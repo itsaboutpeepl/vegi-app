@@ -1,18 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:peepl/features/home/widgets/price.dart';
-import 'package:peepl/features/home/widgets/price_change.dart';
-import 'package:peepl/features/home/widgets/price_diff.dart';
-import 'package:peepl/features/home/widgets/price_line_chart.dart';
-import 'package:peepl/features/home/widgets/token_activities.dart';
-import 'package:peepl/generated/l10n.dart';
-import 'package:peepl/redux/viewsmodels/token_tile.dart';
-import 'package:peepl/utils/format.dart';
-import 'package:peepl/features/shared/widgets/default_logo.dart';
+import 'package:vegan_liverpool/features/home/widgets/price.dart';
+import 'package:vegan_liverpool/features/home/widgets/price_change.dart';
+import 'package:vegan_liverpool/features/home/widgets/price_diff.dart';
+import 'package:vegan_liverpool/features/home/widgets/price_line_chart.dart';
+import 'package:vegan_liverpool/features/home/widgets/token_activities.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/token_tile.dart';
+import 'package:vegan_liverpool/utils/format.dart';
+import 'package:vegan_liverpool/features/shared/widgets/default_logo.dart';
 import 'package:flutter/material.dart';
-import 'package:peepl/models/app_state.dart';
-import 'package:peepl/models/tokens/token.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TokenTile extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:peepl/constants/enums.dart';
-import 'package:peepl/models/tokens/token.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
 
 class SendFlowArguments {
   String? name;

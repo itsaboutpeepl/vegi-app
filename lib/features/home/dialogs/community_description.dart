@@ -1,10 +1,10 @@
 import 'dart:core';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:peepl/generated/l10n.dart';
-import 'package:peepl/models/community/community.dart';
-import 'package:peepl/models/tokens/token.dart';
-import 'package:peepl/features/shared/widgets/primary_button.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
+import 'package:vegan_liverpool/models/community/community.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 
 class CommunityDescription extends StatefulWidget {
   final Token token;

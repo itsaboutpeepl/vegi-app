@@ -1,7 +1,7 @@
-name: peepl
-version: 1.0.20+62
+name: vegan_liverpool
+version: 0.0.1
 publish_to: none
-description: Cross platform mobile Ethereum wallet.
+description: Food, Grocery delivery platform for Vegan products and food, with a built in wallet running on the Fuse network
 environment:
   sdk: ">=2.12.0 <3.0.0"
 dependencies:

@@ -1,6 +1,6 @@
-import 'package:peepl/models/swap_state.dart';
-import 'package:peepl/models/tokens/token.dart';
-import 'package:peepl/redux/actions/swap_actions.dart';
+import 'package:vegan_liverpool/models/swap_state.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/redux/actions/swap_actions.dart';
 import 'package:redux/redux.dart';
 
 final swapReducers = combineReducers<SwapState>([

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:peepl/models/app_state.dart';
-import 'package:peepl/models/tokens/token.dart';
-import 'package:peepl/redux/actions/cash_wallet_actions.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:redux/redux.dart';
 
 class PriceDiffViewModel extends Equatable {

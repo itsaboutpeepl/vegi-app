@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:peepl/models/app_state.dart';
-import 'package:peepl/models/articles/videoArticle.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/articles/videoArticle.dart';
 import 'package:redux/redux.dart';
 
 class FeaturedVideosViewModel extends Equatable {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:peepl/features/guideNews/screens/newsScreen.dart';
-import 'package:peepl/features/guideNews/widgets/singleCategoryArticle.dart';
-import 'package:peepl/models/app_state.dart';
-import 'package:peepl/redux/actions/news_actions.dart';
-import 'package:peepl/redux/viewsmodels/categoryArticleList.dart';
+import 'package:vegan_liverpool/features/guideNews/screens/newsScreen.dart';
+import 'package:vegan_liverpool/features/guideNews/widgets/singleCategoryArticle.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/news_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/categoryArticleList.dart';
 
 class CategoryArticlesList extends StatefulWidget {
   const CategoryArticlesList({Key? key}) : super(key: key);

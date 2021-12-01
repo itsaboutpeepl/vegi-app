@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:peepl/features/shared/dialogs/warn_send.dart';
-import 'package:peepl/generated/l10n.dart';
-import 'package:peepl/features/contacts/widgets/contact_tile.dart';
-import 'package:peepl/models/app_state.dart';
-import 'package:peepl/models/tokens/token.dart';
-import 'package:peepl/redux/viewsmodels/warn_send.dart';
-import 'package:peepl/utils/format.dart';
-import 'package:peepl/utils/send.dart';
+import 'package:vegan_liverpool/features/shared/dialogs/warn_send.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
+import 'package:vegan_liverpool/features/contacts/widgets/contact_tile.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/warn_send.dart';
+import 'package:vegan_liverpool/utils/format.dart';
+import 'package:vegan_liverpool/utils/send.dart';
 
 class SendToAccount extends StatelessWidget {
   final String accountAddress;

@@ -1,6 +1,6 @@
-import 'package:peepl/models/app_state.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
-import 'package:peepl/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 class SettingsViewModel {
   final Function() logout;
