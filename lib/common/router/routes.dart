@@ -20,6 +20,7 @@ import 'package:vegan_liverpool/features/screens/splash_screen.dart';
 import 'package:vegan_liverpool/features/screens/webview_screen.dart';
 import 'package:vegan_liverpool/features/swap/router/swap_router.dart';
 import 'package:vegan_liverpool/features/topup/router/topup_router.dart';
+import 'package:vegan_liverpool/features/veganHome/router/router.dart';
 import 'package:vegan_liverpool/features/webview/router/router.dart';
 
 export 'routes.gr.dart';
@@ -40,6 +41,7 @@ export 'routes.gr.dart';
       page: MainScreen,
       guards: [AuthGuard],
       children: [
+        veganHomeTab,
         guideHomeTab,
         newsTab,
         homeTab,
