@@ -56,6 +56,7 @@ class _MainScreenState extends State<MainScreen> {
         builder: (_, vm) => AutoTabsScaffold(
           animationDuration: Duration(milliseconds: 0),
           routes: [
+            VeganHomeTab(),
             GuideHomeTab(),
             NewsHomeTab(),
             HomeTab(),
@@ -82,10 +83,10 @@ class _MainScreenState extends State<MainScreen> {
             // ),
             // AccountTab(),
           ],
-          bottomNavigationBuilder: (_, TabsRouter tabs) {
-            _tabsRouter = tabs;
-            return BottomBar(tabs);
-          },
+          // bottomNavigationBuilder: (_, TabsRouter tabs) {
+          //   _tabsRouter = tabs;
+          //   return BottomBar(tabs);
+          // },
         ),
       ),
     );
