@@ -77,46 +77,45 @@ class _VeganHomeScreenState extends State<VeganHomeScreen>
           color: Colors.white,
         ),
       ),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          featuredRestaurants(),
-          foodCategoryTabs(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            featuredRestaurants(),
+            foodCategoryTabs(),
+          ],
+        ),
       ),
     );
   }
 
   Widget featuredRestaurants() {
-    return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20),
-            child: Text(
-              "Featured",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20),
+          child: Text(
+            "Featured",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w900,
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.34,
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              scrollDirection: Axis.horizontal,
-              itemCount: 4,
-              itemBuilder: (context, index) =>
-                  singleFeaturedRestaurant(listOfFeaturedRestImageURLs[2]),
-              separatorBuilder: (_, __) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-              ),
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.34,
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            scrollDirection: Axis.horizontal,
+            itemCount: 4,
+            itemBuilder: (context, index) =>
+                singleFeaturedRestaurant(listOfFeaturedRestImageURLs[2]),
+            separatorBuilder: (_, __) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 
@@ -238,52 +237,52 @@ class _VeganHomeScreenState extends State<VeganHomeScreen>
   }
 
   Widget foodCategoryTabs() {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TabBar(
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(),
-                color: Colors.yellow[400],
-              ),
-              isScrollable: true,
-              unselectedLabelColor: Colors.black,
-              labelColor: Colors.black,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              tabs: [
-                tabItem(tabName: "All"),
-                tabItem(tabName: "Pizza", icon: Icons.ac_unit),
-                tabItem(tabName: "Pizza", icon: Icons.ac_unit),
-                tabItem(tabName: "Pizza", icon: Icons.ac_unit),
-                tabItem(tabName: "Pizza", icon: Icons.ac_unit),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          TabBar(
+            indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(),
+              color: Colors.yellow[400],
+            ),
+            isScrollable: true,
+            unselectedLabelColor: Colors.black,
+            labelColor: Colors.black,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            tabs: [
+              tabItem(tabName: "All"),
+              tabItem(tabName: "Pizza", icon: Icons.ac_unit),
+              tabItem(tabName: "Pizza", icon: Icons.ac_unit),
+              tabItem(tabName: "Pizza", icon: Icons.ac_unit),
+              tabItem(tabName: "Pizza", icon: Icons.ac_unit),
+            ],
+            controller: _tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
+          ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                foodCategoryTab(),
+                foodCategoryTab(),
+                foodCategoryTab(),
+                foodCategoryTab(),
+                foodCategoryTab(),
               ],
               controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
             ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  foodCategoryTab(),
-                  foodCategoryTab(),
-                  foodCategoryTab(),
-                  foodCategoryTab(),
-                  foodCategoryTab(),
-                ],
-                controller: _tabController,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget foodCategoryTab() {
     return ListView.separated(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       itemCount: 4,
       itemBuilder: (context, index) =>
