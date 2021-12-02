@@ -41,6 +41,7 @@ export 'routes.gr.dart';
       page: MainScreen,
       guards: [AuthGuard],
       children: [
+        veganHomeAltTab,
         veganHomeTab,
         guideHomeTab,
         newsTab,
