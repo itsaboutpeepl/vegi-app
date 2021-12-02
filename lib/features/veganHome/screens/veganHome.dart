@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/categoryScreen.dart';
 
 List<String> listOfFeaturedRestImageURLs = [
   "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVzdGF1cmFudCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80",
@@ -33,7 +34,6 @@ class _VeganHomeScreenState extends State<VeganHomeScreen>
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
         backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,11 +126,17 @@ class _VeganHomeScreenState extends State<VeganHomeScreen>
         Material(
           borderRadius: BorderRadius.circular(30),
           elevation: 20,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Image(
-              image: NetworkImage(imageUrl),
-              width: MediaQuery.of(context).size.width * 0.8,
+          child: GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FoodScreen()),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image(
+                image: NetworkImage(imageUrl),
+                width: MediaQuery.of(context).size.width * 0.8,
+              ),
             ),
           ),
         ),
