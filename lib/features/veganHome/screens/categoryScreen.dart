@@ -8,6 +8,14 @@ class FoodScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.black,
+        child: Icon(
+          Icons.shopping_basket,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
