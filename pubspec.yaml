@@ -6,6 +6,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 dependencies:
   scrollable_list_tabview: ^0.2.0-nullsafety
+  swipeable_page_route: ^0.2.4
   analyzer: ^1.7.2
   another_flushbar: ^1.10.24
   app_tracking_transparency: ^2.0.1
