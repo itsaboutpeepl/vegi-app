@@ -56,8 +56,7 @@ class _MainScreenState extends State<MainScreen> {
         builder: (_, vm) => AutoTabsScaffold(
           animationDuration: Duration(milliseconds: 0),
           routes: [
-            // VeganHomeAltTab(),
-            VeganHomeTab(),
+            VeganHomeAltTab(),
             GuideHomeTab(),
             NewsHomeTab(),
             HomeTab(),
