@@ -13,17 +13,34 @@ class _FoodScreenState extends State<FoodScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.black,
+        child: Icon(
+          Icons.shopping_basket,
+          color: Colors.white,
+        ),
+      ),
       body: ScrollableListTabView(
-        tabHeight: 48,
+        tabHeight: 60,
         bodyAnimationDuration: const Duration(milliseconds: 150),
         tabAnimationCurve: Curves.easeOut,
         tabAnimationDuration: const Duration(milliseconds: 200),
         tabs: [
           ScrollableListTab(
               tab: ListTab(
-                  label: Text('Label 1'),
-                  icon: Icon(Icons.group),
-                  showIconOnList: false),
+                label: Text(
+                  'Label 1',
+                  style: TextStyle(color: Colors.black),
+                ),
+                icon: Icon(
+                  Icons.group,
+                  color: Colors.black,
+                ),
+                showIconOnList: false,
+                activeBackgroundColor: Colors.yellow[400]!,
+                borderColor: Colors.black,
+              ),
               body: ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
