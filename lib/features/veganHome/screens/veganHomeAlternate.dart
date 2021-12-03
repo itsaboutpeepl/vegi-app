@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
 
 List<String> listOfFeaturedRestImageURLs = [
@@ -27,14 +25,11 @@ class VeganHomeScreenAlternate extends StatefulWidget {
       _VeganHomeScreenAlternateState();
 }
 
-class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate> {
   ScrollController? _scrollController;
 
   @override
   void initState() {
-    _tabController = TabController(length: 5, vsync: this);
     super.initState();
   }
 
