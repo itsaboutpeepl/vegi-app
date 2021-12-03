@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
 
 List<String> listOfFeaturedRestImageURLs = [
   "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVzdGF1cmFudCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80",
@@ -39,44 +41,6 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 60,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Material(
-                borderRadius: BorderRadius.circular(40),
-                elevation: 5,
-                child: CircleAvatar(
-                  radius: 23,
-                  backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  color: Colors.grey[200],
-                  child: Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.black,
@@ -88,6 +52,7 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate>
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
+          VeganSliverAppBar(),
           categorySlider(),
           featuredRestaurantsHeader(),
           featuredRestaurantsList(),
