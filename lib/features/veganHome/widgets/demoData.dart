@@ -14,18 +14,19 @@ List<String> veganCategories = [
 
 List<String> veganCategoryNames = ["Bakery", "Pizza"];
 
-MenuItem demoMenuItem = MenuItem(
-    name: "Blueberry Bagel",
-    imageURL:
-        "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
-    category: "Bakery",
-    price: 3.9,
-    description:
-        "Freshiy Deked Dacel made with à mix of wild and cultured blueberries baked inside",
-    options: {
-      "Cream Cheese": 1.0,
-      "Extra Blueberries": 1.85,
-      "Extra Baked": 2.35,
-      "Extra Love": 5.0,
-      "Addon - Maple Syrup": 2.3
-    });
+final MenuItem demoMenuItem = new MenuItem(
+  name: "Blueberry Bagel",
+  imageURL:
+      "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
+  category: "Bakery",
+  price: 3.9,
+  description:
+      "Freshiy Deked Dacel made with à mix of wild and cultured blueberries baked inside",
+  options: {
+    "Cream Cheese": 1.0,
+    "Extra Blueberries": 1.85,
+    "Extra Baked": 2.35,
+    "Extra Love": 5.0,
+    "Addon - Maple Syrup": 2.3
+  },
+);
