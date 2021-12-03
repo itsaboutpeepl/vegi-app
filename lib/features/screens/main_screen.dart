@@ -57,8 +57,6 @@ class _MainScreenState extends State<MainScreen> {
           animationDuration: Duration(milliseconds: 0),
           routes: [
             VeganHomeAltTab(),
-            GuideHomeTab(),
-            NewsHomeTab(),
             HomeTab(),
 
             // WebviewTab(
