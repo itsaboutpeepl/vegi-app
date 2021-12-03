@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
           return StoreProvider<AppState>(
             store: widget.store,
             child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
               locale: _locale,
               title: Strings.APP_NAME,
               themeMode: ThemeMode.system,
@@ -119,6 +120,7 @@ class _MyAppState extends State<MyApp> {
           );
         } else {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             home: Scaffold(
               body: Container(
                 decoration: BoxDecoration(
