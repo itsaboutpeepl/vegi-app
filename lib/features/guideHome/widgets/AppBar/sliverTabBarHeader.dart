@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class SliverTabBarHeader extends SliverPersistentHeaderDelegate {
   final TabBar tabBar;
@@ -12,17 +13,25 @@ class SliverTabBarHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: color,
-      child: tabBar,
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          color: Colors.white,
+        ),
+        Positioned(
+          child: tabBar,
+          bottom: 20,
+        ),
+      ],
     );
   }
 
   @override
-  double get maxExtent => tabBar.preferredSize.height;
+  double get maxExtent => tabBar.preferredSize.height + 70;
 
   @override
-  double get minExtent => tabBar.preferredSize.height;
+  double get minExtent => tabBar.preferredSize.height + 60;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
