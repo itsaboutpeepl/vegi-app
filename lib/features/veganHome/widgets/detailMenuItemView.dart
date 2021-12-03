@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:vegan_liverpool/models/restaurant/MenuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 
 class DetailMenuItemView extends StatefulWidget {
   const DetailMenuItemView({Key? key, required this.menuItem})
