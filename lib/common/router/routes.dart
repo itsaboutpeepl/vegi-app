@@ -3,8 +3,6 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/router/router.dart';
 import 'package:vegan_liverpool/features/buy/router/router.dart';
 import 'package:vegan_liverpool/features/contacts/router/router.dart';
-import 'package:vegan_liverpool/features/guideHome/router/router.dart';
-import 'package:vegan_liverpool/features/guideNews/router/router.dart';
 import 'package:vegan_liverpool/features/help/router/router.dart';
 // import 'package:vegan_liverpool/features/earn/router/router.dart';
 import 'package:vegan_liverpool/features/home/router/router.dart';
@@ -42,8 +40,6 @@ export 'routes.gr.dart';
       guards: [AuthGuard],
       children: [
         veganHomeAltTab,
-        guideHomeTab,
-        newsTab,
         homeTab,
         topupTab,
         helpTab,
