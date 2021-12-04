@@ -112,6 +112,9 @@ class _ScrollableListTabViewState extends State<ScrollableListTabView> {
             },
           ),
         ),
+        SizedBox(
+          height: 20,
+        ),
         Flexible(
           child: ScrollablePositionedList.builder(
             itemScrollController: _bodyScrollController,
