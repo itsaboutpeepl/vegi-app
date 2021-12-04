@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomAppBar({Key? key})
+  CustomAppBar(
+      {Key? key,
+      required this.centerText,
+      required this.pageTitle,
+      required this.hasSearchAction})
       : preferredSize = Size.fromHeight(115),
         super(key: key);
 
   @override
   final Size preferredSize;
+
+  final String centerText;
+  final String pageTitle;
+  final bool hasSearchAction;
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -45,7 +53,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 Padding(
                   padding: const EdgeInsets.only(left: 50),
                   child: Text(
-                    'Liverpool,L17 0AB,UK',
+                    widget.centerText,
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 15,
@@ -53,25 +61,27 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   ),
                 ),
                 Spacer(),
-                Padding(
-                  //  TODO: Use MediaQuery
-                  padding: const EdgeInsets.only(left: 0),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    child: IconButton(
-                      icon: Icon(Icons.search),
-                      color: Colors.black,
-                      onPressed: () {},
-                    ),
-                  ),
-                )
+                widget.hasSearchAction
+                    ? Padding(
+                        //  TODO: Use MediaQuery
+                        padding: const EdgeInsets.only(left: 0),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          child: IconButton(
+                            icon: Icon(Icons.search),
+                            color: Colors.black,
+                            onPressed: () {},
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink()
               ],
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Da Cimino',
+                widget.pageTitle,
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w900,
