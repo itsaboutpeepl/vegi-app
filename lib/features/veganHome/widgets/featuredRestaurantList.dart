@@ -16,6 +16,7 @@ class _FeaturedRestaurantListState extends State<FeaturedRestaurantList> {
     return ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 50),
       itemCount: 4,
       itemBuilder: (context, index) =>
