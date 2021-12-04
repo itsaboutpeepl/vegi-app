@@ -41,7 +41,7 @@ import '../../features/swap/screens/review_swap.dart' as _i30;
 import '../../features/swap/screens/swap.dart' as _i29;
 import '../../features/topup/screens/topup.dart' as _i19;
 import '../../features/topup/screens/topup_explained.dart' as _i20;
-import '../../features/veganHome/screens/categoryScreen.dart' as _i15;
+import '../../features/veganHome/screens/restaurantMenuScreen.dart' as _i15;
 import '../../features/veganHome/screens/restaurantListingScreen.dart' as _i16;
 import '../../features/veganHome/screens/veganHomeAlternate.dart' as _i14;
 import '../../models/actions/wallet_action.dart' as _i39;

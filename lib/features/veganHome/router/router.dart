@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/categoryScreen.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantListingScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHomeAlternate.dart';
 
