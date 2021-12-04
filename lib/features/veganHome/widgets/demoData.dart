@@ -14,7 +14,7 @@ List<String> veganCategories = [
 
 List<String> veganCategoryNames = ["Bakery", "Pizza"];
 
-final MenuItem demoMenuItem = new MenuItem(
+final MenuItem bagel1 = new MenuItem(
   name: "Blueberry Bagel",
   imageURLs: [
     "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
@@ -39,3 +39,57 @@ final MenuItem demoMenuItem = new MenuItem(
     "Addon - Orange Syrup": 2.3
   },
 );
+
+final MenuItem bagel2 = new MenuItem(
+  name: "Poppy Seed Bagel",
+  imageURLs: [
+    "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
+    "https://images.kitchenstories.io/communityImages/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540-large-landscape-150.jpg",
+    "https://images.kitchenstories.io/communityImages/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540-large-landscape-150.jpg"
+  ],
+  category: "Bakery",
+  price: 3.9,
+  description:
+      "Freshiy Baked Bagel made with a mix of wild and cultured poppy seeds",
+  options: {
+    "Cream Cheese": 1.0,
+    "Extra Blueberries": 1.85,
+    "Extra Baked": 2.35,
+    "Extra Love": 5.0,
+    "Addon - Maple Syrup": 2.3,
+    "Addon - Strawberry Syrup": 2.3,
+    "Addon - Apple Syrup": 2.3,
+    "Addon - Mango Syrup": 2.3,
+    "Addon - Banana Syrup": 2.3,
+    "Addon - Blueberry Syrup": 2.3,
+    "Addon - Orange Syrup": 2.3
+  },
+);
+
+final MenuItem bagel3 = new MenuItem(
+  name: "Everything Bagel",
+  imageURLs: [
+    "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
+    "https://images.kitchenstories.io/communityImages/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540-large-landscape-150.jpg",
+    "https://images.kitchenstories.io/communityImages/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540/4a1a3db06ed03e8fc549a134983353d4_97f73b4a-0b32-4e1d-9bc7-d56df4f51540-large-landscape-150.jpg"
+  ],
+  category: "Bakery",
+  price: 3.9,
+  description:
+      "Freshiy Baked Bagel made with a mix of poppy seeds, flax seeds, chia seeds, sesame seeds, onion flakes, garlic flakes, sunflower seeds, caraway seeds, pretzel salt, and black pepper.",
+  options: {
+    "Cream Cheese": 1.0,
+    "Extra Blueberries": 1.85,
+    "Extra Baked": 2.35,
+    "Extra Love": 5.0,
+    "Addon - Maple Syrup": 2.3,
+    "Addon - Strawberry Syrup": 2.3,
+    "Addon - Apple Syrup": 2.3,
+    "Addon - Mango Syrup": 2.3,
+    "Addon - Banana Syrup": 2.3,
+    "Addon - Blueberry Syrup": 2.3,
+    "Addon - Orange Syrup": 2.3
+  },
+);
+
+List<MenuItem> bagels = [bagel1, bagel2, bagel3];
