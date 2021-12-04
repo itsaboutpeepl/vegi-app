@@ -50,7 +50,7 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
                           backgroundColor: Colors.cyan,
                           context: context,
                           builder: (context) =>
-                              DetailMenuItemView(menuItem: demoMenuItem),
+                              DetailMenuItemView(menuItem: bagel1),
                         );
                       },
                       icon: Icon(Icons.add),
@@ -68,7 +68,7 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
             useRootNavigator: true,
             backgroundColor: Colors.cyan,
             context: context,
-            builder: (context) => DetailMenuItemView(menuItem: demoMenuItem),
+            builder: (context) => DetailMenuItemView(menuItem: bagel1),
           ),
         },
       ),
