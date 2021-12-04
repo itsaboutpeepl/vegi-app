@@ -24,7 +24,6 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
         ),
       ),
       body: ScrollableListTabView(
-        tabHeight: 60,
         bodyAnimationDuration: const Duration(milliseconds: 150),
         tabAnimationCurve: Curves.easeOut,
         tabAnimationDuration: const Duration(milliseconds: 200),
@@ -50,7 +49,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
         ),
         showIconOnList: false,
         showLabelOnList: false,
-        activeBackgroundColor: Colors.yellow[400]!,
+        activeBackgroundColor: Colors.yellow[200]!,
         activeBorderColor: Colors.black,
       ),
       body: ListView.separated(
