@@ -2,6 +2,7 @@ import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/categoryList.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/demoData.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
 
@@ -28,7 +29,7 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.router.push(ToteScreen());
+          context.router.push(ToteScreen(userCart: userCart));
         },
         backgroundColor: Colors.black,
         child: Icon(
