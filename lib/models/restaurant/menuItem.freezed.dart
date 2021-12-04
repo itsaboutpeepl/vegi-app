@@ -22,14 +22,14 @@ class _$MenuItemTearOff {
 
   _MenuItem call(
       {required String name,
-      required String imageURL,
+      required List<String> imageURLs,
       required String category,
       required double price,
       required String description,
       required Map<String, double> options}) {
     return _MenuItem(
       name: name,
-      imageURL: imageURL,
+      imageURLs: imageURLs,
       category: category,
       price: price,
       description: description,
@@ -48,7 +48,7 @@ const $MenuItem = _$MenuItemTearOff();
 /// @nodoc
 mixin _$MenuItem {
   String get name => throw _privateConstructorUsedError;
-  String get imageURL => throw _privateConstructorUsedError;
+  List<String> get imageURLs => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -66,7 +66,7 @@ abstract class $MenuItemCopyWith<$Res> {
       _$MenuItemCopyWithImpl<$Res>;
   $Res call(
       {String name,
-      String imageURL,
+      List<String> imageURLs,
       String category,
       double price,
       String description,
@@ -84,7 +84,7 @@ class _$MenuItemCopyWithImpl<$Res> implements $MenuItemCopyWith<$Res> {
   @override
   $Res call({
     Object? name = freezed,
-    Object? imageURL = freezed,
+    Object? imageURLs = freezed,
     Object? category = freezed,
     Object? price = freezed,
     Object? description = freezed,
@@ -95,10 +95,10 @@ class _$MenuItemCopyWithImpl<$Res> implements $MenuItemCopyWith<$Res> {
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURL: imageURL == freezed
-          ? _value.imageURL
-          : imageURL // ignore: cast_nullable_to_non_nullable
-              as String,
+      imageURLs: imageURLs == freezed
+          ? _value.imageURLs
+          : imageURLs // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -126,7 +126,7 @@ abstract class _$MenuItemCopyWith<$Res> implements $MenuItemCopyWith<$Res> {
   @override
   $Res call(
       {String name,
-      String imageURL,
+      List<String> imageURLs,
       String category,
       double price,
       String description,
@@ -145,7 +145,7 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? imageURL = freezed,
+    Object? imageURLs = freezed,
     Object? category = freezed,
     Object? price = freezed,
     Object? description = freezed,
@@ -156,10 +156,10 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURL: imageURL == freezed
-          ? _value.imageURL
-          : imageURL // ignore: cast_nullable_to_non_nullable
-              as String,
+      imageURLs: imageURLs == freezed
+          ? _value.imageURLs
+          : imageURLs // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -186,7 +186,7 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
 class _$_MenuItem extends _MenuItem {
   _$_MenuItem(
       {required this.name,
-      required this.imageURL,
+      required this.imageURLs,
       required this.category,
       required this.price,
       required this.description,
@@ -199,7 +199,7 @@ class _$_MenuItem extends _MenuItem {
   @override
   final String name;
   @override
-  final String imageURL;
+  final List<String> imageURLs;
   @override
   final String category;
   @override
@@ -211,7 +211,7 @@ class _$_MenuItem extends _MenuItem {
 
   @override
   String toString() {
-    return 'MenuItem(name: $name, imageURL: $imageURL, category: $category, price: $price, description: $description, options: $options)';
+    return 'MenuItem(name: $name, imageURLs: $imageURLs, category: $category, price: $price, description: $description, options: $options)';
   }
 
   @override
@@ -220,9 +220,9 @@ class _$_MenuItem extends _MenuItem {
         (other is _MenuItem &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.imageURL, imageURL) ||
+            (identical(other.imageURLs, imageURLs) ||
                 const DeepCollectionEquality()
-                    .equals(other.imageURL, imageURL)) &&
+                    .equals(other.imageURLs, imageURLs)) &&
             (identical(other.category, category) ||
                 const DeepCollectionEquality()
                     .equals(other.category, category)) &&
@@ -239,7 +239,7 @@ class _$_MenuItem extends _MenuItem {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(imageURL) ^
+      const DeepCollectionEquality().hash(imageURLs) ^
       const DeepCollectionEquality().hash(category) ^
       const DeepCollectionEquality().hash(price) ^
       const DeepCollectionEquality().hash(description) ^
@@ -259,7 +259,7 @@ class _$_MenuItem extends _MenuItem {
 abstract class _MenuItem extends MenuItem {
   factory _MenuItem(
       {required String name,
-      required String imageURL,
+      required List<String> imageURLs,
       required String category,
       required double price,
       required String description,
@@ -271,7 +271,7 @@ abstract class _MenuItem extends MenuItem {
   @override
   String get name => throw _privateConstructorUsedError;
   @override
-  String get imageURL => throw _privateConstructorUsedError;
+  List<String> get imageURLs => throw _privateConstructorUsedError;
   @override
   String get category => throw _privateConstructorUsedError;
   @override

@@ -11,7 +11,7 @@ class MenuItem with _$MenuItem {
   @JsonSerializable()
   factory MenuItem({
     required String name,
-    required String imageURL,
+    required List<String> imageURLs,
     required String category,
     required double price,
     required String description,
@@ -19,4 +19,6 @@ class MenuItem with _$MenuItem {
   }) = _MenuItem;
 
   factory MenuItem.fromJson(dynamic json) => _$MenuItemFromJson(json);
+
+  String get formattedPrice => "£" + this.price.toString();
 }
