@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHomeAlternate.dart';
 
@@ -30,5 +31,6 @@ const veganHomeAltTab = AutoRoute(
         page: RestaurantMenuScreen,
         name: 'restaurantMenuScreen',
         guards: [AuthGuard]),
+    AutoRoute(page: ToteScreen, name: 'toteScreen', guards: [AuthGuard]),
   ],
 );
