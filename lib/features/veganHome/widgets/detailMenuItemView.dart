@@ -170,106 +170,148 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
         ),
         Positioned(
           bottom: 0,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                color: Colors.yellow[300]),
-            width: MediaQuery.of(context).size.width,
-            height: 100,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(10),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                    color: Colors.yellow[300]),
+                width: MediaQuery.of(context).size.width,
+                height: 100,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Row(
+                    children: [
+                      quantityButtons(),
+                      Spacer(),
+                      ElevatedButton(
+                        onPressed: () => {},
+                        child: Text("Add to Tote"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Colors.black,
+                          fixedSize: Size(120, 40),
+                          textStyle: TextStyle(fontWeight: FontWeight.w900),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () => {},
-                      icon: Icon(Icons.remove),
-                    ),
-                  ),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    child: Center(
-                      child: Text(
-                        "1",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w900),
                       ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.symmetric(
-                        vertical: BorderSide(color: Colors.grey),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(3, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.horizontal(
-                        right: Radius.circular(10),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(3, 0), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () => {},
-                      icon: Icon(Icons.add),
-                    ),
-                  ),
-                  Spacer(),
-                  ElevatedButton(
-                    onPressed: () => {},
-                    child: Text("Add to Tote"),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      onPrimary: Colors.black,
-                      onSurface: Colors.cyan,
-                      fixedSize: Size(120, 40),
-                      textStyle: TextStyle(fontWeight: FontWeight.w900),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              Positioned(
+                top: -40,
+                left: (MediaQuery.of(context).size.width * 0.5) - 40,
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 8,
+                        blurRadius: 10,
+                        offset: Offset(0, 0), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      "£50",
+                      style: TextStyle(
+                        color: Colors.yellow[300],
+                        fontWeight: FontWeight.w900,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ],
     );
   }
+}
+
+Widget quantityButtons() {
+  return Row(
+    children: [
+      Container(
+        height: 40,
+        width: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.horizontal(
+            left: Radius.circular(10),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: IconButton(
+          onPressed: () => {},
+          icon: Icon(Icons.remove),
+        ),
+      ),
+      Container(
+        height: 40,
+        width: 40,
+        child: Center(
+          child: Text(
+            "1",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+          ),
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.symmetric(
+            vertical: BorderSide(color: Colors.grey),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(3, 3), // changes position of shadow
+            ),
+          ],
+        ),
+      ),
+      Container(
+        height: 40,
+        width: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.horizontal(
+            right: Radius.circular(10),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(3, 0), // changes position of shadow
+            ),
+          ],
+        ),
+        child: IconButton(
+          onPressed: () => {},
+          icon: Icon(Icons.add),
+        ),
+      ),
+    ],
+  );
 }
