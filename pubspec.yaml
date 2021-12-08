@@ -52,6 +52,7 @@ dependencies:
   injectable: ^1.4.1
   json_annotation: ^4.0.1
   local_auth: ^1.1.6
+  location: ^4.3.0
   logger: ^1.0.0
   modal_bottom_sheet: ^2.0.0
   number_display: ^3.0.0
