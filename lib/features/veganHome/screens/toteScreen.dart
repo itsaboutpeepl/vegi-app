@@ -1,5 +1,7 @@
+import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/demoData.dart';
@@ -67,7 +69,9 @@ class _ToteScreenState extends State<ToteScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.push(CheckoutScreen());
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -75,7 +79,7 @@ class _ToteScreenState extends State<ToteScreen> {
                         SizedBox(
                           width: 20,
                         ),
-                        Text("Add to Tote"),
+                        Text("Checkout"),
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
