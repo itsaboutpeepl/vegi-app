@@ -67,6 +67,7 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
           showBarModalBottomSheet(
             useRootNavigator: true,
             backgroundColor: Colors.cyan,
+            isDismissible: true,
             context: context,
             builder: (context) => DetailMenuItemView(menuItem: bagel1),
           ),
