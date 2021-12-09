@@ -171,26 +171,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(10),
                   child: Container(
                     color: Colors.white,
-                    height: 80,
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Peepl Offices, \nL1 4QR'),
-                        ),
-                        Spacer(),
-                        CircleAvatar(
-                          child: Icon(
-                            Icons.edit_outlined,
+                    height: 55,
+                    width: MediaQuery.of(context).size.width * 0.86,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Peepl Offices, \nL1 4QR'),
                           ),
-                          backgroundColor: Colors.yellow[400],
-                        ),
-                      ],
+                          Spacer(),
+                          CircleAvatar(
+                            child: Icon(
+                              Icons.edit_outlined,
+                            ),
+                            backgroundColor: Colors.yellow[400],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
