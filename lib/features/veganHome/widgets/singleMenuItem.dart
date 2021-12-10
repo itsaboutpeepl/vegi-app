@@ -47,7 +47,6 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
                       onPressed: () {
                         showBarModalBottomSheet(
                           useRootNavigator: true,
-                          backgroundColor: Colors.cyan,
                           context: context,
                           builder: (context) =>
                               DetailMenuItemView(menuItem: bagel1),
@@ -66,7 +65,6 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
         onTap: () => {
           showBarModalBottomSheet(
             useRootNavigator: true,
-            backgroundColor: Colors.cyan,
             isDismissible: true,
             context: context,
             builder: (context) => DetailMenuItemView(menuItem: bagel1),
