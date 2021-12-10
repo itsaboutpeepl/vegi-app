@@ -44,6 +44,7 @@ dependencies:
   flutter_web_browser: ^0.14.0
   font_awesome_flutter: ^9.1.0
   freezed_annotation: ^0.14.2
+  geocoding: ^2.0.1
   get_it: ^7.2.0
   google_fonts: ^2.1.0
   google_maps_flutter: ^2.0.6
@@ -52,7 +53,6 @@ dependencies:
   injectable: ^1.4.1
   json_annotation: ^4.0.1
   local_auth: ^1.1.6
-  location: ^4.3.0
   logger: ^1.0.0
   modal_bottom_sheet: ^2.0.0
   number_display: ^3.0.0

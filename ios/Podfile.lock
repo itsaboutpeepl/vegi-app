@@ -110,6 +110,8 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - geocoding (1.0.5):
+    - Flutter
   - google_maps_flutter (0.0.1):
     - Flutter
     - GoogleMaps
@@ -236,6 +238,7 @@ DEPENDENCIES:
   - flutter_segment (from `.symlinks/plugins/flutter_segment/ios`)
   - flutter_udid (from `.symlinks/plugins/flutter_udid/ios`)
   - flutter_web_browser (from `.symlinks/plugins/flutter_web_browser/ios`)
+  - geocoding (from `.symlinks/plugins/geocoding/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - local_auth (from `.symlinks/plugins/local_auth/ios`)
@@ -312,6 +315,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_udid/ios"
   flutter_web_browser:
     :path: ".symlinks/plugins/flutter_web_browser/ios"
+  geocoding:
+    :path: ".symlinks/plugins/geocoding/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   image_picker:
@@ -378,6 +383,7 @@ SPEC CHECKSUMS:
   flutter_udid: 0848809dbed4c055175747ae6a45a8b4f6771e1c
   flutter_web_browser: a719eca01d00bdc9a0e13e42194f86b90a5b8729
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
   google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
   GoogleAppMeasurement: de70802583dedceb0bca18172b345307e8f410b8
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
