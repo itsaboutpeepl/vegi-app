@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/addressView.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
@@ -187,8 +189,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           Spacer(),
                           CircleAvatar(
-                            child: Icon(
-                              Icons.edit_outlined,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.edit_outlined,
+                              ),
+                              onPressed: () => showBarModalBottomSheet(
+                                isDismissible: true,
+                                enableDrag: false,
+                                useRootNavigator: true,
+                                context: context,
+                                builder: (context) => AddressView(),
+                              ),
                             ),
                             backgroundColor: Colors.yellow[400],
                           ),
