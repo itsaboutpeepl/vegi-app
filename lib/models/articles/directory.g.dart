@@ -6,16 +6,14 @@ part of 'directory.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Directory _$_$_DirectoryFromJson(Map<String, dynamic> json) {
-  return _$_Directory(
-    directoryTitle: json['directoryTitle'] as String,
-    directoryLocation: json['directoryLocation'] as String,
-    directoryCoordinates: json['directoryCoordinates'] as String,
-    directoryWebsiteURL: json['directoryWebsiteURL'] as String,
-  );
-}
+_$_Directory _$$_DirectoryFromJson(Map<String, dynamic> json) => _$_Directory(
+      directoryTitle: json['directoryTitle'] as String,
+      directoryLocation: json['directoryLocation'] as String,
+      directoryCoordinates: json['directoryCoordinates'] as String,
+      directoryWebsiteURL: json['directoryWebsiteURL'] as String,
+    );
 
-Map<String, dynamic> _$_$_DirectoryToJson(_$_Directory instance) =>
+Map<String, dynamic> _$$_DirectoryToJson(_$_Directory instance) =>
     <String, dynamic>{
       'directoryTitle': instance.directoryTitle,
       'directoryLocation': instance.directoryLocation,

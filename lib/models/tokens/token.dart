@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
@@ -7,7 +6,6 @@ import 'package:vegan_liverpool/models/tokens/price.dart';
 import 'package:vegan_liverpool/models/tokens/stats.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/format.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:wallet_core/wallet_core.dart' show EtherAmount, Web3;
 
 part 'token.freezed.dart';

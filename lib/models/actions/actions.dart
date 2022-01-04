@@ -1,5 +1,4 @@
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 

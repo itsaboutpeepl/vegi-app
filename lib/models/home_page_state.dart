@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:vegan_liverpool/models/articles/blogArticle.dart';
 import 'package:vegan_liverpool/models/articles/directory.dart';
 import 'package:vegan_liverpool/models/articles/events.dart';
