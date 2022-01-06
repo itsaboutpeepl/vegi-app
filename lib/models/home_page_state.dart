@@ -1,31 +1,26 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/models/articles/blogArticle.dart';
-import 'package:vegan_liverpool/models/articles/directory.dart';
-import 'package:vegan_liverpool/models/articles/events.dart';
-import 'package:vegan_liverpool/models/articles/videoArticle.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
+import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 
 part 'home_page_state.freezed.dart';
 part 'home_page_state.g.dart';
 
-@immutable
 @freezed
 class HomePageState with _$HomePageState {
   const HomePageState._();
 
   @JsonSerializable()
-  factory HomePageState(
-      {required List<BlogArticle> featuredPosts,
-      required List<VideoArticle> featuredVideos,
-      required List<Events> eventList,
-      required List<Directory> directoryList,
-      required bool playConfetti}) = _HomePageState;
+  factory HomePageState({
+    required List<RestaurantCategory> restaurantCategories,
+    required List<RestaurantItem> featuredRestaurants,
+    required UserCart currentUserCart,
+  }) = _HomePageState;
 
   factory HomePageState.initial() => HomePageState(
-        featuredPosts: [],
-        featuredVideos: [],
-        eventList: [],
-        directoryList: [],
-        playConfetti: false,
+        restaurantCategories: [],
+        featuredRestaurants: [],
+        currentUserCart: UserCart.initial(),
       );
 
   factory HomePageState.fromJson(dynamic json) => _$HomePageStateFromJson(json);

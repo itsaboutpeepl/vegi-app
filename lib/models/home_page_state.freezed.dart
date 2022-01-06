@@ -22,17 +22,13 @@ class _$HomePageStateTearOff {
   const _$HomePageStateTearOff();
 
   _HomePageState call(
-      {required List<BlogArticle> featuredPosts,
-      required List<VideoArticle> featuredVideos,
-      required List<Events> eventList,
-      required List<Directory> directoryList,
-      required bool playConfetti}) {
+      {required List<RestaurantCategory> restaurantCategories,
+      required List<RestaurantItem> featuredRestaurants,
+      required UserCart currentUserCart}) {
     return _HomePageState(
-      featuredPosts: featuredPosts,
-      featuredVideos: featuredVideos,
-      eventList: eventList,
-      directoryList: directoryList,
-      playConfetti: playConfetti,
+      restaurantCategories: restaurantCategories,
+      featuredRestaurants: featuredRestaurants,
+      currentUserCart: currentUserCart,
     );
   }
 
@@ -46,11 +42,11 @@ const $HomePageState = _$HomePageStateTearOff();
 
 /// @nodoc
 mixin _$HomePageState {
-  List<BlogArticle> get featuredPosts => throw _privateConstructorUsedError;
-  List<VideoArticle> get featuredVideos => throw _privateConstructorUsedError;
-  List<Events> get eventList => throw _privateConstructorUsedError;
-  List<Directory> get directoryList => throw _privateConstructorUsedError;
-  bool get playConfetti => throw _privateConstructorUsedError;
+  List<RestaurantCategory> get restaurantCategories =>
+      throw _privateConstructorUsedError;
+  List<RestaurantItem> get featuredRestaurants =>
+      throw _privateConstructorUsedError;
+  UserCart get currentUserCart => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -64,11 +60,11 @@ abstract class $HomePageStateCopyWith<$Res> {
           HomePageState value, $Res Function(HomePageState) then) =
       _$HomePageStateCopyWithImpl<$Res>;
   $Res call(
-      {List<BlogArticle> featuredPosts,
-      List<VideoArticle> featuredVideos,
-      List<Events> eventList,
-      List<Directory> directoryList,
-      bool playConfetti});
+      {List<RestaurantCategory> restaurantCategories,
+      List<RestaurantItem> featuredRestaurants,
+      UserCart currentUserCart});
+
+  $UserCartCopyWith<$Res> get currentUserCart;
 }
 
 /// @nodoc
@@ -82,34 +78,31 @@ class _$HomePageStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? featuredPosts = freezed,
-    Object? featuredVideos = freezed,
-    Object? eventList = freezed,
-    Object? directoryList = freezed,
-    Object? playConfetti = freezed,
+    Object? restaurantCategories = freezed,
+    Object? featuredRestaurants = freezed,
+    Object? currentUserCart = freezed,
   }) {
     return _then(_value.copyWith(
-      featuredPosts: featuredPosts == freezed
-          ? _value.featuredPosts
-          : featuredPosts // ignore: cast_nullable_to_non_nullable
-              as List<BlogArticle>,
-      featuredVideos: featuredVideos == freezed
-          ? _value.featuredVideos
-          : featuredVideos // ignore: cast_nullable_to_non_nullable
-              as List<VideoArticle>,
-      eventList: eventList == freezed
-          ? _value.eventList
-          : eventList // ignore: cast_nullable_to_non_nullable
-              as List<Events>,
-      directoryList: directoryList == freezed
-          ? _value.directoryList
-          : directoryList // ignore: cast_nullable_to_non_nullable
-              as List<Directory>,
-      playConfetti: playConfetti == freezed
-          ? _value.playConfetti
-          : playConfetti // ignore: cast_nullable_to_non_nullable
-              as bool,
+      restaurantCategories: restaurantCategories == freezed
+          ? _value.restaurantCategories
+          : restaurantCategories // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantCategory>,
+      featuredRestaurants: featuredRestaurants == freezed
+          ? _value.featuredRestaurants
+          : featuredRestaurants // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantItem>,
+      currentUserCart: currentUserCart == freezed
+          ? _value.currentUserCart
+          : currentUserCart // ignore: cast_nullable_to_non_nullable
+              as UserCart,
     ));
+  }
+
+  @override
+  $UserCartCopyWith<$Res> get currentUserCart {
+    return $UserCartCopyWith<$Res>(_value.currentUserCart, (value) {
+      return _then(_value.copyWith(currentUserCart: value));
+    });
   }
 }
 
@@ -121,11 +114,12 @@ abstract class _$HomePageStateCopyWith<$Res>
       __$HomePageStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<BlogArticle> featuredPosts,
-      List<VideoArticle> featuredVideos,
-      List<Events> eventList,
-      List<Directory> directoryList,
-      bool playConfetti});
+      {List<RestaurantCategory> restaurantCategories,
+      List<RestaurantItem> featuredRestaurants,
+      UserCart currentUserCart});
+
+  @override
+  $UserCartCopyWith<$Res> get currentUserCart;
 }
 
 /// @nodoc
@@ -141,33 +135,23 @@ class __$HomePageStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? featuredPosts = freezed,
-    Object? featuredVideos = freezed,
-    Object? eventList = freezed,
-    Object? directoryList = freezed,
-    Object? playConfetti = freezed,
+    Object? restaurantCategories = freezed,
+    Object? featuredRestaurants = freezed,
+    Object? currentUserCart = freezed,
   }) {
     return _then(_HomePageState(
-      featuredPosts: featuredPosts == freezed
-          ? _value.featuredPosts
-          : featuredPosts // ignore: cast_nullable_to_non_nullable
-              as List<BlogArticle>,
-      featuredVideos: featuredVideos == freezed
-          ? _value.featuredVideos
-          : featuredVideos // ignore: cast_nullable_to_non_nullable
-              as List<VideoArticle>,
-      eventList: eventList == freezed
-          ? _value.eventList
-          : eventList // ignore: cast_nullable_to_non_nullable
-              as List<Events>,
-      directoryList: directoryList == freezed
-          ? _value.directoryList
-          : directoryList // ignore: cast_nullable_to_non_nullable
-              as List<Directory>,
-      playConfetti: playConfetti == freezed
-          ? _value.playConfetti
-          : playConfetti // ignore: cast_nullable_to_non_nullable
-              as bool,
+      restaurantCategories: restaurantCategories == freezed
+          ? _value.restaurantCategories
+          : restaurantCategories // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantCategory>,
+      featuredRestaurants: featuredRestaurants == freezed
+          ? _value.featuredRestaurants
+          : featuredRestaurants // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantItem>,
+      currentUserCart: currentUserCart == freezed
+          ? _value.currentUserCart
+          : currentUserCart // ignore: cast_nullable_to_non_nullable
+              as UserCart,
     ));
   }
 }
@@ -177,61 +161,47 @@ class __$HomePageStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_HomePageState extends _HomePageState {
   _$_HomePageState(
-      {required this.featuredPosts,
-      required this.featuredVideos,
-      required this.eventList,
-      required this.directoryList,
-      required this.playConfetti})
+      {required this.restaurantCategories,
+      required this.featuredRestaurants,
+      required this.currentUserCart})
       : super._();
 
   factory _$_HomePageState.fromJson(Map<String, dynamic> json) =>
       _$$_HomePageStateFromJson(json);
 
   @override
-  final List<BlogArticle> featuredPosts;
+  final List<RestaurantCategory> restaurantCategories;
   @override
-  final List<VideoArticle> featuredVideos;
+  final List<RestaurantItem> featuredRestaurants;
   @override
-  final List<Events> eventList;
-  @override
-  final List<Directory> directoryList;
-  @override
-  final bool playConfetti;
+  final UserCart currentUserCart;
 
   @override
   String toString() {
-    return 'HomePageState(featuredPosts: $featuredPosts, featuredVideos: $featuredVideos, eventList: $eventList, directoryList: $directoryList, playConfetti: $playConfetti)';
+    return 'HomePageState(restaurantCategories: $restaurantCategories, featuredRestaurants: $featuredRestaurants, currentUserCart: $currentUserCart)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _HomePageState &&
-            (identical(other.featuredPosts, featuredPosts) ||
+            (identical(other.restaurantCategories, restaurantCategories) ||
+                const DeepCollectionEquality().equals(
+                    other.restaurantCategories, restaurantCategories)) &&
+            (identical(other.featuredRestaurants, featuredRestaurants) ||
                 const DeepCollectionEquality()
-                    .equals(other.featuredPosts, featuredPosts)) &&
-            (identical(other.featuredVideos, featuredVideos) ||
+                    .equals(other.featuredRestaurants, featuredRestaurants)) &&
+            (identical(other.currentUserCart, currentUserCart) ||
                 const DeepCollectionEquality()
-                    .equals(other.featuredVideos, featuredVideos)) &&
-            (identical(other.eventList, eventList) ||
-                const DeepCollectionEquality()
-                    .equals(other.eventList, eventList)) &&
-            (identical(other.directoryList, directoryList) ||
-                const DeepCollectionEquality()
-                    .equals(other.directoryList, directoryList)) &&
-            (identical(other.playConfetti, playConfetti) ||
-                const DeepCollectionEquality()
-                    .equals(other.playConfetti, playConfetti)));
+                    .equals(other.currentUserCart, currentUserCart)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(featuredPosts) ^
-      const DeepCollectionEquality().hash(featuredVideos) ^
-      const DeepCollectionEquality().hash(eventList) ^
-      const DeepCollectionEquality().hash(directoryList) ^
-      const DeepCollectionEquality().hash(playConfetti);
+      const DeepCollectionEquality().hash(restaurantCategories) ^
+      const DeepCollectionEquality().hash(featuredRestaurants) ^
+      const DeepCollectionEquality().hash(currentUserCart);
 
   @JsonKey(ignore: true)
   @override
@@ -246,26 +216,22 @@ class _$_HomePageState extends _HomePageState {
 
 abstract class _HomePageState extends HomePageState {
   factory _HomePageState(
-      {required List<BlogArticle> featuredPosts,
-      required List<VideoArticle> featuredVideos,
-      required List<Events> eventList,
-      required List<Directory> directoryList,
-      required bool playConfetti}) = _$_HomePageState;
+      {required List<RestaurantCategory> restaurantCategories,
+      required List<RestaurantItem> featuredRestaurants,
+      required UserCart currentUserCart}) = _$_HomePageState;
   _HomePageState._() : super._();
 
   factory _HomePageState.fromJson(Map<String, dynamic> json) =
       _$_HomePageState.fromJson;
 
   @override
-  List<BlogArticle> get featuredPosts => throw _privateConstructorUsedError;
+  List<RestaurantCategory> get restaurantCategories =>
+      throw _privateConstructorUsedError;
   @override
-  List<VideoArticle> get featuredVideos => throw _privateConstructorUsedError;
+  List<RestaurantItem> get featuredRestaurants =>
+      throw _privateConstructorUsedError;
   @override
-  List<Events> get eventList => throw _privateConstructorUsedError;
-  @override
-  List<Directory> get directoryList => throw _privateConstructorUsedError;
-  @override
-  bool get playConfetti => throw _privateConstructorUsedError;
+  UserCart get currentUserCart => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HomePageStateCopyWith<_HomePageState> get copyWith =>
