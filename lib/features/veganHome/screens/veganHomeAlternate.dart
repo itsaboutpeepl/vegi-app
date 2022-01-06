@@ -1,10 +1,13 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/categoryList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/demoData.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
 
 class VeganHomeScreenAlternate extends StatefulWidget {
   const VeganHomeScreenAlternate({
@@ -26,26 +29,33 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.router.push(ToteScreen(userCart: userCart));
-        },
-        backgroundColor: Colors.black,
-        child: Icon(
-          Icons.shopping_basket,
-          color: Colors.white,
-        ),
-      ),
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (_, flag) => [
-          VeganSliverAppBar(),
-          CategoryList(),
-          _featuredRestaurantsHeader(),
-        ],
-        body: FeaturedRestaurantList(),
-      ),
+    return StoreConnector<AppState, VeganHomeViewModel>(
+      converter: VeganHomeViewModel.fromStore,
+      distinct: true,
+      onInit: (store) {},
+      builder: (_, viewmodel) {
+        return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              context.router.push(ToteScreen(userCart: userCart));
+            },
+            backgroundColor: Colors.black,
+            child: Icon(
+              Icons.shopping_basket,
+              color: Colors.white,
+            ),
+          ),
+          body: NestedScrollView(
+            controller: _scrollController,
+            headerSliverBuilder: (_, flag) => [
+              VeganSliverAppBar(),
+              CategoryList(),
+              _featuredRestaurantsHeader(),
+            ],
+            body: FeaturedRestaurantList(),
+          ),
+        );
+      },
     );
   }
 }
