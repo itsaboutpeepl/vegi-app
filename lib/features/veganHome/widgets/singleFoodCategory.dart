@@ -22,9 +22,14 @@ class _SingleCategoryItemState extends State<SingleCategoryItem> {
           elevation: 20,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
-            child: Image(
-              image: NetworkImage(widget.imageURL),
-              width: MediaQuery.of(context).size.width * 0.8,
+            child: Container(
+              width: 300,
+              height: 200,
+              child: Image(
+                fit: BoxFit.contain,
+                image: NetworkImage(widget.imageURL),
+                width: MediaQuery.of(context).size.width * 0.8,
+              ),
             ),
           ),
         ),
