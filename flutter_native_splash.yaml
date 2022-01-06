@@ -1,7 +1,8 @@
 flutter_native_splash:
-  image: assets/images/guide-logo.png
+  image: assets/images/Vegi-Logo-square-black.png
   fill: false
   android_gravity: center
   ios_content_mode: center
-  color: "011C35"
+  #color: "011C35"
+  background_image: "assets/images/vegi-splash-background.png"
   ios: true
