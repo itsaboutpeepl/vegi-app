@@ -18,5 +18,14 @@ class UserCart with _$UserCart {
     required double cartDiscount,
   }) = _UserCart;
 
+  factory UserCart.initial() => UserCart(
+        cartItems: [],
+        cartItemQuantities: {},
+        cartSubTotal: 0,
+        cartTax: 0,
+        cartTotal: 0,
+        cartDiscount: 0,
+      );
+
   factory UserCart.fromJson(dynamic json) => _$UserCartFromJson(json);
 }
