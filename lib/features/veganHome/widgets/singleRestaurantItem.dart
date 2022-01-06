@@ -3,9 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 
 class SingleRestaurantItem extends StatefulWidget {
-  const SingleRestaurantItem({Key? key, required String this.imageURL})
-      : super(key: key);
+  const SingleRestaurantItem({
+    Key? key,
+    required String this.imageURL,
+    required this.name,
+    required this.category,
+    required this.costLevel,
+    required this.deliveryTime,
+    required this.rating,
+    required this.address,
+  }) : super(key: key);
+
+  final String name;
   final String imageURL;
+  final String category;
+  final String costLevel;
+  final String deliveryTime;
+  final String rating;
+  final String address;
 
   @override
   _SingleRestaurantItemState createState() => _SingleRestaurantItemState();
@@ -33,7 +48,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
             height: 20,
           ),
           Text(
-            "Da Cimino",
+            widget.name,
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
           ),
           SizedBox(
@@ -53,7 +68,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Center(
                       child: Text(
-                        "\$\$",
+                        widget.costLevel,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -84,7 +99,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                             width: 5,
                           ),
                           Text(
-                            "45-120 Min",
+                            widget.deliveryTime,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -117,7 +132,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                             width: 5,
                           ),
                           Text(
-                            "4.5",
+                            widget.rating,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
