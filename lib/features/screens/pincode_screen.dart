@@ -38,7 +38,20 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryVariant,
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
+            colors: [
+              Colors.yellow[100]!,
+              Colors.yellow[200]!,
+              Colors.yellow[300]!,
+              Colors.yellow[400]!,
+              Colors.yellow[300]!,
+              Colors.yellow[200]!,
+              Colors.yellow[100]!,
+            ],
+          ),
         ),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -57,7 +70,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   ),
                   Expanded(
                     child: Image.asset(
-                      'assets/images/guide-logo-horizontal.png',
+                      'assets/images/Vegi-Logo-horizontal-black.png',
                     ),
                   ),
                   Expanded(
@@ -68,7 +81,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           I10n.of(context).enter_pincode,
                           style: TextStyle(
                             fontSize: 25,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                         SizedBox(
@@ -103,7 +116,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                         : null,
                                 textStyle: TextStyle(
                                   fontSize: 30,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 pinTheme: PinTheme(
@@ -111,9 +124,9 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                   borderWidth: 4,
                                   fieldWidth: 35,
                                   shape: PinCodeFieldShape.underline,
-                                  inactiveColor: Colors.white,
-                                  selectedColor: Colors.white,
-                                  activeColor: Colors.white,
+                                  inactiveColor: Colors.black,
+                                  selectedColor: Colors.black,
+                                  activeColor: Colors.black,
                                   inactiveFillColor: Colors.transparent,
                                   selectedFillColor: Colors.transparent,
                                   disabledColor: Colors.transparent,

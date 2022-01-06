@@ -33,7 +33,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
               Expanded(
                 flex: 6,
                 child: Image.asset(
-                  'assets/images/guide-logo-horizontal.png',
+                  'assets/images/Vegi-Logo-horizontal-black.png',
                   width: 350,
                   height: 350,
                 ),
