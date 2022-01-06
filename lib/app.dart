@@ -125,17 +125,23 @@ class _MyAppState extends State<MyApp> {
               body: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
                     colors: [
-                      flexColorSchemeLight.primaryVariant,
-                      flexColorSchemeLight.primary,
+                      Colors.yellow[100]!,
+                      Colors.yellow[200]!,
+                      Colors.yellow[300]!,
+                      Colors.yellow[400]!,
+                      Colors.yellow[300]!,
+                      Colors.yellow[200]!,
+                      Colors.yellow[100]!,
                     ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
                   ),
                 ),
                 child: Center(
                   child: Image.asset(
-                    'assets/images/guide-logo.png',
+                    'assets/images/Vegi-Logo-square-black.png',
                   ),
                 ),
               ),
