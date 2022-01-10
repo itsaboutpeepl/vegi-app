@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/NavDrawer.dart';
 
 class VeganSliverAppBar extends StatelessWidget {
-  const VeganSliverAppBar({Key? key}) : super(key: key);
+  const VeganSliverAppBar({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
       floating: false,
       pinned: false,
@@ -14,6 +20,7 @@ class VeganSliverAppBar extends StatelessWidget {
       expandedHeight: MediaQuery.of(context).size.height * 0.07,
       flexibleSpace: FlexibleSpaceBar(
         background: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 60,
           backgroundColor: Colors.white,
           title: Row(
@@ -25,10 +32,15 @@ class VeganSliverAppBar extends StatelessWidget {
                 child: Material(
                   borderRadius: BorderRadius.circular(40),
                   elevation: 5,
-                  child: CircleAvatar(
-                    radius: 23,
-                    backgroundImage: NetworkImage(
-                        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"),
+                  child: GestureDetector(
+                    onTap: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    child: CircleAvatar(
+                      radius: 23,
+                      backgroundImage: NetworkImage(
+                          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"),
+                    ),
                   ),
                 ),
               ),

@@ -3,7 +3,10 @@ import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/ScrollableListTab.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/ScrollableListTabView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/listTab.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/demoData.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleMenuItem.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:auto_route/src/router/auto_router_x.dart';
 
 class RestaurantMenuScreen extends StatefulWidget {
   @override
@@ -20,7 +23,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
         hasSearchAction: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => context.router.push(ToteScreen(userCart: userCart)),
         backgroundColor: Colors.black,
         child: Icon(
           Icons.shopping_basket,
