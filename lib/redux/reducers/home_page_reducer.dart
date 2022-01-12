@@ -12,15 +12,10 @@ final HomePageReducers = combineReducers<HomePageState>(
   ],
 );
 
-// HomePageState _getFeaturedPosts(
-//   HomePageState state,
-//   UpdateFeaturedPost action,
-// ) {
-//   return state.copyWith(featuredPosts: action.listOfFeaturedArticles);
-// }
-
 HomePageState _getFeaturedRestaurants(
-    HomePageState state, UpdateFeaturedRestaurants action) {
+  HomePageState state,
+  UpdateFeaturedRestaurants action,
+) {
   return state.copyWith(featuredRestaurants: action.listOfFeaturedRestaurants);
 }
 
