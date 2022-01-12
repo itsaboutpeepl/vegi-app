@@ -26,13 +26,7 @@ class _FeaturedRestaurantListState extends State<FeaturedRestaurantList> {
           padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 50),
           itemCount: viewmodel.featuredRestaurants.length,
           itemBuilder: (context, index) => SingleRestaurantItem(
-            name: viewmodel.featuredRestaurants[index].name,
-            imageURL: viewmodel.featuredRestaurants[index].imageURL,
-            category: viewmodel.featuredRestaurants[index].category,
-            costLevel: viewmodel.featuredRestaurants[index].costLevel,
-            rating: viewmodel.featuredRestaurants[index].rating,
-            address: viewmodel.featuredRestaurants[index].address,
-            deliveryTime: viewmodel.featuredRestaurants[index].deliveryTime,
+            restaurantItem: viewmodel.featuredRestaurants[index],
           ),
           separatorBuilder: (_, __) => Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
