@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/categoryList.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/demoData.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
 
 class VeganHomeScreenAlternate extends StatefulWidget {
