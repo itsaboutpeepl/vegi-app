@@ -2,6 +2,7 @@ import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/NavDrawer.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/categoryList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
@@ -35,6 +36,7 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate> {
       onInit: (store) {},
       builder: (_, viewmodel) {
         return Scaffold(
+          drawer: NavDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               context.router.push(ToteScreen(userCart: userCart));

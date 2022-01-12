@@ -4,7 +4,10 @@ import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/Scrolla
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/ScrollableListTabView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/listTab.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleMenuItem.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 class RestaurantMenuScreen extends StatefulWidget {
   const RestaurantMenuScreen({Key? key, required this.menuList})
@@ -26,7 +29,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
         hasSearchAction: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => context.router.push(ToteScreen(userCart: userCart)),
         backgroundColor: Colors.black,
         child: Icon(
           Icons.shopping_basket,
