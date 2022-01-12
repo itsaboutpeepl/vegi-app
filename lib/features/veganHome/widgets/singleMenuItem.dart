@@ -1,17 +1,26 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/detailMenuItemView.dart';
-
-import 'demoData.dart';
+import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 class SingleMenuItem extends StatefulWidget {
-  const SingleMenuItem({Key? key}) : super(key: key);
+  const SingleMenuItem({Key? key, required this.menuItem}) : super(key: key);
+
+  final MenuItem menuItem;
 
   @override
   _SingleMenuItemState createState() => _SingleMenuItemState();
 }
 
 class _SingleMenuItemState extends State<SingleMenuItem> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,19 +33,35 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
               borderRadius: BorderRadius.circular(20),
               child: Image(
                 image: NetworkImage(
-                    "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVzdGF1cmFudCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80"),
+                  "https://app.itsaboutpeepl.com/products/download-image/2",
+                ),
+                errorBuilder: (context, error, stackTrace) {
+                  print("ERROR:");
+                  print(error);
+                  print("STACKTRACE:");
+                  print(stackTrace);
+                  return SizedBox.shrink();
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15),
               child: Row(
                 children: [
-                  Text(
-                    'Random Meal',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          widget.menuItem.name,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Spacer(),
@@ -58,8 +83,14 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
                 ],
               ),
             ),
-            Text('Even Randomer description'),
-            Text('\$1.49'),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              parseHtmlString(widget.menuItem.description),
+              maxLines: 3,
+            ),
+            Text(widget.menuItem.price.toString()),
           ],
         ),
         onTap: () => {

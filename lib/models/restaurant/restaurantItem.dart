@@ -10,6 +10,7 @@ class RestaurantItem with _$RestaurantItem {
 
   @JsonSerializable()
   factory RestaurantItem({
+    required String restaurantID,
     required String name,
     required String imageURL,
     required String category,

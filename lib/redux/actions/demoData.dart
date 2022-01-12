@@ -1,8 +1,10 @@
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
+import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 
 RestaurantItem restaurantItem1 = new RestaurantItem(
+  restaurantID: "restaurantID1",
   name: "Da Cimino",
   imageURL:
       "https://cdn.pixabay.com/photo/2018/03/21/06/54/food-3245765_1280.jpg",
@@ -15,6 +17,7 @@ RestaurantItem restaurantItem1 = new RestaurantItem(
 );
 
 RestaurantItem restaurantItem2 = new RestaurantItem(
+  restaurantID: "restaurantID2",
   name: "Veggies 'n More",
   imageURL:
       "https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/content9442.jpg",
@@ -27,6 +30,7 @@ RestaurantItem restaurantItem2 = new RestaurantItem(
 );
 
 RestaurantItem restaurantItem3 = new RestaurantItem(
+  restaurantID: "restaurantID3",
   name: "Pita'd to Death",
   imageURL:
       "https://cdn-prod.medicalnewstoday.com/content/images/articles/322/322303/selection-of-chinese-food-that-may-cause-chinese-restaurant-syndrome.jpg",
@@ -53,6 +57,7 @@ RestaurantCategory restaurantCategory2 = new RestaurantCategory(
 );
 
 final MenuItem bagel1 = new MenuItem(
+  menuID: "menuID1",
   name: "Blueberry Bagel",
   imageURLs: [
     "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
@@ -79,6 +84,7 @@ final MenuItem bagel1 = new MenuItem(
 );
 
 final MenuItem bagel2 = new MenuItem(
+  menuID: "menuID2",
   name: "Poppy Seed Bagel",
   imageURLs: [
     "https://img.taste.com.au/DGaf7toO/taste/2016/11/poppy-seed-bagels-74845-1.jpeg",
@@ -105,6 +111,7 @@ final MenuItem bagel2 = new MenuItem(
 );
 
 final MenuItem bagel3 = new MenuItem(
+  menuID: "menuID3",
   name: "Everything Bagel",
   imageURLs: [
     "https://simmerandsauce.com/wp-content/uploads/2019/02/fullsizeoutput_1badf.jpeg",
@@ -128,4 +135,31 @@ final MenuItem bagel3 = new MenuItem(
     "Addon - Blueberry Syrup": 2.3,
     "Addon - Orange Syrup": 2.3
   },
+);
+
+final Map<String, double> demoOptions = {
+  "Cream Cheese": 1.0,
+  "Extra Blueberries": 1.85,
+  "Extra Baked": 2.35,
+  "Extra Love": 5.0,
+  "Addon - Maple Syrup": 2.3,
+  "Addon - Strawberry Syrup": 2.3,
+  "Addon - Apple Syrup": 2.3,
+  "Addon - Mango Syrup": 2.3,
+  "Addon - Banana Syrup": 2.3,
+  "Addon - Blueberry Syrup": 2.3,
+  "Addon - Orange Syrup": 2.3
+};
+
+final UserCart userCart = new UserCart(
+  cartItems: [bagel1, bagel2, bagel3],
+  cartItemQuantities: {
+    "Blueberry Bagel": 4,
+    "Everything Bagel": 2,
+    "Poppy Seed Bagel": 5
+  },
+  cartSubTotal: 5.02,
+  cartTax: 2.31,
+  cartTotal: 7.33,
+  cartDiscount: 0,
 );

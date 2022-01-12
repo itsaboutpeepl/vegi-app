@@ -3,14 +3,20 @@ import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/ScrollableListTab.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/ScrollableListTabView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/ScrollableTab/listTab.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/demoData.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleMenuItem.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 class RestaurantMenuScreen extends StatefulWidget {
+  const RestaurantMenuScreen({Key? key, required this.menuList})
+      : super(key: key);
+
   @override
   State<RestaurantMenuScreen> createState() => _RestaurantMenuScreenState();
+
+  final List<MenuItem> menuList;
 }
 
 class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
@@ -62,10 +68,12 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
       body: ListView.separated(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: 3,
+        itemCount: widget.menuList.length,
         separatorBuilder: (_, index) =>
             Padding(padding: EdgeInsets.symmetric(vertical: 15)),
-        itemBuilder: (_, index) => SingleMenuItem(),
+        itemBuilder: (_, index) => SingleMenuItem(
+          menuItem: widget.menuList[index],
+        ),
       ),
     );
   }

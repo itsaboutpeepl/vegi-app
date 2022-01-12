@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/demoData.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/userCart.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 List<String> tileTitles = ["Subtotal", "Tax", "Discount", "Total"];
 
