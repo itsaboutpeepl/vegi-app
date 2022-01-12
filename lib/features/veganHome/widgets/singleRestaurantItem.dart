@@ -1,26 +1,16 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 
 class SingleRestaurantItem extends StatefulWidget {
   const SingleRestaurantItem({
     Key? key,
-    required String this.imageURL,
-    required this.name,
-    required this.category,
-    required this.costLevel,
-    required this.deliveryTime,
-    required this.rating,
-    required this.address,
+    required this.restaurantItem,
   }) : super(key: key);
 
-  final String name;
-  final String imageURL;
-  final String category;
-  final String costLevel;
-  final String deliveryTime;
-  final String rating;
-  final String address;
+  final RestaurantItem restaurantItem;
 
   @override
   _SingleRestaurantItemState createState() => _SingleRestaurantItemState();
@@ -39,7 +29,8 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image(
-                image: NetworkImage(widget.imageURL),
+                image:
+                    CachedNetworkImageProvider(widget.restaurantItem.imageURL),
                 width: MediaQuery.of(context).size.width * 0.9,
               ),
             ),
@@ -48,7 +39,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
             height: 20,
           ),
           Text(
-            widget.name,
+            widget.restaurantItem.name,
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
           ),
           SizedBox(
@@ -68,7 +59,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Center(
                       child: Text(
-                        widget.costLevel,
+                        widget.restaurantItem.costLevel,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -99,7 +90,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                             width: 5,
                           ),
                           Text(
-                            widget.deliveryTime,
+                            widget.restaurantItem.deliveryTime,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -132,7 +123,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                             width: 5,
                           ),
                           Text(
-                            widget.rating,
+                            widget.restaurantItem.rating,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -145,7 +136,8 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
           )
         ],
       ),
-      onTap: () => context.router.push(RestaurantMenuScreen()),
+      onTap: () => context.router.push(RestaurantMenuScreen(
+          menuList: widget.restaurantItem.listOfMenuItems)),
     );
   }
 }
