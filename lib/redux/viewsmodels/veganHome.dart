@@ -1,18 +1,25 @@
 import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/userCart.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 
-class VeganHomeViewModel extends Equatable {
+class UserCartViewModel extends Equatable {
   final UserCart currentUserCart;
+  final Function(OrderItem itemToAdd) updateUserCart;
 
-  VeganHomeViewModel({
+  UserCartViewModel({
     required this.currentUserCart,
+    required this.updateUserCart,
   });
 
-  static VeganHomeViewModel fromStore(Store<AppState> store) {
-    return VeganHomeViewModel(
-        currentUserCart: store.state.homePageState.currentUserCart);
+  static UserCartViewModel fromStore(Store<AppState> store) {
+    return UserCartViewModel(
+        currentUserCart: store.state.homePageState.currentUserCart,
+        updateUserCart: (itemToAdd) {
+          store.dispatch(updateComputeUserCart(itemToAdd));
+        });
   }
 
   @override
