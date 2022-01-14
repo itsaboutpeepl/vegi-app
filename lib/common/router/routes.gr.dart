@@ -11,7 +11,7 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i11;
-import 'package:contacts_service/contacts_service.dart' as _i43;
+import 'package:contacts_service/contacts_service.dart' as _i42;
 import 'package:flutter/material.dart' as _i38;
 
 import '../../features/account/screens/account_screen.dart' as _i30;
@@ -28,7 +28,7 @@ import '../../features/contacts/screens/contacts_list.dart' as _i21;
 import '../../features/contacts/screens/send_amount.dart' as _i22;
 import '../../features/contacts/screens/send_review.dart' as _i23;
 import '../../features/contacts/screens/send_success.dart' as _i24;
-import '../../features/contacts/send_amount_arguments.dart' as _i44;
+import '../../features/contacts/send_amount_arguments.dart' as _i43;
 import '../../features/home/screens/action_details.dart' as _i17;
 import '../../features/home/screens/home.dart' as _i16;
 import '../../features/onboard/screens/restore_wallet_screen.dart' as _i4;
@@ -51,12 +51,11 @@ import '../../features/veganHome/screens/checkoutScreen.dart' as _i15;
 import '../../features/veganHome/screens/restaurantMenuScreen.dart' as _i13;
 import '../../features/veganHome/screens/toteScreen.dart' as _i14;
 import '../../features/veganHome/screens/veganHomeAlternate.dart' as _i12;
-import '../../models/actions/wallet_action.dart' as _i42;
-import '../../models/community/business.dart' as _i45;
+import '../../models/actions/wallet_action.dart' as _i41;
+import '../../models/community/business.dart' as _i44;
 import '../../models/restaurant/menuItem.dart' as _i40;
-import '../../models/restaurant/userCart.dart' as _i41;
-import '../../models/swap/swap.dart' as _i47;
-import '../../models/tokens/token.dart' as _i46;
+import '../../models/swap/swap.dart' as _i46;
+import '../../models/tokens/token.dart' as _i45;
 import 'route_guards.dart' as _i39;
 
 class RootRouter extends _i11.RootStackRouter {
@@ -170,10 +169,8 @@ class RootRouter extends _i11.RootStackRouter {
               key: args.key, menuList: args.menuList));
     },
     ToteScreen.name: (routeData) {
-      final args = routeData.argsAs<ToteScreenArgs>();
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i14.ToteScreen(key: args.key, userCart: args.userCart));
+          routeData: routeData, child: const _i14.ToteScreen());
     },
     CheckoutScreen.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
@@ -743,26 +740,10 @@ class RestaurantMenuScreenArgs {
 
 /// generated route for
 /// [_i14.ToteScreen]
-class ToteScreen extends _i11.PageRouteInfo<ToteScreenArgs> {
-  ToteScreen({_i38.Key? key, required _i41.UserCart userCart})
-      : super(ToteScreen.name,
-            path: 'tote-screen',
-            args: ToteScreenArgs(key: key, userCart: userCart));
+class ToteScreen extends _i11.PageRouteInfo<void> {
+  const ToteScreen() : super(ToteScreen.name, path: 'tote-screen');
 
   static const String name = 'ToteScreen';
-}
-
-class ToteScreenArgs {
-  const ToteScreenArgs({this.key, required this.userCart});
-
-  final _i38.Key? key;
-
-  final _i41.UserCart userCart;
-
-  @override
-  String toString() {
-    return 'ToteScreenArgs{key: $key, userCart: $userCart}';
-  }
 }
 
 /// generated route for
@@ -785,12 +766,12 @@ class HomeScreen extends _i11.PageRouteInfo<void> {
 /// [_i17.ActionDetailsScreen]
 class ActionDetailsScreen extends _i11.PageRouteInfo<ActionDetailsScreenArgs> {
   ActionDetailsScreen(
-      {required _i42.WalletAction action,
+      {required _i41.WalletAction action,
       _i38.ImageProvider<Object>? image,
       required String displayName,
       String? accountAddress,
       required String symbol,
-      _i43.Contact? contact})
+      _i42.Contact? contact})
       : super(ActionDetailsScreen.name,
             path: 'action-details-screen',
             args: ActionDetailsScreenArgs(
@@ -813,7 +794,7 @@ class ActionDetailsScreenArgs {
       required this.symbol,
       this.contact});
 
-  final _i42.WalletAction action;
+  final _i41.WalletAction action;
 
   final _i38.ImageProvider<Object>? image;
 
@@ -823,7 +804,7 @@ class ActionDetailsScreenArgs {
 
   final String symbol;
 
-  final _i43.Contact? contact;
+  final _i42.Contact? contact;
 
   @override
   String toString() {
@@ -871,7 +852,7 @@ class HelpScreen extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i21.ContactsList]
 class ContactsList extends _i11.PageRouteInfo<ContactsListArgs> {
-  ContactsList({_i44.SendFlowArguments? pageArgs})
+  ContactsList({_i43.SendFlowArguments? pageArgs})
       : super(ContactsList.name,
             path: '', args: ContactsListArgs(pageArgs: pageArgs));
 
@@ -881,7 +862,7 @@ class ContactsList extends _i11.PageRouteInfo<ContactsListArgs> {
 class ContactsListArgs {
   const ContactsListArgs({this.pageArgs});
 
-  final _i44.SendFlowArguments? pageArgs;
+  final _i43.SendFlowArguments? pageArgs;
 
   @override
   String toString() {
@@ -892,7 +873,7 @@ class ContactsListArgs {
 /// generated route for
 /// [_i22.SendAmountScreen]
 class SendAmountScreen extends _i11.PageRouteInfo<SendAmountScreenArgs> {
-  SendAmountScreen({required _i44.SendFlowArguments pageArgs})
+  SendAmountScreen({required _i43.SendFlowArguments pageArgs})
       : super(SendAmountScreen.name,
             path: 'send-amount',
             args: SendAmountScreenArgs(pageArgs: pageArgs));
@@ -903,7 +884,7 @@ class SendAmountScreen extends _i11.PageRouteInfo<SendAmountScreenArgs> {
 class SendAmountScreenArgs {
   const SendAmountScreenArgs({required this.pageArgs});
 
-  final _i44.SendFlowArguments pageArgs;
+  final _i43.SendFlowArguments pageArgs;
 
   @override
   String toString() {
@@ -914,7 +895,7 @@ class SendAmountScreenArgs {
 /// generated route for
 /// [_i23.SendReviewScreen]
 class SendReviewScreen extends _i11.PageRouteInfo<SendReviewScreenArgs> {
-  SendReviewScreen({required _i44.SendFlowArguments pageArgs})
+  SendReviewScreen({required _i43.SendFlowArguments pageArgs})
       : super(SendReviewScreen.name,
             path: 'send-review',
             args: SendReviewScreenArgs(pageArgs: pageArgs));
@@ -925,7 +906,7 @@ class SendReviewScreen extends _i11.PageRouteInfo<SendReviewScreenArgs> {
 class SendReviewScreenArgs {
   const SendReviewScreenArgs({required this.pageArgs});
 
-  final _i44.SendFlowArguments pageArgs;
+  final _i43.SendFlowArguments pageArgs;
 
   @override
   String toString() {
@@ -936,7 +917,7 @@ class SendReviewScreenArgs {
 /// generated route for
 /// [_i24.SendSuccessScreen]
 class SendSuccessScreen extends _i11.PageRouteInfo<SendSuccessScreenArgs> {
-  SendSuccessScreen({required _i44.SendFlowArguments pageArgs})
+  SendSuccessScreen({required _i43.SendFlowArguments pageArgs})
       : super(SendSuccessScreen.name,
             path: 'send-success',
             args: SendSuccessScreenArgs(pageArgs: pageArgs));
@@ -947,7 +928,7 @@ class SendSuccessScreen extends _i11.PageRouteInfo<SendSuccessScreenArgs> {
 class SendSuccessScreenArgs {
   const SendSuccessScreenArgs({required this.pageArgs});
 
-  final _i44.SendFlowArguments pageArgs;
+  final _i43.SendFlowArguments pageArgs;
 
   @override
   String toString() {
@@ -990,7 +971,7 @@ class BuyScreen extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i27.BusinessScreen]
 class BusinessScreen extends _i11.PageRouteInfo<BusinessScreenArgs> {
-  BusinessScreen({required _i45.Business business, required _i46.Token token})
+  BusinessScreen({required _i44.Business business, required _i45.Token token})
       : super(BusinessScreen.name,
             path: 'business-screen',
             args: BusinessScreenArgs(business: business, token: token));
@@ -1001,9 +982,9 @@ class BusinessScreen extends _i11.PageRouteInfo<BusinessScreenArgs> {
 class BusinessScreenArgs {
   const BusinessScreenArgs({required this.business, required this.token});
 
-  final _i45.Business business;
+  final _i44.Business business;
 
-  final _i46.Token token;
+  final _i45.Token token;
 
   @override
   String toString() {
@@ -1014,7 +995,7 @@ class BusinessScreenArgs {
 /// generated route for
 /// [_i28.SwapScreen]
 class SwapScreen extends _i11.PageRouteInfo<SwapScreenArgs> {
-  SwapScreen({_i38.Key? key, _i46.Token? primaryToken})
+  SwapScreen({_i38.Key? key, _i45.Token? primaryToken})
       : super(SwapScreen.name,
             path: '',
             args: SwapScreenArgs(key: key, primaryToken: primaryToken));
@@ -1027,7 +1008,7 @@ class SwapScreenArgs {
 
   final _i38.Key? key;
 
-  final _i46.Token? primaryToken;
+  final _i45.Token? primaryToken;
 
   @override
   String toString() {
@@ -1039,9 +1020,9 @@ class SwapScreenArgs {
 /// [_i29.ReviewSwapScreen]
 class ReviewSwapScreen extends _i11.PageRouteInfo<ReviewSwapScreenArgs> {
   ReviewSwapScreen(
-      {required _i47.TradeInfo tradeInfo,
-      required _i47.TradeInfo rateInfo,
-      required _i47.SwapRequestBody swapRequestBody})
+      {required _i46.TradeInfo tradeInfo,
+      required _i46.TradeInfo rateInfo,
+      required _i46.SwapRequestBody swapRequestBody})
       : super(ReviewSwapScreen.name,
             path: 'review-swap-screen',
             args: ReviewSwapScreenArgs(
@@ -1058,11 +1039,11 @@ class ReviewSwapScreenArgs {
       required this.rateInfo,
       required this.swapRequestBody});
 
-  final _i47.TradeInfo tradeInfo;
+  final _i46.TradeInfo tradeInfo;
 
-  final _i47.TradeInfo rateInfo;
+  final _i46.TradeInfo rateInfo;
 
-  final _i47.SwapRequestBody swapRequestBody;
+  final _i46.SwapRequestBody swapRequestBody;
 
   @override
   String toString() {

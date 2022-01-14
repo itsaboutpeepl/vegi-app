@@ -29,7 +29,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
         hasSearchAction: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.push(ToteScreen(userCart: userCart)),
+        onPressed: () => context.router.push(ToteScreen()),
         backgroundColor: Colors.black,
         child: Icon(
           Icons.shopping_basket,
