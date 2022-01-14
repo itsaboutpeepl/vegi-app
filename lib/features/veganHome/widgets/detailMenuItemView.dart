@@ -18,17 +18,20 @@ class DetailMenuItemView extends StatefulWidget {
 
 class _DetailMenuItemViewState extends State<DetailMenuItemView> {
   int _currentIndex = 0;
+  int _selectedQuantity = 1;
 
   // ignore: unused_field
   late Timer _timer;
 
-  List<bool> _selected = [];
+  List<bool> _selectedExtras = [];
+  Map<String, int> _selectedExtrasMap = {};
 
   @override
   void initState() {
     super.initState();
 
-    _selected = List.generate(widget.menuItem.options.length, (i) => false);
+    _selectedExtras =
+        List.generate(widget.menuItem.options.length, (i) => false);
 
     _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
       if (mounted) {
@@ -50,14 +53,6 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
         FractionallySizedBox(
           heightFactor: 1,
           child: Scaffold(
-            // floatingActionButton: FloatingActionButton(
-            //   onPressed: () => {print("item added to card")},
-            //   child: Icon(
-            //     Icons.add,
-            //     color: Colors.black,
-            //   ),
-            //   backgroundColor: Colors.yellow,
-            // ),
             body: SingleChildScrollView(
               controller: ModalScrollController.of(context),
               child: Column(
@@ -103,20 +98,10 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.menuItem.name,
-                              style: TextStyle(
-                                  fontSize: 28.0, fontWeight: FontWeight.w900),
-                            ),
-                            Text(
-                              widget.menuItem.formattedPrice,
-                              style: TextStyle(
-                                  fontSize: 28.0, fontWeight: FontWeight.w400),
-                            ),
-                          ],
+                        Text(
+                          widget.menuItem.name,
+                          style: TextStyle(
+                              fontSize: 28.0, fontWeight: FontWeight.w900),
                         ),
                         Text(
                           widget.menuItem.category,
@@ -127,14 +112,14 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                           height: 25,
                         ),
                         Text(
-                          widget.menuItem.description,
+                          parseHtmlString(widget.menuItem.description),
                           style: TextStyle(fontSize: 18.0),
                         ),
                         SizedBox(
                           height: 25,
                         ),
                         Text(
-                          "Additional Toppings",
+                          "Extras",
                           style: TextStyle(
                               fontSize: 22.0, fontWeight: FontWeight.w600),
                         ),
@@ -146,15 +131,32 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: widget.menuItem.options.length,
                           itemBuilder: (_, index) => ListTile(
-                            tileColor:
-                                _selected[index] ? Colors.yellow[100] : null,
+                            tileColor: _selectedExtras[index]
+                                ? Colors.yellow[100]
+                                : null,
                             title: Text(
                                 widget.menuItem.options.keys.elementAt(index)),
-                            trailing: Text(cFPrice(widget
-                                .menuItem.options.values
-                                .elementAt(index))),
-                            onTap: () => setState(
-                                () => _selected[index] = !_selected[index]),
+                            trailing: Text(
+                              cFPrice(
+                                  widget.menuItem.options.values
+                                      .elementAt(index),
+                                  isPence: true),
+                            ),
+                            onTap: () => setState(() {
+                              _selectedExtras[index] = !_selectedExtras[index];
+
+                              _selectedExtrasMap.containsKey(widget
+                                      .menuItem.options.keys
+                                      .elementAt(index))
+                                  ? _selectedExtrasMap.remove(widget
+                                      .menuItem.options.keys
+                                      .elementAt(index))
+                                  : _selectedExtrasMap[widget
+                                          .menuItem.options.keys
+                                          .elementAt(index)] =
+                                      widget.menuItem.options.values
+                                          .elementAt(index);
+                            }),
                           ),
                         ),
                         SizedBox(
@@ -204,11 +206,11 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                 ),
               ),
               Positioned(
-                top: -40,
-                left: (MediaQuery.of(context).size.width * 0.5) - 40,
+                top: -45,
+                left: (MediaQuery.of(context).size.width * 0.5) - 45,
                 child: Container(
-                  width: 80,
-                  height: 80,
+                  width: 90,
+                  height: 90,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.black,
@@ -223,11 +225,11 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                   ),
                   child: Center(
                     child: Text(
-                      "£50",
+                      doublecFPrice(_calculateItemTotal(), isPence: true),
                       style: TextStyle(
                         color: Colors.yellow[300],
                         fontWeight: FontWeight.w900,
-                        fontSize: 25,
+                        fontSize: 22,
                       ),
                     ),
                   ),
@@ -239,79 +241,95 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
       ],
     );
   }
-}
 
-Widget quantityButtons() {
-  return Row(
-    children: [
-      Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.horizontal(
-            left: Radius.circular(10),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
+  double _calculateItemTotal() {
+    double total = 0.0;
+
+    total = _selectedQuantity * widget.menuItem.price;
+
+    _selectedExtrasMap.forEach((key, value) {
+      total += value;
+    });
+
+    return total;
+  }
+
+  Widget quantityButtons() {
+    return Row(
+      children: [
+        Container(
+          height: 40,
+          width: 40,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.horizontal(
+              left: Radius.circular(10),
             ),
-          ],
-        ),
-        child: IconButton(
-          onPressed: () => {},
-          icon: Icon(Icons.remove),
-        ),
-      ),
-      Container(
-        height: 40,
-        width: 40,
-        child: Center(
-          child: Text(
-            "1",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: IconButton(
+            onPressed: () => setState(() {
+              _selectedQuantity <= 0 ? null : _selectedQuantity--;
+            }),
+            icon: Icon(Icons.remove),
           ),
         ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.symmetric(
-            vertical: BorderSide(color: Colors.grey),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(3, 3), // changes position of shadow
+        Container(
+          height: 40,
+          width: 40,
+          child: Center(
+            child: Text(
+              _selectedQuantity.toString(),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
             ),
-          ],
-        ),
-      ),
-      Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.horizontal(
-            right: Radius.circular(10),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(3, 0), // changes position of shadow
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.symmetric(
+              vertical: BorderSide(color: Colors.grey),
             ),
-          ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 7,
+                offset: Offset(3, 3), // changes position of shadow
+              ),
+            ],
+          ),
         ),
-        child: IconButton(
-          onPressed: () => {},
-          icon: Icon(Icons.add),
+        Container(
+          height: 40,
+          width: 40,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.horizontal(
+              right: Radius.circular(10),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 7,
+                offset: Offset(3, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          child: IconButton(
+            onPressed: () => setState(() {
+              _selectedQuantity++;
+            }),
+            icon: Icon(Icons.add),
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
