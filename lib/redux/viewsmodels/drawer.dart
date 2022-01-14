@@ -24,6 +24,7 @@ class DrawerViewModel {
   final Function() firstName;
   final pplBalance;
   final gbpxBalance;
+  final avatarUrl;
 
   DrawerViewModel({
     // this.avatarUrl,
@@ -31,6 +32,7 @@ class DrawerViewModel {
     required this.logout,
     required this.pplBalance,
     required this.gbpxBalance,
+    required this.avatarUrl,
     // this.isBackup,
     // required this.walletAddress,
   });
@@ -45,6 +47,7 @@ class DrawerViewModel {
       logout: () {
         store.dispatch(logoutCall());
       },
+      avatarUrl: store.state.userState.avatarUrl,
       firstName: () {
         String fullName = store.state.userState.displayName;
         return fullName.split(' ')[0];

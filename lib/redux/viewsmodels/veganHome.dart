@@ -5,14 +5,18 @@ import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 
 class VeganHomeViewModel extends Equatable {
   final UserCart currentUserCart;
+  final avatarUrl;
 
   VeganHomeViewModel({
     required this.currentUserCart,
+    required this.avatarUrl,
   });
 
   static VeganHomeViewModel fromStore(Store<AppState> store) {
     return VeganHomeViewModel(
-        currentUserCart: store.state.homePageState.currentUserCart);
+      currentUserCart: store.state.homePageState.currentUserCart,
+      avatarUrl: store.state.userState.avatarUrl,
+    );
   }
 
   @override
