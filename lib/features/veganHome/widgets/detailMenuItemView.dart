@@ -225,7 +225,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                   ),
                   child: Center(
                     child: Text(
-                      doublecFPrice(_calculateItemTotal(), isPence: true),
+                      cFPrice(_calculateItemTotal(), isPence: true),
                       style: TextStyle(
                         color: Colors.yellow[300],
                         fontWeight: FontWeight.w900,
@@ -242,8 +242,8 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
     );
   }
 
-  double _calculateItemTotal() {
-    double total = 0.0;
+  int _calculateItemTotal() {
+    int total = 0;
 
     total = _selectedQuantity * widget.menuItem.price;
 
