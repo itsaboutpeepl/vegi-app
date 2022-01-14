@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SingleCategoryItem extends StatefulWidget {
@@ -27,7 +28,7 @@ class _SingleCategoryItemState extends State<SingleCategoryItem> {
               height: 200,
               child: Image(
                 fit: BoxFit.contain,
-                image: NetworkImage(widget.imageURL),
+                image: CachedNetworkImageProvider(widget.imageURL),
                 width: MediaQuery.of(context).size.width * 0.8,
               ),
             ),
