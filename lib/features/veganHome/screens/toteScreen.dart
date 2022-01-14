@@ -48,11 +48,11 @@ class _ToteScreenState extends State<ToteScreen> {
                 ),
                 totalsPriceItemTile(
                   "Subtotal",
-                  cFPrice(widget.userCart.cartSubTotal),
+                  doublecFPrice(widget.userCart.cartSubTotal),
                 ),
                 totalsPriceItemTile(
                   "Tax",
-                  cFPrice(widget.userCart.cartTax),
+                  doublecFPrice(widget.userCart.cartTax),
                 ),
                 Divider(
                   height: 20,
@@ -63,7 +63,7 @@ class _ToteScreenState extends State<ToteScreen> {
                 ),
                 totalsPriceItemTile(
                   "Total",
-                  cFPrice(widget.userCart.cartTotal),
+                  doublecFPrice(widget.userCart.cartTotal),
                 ),
                 Padding(
                   padding:
