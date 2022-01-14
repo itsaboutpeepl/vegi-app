@@ -1,78 +1,128 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
-class NavDrawer extends StatelessWidget {
+import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/balance.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/header.dart';
+
+class NavDrawer extends StatefulWidget {
+  @override
+  State<NavDrawer> createState() => _NavDrawerState();
+}
+
+class _NavDrawerState extends State<NavDrawer> {
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 23,
-                  backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Name',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+    return StoreConnector<AppState, DrawerViewModel>(
+      distinct: true,
+      converter: DrawerViewModel.fromStore,
+      builder: (_, viewModel) {
+        return Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 23,
+                      backgroundImage: NetworkImage(
+                          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        '0 GBPx',
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Hi ${viewModel.firstName()}!',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Spacer(),
-                      Text(
-                        '0 PPL',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              '0',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'GBPx',
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              '0',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'PPL',
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            decoration: BoxDecoration(
-              color: Colors.yellow[200],
-            ),
+                decoration: BoxDecoration(
+                  color: Colors.yellow[200],
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.money),
+                title: Text('TopUp'),
+                onTap: () {
+                  context.router.push(TopupScreen());
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text(' Settings'),
+                onTap: () => context.router.push(ProfileScreen()),
+              ),
+              ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Logout'),
+                onTap: () {
+                  viewModel.logout();
+                  context.router.replace(OnBoardScreen());
+                },
+              ),
+            ],
           ),
-          ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Welcome'),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => Navigator.of(context).pop(),
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logoiut'),
-            onTap: () => Navigator.of(context).pop(),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
