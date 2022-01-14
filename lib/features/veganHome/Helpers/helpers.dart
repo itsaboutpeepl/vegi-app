@@ -1,13 +1,8 @@
 import 'package:html/parser.dart';
 
-String cFPrice(int price, {bool isPence = false}) {
-  isPence ? price = price ~/ 100 : price;
-  return "£" + (price).toString();
-}
-
-String doublecFPrice(double price, {bool isPence = false}) {
-  isPence ? price = price / 100 : price;
-  return "£" + (price).toString();
+String cFPrice(int price, {bool isPence = true}) {
+  //isPence ? price = price ~/ 100 : price;
+  return "£" + (price / 100).toString();
 }
 
 String parseHtmlString(String htmlString) {
