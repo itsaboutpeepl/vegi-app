@@ -22,15 +22,13 @@ class _$UserCartTearOff {
   const _$UserCartTearOff();
 
   _UserCart call(
-      {required List<MenuItem> cartItems,
-      required Map<String, int> cartItemQuantities,
+      {required List<OrderItem> cartItems,
       required int cartSubTotal,
       required int cartTax,
       required int cartTotal,
       required int cartDiscount}) {
     return _UserCart(
       cartItems: cartItems,
-      cartItemQuantities: cartItemQuantities,
       cartSubTotal: cartSubTotal,
       cartTax: cartTax,
       cartTotal: cartTotal,
@@ -48,8 +46,7 @@ const $UserCart = _$UserCartTearOff();
 
 /// @nodoc
 mixin _$UserCart {
-  List<MenuItem> get cartItems => throw _privateConstructorUsedError;
-  Map<String, int> get cartItemQuantities => throw _privateConstructorUsedError;
+  List<OrderItem> get cartItems => throw _privateConstructorUsedError;
   int get cartSubTotal => throw _privateConstructorUsedError;
   int get cartTax => throw _privateConstructorUsedError;
   int get cartTotal => throw _privateConstructorUsedError;
@@ -66,8 +63,7 @@ abstract class $UserCartCopyWith<$Res> {
   factory $UserCartCopyWith(UserCart value, $Res Function(UserCart) then) =
       _$UserCartCopyWithImpl<$Res>;
   $Res call(
-      {List<MenuItem> cartItems,
-      Map<String, int> cartItemQuantities,
+      {List<OrderItem> cartItems,
       int cartSubTotal,
       int cartTax,
       int cartTotal,
@@ -85,7 +81,6 @@ class _$UserCartCopyWithImpl<$Res> implements $UserCartCopyWith<$Res> {
   @override
   $Res call({
     Object? cartItems = freezed,
-    Object? cartItemQuantities = freezed,
     Object? cartSubTotal = freezed,
     Object? cartTax = freezed,
     Object? cartTotal = freezed,
@@ -95,11 +90,7 @@ class _$UserCartCopyWithImpl<$Res> implements $UserCartCopyWith<$Res> {
       cartItems: cartItems == freezed
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
-              as List<MenuItem>,
-      cartItemQuantities: cartItemQuantities == freezed
-          ? _value.cartItemQuantities
-          : cartItemQuantities // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+              as List<OrderItem>,
       cartSubTotal: cartSubTotal == freezed
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
@@ -126,8 +117,7 @@ abstract class _$UserCartCopyWith<$Res> implements $UserCartCopyWith<$Res> {
       __$UserCartCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<MenuItem> cartItems,
-      Map<String, int> cartItemQuantities,
+      {List<OrderItem> cartItems,
       int cartSubTotal,
       int cartTax,
       int cartTotal,
@@ -146,7 +136,6 @@ class __$UserCartCopyWithImpl<$Res> extends _$UserCartCopyWithImpl<$Res>
   @override
   $Res call({
     Object? cartItems = freezed,
-    Object? cartItemQuantities = freezed,
     Object? cartSubTotal = freezed,
     Object? cartTax = freezed,
     Object? cartTotal = freezed,
@@ -156,11 +145,7 @@ class __$UserCartCopyWithImpl<$Res> extends _$UserCartCopyWithImpl<$Res>
       cartItems: cartItems == freezed
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
-              as List<MenuItem>,
-      cartItemQuantities: cartItemQuantities == freezed
-          ? _value.cartItemQuantities
-          : cartItemQuantities // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+              as List<OrderItem>,
       cartSubTotal: cartSubTotal == freezed
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
@@ -187,7 +172,6 @@ class __$UserCartCopyWithImpl<$Res> extends _$UserCartCopyWithImpl<$Res>
 class _$_UserCart extends _UserCart {
   _$_UserCart(
       {required this.cartItems,
-      required this.cartItemQuantities,
       required this.cartSubTotal,
       required this.cartTax,
       required this.cartTotal,
@@ -198,9 +182,7 @@ class _$_UserCart extends _UserCart {
       _$$_UserCartFromJson(json);
 
   @override
-  final List<MenuItem> cartItems;
-  @override
-  final Map<String, int> cartItemQuantities;
+  final List<OrderItem> cartItems;
   @override
   final int cartSubTotal;
   @override
@@ -212,7 +194,7 @@ class _$_UserCart extends _UserCart {
 
   @override
   String toString() {
-    return 'UserCart(cartItems: $cartItems, cartItemQuantities: $cartItemQuantities, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscount: $cartDiscount)';
+    return 'UserCart(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscount: $cartDiscount)';
   }
 
   @override
@@ -222,9 +204,6 @@ class _$_UserCart extends _UserCart {
             (identical(other.cartItems, cartItems) ||
                 const DeepCollectionEquality()
                     .equals(other.cartItems, cartItems)) &&
-            (identical(other.cartItemQuantities, cartItemQuantities) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartItemQuantities, cartItemQuantities)) &&
             (identical(other.cartSubTotal, cartSubTotal) ||
                 const DeepCollectionEquality()
                     .equals(other.cartSubTotal, cartSubTotal)) &&
@@ -243,7 +222,6 @@ class _$_UserCart extends _UserCart {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(cartItems) ^
-      const DeepCollectionEquality().hash(cartItemQuantities) ^
       const DeepCollectionEquality().hash(cartSubTotal) ^
       const DeepCollectionEquality().hash(cartTax) ^
       const DeepCollectionEquality().hash(cartTotal) ^
@@ -262,8 +240,7 @@ class _$_UserCart extends _UserCart {
 
 abstract class _UserCart extends UserCart {
   factory _UserCart(
-      {required List<MenuItem> cartItems,
-      required Map<String, int> cartItemQuantities,
+      {required List<OrderItem> cartItems,
       required int cartSubTotal,
       required int cartTax,
       required int cartTotal,
@@ -273,9 +250,7 @@ abstract class _UserCart extends UserCart {
   factory _UserCart.fromJson(Map<String, dynamic> json) = _$_UserCart.fromJson;
 
   @override
-  List<MenuItem> get cartItems => throw _privateConstructorUsedError;
-  @override
-  Map<String, int> get cartItemQuantities => throw _privateConstructorUsedError;
+  List<OrderItem> get cartItems => throw _privateConstructorUsedError;
   @override
   int get cartSubTotal => throw _privateConstructorUsedError;
   @override
