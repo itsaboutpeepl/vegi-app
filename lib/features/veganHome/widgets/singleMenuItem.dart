@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
@@ -33,7 +32,7 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
               borderRadius: BorderRadius.circular(20),
               child: Image(
                 image: NetworkImage(
-                  "https://app.itsaboutpeepl.com/products/download-image/2",
+                  "https://cdn.pixabay.com/photo/2018/03/21/06/54/food-3245765_1280.jpg",
                 ),
                 errorBuilder: (context, error, stackTrace) {
                   print("ERROR:");
@@ -74,7 +73,7 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
                           useRootNavigator: true,
                           context: context,
                           builder: (context) =>
-                              DetailMenuItemView(menuItem: bagel1),
+                              DetailMenuItemView(menuItem: widget.menuItem),
                         );
                       },
                       icon: Icon(Icons.add),
@@ -98,7 +97,7 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
             useRootNavigator: true,
             isDismissible: true,
             context: context,
-            builder: (context) => DetailMenuItemView(menuItem: bagel1),
+            builder: (context) => DetailMenuItemView(menuItem: widget.menuItem),
           ),
         },
       ),
