@@ -24,10 +24,10 @@ class _$UserCartTearOff {
   _UserCart call(
       {required List<MenuItem> cartItems,
       required Map<String, int> cartItemQuantities,
-      required double cartSubTotal,
-      required double cartTax,
-      required double cartTotal,
-      required double cartDiscount}) {
+      required int cartSubTotal,
+      required int cartTax,
+      required int cartTotal,
+      required int cartDiscount}) {
     return _UserCart(
       cartItems: cartItems,
       cartItemQuantities: cartItemQuantities,
@@ -50,10 +50,10 @@ const $UserCart = _$UserCartTearOff();
 mixin _$UserCart {
   List<MenuItem> get cartItems => throw _privateConstructorUsedError;
   Map<String, int> get cartItemQuantities => throw _privateConstructorUsedError;
-  double get cartSubTotal => throw _privateConstructorUsedError;
-  double get cartTax => throw _privateConstructorUsedError;
-  double get cartTotal => throw _privateConstructorUsedError;
-  double get cartDiscount => throw _privateConstructorUsedError;
+  int get cartSubTotal => throw _privateConstructorUsedError;
+  int get cartTax => throw _privateConstructorUsedError;
+  int get cartTotal => throw _privateConstructorUsedError;
+  int get cartDiscount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -68,10 +68,10 @@ abstract class $UserCartCopyWith<$Res> {
   $Res call(
       {List<MenuItem> cartItems,
       Map<String, int> cartItemQuantities,
-      double cartSubTotal,
-      double cartTax,
-      double cartTotal,
-      double cartDiscount});
+      int cartSubTotal,
+      int cartTax,
+      int cartTotal,
+      int cartDiscount});
 }
 
 /// @nodoc
@@ -103,19 +103,19 @@ class _$UserCartCopyWithImpl<$Res> implements $UserCartCopyWith<$Res> {
       cartSubTotal: cartSubTotal == freezed
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       cartTax: cartTax == freezed
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       cartTotal: cartTotal == freezed
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       cartDiscount: cartDiscount == freezed
           ? _value.cartDiscount
           : cartDiscount // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
     ));
   }
 }
@@ -128,10 +128,10 @@ abstract class _$UserCartCopyWith<$Res> implements $UserCartCopyWith<$Res> {
   $Res call(
       {List<MenuItem> cartItems,
       Map<String, int> cartItemQuantities,
-      double cartSubTotal,
-      double cartTax,
-      double cartTotal,
-      double cartDiscount});
+      int cartSubTotal,
+      int cartTax,
+      int cartTotal,
+      int cartDiscount});
 }
 
 /// @nodoc
@@ -164,19 +164,19 @@ class __$UserCartCopyWithImpl<$Res> extends _$UserCartCopyWithImpl<$Res>
       cartSubTotal: cartSubTotal == freezed
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       cartTax: cartTax == freezed
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       cartTotal: cartTotal == freezed
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       cartDiscount: cartDiscount == freezed
           ? _value.cartDiscount
           : cartDiscount // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
     ));
   }
 }
@@ -202,13 +202,13 @@ class _$_UserCart extends _UserCart {
   @override
   final Map<String, int> cartItemQuantities;
   @override
-  final double cartSubTotal;
+  final int cartSubTotal;
   @override
-  final double cartTax;
+  final int cartTax;
   @override
-  final double cartTotal;
+  final int cartTotal;
   @override
-  final double cartDiscount;
+  final int cartDiscount;
 
   @override
   String toString() {
@@ -264,10 +264,10 @@ abstract class _UserCart extends UserCart {
   factory _UserCart(
       {required List<MenuItem> cartItems,
       required Map<String, int> cartItemQuantities,
-      required double cartSubTotal,
-      required double cartTax,
-      required double cartTotal,
-      required double cartDiscount}) = _$_UserCart;
+      required int cartSubTotal,
+      required int cartTax,
+      required int cartTotal,
+      required int cartDiscount}) = _$_UserCart;
   _UserCart._() : super._();
 
   factory _UserCart.fromJson(Map<String, dynamic> json) = _$_UserCart.fromJson;
@@ -277,13 +277,13 @@ abstract class _UserCart extends UserCart {
   @override
   Map<String, int> get cartItemQuantities => throw _privateConstructorUsedError;
   @override
-  double get cartSubTotal => throw _privateConstructorUsedError;
+  int get cartSubTotal => throw _privateConstructorUsedError;
   @override
-  double get cartTax => throw _privateConstructorUsedError;
+  int get cartTax => throw _privateConstructorUsedError;
   @override
-  double get cartTotal => throw _privateConstructorUsedError;
+  int get cartTotal => throw _privateConstructorUsedError;
   @override
-  double get cartDiscount => throw _privateConstructorUsedError;
+  int get cartDiscount => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserCartCopyWith<_UserCart> get copyWith =>

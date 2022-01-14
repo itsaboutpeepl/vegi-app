@@ -64,7 +64,7 @@ class VegiEatsService {
                     element['id'].toString()
               ],
               category: "Category",
-              price: element['basePrice'] + 0.1,
+              price: element['basePrice'],
               description: element['description'],
               options: demoOptions),
         );

@@ -12,10 +12,10 @@ class UserCart with _$UserCart {
   factory UserCart({
     required List<MenuItem> cartItems,
     required Map<String, int> cartItemQuantities,
-    required double cartSubTotal,
-    required double cartTax,
-    required double cartTotal,
-    required double cartDiscount,
+    required int cartSubTotal,
+    required int cartTax,
+    required int cartTotal,
+    required int cartDiscount,
   }) = _UserCart;
 
   factory UserCart.initial() => UserCart(

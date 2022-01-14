@@ -13,12 +13,12 @@ class MenuItem with _$MenuItem {
     required String name,
     required List<String> imageURLs,
     required String category,
-    required double price,
+    required int price,
     required String description,
-    required Map<String, double> options,
+    required Map<String, int> options,
   }) = _MenuItem;
 
   factory MenuItem.fromJson(dynamic json) => _$MenuItemFromJson(json);
 
-  String get formattedPrice => "£" + this.price.toString();
+  String get formattedPrice => "£" + (this.price * 0.01).toString();
 }
