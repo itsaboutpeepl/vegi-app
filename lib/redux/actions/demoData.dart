@@ -1,4 +1,5 @@
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/userCart.dart';
@@ -151,13 +152,31 @@ final Map<String, int> demoOptions = {
   "Addon - Orange Syrup": 230
 };
 
+OrderItem demoOrderItem1 = new OrderItem(
+    menuItem: bagel3,
+    totalItemPrice: 3242,
+    itemQuantity: 3,
+    selectedOptions: {
+      "Cream Cheese": 100,
+      "Extra Blueberries": 185,
+      "Extra Baked": 235,
+    });
+
+OrderItem demoOrderItem2 = new OrderItem(
+    menuItem: bagel1,
+    totalItemPrice: 8922,
+    itemQuantity: 5,
+    selectedOptions: {
+      "Addon - Banana Syrup": 230,
+      "Addon - Blueberry Syrup": 230,
+      "Addon - Orange Syrup": 230
+    });
+
 final UserCart userCart = new UserCart(
-  cartItems: [bagel1, bagel2, bagel3],
-  cartItemQuantities: {
-    "Blueberry Bagel": 4,
-    "Everything Bagel": 2,
-    "Poppy Seed Bagel": 5
-  },
+  cartItems: [
+    demoOrderItem1,
+    demoOrderItem2,
+  ],
   cartSubTotal: 502,
   cartTax: 231,
   cartTotal: 733,
