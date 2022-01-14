@@ -51,7 +51,7 @@ class _NavDrawerState extends State<NavDrawer> {
                         child: Row(
                           children: [
                             Text(
-                              '0',
+                              viewModel.gbpxBalance,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
@@ -71,7 +71,7 @@ class _NavDrawerState extends State<NavDrawer> {
                             ),
                             Spacer(),
                             Text(
-                              '0',
+                              viewModel.pplBalance,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
