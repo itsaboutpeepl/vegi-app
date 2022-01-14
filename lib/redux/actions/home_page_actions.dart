@@ -79,7 +79,8 @@ ThunkAction fetchMenuItemsForRestaurant() {
         },
       );
 
-      //UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList);
+      store.dispatch(
+          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList));
     } catch (e, s) {
       log.error('ERROR - fetchMenuItemsForRestaurant $e');
       await Sentry.captureException(
