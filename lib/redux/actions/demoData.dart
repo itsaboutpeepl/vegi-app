@@ -65,7 +65,7 @@ final MenuItem bagel1 = new MenuItem(
     "https://www.gnom-gnom.com/wp-content/uploads/2018/07/Gluten-Free-Paleo-Keto-Blueberry-Bagels-by-Gnom-Gnom-8-683x1024-1.jpg"
   ],
   category: "Bakery",
-  price: 3.9,
+  price: 390,
   description:
       "Freshiy Baked Bagel made with a mix of wild and cultured blueberries baked inside",
   options: {
@@ -92,7 +92,7 @@ final MenuItem bagel2 = new MenuItem(
     "http://www.thesugarhit.com/wp-content/uploads/2014/03/IMG_1698.jpg"
   ],
   category: "Bakery",
-  price: 3.9,
+  price: 390,
   description:
       "Freshiy Baked Bagel made with a mix of wild and cultured poppy seeds",
   options: {
@@ -119,7 +119,7 @@ final MenuItem bagel3 = new MenuItem(
         "https://healthyfitnessmeals.com/wp-content/uploads/2019/05/Keto_Parmesan_Everything_Bagel_Square_0001.jpg"
   ],
   category: "Bakery",
-  price: 3.9,
+  price: 390,
   description:
       "Freshiy Baked Bagel made with a mix of poppy seeds, flax seeds, chia seeds, sesame seeds, onion flakes, garlic flakes, sunflower seeds, caraway seeds, pretzel salt, and black pepper.",
   options: {
@@ -158,8 +158,8 @@ final UserCart userCart = new UserCart(
     "Everything Bagel": 2,
     "Poppy Seed Bagel": 5
   },
-  cartSubTotal: 5.02,
-  cartTax: 2.31,
-  cartTotal: 7.33,
+  cartSubTotal: 502,
+  cartTax: 231,
+  cartTotal: 733,
   cartDiscount: 0,
 );
