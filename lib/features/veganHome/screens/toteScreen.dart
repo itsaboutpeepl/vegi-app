@@ -1,18 +1,18 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
-import 'package:vegan_liverpool/models/restaurant/userCart.dart';
-import 'package:vegan_liverpool/redux/actions/demoData.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
 
 List<String> tileTitles = ["Subtotal", "Tax", "Discount", "Total"];
 
 class ToteScreen extends StatefulWidget {
-  const ToteScreen({Key? key, required this.userCart}) : super(key: key);
-  final UserCart userCart;
+  const ToteScreen({Key? key}) : super(key: key);
 
   @override
   _ToteScreenState createState() => _ToteScreenState();
@@ -21,89 +21,102 @@ class ToteScreen extends StatefulWidget {
 class _ToteScreenState extends State<ToteScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        centerText: "",
-        pageTitle: "Cart",
-        hasSearchAction: false,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: userCart.cartItems
-                  .map(
-                    (element) => singleCartItem(
-                        element, userCart.cartItemQuantities[element.name]!),
-                  )
-                  .toList() +
-              [
-                Divider(
-                  height: 0,
-                  thickness: 1,
-                  color: Colors.grey[300],
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                totalsPriceItemTile(
-                  "Subtotal",
-                  cFPrice(widget.userCart.cartSubTotal),
-                ),
-                totalsPriceItemTile(
-                  "Tax",
-                  cFPrice(widget.userCart.cartTax),
-                ),
-                Divider(
-                  height: 20,
-                  thickness: 1,
-                  color: Colors.grey[300],
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                totalsPriceItemTile(
-                  "Total",
-                  cFPrice(widget.userCart.cartTotal),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.router.push(CheckoutScreen());
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.shopping_basket_rounded),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text("Checkout"),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 15,
-                      onPrimary: Colors.grey[800],
-                      primary: Colors.yellow,
-                      shadowColor: Colors.yellow,
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18,
-                      ),
-                    ),
+    return StoreConnector<AppState, UserCartViewModel>(
+      converter: UserCartViewModel.fromStore,
+      builder: (_, viewmodel) {
+        return Scaffold(
+          appBar: CustomAppBar(
+            centerText: "",
+            pageTitle: "Cart",
+            hasSearchAction: false,
+          ),
+          body: viewmodel.currentUserCart.cartItems.isNotEmpty
+              ? SingleChildScrollView(
+                  child: Column(
+                    children: viewmodel.currentUserCart.cartItems
+                            .map(
+                              (element) => singleCartItem(element),
+                            )
+                            .toList() +
+                        [
+                          Divider(
+                            height: 0,
+                            thickness: 1,
+                            color: Colors.grey[300],
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          totalsPriceItemTile(
+                            "Subtotal",
+                            cFPrice(viewmodel.currentUserCart.cartSubTotal),
+                          ),
+                          totalsPriceItemTile(
+                            "Tax",
+                            cFPrice(viewmodel.currentUserCart.cartTax),
+                          ),
+                          totalsPriceItemTile(
+                            "Discount",
+                            cFPrice(viewmodel.currentUserCart.cartDiscount),
+                          ),
+                          Divider(
+                            height: 20,
+                            thickness: 1,
+                            color: Colors.grey[300],
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          totalsPriceItemTile(
+                            "Total",
+                            cFPrice(viewmodel.currentUserCart.cartTotal),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.router.push(CheckoutScreen());
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.shopping_basket_rounded),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text("Checkout"),
+                                ],
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                elevation: 15,
+                                onPrimary: Colors.grey[800],
+                                primary: Colors.yellow,
+                                shadowColor: Colors.yellow,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15.0),
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50,
+                          )
+                        ],
                   ),
-                ),
-                SizedBox(
-                  height: 50,
                 )
-              ],
-        ),
-      ),
+              : Center(
+                  child: Text("Add some items to cart"), //TODO: Need Better UI
+                ),
+        );
+      },
     );
   }
 
@@ -142,7 +155,7 @@ class _ToteScreenState extends State<ToteScreen> {
     );
   }
 
-  Widget singleCartItem(MenuItem menuItem, int quantity) {
+  Widget singleCartItem(OrderItem orderItem) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
@@ -154,7 +167,7 @@ class _ToteScreenState extends State<ToteScreen> {
               height: MediaQuery.of(context).size.width * 0.2,
               width: MediaQuery.of(context).size.width * 0.2,
               child: CachedNetworkImage(
-                imageUrl: menuItem.imageURLs[0],
+                imageUrl: orderItem.menuItem.imageURLs[0],
                 fit: BoxFit.cover,
               ),
             ),
@@ -167,7 +180,7 @@ class _ToteScreenState extends State<ToteScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                     Text(
-                      menuItem.name,
+                      orderItem.menuItem.name,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
@@ -180,13 +193,13 @@ class _ToteScreenState extends State<ToteScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          menuItem.formattedPrice,
+                          orderItem.menuItem.formattedPrice,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
-                        quantityButtons(quantity),
+                        quantityButtons(orderItem.itemQuantity),
                       ],
                     ),
                     SizedBox(
@@ -200,7 +213,7 @@ class _ToteScreenState extends State<ToteScreen> {
                       ),
                     ),
                   ] +
-                  menuItem.options.entries
+                  orderItem.selectedOptions.entries
                       .map(
                         (e) => addOnPriceItemTile(
                           e.key,
