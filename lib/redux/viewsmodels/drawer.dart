@@ -7,9 +7,11 @@
 // import 'package:vegan_liverpool/utils/addresses.dart' as util;
 
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/cash_wallet_state.dart';
 import 'package:vegan_liverpool/models/community/community.dart';
 import 'package:vegan_liverpool/models/plugins/plugins.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import '../../models/app_state.dart';
 import 'package:equatable/equatable.dart';
 
@@ -20,19 +22,22 @@ class DrawerViewModel {
   // final bool? isBackup;
 
   final Function() firstName;
+  final pplBalance;
+  final gbpxBalance;
 
   DrawerViewModel({
     // this.avatarUrl,
     required this.firstName,
     required this.logout,
+    required this.pplBalance,
+    required this.gbpxBalance,
     // this.isBackup,
     // required this.walletAddress,
   });
 
   static DrawerViewModel fromStore(Store<AppState> store) {
-    // String communityAddress = store.state.cashWalletState.communityAddress;
-    // Community community =
-    //     store.state.cashWalletState.communities[communityAddress]!;
+    CashWalletState cashWalletState = store.state.cashWalletState;
+
     return DrawerViewModel(
       // isBackup: store.state.userState.backup,
       // walletAddress: store.state.userState.walletAddress,
@@ -44,6 +49,8 @@ class DrawerViewModel {
         String fullName = store.state.userState.displayName;
         return fullName.split(' ')[0];
       },
+      pplBalance: cashWalletState.tokens[PeeplToken.address]!.getBalance(),
+      gbpxBalance: cashWalletState.tokens[GBPxToken.address]!.getBalance(),
     );
   }
 
