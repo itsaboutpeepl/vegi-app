@@ -13,7 +13,7 @@ class MenuItem with _$MenuItem {
     required String name,
     required List<String> imageURLs,
     required String category,
-    required double price,
+    required int price,
     required String description,
     required Map<String, int> options,
   }) = _MenuItem;

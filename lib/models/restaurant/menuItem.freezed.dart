@@ -26,7 +26,7 @@ class _$MenuItemTearOff {
       required String name,
       required List<String> imageURLs,
       required String category,
-      required double price,
+      required int price,
       required String description,
       required Map<String, int> options}) {
     return _MenuItem(
@@ -54,7 +54,7 @@ mixin _$MenuItem {
   String get name => throw _privateConstructorUsedError;
   List<String> get imageURLs => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
-  double get price => throw _privateConstructorUsedError;
+  int get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Map<String, int> get options => throw _privateConstructorUsedError;
 
@@ -73,7 +73,7 @@ abstract class $MenuItemCopyWith<$Res> {
       String name,
       List<String> imageURLs,
       String category,
-      double price,
+      int price,
       String description,
       Map<String, int> options});
 }
@@ -116,7 +116,7 @@ class _$MenuItemCopyWithImpl<$Res> implements $MenuItemCopyWith<$Res> {
       price: price == freezed
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -139,7 +139,7 @@ abstract class _$MenuItemCopyWith<$Res> implements $MenuItemCopyWith<$Res> {
       String name,
       List<String> imageURLs,
       String category,
-      double price,
+      int price,
       String description,
       Map<String, int> options});
 }
@@ -183,7 +183,7 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
       price: price == freezed
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as double,
+              as int,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -222,7 +222,7 @@ class _$_MenuItem extends _MenuItem {
   @override
   final String category;
   @override
-  final double price;
+  final int price;
   @override
   final String description;
   @override
@@ -284,7 +284,7 @@ abstract class _MenuItem extends MenuItem {
       required String name,
       required List<String> imageURLs,
       required String category,
-      required double price,
+      required int price,
       required String description,
       required Map<String, int> options}) = _$_MenuItem;
   _MenuItem._() : super._();
@@ -300,7 +300,7 @@ abstract class _MenuItem extends MenuItem {
   @override
   String get category => throw _privateConstructorUsedError;
   @override
-  double get price => throw _privateConstructorUsedError;
+  int get price => throw _privateConstructorUsedError;
   @override
   String get description => throw _privateConstructorUsedError;
   @override

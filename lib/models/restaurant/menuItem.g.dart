@@ -12,7 +12,7 @@ _$_MenuItem _$$_MenuItemFromJson(Map<String, dynamic> json) => _$_MenuItem(
       imageURLs:
           (json['imageURLs'] as List<dynamic>).map((e) => e as String).toList(),
       category: json['category'] as String,
-      price: (json['price'] as num).toDouble(),
+      price: json['price'] as int,
       description: json['description'] as String,
       options: Map<String, int>.from(json['options'] as Map),
     );
