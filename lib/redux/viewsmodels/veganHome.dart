@@ -7,7 +7,7 @@ import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 
 class UserCartViewModel extends Equatable {
   final UserCart currentUserCart;
-  final String? avatarUrl;
+  final String avatarUrl;
   final Function(OrderItem itemToAdd) updateUserCart;
 
   UserCartViewModel({
@@ -26,5 +26,5 @@ class UserCartViewModel extends Equatable {
   }
 
   @override
-  List<Object> get props => [currentUserCart];
+  List<Object> get props => [currentUserCart, avatarUrl];
 }

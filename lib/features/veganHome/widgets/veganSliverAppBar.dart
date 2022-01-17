@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -13,10 +14,10 @@ class VeganSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, VeganHomeViewModel>(
-        converter: VeganHomeViewModel.fromStore,
+    return StoreConnector<AppState, UserCartViewModel>(
+        converter: UserCartViewModel.fromStore,
         distinct: true,
-        builder: (_, viewmodel) {
+        builder: (_, viewModel) {
           return SliverAppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
@@ -43,12 +44,20 @@ class VeganSliverAppBar extends StatelessWidget {
                           onTap: () {
                             Scaffold.of(context).openDrawer();
                           },
-                          child: CircleAvatar(
-                            radius: 23,
-                            backgroundImage: NetworkImage(
-                              viewmodel.avatarUrl.isEmpty
-                                  ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"
-                                  : viewmodel.avatarUrl,
+                          child: CachedNetworkImage(
+                            width: 60,
+                            height: 60,
+                            imageUrl: viewModel.avatarUrl,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('assets/images/anom.png'),
+                              radius: 30,
+                            ),
+                            imageBuilder: (context, imageProvider) => Image(
+                              image: imageProvider,
+                              fit: BoxFit.fill,
                             ),
                           ),
                         ),

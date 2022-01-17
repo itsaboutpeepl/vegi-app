@@ -15,7 +15,7 @@ import 'package:vegan_liverpool/utils/constants.dart';
 import '../../models/app_state.dart';
 import 'package:equatable/equatable.dart';
 
-class DrawerViewModel {
+class DrawerViewModel extends Equatable {
   final Function() logout;
   // final String walletAddress;
   // final String? avatarUrl;
@@ -57,10 +57,12 @@ class DrawerViewModel {
     );
   }
 
-  // @override
-  // List get props => [
-  //       walletAddress,
-  //     ];
+  @override
+  List get props => [
+        avatarUrl,
+        pplBalance,
+        gbpxBalance,
+      ];
 }
 
 // class DrawerViewModel extends Equatable {
