@@ -1,3 +1,4 @@
+import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/userCart.dart';
@@ -21,6 +22,36 @@ class UpdateFeaturedRestaurants {
 class UpdateUserCart {
   final UserCart currentUserCart;
   UpdateUserCart({required this.currentUserCart});
+}
+
+ThunkAction updateComputeUserCart(OrderItem itemToAdd) {
+  return (Store store) async {
+    try {
+      UserCart currentUserCart = store.state.homePageState.currentUserCart;
+
+      int newSubTotal = currentUserCart.cartSubTotal + itemToAdd.totalItemPrice;
+      int newTax = (newSubTotal * 10) ~/ 100;
+      int newDiscount = (newSubTotal * 5) ~/ 100;
+      int newTotal = (newSubTotal + newTax) - newDiscount;
+
+      UserCart updatedUserCart = new UserCart(
+        cartItems: currentUserCart.cartItems + [itemToAdd],
+        cartSubTotal: newSubTotal,
+        cartTax: newTax,
+        cartDiscount: newDiscount,
+        cartTotal: newTotal,
+      );
+
+      store.dispatch(UpdateUserCart(currentUserCart: updatedUserCart));
+    } catch (e, s) {
+      log.error('ERROR - updateComputeUserCart $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - updateComputeUserCart $e',
+      );
+    }
+  };
 }
 
 ThunkAction fetchRestaurantCategories() {

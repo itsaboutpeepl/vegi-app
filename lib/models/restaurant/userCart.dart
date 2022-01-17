@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 
 part 'userCart.freezed.dart';
 part 'userCart.g.dart';
@@ -10,8 +10,7 @@ class UserCart with _$UserCart {
 
   @JsonSerializable()
   factory UserCart({
-    required List<MenuItem> cartItems,
-    required Map<String, int> cartItemQuantities,
+    required List<OrderItem> cartItems,
     required int cartSubTotal,
     required int cartTax,
     required int cartTotal,
@@ -20,7 +19,6 @@ class UserCart with _$UserCart {
 
   factory UserCart.initial() => UserCart(
         cartItems: [],
-        cartItemQuantities: {},
         cartSubTotal: 0,
         cartTax: 0,
         cartTotal: 0,

@@ -1,10 +1,15 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
 
 class DetailMenuItemView extends StatefulWidget {
   const DetailMenuItemView({Key? key, required this.menuItem})
@@ -48,198 +53,217 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        FractionallySizedBox(
-          heightFactor: 1,
-          child: Scaffold(
-            body: SingleChildScrollView(
-              controller: ModalScrollController.of(context),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 350.0,
-                        child: CarouselSlider(
-                          items: widget.menuItem.imageURLs
-                              .map(
-                                (item) => CachedNetworkImage(
-                                  imageUrl: item,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                              .toList(),
-                          options: CarouselOptions(
-                            autoPlay: true,
-                            height: double.infinity,
-                            viewportFraction: 1,
-                            autoPlayCurve: Curves.slowMiddle,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: -1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(100)),
-                              color: Colors.white),
-                          width: MediaQuery.of(context).size.width,
-                          height: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    return StoreConnector<AppState, UserCartViewModel>(
+        converter: UserCartViewModel.fromStore,
+        builder: (_, viewmodel) {
+          return Stack(
+            children: [
+              FractionallySizedBox(
+                heightFactor: 1,
+                child: Scaffold(
+                  body: SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.menuItem.name,
-                          style: TextStyle(
-                              fontSize: 28.0, fontWeight: FontWeight.w900),
-                        ),
-                        Text(
-                          widget.menuItem.category,
-                          style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.w100),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        Text(
-                          parseHtmlString(widget.menuItem.description),
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        Text(
-                          "Extras",
-                          style: TextStyle(
-                              fontSize: 22.0, fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: widget.menuItem.options.length,
-                          itemBuilder: (_, index) => ListTile(
-                            tileColor: _selectedExtras[index]
-                                ? Colors.yellow[100]
-                                : null,
-                            title: Text(
-                                widget.menuItem.options.keys.elementAt(index)),
-                            trailing: Text(
-                              cFPrice(
-                                  widget.menuItem.options.values
-                                      .elementAt(index),
-                                  isPence: true),
+                        Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 350.0,
+                              child: CarouselSlider(
+                                items: widget.menuItem.imageURLs
+                                    .map(
+                                      (item) => CachedNetworkImage(
+                                        imageUrl: item,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                    .toList(),
+                                options: CarouselOptions(
+                                  autoPlay: true,
+                                  height: double.infinity,
+                                  viewportFraction: 1,
+                                  autoPlayCurve: Curves.slowMiddle,
+                                ),
+                              ),
                             ),
-                            onTap: () => setState(() {
-                              _selectedExtras[index] = !_selectedExtras[index];
-
-                              _selectedExtrasMap.containsKey(widget
-                                      .menuItem.options.keys
-                                      .elementAt(index))
-                                  ? _selectedExtrasMap.remove(widget
-                                      .menuItem.options.keys
-                                      .elementAt(index))
-                                  : _selectedExtrasMap[widget
-                                          .menuItem.options.keys
-                                          .elementAt(index)] =
-                                      widget.menuItem.options.values
-                                          .elementAt(index);
-                            }),
-                          ),
+                            Positioned(
+                              bottom: -1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(100)),
+                                    color: Colors.white),
+                                width: MediaQuery.of(context).size.width,
+                                height: 30,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 100,
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.menuItem.name,
+                                style: TextStyle(
+                                    fontSize: 28.0,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              Text(
+                                widget.menuItem.category,
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w100),
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                parseHtmlString(widget.menuItem.description),
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                "Extras",
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: widget.menuItem.options.length,
+                                itemBuilder: (_, index) => ListTile(
+                                  tileColor: _selectedExtras[index]
+                                      ? Colors.yellow[100]
+                                      : null,
+                                  title: Text(widget.menuItem.options.keys
+                                      .elementAt(index)),
+                                  trailing: Text(
+                                    cFPrice(
+                                        widget.menuItem.options.values
+                                            .elementAt(index),
+                                        isPence: true),
+                                  ),
+                                  onTap: () => setState(() {
+                                    _selectedExtras[index] =
+                                        !_selectedExtras[index];
+
+                                    _selectedExtrasMap.containsKey(widget
+                                            .menuItem.options.keys
+                                            .elementAt(index))
+                                        ? _selectedExtrasMap.remove(widget
+                                            .menuItem.options.keys
+                                            .elementAt(index))
+                                        : _selectedExtrasMap[widget
+                                                .menuItem.options.keys
+                                                .elementAt(index)] =
+                                            widget.menuItem.options.values
+                                                .elementAt(index);
+                                  }),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 100,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
-                    color: Colors.yellow[300]),
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Row(
-                    children: [
-                      quantityButtons(),
-                      Spacer(),
-                      ElevatedButton(
-                        onPressed: () => {},
-                        child: Text("Add to Tote"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.black,
-                          fixedSize: Size(120, 40),
-                          textStyle: TextStyle(fontWeight: FontWeight.w900),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
               Positioned(
-                top: -45,
-                left: (MediaQuery.of(context).size.width * 0.5) - 45,
-                child: Container(
-                  width: 90,
-                  height: 90,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 8,
-                        blurRadius: 10,
-                        offset: Offset(0, 0), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      cFPrice(_calculateItemTotal(), isPence: true),
-                      style: TextStyle(
-                        color: Colors.yellow[300],
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
+                bottom: 0,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(20)),
+                          color: Colors.yellow[300]),
+                      width: MediaQuery.of(context).size.width,
+                      height: 100,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: Row(
+                          children: [
+                            quantityButtons(),
+                            Spacer(),
+                            ElevatedButton(
+                              onPressed: () => {
+                                viewmodel.updateUserCart(
+                                  OrderItem(
+                                      menuItem: widget.menuItem,
+                                      totalItemPrice: _calculateItemTotal(),
+                                      itemQuantity: _selectedQuantity,
+                                      selectedOptions: _selectedExtrasMap),
+                                ),
+                                print("adding to cart"),
+                              },
+                              child: Text("Add to Tote"),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                onPrimary: Colors.black,
+                                fixedSize: Size(120, 40),
+                                textStyle:
+                                    TextStyle(fontWeight: FontWeight.w900),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                    Positioned(
+                      top: -45,
+                      left: (MediaQuery.of(context).size.width * 0.5) - 45,
+                      child: Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 8,
+                              blurRadius: 10,
+                              offset:
+                                  Offset(0, 0), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            cFPrice(_calculateItemTotal(), isPence: true),
+                            style: TextStyle(
+                              color: Colors.yellow[300],
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              )
+              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
+        });
   }
 
   int _calculateItemTotal() {

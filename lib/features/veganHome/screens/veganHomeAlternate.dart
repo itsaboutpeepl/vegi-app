@@ -32,8 +32,8 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, VeganHomeViewModel>(
-      converter: VeganHomeViewModel.fromStore,
+    return StoreConnector<AppState, UserCartViewModel>(
+      converter: UserCartViewModel.fromStore,
       distinct: true,
       onInit: (store) {},
       builder: (_, viewmodel) {
@@ -41,7 +41,7 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate> {
           drawer: NavDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              context.router.push(ToteScreen(userCart: userCart));
+              context.router.push(ToteScreen());
             },
             backgroundColor: Colors.black,
             child: Icon(
