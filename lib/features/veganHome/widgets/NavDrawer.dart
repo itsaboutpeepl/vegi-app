@@ -30,8 +30,8 @@ class _NavDrawerState extends State<NavDrawer> {
                 child: Column(
                   children: [
                     CachedNetworkImage(
-                      width: 60,
-                      height: 60,
+                      width: 50,
+                      height: 50,
                       imageUrl: viewModel.avatarUrl,
                       placeholder: (context, url) =>
                           CircularProgressIndicator(),
