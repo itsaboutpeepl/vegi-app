@@ -9,8 +9,6 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
 
-List<String> tileTitles = ["Subtotal", "Tax", "Discount", "Total"];
-
 class ToteScreen extends StatefulWidget {
   const ToteScreen({Key? key}) : super(key: key);
 
@@ -47,7 +45,7 @@ class _ToteScreenState extends State<ToteScreen> {
                             endIndent: 20,
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           totalsPriceItemTile(
                             "Subtotal",
@@ -56,10 +54,6 @@ class _ToteScreenState extends State<ToteScreen> {
                           totalsPriceItemTile(
                             "Tax",
                             cFPrice(viewmodel.currentUserCart.cartTax),
-                          ),
-                          totalsPriceItemTile(
-                            "Discount",
-                            cFPrice(viewmodel.currentUserCart.cartDiscount),
                           ),
                           Divider(
                             height: 20,
