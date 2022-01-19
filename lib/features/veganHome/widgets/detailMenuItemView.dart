@@ -8,7 +8,6 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
-import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
 
 class DetailMenuItemView extends StatefulWidget {
@@ -209,7 +208,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                                       itemQuantity: _selectedQuantity,
                                       selectedOptions: _selectedExtrasMap),
                                 ),
-                                print("adding to cart"),
+                                Navigator.pop(context)
                               },
                               child: Text("Add to Tote"),
                               style: ElevatedButton.styleFrom(
