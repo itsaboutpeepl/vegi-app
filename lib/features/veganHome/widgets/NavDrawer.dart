@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
@@ -28,10 +29,20 @@ class _NavDrawerState extends State<NavDrawer> {
               DrawerHeader(
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 23,
-                      backgroundImage: NetworkImage(
-                          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80"),
+                    CachedNetworkImage(
+                      width: 50,
+                      height: 50,
+                      imageUrl: viewModel.avatarUrl,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/anom.png'),
+                        radius: 30,
+                      ),
+                      imageBuilder: (context, imageProvider) => Image(
+                        image: imageProvider,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
