@@ -1,16 +1,14 @@
-import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
+    as ts;
 import 'package:vegan_liverpool/features/veganHome/widgets/NavDrawer.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/categoryList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
-import 'package:vegan_liverpool/redux/actions/demoData.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
-import 'package:vegan_liverpool/utils/addresses.dart';
 
 class VeganHomeScreenAlternate extends StatefulWidget {
   const VeganHomeScreenAlternate({
@@ -39,15 +37,30 @@ class _VeganHomeScreenAlternateState extends State<VeganHomeScreenAlternate> {
       builder: (_, viewmodel) {
         return Scaffold(
           drawer: NavDrawer(),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              context.router.push(ToteScreen());
+          floatingActionButton: OpenContainer(
+            transitionDuration: const Duration(milliseconds: 500),
+            openBuilder: (BuildContext context, VoidCallback _) {
+              return const ts.ToteScreen();
             },
-            backgroundColor: Colors.black,
-            child: Icon(
-              Icons.shopping_basket,
-              color: Colors.white,
+            closedElevation: 6.0,
+            closedShape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(56 / 2),
+              ),
             ),
+            closedColor: Colors.black,
+            closedBuilder: (BuildContext context, VoidCallback openContainer) {
+              return SizedBox(
+                height: 56,
+                width: 56,
+                child: Center(
+                  child: Icon(
+                    Icons.shopping_basket,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
           ),
           body: NestedScrollView(
             controller: _scrollController,
