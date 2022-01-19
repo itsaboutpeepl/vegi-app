@@ -44,21 +44,21 @@ class VeganSliverAppBar extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    color: Colors.grey[200],
-                    child: Icon(
-                      Icons.menu,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              )
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 8.0),
+              //   child: ClipRRect(
+              //     borderRadius: BorderRadius.circular(10),
+              //     child: Container(
+              //       width: 40,
+              //       height: 40,
+              //       color: Colors.grey[200],
+              //       child: Icon(
+              //         Icons.menu,
+              //         color: Colors.black,
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),
