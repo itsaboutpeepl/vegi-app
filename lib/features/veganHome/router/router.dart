@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHomeAlternate.dart';
@@ -29,20 +30,28 @@ const veganHomeAltTab = AutoRoute(
       name: 'veganHomeScreenAlt',
       guards: [AuthGuard],
     ),
-    AutoRoute(
+    CustomRoute(
       page: RestaurantMenuScreen,
       name: 'restaurantMenuScreen',
       guards: [AuthGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
-    AutoRoute(
+    CustomRoute(
       page: ToteScreen,
       name: 'toteScreen',
       guards: [AuthGuard],
     ),
-    AutoRoute(
+    CustomRoute(
       page: CheckoutScreen,
       name: 'checkoutScreen',
       guards: [AuthGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    CustomRoute(
+      page: OrderConfirmedScreen,
+      name: 'orderConfirmedScreen',
+      guards: [AuthGuard],
+      transitionsBuilder: TransitionsBuilders.slideBottom,
     ),
   ],
 );
