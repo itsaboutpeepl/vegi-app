@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/addressView.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/addressCard.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/paymentSheet.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/pickUpCard.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
@@ -12,6 +13,11 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
@@ -20,13 +26,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         hasSearchAction: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            addressBuilder(),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.25,
+              child: PageView.builder(
+                scrollDirection: Axis.horizontal,
+                physics: PageScrollPhysics(),
+                controller:
+                    PageController(viewportFraction: 0.9, initialPage: 1),
+                itemBuilder: (context, index) {
+                  return index == 0 ? PickUpCard() : AddressCard();
+                },
+                itemCount: 3,
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 8.0),
+              padding: const EdgeInsets.only(top: 20, bottom: 8.0),
               child: Text(
                 'Payment',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -34,9 +52,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
             Card(),
             Padding(
-              padding: const EdgeInsets.only(
-                bottom: 8.0,
-              ),
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(
                 children: [
                   Text(
@@ -55,9 +71,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                bottom: 8.0,
-              ),
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(
                 children: [
                   Text(
@@ -75,29 +89,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ],
               ),
             ),
-            Divider(),
-            Row(
-              children: [
-                Text(
-                  'Total',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+            Divider(
+              indent: 20.0,
+              endIndent: 20.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: [
+                  Text(
+                    'Total',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-                Spacer(),
-                Text(
-                  '\$3.58',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                  Spacer(),
+                  Text(
+                    '\$3.58',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Spacer(),
             Padding(
-              padding: const EdgeInsets.only(bottom: 15.0),
+              padding: const EdgeInsets.only(bottom: 35.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -113,7 +133,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     fontSize: 18,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.grey[900],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    elevation: 5,
+                    context: context,
+                    builder: (context) => PaymentSheet(),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: 15.0,
@@ -148,75 +180,4 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
-
-  Widget addressBuilder() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: SizedBox(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                child: Image.network(
-                  mapPreviewImage(
-                      latitude: 53.40232093140704,
-                      longitude: -2.9833307421239623),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    color: Colors.white,
-                    height: 55,
-                    width: MediaQuery.of(context).size.width * 0.86,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Peepl Offices, \nL1 4QR'),
-                          ),
-                          Spacer(),
-                          CircleAvatar(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.edit_outlined,
-                              ),
-                              onPressed: () => showBarModalBottomSheet(
-                                isDismissible: true,
-                                enableDrag: false,
-                                useRootNavigator: true,
-                                context: context,
-                                builder: (context) => AddressView(),
-                              ),
-                            ),
-                            backgroundColor: Colors.yellow[400],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-String mapPreviewImage({required double latitude, required double longitude}) {
-  return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=600x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=AIzaSyDaInwx4OK0CQ2G3dEQ5BLq4QU7W3-H6w8&style=feature:|element:|visibility:simplified';
 }
