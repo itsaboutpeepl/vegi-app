@@ -182,3 +182,6 @@ final UserCart userCart = new UserCart(
   cartTotal: 733,
   cartDiscount: 0,
 );
+
+final String loremImpsum =
+    "Your order #XXXXXX has been confirmed and will be delivered by Agile Liverpool within the next hour. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
