@@ -43,78 +43,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 itemCount: 3,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 8.0),
-              child: Text(
-                'Payment',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ),
-            Card(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                children: [
-                  Text(
-                    'Items',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    '\$4.47',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                children: [
-                  Text(
-                    'Discount',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    '-20%',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              indent: 20.0,
-              endIndent: 20.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                children: [
-                  Text(
-                    'Total',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    '\$3.58',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 35.0),
@@ -125,7 +53,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   elevation: 15,
                   onPrimary: Colors.grey[800],
-                  primary: Colors.yellow,
+                  primary: Colors.yellow[300],
                   shadowColor: Colors.yellow,
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   textStyle: TextStyle(
