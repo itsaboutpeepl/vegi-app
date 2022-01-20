@@ -4,6 +4,24 @@ import 'package:vegan_liverpool/features/veganHome/widgets/addressCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/paymentSheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/pickUpCard.dart';
 
+List<String> _listOfTimings = [
+  "6:30",
+  "7:00",
+  "7:30",
+  "8:00",
+  "8:30",
+  "9:00",
+  "9:30",
+  "10:00"
+];
+
+Map<String, int> _discountCodes = {
+  "TEST20": 20,
+  "TEST5": 5,
+  "TEST10": 10,
+  "TEST15": 15,
+};
+
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
 
@@ -12,8 +30,26 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  late PageController _pageController;
+  String _typeOfScheduling = "Delivery";
+  bool _isScheduledDelivery = false;
+  int _value = 1;
+  bool _isDiscountApplied = false;
+  int _discountPercent = 0;
+  late TextEditingController _textController;
+
   @override
   void initState() {
+    _pageController = PageController(viewportFraction: 0.9, initialPage: 1);
+    _pageController.addListener(() {
+      _pageController.page == 0
+          ? _typeOfScheduling = "Pickup"
+          : _typeOfScheduling = "Delivery";
+      setState(() {});
+    });
+
+    _textController = TextEditingController();
+
     super.initState();
   }
 
@@ -35,17 +71,121 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: PageView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: PageScrollPhysics(),
-                controller:
-                    PageController(viewportFraction: 0.9, initialPage: 1),
+                controller: _pageController,
                 itemBuilder: (context, index) {
                   return index == 0 ? PickUpCard() : AddressCard();
                 },
                 itemCount: 3,
               ),
             ),
+            SizedBox(height: 10),
+            Text(
+              "${_typeOfScheduling} Scheduling",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+            ),
+            Row(
+              children: [
+                ChoiceChip(
+                  label: Text(
+                    "ASAP",
+                    style: TextStyle(),
+                  ),
+                  selected: !_isScheduledDelivery,
+                  selectedColor: Colors.yellow[200],
+                  onSelected: (value) {
+                    setState(() {
+                      _isScheduledDelivery = false;
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                ChoiceChip(
+                  label: Text(
+                    "Scheduled",
+                    style: TextStyle(),
+                  ),
+                  selected: _isScheduledDelivery,
+                  selectedColor: Colors.yellow[100],
+                  onSelected: (value) {
+                    setState(() {
+                      _isScheduledDelivery = true;
+                    });
+                  },
+                ),
+              ],
+            ),
+            _isScheduledDelivery
+                ? Wrap(
+                    children: List<Widget>.generate(
+                      _listOfTimings.length,
+                      (int index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: ChoiceChip(
+                            selectedColor: Colors.yellow[100],
+                            avatar: Icon(
+                              Icons.timer,
+                              size: 18,
+                            ),
+                            label: Text(_listOfTimings[index]),
+                            selected: _value == index,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                _value = (selected ? index : null)!;
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  )
+                : SizedBox.shrink(),
             Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Discount Code",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                ),
+                SizedBox(
+                  width: 50,
+                ),
+                _isDiscountApplied
+                    ? Text(
+                        "${_textController.text} Applied, -${_discountPercent.toString()}%",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w800),
+                      )
+                    : Expanded(
+                        child: TextField(
+                          controller: _textController,
+                          onSubmitted: (key) {
+                            if (_discountCodes.containsKey(key)) {
+                              setState(() {
+                                _discountPercent = _discountCodes[key]!;
+                                _isDiscountApplied = true;
+                              });
+                            } else {
+                              _textController.text = "Not Found";
+                            }
+                          },
+                          maxLength: 20,
+                          textInputAction: TextInputAction.done,
+                          textCapitalization: TextCapitalization.characters,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            fillColor: Colors.transparent,
+                            isDense: true,
+                          ),
+                        ),
+                      ),
+              ],
+            ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 35.0),
+              padding: const EdgeInsets.only(top: 20, bottom: 35.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -84,7 +224,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: Row(
                     children: [
                       Text(
-                        'Peepl.Pay',
+                        'Pay',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -92,7 +232,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                       Spacer(),
                       Text(
-                        '\$3.58',
+                        '\£59.65',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
