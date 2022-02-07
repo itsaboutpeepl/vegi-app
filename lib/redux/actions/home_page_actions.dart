@@ -1,7 +1,5 @@
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
-import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -17,41 +15,6 @@ class UpdateRestaurantCategories {
 class UpdateFeaturedRestaurants {
   final List<RestaurantItem> listOfFeaturedRestaurants;
   UpdateFeaturedRestaurants({required this.listOfFeaturedRestaurants});
-}
-
-class UpdateUserCart {
-  final UserCart currentUserCart;
-  UpdateUserCart({required this.currentUserCart});
-}
-
-ThunkAction updateComputeUserCart(OrderItem itemToAdd) {
-  return (Store store) async {
-    try {
-      UserCart currentUserCart = store.state.homePageState.currentUserCart;
-
-      int newSubTotal = currentUserCart.cartSubTotal + itemToAdd.totalItemPrice;
-      int newTax = (newSubTotal * 10) ~/ 100;
-      int newDiscount = (newSubTotal * 5) ~/ 100;
-      int newTotal = (newSubTotal + newTax) - newDiscount;
-
-      UserCart updatedUserCart = new UserCart(
-        cartItems: currentUserCart.cartItems + [itemToAdd],
-        cartSubTotal: newSubTotal,
-        cartTax: newTax,
-        cartDiscount: newDiscount,
-        cartTotal: newTotal,
-      );
-
-      store.dispatch(UpdateUserCart(currentUserCart: updatedUserCart));
-    } catch (e, s) {
-      log.error('ERROR - updateComputeUserCart $e');
-      await Sentry.captureException(
-        e,
-        stackTrace: s,
-        hint: 'ERROR - updateComputeUserCart $e',
-      );
-    }
-  };
 }
 
 ThunkAction fetchRestaurantCategories() {
@@ -122,54 +85,6 @@ ThunkAction fetchMenuItemsForRestaurant() {
     }
   };
 }
-
-// ThunkAction fetchFeaturedVideos() {
-//   return (Store store) async {
-//     try {
-//       List<VideoArticle> videoArticles = await newsService.featuredVideos();
-//       store.dispatch(UpdateFeaturedVideos(featuredVideos: videoArticles));
-//     } catch (e, s) {
-//       log.error('ERROR - fetchFeaturedVideos $e');
-//       await Sentry.captureException(
-//         e,
-//         stackTrace: s,
-//         hint: 'ERROR - fetchFeaturedVideos $e',
-//       );
-//     }
-//   };
-// }
-
-// ThunkAction fetchEventsList() {
-//   return (Store store) async {
-//     try {
-//       List<Events> eventsList = await newsService.eventsList();
-//       store.dispatch(UpdateEventsList(eventsList: eventsList));
-//     } catch (e, s) {
-//       log.error('ERROR - fetchEventsList $e');
-//       await Sentry.captureException(
-//         e,
-//         stackTrace: s,
-//         hint: 'ERROR - fetchEventsList $e',
-//       );
-//     }
-//   };
-// }
-
-// ThunkAction fetchDirectoryList() {
-//   return (Store store) async {
-//     try {
-//       List<Directory> directoryList = await newsService.directoryList();
-//       store.dispatch(UpdateDirectoryList(directoryList: directoryList));
-//     } catch (e, s) {
-//       log.error('ERROR - fetchDirectoryList $e');
-//       await Sentry.captureException(
-//         e,
-//         stackTrace: s,
-//         hint: 'ERROR - fetchDirectoryList $e',
-//       );
-//     }
-//   };
-// }
 
 ThunkAction fetchHomePageData() {
   return (Store store) async {
