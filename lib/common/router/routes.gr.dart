@@ -191,7 +191,7 @@ class RootRouter extends _i11.RootStackRouter {
       return _i11.CustomPage<dynamic>(
           routeData: routeData,
           child: const _i16.OrderConfirmedScreen(),
-          transitionsBuilder: _i11.TransitionsBuilders.slideTop,
+          transitionsBuilder: _i11.TransitionsBuilders.slideBottom,
           opaque: true,
           barrierDismissible: false);
     },
