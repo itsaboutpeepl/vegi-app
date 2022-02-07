@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -97,6 +98,7 @@ class _MyAppState extends State<MyApp> {
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
+                FormBuilderLocalizations.delegate,
               ],
               supportedLocales: I10n.delegate.supportedLocales,
               localeListResolutionCallback: (locales, supportedLocales) {
