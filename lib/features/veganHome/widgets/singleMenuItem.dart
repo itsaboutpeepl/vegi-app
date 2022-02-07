@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
@@ -31,8 +32,8 @@ class _SingleMenuItemState extends State<SingleMenuItem> {
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image(
-                image: NetworkImage(
-                  "https://cdn.pixabay.com/photo/2018/03/21/06/54/food-3245765_1280.jpg",
+                image: CachedNetworkImageProvider(
+                  widget.menuItem.imageURLs[0],
                 ),
                 errorBuilder: (context, error, stackTrace) {
                   print("ERROR:");
