@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/addressCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/paymentSheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/pickUpCard.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 List<String> _listOfTimings = [
   "6:30",
@@ -55,197 +59,207 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        centerText: "",
-        pageTitle: "Checkout",
-        hasSearchAction: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.25,
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: PageScrollPhysics(),
-                controller: _pageController,
-                itemBuilder: (context, index) {
-                  return index == 0 ? PickUpCard() : AddressCard();
-                },
-                itemCount: 3,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "${_typeOfScheduling} Scheduling",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-            ),
-            Row(
+    return StoreConnector<AppState, UserCartViewModel>(
+      converter: UserCartViewModel.fromStore,
+      distinct: true,
+      onInit: (store) {
+        _isDiscountApplied =
+            store.state.cartState.cartDiscountPercent > 0 ? true : false;
+        _discountPercent = store.state.cartState.cartDiscountPercent;
+      },
+      builder: (_, viewmodel) {
+        return Scaffold(
+          appBar: CustomAppBar(
+            centerText: "",
+            pageTitle: "Checkout",
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ChoiceChip(
-                  label: Text(
-                    "ASAP",
-                    style: TextStyle(),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: PageScrollPhysics(),
+                    controller: _pageController,
+                    itemBuilder: (context, index) {
+                      return index == 0 ? PickUpCard() : AddressCard();
+                    },
+                    itemCount: 3,
                   ),
-                  selected: !_isScheduledDelivery,
-                  selectedColor: Colors.yellow[200],
-                  onSelected: (value) {
-                    setState(() {
-                      _isScheduledDelivery = false;
-                    });
-                  },
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                ChoiceChip(
-                  label: Text(
-                    "Scheduled",
-                    style: TextStyle(),
-                  ),
-                  selected: _isScheduledDelivery,
-                  selectedColor: Colors.yellow[100],
-                  onSelected: (value) {
-                    setState(() {
-                      _isScheduledDelivery = true;
-                    });
-                  },
-                ),
-              ],
-            ),
-            _isScheduledDelivery
-                ? Wrap(
-                    children: List<Widget>.generate(
-                      _listOfTimings.length,
-                      (int index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: ChoiceChip(
-                            selectedColor: Colors.yellow[100],
-                            avatar: Icon(
-                              Icons.timer,
-                              size: 18,
-                            ),
-                            label: Text(_listOfTimings[index]),
-                            selected: _value == index,
-                            onSelected: (bool selected) {
-                              setState(() {
-                                _value = (selected ? index : null)!;
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ).toList(),
-                  )
-                : SizedBox.shrink(),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+                SizedBox(height: 10),
                 Text(
-                  "Discount Code",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                  "${_typeOfScheduling} Scheduling",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
                 ),
-                SizedBox(
-                  width: 50,
-                ),
-                _isDiscountApplied
-                    ? Text(
-                        "${_textController.text} Applied, -${_discountPercent.toString()}%",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w800),
-                      )
-                    : Expanded(
-                        child: TextField(
-                          controller: _textController,
-                          onSubmitted: (key) {
-                            if (_discountCodes.containsKey(key)) {
-                              setState(() {
-                                _discountPercent = _discountCodes[key]!;
-                                _isDiscountApplied = true;
-                              });
-                            } else {
-                              _textController.text = "Not Found";
-                            }
-                          },
-                          maxLength: 20,
-                          textInputAction: TextInputAction.done,
-                          textCapitalization: TextCapitalization.characters,
-                          decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
-                            fillColor: Colors.transparent,
-                            isDense: true,
-                          ),
-                        ),
+                Row(
+                  children: [
+                    ChoiceChip(
+                      label: Text(
+                        "ASAP",
+                        style: TextStyle(),
                       ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 35.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 15,
-                  onPrimary: Colors.grey[800],
-                  primary: Colors.yellow[300],
-                  shadowColor: Colors.yellow,
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18,
-                  ),
+                      selected: !_isScheduledDelivery,
+                      selectedColor: Colors.yellow[200],
+                      onSelected: (value) {
+                        setState(() {
+                          _isScheduledDelivery = false;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    ChoiceChip(
+                      label: Text(
+                        "Scheduled",
+                        style: TextStyle(),
+                      ),
+                      selected: _isScheduledDelivery,
+                      selectedColor: Colors.yellow[100],
+                      onSelected: (value) {
+                        setState(() {
+                          _isScheduledDelivery = true;
+                        });
+                      },
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.grey[900],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                _isScheduledDelivery
+                    ? Wrap(
+                        children: List<Widget>.generate(
+                          _listOfTimings.length,
+                          (int index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: ChoiceChip(
+                                selectedColor: Colors.yellow[100],
+                                avatar: Icon(
+                                  Icons.timer,
+                                  size: 18,
+                                ),
+                                label: Text(_listOfTimings[index]),
+                                selected: _value == index,
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    _value = (selected ? index : null)!;
+                                  });
+                                },
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      )
+                    : SizedBox.shrink(),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Discount Code",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    ),
+                    Spacer(),
+                    _isDiscountApplied
+                        ? Text(
+                            "Discount Applied, -${_discountPercent.toString()}%",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w800),
+                          )
+                        : Expanded(
+                            child: TextField(
+                              controller: _textController,
+                              onSubmitted: (key) {
+                                if (_discountCodes.containsKey(key)) {
+                                  setState(() {
+                                    _discountPercent = _discountCodes[key]!;
+                                    _isDiscountApplied = true;
+                                    viewmodel.updateDiscount(_discountPercent);
+                                  });
+                                } else {
+                                  _textController.text = "Not Found";
+                                }
+                              },
+                              maxLength: 20,
+                              textInputAction: TextInputAction.done,
+                              textCapitalization: TextCapitalization.characters,
+                              decoration: InputDecoration(
+                                border: UnderlineInputBorder(),
+                                fillColor: Colors.transparent,
+                                isDense: true,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 35.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 15,
+                      onPrimary: Colors.grey[800],
+                      primary: Colors.yellow[300],
+                      shadowColor: Colors.yellow,
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
                       ),
                     ),
-                    elevation: 5,
-                    context: context,
-                    builder: (context) => PaymentSheet(),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                    right: 15.0,
-                    top: 5.0,
-                    bottom: 5.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Pay',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                    onPressed: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.grey[900],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
+                        elevation: 5,
+                        context: context,
+                        builder: (context) => PaymentSheet(),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 15.0,
+                        right: 15.0,
+                        top: 5.0,
+                        bottom: 5.0,
                       ),
-                      Spacer(),
-                      Text(
-                        '\£59.65',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Pay',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            cFPrice(viewmodel.cartTotal),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
