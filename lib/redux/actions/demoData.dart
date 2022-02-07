@@ -153,6 +153,7 @@ final Map<String, int> demoOptions = {
 };
 
 OrderItem demoOrderItem1 = new OrderItem(
+    internalID: 4324,
     menuItem: bagel3,
     totalItemPrice: 3242,
     itemQuantity: 3,
@@ -163,6 +164,7 @@ OrderItem demoOrderItem1 = new OrderItem(
     });
 
 OrderItem demoOrderItem2 = new OrderItem(
+    internalID: 3414,
     menuItem: bagel1,
     totalItemPrice: 8922,
     itemQuantity: 5,
