@@ -10,6 +10,7 @@ class OrderItem with _$OrderItem {
 
   @JsonSerializable()
   factory OrderItem({
+    required int internalID,
     required MenuItem menuItem,
     required int totalItemPrice,
     required int itemQuantity,

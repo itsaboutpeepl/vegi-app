@@ -22,11 +22,13 @@ class _$OrderItemTearOff {
   const _$OrderItemTearOff();
 
   _OrderItem call(
-      {required MenuItem menuItem,
+      {required int internalID,
+      required MenuItem menuItem,
       required int totalItemPrice,
       required int itemQuantity,
       required Map<String, int> selectedOptions}) {
     return _OrderItem(
+      internalID: internalID,
       menuItem: menuItem,
       totalItemPrice: totalItemPrice,
       itemQuantity: itemQuantity,
@@ -44,6 +46,7 @@ const $OrderItem = _$OrderItemTearOff();
 
 /// @nodoc
 mixin _$OrderItem {
+  int get internalID => throw _privateConstructorUsedError;
   MenuItem get menuItem => throw _privateConstructorUsedError;
   int get totalItemPrice => throw _privateConstructorUsedError;
   int get itemQuantity => throw _privateConstructorUsedError;
@@ -60,7 +63,8 @@ abstract class $OrderItemCopyWith<$Res> {
   factory $OrderItemCopyWith(OrderItem value, $Res Function(OrderItem) then) =
       _$OrderItemCopyWithImpl<$Res>;
   $Res call(
-      {MenuItem menuItem,
+      {int internalID,
+      MenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
       Map<String, int> selectedOptions});
@@ -78,12 +82,17 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? internalID = freezed,
     Object? menuItem = freezed,
     Object? totalItemPrice = freezed,
     Object? itemQuantity = freezed,
     Object? selectedOptions = freezed,
   }) {
     return _then(_value.copyWith(
+      internalID: internalID == freezed
+          ? _value.internalID
+          : internalID // ignore: cast_nullable_to_non_nullable
+              as int,
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
@@ -118,7 +127,8 @@ abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
       __$OrderItemCopyWithImpl<$Res>;
   @override
   $Res call(
-      {MenuItem menuItem,
+      {int internalID,
+      MenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
       Map<String, int> selectedOptions});
@@ -138,12 +148,17 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? internalID = freezed,
     Object? menuItem = freezed,
     Object? totalItemPrice = freezed,
     Object? itemQuantity = freezed,
     Object? selectedOptions = freezed,
   }) {
     return _then(_OrderItem(
+      internalID: internalID == freezed
+          ? _value.internalID
+          : internalID // ignore: cast_nullable_to_non_nullable
+              as int,
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
@@ -169,7 +184,8 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_OrderItem extends _OrderItem {
   _$_OrderItem(
-      {required this.menuItem,
+      {required this.internalID,
+      required this.menuItem,
       required this.totalItemPrice,
       required this.itemQuantity,
       required this.selectedOptions})
@@ -178,6 +194,8 @@ class _$_OrderItem extends _OrderItem {
   factory _$_OrderItem.fromJson(Map<String, dynamic> json) =>
       _$$_OrderItemFromJson(json);
 
+  @override
+  final int internalID;
   @override
   final MenuItem menuItem;
   @override
@@ -189,13 +207,16 @@ class _$_OrderItem extends _OrderItem {
 
   @override
   String toString() {
-    return 'OrderItem(menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, selectedOptions: $selectedOptions)';
+    return 'OrderItem(internalID: $internalID, menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, selectedOptions: $selectedOptions)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _OrderItem &&
+            (identical(other.internalID, internalID) ||
+                const DeepCollectionEquality()
+                    .equals(other.internalID, internalID)) &&
             (identical(other.menuItem, menuItem) ||
                 const DeepCollectionEquality()
                     .equals(other.menuItem, menuItem)) &&
@@ -213,6 +234,7 @@ class _$_OrderItem extends _OrderItem {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(internalID) ^
       const DeepCollectionEquality().hash(menuItem) ^
       const DeepCollectionEquality().hash(totalItemPrice) ^
       const DeepCollectionEquality().hash(itemQuantity) ^
@@ -231,7 +253,8 @@ class _$_OrderItem extends _OrderItem {
 
 abstract class _OrderItem extends OrderItem {
   factory _OrderItem(
-      {required MenuItem menuItem,
+      {required int internalID,
+      required MenuItem menuItem,
       required int totalItemPrice,
       required int itemQuantity,
       required Map<String, int> selectedOptions}) = _$_OrderItem;
@@ -240,6 +263,8 @@ abstract class _OrderItem extends OrderItem {
   factory _OrderItem.fromJson(Map<String, dynamic> json) =
       _$_OrderItem.fromJson;
 
+  @override
+  int get internalID => throw _privateConstructorUsedError;
   @override
   MenuItem get menuItem => throw _privateConstructorUsedError;
   @override
