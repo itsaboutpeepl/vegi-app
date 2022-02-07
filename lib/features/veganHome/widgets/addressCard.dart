@@ -62,6 +62,11 @@ class _AddressCardState extends State<AddressCard> {
                               Icons.edit_outlined,
                             ),
                             onPressed: () => showBarModalBottomSheet(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(10),
+                                ),
+                              ),
                               isDismissible: true,
                               enableDrag: false,
                               useRootNavigator: true,
