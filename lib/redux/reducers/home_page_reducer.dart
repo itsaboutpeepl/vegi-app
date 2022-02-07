@@ -8,7 +8,6 @@ final HomePageReducers = combineReducers<HomePageState>(
         _getFeaturedRestaurants),
     TypedReducer<HomePageState, UpdateRestaurantCategories>(
         _getRestaurantCategories),
-    TypedReducer<HomePageState, UpdateUserCart>(_getUserCart),
   ],
 );
 
@@ -23,8 +22,4 @@ HomePageState _getRestaurantCategories(
     HomePageState state, UpdateRestaurantCategories action) {
   return state.copyWith(
       restaurantCategories: action.listOfRestaurantCategories);
-}
-
-HomePageState _getUserCart(HomePageState state, UpdateUserCart action) {
-  return state.copyWith(currentUserCart: action.currentUserCart);
 }
