@@ -34,9 +34,7 @@ class VegiEatsService {
               costLevel: "Cost Level",
               deliveryTime: "Delivery Time",
               rating: "Rating",
-              address: element["pickupAddressPostCode"] +
-                  ", " +
-                  element["pickupAddressLineTwo"],
+              address: "Address",
               listOfMenuItems: []),
         );
       },
