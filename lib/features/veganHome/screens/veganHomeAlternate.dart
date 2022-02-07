@@ -8,7 +8,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/categoryList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/veganSliverAppBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 class VeganHomeScreenAlternate extends StatefulWidget {
   const VeganHomeScreenAlternate({
