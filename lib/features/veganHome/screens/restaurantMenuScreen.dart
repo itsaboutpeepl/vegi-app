@@ -26,7 +26,6 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
       appBar: CustomAppBar(
         centerText: "Liverpool, L17 0AB",
         pageTitle: "DaCimino",
-        hasSearchAction: true,
       ),
       floatingActionButton: OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
