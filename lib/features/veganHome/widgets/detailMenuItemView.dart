@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -8,7 +9,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 class DetailMenuItemView extends StatefulWidget {
   const DetailMenuItemView({Key? key, required this.menuItem})
@@ -152,22 +153,24 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                                             .elementAt(index),
                                         isPence: true),
                                   ),
-                                  onTap: () => setState(() {
-                                    _selectedExtras[index] =
-                                        !_selectedExtras[index];
+                                  onTap: () => setState(
+                                    () {
+                                      _selectedExtras[index] =
+                                          !_selectedExtras[index];
 
-                                    _selectedExtrasMap.containsKey(widget
-                                            .menuItem.options.keys
-                                            .elementAt(index))
-                                        ? _selectedExtrasMap.remove(widget
-                                            .menuItem.options.keys
-                                            .elementAt(index))
-                                        : _selectedExtrasMap[widget
-                                                .menuItem.options.keys
-                                                .elementAt(index)] =
-                                            widget.menuItem.options.values
-                                                .elementAt(index);
-                                  }),
+                                      _selectedExtrasMap.containsKey(widget
+                                              .menuItem.options.keys
+                                              .elementAt(index))
+                                          ? _selectedExtrasMap.remove(widget
+                                              .menuItem.options.keys
+                                              .elementAt(index))
+                                          : _selectedExtrasMap[widget
+                                                  .menuItem.options.keys
+                                                  .elementAt(index)] =
+                                              widget.menuItem.options.values
+                                                  .elementAt(index);
+                                    },
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -201,8 +204,11 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                             Spacer(),
                             ElevatedButton(
                               onPressed: () => {
-                                viewmodel.updateUserCart(
+                                viewmodel.addOrderItem(
                                   OrderItem(
+                                      internalID: Random(DateTime.now()
+                                              .millisecondsSinceEpoch)
+                                          .nextInt(10000),
                                       menuItem: widget.menuItem,
                                       totalItemPrice: _calculateItemTotal(),
                                       itemQuantity: _selectedQuantity,
