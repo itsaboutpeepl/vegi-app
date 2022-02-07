@@ -5,7 +5,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
       {Key? key,
       required this.centerText,
       required this.pageTitle,
-      required this.hasSearchAction})
+      this.otherAction})
       : preferredSize = Size.fromHeight(115),
         super(key: key);
 
@@ -14,7 +14,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   final String centerText;
   final String pageTitle;
-  final bool hasSearchAction;
+  final Widget? otherAction;
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -61,21 +61,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   ),
                 ),
                 Spacer(),
-                widget.hasSearchAction
+                widget.otherAction != null
                     ? Padding(
                         //  TODO: Use MediaQuery
                         padding: const EdgeInsets.only(left: 0),
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          child: IconButton(
-                            icon: Icon(Icons.search),
-                            color: Colors.black,
-                            onPressed: () {},
-                          ),
-                        ),
+                        child: Container(height: 40, child: widget.otherAction),
                       )
-                    : SizedBox.shrink()
+                    : SizedBox.shrink(),
               ],
             ),
             Padding(
