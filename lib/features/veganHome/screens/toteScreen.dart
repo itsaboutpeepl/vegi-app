@@ -7,7 +7,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 class ToteScreen extends StatefulWidget {
   const ToteScreen({Key? key}) : super(key: key);
@@ -21,19 +21,25 @@ class _ToteScreenState extends State<ToteScreen> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, UserCartViewModel>(
       converter: UserCartViewModel.fromStore,
+      distinct: true,
       builder: (_, viewmodel) {
         return Scaffold(
           appBar: CustomAppBar(
             centerText: "",
             pageTitle: "Cart",
-            hasSearchAction: false,
+            otherAction: IconButton(
+              onPressed: () => viewmodel.clearCart(),
+              icon: ImageIcon(
+                AssetImage("assets/images/clear-shopping-tote.png"),
+              ),
+            ),
           ),
-          body: viewmodel.currentUserCart.cartItems.isNotEmpty
+          body: viewmodel.cartItems.isNotEmpty
               ? SingleChildScrollView(
                   child: Column(
-                    children: viewmodel.currentUserCart.cartItems
+                    children: viewmodel.cartItems
                             .map(
-                              (element) => singleCartItem(element),
+                              (element) => singleCartItem(element, viewmodel),
                             )
                             .toList() +
                         [
@@ -49,11 +55,11 @@ class _ToteScreenState extends State<ToteScreen> {
                           ),
                           totalsPriceItemTile(
                             "Subtotal",
-                            cFPrice(viewmodel.currentUserCart.cartSubTotal),
+                            cFPrice(viewmodel.cartSubTotal),
                           ),
                           totalsPriceItemTile(
                             "Tax",
-                            cFPrice(viewmodel.currentUserCart.cartTax),
+                            cFPrice(viewmodel.cartTax),
                           ),
                           Divider(
                             height: 20,
@@ -64,7 +70,7 @@ class _ToteScreenState extends State<ToteScreen> {
                           ),
                           totalsPriceItemTile(
                             "Total",
-                            cFPrice(viewmodel.currentUserCart.cartTotal),
+                            cFPrice(viewmodel.cartTotal),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -149,7 +155,7 @@ class _ToteScreenState extends State<ToteScreen> {
     );
   }
 
-  Widget singleCartItem(OrderItem orderItem) {
+  Widget singleCartItem(OrderItem orderItem, UserCartViewModel viewmodel) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
@@ -193,7 +199,7 @@ class _ToteScreenState extends State<ToteScreen> {
                             fontWeight: FontWeight.w900,
                           ),
                         ),
-                        quantityButtons(orderItem.itemQuantity),
+                        quantityButtons(orderItem, viewmodel),
                       ],
                     ),
                     SizedBox(
@@ -221,9 +227,88 @@ class _ToteScreenState extends State<ToteScreen> {
       ),
     );
   }
+
+  // Widget quantityButtons() {
+  //   return Row(
+  //     children: [
+  //       Container(
+  //         height: 25,
+  //         width: 25,
+  //         decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           borderRadius: BorderRadius.horizontal(
+  //             left: Radius.circular(5),
+  //           ),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.grey.withOpacity(0.5),
+  //               spreadRadius: 1,
+  //               blurRadius: 7,
+  //               offset: Offset(0, 3), // changes position of shadow
+  //             ),
+  //           ],
+  //         ),
+  //         child: IconButton(
+  //           onPressed: () => setState(() {
+  //             _selectedQuantity <= 0 ? null : _selectedQuantity--;
+  //           }),
+  //           icon: Icon(Icons.remove),
+  //         ),
+  //       ),
+  //       Container(
+  //         height: 25,
+  //         width: 25,
+  //         child: Center(
+  //           child: Text(
+  //             _selectedQuantity.toString(),
+  //             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+  //           ),
+  //         ),
+  //         decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           border: Border.symmetric(
+  //             vertical: BorderSide(color: Colors.grey),
+  //           ),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.grey.withOpacity(0.5),
+  //               spreadRadius: 1,
+  //               blurRadius: 7,
+  //               offset: Offset(3, 3), // changes position of shadow
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       Container(
+  //         height: 25,
+  //         width: 25,
+  //         decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           borderRadius: BorderRadius.horizontal(
+  //             right: Radius.circular(5),
+  //           ),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.grey.withOpacity(0.5),
+  //               spreadRadius: 1,
+  //               blurRadius: 7,
+  //               offset: Offset(3, 0), // changes position of shadow
+  //             ),
+  //           ],
+  //         ),
+  //         child: IconButton(
+  //           onPressed: () => setState(() {
+  //             _selectedQuantity++;
+  //           }),
+  //           icon: Icon(Icons.add),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }
 
-Widget quantityButtons(int quantity) {
+Widget quantityButtons(OrderItem orderItem, UserCartViewModel viewmodel) {
   return Row(
     children: [
       Container(
@@ -244,17 +329,27 @@ Widget quantityButtons(int quantity) {
           ],
         ),
         child: Center(
-            child: Icon(
-          Icons.remove,
-          size: 15,
-        )),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              OrderItem newOrderItem = orderItem.copyWith(
+                itemQuantity: orderItem.itemQuantity - 1,
+                totalItemPrice:
+                    orderItem.totalItemPrice - orderItem.menuItem.price,
+              );
+
+              viewmodel.updateOrderItem(newOrderItem);
+            },
+            icon: Icon(Icons.remove, size: 15),
+          ),
+        ),
       ),
       Container(
         height: 25,
         width: 35,
         child: Center(
           child: Text(
-            quantity.toString(),
+            orderItem.itemQuantity.toString(),
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900),
           ),
         ),
@@ -291,12 +386,60 @@ Widget quantityButtons(int quantity) {
           ],
         ),
         child: Center(
-          child: Icon(
-            Icons.add,
-            size: 15,
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              OrderItem newOrderItem = orderItem.copyWith(
+                itemQuantity: orderItem.itemQuantity + 1,
+                totalItemPrice:
+                    orderItem.totalItemPrice + orderItem.menuItem.price,
+              );
+
+              viewmodel.updateOrderItem(newOrderItem);
+            },
+            icon: Icon(
+              Icons.add,
+              size: 15,
+            ),
           ),
         ),
       ),
     ],
   );
 }
+
+
+// GestureDetector(
+//         onTap: () {
+//           OrderItem newOrderItem = orderItem.copyWith(
+//             itemQuantity: orderItem.itemQuantity + 1,
+//             totalItemPrice: orderItem.totalItemPrice + orderItem.menuItem.price,
+//           );
+
+//           viewmodel.updateOrderItem(newOrderItem);
+//         },
+//         child: Container(
+//           height: 25,
+//           width: 25,
+//           decoration: BoxDecoration(
+//             color: Colors.yellow,
+//             borderRadius: BorderRadius.horizontal(
+//               right: Radius.circular(5),
+//             ),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Colors.grey.withOpacity(0.5),
+//                 spreadRadius: 1,
+//                 blurRadius: 7,
+//                 offset: Offset(3, 0), // changes position of shadow
+//               ),
+//             ],
+//           ),
+//           child: Center(
+//             child: Icon(
+//               Icons.add,
+//               size: 15,
+//             ),
+//           ),
+//         ),
+//       ),
