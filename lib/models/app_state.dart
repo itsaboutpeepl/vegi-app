@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/models/home_page_state.dart';
-import 'package:vegan_liverpool/models/news_state.dart';
 import 'package:vegan_liverpool/models/swap_state.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
@@ -23,7 +22,6 @@ class AppState with _$AppState {
     @ProWalletStateConverter() required ProWalletState proWalletState,
     @SwapStateConverter() required SwapState swapState,
     @HomePageStateConverter() required HomePageState homePageState,
-    @NewsStateConverter() required NewsState newsState,
     @UserCartStateConverter() required UserCartState cartState,
   }) = _AppState;
 
@@ -34,7 +32,6 @@ class AppState with _$AppState {
       proWalletState: ProWalletState.initial(),
       swapState: SwapState.initial(),
       homePageState: HomePageState.initial(),
-      newsState: NewsState.initial(),
       cartState: UserCartState.initial(),
     );
   }
