@@ -5,7 +5,6 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
 import 'package:vegan_liverpool/services/apis/explorer.dart';
 import 'package:vegan_liverpool/services/apis/fuseswap.dart';
-import 'package:vegan_liverpool/services/apis/news.dart';
 import 'package:vegan_liverpool/services/apis/vegiEats.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 import 'package:phone_number/phone_number.dart';
@@ -27,8 +26,6 @@ final Explorer ethereumExplorerApi = getIt<Explorer>(
 final API api = getIt<API>();
 
 final FuseSwapService fuseSwapService = getIt<FuseSwapService>();
-
-final NewsService newsService = getIt<NewsService>();
 
 final VegiEatsService vegiEatsService = getIt<VegiEatsService>();
 
