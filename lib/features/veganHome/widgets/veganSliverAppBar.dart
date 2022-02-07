@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/NavDrawer.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/veganHome.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 class VeganSliverAppBar extends StatelessWidget {
   const VeganSliverAppBar({
