@@ -64,7 +64,8 @@ class _$UserStateTearOff {
       @JsonKey(ignore: true)
           List<Contact> contacts = const [],
       @JsonKey(ignore: true)
-          PhoneAuthCredential? credentials = null}) {
+          PhoneAuthCredential? credentials = null,
+      List<DeliveryAddresses> listOfDeliveryAddresses = const []}) {
     return _UserState(
       installedAt: installedAt,
       isContactsSynced: isContactsSynced,
@@ -100,6 +101,7 @@ class _$UserStateTearOff {
       locale: locale,
       contacts: contacts,
       credentials: credentials,
+      listOfDeliveryAddresses: listOfDeliveryAddresses,
     );
   }
 
@@ -156,6 +158,8 @@ mixin _$UserState {
   List<Contact> get contacts => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
+  List<DeliveryAddresses> get listOfDeliveryAddresses =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -210,7 +214,8 @@ abstract class $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true)
           List<Contact> contacts,
       @JsonKey(ignore: true)
-          PhoneAuthCredential? credentials});
+          PhoneAuthCredential? credentials,
+      List<DeliveryAddresses> listOfDeliveryAddresses});
 }
 
 /// @nodoc
@@ -257,6 +262,7 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
     Object? locale = freezed,
     Object? contacts = freezed,
     Object? credentials = freezed,
+    Object? listOfDeliveryAddresses = freezed,
   }) {
     return _then(_value.copyWith(
       installedAt: installedAt == freezed
@@ -395,6 +401,10 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
           ? _value.credentials
           : credentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
+      listOfDeliveryAddresses: listOfDeliveryAddresses == freezed
+          ? _value.listOfDeliveryAddresses
+          : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
+              as List<DeliveryAddresses>,
     ));
   }
 }
@@ -448,7 +458,8 @@ abstract class _$UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true)
           List<Contact> contacts,
       @JsonKey(ignore: true)
-          PhoneAuthCredential? credentials});
+          PhoneAuthCredential? credentials,
+      List<DeliveryAddresses> listOfDeliveryAddresses});
 }
 
 /// @nodoc
@@ -496,6 +507,7 @@ class __$UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
     Object? locale = freezed,
     Object? contacts = freezed,
     Object? credentials = freezed,
+    Object? listOfDeliveryAddresses = freezed,
   }) {
     return _then(_UserState(
       installedAt: installedAt == freezed
@@ -634,6 +646,10 @@ class __$UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
           ? _value.credentials
           : credentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
+      listOfDeliveryAddresses: listOfDeliveryAddresses == freezed
+          ? _value.listOfDeliveryAddresses
+          : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
+              as List<DeliveryAddresses>,
     ));
   }
 }
@@ -685,7 +701,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       @JsonKey(ignore: true)
           this.contacts = const [],
       @JsonKey(ignore: true)
-          this.credentials = null})
+          this.credentials = null,
+      this.listOfDeliveryAddresses = const []})
       : super._();
 
   factory _$_UserState.fromJson(Map<String, dynamic> json) =>
@@ -792,10 +809,13 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey(ignore: true)
   final PhoneAuthCredential? credentials;
+  @JsonKey(defaultValue: const [])
+  @override
+  final List<DeliveryAddresses> listOfDeliveryAddresses;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials)';
+    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses)';
   }
 
   @override
@@ -838,7 +858,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('authType', authType))
       ..add(DiagnosticsProperty('locale', locale))
       ..add(DiagnosticsProperty('contacts', contacts))
-      ..add(DiagnosticsProperty('credentials', credentials));
+      ..add(DiagnosticsProperty('credentials', credentials))
+      ..add(DiagnosticsProperty(
+          'listOfDeliveryAddresses', listOfDeliveryAddresses));
   }
 
   @override
@@ -919,7 +941,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             (identical(other.authType, authType) || const DeepCollectionEquality().equals(other.authType, authType)) &&
             (identical(other.locale, locale) || const DeepCollectionEquality().equals(other.locale, locale)) &&
             (identical(other.contacts, contacts) || const DeepCollectionEquality().equals(other.contacts, contacts)) &&
-            (identical(other.credentials, credentials) || const DeepCollectionEquality().equals(other.credentials, credentials)));
+            (identical(other.credentials, credentials) || const DeepCollectionEquality().equals(other.credentials, credentials)) &&
+            (identical(other.listOfDeliveryAddresses, listOfDeliveryAddresses) || const DeepCollectionEquality().equals(other.listOfDeliveryAddresses, listOfDeliveryAddresses)));
   }
 
   @override
@@ -958,7 +981,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(authType) ^
       const DeepCollectionEquality().hash(locale) ^
       const DeepCollectionEquality().hash(contacts) ^
-      const DeepCollectionEquality().hash(credentials);
+      const DeepCollectionEquality().hash(credentials) ^
+      const DeepCollectionEquality().hash(listOfDeliveryAddresses);
 
   @JsonKey(ignore: true)
   @override
@@ -1015,7 +1039,8 @@ abstract class _UserState extends UserState {
       @JsonKey(ignore: true)
           List<Contact> contacts,
       @JsonKey(ignore: true)
-          PhoneAuthCredential? credentials}) = _$_UserState;
+          PhoneAuthCredential? credentials,
+      List<DeliveryAddresses> listOfDeliveryAddresses}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
@@ -1098,6 +1123,9 @@ abstract class _UserState extends UserState {
   @override
   @JsonKey(ignore: true)
   PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
+  @override
+  List<DeliveryAddresses> get listOfDeliveryAddresses =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserStateCopyWith<_UserState> get copyWith =>

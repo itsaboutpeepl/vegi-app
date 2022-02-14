@@ -5,6 +5,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 
 part 'user_state.freezed.dart';
 part 'user_state.g.dart';
@@ -22,7 +23,6 @@ Map<String, dynamic> localeToJson(Locale? locale) => locale == null
     ? {'languageCode': 'en', 'countryCode': 'US'}
     : {'languageCode': locale.languageCode, 'countryCode': locale.countryCode};
 
-@immutable
 @freezed
 class UserState with _$UserState {
   const UserState._();
@@ -67,6 +67,7 @@ class UserState with _$UserState {
         Locale? locale,
     @JsonKey(ignore: true) @Default([]) List<Contact> contacts,
     @Default(null) @JsonKey(ignore: true) PhoneAuthCredential? credentials,
+    @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
   }) = _UserState;
 
   factory UserState.initial() => UserState(
@@ -81,6 +82,7 @@ class UserState with _$UserState {
         receiveBackupDialogShowed: false,
         homeBackupDialogShowed: false,
         currency: 'usd',
+        listOfDeliveryAddresses: [],
       );
 
   factory UserState.fromJson(dynamic json) => _$UserStateFromJson(json);

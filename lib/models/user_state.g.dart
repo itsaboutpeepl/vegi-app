@@ -56,6 +56,11 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       locale: json['locale'] == null
           ? null
           : localeFromJson(json['locale'] as Map<String, dynamic>?),
+      listOfDeliveryAddresses:
+          (json['listOfDeliveryAddresses'] as List<dynamic>?)
+                  ?.map((e) => DeliveryAddresses.fromJson(e))
+                  .toList() ??
+              [],
     );
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
@@ -88,4 +93,6 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'currency': instance.currency,
       'authType': EnumToString.convertToString(instance.authType),
       'locale': localeToJson(instance.locale),
+      'listOfDeliveryAddresses':
+          instance.listOfDeliveryAddresses.map((e) => e.toJson()).toList(),
     };
