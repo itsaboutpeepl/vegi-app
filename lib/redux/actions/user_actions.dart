@@ -630,7 +630,9 @@ ThunkAction addNewDeliveryAddress(DeliveryAddresses newAddress) {
       return element.internalID == newAddress.internalID;
     });
 
-    listOfAddresses.insert(index, newAddress);
+    index == -1
+        ? listOfAddresses.add(newAddress)
+        : listOfAddresses.insert(index, newAddress);
 
     store.dispatch(AddDeliveryAddress(listOfAddresses));
   };
