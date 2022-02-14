@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/addressCard.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/newAddressCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/pickUpCard.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/deliveryAddressVM.dart';
@@ -25,7 +26,6 @@ class _AddressListState extends State<AddressList> {
     return StoreConnector<AppState, DeliveryAddressesVM>(
       distinct: true,
       builder: ((context, vm) {
-        print("hello list  ${vm.listOfDeliveryAddresses}");
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.25,
           child: PageView.builder(
@@ -35,9 +35,12 @@ class _AddressListState extends State<AddressList> {
             itemBuilder: (context, index) {
               return index == 0
                   ? PickUpCard()
-                  : AddressCard(address: vm.listOfDeliveryAddresses[index - 1]);
+                  : index == vm.listOfDeliveryAddresses.length + 1
+                      ? NewAddressCard()
+                      : AddressCard(
+                          address: vm.listOfDeliveryAddresses[index - 1]);
             },
-            itemCount: vm.listOfDeliveryAddresses.length + 1,
+            itemCount: vm.listOfDeliveryAddresses.length + 2,
           ),
         );
       }),
