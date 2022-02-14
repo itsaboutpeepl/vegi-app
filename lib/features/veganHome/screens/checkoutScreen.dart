@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/AddressList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/addressCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/paymentSheet.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/pickUpCard.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
@@ -78,16 +77,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  child: PageView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: PageScrollPhysics(),
-                    controller: _pageController,
-                    itemBuilder: (context, index) {
-                      return index == 0 ? PickUpCard() : AddressCard();
-                    },
-                    itemCount: 3,
+                AddressList(pageController: _pageController),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Slide left for pickup",
+                    style: TextStyle(color: Colors.grey[400]),
                   ),
                 ),
                 SizedBox(height: 10),
