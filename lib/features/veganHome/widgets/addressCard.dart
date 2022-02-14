@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/addressView.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/editAddressView.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 
 class AddressCard extends StatefulWidget {
-  const AddressCard({Key? key}) : super(key: key);
+  const AddressCard({Key? key, required this.address}) : super(key: key);
 
+  final DeliveryAddresses address;
   @override
   _AddressCardState createState() => _AddressCardState();
 }
@@ -30,8 +32,8 @@ class _AddressCardState extends State<AddressCard> {
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: CachedNetworkImage(
                 imageUrl: _mapPreviewImage(
-                    latitude: 53.40232093140704,
-                    longitude: -2.9833307421239623),
+                    latitude: widget.address.latitude,
+                    longitude: widget.address.longitude),
                 fit: BoxFit.cover,
               ),
             ),
@@ -53,7 +55,8 @@ class _AddressCardState extends State<AddressCard> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('Peepl Offices, \nL1 4QR'),
+                          child: Text(
+                              '${widget.address.houseNumber}, \n${widget.address.postalCode}'),
                         ),
                         Spacer(),
                         CircleAvatar(
@@ -71,7 +74,9 @@ class _AddressCardState extends State<AddressCard> {
                               enableDrag: false,
                               useRootNavigator: true,
                               context: context,
-                              builder: (context) => AddressView(),
+                              builder: (context) => AddressView(
+                                existingAddress: widget.address,
+                              ),
                             ),
                           ),
                           backgroundColor: Colors.yellow[400],
