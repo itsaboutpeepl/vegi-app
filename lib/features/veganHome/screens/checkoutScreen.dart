@@ -154,27 +154,45 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Discount Code",
+                      _isDiscountApplied
+                          ? "Discount Applied: -${_discountPercent.toString()}%"
+                          : "Discount Code",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
                     ),
-                    Spacer(),
+                    SizedBox(
+                      width: 50,
+                    ),
                     _isDiscountApplied
-                        ? Text(
-                            "Discount Applied, -${_discountPercent.toString()}%",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w800),
+                        ? TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _discountPercent = 0;
+                                _isDiscountApplied = false;
+                                viewmodel.updateDiscount(0);
+                              });
+                            },
+                            child: Text(
+                              "Remove",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 18),
+                            ),
                           )
                         : Expanded(
                             child: TextField(
                               controller: _textController,
                               onSubmitted: (key) {
                                 if (_discountCodes.containsKey(key)) {
-                                  setState(() {
-                                    _discountPercent = _discountCodes[key]!;
-                                    _isDiscountApplied = true;
-                                    viewmodel.updateDiscount(_discountPercent);
-                                  });
+                                  setState(
+                                    () {
+                                      _discountPercent = _discountCodes[key]!;
+                                      _isDiscountApplied = true;
+                                      viewmodel
+                                          .updateDiscount(_discountPercent);
+                                    },
+                                  );
                                 } else {
                                   _textController.text = "Not Found";
                                 }
@@ -183,6 +201,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               textInputAction: TextInputAction.done,
                               textCapitalization: TextCapitalization.characters,
                               decoration: InputDecoration(
+                                counter: SizedBox.shrink(),
                                 border: UnderlineInputBorder(),
                                 fillColor: Colors.transparent,
                                 isDense: true,
