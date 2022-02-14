@@ -32,6 +32,7 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed),
   TypedReducer<UserState, UpdateCurrency>(_updateCurrency),
   TypedReducer<UserState, UpdateLocale>(_updateLocale),
+  TypedReducer<UserState, AddDeliveryAddress>(_addDeliveryAddress),
 ]);
 
 UserState _updateLocale(UserState state, UpdateLocale action) {
@@ -189,4 +190,8 @@ UserState _setIsVerifyRequest(UserState state, SetIsVerifyRequest action) {
 
 UserState _deviceIdSuccess(UserState state, DeviceIdSuccess action) {
   return state.copyWith(identifier: action.identifier);
+}
+
+UserState _addDeliveryAddress(UserState state, AddDeliveryAddress action) {
+  return state.copyWith(listOfDeliveryAddresses: action.listOfAddresses);
 }
