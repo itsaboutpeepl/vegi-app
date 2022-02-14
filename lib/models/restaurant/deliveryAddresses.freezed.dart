@@ -22,13 +22,15 @@ class _$DeliveryAddressesTearOff {
   const _$DeliveryAddressesTearOff();
 
   _DeliveryAddresses call(
-      {required String houseNumber,
+      {required int internalID,
+      required String houseNumber,
       required String buildingName,
       required String streetName,
       required String postalCode,
       required double latitude,
       required double longitude}) {
     return _DeliveryAddresses(
+      internalID: internalID,
       houseNumber: houseNumber,
       buildingName: buildingName,
       streetName: streetName,
@@ -48,6 +50,7 @@ const $DeliveryAddresses = _$DeliveryAddressesTearOff();
 
 /// @nodoc
 mixin _$DeliveryAddresses {
+  int get internalID => throw _privateConstructorUsedError;
   String get houseNumber => throw _privateConstructorUsedError;
   String get buildingName => throw _privateConstructorUsedError;
   String get streetName => throw _privateConstructorUsedError;
@@ -67,7 +70,8 @@ abstract class $DeliveryAddressesCopyWith<$Res> {
           DeliveryAddresses value, $Res Function(DeliveryAddresses) then) =
       _$DeliveryAddressesCopyWithImpl<$Res>;
   $Res call(
-      {String houseNumber,
+      {int internalID,
+      String houseNumber,
       String buildingName,
       String streetName,
       String postalCode,
@@ -86,6 +90,7 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? internalID = freezed,
     Object? houseNumber = freezed,
     Object? buildingName = freezed,
     Object? streetName = freezed,
@@ -94,6 +99,10 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
     Object? longitude = freezed,
   }) {
     return _then(_value.copyWith(
+      internalID: internalID == freezed
+          ? _value.internalID
+          : internalID // ignore: cast_nullable_to_non_nullable
+              as int,
       houseNumber: houseNumber == freezed
           ? _value.houseNumber
           : houseNumber // ignore: cast_nullable_to_non_nullable
@@ -130,7 +139,8 @@ abstract class _$DeliveryAddressesCopyWith<$Res>
       __$DeliveryAddressesCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String houseNumber,
+      {int internalID,
+      String houseNumber,
       String buildingName,
       String streetName,
       String postalCode,
@@ -151,6 +161,7 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? internalID = freezed,
     Object? houseNumber = freezed,
     Object? buildingName = freezed,
     Object? streetName = freezed,
@@ -159,6 +170,10 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
     Object? longitude = freezed,
   }) {
     return _then(_DeliveryAddresses(
+      internalID: internalID == freezed
+          ? _value.internalID
+          : internalID // ignore: cast_nullable_to_non_nullable
+              as int,
       houseNumber: houseNumber == freezed
           ? _value.houseNumber
           : houseNumber // ignore: cast_nullable_to_non_nullable
@@ -192,7 +207,8 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DeliveryAddresses extends _DeliveryAddresses {
   _$_DeliveryAddresses(
-      {required this.houseNumber,
+      {required this.internalID,
+      required this.houseNumber,
       required this.buildingName,
       required this.streetName,
       required this.postalCode,
@@ -203,6 +219,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   factory _$_DeliveryAddresses.fromJson(Map<String, dynamic> json) =>
       _$$_DeliveryAddressesFromJson(json);
 
+  @override
+  final int internalID;
   @override
   final String houseNumber;
   @override
@@ -218,13 +236,16 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
 
   @override
   String toString() {
-    return 'DeliveryAddresses(houseNumber: $houseNumber, buildingName: $buildingName, streetName: $streetName, postalCode: $postalCode, latitude: $latitude, longitude: $longitude)';
+    return 'DeliveryAddresses(internalID: $internalID, houseNumber: $houseNumber, buildingName: $buildingName, streetName: $streetName, postalCode: $postalCode, latitude: $latitude, longitude: $longitude)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _DeliveryAddresses &&
+            (identical(other.internalID, internalID) ||
+                const DeepCollectionEquality()
+                    .equals(other.internalID, internalID)) &&
             (identical(other.houseNumber, houseNumber) ||
                 const DeepCollectionEquality()
                     .equals(other.houseNumber, houseNumber)) &&
@@ -248,6 +269,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(internalID) ^
       const DeepCollectionEquality().hash(houseNumber) ^
       const DeepCollectionEquality().hash(buildingName) ^
       const DeepCollectionEquality().hash(streetName) ^
@@ -268,7 +290,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
 
 abstract class _DeliveryAddresses extends DeliveryAddresses {
   factory _DeliveryAddresses(
-      {required String houseNumber,
+      {required int internalID,
+      required String houseNumber,
       required String buildingName,
       required String streetName,
       required String postalCode,
@@ -279,6 +302,8 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
   factory _DeliveryAddresses.fromJson(Map<String, dynamic> json) =
       _$_DeliveryAddresses.fromJson;
 
+  @override
+  int get internalID => throw _privateConstructorUsedError;
   @override
   String get houseNumber => throw _privateConstructorUsedError;
   @override

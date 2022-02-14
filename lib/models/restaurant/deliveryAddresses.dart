@@ -9,6 +9,7 @@ class DeliveryAddresses with _$DeliveryAddresses {
 
   @JsonSerializable()
   factory DeliveryAddresses({
+    required int internalID,
     required String houseNumber,
     required String buildingName,
     required String streetName,
