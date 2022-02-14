@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/variables.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/pro_mode_wallet_actions.dart';
@@ -170,6 +171,11 @@ class SetIsVerifyRequest {
 class DeviceIdSuccess {
   final String identifier;
   DeviceIdSuccess(this.identifier);
+}
+
+class AddDeliveryAddress {
+  final List<DeliveryAddresses> listOfAddresses;
+  AddDeliveryAddress(this.listOfAddresses);
 }
 
 ThunkAction loginHandler(
@@ -609,5 +615,23 @@ ThunkAction updateUserAvatarCall(ImageSource source) {
     } catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
     }
+  };
+}
+
+ThunkAction addNewDeliveryAddress(DeliveryAddresses newAddress) {
+  return (Store store) {
+    List<DeliveryAddresses> listOfAddresses =
+        store.state.userState.listOfDeliveryAddresses;
+
+    int index = listOfAddresses
+        .indexWhere((element) => element.internalID == newAddress.internalID);
+
+    listOfAddresses.removeWhere((element) {
+      return element.internalID == newAddress.internalID;
+    });
+
+    listOfAddresses.insert(index, newAddress);
+
+    store.dispatch(AddDeliveryAddress(listOfAddresses));
   };
 }
