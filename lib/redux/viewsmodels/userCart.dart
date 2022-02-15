@@ -3,6 +3,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class UserCartViewModel extends Equatable {
   final List<OrderItem> cartItems;
@@ -12,6 +13,8 @@ class UserCartViewModel extends Equatable {
   final int cartDiscountPercent;
   final int cartDiscountComputed;
   final String avatarUrl;
+  final String pplBalance;
+  final String gbpXBalance;
   final Function(OrderItem itemToAdd) addOrderItem;
   final Function(int discount) updateDiscount;
   final Function(OrderItem itemToUpdate) updateOrderItem;
@@ -25,6 +28,8 @@ class UserCartViewModel extends Equatable {
     required this.cartDiscountPercent,
     required this.cartDiscountComputed,
     required this.avatarUrl,
+    required this.pplBalance,
+    required this.gbpXBalance,
     required this.addOrderItem,
     required this.updateDiscount,
     required this.updateOrderItem,
@@ -40,6 +45,10 @@ class UserCartViewModel extends Equatable {
       cartDiscountComputed: store.state.cartState.cartDiscountComputed,
       cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       avatarUrl: store.state.userState.avatarUrl,
+      pplBalance:
+          store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
+      gbpXBalance:
+          store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       addOrderItem: (itemToAdd) {
         store.dispatch(updateCartItems(itemToAdd));
       },
