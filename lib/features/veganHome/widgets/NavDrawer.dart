@@ -1,14 +1,10 @@
-import 'dart:ui';
-
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/balance.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/header.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
