@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/NavDrawer.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
@@ -39,7 +36,7 @@ class VeganSliverAppBar extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Material(
                         borderRadius: BorderRadius.circular(40),
-                        elevation: 5,
+                        elevation: 3,
                         child: GestureDetector(
                           onTap: () {
                             Scaffold.of(context).openDrawer();
@@ -63,24 +60,50 @@ class VeganSliverAppBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right: 8.0),
-                    //   child: ClipRRect(
-                    //     borderRadius: BorderRadius.circular(10),
-                    //     child: Container(
-                    //       width: 40,
-                    //       height: 40,
-                    //       color: Colors.grey[200],
-                    //       child: IconButton(
-                    //         icon: Icon(Icons.menu),
-                    //         color: Colors.black,
-                    //         onPressed: () {
-
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              text: viewModel.gbpXBalance,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w900,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: " GBPx",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text.rich(
+                            TextSpan(
+                              text: viewModel.pplBalance,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w900,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: " PPL",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
