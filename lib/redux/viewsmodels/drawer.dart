@@ -8,8 +8,6 @@
 
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
-import 'package:vegan_liverpool/models/community/community.dart';
-import 'package:vegan_liverpool/models/plugins/plugins.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import '../../models/app_state.dart';
@@ -22,9 +20,9 @@ class DrawerViewModel extends Equatable {
   // final bool? isBackup;
 
   final Function() firstName;
-  final pplBalance;
-  final gbpxBalance;
-  final avatarUrl;
+  final String pplBalance;
+  final String gbpxBalance;
+  final String avatarUrl;
 
   DrawerViewModel({
     // this.avatarUrl,
