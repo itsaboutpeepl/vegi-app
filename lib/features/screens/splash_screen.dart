@@ -49,15 +49,23 @@ class _SplashScreenState extends State<SplashScreen> {
       }
       if (BiometricAuth.faceID == userState.authType ||
           BiometricAuth.touchID == userState.authType) {
-        await _showLocalAuthPopup(
-          BiometricUtils.getBiometricString(
-            context,
-            userState.authType,
-          ),
+        // Using FaceID for login authentication
+        // await _showLocalAuthPopup(
+        //   BiometricUtils.getBiometricString(
+        //     context,
+        //     userState.authType,
+        //   ),
+        // );
+        Segment.track(
+          eventName: 'Session Start: Authentication success',
         );
+        context.router.replaceAll([MainScreen()]);
         widget.onLoginResult?.call(true);
       } else if (userState.authType == BiometricAuth.pincode) {
-        context.router.replaceAll([PinCodeScreen()]);
+        Segment.track(
+          eventName: 'Session Start: Authentication success',
+        );
+        context.router.replaceAll([MainScreen()]);
         widget.onLoginResult?.call(true);
       } else {
         context.router.replaceAll([MainScreen()]);
