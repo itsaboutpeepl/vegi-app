@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHomeAlternate.dart';
+import 'package:vegan_liverpool/features/account/screens/profile.dart';
 
 // const veganHomeTab = AutoRoute(
 //   path: 'veganHome',
@@ -53,5 +54,10 @@ const veganHomeAltTab = AutoRoute(
       guards: [AuthGuard],
       transitionsBuilder: TransitionsBuilders.slideBottom,
     ),
+    AutoRoute(
+      page: ProfileScreen,
+      name: 'ProfileScreen',
+      guards: [AuthGuard],
+    )
   ],
 );
