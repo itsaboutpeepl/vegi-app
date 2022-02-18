@@ -38,7 +38,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
         toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         title: Column(
-          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -50,17 +49,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   },
                   icon: Icon(Icons.arrow_back),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50),
-                  child: Text(
-                    widget.centerText,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
+                Spacer(
+                  flex: 2,
                 ),
-                Spacer(),
+                Text(
+                  widget.centerText,
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
+                Spacer(
+                  flex: 3,
+                ),
                 widget.otherAction != null
                     ? Padding(
                         //  TODO: Use MediaQuery
