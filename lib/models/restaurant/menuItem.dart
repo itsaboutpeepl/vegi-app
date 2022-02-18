@@ -16,6 +16,7 @@ class MenuItem with _$MenuItem {
     required int price,
     required String description,
     required Map<String, int> options,
+    required bool isFeatured,
   }) = _MenuItem;
 
   factory MenuItem.fromJson(dynamic json) => _$MenuItemFromJson(json);

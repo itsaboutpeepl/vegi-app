@@ -15,6 +15,7 @@ _$_MenuItem _$$_MenuItemFromJson(Map<String, dynamic> json) => _$_MenuItem(
       price: json['price'] as int,
       description: json['description'] as String,
       options: Map<String, int>.from(json['options'] as Map),
+      isFeatured: json['isFeatured'] as bool,
     );
 
 Map<String, dynamic> _$$_MenuItemToJson(_$_MenuItem instance) =>
@@ -26,4 +27,5 @@ Map<String, dynamic> _$$_MenuItemToJson(_$_MenuItem instance) =>
       'price': instance.price,
       'description': instance.description,
       'options': instance.options,
+      'isFeatured': instance.isFeatured,
     };
