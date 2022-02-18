@@ -58,6 +58,7 @@ RestaurantCategory restaurantCategory2 = new RestaurantCategory(
 );
 
 final MenuItem bagel1 = new MenuItem(
+  isFeatured: true,
   menuID: "menuID1",
   name: "Blueberry Bagel",
   imageURLs: [
@@ -85,6 +86,7 @@ final MenuItem bagel1 = new MenuItem(
 );
 
 final MenuItem bagel2 = new MenuItem(
+  isFeatured: true,
   menuID: "menuID2",
   name: "Poppy Seed Bagel",
   imageURLs: [
@@ -112,6 +114,7 @@ final MenuItem bagel2 = new MenuItem(
 );
 
 final MenuItem bagel3 = new MenuItem(
+  isFeatured: true,
   menuID: "menuID3",
   name: "Everything Bagel",
   imageURLs: [
