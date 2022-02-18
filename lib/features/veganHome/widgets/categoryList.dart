@@ -24,7 +24,7 @@ class _CategoryListState extends State<CategoryList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 20, left: 20),
+                padding: const EdgeInsets.only(top: 0, left: 20),
                 child: Text(
                   "Cravings",
                   style: TextStyle(
