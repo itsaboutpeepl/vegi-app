@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
@@ -54,6 +56,7 @@ class VegiEatsService {
       (element) {
         menuItems.add(
           MenuItem(
+              isFeatured: Random().nextBool(),
               menuID: element["id"].toString(),
               name: element['name'],
               imageURLs: [
