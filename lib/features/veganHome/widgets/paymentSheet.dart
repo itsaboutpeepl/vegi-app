@@ -124,7 +124,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
                       endIndent: 5,
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
                           "329.4",
@@ -137,13 +137,12 @@ class _PaymentSheetState extends State<PaymentSheet> {
                         SizedBox(
                           height: 2,
                         ),
-                        Text(
-                          "PPL",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        Image.asset(
+                          "assets/images/avatar-ppl-red.png",
+                          width: 35,
+                        ),
+                        SizedBox(
+                          height: 15,
                         ),
                       ],
                     ),
@@ -166,7 +165,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
                         ),
                       ),
                       Text(
-                        "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)}, PPL ${(_pplSliderValue / 100).toStringAsFixed(2)}",
+                        "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)}, PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}",
                         style: TextStyle(
                           color: Colors.grey[300],
                           fontSize: 25,
@@ -176,13 +175,38 @@ class _PaymentSheetState extends State<PaymentSheet> {
                       SizedBox(
                         height: 3,
                       ),
-                      Text(
-                        "Total Amount is ${cFPrice(viewmodel.cartTotal)}",
-                        style: TextStyle(
-                          color: Colors.grey[300],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w200,
-                        ),
+                      // Text(
+                      //   "Total Amount is ${cFPrice(viewmodel.cartTotal)}",
+                      //   style: TextStyle(
+                      //     color: Colors.grey[300],
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.w200,
+                      //   ),
+                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Total ${cFPrice(viewmodel.cartTotal)} | ",
+                            style: TextStyle(
+                              color: Colors.grey[300],
+                              fontSize: 16,
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                          Text(
+                            "Earn ${(((_amountToBePaid / 100) - (_pplSliderValue / 1000)) * 5).toStringAsFixed(2)} ",
+                            style: TextStyle(
+                              color: Colors.grey[300],
+                              fontSize: 16,
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                          Image.asset(
+                            "assets/images/avatar-ppl-red.png",
+                            width: 25,
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 10,
@@ -204,9 +228,10 @@ class _PaymentSheetState extends State<PaymentSheet> {
                         ),
                         child: Slider(
                           min: 0.0,
-                          max: _amountToBePaid * 10 < 32940
-                              ? _amountToBePaid * 10
-                              : 32940,
+                          max: _amountToBePaid * 10 <
+                                  3294 //if amount to be paid is less than ppl balance then the max is amount to be paid * 10 otherwise max is wallet balance
+                              ? _amountToBePaid * 100
+                              : 3294,
                           value: _pplSliderValue,
                           divisions: 100,
                           onChanged: (value) {
