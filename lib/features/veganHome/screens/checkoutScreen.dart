@@ -4,10 +4,12 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/AddressList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/paymentSheet.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/tipCard.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 List<String> _listOfTimings = [
+  "ASAP",
   "6:30",
   "7:00",
   "7:30",
@@ -36,7 +38,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   late PageController _pageController;
   String _typeOfScheduling = "Delivery";
   bool _isScheduledDelivery = false;
-  int _value = 1;
+  int _value = 0;
   bool _isDiscountApplied = false;
   int _discountPercent = 0;
   late TextEditingController _textController;
@@ -86,132 +88,217 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 SizedBox(height: 10),
-                Text(
-                  "${_typeOfScheduling} Scheduling",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-                ),
-                Row(
-                  children: [
-                    ChoiceChip(
-                      label: Text(
-                        "ASAP",
-                        style: TextStyle(),
+                Card(
+                  color: Color(0xFFFAFAFA),
+                  margin: EdgeInsets.only(bottom: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Schedule Order",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w800),
+                            ),
+                            Spacer(),
+                            // Transform.scale(
+                            //   scale: 1.3,
+                            //   child: Checkbox(
+                            //     visualDensity: VisualDensity.standard,
+                            //     side: BorderSide(color: Colors.grey[800]!),
+                            //     shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(10)),
+                            //     checkColor: Colors.grey[800],
+                            //     activeColor: Colors.yellow[300],
+                            //     value: _isScheduledDelivery,
+                            //     onChanged: (value) {
+                            //       setState(() {
+                            //         _isScheduledDelivery = value!;
+                            //       });
+                            //     },
+                            //   ),
+                            // )
+                          ],
+                        ),
                       ),
-                      selected: !_isScheduledDelivery,
-                      selectedColor: Colors.yellow[200],
-                      onSelected: (value) {
-                        setState(() {
-                          _isScheduledDelivery = false;
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    ChoiceChip(
-                      label: Text(
-                        "Scheduled",
-                        style: TextStyle(),
-                      ),
-                      selected: _isScheduledDelivery,
-                      selectedColor: Colors.yellow[100],
-                      onSelected: (value) {
-                        setState(() {
-                          _isScheduledDelivery = true;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                _isScheduledDelivery
-                    ? Wrap(
-                        children: List<Widget>.generate(
-                          _listOfTimings.length,
-                          (int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: ChoiceChip(
-                                selectedColor: Colors.yellow[100],
-                                avatar: Icon(
-                                  Icons.timer,
-                                  size: 18,
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 50,
+                        padding: EdgeInsets.only(bottom: 15, left: 10),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _listOfTimings.length,
+                          itemBuilder: ((context, index) => Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: ChoiceChip(
+                                  selectedColor: Colors.yellow[100],
+                                  avatar: Icon(
+                                    Icons.timer,
+                                    size: 18,
+                                  ),
+                                  label: Text(_listOfTimings[index]),
+                                  selected: _value == index,
+                                  onSelected: (bool selected) {
+                                    setState(() {
+                                      _value = (selected ? index : null)!;
+                                    });
+                                  },
                                 ),
-                                label: Text(_listOfTimings[index]),
-                                selected: _value == index,
-                                onSelected: (bool selected) {
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Card(
+                  color: Color(0xFFFAFAFA),
+                  margin: EdgeInsets.only(bottom: 15),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Add a Tip?",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Support your delivery partner and make their day! 100% of your tip will be transferred to them!",
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w100),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TipCard(
+                              emoji: "😒",
+                              tipAmount: "£1",
+                            ),
+                            TipCard(
+                              emoji: "🤨",
+                              tipAmount: "£2",
+                            ),
+                            TipCard(
+                              emoji: "😐",
+                              tipAmount: "£3",
+                            ),
+                            TipCard(
+                              emoji: "😏",
+                              tipAmount: "£4",
+                            ),
+                            TipCard(
+                              emoji: "🥵",
+                              tipAmount: "£5",
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  color: Color(0xFFFAFAFA),
+                  margin: EdgeInsets.only(bottom: 15),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _isDiscountApplied
+                              ? "Discount Applied: -${_discountPercent.toString()}%"
+                              : "Discount Code",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w800),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _textController,
+                                maxLength: 20,
+                                textInputAction: TextInputAction.done,
+                                textCapitalization:
+                                    TextCapitalization.characters,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(bottom: 5),
+                                  counter: SizedBox.shrink(),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2.0,
+                                      color: Colors.grey[300]!,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2.0,
+                                      color: Colors.yellow[300]!,
+                                    ),
+                                  ),
+                                  fillColor: Colors.transparent,
+                                  isDense: true,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: TextButton(
+                                onPressed: () {
                                   setState(() {
-                                    _value = (selected ? index : null)!;
+                                    if (_isDiscountApplied) {
+                                      _discountPercent = 0;
+                                      _isDiscountApplied = false;
+                                      viewmodel.updateDiscount(0);
+                                      _textController.clear();
+                                    } else {
+                                      if (_discountCodes
+                                          .containsKey(_textController.text)) {
+                                        _discountPercent = _discountCodes[
+                                            _textController.text]!;
+                                        _isDiscountApplied = true;
+                                        viewmodel
+                                            .updateDiscount(_discountPercent);
+                                      } else {
+                                        _textController.text = "Not Found";
+                                      }
+                                    }
                                   });
                                 },
-                              ),
-                            );
-                          },
-                        ).toList(),
-                      )
-                    : SizedBox.shrink(),
-                Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _isDiscountApplied
-                          ? "Discount Applied: -${_discountPercent.toString()}%"
-                          : "Discount Code",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-                    ),
-                    SizedBox(
-                      width: 50,
-                    ),
-                    _isDiscountApplied
-                        ? TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _discountPercent = 0;
-                                _isDiscountApplied = false;
-                                viewmodel.updateDiscount(0);
-                              });
-                            },
-                            child: Text(
-                              "Remove",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18),
-                            ),
-                          )
-                        : Expanded(
-                            child: TextField(
-                              controller: _textController,
-                              onSubmitted: (key) {
-                                if (_discountCodes.containsKey(key)) {
-                                  setState(
-                                    () {
-                                      _discountPercent = _discountCodes[key]!;
-                                      _isDiscountApplied = true;
-                                      viewmodel
-                                          .updateDiscount(_discountPercent);
-                                    },
-                                  );
-                                } else {
-                                  _textController.text = "Not Found";
-                                }
-                              },
-                              maxLength: 20,
-                              textInputAction: TextInputAction.done,
-                              textCapitalization: TextCapitalization.characters,
-                              decoration: InputDecoration(
-                                counter: SizedBox.shrink(),
-                                border: UnderlineInputBorder(),
-                                fillColor: Colors.transparent,
-                                isDense: true,
+                                child: Text(
+                                    _isDiscountApplied ? "Remove" : "Apply"),
+                                style: TextButton.styleFrom(
+                                  primary: _isDiscountApplied
+                                      ? Colors.red
+                                      : Colors.grey[800],
+                                  textStyle: TextStyle(
+                                    fontFamily: "Europa",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  padding: EdgeInsets.zero,
+                                  visualDensity: VisualDensity.compact,
+                                ),
                               ),
                             ),
-                          ),
-                  ],
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
+                Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 35.0),
+                  padding: const EdgeInsets.only(top: 10, bottom: 15.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
