@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/editAddressView.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 
@@ -13,11 +14,6 @@ class AddressCard extends StatefulWidget {
 }
 
 class _AddressCardState extends State<AddressCard> {
-  String _mapPreviewImage(
-      {required double latitude, required double longitude}) {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=800x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=AIzaSyDaInwx4OK0CQ2G3dEQ5BLq4QU7W3-H6w8&style=feature:|element:|visibility:simplified';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +27,7 @@ class _AddressCardState extends State<AddressCard> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: CachedNetworkImage(
-                imageUrl: _mapPreviewImage(
+                imageUrl: mapPreviewImage(
                     latitude: widget.address.latitude,
                     longitude: widget.address.longitude),
                 fit: BoxFit.cover,
