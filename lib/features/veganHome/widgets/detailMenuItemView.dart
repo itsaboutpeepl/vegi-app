@@ -92,6 +92,13 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                               bottom: -1,
                               child: Container(
                                 decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey[800]!,
+                                        offset: Offset(0, -5),
+                                        blurRadius: 10,
+                                      )
+                                    ],
                                     borderRadius: BorderRadius.vertical(
                                         top: Radius.circular(100)),
                                     color: Colors.white),
@@ -109,17 +116,26 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                               Text(
                                 widget.menuItem.name,
                                 style: TextStyle(
-                                    fontSize: 28.0,
+                                    fontSize: 22.0,
                                     fontWeight: FontWeight.w900),
                               ),
-                              Text(
-                                widget.menuItem.category,
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w100),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    cFPrice(_calculateItemTotal()),
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w900),
+                                  ),
+                                ],
                               ),
                               SizedBox(
-                                height: 25,
+                                height: 10,
                               ),
                               Text(
                                 parseHtmlString(widget.menuItem.description),
@@ -148,10 +164,8 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                                   title: Text(widget.menuItem.options.keys
                                       .elementAt(index)),
                                   trailing: Text(
-                                    cFPrice(
-                                        widget.menuItem.options.values
-                                            .elementAt(index),
-                                        isPence: true),
+                                    cFPrice(widget.menuItem.options.values
+                                        .elementAt(index)),
                                   ),
                                   onTap: () => setState(
                                     () {
@@ -240,7 +254,8 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                         height: 90,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.black,
+                          // #E7352D
+                          color: Color(0xFF313131),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
@@ -251,16 +266,49 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                             ),
                           ],
                         ),
-                        child: Center(
-                          child: Text(
-                            cFPrice(_calculateItemTotal(), isPence: true),
-                            style: TextStyle(
-                              color: Colors.yellow[300],
-                              fontWeight: FontWeight.w900,
-                              fontSize: 22,
-                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              // Text(
+                              //   "",
+                              //   style: TextStyle(color: Colors.white),
+                              // ),
+                              Text(
+                                _calculateItemReward().toString(),
+                                style: TextStyle(
+                                  color: Color(0xFFf4f2eb),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 23,
+                                  fontFamily: "Indie Flower",
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Image.asset(
+                                "assets/images/avatar-ppl-cream.png",
+                                width: 35,
+                              ),
+                            ],
                           ),
                         ),
+                        // child: Center(
+
+                        //   child: Image.asset(
+                        //     "assets/images/avatar-ppl-red.png",
+                        //     width: 30,
+                        //   ),
+                        //   // child: Text(
+                        //   //   _calculateItemReward().toString(),
+                        //   //   style: TextStyle(
+                        //   //     color: Color(0xFFE7352D),
+                        //   //     fontWeight: FontWeight.w900,
+                        //   //     fontSize: 22,
+                        //   //   ),
+                        //   // ),
+                        // ),
                       ),
                     )
                   ],
@@ -269,6 +317,10 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
             ],
           );
         });
+  }
+
+  int _calculateItemReward() {
+    return (_calculateItemTotal() * 5 ~/ 100);
   }
 
   int _calculateItemTotal() {
@@ -305,7 +357,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
           ),
           child: IconButton(
             onPressed: () => setState(() {
-              _selectedQuantity <= 0 ? null : _selectedQuantity--;
+              _selectedQuantity <= 1 ? null : _selectedQuantity--;
             }),
             icon: Icon(Icons.remove),
           ),
