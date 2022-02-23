@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/MenuStickyHeader.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurantMenuAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/singleMenuItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/singleFeaturedMenuItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/singleRegularMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
     as ts;
@@ -18,13 +22,32 @@ class RestaurantMenuScreen extends StatefulWidget {
 }
 
 class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
+  List<MenuItem> _featuredList = [];
+  List<MenuItem> _regularList = [];
+
+  @override
+  void initState() {
+    // widget.menuList.forEach((element) {
+    //   element.isFeatured
+    //       ? _featuredList.add(element)
+    //       : _regularList.add(element);
+    // });
+
+    //TODO: Remove Eventually
+    for (var i = 0; i < 2; i++) {
+      _featuredList.add(widget.menuList.first);
+    }
+
+    for (var i = 0; i < 4; i++) {
+      _regularList.add(widget.menuList.first);
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: RestaurantMenuAppBar(
-        centerText: "Liverpool, L17 0AB",
-        pageTitle: "DaCimino",
-      ),
+      appBar: RestaurantMenuAppBar(),
       floatingActionButton: OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
         openBuilder: (BuildContext context, VoidCallback _) {
@@ -53,61 +76,29 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
       body: CustomScrollView(
         slivers: [
           SliverStickyHeader(
-            header: Container(
-              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.yellow[100],
-              ),
-              height: 40.0,
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Featured Items',
-                style: TextStyle(
-                    color: Colors.grey[850],
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900),
-              ),
-            ),
+            header: MenuStickyHeader(title: "Featured Items"),
             sliver: SliverPadding(
               padding: const EdgeInsets.only(top: 10, bottom: 20),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) => SingleMenuItem(
-                    menuItem: widget.menuList[0],
-                  ),
-                  childCount: 5,
+                  (context, index) =>
+                      SingleFeaturedMenuItem(menuItem: _featuredList[index]),
+                  childCount: _featuredList.length,
                 ),
               ),
             ),
           ),
           SliverStickyHeader(
-            header: Container(
-              margin: EdgeInsets.only(left: 20, right: 20, bottom: 0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.yellow[100],
-              ),
-              height: 60.0,
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Regular Items',
-                style: TextStyle(
-                    color: Colors.grey[850],
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900),
-              ),
+            header: MenuStickyHeader(
+              title: "Regular Items",
             ),
             sliver: SliverPadding(
               padding: const EdgeInsets.only(top: 10, bottom: 20),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) => SingleMenuItem(
-                    menuItem: widget.menuList[0],
-                  ),
-                  childCount: 5,
+                  (context, index) =>
+                      SingleRegularMenuItem(menuItem: _regularList[index]),
+                  childCount: _regularList.length,
                 ),
               ),
             ),
