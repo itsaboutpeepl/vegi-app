@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 
 class PickUpCard extends StatefulWidget {
   const PickUpCard({Key? key}) : super(key: key);
@@ -9,11 +10,6 @@ class PickUpCard extends StatefulWidget {
 }
 
 class _PickUpCardState extends State<PickUpCard> {
-  String _mapPreviewImage(
-      {required double latitude, required double longitude}) {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=800x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=AIzaSyDaInwx4OK0CQ2G3dEQ5BLq4QU7W3-H6w8&style=feature:|element:|visibility:simplified';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +23,7 @@ class _PickUpCardState extends State<PickUpCard> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: CachedNetworkImage(
-                imageUrl: _mapPreviewImage(
+                imageUrl: mapPreviewImage(
                     latitude: 53.40232093140704,
                     longitude: -2.9833307421239623),
                 fit: BoxFit.cover,
