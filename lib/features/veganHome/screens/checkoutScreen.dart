@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/AddressList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/paymentSheet.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/tipCard.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
@@ -298,23 +299,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 15.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 15,
-                      onPrimary: Colors.grey[800],
-                      primary: Colors.yellow[300],
-                      shadowColor: Colors.yellow,
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18,
-                      ),
-                    ),
-                    onPressed: () {
+                  padding: const EdgeInsets.only(top: 10, bottom: 25.0),
+                  child: ShimmerButton(
+                    buttonAction: () {
                       showModalBottomSheet(
                         backgroundColor: Colors.grey[900],
                         shape: RoundedRectangleBorder(
@@ -327,35 +314,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         builder: (context) => PaymentSheet(),
                       );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 15.0,
-                        right: 15.0,
-                        top: 5.0,
-                        bottom: 5.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Pay',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    buttonContent: Row(
+                      children: [
+                        Text(
+                          'Pay',
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20.0,
                           ),
-                          Spacer(),
-                          Text(
-                            cFPrice(viewmodel.cartTotal),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        ),
+                        Spacer(),
+                        Text(
+                          cFPrice(viewmodel.cartTotal),
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20.0,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
