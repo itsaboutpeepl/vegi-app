@@ -22,10 +22,12 @@ class AddressView extends StatefulWidget {
 }
 
 class _AddressViewState extends State<AddressView> {
-  Completer<GoogleMapController> _controller = Completer();
-  static const LatLng _center = const LatLng(45.521563, -122.677433);
-  Marker? userMarker;
+  Completer<GoogleMapController> _controllerCompleter = Completer();
+  LatLng _center = LatLng(45.521563, -122.677433);
+  Marker? _userMarker;
   bool _isExistingAddress = false;
+
+  late GoogleMapController _mapController;
 
   @override
   void initState() {
@@ -34,15 +36,23 @@ class _AddressViewState extends State<AddressView> {
         : _isExistingAddress = true;
 
     _isExistingAddress
-        ? _addMarker(LatLng(widget.existingAddress!.latitude,
-            widget.existingAddress!.longitude))
+        ? _addMarker(
+            LatLng(widget.existingAddress!.latitude,
+                widget.existingAddress!.longitude),
+            isAutoFill: false)
+        : null;
+
+    _isExistingAddress
+        ? _center = LatLng(
+            widget.existingAddress!.latitude, widget.existingAddress!.longitude)
         : null;
 
     super.initState();
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
+    _controllerCompleter.complete(controller);
+    _mapController = controller;
   }
 
   @override
@@ -59,8 +69,8 @@ class _AddressViewState extends State<AddressView> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                   child: GoogleMap(
-                    onTap: (position) => _addMarker(position),
-                    markers: userMarker != null ? {userMarker!} : {},
+                    onTap: (position) => _addMarker(position, isAutoFill: true),
+                    markers: _userMarker != null ? {_userMarker!} : {},
                     myLocationButtonEnabled: true,
                     myLocationEnabled: true,
                     onMapCreated: _onMapCreated,
@@ -79,41 +89,18 @@ class _AddressViewState extends State<AddressView> {
                 style: TextStyle(color: Colors.grey[400]),
               ),
               SizedBox(
-                height: 10,
-              ),
-              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.45,
                 child: FormBuilder(
                   key: AppKeys.addressFormKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: AutovalidateMode.disabled,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FormBuilderTextField(
                             initialValue: _isExistingAddress
                                 ? widget.existingAddress!.houseNumber
-                                : null,
-                            name: 'houseNumber',
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.yellow[300]!, width: 3.0),
-                              ),
-                              fillColor: Colors.transparent,
-                              labelText: 'House No./Flat No.',
-                            ),
-                            onChanged: (value) {},
-                            // valueTransformer: (text) => num.tryParse(text),
-                            keyboardType: TextInputType.streetAddress,
-                            validator: FormBuilderValidators.required(context)),
-                        FormBuilderTextField(
-                            initialValue: _isExistingAddress
-                                ? widget.existingAddress!.buildingName
                                 : null,
                             name: 'buildingName',
                             decoration: InputDecoration(
@@ -125,15 +112,15 @@ class _AddressViewState extends State<AddressView> {
                                     color: Colors.yellow[300]!, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
-                              labelText: 'Building/Premise Name',
+                              labelText: 'Building',
                             ),
                             onChanged: (value) {},
                             // valueTransformer: (text) => num.tryParse(text),
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.streetAddress,
                             validator: FormBuilderValidators.required(context)),
                         FormBuilderTextField(
                             initialValue: _isExistingAddress
-                                ? widget.existingAddress!.streetName
+                                ? widget.existingAddress!.buildingName
                                 : null,
                             name: 'streetName',
                             decoration: InputDecoration(
@@ -153,9 +140,9 @@ class _AddressViewState extends State<AddressView> {
                             validator: FormBuilderValidators.required(context)),
                         FormBuilderTextField(
                             initialValue: _isExistingAddress
-                                ? widget.existingAddress!.postalCode
+                                ? widget.existingAddress!.townCity
                                 : null,
-                            name: 'area',
+                            name: 'townCity',
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey),
@@ -165,14 +152,32 @@ class _AddressViewState extends State<AddressView> {
                                     color: Colors.yellow[300]!, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
-                              labelText: 'Area/Postal Code',
+                              labelText: 'Town or City',
                             ),
                             onChanged: (value) {},
                             // valueTransformer: (text) => num.tryParse(text),
                             keyboardType: TextInputType.text,
                             validator: FormBuilderValidators.required(context)),
+                        FormBuilderTextField(
+                            initialValue: _isExistingAddress
+                                ? widget.existingAddress!.postalCode
+                                : null,
+                            name: 'postalCode',
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.yellow[300]!, width: 3.0),
+                              ),
+                              fillColor: Colors.transparent,
+                              labelText: 'Postal Code',
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: FormBuilderValidators.required(context)),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -186,8 +191,13 @@ class _AddressViewState extends State<AddressView> {
                           onPressed: () {
                             if (AppKeys.addressFormKey.currentState!
                                 .saveAndValidate()) {
-                              print(AppKeys.addressFormKey.currentState!.value);
-                              vm.addDeliveryAddress(saveDeliveryAddress());
+                              Future.wait(
+                                [_autoFillMapLocation()],
+                              ).then(
+                                (value) => vm.addDeliveryAddress(
+                                  saveDeliveryAddress(position: value[0]),
+                                ),
+                              );
                               Navigator.pop(context);
                             }
                           },
@@ -205,32 +215,56 @@ class _AddressViewState extends State<AddressView> {
     );
   }
 
-  DeliveryAddresses saveDeliveryAddress() {
+  Future<LatLng?> _autoFillMapLocation() async {
+    print("Hello from auto fill map location");
+    String streetName =
+        AppKeys.addressFormKey.currentState!.fields["streetName"]!.value;
+    String townCity =
+        AppKeys.addressFormKey.currentState!.fields["townCity"]!.value;
+    String postalCode =
+        AppKeys.addressFormKey.currentState!.fields["postalCode"]!.value;
+
+    String address = "$streetName, $townCity, $postalCode";
+
+    List<Location> possibleLocations =
+        await locationFromAddress(address).onError((error, stackTrace) => []);
+
+    if (possibleLocations.isNotEmpty) {
+      return LatLng(
+          possibleLocations[0].latitude, possibleLocations[0].longitude);
+    }
+    return null;
+  }
+
+  DeliveryAddresses saveDeliveryAddress({LatLng? position}) {
     Map<String, dynamic> formValue = AppKeys.addressFormKey.currentState!.value;
 
     return DeliveryAddresses(
       internalID: _isExistingAddress
           ? widget.existingAddress!.internalID
           : Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
-      houseNumber: formValue['houseNumber'],
-      buildingName: formValue['buildingName'],
-      streetName: formValue['streetName'],
-      postalCode: formValue['area'],
-      latitude: formValue['latitude'],
-      longitude: formValue['longitude'],
+      houseNumber: formValue['buildingName'],
+      buildingName: formValue['streetName'],
+      townCity: formValue['townCity'],
+      postalCode: formValue['postalCode'],
+      latitude:
+          position != null ? position.latitude : formValue['latitude'] ?? 0.0,
+      longitude:
+          position != null ? position.longitude : formValue['longitude'] ?? 0.0,
     );
   }
 
-  void _addMarker(LatLng position) {
+  void _addMarker(LatLng position, {required bool isAutoFill}) {
+    print("MARKER POSITION" + position.toString());
     setState(
       () {
-        userMarker = Marker(
+        _userMarker = Marker(
           markerId: MarkerId("userLocation"),
           position: position,
         );
       },
     );
-    _autoFillAddress(position.latitude, position.longitude);
+    isAutoFill ? _autoFillAddress(position.latitude, position.longitude) : null;
   }
 
   void _autoFillAddress(double latitude, double longitude) async {
@@ -245,11 +279,11 @@ class _AddressViewState extends State<AddressView> {
     AppKeys.addressFormKey.currentState!
         .setInternalFieldValue("latitude", latitude, isSetState: false);
 
-    AppKeys.addressFormKey.currentState!.fields["buildingName"]!
-        .didChange(placeMark.name);
     AppKeys.addressFormKey.currentState!.fields["streetName"]!
+        .didChange(placeMark.name);
+    AppKeys.addressFormKey.currentState!.fields["townCity"]!
         .didChange(placeMark.locality ?? "");
-    AppKeys.addressFormKey.currentState!.fields["area"]!
+    AppKeys.addressFormKey.currentState!.fields["postalCode"]!
         .didChange(placeMark.postalCode ?? "");
 
     // String name = placeMark.name ?? "name";
