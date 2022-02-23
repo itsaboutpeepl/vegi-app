@@ -115,6 +115,10 @@ flutter:
     - assets/images/
     - assets/fonts/
   fonts:
+    - family: Indie Flower
+      fonts:
+        - asset: assets/fonts/Righteous-Regular.ttf
+          weight: 500
     - family: Europa
       fonts:
         - asset: assets/fonts/europa-regular-webfont.ttf
