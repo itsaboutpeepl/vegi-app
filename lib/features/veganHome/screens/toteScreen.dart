@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/SingleCartItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
@@ -70,34 +71,28 @@ class _ToteScreenState extends State<ToteScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 20),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                context.router.push(CheckoutScreen());
-                              },
-                              child: Row(
+                            child: ShimmerButton(
+                              buttonAction: () =>
+                                  context.router.push(CheckoutScreen()),
+                              buttonContent: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.shopping_basket_rounded),
+                                  Icon(
+                                    Icons.shopping_basket_rounded,
+                                    color: Colors.grey[800],
+                                  ),
                                   SizedBox(
                                     width: 20,
                                   ),
-                                  Text("Checkout"),
+                                  Text(
+                                    "Checkout",
+                                    style: TextStyle(
+                                      color: Colors.grey[800],
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
                                 ],
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 15,
-                                onPrimary: Colors.grey[800],
-                                primary: Colors.yellow,
-                                shadowColor: Colors.yellow,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15.0),
-                                textStyle: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
-                                ),
                               ),
                             ),
                           ),
