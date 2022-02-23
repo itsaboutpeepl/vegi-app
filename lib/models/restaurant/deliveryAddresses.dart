@@ -12,7 +12,7 @@ class DeliveryAddresses with _$DeliveryAddresses {
     required int internalID,
     required String houseNumber,
     required String buildingName,
-    required String streetName,
+    required String townCity,
     required String postalCode,
     required double latitude,
     required double longitude,

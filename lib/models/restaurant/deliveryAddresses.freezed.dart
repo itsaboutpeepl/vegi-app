@@ -25,7 +25,7 @@ class _$DeliveryAddressesTearOff {
       {required int internalID,
       required String houseNumber,
       required String buildingName,
-      required String streetName,
+      required String townCity,
       required String postalCode,
       required double latitude,
       required double longitude}) {
@@ -33,7 +33,7 @@ class _$DeliveryAddressesTearOff {
       internalID: internalID,
       houseNumber: houseNumber,
       buildingName: buildingName,
-      streetName: streetName,
+      townCity: townCity,
       postalCode: postalCode,
       latitude: latitude,
       longitude: longitude,
@@ -53,7 +53,7 @@ mixin _$DeliveryAddresses {
   int get internalID => throw _privateConstructorUsedError;
   String get houseNumber => throw _privateConstructorUsedError;
   String get buildingName => throw _privateConstructorUsedError;
-  String get streetName => throw _privateConstructorUsedError;
+  String get townCity => throw _privateConstructorUsedError;
   String get postalCode => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
@@ -73,7 +73,7 @@ abstract class $DeliveryAddressesCopyWith<$Res> {
       {int internalID,
       String houseNumber,
       String buildingName,
-      String streetName,
+      String townCity,
       String postalCode,
       double latitude,
       double longitude});
@@ -93,7 +93,7 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
     Object? internalID = freezed,
     Object? houseNumber = freezed,
     Object? buildingName = freezed,
-    Object? streetName = freezed,
+    Object? townCity = freezed,
     Object? postalCode = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
@@ -111,9 +111,9 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
           ? _value.buildingName
           : buildingName // ignore: cast_nullable_to_non_nullable
               as String,
-      streetName: streetName == freezed
-          ? _value.streetName
-          : streetName // ignore: cast_nullable_to_non_nullable
+      townCity: townCity == freezed
+          ? _value.townCity
+          : townCity // ignore: cast_nullable_to_non_nullable
               as String,
       postalCode: postalCode == freezed
           ? _value.postalCode
@@ -142,7 +142,7 @@ abstract class _$DeliveryAddressesCopyWith<$Res>
       {int internalID,
       String houseNumber,
       String buildingName,
-      String streetName,
+      String townCity,
       String postalCode,
       double latitude,
       double longitude});
@@ -164,7 +164,7 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
     Object? internalID = freezed,
     Object? houseNumber = freezed,
     Object? buildingName = freezed,
-    Object? streetName = freezed,
+    Object? townCity = freezed,
     Object? postalCode = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
@@ -182,9 +182,9 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
           ? _value.buildingName
           : buildingName // ignore: cast_nullable_to_non_nullable
               as String,
-      streetName: streetName == freezed
-          ? _value.streetName
-          : streetName // ignore: cast_nullable_to_non_nullable
+      townCity: townCity == freezed
+          ? _value.townCity
+          : townCity // ignore: cast_nullable_to_non_nullable
               as String,
       postalCode: postalCode == freezed
           ? _value.postalCode
@@ -210,7 +210,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
       {required this.internalID,
       required this.houseNumber,
       required this.buildingName,
-      required this.streetName,
+      required this.townCity,
       required this.postalCode,
       required this.latitude,
       required this.longitude})
@@ -226,7 +226,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   @override
   final String buildingName;
   @override
-  final String streetName;
+  final String townCity;
   @override
   final String postalCode;
   @override
@@ -236,7 +236,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
 
   @override
   String toString() {
-    return 'DeliveryAddresses(internalID: $internalID, houseNumber: $houseNumber, buildingName: $buildingName, streetName: $streetName, postalCode: $postalCode, latitude: $latitude, longitude: $longitude)';
+    return 'DeliveryAddresses(internalID: $internalID, houseNumber: $houseNumber, buildingName: $buildingName, townCity: $townCity, postalCode: $postalCode, latitude: $latitude, longitude: $longitude)';
   }
 
   @override
@@ -252,9 +252,9 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
             (identical(other.buildingName, buildingName) ||
                 const DeepCollectionEquality()
                     .equals(other.buildingName, buildingName)) &&
-            (identical(other.streetName, streetName) ||
+            (identical(other.townCity, townCity) ||
                 const DeepCollectionEquality()
-                    .equals(other.streetName, streetName)) &&
+                    .equals(other.townCity, townCity)) &&
             (identical(other.postalCode, postalCode) ||
                 const DeepCollectionEquality()
                     .equals(other.postalCode, postalCode)) &&
@@ -272,7 +272,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
       const DeepCollectionEquality().hash(internalID) ^
       const DeepCollectionEquality().hash(houseNumber) ^
       const DeepCollectionEquality().hash(buildingName) ^
-      const DeepCollectionEquality().hash(streetName) ^
+      const DeepCollectionEquality().hash(townCity) ^
       const DeepCollectionEquality().hash(postalCode) ^
       const DeepCollectionEquality().hash(latitude) ^
       const DeepCollectionEquality().hash(longitude);
@@ -293,7 +293,7 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
       {required int internalID,
       required String houseNumber,
       required String buildingName,
-      required String streetName,
+      required String townCity,
       required String postalCode,
       required double latitude,
       required double longitude}) = _$_DeliveryAddresses;
@@ -309,7 +309,7 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
   @override
   String get buildingName => throw _privateConstructorUsedError;
   @override
-  String get streetName => throw _privateConstructorUsedError;
+  String get townCity => throw _privateConstructorUsedError;
   @override
   String get postalCode => throw _privateConstructorUsedError;
   @override
