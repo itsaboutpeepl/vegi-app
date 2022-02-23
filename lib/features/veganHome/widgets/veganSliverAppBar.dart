@@ -70,33 +70,37 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              DropdownButton<String>(
-                                isDense: true,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black,
-                                  fontFamily: "Europa",
-                                ),
-                                value: _dropdownValue,
-                                borderRadius: BorderRadius.circular(10),
-                                underline: SizedBox.shrink(),
-                                items: <String>["L1", "L2", "L3"]
-                                    .map(
-                                      (value) => DropdownMenuItem<String>(
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(fontSize: 20),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 1.5),
+                                child: DropdownButton<String>(
+                                  alignment: Alignment.centerLeft,
+                                  isDense: true,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
+                                    fontFamily: "Europa",
+                                  ),
+                                  value: _dropdownValue,
+                                  borderRadius: BorderRadius.circular(10),
+                                  underline: SizedBox.shrink(),
+                                  items: <String>["L1", "L2", "L3"]
+                                      .map(
+                                        (value) => DropdownMenuItem<String>(
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                          value: value,
                                         ),
-                                        value: value,
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _dropdownValue = value!;
-                                  });
-                                },
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dropdownValue = value!;
+                                    });
+                                  },
+                                ),
                               ),
                             ],
                           ),
