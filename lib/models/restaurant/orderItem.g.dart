@@ -11,7 +11,10 @@ _$_OrderItem _$$_OrderItemFromJson(Map<String, dynamic> json) => _$_OrderItem(
       menuItem: MenuItem.fromJson(json['menuItem']),
       totalItemPrice: json['totalItemPrice'] as int,
       itemQuantity: json['itemQuantity'] as int,
-      selectedOptions: Map<String, int>.from(json['selectedOptions'] as Map),
+      selectedProductOptions:
+          (json['selectedProductOptions'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(int.parse(k), ProductOptions.fromJson(e)),
+      ),
     );
 
 Map<String, dynamic> _$$_OrderItemToJson(_$_OrderItem instance) =>
@@ -20,5 +23,6 @@ Map<String, dynamic> _$$_OrderItemToJson(_$_OrderItem instance) =>
       'menuItem': instance.menuItem.toJson(),
       'totalItemPrice': instance.totalItemPrice,
       'itemQuantity': instance.itemQuantity,
-      'selectedOptions': instance.selectedOptions,
+      'selectedProductOptions': instance.selectedProductOptions
+          .map((k, e) => MapEntry(k.toString(), e.toJson())),
     };

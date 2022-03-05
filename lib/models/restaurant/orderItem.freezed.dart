@@ -26,13 +26,13 @@ class _$OrderItemTearOff {
       required MenuItem menuItem,
       required int totalItemPrice,
       required int itemQuantity,
-      required Map<String, int> selectedOptions}) {
+      required Map<int, ProductOptions> selectedProductOptions}) {
     return _OrderItem(
       internalID: internalID,
       menuItem: menuItem,
       totalItemPrice: totalItemPrice,
       itemQuantity: itemQuantity,
-      selectedOptions: selectedOptions,
+      selectedProductOptions: selectedProductOptions,
     );
   }
 
@@ -50,7 +50,8 @@ mixin _$OrderItem {
   MenuItem get menuItem => throw _privateConstructorUsedError;
   int get totalItemPrice => throw _privateConstructorUsedError;
   int get itemQuantity => throw _privateConstructorUsedError;
-  Map<String, int> get selectedOptions => throw _privateConstructorUsedError;
+  Map<int, ProductOptions> get selectedProductOptions =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -67,7 +68,7 @@ abstract class $OrderItemCopyWith<$Res> {
       MenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
-      Map<String, int> selectedOptions});
+      Map<int, ProductOptions> selectedProductOptions});
 
   $MenuItemCopyWith<$Res> get menuItem;
 }
@@ -86,7 +87,7 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
     Object? menuItem = freezed,
     Object? totalItemPrice = freezed,
     Object? itemQuantity = freezed,
-    Object? selectedOptions = freezed,
+    Object? selectedProductOptions = freezed,
   }) {
     return _then(_value.copyWith(
       internalID: internalID == freezed
@@ -105,10 +106,10 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
           ? _value.itemQuantity
           : itemQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedOptions: selectedOptions == freezed
-          ? _value.selectedOptions
-          : selectedOptions // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      selectedProductOptions: selectedProductOptions == freezed
+          ? _value.selectedProductOptions
+          : selectedProductOptions // ignore: cast_nullable_to_non_nullable
+              as Map<int, ProductOptions>,
     ));
   }
 
@@ -131,7 +132,7 @@ abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
       MenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
-      Map<String, int> selectedOptions});
+      Map<int, ProductOptions> selectedProductOptions});
 
   @override
   $MenuItemCopyWith<$Res> get menuItem;
@@ -152,7 +153,7 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
     Object? menuItem = freezed,
     Object? totalItemPrice = freezed,
     Object? itemQuantity = freezed,
-    Object? selectedOptions = freezed,
+    Object? selectedProductOptions = freezed,
   }) {
     return _then(_OrderItem(
       internalID: internalID == freezed
@@ -171,10 +172,10 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
           ? _value.itemQuantity
           : itemQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedOptions: selectedOptions == freezed
-          ? _value.selectedOptions
-          : selectedOptions // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      selectedProductOptions: selectedProductOptions == freezed
+          ? _value.selectedProductOptions
+          : selectedProductOptions // ignore: cast_nullable_to_non_nullable
+              as Map<int, ProductOptions>,
     ));
   }
 }
@@ -188,7 +189,7 @@ class _$_OrderItem extends _OrderItem {
       required this.menuItem,
       required this.totalItemPrice,
       required this.itemQuantity,
-      required this.selectedOptions})
+      required this.selectedProductOptions})
       : super._();
 
   factory _$_OrderItem.fromJson(Map<String, dynamic> json) =>
@@ -203,11 +204,11 @@ class _$_OrderItem extends _OrderItem {
   @override
   final int itemQuantity;
   @override
-  final Map<String, int> selectedOptions;
+  final Map<int, ProductOptions> selectedProductOptions;
 
   @override
   String toString() {
-    return 'OrderItem(internalID: $internalID, menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, selectedOptions: $selectedOptions)';
+    return 'OrderItem(internalID: $internalID, menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, selectedProductOptions: $selectedProductOptions)';
   }
 
   @override
@@ -226,9 +227,9 @@ class _$_OrderItem extends _OrderItem {
             (identical(other.itemQuantity, itemQuantity) ||
                 const DeepCollectionEquality()
                     .equals(other.itemQuantity, itemQuantity)) &&
-            (identical(other.selectedOptions, selectedOptions) ||
-                const DeepCollectionEquality()
-                    .equals(other.selectedOptions, selectedOptions)));
+            (identical(other.selectedProductOptions, selectedProductOptions) ||
+                const DeepCollectionEquality().equals(
+                    other.selectedProductOptions, selectedProductOptions)));
   }
 
   @override
@@ -238,7 +239,7 @@ class _$_OrderItem extends _OrderItem {
       const DeepCollectionEquality().hash(menuItem) ^
       const DeepCollectionEquality().hash(totalItemPrice) ^
       const DeepCollectionEquality().hash(itemQuantity) ^
-      const DeepCollectionEquality().hash(selectedOptions);
+      const DeepCollectionEquality().hash(selectedProductOptions);
 
   @JsonKey(ignore: true)
   @override
@@ -257,7 +258,7 @@ abstract class _OrderItem extends OrderItem {
       required MenuItem menuItem,
       required int totalItemPrice,
       required int itemQuantity,
-      required Map<String, int> selectedOptions}) = _$_OrderItem;
+      required Map<int, ProductOptions> selectedProductOptions}) = _$_OrderItem;
   _OrderItem._() : super._();
 
   factory _OrderItem.fromJson(Map<String, dynamic> json) =
@@ -272,7 +273,8 @@ abstract class _OrderItem extends OrderItem {
   @override
   int get itemQuantity => throw _privateConstructorUsedError;
   @override
-  Map<String, int> get selectedOptions => throw _privateConstructorUsedError;
+  Map<int, ProductOptions> get selectedProductOptions =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$OrderItemCopyWith<_OrderItem> get copyWith =>
