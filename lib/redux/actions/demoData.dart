@@ -1,5 +1,7 @@
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/userCart.dart';
@@ -70,7 +72,7 @@ final MenuItem bagel1 = new MenuItem(
   price: 390,
   description:
       "Freshiy Baked Bagel made with a mix of wild and cultured blueberries baked inside",
-  options: {
+  extras: {
     "Cream Cheese": 100,
     "Extra Blueberries": 185,
     "Extra Baked": 235,
@@ -83,6 +85,7 @@ final MenuItem bagel1 = new MenuItem(
     "Addon - Blueberry Syrup": 230,
     "Addon - Orange Syrup": 230
   },
+  listOfProductOptions: demoPOCList,
 );
 
 final MenuItem bagel2 = new MenuItem(
@@ -98,7 +101,7 @@ final MenuItem bagel2 = new MenuItem(
   price: 390,
   description:
       "Freshiy Baked Bagel made with a mix of wild and cultured poppy seeds",
-  options: {
+  extras: {
     "Cream Cheese": 100,
     "Extra Blueberries": 185,
     "Extra Baked": 235,
@@ -111,6 +114,7 @@ final MenuItem bagel2 = new MenuItem(
     "Addon - Blueberry Syrup": 230,
     "Addon - Orange Syrup": 230
   },
+  listOfProductOptions: demoPOCList,
 );
 
 final MenuItem bagel3 = new MenuItem(
@@ -126,7 +130,7 @@ final MenuItem bagel3 = new MenuItem(
   price: 390,
   description:
       "Freshiy Baked Bagel made with a mix of poppy seeds, flax seeds, chia seeds, sesame seeds, onion flakes, garlic flakes, sunflower seeds, caraway seeds, pretzel salt, and black pepper.",
-  options: {
+  extras: {
     "Cream Cheese": 100,
     "Extra Blueberries": 185,
     "Extra Baked": 235,
@@ -139,6 +143,7 @@ final MenuItem bagel3 = new MenuItem(
     "Addon - Blueberry Syrup": 230,
     "Addon - Orange Syrup": 230
   },
+  listOfProductOptions: demoPOCList,
 );
 
 final Map<String, int> demoOptions = {
@@ -155,27 +160,62 @@ final Map<String, int> demoOptions = {
   "Addon - Orange Syrup": 230
 };
 
+final ProductOptionsCategory demoPOC1 = ProductOptionsCategory(
+  categoryID: 1,
+  name: "Starter",
+  listOfOptions: [
+    new ProductOptions(
+        optionID: 1,
+        name: "Traditional Cullen Skink",
+        description: "Smoked haddock, potato and leek soup (GF)",
+        price: 0,
+        isAvaliable: true),
+    new ProductOptions(
+        optionID: 2,
+        name: "Rabbit ‘cock-a-leekie’ terrine",
+        description:
+            "A chicken, rabbit and leek terrine served with whisky jelly and oatcakes",
+        price: 0,
+        isAvaliable: true),
+  ],
+);
+
+final ProductOptionsCategory demoPOC2 = ProductOptionsCategory(
+  categoryID: 2,
+  name: "Main",
+  listOfOptions: [
+    new ProductOptions(
+        optionID: 1,
+        name: "Stew",
+        description:
+            "Venison, beef and beer stew, whiskey dumplings and creamy mash",
+        price: 0,
+        isAvaliable: true),
+    new ProductOptions(
+        optionID: 2,
+        name: "Lanarkshire Mushroom",
+        description:
+            "Lanarkshire blue portobello mushroom top hat with rumbledethump croquettes and pearl onion pickle (V)",
+        price: 0,
+        isAvaliable: true),
+  ],
+);
+
+final List<ProductOptionsCategory> demoPOCList = [demoPOC1, demoPOC2];
+
 OrderItem demoOrderItem1 = new OrderItem(
     internalID: 4324,
     menuItem: bagel3,
     totalItemPrice: 3242,
     itemQuantity: 3,
-    selectedOptions: {
-      "Cream Cheese": 100,
-      "Extra Blueberries": 185,
-      "Extra Baked": 235,
-    });
+    selectedProductOptions: {});
 
 OrderItem demoOrderItem2 = new OrderItem(
     internalID: 3414,
     menuItem: bagel1,
     totalItemPrice: 8922,
     itemQuantity: 5,
-    selectedOptions: {
-      "Addon - Banana Syrup": 230,
-      "Addon - Blueberry Syrup": 230,
-      "Addon - Orange Syrup": 230
-    });
+    selectedProductOptions: {});
 
 final UserCart userCart = new UserCart(
   cartItems: [
