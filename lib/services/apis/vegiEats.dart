@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
@@ -56,22 +58,62 @@ class VegiEatsService {
       (element) {
         menuItems.add(
           MenuItem(
-              isFeatured: Random().nextBool(),
-              menuID: element["id"].toString(),
-              name: element['name'],
-              imageURLs: [
-                UrlConstants.VEGI_EATS_BACKEND +
-                    "products/download-image/" +
-                    element['id'].toString()
-              ],
-              category: "Category",
-              price: element['basePrice'],
-              description: element['description'],
-              options: demoOptions),
+            isFeatured: Random().nextBool(),
+            menuID: element["id"].toString(),
+            name: element['name'],
+            imageURLs: [
+              UrlConstants.VEGI_EATS_BACKEND +
+                  "products/download-image/" +
+                  element['id'].toString()
+            ],
+            category: "Category",
+            price: element['basePrice'],
+            description: element['description'],
+            extras: demoOptions,
+            listOfProductOptions: demoPOCList,
+          ),
         );
       },
     );
 
     return menuItems;
+  }
+
+  Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {
+    Response response = await dio
+        .get('api/v1/products/get-product-options/$itemID?wallet=test');
+
+    List<dynamic> results = response.data as List;
+
+    List<ProductOptionsCategory> listOfProductOptions = [];
+
+    results.forEach(
+      (category) {
+        List<ProductOptions> listOfOptions = [];
+        category['values'].forEach(
+          (option) {
+            listOfOptions.add(
+              ProductOptions(
+                optionID: option['id'],
+                name: option['name'],
+                description: option['description'],
+                price: option['priceModifier'],
+                isAvaliable: option['isAvailable'],
+              ),
+            );
+          },
+        );
+
+        listOfProductOptions.add(
+          ProductOptionsCategory(
+            categoryID: category['id'],
+            name: category['name'],
+            listOfOptions: listOfOptions,
+          ),
+        );
+      },
+    );
+
+    return listOfProductOptions;
   }
 }
