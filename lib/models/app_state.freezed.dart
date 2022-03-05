@@ -27,7 +27,8 @@ class _$AppStateTearOff {
       @ProWalletStateConverter() required ProWalletState proWalletState,
       @SwapStateConverter() required SwapState swapState,
       @HomePageStateConverter() required HomePageState homePageState,
-      @UserCartStateConverter() required UserCartState cartState}) {
+      @UserCartStateConverter() required UserCartState cartState,
+      @MenuItemStateConverter() required MenuItemState menuItemState}) {
     return _AppState(
       userState: userState,
       cashWalletState: cashWalletState,
@@ -35,6 +36,7 @@ class _$AppStateTearOff {
       swapState: swapState,
       homePageState: homePageState,
       cartState: cartState,
+      menuItemState: menuItemState,
     );
   }
 
@@ -60,6 +62,8 @@ mixin _$AppState {
   HomePageState get homePageState => throw _privateConstructorUsedError;
   @UserCartStateConverter()
   UserCartState get cartState => throw _privateConstructorUsedError;
+  @MenuItemStateConverter()
+  MenuItemState get menuItemState => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -77,7 +81,8 @@ abstract class $AppStateCopyWith<$Res> {
       @ProWalletStateConverter() ProWalletState proWalletState,
       @SwapStateConverter() SwapState swapState,
       @HomePageStateConverter() HomePageState homePageState,
-      @UserCartStateConverter() UserCartState cartState});
+      @UserCartStateConverter() UserCartState cartState,
+      @MenuItemStateConverter() MenuItemState menuItemState});
 
   $UserStateCopyWith<$Res> get userState;
   $CashWalletStateCopyWith<$Res> get cashWalletState;
@@ -85,6 +90,7 @@ abstract class $AppStateCopyWith<$Res> {
   $SwapStateCopyWith<$Res> get swapState;
   $HomePageStateCopyWith<$Res> get homePageState;
   $UserCartStateCopyWith<$Res> get cartState;
+  $MenuItemStateCopyWith<$Res> get menuItemState;
 }
 
 /// @nodoc
@@ -103,6 +109,7 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
     Object? swapState = freezed,
     Object? homePageState = freezed,
     Object? cartState = freezed,
+    Object? menuItemState = freezed,
   }) {
     return _then(_value.copyWith(
       userState: userState == freezed
@@ -129,6 +136,10 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
           ? _value.cartState
           : cartState // ignore: cast_nullable_to_non_nullable
               as UserCartState,
+      menuItemState: menuItemState == freezed
+          ? _value.menuItemState
+          : menuItemState // ignore: cast_nullable_to_non_nullable
+              as MenuItemState,
     ));
   }
 
@@ -173,6 +184,13 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
       return _then(_value.copyWith(cartState: value));
     });
   }
+
+  @override
+  $MenuItemStateCopyWith<$Res> get menuItemState {
+    return $MenuItemStateCopyWith<$Res>(_value.menuItemState, (value) {
+      return _then(_value.copyWith(menuItemState: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -186,7 +204,8 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
       @ProWalletStateConverter() ProWalletState proWalletState,
       @SwapStateConverter() SwapState swapState,
       @HomePageStateConverter() HomePageState homePageState,
-      @UserCartStateConverter() UserCartState cartState});
+      @UserCartStateConverter() UserCartState cartState,
+      @MenuItemStateConverter() MenuItemState menuItemState});
 
   @override
   $UserStateCopyWith<$Res> get userState;
@@ -200,6 +219,8 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   $HomePageStateCopyWith<$Res> get homePageState;
   @override
   $UserCartStateCopyWith<$Res> get cartState;
+  @override
+  $MenuItemStateCopyWith<$Res> get menuItemState;
 }
 
 /// @nodoc
@@ -219,6 +240,7 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
     Object? swapState = freezed,
     Object? homePageState = freezed,
     Object? cartState = freezed,
+    Object? menuItemState = freezed,
   }) {
     return _then(_AppState(
       userState: userState == freezed
@@ -245,6 +267,10 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
           ? _value.cartState
           : cartState // ignore: cast_nullable_to_non_nullable
               as UserCartState,
+      menuItemState: menuItemState == freezed
+          ? _value.menuItemState
+          : menuItemState // ignore: cast_nullable_to_non_nullable
+              as MenuItemState,
     ));
   }
 }
@@ -259,7 +285,8 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
       @ProWalletStateConverter() required this.proWalletState,
       @SwapStateConverter() required this.swapState,
       @HomePageStateConverter() required this.homePageState,
-      @UserCartStateConverter() required this.cartState})
+      @UserCartStateConverter() required this.cartState,
+      @MenuItemStateConverter() required this.menuItemState})
       : super._();
 
   factory _$_AppState.fromJson(Map<String, dynamic> json) =>
@@ -283,10 +310,13 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
   @override
   @UserCartStateConverter()
   final UserCartState cartState;
+  @override
+  @MenuItemStateConverter()
+  final MenuItemState menuItemState;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AppState(userState: $userState, cashWalletState: $cashWalletState, proWalletState: $proWalletState, swapState: $swapState, homePageState: $homePageState, cartState: $cartState)';
+    return 'AppState(userState: $userState, cashWalletState: $cashWalletState, proWalletState: $proWalletState, swapState: $swapState, homePageState: $homePageState, cartState: $cartState, menuItemState: $menuItemState)';
   }
 
   @override
@@ -299,7 +329,8 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('proWalletState', proWalletState))
       ..add(DiagnosticsProperty('swapState', swapState))
       ..add(DiagnosticsProperty('homePageState', homePageState))
-      ..add(DiagnosticsProperty('cartState', cartState));
+      ..add(DiagnosticsProperty('cartState', cartState))
+      ..add(DiagnosticsProperty('menuItemState', menuItemState));
   }
 
   @override
@@ -323,7 +354,10 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
                     .equals(other.homePageState, homePageState)) &&
             (identical(other.cartState, cartState) ||
                 const DeepCollectionEquality()
-                    .equals(other.cartState, cartState)));
+                    .equals(other.cartState, cartState)) &&
+            (identical(other.menuItemState, menuItemState) ||
+                const DeepCollectionEquality()
+                    .equals(other.menuItemState, menuItemState)));
   }
 
   @override
@@ -334,7 +368,8 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(proWalletState) ^
       const DeepCollectionEquality().hash(swapState) ^
       const DeepCollectionEquality().hash(homePageState) ^
-      const DeepCollectionEquality().hash(cartState);
+      const DeepCollectionEquality().hash(cartState) ^
+      const DeepCollectionEquality().hash(menuItemState);
 
   @JsonKey(ignore: true)
   @override
@@ -354,7 +389,8 @@ abstract class _AppState extends AppState {
           @ProWalletStateConverter() required ProWalletState proWalletState,
           @SwapStateConverter() required SwapState swapState,
           @HomePageStateConverter() required HomePageState homePageState,
-          @UserCartStateConverter() required UserCartState cartState}) =
+          @UserCartStateConverter() required UserCartState cartState,
+          @MenuItemStateConverter() required MenuItemState menuItemState}) =
       _$_AppState;
   _AppState._() : super._();
 
@@ -378,6 +414,9 @@ abstract class _AppState extends AppState {
   @override
   @UserCartStateConverter()
   UserCartState get cartState => throw _privateConstructorUsedError;
+  @override
+  @MenuItemStateConverter()
+  MenuItemState get menuItemState => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AppStateCopyWith<_AppState> get copyWith =>

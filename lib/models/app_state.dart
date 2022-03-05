@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/models/home_page_state.dart';
+import 'package:vegan_liverpool/models/menu_item_state.dart';
 import 'package:vegan_liverpool/models/swap_state.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
@@ -23,6 +24,7 @@ class AppState with _$AppState {
     @SwapStateConverter() required SwapState swapState,
     @HomePageStateConverter() required HomePageState homePageState,
     @UserCartStateConverter() required UserCartState cartState,
+    @MenuItemStateConverter() required MenuItemState menuItemState,
   }) = _AppState;
 
   factory AppState.initial() {
@@ -33,6 +35,7 @@ class AppState with _$AppState {
       swapState: SwapState.initial(),
       homePageState: HomePageState.initial(),
       cartState: UserCartState.initial(),
+      menuItemState: MenuItemState.initial(),
     );
   }
 
