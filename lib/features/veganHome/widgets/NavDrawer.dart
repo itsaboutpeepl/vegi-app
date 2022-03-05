@@ -110,14 +110,14 @@ class _NavDrawerState extends State<NavDrawer> {
                 leading: Icon(Icons.money),
                 title: Text('Top Up Vegi Wallet'),
                 onTap: () {
-                  context.router.push(TopupScreen());
+                  context.router.push(TopUpScreen());
                 },
               ),
               ListTile(
                 leading: Icon(FontAwesomeIcons.history),
                 title: Text('My Orders'),
                 onTap: () {
-                  context.router.push(TopupScreen());
+                  context.router.push(TopUpScreen());
                 },
               ),
               ListTile(
