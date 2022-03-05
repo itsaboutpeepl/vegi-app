@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/SingleCartItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/emptyStatePage.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
@@ -102,9 +103,11 @@ class _ToteScreenState extends State<ToteScreen> {
                         ],
                   ),
                 )
-              : Center(
-                  child: Text("Add some items to cart"), //TODO: Need Better UI
-                ),
+              : EmptyStatePage(
+                  iconName: Icons.shopping_cart_outlined,
+                  title: "Cart is Empty",
+                  subtitle:
+                      "Looks like you haven't added anything to your cart yet!"),
         );
       },
     );
