@@ -14,7 +14,10 @@ _$_MenuItem _$$_MenuItemFromJson(Map<String, dynamic> json) => _$_MenuItem(
       category: json['category'] as String,
       price: json['price'] as int,
       description: json['description'] as String,
-      options: Map<String, int>.from(json['options'] as Map),
+      extras: Map<String, int>.from(json['extras'] as Map),
+      listOfProductOptions: (json['listOfProductOptions'] as List<dynamic>)
+          .map((e) => ProductOptionsCategory.fromJson(e))
+          .toList(),
       isFeatured: json['isFeatured'] as bool,
     );
 
@@ -26,6 +29,8 @@ Map<String, dynamic> _$$_MenuItemToJson(_$_MenuItem instance) =>
       'category': instance.category,
       'price': instance.price,
       'description': instance.description,
-      'options': instance.options,
+      'extras': instance.extras,
+      'listOfProductOptions':
+          instance.listOfProductOptions.map((e) => e.toJson()).toList(),
       'isFeatured': instance.isFeatured,
     };

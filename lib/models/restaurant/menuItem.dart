@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 
 part 'menuItem.freezed.dart';
 part 'menuItem.g.dart';
@@ -15,7 +16,8 @@ class MenuItem with _$MenuItem {
     required String category,
     required int price,
     required String description,
-    required Map<String, int> options,
+    required Map<String, int> extras,
+    required List<ProductOptionsCategory> listOfProductOptions,
     required bool isFeatured,
   }) = _MenuItem;
 

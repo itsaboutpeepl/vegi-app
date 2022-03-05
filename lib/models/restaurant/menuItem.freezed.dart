@@ -28,7 +28,8 @@ class _$MenuItemTearOff {
       required String category,
       required int price,
       required String description,
-      required Map<String, int> options,
+      required Map<String, int> extras,
+      required List<ProductOptionsCategory> listOfProductOptions,
       required bool isFeatured}) {
     return _MenuItem(
       menuID: menuID,
@@ -37,7 +38,8 @@ class _$MenuItemTearOff {
       category: category,
       price: price,
       description: description,
-      options: options,
+      extras: extras,
+      listOfProductOptions: listOfProductOptions,
       isFeatured: isFeatured,
     );
   }
@@ -58,7 +60,9 @@ mixin _$MenuItem {
   String get category => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  Map<String, int> get options => throw _privateConstructorUsedError;
+  Map<String, int> get extras => throw _privateConstructorUsedError;
+  List<ProductOptionsCategory> get listOfProductOptions =>
+      throw _privateConstructorUsedError;
   bool get isFeatured => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -78,7 +82,8 @@ abstract class $MenuItemCopyWith<$Res> {
       String category,
       int price,
       String description,
-      Map<String, int> options,
+      Map<String, int> extras,
+      List<ProductOptionsCategory> listOfProductOptions,
       bool isFeatured});
 }
 
@@ -98,7 +103,8 @@ class _$MenuItemCopyWithImpl<$Res> implements $MenuItemCopyWith<$Res> {
     Object? category = freezed,
     Object? price = freezed,
     Object? description = freezed,
-    Object? options = freezed,
+    Object? extras = freezed,
+    Object? listOfProductOptions = freezed,
     Object? isFeatured = freezed,
   }) {
     return _then(_value.copyWith(
@@ -126,10 +132,14 @@ class _$MenuItemCopyWithImpl<$Res> implements $MenuItemCopyWith<$Res> {
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      options: options == freezed
-          ? _value.options
-          : options // ignore: cast_nullable_to_non_nullable
+      extras: extras == freezed
+          ? _value.extras
+          : extras // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
+      listOfProductOptions: listOfProductOptions == freezed
+          ? _value.listOfProductOptions
+          : listOfProductOptions // ignore: cast_nullable_to_non_nullable
+              as List<ProductOptionsCategory>,
       isFeatured: isFeatured == freezed
           ? _value.isFeatured
           : isFeatured // ignore: cast_nullable_to_non_nullable
@@ -150,7 +160,8 @@ abstract class _$MenuItemCopyWith<$Res> implements $MenuItemCopyWith<$Res> {
       String category,
       int price,
       String description,
-      Map<String, int> options,
+      Map<String, int> extras,
+      List<ProductOptionsCategory> listOfProductOptions,
       bool isFeatured});
 }
 
@@ -171,7 +182,8 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
     Object? category = freezed,
     Object? price = freezed,
     Object? description = freezed,
-    Object? options = freezed,
+    Object? extras = freezed,
+    Object? listOfProductOptions = freezed,
     Object? isFeatured = freezed,
   }) {
     return _then(_MenuItem(
@@ -199,10 +211,14 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      options: options == freezed
-          ? _value.options
-          : options // ignore: cast_nullable_to_non_nullable
+      extras: extras == freezed
+          ? _value.extras
+          : extras // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
+      listOfProductOptions: listOfProductOptions == freezed
+          ? _value.listOfProductOptions
+          : listOfProductOptions // ignore: cast_nullable_to_non_nullable
+              as List<ProductOptionsCategory>,
       isFeatured: isFeatured == freezed
           ? _value.isFeatured
           : isFeatured // ignore: cast_nullable_to_non_nullable
@@ -222,7 +238,8 @@ class _$_MenuItem extends _MenuItem {
       required this.category,
       required this.price,
       required this.description,
-      required this.options,
+      required this.extras,
+      required this.listOfProductOptions,
       required this.isFeatured})
       : super._();
 
@@ -242,13 +259,15 @@ class _$_MenuItem extends _MenuItem {
   @override
   final String description;
   @override
-  final Map<String, int> options;
+  final Map<String, int> extras;
+  @override
+  final List<ProductOptionsCategory> listOfProductOptions;
   @override
   final bool isFeatured;
 
   @override
   String toString() {
-    return 'MenuItem(menuID: $menuID, name: $name, imageURLs: $imageURLs, category: $category, price: $price, description: $description, options: $options, isFeatured: $isFeatured)';
+    return 'MenuItem(menuID: $menuID, name: $name, imageURLs: $imageURLs, category: $category, price: $price, description: $description, extras: $extras, listOfProductOptions: $listOfProductOptions, isFeatured: $isFeatured)';
   }
 
   @override
@@ -270,9 +289,11 @@ class _$_MenuItem extends _MenuItem {
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality()
-                    .equals(other.options, options)) &&
+            (identical(other.extras, extras) ||
+                const DeepCollectionEquality().equals(other.extras, extras)) &&
+            (identical(other.listOfProductOptions, listOfProductOptions) ||
+                const DeepCollectionEquality().equals(
+                    other.listOfProductOptions, listOfProductOptions)) &&
             (identical(other.isFeatured, isFeatured) ||
                 const DeepCollectionEquality()
                     .equals(other.isFeatured, isFeatured)));
@@ -287,7 +308,8 @@ class _$_MenuItem extends _MenuItem {
       const DeepCollectionEquality().hash(category) ^
       const DeepCollectionEquality().hash(price) ^
       const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(options) ^
+      const DeepCollectionEquality().hash(extras) ^
+      const DeepCollectionEquality().hash(listOfProductOptions) ^
       const DeepCollectionEquality().hash(isFeatured);
 
   @JsonKey(ignore: true)
@@ -309,7 +331,8 @@ abstract class _MenuItem extends MenuItem {
       required String category,
       required int price,
       required String description,
-      required Map<String, int> options,
+      required Map<String, int> extras,
+      required List<ProductOptionsCategory> listOfProductOptions,
       required bool isFeatured}) = _$_MenuItem;
   _MenuItem._() : super._();
 
@@ -328,7 +351,10 @@ abstract class _MenuItem extends MenuItem {
   @override
   String get description => throw _privateConstructorUsedError;
   @override
-  Map<String, int> get options => throw _privateConstructorUsedError;
+  Map<String, int> get extras => throw _privateConstructorUsedError;
+  @override
+  List<ProductOptionsCategory> get listOfProductOptions =>
+      throw _privateConstructorUsedError;
   @override
   bool get isFeatured => throw _privateConstructorUsedError;
   @override
