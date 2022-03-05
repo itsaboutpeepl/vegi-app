@@ -106,23 +106,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   fontSize: 20, fontWeight: FontWeight.w800),
                             ),
                             Spacer(),
-                            // Transform.scale(
-                            //   scale: 1.3,
-                            //   child: Checkbox(
-                            //     visualDensity: VisualDensity.standard,
-                            //     side: BorderSide(color: Colors.grey[800]!),
-                            //     shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(10)),
-                            //     checkColor: Colors.grey[800],
-                            //     activeColor: Colors.yellow[300],
-                            //     value: _isScheduledDelivery,
-                            //     onChanged: (value) {
-                            //       setState(() {
-                            //         _isScheduledDelivery = value!;
-                            //       });
-                            //     },
-                            //   ),
-                            // )
                           ],
                         ),
                       ),
@@ -175,6 +158,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           "Support your delivery partner and make their day! 100% of your tip will be transferred to them!",
                           style: TextStyle(
                               fontSize: 12, fontWeight: FontWeight.w100),
+                        ),
+                        SizedBox(
+                          height: 5,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
