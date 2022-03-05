@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/QuantityButtons.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 
 class SingleOrderItem extends StatefulWidget {
@@ -64,9 +63,9 @@ class _SingleOrderItemState extends State<SingleOrderItem> {
                     SizedBox(
                       height: 5,
                     ),
-                    widget.orderItem.selectedOptions.entries.isNotEmpty
+                    widget.orderItem.selectedProductOptions.entries.isNotEmpty
                         ? Text(
-                            "Addons",
+                            "Options",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -74,11 +73,17 @@ class _SingleOrderItemState extends State<SingleOrderItem> {
                           )
                         : SizedBox.shrink(),
                   ] +
-                  widget.orderItem.selectedOptions.entries
+                  widget.orderItem.selectedProductOptions.entries
                       .map<Widget>(
-                        (e) => addOnPriceItemTile(
-                          e.key,
-                          cFPrice(e.value),
+                        (e) => Text.rich(
+                          TextSpan(
+                            text: e.value.name,
+                            children: [
+                              TextSpan(text: " - "),
+                              TextSpan(text: cFPrice(e.value.price))
+                            ],
+                          ),
+                          style: TextStyle(color: Colors.grey),
                         ),
                       )
                       .toList(),
