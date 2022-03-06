@@ -7,6 +7,16 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateComputedCartValues>(_computeCartTotals),
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
   TypedReducer<UserCartState, ClearCart>(_clearCart),
+  TypedReducer<UserCartState, UpdateSlots>(_updateSlots),
+  TypedReducer<UserCartState, UpdateSlotIndex>(_updateSlotIndex),
+  TypedReducer<UserCartState, UpdateTipAmount>(_updateTipAmount),
+  TypedReducer<UserCartState, UpdateDeliveryAddressIndex>(
+      _updateDeliveryAddressIndex),
+  TypedReducer<UserCartState, CreateOrder>(_createOrder),
+  TypedReducer<UserCartState, ToggleTransferPayment>(_toggleTransfer),
+  TypedReducer<UserCartState, ToggleError>(_toggleError),
+  TypedReducer<UserCartState, ToggleConfirmed>(_toggleConfirmed),
+  TypedReducer<UserCartState, UpdateSelectedAmounts>(_updateSelectedAmounts),
 ]);
 
 UserCartState _updateCartItems(
@@ -45,5 +55,75 @@ UserCartState _updateCartDiscount(
   UserCartState state,
   UpdateCartDiscount action,
 ) {
-  return state.copyWith(cartDiscountPercent: action.cartDiscountPercent);
+  return state.copyWith(
+      cartDiscountPercent: action.cartDiscountPercent,
+      discountCode: action.discountCode);
+}
+
+UserCartState _updateSlots(
+  UserCartState state,
+  UpdateSlots action,
+) {
+  return state.copyWith(
+      deliverySlots: action.deliverySlots,
+      collectionSlots: action.collectionSlots);
+}
+
+UserCartState _updateSlotIndex(
+  UserCartState state,
+  UpdateSlotIndex action,
+) {
+  return state.copyWith(selectedSlotIndex: action.index);
+}
+
+UserCartState _updateTipAmount(
+  UserCartState state,
+  UpdateTipAmount action,
+) {
+  return state.copyWith(selectedTipAmount: action.tipAmount);
+}
+
+UserCartState _updateDeliveryAddressIndex(
+  UserCartState state,
+  UpdateDeliveryAddressIndex action,
+) {
+  return state.copyWith(selectedDeliveryAddressIndex: action.indexOfAddress);
+}
+
+UserCartState _createOrder(
+  UserCartState state,
+  CreateOrder action,
+) {
+  return state.copyWith(
+      orderID: action.orderID, paymentIntentID: action.paymentIntentID);
+}
+
+UserCartState _toggleTransfer(
+  UserCartState state,
+  ToggleTransferPayment action,
+) {
+  return state.copyWith(transferringTokens: !state.transferringTokens);
+}
+
+UserCartState _toggleError(
+  UserCartState state,
+  ToggleError action,
+) {
+  return state.copyWith(transferringTokens: !state.errorCompletingPayment);
+}
+
+UserCartState _toggleConfirmed(
+  UserCartState state,
+  ToggleConfirmed action,
+) {
+  return state.copyWith(transferringTokens: !state.confirmedPayment);
+}
+
+UserCartState _updateSelectedAmounts(
+  UserCartState state,
+  UpdateSelectedAmounts action,
+) {
+  return state.copyWith(
+      selectedGBPxAmount: action.GBPxAmount,
+      selectedPPLAmount: action.PPLAmount);
 }
