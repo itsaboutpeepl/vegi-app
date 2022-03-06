@@ -16,7 +16,6 @@ class UserCartViewModel extends Equatable {
   final String pplBalance;
   final String gbpXBalance;
   final Function(OrderItem itemToAdd) addOrderItem;
-  final Function(int discount) updateDiscount;
   final Function(OrderItem itemToUpdate) updateOrderItem;
   final Function() clearCart;
 
@@ -31,7 +30,6 @@ class UserCartViewModel extends Equatable {
     required this.pplBalance,
     required this.gbpXBalance,
     required this.addOrderItem,
-    required this.updateDiscount,
     required this.updateOrderItem,
     required this.clearCart,
   });
@@ -51,9 +49,6 @@ class UserCartViewModel extends Equatable {
           store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       addOrderItem: (itemToAdd) {
         store.dispatch(updateCartItems(itemToAdd));
-      },
-      updateDiscount: (newDiscount) {
-        store.dispatch(updateCartDiscount(newDiscount));
       },
       updateOrderItem: (itemToAdd) {
         store.dispatch(updateCartItemQuantity(itemToAdd));
