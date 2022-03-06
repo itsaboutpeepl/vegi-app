@@ -3,11 +3,17 @@ import 'package:shimmer/shimmer.dart';
 
 class ShimmerButton extends StatefulWidget {
   const ShimmerButton(
-      {Key? key, required this.buttonContent, required this.buttonAction})
+      {Key? key,
+      required this.buttonContent,
+      required this.buttonAction,
+      required this.baseColor,
+      required this.highlightColor})
       : super(key: key);
 
   final Widget buttonContent;
   final Function() buttonAction;
+  final Color baseColor;
+  final Color highlightColor;
 
   @override
   _ShimmerButtonState createState() => _ShimmerButtonState();
@@ -27,8 +33,8 @@ class _ShimmerButtonState extends State<ShimmerButton> {
               borderRadius: BorderRadius.circular(10),
               child: Shimmer.fromColors(
                 period: Duration(seconds: 3),
-                baseColor: Colors.yellow,
-                highlightColor: Colors.yellow[100]!,
+                baseColor: widget.baseColor,
+                highlightColor: widget.highlightColor,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 60,
