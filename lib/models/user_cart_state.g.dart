@@ -16,6 +16,23 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       cartTotal: json['cartTotal'] as int,
       cartDiscountPercent: json['cartDiscountPercent'] as int,
       cartDiscountComputed: json['cartDiscountComputed'] as int,
+      deliverySlots: (json['deliverySlots'] as List<dynamic>)
+          .map((e) => Map<String, String>.from(e as Map))
+          .toList(),
+      collectionSlots: (json['collectionSlots'] as List<dynamic>)
+          .map((e) => Map<String, String>.from(e as Map))
+          .toList(),
+      selectedSlotIndex: json['selectedSlotIndex'] as int,
+      selectedTipAmount: json['selectedTipAmount'] as int,
+      discountCode: json['discountCode'] as String,
+      selectedDeliveryAddressIndex: json['selectedDeliveryAddressIndex'] as int,
+      paymentIntentID: json['paymentIntentID'] as String,
+      orderID: json['orderID'] as String,
+      selectedGBPxAmount: (json['selectedGBPxAmount'] as num).toDouble(),
+      selectedPPLAmount: (json['selectedPPLAmount'] as num).toDouble(),
+      transferringTokens: json['transferringTokens'] as bool,
+      errorCompletingPayment: json['errorCompletingPayment'] as bool,
+      confirmedPayment: json['confirmedPayment'] as bool,
     );
 
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
@@ -26,4 +43,17 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'cartTotal': instance.cartTotal,
       'cartDiscountPercent': instance.cartDiscountPercent,
       'cartDiscountComputed': instance.cartDiscountComputed,
+      'deliverySlots': instance.deliverySlots,
+      'collectionSlots': instance.collectionSlots,
+      'selectedSlotIndex': instance.selectedSlotIndex,
+      'selectedTipAmount': instance.selectedTipAmount,
+      'discountCode': instance.discountCode,
+      'selectedDeliveryAddressIndex': instance.selectedDeliveryAddressIndex,
+      'paymentIntentID': instance.paymentIntentID,
+      'orderID': instance.orderID,
+      'selectedGBPxAmount': instance.selectedGBPxAmount,
+      'selectedPPLAmount': instance.selectedPPLAmount,
+      'transferringTokens': instance.transferringTokens,
+      'errorCompletingPayment': instance.errorCompletingPayment,
+      'confirmedPayment': instance.confirmedPayment,
     };

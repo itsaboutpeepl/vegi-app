@@ -27,7 +27,20 @@ class _$UserCartStateTearOff {
       required int cartTax,
       required int cartTotal,
       required int cartDiscountPercent,
-      required int cartDiscountComputed}) {
+      required int cartDiscountComputed,
+      required List<Map<String, String>> deliverySlots,
+      required List<Map<String, String>> collectionSlots,
+      required int selectedSlotIndex,
+      required int selectedTipAmount,
+      required String discountCode,
+      required int selectedDeliveryAddressIndex,
+      required String paymentIntentID,
+      required String orderID,
+      required double selectedGBPxAmount,
+      required double selectedPPLAmount,
+      required bool transferringTokens,
+      required bool errorCompletingPayment,
+      required bool confirmedPayment}) {
     return _UserCartState(
       cartItems: cartItems,
       cartSubTotal: cartSubTotal,
@@ -35,6 +48,19 @@ class _$UserCartStateTearOff {
       cartTotal: cartTotal,
       cartDiscountPercent: cartDiscountPercent,
       cartDiscountComputed: cartDiscountComputed,
+      deliverySlots: deliverySlots,
+      collectionSlots: collectionSlots,
+      selectedSlotIndex: selectedSlotIndex,
+      selectedTipAmount: selectedTipAmount,
+      discountCode: discountCode,
+      selectedDeliveryAddressIndex: selectedDeliveryAddressIndex,
+      paymentIntentID: paymentIntentID,
+      orderID: orderID,
+      selectedGBPxAmount: selectedGBPxAmount,
+      selectedPPLAmount: selectedPPLAmount,
+      transferringTokens: transferringTokens,
+      errorCompletingPayment: errorCompletingPayment,
+      confirmedPayment: confirmedPayment,
     );
   }
 
@@ -54,6 +80,21 @@ mixin _$UserCartState {
   int get cartTotal => throw _privateConstructorUsedError;
   int get cartDiscountPercent => throw _privateConstructorUsedError;
   int get cartDiscountComputed => throw _privateConstructorUsedError;
+  List<Map<String, String>> get deliverySlots =>
+      throw _privateConstructorUsedError;
+  List<Map<String, String>> get collectionSlots =>
+      throw _privateConstructorUsedError;
+  int get selectedSlotIndex => throw _privateConstructorUsedError;
+  int get selectedTipAmount => throw _privateConstructorUsedError;
+  String get discountCode => throw _privateConstructorUsedError;
+  int get selectedDeliveryAddressIndex => throw _privateConstructorUsedError;
+  String get paymentIntentID => throw _privateConstructorUsedError;
+  String get orderID => throw _privateConstructorUsedError;
+  double get selectedGBPxAmount => throw _privateConstructorUsedError;
+  double get selectedPPLAmount => throw _privateConstructorUsedError;
+  bool get transferringTokens => throw _privateConstructorUsedError;
+  bool get errorCompletingPayment => throw _privateConstructorUsedError;
+  bool get confirmedPayment => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,7 +113,20 @@ abstract class $UserCartStateCopyWith<$Res> {
       int cartTax,
       int cartTotal,
       int cartDiscountPercent,
-      int cartDiscountComputed});
+      int cartDiscountComputed,
+      List<Map<String, String>> deliverySlots,
+      List<Map<String, String>> collectionSlots,
+      int selectedSlotIndex,
+      int selectedTipAmount,
+      String discountCode,
+      int selectedDeliveryAddressIndex,
+      String paymentIntentID,
+      String orderID,
+      double selectedGBPxAmount,
+      double selectedPPLAmount,
+      bool transferringTokens,
+      bool errorCompletingPayment,
+      bool confirmedPayment});
 }
 
 /// @nodoc
@@ -92,6 +146,19 @@ class _$UserCartStateCopyWithImpl<$Res>
     Object? cartTotal = freezed,
     Object? cartDiscountPercent = freezed,
     Object? cartDiscountComputed = freezed,
+    Object? deliverySlots = freezed,
+    Object? collectionSlots = freezed,
+    Object? selectedSlotIndex = freezed,
+    Object? selectedTipAmount = freezed,
+    Object? discountCode = freezed,
+    Object? selectedDeliveryAddressIndex = freezed,
+    Object? paymentIntentID = freezed,
+    Object? orderID = freezed,
+    Object? selectedGBPxAmount = freezed,
+    Object? selectedPPLAmount = freezed,
+    Object? transferringTokens = freezed,
+    Object? errorCompletingPayment = freezed,
+    Object? confirmedPayment = freezed,
   }) {
     return _then(_value.copyWith(
       cartItems: cartItems == freezed
@@ -118,6 +185,58 @@ class _$UserCartStateCopyWithImpl<$Res>
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
               as int,
+      deliverySlots: deliverySlots == freezed
+          ? _value.deliverySlots
+          : deliverySlots // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, String>>,
+      collectionSlots: collectionSlots == freezed
+          ? _value.collectionSlots
+          : collectionSlots // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, String>>,
+      selectedSlotIndex: selectedSlotIndex == freezed
+          ? _value.selectedSlotIndex
+          : selectedSlotIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedTipAmount: selectedTipAmount == freezed
+          ? _value.selectedTipAmount
+          : selectedTipAmount // ignore: cast_nullable_to_non_nullable
+              as int,
+      discountCode: discountCode == freezed
+          ? _value.discountCode
+          : discountCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedDeliveryAddressIndex: selectedDeliveryAddressIndex == freezed
+          ? _value.selectedDeliveryAddressIndex
+          : selectedDeliveryAddressIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      paymentIntentID: paymentIntentID == freezed
+          ? _value.paymentIntentID
+          : paymentIntentID // ignore: cast_nullable_to_non_nullable
+              as String,
+      orderID: orderID == freezed
+          ? _value.orderID
+          : orderID // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedGBPxAmount: selectedGBPxAmount == freezed
+          ? _value.selectedGBPxAmount
+          : selectedGBPxAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      selectedPPLAmount: selectedPPLAmount == freezed
+          ? _value.selectedPPLAmount
+          : selectedPPLAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      transferringTokens: transferringTokens == freezed
+          ? _value.transferringTokens
+          : transferringTokens // ignore: cast_nullable_to_non_nullable
+              as bool,
+      errorCompletingPayment: errorCompletingPayment == freezed
+          ? _value.errorCompletingPayment
+          : errorCompletingPayment // ignore: cast_nullable_to_non_nullable
+              as bool,
+      confirmedPayment: confirmedPayment == freezed
+          ? _value.confirmedPayment
+          : confirmedPayment // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -135,7 +254,20 @@ abstract class _$UserCartStateCopyWith<$Res>
       int cartTax,
       int cartTotal,
       int cartDiscountPercent,
-      int cartDiscountComputed});
+      int cartDiscountComputed,
+      List<Map<String, String>> deliverySlots,
+      List<Map<String, String>> collectionSlots,
+      int selectedSlotIndex,
+      int selectedTipAmount,
+      String discountCode,
+      int selectedDeliveryAddressIndex,
+      String paymentIntentID,
+      String orderID,
+      double selectedGBPxAmount,
+      double selectedPPLAmount,
+      bool transferringTokens,
+      bool errorCompletingPayment,
+      bool confirmedPayment});
 }
 
 /// @nodoc
@@ -157,6 +289,19 @@ class __$UserCartStateCopyWithImpl<$Res>
     Object? cartTotal = freezed,
     Object? cartDiscountPercent = freezed,
     Object? cartDiscountComputed = freezed,
+    Object? deliverySlots = freezed,
+    Object? collectionSlots = freezed,
+    Object? selectedSlotIndex = freezed,
+    Object? selectedTipAmount = freezed,
+    Object? discountCode = freezed,
+    Object? selectedDeliveryAddressIndex = freezed,
+    Object? paymentIntentID = freezed,
+    Object? orderID = freezed,
+    Object? selectedGBPxAmount = freezed,
+    Object? selectedPPLAmount = freezed,
+    Object? transferringTokens = freezed,
+    Object? errorCompletingPayment = freezed,
+    Object? confirmedPayment = freezed,
   }) {
     return _then(_UserCartState(
       cartItems: cartItems == freezed
@@ -183,6 +328,58 @@ class __$UserCartStateCopyWithImpl<$Res>
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
               as int,
+      deliverySlots: deliverySlots == freezed
+          ? _value.deliverySlots
+          : deliverySlots // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, String>>,
+      collectionSlots: collectionSlots == freezed
+          ? _value.collectionSlots
+          : collectionSlots // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, String>>,
+      selectedSlotIndex: selectedSlotIndex == freezed
+          ? _value.selectedSlotIndex
+          : selectedSlotIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedTipAmount: selectedTipAmount == freezed
+          ? _value.selectedTipAmount
+          : selectedTipAmount // ignore: cast_nullable_to_non_nullable
+              as int,
+      discountCode: discountCode == freezed
+          ? _value.discountCode
+          : discountCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedDeliveryAddressIndex: selectedDeliveryAddressIndex == freezed
+          ? _value.selectedDeliveryAddressIndex
+          : selectedDeliveryAddressIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      paymentIntentID: paymentIntentID == freezed
+          ? _value.paymentIntentID
+          : paymentIntentID // ignore: cast_nullable_to_non_nullable
+              as String,
+      orderID: orderID == freezed
+          ? _value.orderID
+          : orderID // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedGBPxAmount: selectedGBPxAmount == freezed
+          ? _value.selectedGBPxAmount
+          : selectedGBPxAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      selectedPPLAmount: selectedPPLAmount == freezed
+          ? _value.selectedPPLAmount
+          : selectedPPLAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      transferringTokens: transferringTokens == freezed
+          ? _value.transferringTokens
+          : transferringTokens // ignore: cast_nullable_to_non_nullable
+              as bool,
+      errorCompletingPayment: errorCompletingPayment == freezed
+          ? _value.errorCompletingPayment
+          : errorCompletingPayment // ignore: cast_nullable_to_non_nullable
+              as bool,
+      confirmedPayment: confirmedPayment == freezed
+          ? _value.confirmedPayment
+          : confirmedPayment // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -197,7 +394,20 @@ class _$_UserCartState extends _UserCartState {
       required this.cartTax,
       required this.cartTotal,
       required this.cartDiscountPercent,
-      required this.cartDiscountComputed})
+      required this.cartDiscountComputed,
+      required this.deliverySlots,
+      required this.collectionSlots,
+      required this.selectedSlotIndex,
+      required this.selectedTipAmount,
+      required this.discountCode,
+      required this.selectedDeliveryAddressIndex,
+      required this.paymentIntentID,
+      required this.orderID,
+      required this.selectedGBPxAmount,
+      required this.selectedPPLAmount,
+      required this.transferringTokens,
+      required this.errorCompletingPayment,
+      required this.confirmedPayment})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>
@@ -215,10 +425,36 @@ class _$_UserCartState extends _UserCartState {
   final int cartDiscountPercent;
   @override
   final int cartDiscountComputed;
+  @override
+  final List<Map<String, String>> deliverySlots;
+  @override
+  final List<Map<String, String>> collectionSlots;
+  @override
+  final int selectedSlotIndex;
+  @override
+  final int selectedTipAmount;
+  @override
+  final String discountCode;
+  @override
+  final int selectedDeliveryAddressIndex;
+  @override
+  final String paymentIntentID;
+  @override
+  final String orderID;
+  @override
+  final double selectedGBPxAmount;
+  @override
+  final double selectedPPLAmount;
+  @override
+  final bool transferringTokens;
+  @override
+  final bool errorCompletingPayment;
+  @override
+  final bool confirmedPayment;
 
   @override
   String toString() {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedSlotIndex: $selectedSlotIndex, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, selectedDeliveryAddressIndex: $selectedDeliveryAddressIndex, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment)';
   }
 
   @override
@@ -241,8 +477,48 @@ class _$_UserCartState extends _UserCartState {
                 const DeepCollectionEquality()
                     .equals(other.cartDiscountPercent, cartDiscountPercent)) &&
             (identical(other.cartDiscountComputed, cartDiscountComputed) ||
+                const DeepCollectionEquality().equals(
+                    other.cartDiscountComputed, cartDiscountComputed)) &&
+            (identical(other.deliverySlots, deliverySlots) ||
                 const DeepCollectionEquality()
-                    .equals(other.cartDiscountComputed, cartDiscountComputed)));
+                    .equals(other.deliverySlots, deliverySlots)) &&
+            (identical(other.collectionSlots, collectionSlots) ||
+                const DeepCollectionEquality()
+                    .equals(other.collectionSlots, collectionSlots)) &&
+            (identical(other.selectedSlotIndex, selectedSlotIndex) ||
+                const DeepCollectionEquality()
+                    .equals(other.selectedSlotIndex, selectedSlotIndex)) &&
+            (identical(other.selectedTipAmount, selectedTipAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.selectedTipAmount, selectedTipAmount)) &&
+            (identical(other.discountCode, discountCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.discountCode, discountCode)) &&
+            (identical(other.selectedDeliveryAddressIndex, selectedDeliveryAddressIndex) ||
+                const DeepCollectionEquality().equals(
+                    other.selectedDeliveryAddressIndex,
+                    selectedDeliveryAddressIndex)) &&
+            (identical(other.paymentIntentID, paymentIntentID) ||
+                const DeepCollectionEquality()
+                    .equals(other.paymentIntentID, paymentIntentID)) &&
+            (identical(other.orderID, orderID) ||
+                const DeepCollectionEquality()
+                    .equals(other.orderID, orderID)) &&
+            (identical(other.selectedGBPxAmount, selectedGBPxAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.selectedGBPxAmount, selectedGBPxAmount)) &&
+            (identical(other.selectedPPLAmount, selectedPPLAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.selectedPPLAmount, selectedPPLAmount)) &&
+            (identical(other.transferringTokens, transferringTokens) ||
+                const DeepCollectionEquality()
+                    .equals(other.transferringTokens, transferringTokens)) &&
+            (identical(other.errorCompletingPayment, errorCompletingPayment) ||
+                const DeepCollectionEquality().equals(
+                    other.errorCompletingPayment, errorCompletingPayment)) &&
+            (identical(other.confirmedPayment, confirmedPayment) ||
+                const DeepCollectionEquality()
+                    .equals(other.confirmedPayment, confirmedPayment)));
   }
 
   @override
@@ -253,7 +529,20 @@ class _$_UserCartState extends _UserCartState {
       const DeepCollectionEquality().hash(cartTax) ^
       const DeepCollectionEquality().hash(cartTotal) ^
       const DeepCollectionEquality().hash(cartDiscountPercent) ^
-      const DeepCollectionEquality().hash(cartDiscountComputed);
+      const DeepCollectionEquality().hash(cartDiscountComputed) ^
+      const DeepCollectionEquality().hash(deliverySlots) ^
+      const DeepCollectionEquality().hash(collectionSlots) ^
+      const DeepCollectionEquality().hash(selectedSlotIndex) ^
+      const DeepCollectionEquality().hash(selectedTipAmount) ^
+      const DeepCollectionEquality().hash(discountCode) ^
+      const DeepCollectionEquality().hash(selectedDeliveryAddressIndex) ^
+      const DeepCollectionEquality().hash(paymentIntentID) ^
+      const DeepCollectionEquality().hash(orderID) ^
+      const DeepCollectionEquality().hash(selectedGBPxAmount) ^
+      const DeepCollectionEquality().hash(selectedPPLAmount) ^
+      const DeepCollectionEquality().hash(transferringTokens) ^
+      const DeepCollectionEquality().hash(errorCompletingPayment) ^
+      const DeepCollectionEquality().hash(confirmedPayment);
 
   @JsonKey(ignore: true)
   @override
@@ -273,7 +562,20 @@ abstract class _UserCartState extends UserCartState {
       required int cartTax,
       required int cartTotal,
       required int cartDiscountPercent,
-      required int cartDiscountComputed}) = _$_UserCartState;
+      required int cartDiscountComputed,
+      required List<Map<String, String>> deliverySlots,
+      required List<Map<String, String>> collectionSlots,
+      required int selectedSlotIndex,
+      required int selectedTipAmount,
+      required String discountCode,
+      required int selectedDeliveryAddressIndex,
+      required String paymentIntentID,
+      required String orderID,
+      required double selectedGBPxAmount,
+      required double selectedPPLAmount,
+      required bool transferringTokens,
+      required bool errorCompletingPayment,
+      required bool confirmedPayment}) = _$_UserCartState;
   _UserCartState._() : super._();
 
   factory _UserCartState.fromJson(Map<String, dynamic> json) =
@@ -291,6 +593,34 @@ abstract class _UserCartState extends UserCartState {
   int get cartDiscountPercent => throw _privateConstructorUsedError;
   @override
   int get cartDiscountComputed => throw _privateConstructorUsedError;
+  @override
+  List<Map<String, String>> get deliverySlots =>
+      throw _privateConstructorUsedError;
+  @override
+  List<Map<String, String>> get collectionSlots =>
+      throw _privateConstructorUsedError;
+  @override
+  int get selectedSlotIndex => throw _privateConstructorUsedError;
+  @override
+  int get selectedTipAmount => throw _privateConstructorUsedError;
+  @override
+  String get discountCode => throw _privateConstructorUsedError;
+  @override
+  int get selectedDeliveryAddressIndex => throw _privateConstructorUsedError;
+  @override
+  String get paymentIntentID => throw _privateConstructorUsedError;
+  @override
+  String get orderID => throw _privateConstructorUsedError;
+  @override
+  double get selectedGBPxAmount => throw _privateConstructorUsedError;
+  @override
+  double get selectedPPLAmount => throw _privateConstructorUsedError;
+  @override
+  bool get transferringTokens => throw _privateConstructorUsedError;
+  @override
+  bool get errorCompletingPayment => throw _privateConstructorUsedError;
+  @override
+  bool get confirmedPayment => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserCartStateCopyWith<_UserCartState> get copyWith =>

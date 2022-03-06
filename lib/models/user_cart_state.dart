@@ -16,6 +16,19 @@ class UserCartState with _$UserCartState {
     required int cartTotal,
     required int cartDiscountPercent,
     required int cartDiscountComputed,
+    required List<Map<String, String>> deliverySlots,
+    required List<Map<String, String>> collectionSlots,
+    required int selectedSlotIndex,
+    required int selectedTipAmount,
+    required String discountCode,
+    required int selectedDeliveryAddressIndex,
+    required String paymentIntentID,
+    required String orderID,
+    required double selectedGBPxAmount,
+    required double selectedPPLAmount,
+    required bool transferringTokens,
+    required bool errorCompletingPayment,
+    required bool confirmedPayment,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(
@@ -25,6 +38,19 @@ class UserCartState with _$UserCartState {
         cartTotal: 0,
         cartDiscountPercent: 0,
         cartDiscountComputed: 0,
+        deliverySlots: [],
+        collectionSlots: [],
+        selectedSlotIndex: 0,
+        selectedTipAmount: 0,
+        discountCode: "",
+        selectedDeliveryAddressIndex: 1,
+        paymentIntentID: "",
+        orderID: "",
+        selectedGBPxAmount: 0.0,
+        selectedPPLAmount: 0.0,
+        transferringTokens: false,
+        errorCompletingPayment: false,
+        confirmedPayment: false,
       );
 
   factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);
