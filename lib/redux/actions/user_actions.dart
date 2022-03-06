@@ -621,7 +621,7 @@ ThunkAction updateUserAvatarCall(ImageSource source) {
 ThunkAction addNewDeliveryAddress(DeliveryAddresses newAddress) {
   return (Store store) {
     List<DeliveryAddresses> listOfAddresses =
-        store.state.userState.listOfDeliveryAddresses;
+        List.from(store.state.userState.listOfDeliveryAddresses);
 
     int index = listOfAddresses
         .indexWhere((element) => element.internalID == newAddress.internalID);
