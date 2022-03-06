@@ -1,6 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux/redux.dart';
 
@@ -21,18 +30,115 @@ class UpdateComputedCartValues {
 
 class UpdateCartDiscount {
   final int cartDiscountPercent;
-  UpdateCartDiscount(this.cartDiscountPercent);
+  final String discountCode;
+  UpdateCartDiscount(this.cartDiscountPercent, this.discountCode);
 }
 
 class ClearCart {
   ClearCart();
 }
 
-ThunkAction updateCartDiscount(int newCartDiscount) {
+class UpdateSlots {
+  final List<Map<String, String>> deliverySlots;
+  final List<Map<String, String>> collectionSlots;
+
+  UpdateSlots(this.deliverySlots, this.collectionSlots);
+}
+
+class UpdateDeliveryAddressIndex {
+  final int indexOfAddress;
+  UpdateDeliveryAddressIndex(this.indexOfAddress);
+}
+
+class UpdateSlotIndex {
+  final int index;
+  UpdateSlotIndex(this.index);
+}
+
+class UpdateTipAmount {
+  final int tipAmount;
+  UpdateTipAmount(this.tipAmount);
+}
+
+class UpdateDeliveryAddress {
+  final int index;
+  UpdateDeliveryAddress(this.index);
+}
+
+class CreateOrder {
+  final String orderID;
+  final String paymentIntentID;
+  CreateOrder(this.orderID, this.paymentIntentID);
+}
+
+class ToggleTransferPayment {
+  ToggleTransferPayment();
+}
+
+class ToggleError {
+  ToggleError();
+}
+
+class ToggleConfirmed {
+  ToggleConfirmed();
+}
+
+class UpdateSelectedAmounts {
+  final double GBPxAmount;
+  final double PPLAmount;
+  UpdateSelectedAmounts(this.GBPxAmount, this.PPLAmount);
+}
+
+ThunkAction getFullfillmentMethods() {
   return (Store store) async {
     try {
-      store.dispatch(UpdateCartDiscount(newCartDiscount));
+      List<Map<String, String>> deliverySlots =
+          await vegiEatsService.getDeliverySlots();
+
+      List<Map<String, String>> collectionSlots =
+          await vegiEatsService.getCollectionSlots();
+
+      store.dispatch(UpdateSlots(deliverySlots, collectionSlots));
+    } catch (e, s) {
+      log.error('ERROR - getFullfillmentMethods $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - getFullfillmentMethods $e',
+      );
+    }
+  };
+}
+
+ThunkAction updateCartTip(int newTip) {
+  return (Store store) async {
+    try {
+      store.dispatch(UpdateTipAmount(newTip));
       store.dispatch(computeCartTotals());
+    } catch (e, s) {
+      log.error('ERROR - updateCartTip $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - updateCartTip $e',
+      );
+    }
+  };
+}
+
+ThunkAction updateCartDiscount(String newDiscountCode) {
+  return (Store store) async {
+    try {
+      if (newDiscountCode == 'REMOVE') {
+        store.dispatch(UpdateCartDiscount(0, ""));
+        store.dispatch(computeCartTotals());
+      } else {
+        int discountPercent =
+            await vegiEatsService.checkDiscountCode(newDiscountCode);
+
+        store.dispatch(UpdateCartDiscount(discountPercent, newDiscountCode));
+        store.dispatch(computeCartTotals());
+      }
     } catch (e, s) {
       log.error('ERROR - updateComputeUserCart $e');
       await Sentry.captureException(
@@ -106,6 +212,7 @@ ThunkAction computeCartTotals() {
       int cartTotal = 0;
       int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
       int cartDiscountComputed = 0;
+      int cartTip = store.state.cartState.selectedTipAmount * 100;
 
       cartItems.forEach((element) {
         cartSubTotal += element.totalItemPrice;
@@ -115,11 +222,170 @@ ThunkAction computeCartTotals() {
 
       cartTax = ((cartSubTotal - cartDiscountComputed) * 5) ~/ 100;
 
-      cartTotal = (cartSubTotal + cartTax) - cartDiscountComputed;
+      cartTotal = (cartSubTotal + cartTax + cartTip) - cartDiscountComputed;
 
       store.dispatch(UpdateComputedCartValues(
           cartSubTotal, cartTax, cartTotal, cartDiscountComputed));
     } catch (e, s) {
+      log.error('ERROR - updateComputeUserCart $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - updateComputeUserCart $e',
+      );
+    }
+  };
+}
+
+ThunkAction prepareAndSendOrder() {
+  return (Store store) async {
+    try {
+      DeliveryAddresses selectedAddress =
+          store.state.userState.listOfDeliveryAddresses[
+              store.state.cartState.selectedDeliveryAddressIndex];
+
+      bool isDelivery = store.state.cartState.selectedDeliveryAddressIndex == 0
+          ? false
+          : true;
+
+      Map<String, dynamic> orderObject = {
+        "items": store.state.cartState.cartItems
+            .map(
+              (e) => {
+                "id": int.parse(e.menuItem.menuID),
+                "options": e.selectedProductOptions.map(
+                  (key, value) =>
+                      MapEntry<String, int>(key.toString(), value.optionID),
+                ),
+              },
+            )
+            .toList(),
+        "address": {
+          "name": store.state.userState.displayName,
+          "phoneNumber": store.state.userState.phoneNumber,
+          "email": store.state.userState.email == ""
+              ? "surti.huss@gmail.com"
+              : store.state.userState.email,
+          "lineOne": selectedAddress.houseNumber,
+          "lineTwo":
+              selectedAddress.buildingName + ", " + selectedAddress.townCity,
+          "postCode": selectedAddress.postalCode,
+          "deliveryInstructions": " ",
+        },
+        "total": store.state.cartState.cartTotal,
+        "marketingOptIn": false,
+        "discountCode": store.state.cartState.discountCode,
+        "vendor": 1,
+        "fulfilmentMethod": isDelivery ? 1 : 0,
+        "fulfilmentSlotFrom": isDelivery
+            ? formatDateForOrderObject(store
+                .state
+                .cartState
+                .deliverySlots[store.state.cartState.selectedSlotIndex]
+                .entries
+                .first
+                .value)
+            : formatDateForOrderObject(store
+                .state
+                .cartState
+                .collectionSlots[store.state.cartState.selectedSlotIndex]
+                .entries
+                .first
+                .value),
+        "fulfilmentSlotTo": isDelivery
+            ? formatDateForOrderObject(store
+                .state
+                .cartState
+                .deliverySlots[store.state.cartState.selectedSlotIndex]
+                .entries
+                .last
+                .value)
+            : formatDateForOrderObject(store
+                .state
+                .cartState
+                .collectionSlots[store.state.cartState.selectedSlotIndex]
+                .entries
+                .last
+                .value),
+      };
+
+      print(json.encode(orderObject).toString());
+
+      Map result = await vegiEatsService.createOrder(orderObject);
+
+      store.dispatch(CreateOrder(result['orderID'], result['paymentIntentID']));
+
+      print(result);
+    } catch (e, s) {
+      log.error('ERROR - prepareAndSendOrder $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - prepareAndSendOrder $e',
+      );
+    }
+  };
+}
+
+ThunkAction sendTokenPayment() {
+  return (Store store) async {
+    try {
+      //Set loading to true
+      store.dispatch(ToggleTransferPayment());
+
+      //Get tokens for GBPx and PPL
+      Token GBPxToken = store.state.cashWalletState.tokens.values.firstWhere(
+        (token) =>
+            token.symbol.toLowerCase() == "GBPx".toString().toLowerCase(),
+      );
+
+      Token PPLToken = store.state.cashWalletState.tokens.values.firstWhere(
+        (token) => token.symbol.toLowerCase() == "PPL".toString().toLowerCase(),
+      );
+
+      //If Selected GBPx amount is not 0, transfer GBPx
+      dynamic GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
+          ? await api.tokenTransfer(
+              fuseWeb3!,
+              store.state.userState.walletAddress,
+              GBPxToken.address,
+              "receiverAddress",
+              store.state.cartState.selectedGBPxAmount,
+              externalId: store.state.cartState.paymentIntentID,
+            )
+          : null;
+
+      print(GBPxResponse);
+
+      // If Selected PPL Amount is not 0, transfer PPL
+      dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
+          ? await api.tokenTransfer(
+              fuseWeb3!,
+              store.state.userState.walletAddress,
+              PPLToken.address,
+              "receiverAddress",
+              store.state.cartState.selectedPPLAmount,
+              externalId: store.state.cartState.paymentIntentID,
+            )
+          : null;
+
+      print(PPLResponse);
+
+      //Make periodic API calls to check the order status
+      //If status is paid, then set loading = false, and confirmed = true
+
+      Timer.periodic(const Duration(seconds: 2), (timer) async {
+        final response = await vegiEatsService
+            .checkOrderStatus(store.state.cartState.orderID);
+
+        if (response['paymentState'] == "paid") {
+          store.dispatch(ToggleTransferPayment());
+          store.dispatch(ToggleConfirmed());
+          timer.cancel();
+        }
+      });
+    } catch (e, s) {
+      store.dispatch(ToggleError());
       log.error('ERROR - updateComputeUserCart $e');
       await Sentry.captureException(
         e,
