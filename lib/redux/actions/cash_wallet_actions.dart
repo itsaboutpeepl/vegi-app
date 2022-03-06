@@ -1406,3 +1406,31 @@ ThunkAction sendTokenFromWebViewCall(
     }
   };
 }
+
+ThunkAction sendTokenFromPeeplPaySheet({
+  required String currency,
+  required String receiverAddress,
+  required double tokensAmount,
+  required String orderId,
+}) {
+  return (Store store) async {
+    try {
+      Token token = store.state.cashWalletState.tokens.values.firstWhere(
+        (token) =>
+            token.symbol.toLowerCase() == currency.toString().toLowerCase(),
+      );
+      String walletAddress = store.state.userState.walletAddress;
+      dynamic response = await api.tokenTransfer(
+        fuseWeb3!,
+        walletAddress,
+        token.address,
+        receiverAddress,
+        tokensAmount,
+        externalId: orderId,
+      );
+      //Create a call to check if the payment is gone through
+    } catch (e) {
+      log.error('ERROR - sendTokenFromWebViewCall $e');
+    }
+  };
+}
