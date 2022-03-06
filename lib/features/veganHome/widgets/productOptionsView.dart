@@ -55,6 +55,11 @@ class _ProductOptionsCategoryViewState
   Widget build(BuildContext context) {
     return StoreConnector<AppState, DetailMenuItem>(
       converter: DetailMenuItem.fromStore,
+      onInit: (store) {
+        store.state.menuItemState.selectedProductOptionsForCategory[widget
+            .productOptionsCategory
+            .categoryID] = widget.productOptionsCategory.listOfOptions[0];
+      },
       builder: (_, viewmodel) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
