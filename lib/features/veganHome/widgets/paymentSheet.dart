@@ -4,9 +4,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/paymentSheet.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
 
 class PaymentSheet extends StatefulWidget {
@@ -17,292 +18,335 @@ class PaymentSheet extends StatefulWidget {
 }
 
 class _PaymentSheetState extends State<PaymentSheet> {
-  double _pplSliderValue = 0.0;
-  double _amountToBePaid = 0;
   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, UserCartViewModel>(
+    return StoreConnector<AppState, PaymentSheetViewModel>(
       distinct: true,
-      converter: UserCartViewModel.fromStore,
+      converter: PaymentSheetViewModel.fromStore,
+      builder: (_, viewmodel) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 20, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Peepl Pay",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  IconButton(
+                    splashRadius: 25,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.grey[800],
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+              child: Text(
+                "Current Wallet Balance",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[800],
+              ),
+              height: 85,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        viewmodel.gbpXBalance,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Text(
+                        "GBPx",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                  VerticalDivider(
+                    width: 20,
+                    thickness: 2,
+                    color: Colors.grey[600],
+                    indent: 15,
+                    endIndent: 15,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        viewmodel.pplBalance,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Image.asset(
+                        "assets/images/avatar-ppl-red.png",
+                        width: 25,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            PPLSlider(),
+            Spacer(),
+            viewmodel.transferringTokens
+                ? CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: ShimmerButton(
+                        buttonContent: Center(
+                          child: Text(
+                            "Pay Now",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                        buttonAction: () async {
+                          final BiometricAuth biometricAuth =
+                              await BiometricUtils.getAvailableBiometrics();
+                          final String biometric =
+                              BiometricUtils.getBiometricString(
+                            context,
+                            biometricAuth,
+                          );
+                          await BiometricUtils
+                              .showDefaultPopupCheckBiometricAuth(
+                            message:
+                                '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
+                            callback: (bool result) {
+                              result
+                                  ? (double.parse(viewmodel.gbpXBalance) <=
+                                          viewmodel.selectedGBPxAmount)
+                                      ? context.router.push(TopUpScreen())
+                                      : viewmodel.sendToken()
+                                  : context.router.pop();
+                            },
+                          );
+                        },
+                        baseColor: Colors.grey[800]!,
+                        highlightColor: Colors.grey[850]!),
+                  ),
+            Spacer()
+          ],
+        );
+      },
+    );
+  }
+}
+
+void paymentHandler(double walletBalance, double actualAmount) {
+  //What do i need to do?
+
+  // I have a payment intent ID
+  // I have payment final amounts in GBPx and PPL
+  // Check if the amounts are actually there in the wallet
+  // Set Loading to true
+  // If PPL or GBPX payment amount is zero, dont make any payment in PPL/GBPx
+  // Make Payment for payment amount in GBPx
+  // Make Payment for payment amount in PPL
+  // Error? => show Error
+  // Confirmed => Show Screen
+}
+
+class PPLSlider extends StatefulWidget {
+  const PPLSlider({Key? key}) : super(key: key);
+
+  @override
+  State<PPLSlider> createState() => _PPLSliderState();
+}
+
+class _PPLSliderState extends State<PPLSlider> {
+  double _pplSliderValue = 0.0;
+  double _amountToBePaid = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, PaymentSheetViewModel>(
+      converter: PaymentSheetViewModel.fromStore,
+      distinct: true,
       onInit: (store) {
         _amountToBePaid = store.state.cartState.cartTotal.toDouble();
       },
       builder: (_, viewmodel) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.53,
-          width: double.infinity,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 20, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Peepl Pay",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w800),
-                    ),
-                    IconButton(
-                      splashRadius: 25,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey[800],
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            size: 20,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: (viewmodel.pplBalance != "0.0"
+                    ? [
+                        SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: 5.0,
+                            trackShape: RoundedRectSliderTrackShape(),
+                            activeTrackColor: Colors.grey[800],
+                            inactiveTrackColor: Colors.grey[400],
+                            thumbShape: RoundSliderThumbShape(
+                              enabledThumbRadius: 9.0,
+                              pressedElevation: 8.0,
+                            ),
+                            thumbColor: Colors.white,
+                            overlayColor: Colors.grey.withOpacity(0.2),
+                            overlayShape:
+                                RoundSliderOverlayShape(overlayRadius: 0.0),
+                          ),
+                          child: Slider(
+                            min: 0.0,
+                            max: _amountToBePaid * 10 <
+                                    3294 //if amount to be paid is less than ppl balance then the max is amount to be paid * 10 otherwise max is wallet balance
+                                ? _amountToBePaid * 100
+                                : 3294,
+                            value: _pplSliderValue,
+                            divisions: 100,
+                            onChangeEnd: (value) {
+                              viewmodel.updateSelectedValues(
+                                (_amountToBePaid / 100) -
+                                    (_pplSliderValue / 1000),
+                                (_pplSliderValue / 10),
+                              );
+                            },
+                            onChanged: (value) {
+                              setState(
+                                () {
+                                  _pplSliderValue = value;
+                                },
+                              );
+                            },
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                child: Text(
-                  "Current Wallet Balance",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Slide to use your Peepl Token balance",
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: 14,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ]
+                    : <Widget>[SizedBox.shrink()]) +
+                [
+                  Text(
+                    "Pay Delifonesca",
+                    style: TextStyle(
+                      color: Colors.grey[300],
+                      fontSize: 14,
+                      fontWeight: FontWeight.w200,
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[800],
-                ),
-                height: 100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      text:
+                          "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)},",
                       children: [
-                        Text(
-                          "543.1",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          "GBPx",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                        TextSpan(
+                            text:
+                                " PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}")
                       ],
                     ),
-                    VerticalDivider(
-                      width: 20,
-                      thickness: 2,
-                      color: Colors.grey[600],
-                      indent: 5,
-                      endIndent: 5,
+                    style: TextStyle(
+                      color: Colors.grey[300],
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      text: "Total ${cFPrice(viewmodel.cartTotal)} | ",
                       children: [
-                        Text(
-                          "329.4",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Image.asset(
-                          "assets/images/avatar-ppl-red.png",
-                          width: 35,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  width: double.infinity,
-                  color: Colors.grey[800],
-                  child: Column(
-                    children: [
-                      Text(
-                        "Pay Delifonesca",
-                        style: TextStyle(
-                          color: Colors.grey[300],
-                          fontSize: 14,
-                          fontWeight: FontWeight.w200,
-                        ),
-                      ),
-                      Text(
-                        "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)}, PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}",
-                        style: TextStyle(
-                          color: Colors.grey[300],
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 3,
-                      ),
-                      // Text(
-                      //   "Total Amount is ${cFPrice(viewmodel.cartTotal)}",
-                      //   style: TextStyle(
-                      //     color: Colors.grey[300],
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.w200,
-                      //   ),
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Total ${cFPrice(viewmodel.cartTotal)} | ",
-                            style: TextStyle(
-                              color: Colors.grey[300],
-                              fontSize: 16,
-                              fontWeight: FontWeight.w200,
-                            ),
-                          ),
-                          Text(
-                            "Earn ${(((_amountToBePaid / 100) - (_pplSliderValue / 1000)) * 5).toStringAsFixed(2)} ",
-                            style: TextStyle(
-                              color: Colors.grey[300],
-                              fontSize: 16,
-                              fontWeight: FontWeight.w200,
-                            ),
-                          ),
-                          Image.asset(
+                        TextSpan(
+                            text:
+                                "Earn ${(((_amountToBePaid / 100) - (_pplSliderValue / 1000)) * 5).toStringAsFixed(2)} "),
+                        WidgetSpan(
+                          child: Image.asset(
                             "assets/images/avatar-ppl-red.png",
                             width: 25,
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          trackHeight: 5.0,
-                          trackShape: RoundedRectSliderTrackShape(),
-                          activeTrackColor: Colors.grey[900],
-                          inactiveTrackColor: Colors.grey[400],
-                          thumbShape: RoundSliderThumbShape(
-                            enabledThumbRadius: 9.0,
-                            pressedElevation: 8.0,
-                          ),
-                          thumbColor: Colors.white,
-                          overlayColor: Colors.grey.withOpacity(0.2),
-                          overlayShape:
-                              RoundSliderOverlayShape(overlayRadius: 0.0),
-                        ),
-                        child: Slider(
-                          min: 0.0,
-                          max: _amountToBePaid * 10 <
-                                  3294 //if amount to be paid is less than ppl balance then the max is amount to be paid * 10 otherwise max is wallet balance
-                              ? _amountToBePaid * 100
-                              : 3294,
-                          value: _pplSliderValue,
-                          divisions: 100,
-                          onChanged: (value) {
-                            setState(
-                              () {
-                                _pplSliderValue = value;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      Text(
-                        "Slide to use your Peepl Token balance",
-                        style: TextStyle(
-                          color: Colors.grey[300],
-                          fontSize: 14,
-                          fontWeight: FontWeight.w200,
-                        ),
-                      ),
-                      Spacer(),
-                      Center(
-                        child: _isLoading
-                            ? CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : ElevatedButton(
-                                child: Text("Pay Now"),
-                                onPressed: () async {
-                                  final BiometricAuth biometricAuth =
-                                      await BiometricUtils
-                                          .getAvailableBiometrics();
-                                  final String biometric =
-                                      BiometricUtils.getBiometricString(
-                                    context,
-                                    biometricAuth,
-                                  );
-                                  await BiometricUtils
-                                      .showDefaultPopupCheckBiometricAuth(
-                                    message:
-                                        '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
-                                    callback: (bool result) {
-                                      result
-                                          ? setState(() {
-                                              _isLoading = true;
-
-                                              Future.delayed(
-                                                  Duration(seconds: 3), () {
-                                                context.router.push(
-                                                    OrderConfirmedScreen());
-                                              });
-                                            })
-                                          : null;
-                                    },
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 15),
-                                  primary: Colors.grey[900],
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: "Europa",
-                                  ),
-                                ),
-                              ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
+                    style: TextStyle(
+                      color: Colors.grey[300],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w200,
+                    ),
                   ),
-                ),
-              ),
-            ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
           ),
         );
       },
