@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/SingleCartItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/emptyStatePage.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 class ToteScreen extends StatefulWidget {
@@ -23,6 +24,9 @@ class _ToteScreenState extends State<ToteScreen> {
     return StoreConnector<AppState, UserCartViewModel>(
       converter: UserCartViewModel.fromStore,
       distinct: true,
+      onInit: (store) {
+        store.dispatch(getFullfillmentMethods());
+      },
       builder: (_, viewmodel) {
         return Scaffold(
           appBar: CustomAppBar(
@@ -73,6 +77,8 @@ class _ToteScreenState extends State<ToteScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 20),
                             child: ShimmerButton(
+                              baseColor: Colors.yellow,
+                              highlightColor: Colors.yellow[100]!,
                               buttonAction: () =>
                                   context.router.push(CheckoutScreen()),
                               buttonContent: Row(
