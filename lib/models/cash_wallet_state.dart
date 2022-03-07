@@ -25,15 +25,7 @@ Map<String, Token> tokensFromJson(Map<String, dynamic>? tokens) =>
                 e as Map<String, dynamic>,
               ),
             ),
-          )
-      ..putIfAbsent(
-        Addresses.PPL_TOKEN_ADDRESS,
-        () => PeeplToken.copyWith(),
-      )
-      ..putIfAbsent(
-        Addresses.GBPX_TOKEN_ADDRESS,
-        () => GBPxToken.copyWith(),
-      );
+          );
 
 Map<String, Community> communitiesFromJson(Map<String, dynamic>? list) {
   if (list == null) {
