@@ -12,24 +12,25 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:logger/logger.dart' as _i11;
 import 'package:package_info/package_info.dart' as _i13;
-import 'package:phone_number/phone_number.dart' as _i14;
+import 'package:phone_number/phone_number.dart' as _i15;
 import 'package:wallet_core/wallet_core.dart' as _i3;
 
 import '../../services/apis/explorer.dart' as _i5;
 import '../../services/apis/fuseswap.dart' as _i9;
 import '../../services/apis/market.dart' as _i12;
-import '../../services/apis/vegiEats.dart' as _i16;
-import '../../utils/log/log_it.dart' as _i17;
+import '../../services/apis/peeplPay.dart' as _i14;
+import '../../services/apis/vegiEats.dart' as _i17;
+import '../../utils/log/log_it.dart' as _i18;
 import '../../utils/onboard/Istrategy.dart' as _i10;
-import '../network/services.dart' as _i18;
-import '../network/web3.dart' as _i25;
-import '../router/routes.dart' as _i15;
-import 'dio.dart' as _i19;
-import 'firebase.dart' as _i20;
-import 'logger_di.dart' as _i22;
-import 'onboard.dart' as _i21;
-import 'package_info.dart' as _i23;
-import 'phone.dart' as _i24; // ignore_for_file: unnecessary_lambdas
+import '../network/services.dart' as _i19;
+import '../network/web3.dart' as _i26;
+import '../router/routes.dart' as _i16;
+import 'dio.dart' as _i20;
+import 'firebase.dart' as _i21;
+import 'logger_di.dart' as _i23;
+import 'onboard.dart' as _i22;
+import 'package_info.dart' as _i24;
+import 'phone.dart' as _i25; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -64,12 +65,14 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i12.Market>(() => _i12.Market(get<_i4.Dio>()));
   await gh.factoryAsync<_i13.PackageInfo>(() => packageInfoDi.packageInfo,
       preResolve: true);
-  gh.lazySingleton<_i14.PhoneNumberUtil>(() => phone.phoneNumberUtil);
-  gh.singleton<_i15.RootRouter>(servicesModule.rootRouter);
+  gh.lazySingleton<_i14.PeeplPaySerivce>(
+      () => _i14.PeeplPaySerivce(get<_i4.Dio>()));
+  gh.lazySingleton<_i15.PhoneNumberUtil>(() => phone.phoneNumberUtil);
+  gh.singleton<_i16.RootRouter>(servicesModule.rootRouter);
   gh.factory<String>(() => web3Di.defaultCommunityAddress,
       instanceName: 'defaultCommunityAddress');
-  gh.lazySingleton<_i16.VegiEatsService>(
-      () => _i16.VegiEatsService(get<_i4.Dio>()));
+  gh.lazySingleton<_i17.VegiEatsService>(
+      () => _i17.VegiEatsService(get<_i4.Dio>()));
   gh.factoryParam<_i3.Web3, Map<dynamic, dynamic>?, dynamic>(
       (walletModules, _) => web3Di.fuseWeb3(
           get<String>(instanceName: 'defaultCommunityAddress'), walletModules),
@@ -78,22 +81,22 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       (walletModules, _) => web3Di.ethereumWeb3(
           get<String>(instanceName: 'defaultCommunityAddress'), walletModules),
       instanceName: 'ethereumWeb3');
-  gh.lazySingleton<_i17.LogIt>(() => _i17.LogIt(get<_i11.Logger>()));
+  gh.lazySingleton<_i18.LogIt>(() => _i18.LogIt(get<_i11.Logger>()));
   return get;
 }
 
-class _$ServicesModule extends _i18.ServicesModule {}
+class _$ServicesModule extends _i19.ServicesModule {}
 
-class _$DioDi extends _i19.DioDi {}
+class _$DioDi extends _i20.DioDi {}
 
-class _$FirebaseInjectableModule extends _i20.FirebaseInjectableModule {}
+class _$FirebaseInjectableModule extends _i21.FirebaseInjectableModule {}
 
-class _$OnBoardStrategy extends _i21.OnBoardStrategy {}
+class _$OnBoardStrategy extends _i22.OnBoardStrategy {}
 
-class _$LoggerDi extends _i22.LoggerDi {}
+class _$LoggerDi extends _i23.LoggerDi {}
 
-class _$PackageInfoDi extends _i23.PackageInfoDi {}
+class _$PackageInfoDi extends _i24.PackageInfoDi {}
 
-class _$Phone extends _i24.Phone {}
+class _$Phone extends _i25.Phone {}
 
-class _$Web3Di extends _i25.Web3Di {}
+class _$Web3Di extends _i26.Web3Di {}

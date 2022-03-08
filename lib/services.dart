@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
 import 'package:vegan_liverpool/services/apis/explorer.dart';
 import 'package:vegan_liverpool/services/apis/fuseswap.dart';
+import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/vegiEats.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 import 'package:phone_number/phone_number.dart';
@@ -28,6 +29,8 @@ final API api = getIt<API>();
 final FuseSwapService fuseSwapService = getIt<FuseSwapService>();
 
 final VegiEatsService vegiEatsService = getIt<VegiEatsService>();
+
+final PeeplPaySerivce peeplPayService = getIt<PeeplPaySerivce>();
 
 final Graph graph = getIt<Graph>();
 
