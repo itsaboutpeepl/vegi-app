@@ -29,6 +29,9 @@ class WalletActions with _$WalletActions {
 
 class WalletActionFactory {
   static WalletAction create(Map<String, dynamic> json) {
+    print("Printing json");
+    print(json);
+
     json =
         json.containsKey('data') ? Map.from({...json, ...json['data']}) : json;
     json['timestamp'] =
