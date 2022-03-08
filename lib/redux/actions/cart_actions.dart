@@ -212,19 +212,22 @@ ThunkAction computeCartTotals() {
       int cartSubTotal = 0;
       int cartTax = 0;
       int cartTotal = 0;
+      int deliveryPrice = 0; //TODO: fetch from API
       int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
       int cartDiscountComputed = 0;
       int cartTip = store.state.cartState.selectedTipAmount * 100;
 
       cartItems.forEach((element) {
         cartSubTotal += element.totalItemPrice;
-      });
+      }); // add price of each order Item (which has options included)
 
-      cartDiscountComputed = (cartSubTotal * cartDiscountPercent) ~/ 100;
+      cartDiscountComputed =
+          (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
 
-      cartTax = ((cartSubTotal - cartDiscountComputed) * 5) ~/ 100;
+      //cartTax = ((cartSubTotal - cartDiscountComputed) * 5) ~/ 100;
 
-      cartTotal = (cartSubTotal + cartTax + cartTip) - cartDiscountComputed;
+      cartTotal = (cartSubTotal + cartTax + cartTip + deliveryPrice) -
+          cartDiscountComputed;
 
       store.dispatch(UpdateComputedCartValues(
           cartSubTotal, cartTax, cartTotal, cartDiscountComputed));
