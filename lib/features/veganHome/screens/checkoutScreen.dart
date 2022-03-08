@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/addressList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/paymentSheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
@@ -53,18 +54,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     baseColor: Colors.yellow,
                     highlightColor: Colors.yellow[100]!,
                     buttonAction: () {
-                      viewmodel.createOrder();
-                      showModalBottomSheet(
-                        backgroundColor: Colors.grey[900],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
+                      viewmodel.createOrder(() {
+                        //errorCallBack
+                        print("error took place");
+                        showErrorSnack(
+                            context: context, title: "Something went wrong");
+                      }, () {
+                        //successCallBack
+                        showModalBottomSheet(
+                          backgroundColor: Colors.grey[900],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
                           ),
-                        ),
-                        elevation: 5,
-                        context: context,
-                        builder: (context) => PaymentSheet(),
-                      );
+                          elevation: 5,
+                          context: context,
+                          builder: (context) => PaymentSheet(),
+                        );
+                      });
                     },
                     buttonContent: Row(
                       children: [
@@ -137,11 +145,13 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                 height: 50,
                 padding: EdgeInsets.only(bottom: 15, left: 10),
                 child: viewmodel.collectionSlots.isEmpty &&
-                        viewmodel.selectedDeliveryAddressIndex == 0
+                        viewmodel.selectedDeliveryAddressIndex ==
+                            0 //if collectionSlots are empty, and chosen method is collection (first list object)
                     ? Center(
                         child: Text("No Slots Avaliable"),
                       )
-                    : viewmodel.deliverySlots.isEmpty
+                    : viewmodel.deliverySlots
+                            .isEmpty //else if delivery slots are empty
                         ? Center(
                             child: Text("No Slots Avaliable"),
                           )
