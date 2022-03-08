@@ -8,7 +8,6 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
-import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux/redux.dart';
@@ -71,16 +70,19 @@ class CreateOrder {
   CreateOrder(this.orderID, this.paymentIntentID);
 }
 
-class ToggleTransferPayment {
-  ToggleTransferPayment();
+class SetTransferringPayment {
+  bool flag;
+  SetTransferringPayment(this.flag);
 }
 
-class ToggleError {
-  ToggleError();
+class SetError {
+  bool flag;
+  SetError(this.flag);
 }
 
-class ToggleConfirmed {
-  ToggleConfirmed();
+class SetConfirmed {
+  bool flag;
+  SetConfirmed(this.flag);
 }
 
 class UpdateSelectedAmounts {
@@ -237,17 +239,20 @@ ThunkAction computeCartTotals() {
   };
 }
 
-ThunkAction prepareAndSendOrder() {
+ThunkAction prepareAndSendOrder(
+    VoidCallback errorCallback, VoidCallback successCallback) {
   return (Store store) async {
     try {
+      //Prepare fields for order object
       DeliveryAddresses selectedAddress =
           store.state.userState.listOfDeliveryAddresses[
-              store.state.cartState.selectedDeliveryAddressIndex];
+              store.state.cartState.selectedDeliveryAddressIndex - 1];
 
       bool isDelivery = store.state.cartState.selectedDeliveryAddressIndex == 0
           ? false
           : true;
 
+      //Format Object for API
       Map<String, dynamic> orderObject = {
         "items": store.state.cartState.cartItems
             .map(
@@ -311,12 +316,34 @@ ThunkAction prepareAndSendOrder() {
 
       print(json.encode(orderObject).toString());
 
-      Map result = await vegiEatsService.createOrder(orderObject);
+      //Call create order API with prepared orderobject
+      Map result = await vegiEatsService
+          .createOrder(orderObject)
+          .timeout(Duration(seconds: 5), onTimeout: () {
+        return {}; //return empty map on timeout to trigger errorCallback
+      });
 
-      store.dispatch(CreateOrder(result['orderID'], result['paymentIntentID']));
+      if (result.isNotEmpty) {
+        //Call Peepl Pay API to start checking the paymentIntentID
+        Map checkResult = await peeplPayService
+            .startPaymentIntentCheck(result['paymentIntentID']);
 
-      print(result);
+        print("order result $result");
+
+        //Crosscheck the PaymentIntentID with the amount calculcated on device.
+        if (checkResult['paymentIntent']['amount'] == 2160) {
+          store.dispatch(CreateOrder(
+              result['orderID'].toString(), result['paymentIntentID']));
+          successCallback();
+        } else {
+          //check if it is better to just update the total value with the api returned or return an error
+          errorCallback();
+        }
+      } else {
+        errorCallback();
+      }
     } catch (e, s) {
+      errorCallback();
       log.error('ERROR - prepareAndSendOrder $e');
       await Sentry.captureException(
         e,
@@ -327,11 +354,11 @@ ThunkAction prepareAndSendOrder() {
   };
 }
 
-ThunkAction sendTokenPayment() {
+ThunkAction sendTokenPayment(VoidCallback successCallback) {
   return (Store store) async {
     try {
       //Set loading to true
-      store.dispatch(ToggleTransferPayment());
+      store.dispatch(SetTransferringPayment(true));
 
       //Get tokens for GBPx and PPL
       Token GBPxToken = store.state.cashWalletState.tokens.values.firstWhere(
@@ -349,7 +376,7 @@ ThunkAction sendTokenPayment() {
               fuseWeb3!,
               store.state.userState.walletAddress,
               GBPxToken.address,
-              "receiverAddress",
+              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
               store.state.cartState.selectedGBPxAmount,
               externalId: store.state.cartState.paymentIntentID,
             )
@@ -357,13 +384,13 @@ ThunkAction sendTokenPayment() {
 
       print(GBPxResponse);
 
-      // If Selected PPL Amount is not 0, transfer PPL
+      //If Selected PPL Amount is not 0, transfer PPL
       dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
           ? await api.tokenTransfer(
               fuseWeb3!,
               store.state.userState.walletAddress,
               PPLToken.address,
-              "receiverAddress",
+              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
               store.state.cartState.selectedPPLAmount,
               externalId: store.state.cartState.paymentIntentID,
             )
@@ -374,18 +401,26 @@ ThunkAction sendTokenPayment() {
       //Make periodic API calls to check the order status
       //If status is paid, then set loading = false, and confirmed = true
 
-      Timer.periodic(const Duration(seconds: 2), (timer) async {
-        final response = await vegiEatsService
-            .checkOrderStatus(store.state.cartState.orderID);
+      Timer.periodic(
+        const Duration(seconds: 4),
+        (timer) async {
+          final Future<Map<dynamic, dynamic>> checkOrderResponse =
+              vegiEatsService.checkOrderStatus(store.state.cartState.orderID);
 
-        if (response['paymentState'] == "paid") {
-          store.dispatch(ToggleTransferPayment());
-          store.dispatch(ToggleConfirmed());
-          timer.cancel();
-        }
-      });
+          checkOrderResponse.then(
+            (completedValue) {
+              if (completedValue['paymentState'] == "paid") {
+                store.dispatch(SetTransferringPayment(false));
+                store.dispatch(SetConfirmed(true));
+                successCallback();
+                timer.cancel();
+              }
+            },
+          );
+        },
+      );
     } catch (e, s) {
-      store.dispatch(ToggleError());
+      store.dispatch(SetError(true));
       log.error('ERROR - updateComputeUserCart $e');
       await Sentry.captureException(
         e,
