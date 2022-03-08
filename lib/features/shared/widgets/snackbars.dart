@@ -8,7 +8,7 @@ void showErrorSnack({
   String? title,
   int duration = 3,
   EdgeInsets? margin,
-  message,
+  String? message,
 }) {
   Flushbar(
       boxShadows: [
@@ -23,13 +23,18 @@ void showErrorSnack({
         style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
       ),
       messageText: Text(
-        message,
+        message ?? "Try again later!",
         style: TextStyle(
           fontSize: 14.0,
         ),
       ),
       backgroundColor: Theme.of(context).bottomAppBarColor,
-      margin: margin ?? EdgeInsets.only(top: 8, right: 8, left: 8, bottom: 80),
+      margin: margin ??
+          EdgeInsets.only(
+              top: 8,
+              right: 8,
+              left: 8,
+              bottom: MediaQuery.of(context).size.height * 0.01),
       borderRadius: BorderRadius.all(
         Radius.circular(8.0),
       ),
