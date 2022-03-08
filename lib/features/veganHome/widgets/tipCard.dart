@@ -28,7 +28,9 @@ class _TipCardState extends State<TipCard> {
           margin: const EdgeInsets.only(top: 5),
           child: InkWell(
             onTap: () {
-              viewmodel.updateTipAmount(widget.tipAmount);
+              viewmodel.selectedUserTip == widget.tipAmount
+                  ? viewmodel.updateTipAmount(0)
+                  : viewmodel.updateTipAmount(widget.tipAmount);
             },
             child: Padding(
               padding: const EdgeInsets.all(6.0),
