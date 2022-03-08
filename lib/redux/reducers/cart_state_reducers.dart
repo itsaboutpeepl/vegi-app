@@ -13,9 +13,9 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateDeliveryAddressIndex>(
       _updateDeliveryAddressIndex),
   TypedReducer<UserCartState, CreateOrder>(_createOrder),
-  TypedReducer<UserCartState, ToggleTransferPayment>(_toggleTransfer),
-  TypedReducer<UserCartState, ToggleError>(_toggleError),
-  TypedReducer<UserCartState, ToggleConfirmed>(_toggleConfirmed),
+  TypedReducer<UserCartState, SetTransferringPayment>(_toggleTransfer),
+  TypedReducer<UserCartState, SetError>(_toggleError),
+  TypedReducer<UserCartState, SetConfirmed>(_toggleConfirmed),
   TypedReducer<UserCartState, UpdateSelectedAmounts>(_updateSelectedAmounts),
 ]);
 
@@ -100,23 +100,23 @@ UserCartState _createOrder(
 
 UserCartState _toggleTransfer(
   UserCartState state,
-  ToggleTransferPayment action,
+  SetTransferringPayment action,
 ) {
-  return state.copyWith(transferringTokens: !state.transferringTokens);
+  return state.copyWith(transferringTokens: action.flag);
 }
 
 UserCartState _toggleError(
   UserCartState state,
-  ToggleError action,
+  SetError action,
 ) {
-  return state.copyWith(transferringTokens: !state.errorCompletingPayment);
+  return state.copyWith(errorCompletingPayment: action.flag);
 }
 
 UserCartState _toggleConfirmed(
   UserCartState state,
-  ToggleConfirmed action,
+  SetConfirmed action,
 ) {
-  return state.copyWith(transferringTokens: !state.confirmedPayment);
+  return state.copyWith(confirmedPayment: action.flag);
 }
 
 UserCartState _updateSelectedAmounts(
