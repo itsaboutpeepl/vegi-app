@@ -7,8 +7,10 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/paymentSheet.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class PaymentSheet extends StatefulWidget {
   const PaymentSheet({Key? key}) : super(key: key);
@@ -18,13 +20,19 @@ class PaymentSheet extends StatefulWidget {
 }
 
 class _PaymentSheetState extends State<PaymentSheet> {
-  bool _isLoading = false;
+  double _gbpXBalance = 0.0;
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PaymentSheetViewModel>(
       distinct: true,
       converter: PaymentSheetViewModel.fromStore,
+      onInit: (store) {
+        store.dispatch(SetTransferringPayment(false));
+        _gbpXBalance = double.parse(store
+            .state.cashWalletState.tokens[GBPxToken.address]!
+            .getBalance(true));
+      },
       builder: (_, viewmodel) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -177,10 +185,13 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                 '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
                             callback: (bool result) {
                               result
-                                  ? (double.parse(viewmodel.gbpXBalance) <=
+                                  ? (_gbpXBalance <=
                                           viewmodel.selectedGBPxAmount)
                                       ? context.router.push(TopUpScreen())
-                                      : viewmodel.sendToken()
+                                      : viewmodel.sendToken(() {
+                                          context.router
+                                              .push(OrderConfirmedScreen());
+                                        })
                                   : context.router.pop();
                             },
                           );
@@ -195,20 +206,17 @@ class _PaymentSheetState extends State<PaymentSheet> {
     );
   }
 }
+//What do i need to do?
 
-void paymentHandler(double walletBalance, double actualAmount) {
-  //What do i need to do?
-
-  // I have a payment intent ID
-  // I have payment final amounts in GBPx and PPL
-  // Check if the amounts are actually there in the wallet
-  // Set Loading to true
-  // If PPL or GBPX payment amount is zero, dont make any payment in PPL/GBPx
-  // Make Payment for payment amount in GBPx
-  // Make Payment for payment amount in PPL
-  // Error? => show Error
-  // Confirmed => Show Screen
-}
+// I have a payment intent ID
+// I have payment final amounts in GBPx and PPL
+// Check if the amounts are actually there in the wallet
+// Set Loading to true
+// If PPL or GBPX payment amount is zero, dont make any payment in PPL/GBPx
+// Make Payment for payment amount in GBPx
+// Make Payment for payment amount in PPL
+// Error? => show Error
+// Confirmed => Show Screen
 
 class PPLSlider extends StatefulWidget {
   const PPLSlider({Key? key}) : super(key: key);
@@ -220,6 +228,7 @@ class PPLSlider extends StatefulWidget {
 class _PPLSliderState extends State<PPLSlider> {
   double _pplSliderValue = 0.0;
   double _amountToBePaid = 0.0;
+  double _pplBalance = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +237,9 @@ class _PPLSliderState extends State<PPLSlider> {
       distinct: true,
       onInit: (store) {
         _amountToBePaid = store.state.cartState.cartTotal.toDouble();
+        _pplBalance = double.parse(store
+            .state.cashWalletState.tokens[PeeplToken.address]!
+            .getBalance(true));
       },
       builder: (_, viewmodel) {
         return Padding(
@@ -254,9 +266,10 @@ class _PPLSliderState extends State<PPLSlider> {
                           child: Slider(
                             min: 0.0,
                             max: _amountToBePaid * 10 <
-                                    3294 //if amount to be paid is less than ppl balance then the max is amount to be paid * 10 otherwise max is wallet balance
-                                ? _amountToBePaid * 100
-                                : 3294,
+                                    _pplBalance *
+                                        10 //if amount to be paid is less than ppl balance then the max is amount to be paid * 10 otherwise max is wallet balance
+                                ? _amountToBePaid * 10
+                                : _pplBalance * 10,
                             value: _pplSliderValue,
                             divisions: 100,
                             onChangeEnd: (value) {
