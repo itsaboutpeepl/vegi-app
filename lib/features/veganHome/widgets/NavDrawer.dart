@@ -57,43 +57,43 @@ class _NavDrawerState extends State<NavDrawer> {
                         padding: const EdgeInsets.all(6.0),
                         child: Row(
                           children: [
-                            Text(
-                              viewModel.gbpxBalance,
+                            Text.rich(
+                              TextSpan(
+                                text: viewModel.gbpxBalance,
+                                children: [
+                                  TextSpan(
+                                    text: " GBPx",
+                                    style: TextStyle(
+                                      color: Colors.grey[700],
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'GBPx',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             Spacer(),
-                            Text(
-                              viewModel.pplBalance,
+                            Text.rich(
+                              TextSpan(
+                                text: viewModel.pplBalance,
+                                children: [
+                                  TextSpan(
+                                    text: " PPL",
+                                    style: TextStyle(
+                                      color: Colors.grey[700],
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'PPL',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
