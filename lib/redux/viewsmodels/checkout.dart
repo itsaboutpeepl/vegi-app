@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
@@ -15,7 +16,7 @@ class CheckoutViewModel extends Equatable {
   final Function(String discountCode) updateDiscount;
   final Function(int index) updateSlotIndex;
   final Function(int tipAmount) updateTipAmount;
-  final Function() createOrder;
+  final Function(VoidCallback, VoidCallback) createOrder;
 
   CheckoutViewModel({
     required this.deliverySlots,
@@ -52,8 +53,8 @@ class CheckoutViewModel extends Equatable {
         updateTipAmount: (int tipAmount) {
           store.dispatch(updateCartTip(tipAmount));
         },
-        createOrder: () {
-          store.dispatch(prepareAndSendOrder());
+        createOrder: (errorCallback, successCallback) {
+          store.dispatch(prepareAndSendOrder(errorCallback, successCallback));
         });
   }
 
