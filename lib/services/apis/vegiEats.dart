@@ -7,7 +7,6 @@ import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
-import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 @lazySingleton
 class VegiEatsService {
