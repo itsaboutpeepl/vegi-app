@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
@@ -15,10 +16,10 @@ class PaymentSheetViewModel extends Equatable {
   final bool errorCompletingPayment;
   final bool confirmedPayment;
   final Function(double GBPxAmount, double PPLAmount) updateSelectedValues;
-  final Function() sendToken;
-  final Function() toggleTransferringPayment;
-  final Function() toggleError;
-  final Function() toggleConfirmed;
+  final Function(VoidCallback successCallBack) sendToken;
+  final Function(bool) setTransferringPayment;
+  final Function(bool) setError;
+  final Function(bool) setConfirmed;
 
   PaymentSheetViewModel({
     required this.cartTotal,
@@ -32,18 +33,18 @@ class PaymentSheetViewModel extends Equatable {
     required this.transferringTokens,
     required this.errorCompletingPayment,
     required this.confirmedPayment,
-    required this.toggleTransferringPayment,
-    required this.toggleError,
-    required this.toggleConfirmed,
+    required this.setTransferringPayment,
+    required this.setError,
+    required this.setConfirmed,
   });
 
   static PaymentSheetViewModel fromStore(Store<AppState> store) {
     return PaymentSheetViewModel(
       cartTotal: store.state.cartState.cartTotal,
-      pplBalance: store.state.cashWalletState.tokens[PeeplToken.address]!
-          .getBalance(true),
-      gbpXBalance: store.state.cashWalletState.tokens[GBPxToken.address]!
-          .getBalance(true),
+      pplBalance:
+          store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
+      gbpXBalance:
+          store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       paymentIntentID: store.state.cartState.paymentIntentID,
       selectedGBPxAmount: store.state.cartState.selectedGBPxAmount,
       selectedPPLAmount: store.state.cartState.selectedPPLAmount,
@@ -53,17 +54,17 @@ class PaymentSheetViewModel extends Equatable {
       updateSelectedValues: (GBPxAmount, PPLAmount) {
         store.dispatch(UpdateSelectedAmounts(GBPxAmount, PPLAmount));
       },
-      sendToken: () {
-        store.dispatch(sendTokenPayment());
+      sendToken: (successCallback) {
+        store.dispatch(sendTokenPayment(successCallback));
       },
-      toggleTransferringPayment: () {
-        store.dispatch(ToggleTransferPayment());
+      setTransferringPayment: (flag) {
+        store.dispatch(SetTransferringPayment(flag));
       },
-      toggleError: () {
-        store.dispatch(ToggleError());
+      setError: (flag) {
+        store.dispatch(SetError(flag));
       },
-      toggleConfirmed: () {
-        store.dispatch(ToggleConfirmed());
+      setConfirmed: (flag) {
+        store.dispatch(SetConfirmed(flag));
       },
     );
   }
@@ -71,5 +72,13 @@ class PaymentSheetViewModel extends Equatable {
   @override
   List<Object> get props => [
         cartTotal,
+        pplBalance,
+        gbpXBalance,
+        paymentIntentID,
+        selectedGBPxAmount,
+        selectedPPLAmount,
+        transferringTokens,
+        errorCompletingPayment,
+        confirmedPayment,
       ];
 }
