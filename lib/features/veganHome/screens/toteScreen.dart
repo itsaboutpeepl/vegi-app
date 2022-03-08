@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/CustomAppBar.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/SingleCartItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/emptyStatePage.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shimmerButton.dart';
