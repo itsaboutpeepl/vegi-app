@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -81,7 +82,7 @@ class _ProductOptionsCategoryViewState
                       widget.productOptionsCategory.listOfOptions[index];
                 }),
                 selected: _selectedIndex == index,
-                selectedTileColor: Colors.yellow[100],
+                selectedTileColor: themeShade100,
                 dense: true,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -91,10 +92,13 @@ class _ProductOptionsCategoryViewState
                   onChanged: (value) {},
                 ),
                 title: Text(
-                    widget.productOptionsCategory.listOfOptions[index].name),
+                  widget.productOptionsCategory.listOfOptions[index].name,
+                  style: TextStyle(color: Colors.grey[800]),
+                ),
                 trailing: Text(
                   cFPrice(
                       widget.productOptionsCategory.listOfOptions[index].price),
+                  style: TextStyle(color: Colors.grey[800]),
                 ),
               ),
               separatorBuilder: (context, index) =>
@@ -127,7 +131,7 @@ class _ProductOptionsCategoryViewState
 //             shape:
 //                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 //             tileColor:
-//                 viewmodel.selectedExtras[index] ? Colors.yellow[100] : null,
+//                 viewmodel.selectedExtras[index] ? themeShade500[100] : null,
 //             title: Text(viewmodel.menuItem.extras.keys.elementAt(index)),
 //             trailing: Text(
 //               cFPrice(viewmodel.menuItem.extras.values.elementAt(index)),

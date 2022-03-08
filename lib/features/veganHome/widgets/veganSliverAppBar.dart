@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
@@ -37,13 +38,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [
-                        Colors.yellow[300]!,
-                        Colors.yellow[200]!,
-                        Colors.yellow[200]!,
-                        Colors.yellow[100]!,
-                        Colors.white
-                      ],
+                      colors: colorToWhiteGradient,
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       stops: [0.0, 0.3, 0.5, 0.7, 1.0],

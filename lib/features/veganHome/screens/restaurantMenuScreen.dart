@@ -107,44 +107,4 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
       ),
     );
   }
-
-// ScrollableListTabView(
-//         bodyAnimationDuration: const Duration(milliseconds: 150),
-//         tabAnimationCurve: Curves.easeOut,
-//         tabAnimationDuration: const Duration(milliseconds: 200),
-//         tabs: [
-//           buildScrollableListTab('Label 1', Icons.emoji_food_beverage_outlined),
-//           buildScrollableListTab('Label 2', Icons.cake_outlined),
-//           buildScrollableListTab('Label 3', Icons.local_pizza_outlined),
-//         ],
-//       ),
-
-  // ScrollableListTab buildScrollableListTab(String label, IconData icon) {
-  //   return ScrollableListTab(
-  //     tab: ListTab(
-  //       label: Text(
-  //         label,
-  //         style: TextStyle(color: Colors.black),
-  //       ),
-  //       icon: Icon(
-  //         icon,
-  //         color: Colors.black,
-  //       ),
-  //       showIconOnList: false,
-  //       showLabelOnList: false,
-  //       activeBackgroundColor: Colors.yellow[200]!,
-  //       activeBorderColor: Colors.black,
-  //     ),
-  //     body: ListView.separated(
-  //       shrinkWrap: true,
-  //       physics: NeverScrollableScrollPhysics(),
-  //       itemCount: widget.menuList.length,
-  //       separatorBuilder: (_, index) =>
-  //           Padding(padding: EdgeInsets.symmetric(vertical: 15)),
-  //       itemBuilder: (_, index) => SingleMenuItem(
-  //         menuItem: widget.menuList[index],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

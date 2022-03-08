@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
 
@@ -103,12 +104,12 @@ class _NavDrawerState extends State<NavDrawer> {
                   ],
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.yellow[200],
+                  color: flexColorSchemeLight.primary,
                 ),
               ),
               ListTile(
                 leading: Icon(Icons.money),
-                title: Text('Top Up Vegi Wallet'),
+                title: Text('Top Up Wallet'),
                 onTap: () {
                   context.router.push(TopUpScreen());
                 },

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/detailMenuViewQuantityButton.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/flippyCircle.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -30,7 +31,7 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                  color: Colors.yellow[300],
+                  color: themeShade300,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey[800]!,

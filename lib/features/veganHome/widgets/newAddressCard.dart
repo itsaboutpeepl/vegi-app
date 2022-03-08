@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/editAddressView.dart';
 
 class NewAddressCard extends StatelessWidget {
@@ -19,7 +20,7 @@ class NewAddressCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundColor: Colors.yellow[400],
+                  backgroundColor: themeShade400,
                   child: IconButton(
                     iconSize: 35,
                     padding: EdgeInsets.zero,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 
 class RestaurantMenuAppBar extends StatefulWidget
     implements PreferredSizeWidget {
@@ -19,13 +20,7 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [
-              Colors.yellow[300]!,
-              Colors.yellow[200]!,
-              Colors.yellow[200]!,
-              Colors.yellow[100]!,
-              Colors.white
-            ],
+            colors: colorToWhiteGradient,
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 0.3, 0.5, 0.7, 1.0],

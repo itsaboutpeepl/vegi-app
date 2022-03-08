@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:vegan_liverpool/constants/keys.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/screens/inapp_webview_page.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 
@@ -42,8 +43,8 @@ class _TestPeeplPayState extends State<TestPeeplPay> {
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.yellow[300]!, width: 3.0),
+                          borderSide:
+                              BorderSide(color: themeShade300, width: 3.0),
                         ),
                         fillColor: Colors.transparent,
                         labelText: 'Token Name',
@@ -60,8 +61,8 @@ class _TestPeeplPayState extends State<TestPeeplPay> {
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.yellow[300]!, width: 3.0),
+                          borderSide:
+                              BorderSide(color: themeShade300, width: 3.0),
                         ),
                         fillColor: Colors.transparent,
                         labelText: 'Receiver Address',
@@ -78,8 +79,8 @@ class _TestPeeplPayState extends State<TestPeeplPay> {
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.yellow[300]!, width: 3.0),
+                          borderSide:
+                              BorderSide(color: themeShade300, width: 3.0),
                         ),
                         fillColor: Colors.transparent,
                         labelText: 'Token Amount',
@@ -99,8 +100,8 @@ class _TestPeeplPayState extends State<TestPeeplPay> {
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.yellow[300]!, width: 3.0),
+                          borderSide:
+                              BorderSide(color: themeShade300, width: 3.0),
                         ),
                         fillColor: Colors.transparent,
                         labelText: 'External ID',
@@ -115,7 +116,7 @@ class _TestPeeplPayState extends State<TestPeeplPay> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       onPrimary: Colors.grey[800],
-                      primary: Colors.yellow[300],
+                      primary: themeShade300,
                       textStyle:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
                       fixedSize:

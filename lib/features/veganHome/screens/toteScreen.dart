@@ -2,6 +2,7 @@ import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/SingleCartItem.dart';
@@ -77,8 +78,8 @@ class _ToteScreenState extends State<ToteScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 20),
                             child: ShimmerButton(
-                              baseColor: Colors.yellow,
-                              highlightColor: Colors.yellow[100]!,
+                              baseColor: themeShade500,
+                              highlightColor: themeShade100,
                               buttonAction: () =>
                                   context.router.push(CheckoutScreen()),
                               buttonContent: Row(

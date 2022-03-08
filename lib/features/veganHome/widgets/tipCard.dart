@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
@@ -23,7 +24,7 @@ class _TipCardState extends State<TipCard> {
       builder: (_, viewmodel) {
         return Card(
           color: viewmodel.selectedUserTip == widget.tipAmount
-              ? Colors.yellow[200]
+              ? flexColorSchemeLight.primary
               : Colors.white,
           margin: const EdgeInsets.only(top: 5),
           child: InkWell(

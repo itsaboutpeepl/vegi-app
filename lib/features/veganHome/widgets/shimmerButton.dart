@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 
 class ShimmerButton extends StatefulWidget {
   const ShimmerButton(
@@ -39,7 +40,7 @@ class _ShimmerButtonState extends State<ShimmerButton> {
                   width: MediaQuery.of(context).size.width,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.yellow,
+                    color: themeShade500,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey,

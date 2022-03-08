@@ -195,7 +195,7 @@ class _VeganHomeScreenState extends State<VeganHomeScreen>
 //           indicator: BoxDecoration(
 //             borderRadius: BorderRadius.circular(10),
 //             border: Border.all(),
-//             color: Colors.yellow[400],
+//             color: themeShade500[400],
 //           ),
 //           padding: EdgeInsets.symmetric(horizontal: 20.0),
 //           isScrollable: true,

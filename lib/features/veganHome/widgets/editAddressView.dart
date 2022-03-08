@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:vegan_liverpool/constants/keys.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/deliveryAddressVM.dart';
@@ -109,7 +110,7 @@ class _AddressViewState extends State<AddressView> {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.yellow[300]!, width: 3.0),
+                                    color: themeShade300, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
                               labelText: 'Building',
@@ -129,7 +130,7 @@ class _AddressViewState extends State<AddressView> {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.yellow[300]!, width: 3.0),
+                                    color: themeShade300, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
                               labelText: 'Street',
@@ -149,7 +150,7 @@ class _AddressViewState extends State<AddressView> {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.yellow[300]!, width: 3.0),
+                                    color: themeShade300, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
                               labelText: 'Town or City',
@@ -169,7 +170,7 @@ class _AddressViewState extends State<AddressView> {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.yellow[300]!, width: 3.0),
+                                    color: themeShade300, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
                               labelText: 'Postal Code',
@@ -182,7 +183,7 @@ class _AddressViewState extends State<AddressView> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             onPrimary: Colors.grey[800],
-                            primary: Colors.yellow[300],
+                            primary: themeShade300,
                             textStyle: TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.w800),
                             fixedSize: Size(

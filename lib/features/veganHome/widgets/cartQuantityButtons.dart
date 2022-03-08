@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
@@ -27,7 +28,7 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
               height: 25,
               width: 25,
               decoration: BoxDecoration(
-                color: Colors.yellow,
+                color: themeShade500,
                 borderRadius: BorderRadius.horizontal(
                   left: Radius.circular(5),
                 ),
@@ -84,7 +85,7 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
               height: 25,
               width: 25,
               decoration: BoxDecoration(
-                color: Colors.yellow,
+                color: themeShade500,
                 borderRadius: BorderRadius.horizontal(
                   right: Radius.circular(5),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/customAppBar.dart';
@@ -51,8 +52,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 25.0),
                   child: ShimmerButton(
-                    baseColor: Colors.yellow,
-                    highlightColor: Colors.yellow[100]!,
+                    baseColor: themeShade500,
+                    highlightColor: themeShade100,
                     buttonAction: () {
                       viewmodel.createOrder(() {
                         //errorCallBack
@@ -164,7 +165,7 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                             itemBuilder: (context, index) => Padding(
                               padding: const EdgeInsets.only(right: 10),
                               child: ChoiceChip(
-                                selectedColor: Colors.yellow[100],
+                                selectedColor: themeShade100,
                                 avatar: Icon(
                                   Icons.timer,
                                   size: 18,
@@ -175,6 +176,7 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                                         ? viewmodel.collectionSlots[index]
                                         : viewmodel.deliverySlots[index],
                                   ),
+                                  style: TextStyle(color: Colors.grey[800]),
                                 ),
                                 selected: viewmodel.selectedSlotIndex == index,
                                 onSelected: (bool selected) {
@@ -310,7 +312,7 @@ class _DiscountCardState extends State<DiscountCard> {
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 width: 2.0,
-                                color: Colors.yellow[300]!,
+                                color: themeShade300,
                               ),
                             ),
                             fillColor: Colors.transparent,

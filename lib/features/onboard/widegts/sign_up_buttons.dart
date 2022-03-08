@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.dart';
@@ -25,6 +26,14 @@ class _SignUpButtonsState extends State<SignUpButtons> {
       converter: SplashViewModel.fromStore,
       builder: (_, viewModel) {
         return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: screenGradient,
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
+            ),
+          ),
           padding: EdgeInsets.only(bottom: 80),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

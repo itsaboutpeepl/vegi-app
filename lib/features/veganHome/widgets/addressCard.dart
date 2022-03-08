@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/editAddressView.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -59,6 +60,7 @@ class _AddressCardState extends State<AddressCard> {
                           child: IconButton(
                             icon: Icon(
                               Icons.edit_outlined,
+                              color: Colors.grey[800],
                             ),
                             onPressed: () => showBarModalBottomSheet(
                               shape: RoundedRectangleBorder(
@@ -75,7 +77,7 @@ class _AddressCardState extends State<AddressCard> {
                               ),
                             ),
                           ),
-                          backgroundColor: Colors.yellow[400],
+                          backgroundColor: themeShade400,
                         ),
                       ],
                     ),

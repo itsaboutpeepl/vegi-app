@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 
 class MenuStickyHeader extends StatelessWidget {
   const MenuStickyHeader({Key? key, required this.title}) : super(key: key);
@@ -14,7 +15,7 @@ class MenuStickyHeader extends StatelessWidget {
         margin: const EdgeInsets.only(left: 20, right: 20, bottom: 0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Colors.yellow[100],
+          color: themeShade100,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.4),

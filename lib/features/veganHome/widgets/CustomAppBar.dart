@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomAppBar(
@@ -26,10 +27,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [Colors.yellow[200]!, Colors.yellow[100]!, Colors.white],
+            colors: colorToWhiteGradient,
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0.0, 0.5, 1.0],
+            stops: [0.0, 0.3, 0.5, 0.7, 1.0],
             tileMode: TileMode.clamp),
       ),
       child: AppBar(

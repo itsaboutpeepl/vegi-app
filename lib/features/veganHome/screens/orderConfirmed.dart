@@ -3,6 +3,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/drawStar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleOrderItem.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -51,14 +52,10 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [
-                      Colors.yellow[200]!,
-                      Colors.yellow[100]!,
-                      Colors.white
-                    ],
+                    colors: colorToWhiteGradient,
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: [0.0, 0.1, 0.15],
+                    stops: [0.0, 0.3, 0.5, 0.7, 1.0],
                     tileMode: TileMode.clamp),
               ),
               child: Padding(

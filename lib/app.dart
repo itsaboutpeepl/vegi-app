@@ -130,15 +130,7 @@ class _MyAppState extends State<MyApp> {
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
-                    colors: [
-                      Colors.yellow[100]!,
-                      Colors.yellow[200]!,
-                      Colors.yellow[300]!,
-                      Colors.yellow[400]!,
-                      Colors.yellow[300]!,
-                      Colors.yellow[200]!,
-                      Colors.yellow[100]!,
-                    ],
+                    colors: screenGradient,
                   ),
                 ),
                 child: Center(

@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
@@ -137,15 +138,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
-                colors: [
-                  Colors.yellow[100]!,
-                  Colors.yellow[200]!,
-                  Colors.yellow[300]!,
-                  Colors.yellow[400]!,
-                  Colors.yellow[300]!,
-                  Colors.yellow[200]!,
-                  Colors.yellow[100]!,
-                ],
+                colors: screenGradient,
               ),
             ),
             height: MediaQuery.of(context).size.height,
