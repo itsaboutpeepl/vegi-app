@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 final FlexColorScheme flexColorSchemeLight = FlexColorScheme.light(
   fontFamily: 'Europa',
   colors: FlexSchemeColor.from(
-    secondary: Color(0xFFF5F5F5),
-    secondaryVariant: Color(0xFF777777),
-    primary: Color(0xFF011C35), //makes 'Feed' text white
-    primaryVariant: Color(0xFF011C35),
-    appBarColor: Color(0xFFFFFFFF),
+    secondary: Colors.grey[800],
+    secondaryVariant: Colors.grey[700]!,
+    primary: Colors.yellow[200]!, //makes 'Feed' text white
+    primaryVariant: Colors.yellow[100]!,
+    appBarColor: Colors.yellow[200]!,
   ),
 );
