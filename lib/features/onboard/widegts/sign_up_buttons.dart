@@ -58,7 +58,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                       style: OutlinedButton.styleFrom(
                         primary: Colors.white,
                         side: BorderSide(
-                          color: Colors.white,
+                          color: Colors.grey[800]!,
                           width: 2,
                           style: BorderStyle.solid,
                         ),
@@ -77,7 +77,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
-                          color: Colors.white,
+                          color: Colors.grey[800],
                         ),
                       ),
                       onPressed: () {
