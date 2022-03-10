@@ -231,6 +231,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                           child: Text("Back To Home"),
                           onPressed: () {
                             context.router.push(VeganHomeScreenAlt());
+                            viewmodel.clearCart();
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(
