@@ -5,7 +5,7 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/SingleCartItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/cart/SingleCartItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
