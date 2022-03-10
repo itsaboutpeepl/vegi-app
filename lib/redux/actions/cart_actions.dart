@@ -412,7 +412,7 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
 
           checkOrderResponse.then(
             (completedValue) {
-              if (completedValue['paymentState'] == "paid") {
+              if (completedValue['paymentStatus'] == "paid") {
                 store.dispatch(SetTransferringPayment(false));
                 store.dispatch(SetConfirmed(true));
                 successCallback();
