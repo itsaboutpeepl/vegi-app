@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/addressCard.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/newAddressCard.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/pickUpCard.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/address/addressCard.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/address/newAddressCard.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/address/pickUpCard.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/deliveryAddressVM.dart';
 

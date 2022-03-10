@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/cartQuantityButtons.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/cart/cartQuantityButtons.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 
 class SingleCartItem extends StatefulWidget {

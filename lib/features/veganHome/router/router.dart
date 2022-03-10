@@ -4,32 +4,18 @@ import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/veganHomeAlternate.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
 import 'package:vegan_liverpool/features/account/screens/profile.dart';
 import 'package:vegan_liverpool/features/topup/screens/topup.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/testPeeplPay.dart';
 
-// const veganHomeTab = AutoRoute(
-//   path: 'veganHome',
-//   name: 'veganHomeTab',
-//   page: EmptyRouterPage,
-//   children: [
-//     AutoRoute(
-//         initial: true,
-//         page: VeganHomeScreen,
-//         name: 'veganHomeScreen',
-//         guards: [AuthGuard]),
-//   ],
-// );
-
-const veganHomeAltTab = AutoRoute(
+const veganHomeTab = AutoRoute(
   path: 'veganHomeAlt',
   name: 'veganHomeAltTab',
   page: EmptyRouterPage,
   children: [
     AutoRoute(
       initial: true,
-      page: VeganHomeScreenAlternate,
+      page: VeganHomeScreen,
       name: 'veganHomeScreenAlt',
       guards: [AuthGuard],
     ),
@@ -64,11 +50,6 @@ const veganHomeAltTab = AutoRoute(
     AutoRoute(
       page: TopupScreen,
       name: 'TopUpScreen',
-      guards: [AuthGuard],
-    ),
-    AutoRoute(
-      page: TestPeeplPay,
-      name: 'TestPeeplPay',
       guards: [AuthGuard],
     ),
   ],

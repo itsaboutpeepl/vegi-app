@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/singleFoodCategory.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/singleFoodCategory.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantCategoriesVM.dart';
 

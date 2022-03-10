@@ -1,12 +1,10 @@
-import 'dart:math';
-
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/MenuStickyHeader.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/restaurantMenuAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/singleFeaturedMenuItem.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/singleRegularMenuItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurantMenuAppBar.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/singleRegularMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
     as ts;

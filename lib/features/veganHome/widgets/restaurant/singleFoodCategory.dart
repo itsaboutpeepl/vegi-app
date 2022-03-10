@@ -1,7 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
 
 class SingleCategoryItem extends StatefulWidget {
   const SingleCategoryItem(
@@ -18,7 +16,7 @@ class _SingleCategoryItemState extends State<SingleCategoryItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.router.push(TestPeeplPay()),
+      onTap: () => null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
