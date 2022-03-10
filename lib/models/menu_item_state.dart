@@ -35,8 +35,7 @@ class MenuItemStateConverter
   const MenuItemStateConverter();
 
   @override
-  MenuItemState fromJson(Map<String, dynamic>? json) =>
-      json != null ? MenuItemState.fromJson(json) : MenuItemState.initial();
+  MenuItemState fromJson(Map<String, dynamic>? json) => MenuItemState.initial();
 
   @override
   Map<String, dynamic> toJson(MenuItemState instance) => instance.toJson();

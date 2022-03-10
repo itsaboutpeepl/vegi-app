@@ -61,8 +61,7 @@ class UserCartStateConverter
   const UserCartStateConverter();
 
   @override
-  UserCartState fromJson(Map<String, dynamic>? json) =>
-      json != null ? UserCartState.fromJson(json) : UserCartState.initial();
+  UserCartState fromJson(Map<String, dynamic>? json) => UserCartState.initial();
 
   @override
   Map<String, dynamic> toJson(UserCartState instance) => instance.toJson();

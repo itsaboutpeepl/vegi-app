@@ -31,8 +31,7 @@ class HomePageStateConverter
   const HomePageStateConverter();
 
   @override
-  HomePageState fromJson(Map<String, dynamic>? json) =>
-      json != null ? HomePageState.fromJson(json) : HomePageState.initial();
+  HomePageState fromJson(Map<String, dynamic>? json) => HomePageState.initial();
 
   @override
   Map<String, dynamic> toJson(HomePageState instance) => instance.toJson();
