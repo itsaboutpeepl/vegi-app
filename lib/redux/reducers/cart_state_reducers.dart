@@ -48,6 +48,17 @@ UserCartState _clearCart(
     cartTotal: 0,
     cartDiscountPercent: 0,
     cartDiscountComputed: 0,
+    selectedSlotIndex: 0,
+    selectedTipAmount: 0,
+    discountCode: "",
+    selectedDeliveryAddressIndex: 1,
+    paymentIntentID: "",
+    orderID: "",
+    selectedGBPxAmount: 0.0,
+    selectedPPLAmount: 0.0,
+    transferringTokens: false,
+    errorCompletingPayment: false,
+    confirmedPayment: false,
   );
 }
 
