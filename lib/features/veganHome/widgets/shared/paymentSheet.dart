@@ -29,6 +29,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
       converter: PaymentSheetViewModel.fromStore,
       onInit: (store) {
         store.dispatch(SetTransferringPayment(false));
+        store..dispatch(UpdateSelectedAmounts(0, 0));
         _gbpXBalance = double.parse(store
             .state.cashWalletState.tokens[GBPxToken.address]!
             .getBalance(true));
