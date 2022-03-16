@@ -28,7 +28,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
       converter: DetailMenuItem.fromStore,
       onInit: (store) {
         store.dispatch(
-            fetchProductOptions(store.state.menuItemState.menuItem.menuID));
+            fetchProductOptions(store.state.menuItemState.menuItem.menuItemID));
         _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
           if (mounted) {
             setState(() {

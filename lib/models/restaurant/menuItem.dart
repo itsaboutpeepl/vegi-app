@@ -10,7 +10,8 @@ class MenuItem with _$MenuItem {
 
   @JsonSerializable()
   factory MenuItem({
-    required String menuID,
+    required String menuItemID,
+    required String restaurantID,
     required String name,
     required List<String> imageURLs,
     required String category,
