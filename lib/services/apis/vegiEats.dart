@@ -7,6 +7,7 @@ import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 @lazySingleton
 class VegiEatsService {
@@ -17,8 +18,9 @@ class VegiEatsService {
     dio.options.headers = Map.from({"Content-Type": 'application/json'});
   }
 
-  Future<List<RestaurantItem>> featuredRestaurants() async {
-    Response response = await dio.get('api/v1/vendors?wallet=test');
+  Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
+    Response response =
+        await dio.get('api/v1/vendors?wallet=test&outCode=$outCode');
 
     List<dynamic> results = response.data['vendors'] as List;
 
@@ -37,7 +39,7 @@ class VegiEatsService {
             costLevel: "Cost Level",
             deliveryTime: "Delivery Time",
             rating: "Rating",
-            address: "Address",
+            address: demoAddress, //TODO: Change this
             listOfMenuItems: [],
           ),
         );
@@ -60,7 +62,8 @@ class VegiEatsService {
         menuItems.add(
           MenuItem(
             isFeatured: Random().nextBool(),
-            menuID: element["id"].toString(),
+            menuItemID: element["id"].toString(),
+            restaurantID: restaurantID,
             name: element['name'],
             imageURLs: [
               UrlConstants.VEGI_EATS_BACKEND +
@@ -127,9 +130,11 @@ class VegiEatsService {
     return results['percentage'];
   }
 
-  Future<List<Map<String, String>>> getDeliverySlots() async {
-    Response response = await dio
-        .get('api/v1/vendors/get-fulfilment-slots?vendor=1&date=03-03-2022');
+  Future<List<Map<String, String>>> getDeliverySlots(
+      {required String vendorID, required String dateRequired}) async {
+    Response response = await dio.get(
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=03-03-2022');
+    //TODO: Change
 
     List<dynamic> results = response.data['deliverySlots'] as List<dynamic>;
 
@@ -142,9 +147,11 @@ class VegiEatsService {
     return listOfDeliverySlots;
   }
 
-  Future<List<Map<String, String>>> getCollectionSlots() async {
-    Response response = await dio
-        .get('api/v1/vendors/get-fulfilment-slots?vendor=1&date=03-03-2022');
+  Future<List<Map<String, String>>> getCollectionSlots(
+      {required String vendorID, required String dateRequired}) async {
+    Response response = await dio.get(
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=03-03-2022');
+    //TODO: Change
 
     List<dynamic> results = response.data['collectionSlots'] as List<dynamic>;
 
