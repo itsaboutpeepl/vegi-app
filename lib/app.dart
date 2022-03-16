@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 child: Center(
                   child: Image.asset(
-                    'assets/images/Vegi-Logo-square-black.png',
+                    'assets/images/Vegi-Logo-square.png',
                   ),
                 ),
               ),

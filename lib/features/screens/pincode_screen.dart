@@ -63,7 +63,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   ),
                   Expanded(
                     child: Image.asset(
-                      'assets/images/Vegi-Logo-horizontal-black.png',
+                      'assets/images/Vegi-Logo-horizontal.png',
                     ),
                   ),
                   Expanded(

@@ -149,7 +149,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * .5,
                   child: Image.asset(
-                    'assets/images/Vegi-Logo-square-black.png',
+                    'assets/images/Vegi-Logo-square.png',
                   ),
                 )
               ],
