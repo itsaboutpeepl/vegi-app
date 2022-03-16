@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
@@ -26,6 +27,8 @@ final Explorer ethereumExplorerApi = getIt<Explorer>(
 
 final API api = getIt<API>();
 
+final WalletApi walletApi = getIt<WalletApi>();
+
 final FuseSwapService fuseSwapService = getIt<FuseSwapService>();
 
 final VegiEatsService vegiEatsService = getIt<VegiEatsService>();
@@ -35,6 +38,8 @@ final PeeplPaySerivce peeplPayService = getIt<PeeplPaySerivce>();
 final Graph graph = getIt<Graph>();
 
 final FirebaseAuth firebaseAuth = getIt<FirebaseAuth>();
+
+final FirebaseMessaging firebaseMessaging = getIt<FirebaseMessaging>();
 
 final PhoneNumberUtil phoneNumberUtil = getIt<PhoneNumberUtil>();
 
