@@ -38,6 +38,8 @@ class _MainScreenState extends State<MainScreen> {
         .getAPNSToken()
         .then((value) => print("APNS TOKEN $value"));
 
+    firebaseMessaging.subscribeToTopic("testingmybutt");
+
     Function handleFCM = (RemoteMessage? remoteMessage) {
       if (remoteMessage != null) {
         print("PRINTING REMOTE MESSAGE HELOOOOO");

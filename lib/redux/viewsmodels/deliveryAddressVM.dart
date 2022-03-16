@@ -24,8 +24,7 @@ class DeliveryAddressesVM extends Equatable {
       selectedDeliveryAddressIndex:
           store.state.cartState.selectedDeliveryAddressIndex,
       addDeliveryAddress: (newAddress) {
-        //TODO: Fix
-        //store.dispatch(addNewDeliveryAddress(newAddress));
+        store.dispatch(addNewDeliveryAddress(newAddress));
       },
       updateDeliveryAddressIndex: (indexOfAddress) {
         store.dispatch(UpdateDeliveryAddressIndex(indexOfAddress));

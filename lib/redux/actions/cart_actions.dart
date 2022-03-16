@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
@@ -12,6 +13,7 @@ import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux/redux.dart';
 import 'package:intl/intl.dart';
+import 'package:wallet_core/wallet_core.dart';
 
 class UpdateCartItems {
   final List<OrderItem> cartItems;
@@ -374,9 +376,15 @@ ThunkAction prepareAndSendOrder(
         print("order result $result");
 
         //Crosscheck the PaymentIntentID with the amount calculcated on device.
-        if (checkResult['paymentIntent']['amount'] == 2400) {
+        if (checkResult['paymentIntent']['amount'] ==
+            store.state.cartState.cartTotal) {
           store.dispatch(CreateOrder(
               result['orderID'].toString(), result['paymentIntentID']));
+
+          //subscribe to firebase topic of orderID
+
+          firebaseMessaging.subscribeToTopic(result['orderID'].toString());
+
           successCallback();
         } else {
           //check if it is better to just update the total value with the api returned or return an error
@@ -419,32 +427,32 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
       );
 
       //If Selected GBPx amount is not 0, transfer GBPx
-      // dynamic GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
-      //     ? await walletApi.tokenTransfer(
-      //         fuseWeb3!,
-      //         store.state.userState.walletAddress,
-      //         GBPxToken.address,
-      //         "0xf039CD9391cB28a7e632D07821deeBc249a32410",
-      //         store.state.cartState.selectedGBPxAmount.toString(),
-      //         externalId: store.state.cartState.paymentIntentID,
-      //       )
-      //     : null;
+      dynamic GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
+          ? await walletApi.tokenTransfer(
+              getIt<Web3>(instanceName: 'fuseWeb3'),
+              store.state.userState.walletAddress,
+              GBPxToken.address,
+              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
+              store.state.cartState.selectedGBPxAmount.toString(),
+              externalId: store.state.cartState.paymentIntentID,
+            )
+          : null;
 
-      //print(GBPxResponse);
+      print(GBPxResponse);
 
       //If Selected PPL Amount is not 0, transfer PPL
-      // dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
-      //     ? await walletApi.tokenTransfer(
-      //         fuseWeb3!,
-      //         store.state.userState.walletAddress,
-      //         PPLToken.address,
-      //         "0xf039CD9391cB28a7e632D07821deeBc249a32410",
-      //         store.state.cartState.selectedPPLAmount.toString(),
-      //         externalId: store.state.cartState.paymentIntentID,
-      //       )
-      //     : null;
+      dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
+          ? await walletApi.tokenTransfer(
+              getIt<Web3>(instanceName: 'fuseWeb3'),
+              store.state.userState.walletAddress,
+              PPLToken.address,
+              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
+              store.state.cartState.selectedPPLAmount.toString(),
+              externalId: store.state.cartState.paymentIntentID,
+            )
+          : null;
 
-      // print(PPLResponse);
+      print(PPLResponse);
 
       //Make periodic API calls to check the order status
       //If status is paid, then set loading = false, and confirmed = true
