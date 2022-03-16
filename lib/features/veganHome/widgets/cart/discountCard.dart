@@ -18,6 +18,10 @@ class _DiscountCardState extends State<DiscountCard> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CheckoutViewModel>(
         converter: CheckoutViewModel.fromStore,
+        distinct: true,
+        onInit: (store) {
+          _textController.text = store.state.cartState.discountCode;
+        },
         builder: (_, viewmodel) {
           return Card(
             color: Color(0xFFFAFAFA),
@@ -69,9 +73,12 @@ class _DiscountCardState extends State<DiscountCard> {
                         child: TextButton(
                           onPressed: () {
                             if (viewmodel.discountCode == "") {
-                              viewmodel.updateDiscount(_textController.text);
+                              viewmodel.updateDiscount(_textController.text,
+                                  () {
+                                _textController.text = "Not Found";
+                              });
                             } else {
-                              viewmodel.updateDiscount("REMOVE");
+                              viewmodel.updateDiscount("REMOVE", () {});
                               _textController.clear();
                             }
                           },
