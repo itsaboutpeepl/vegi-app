@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
     as ts;
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/navDrawer.dart';
@@ -41,7 +42,7 @@ class _VeganHomeScreenState extends State<VeganHomeScreen> {
             Radius.circular(56 / 2),
           ),
         ),
-        closedColor: Colors.black,
+        closedColor: themeShade400,
         closedBuilder: (BuildContext context, VoidCallback openContainer) {
           return SizedBox(
             height: 56,
@@ -49,7 +50,7 @@ class _VeganHomeScreenState extends State<VeganHomeScreen> {
             child: Center(
               child: Icon(
                 Icons.shopping_basket,
-                color: Colors.white,
+                color: Colors.grey[800],
               ),
             ),
           );

@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurantMenuAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
@@ -57,7 +58,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
             Radius.circular(56 / 2),
           ),
         ),
-        closedColor: Colors.black,
+        closedColor: themeShade400,
         closedBuilder: (BuildContext context, VoidCallback openContainer) {
           return SizedBox(
             height: 56,
@@ -65,7 +66,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
             child: Center(
               child: Icon(
                 Icons.shopping_basket,
-                color: Colors.white,
+                color: Colors.grey[800],
               ),
             ),
           );
