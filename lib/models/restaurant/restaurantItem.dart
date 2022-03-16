@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 
 part 'restaurantItem.freezed.dart';
@@ -17,7 +18,7 @@ class RestaurantItem with _$RestaurantItem {
     required String costLevel,
     required String deliveryTime,
     required String rating,
-    required String address,
+    required DeliveryAddresses address,
     required List<MenuItem> listOfMenuItems,
   }) = _RestaurantItem;
 

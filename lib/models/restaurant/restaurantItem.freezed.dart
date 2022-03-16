@@ -29,7 +29,7 @@ class _$RestaurantItemTearOff {
       required String costLevel,
       required String deliveryTime,
       required String rating,
-      required String address,
+      required DeliveryAddresses address,
       required List<MenuItem> listOfMenuItems}) {
     return _RestaurantItem(
       restaurantID: restaurantID,
@@ -61,7 +61,7 @@ mixin _$RestaurantItem {
   String get costLevel => throw _privateConstructorUsedError;
   String get deliveryTime => throw _privateConstructorUsedError;
   String get rating => throw _privateConstructorUsedError;
-  String get address => throw _privateConstructorUsedError;
+  DeliveryAddresses get address => throw _privateConstructorUsedError;
   List<MenuItem> get listOfMenuItems => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -83,8 +83,10 @@ abstract class $RestaurantItemCopyWith<$Res> {
       String costLevel,
       String deliveryTime,
       String rating,
-      String address,
+      DeliveryAddresses address,
       List<MenuItem> listOfMenuItems});
+
+  $DeliveryAddressesCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -140,12 +142,19 @@ class _$RestaurantItemCopyWithImpl<$Res>
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DeliveryAddresses,
       listOfMenuItems: listOfMenuItems == freezed
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
               as List<MenuItem>,
     ));
+  }
+
+  @override
+  $DeliveryAddressesCopyWith<$Res> get address {
+    return $DeliveryAddressesCopyWith<$Res>(_value.address, (value) {
+      return _then(_value.copyWith(address: value));
+    });
   }
 }
 
@@ -164,8 +173,11 @@ abstract class _$RestaurantItemCopyWith<$Res>
       String costLevel,
       String deliveryTime,
       String rating,
-      String address,
+      DeliveryAddresses address,
       List<MenuItem> listOfMenuItems});
+
+  @override
+  $DeliveryAddressesCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -223,7 +235,7 @@ class __$RestaurantItemCopyWithImpl<$Res>
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DeliveryAddresses,
       listOfMenuItems: listOfMenuItems == freezed
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
@@ -266,7 +278,7 @@ class _$_RestaurantItem extends _RestaurantItem {
   @override
   final String rating;
   @override
-  final String address;
+  final DeliveryAddresses address;
   @override
   final List<MenuItem> listOfMenuItems;
 
@@ -339,7 +351,7 @@ abstract class _RestaurantItem extends RestaurantItem {
       required String costLevel,
       required String deliveryTime,
       required String rating,
-      required String address,
+      required DeliveryAddresses address,
       required List<MenuItem> listOfMenuItems}) = _$_RestaurantItem;
   _RestaurantItem._() : super._();
 
@@ -361,7 +373,7 @@ abstract class _RestaurantItem extends RestaurantItem {
   @override
   String get rating => throw _privateConstructorUsedError;
   @override
-  String get address => throw _privateConstructorUsedError;
+  DeliveryAddresses get address => throw _privateConstructorUsedError;
   @override
   List<MenuItem> get listOfMenuItems => throw _privateConstructorUsedError;
   @override
