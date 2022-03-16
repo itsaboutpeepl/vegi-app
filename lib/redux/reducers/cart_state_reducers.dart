@@ -1,6 +1,7 @@
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartItems>(_updateCartItems),
@@ -17,6 +18,7 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, SetError>(_toggleError),
   TypedReducer<UserCartState, SetConfirmed>(_toggleConfirmed),
   TypedReducer<UserCartState, UpdateSelectedAmounts>(_updateSelectedAmounts),
+  TypedReducer<UserCartState, SetRestaurantDetails>(_setRestaurantDetails),
 ]);
 
 UserCartState _updateCartItems(
@@ -59,6 +61,9 @@ UserCartState _clearCart(
     transferringTokens: false,
     errorCompletingPayment: false,
     confirmedPayment: false,
+    restaurantName: "",
+    restaurantID: "",
+    restaurantAddress: demoAddress,
   );
 }
 
@@ -137,4 +142,15 @@ UserCartState _updateSelectedAmounts(
   return state.copyWith(
       selectedGBPxAmount: action.GBPxAmount,
       selectedPPLAmount: action.PPLAmount);
+}
+
+UserCartState _setRestaurantDetails(
+  UserCartState state,
+  SetRestaurantDetails action,
+) {
+  return state.copyWith(
+    restaurantID: action.restaurantID,
+    restaurantName: action.restaurantName,
+    restaurantAddress: action.restaurantAddress,
+  );
 }
