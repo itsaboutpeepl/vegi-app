@@ -18,6 +18,11 @@ class UpdateFeaturedRestaurants {
   UpdateFeaturedRestaurants({required this.listOfFeaturedRestaurants});
 }
 
+class SetIsLoadingHomePage {
+  final bool isLoading;
+  SetIsLoadingHomePage(this.isLoading);
+}
+
 ThunkAction fetchRestaurantCategories() {
   return (Store store) async {
     try {
@@ -39,15 +44,17 @@ ThunkAction fetchRestaurantCategories() {
   };
 }
 
-ThunkAction fetchFeaturedRestaurants() {
+ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
   return (Store store) async {
     try {
+      store.dispatch(SetIsLoadingHomePage(true));
       List<RestaurantItem> restaurants =
-          await vegiEatsService.featuredRestaurants();
+          await vegiEatsService.featuredRestaurants(outCode);
 
       store.dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants));
       store.dispatch(fetchMenuItemsForRestaurant());
+      store.dispatch(SetIsLoadingHomePage(false));
     } catch (e, s) {
       log.error('ERROR - fetchFeaturedRestaurants $e');
       await Sentry.captureException(
