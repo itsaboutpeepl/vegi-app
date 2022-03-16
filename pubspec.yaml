@@ -19,13 +19,13 @@ dependencies:
   contacts_service: ^0.6.1
   country_code_picker: ^2.0.2
   cupertino_icons: ^1.0.2
-  decimal: ^1.2.0
+  decimal: ^2.1.0
   dio: ^4.0.0
   enum_to_string: ^2.0.1
   equatable: ^2.0.3
   firebase_auth: ^3.0.1
   firebase_core: ^1.4.0
-  firebase_messaging: ^10.0.4
+  firebase_messaging: ^11.2.6
   firebase_remote_config: ^0.10.0+3
   fl_chart: ^0.36.2
   flare_flutter: ^3.0.1
@@ -83,7 +83,7 @@ dependencies:
   wallet_core:
     git:
       url: https://github.com/fuseio/wallet_core.git
-      ref: feat/null-safety
+      ref: master
   ethereum_address:
     git:
       url: https://github.com/fuseio/dart-ethereum_address.git
