@@ -1,9 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/constants/firebaseConfig.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/bottom_bar.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:vegan_liverpool/services.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -14,30 +18,42 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late TabsRouter _tabsRouter;
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
+  void handleFirebaseConfig() {
+    firebaseMessaging.requestPermission();
+    firebaseMessaging.setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
 
-  // @override
-  // void initState() {
-  //   Function handleFCM = (RemoteMessage? remoteMessage) {};
+    firebaseMessaging.setForegroundNotificationPresentationOptions(
+        alert: true, sound: true);
+  }
 
-  //   FirebaseMessaging.instance
-  //       .getInitialMessage()
-  //       .then((RemoteMessage? remoteMessage) {
-  //     handleFCM(remoteMessage);
-  //   });
+  @override
+  void initState() {
+    handleFirebaseConfig();
+    firebaseMessaging
+        .getToken()
+        .then((value) => print("FCM TOKEN HEREEE $value"));
 
-  //   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? remoteMessage) {
-  //     handleFCM(remoteMessage);
-  //   });
+    firebaseMessaging
+        .getAPNSToken()
+        .then((value) => print("APNS TOKEN $value"));
 
-  //   FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) {
-  //     handleFCM(remoteMessage);
-  //   });
-  //   super.initState();
-  // }
+    Function handleFCM = (RemoteMessage? remoteMessage) {
+      if (remoteMessage != null) {
+        print("PRINTING REMOTE MESSAGE HELOOOOO");
+        print("RMDATA ${remoteMessage.data}");
+        print("RMNOTIF ${remoteMessage.notification}");
+        print("RMFROM ${remoteMessage.from}");
+      }
+    };
+
+    firebaseMessaging.getInitialMessage().then((RemoteMessage? remoteMessage) {
+      handleFCM(remoteMessage);
+    });
+
+    startFirebaseNotifs();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,5 +103,29 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  void startFirebaseNotifs() {
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    FirebaseMessaging.onMessageOpenedApp
+        .listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
+
+    FirebaseMessaging.onMessage
+        .listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
+  }
+
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage remoteMessage) async {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseConfig.platformOptions);
+
+    handleFCM(remoteMessage);
+  }
+
+  void handleFCM(RemoteMessage? remoteMessage) async {
+    if (remoteMessage != null) {
+      print("GOT MESSAGE FROM FIREBASE: ${remoteMessage.data}");
+    }
   }
 }
