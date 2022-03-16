@@ -245,7 +245,7 @@ ThunkAction enablePushNotifications() {
       final String token = (await getIt<FirebaseMessaging>().getToken())!;
       log.info("Firebase messaging token $token");
       String walletAddress = store.state.userState.walletAddress;
-      await api.updateFirebaseToken(walletAddress, token);
+      await walletApi.updateFirebaseToken(walletAddress, token);
       await Segment.setContext({
         'device': {'token': token},
       });
@@ -297,7 +297,7 @@ ThunkAction startFetchTokensBalances() {
           timer.cancel();
         } else {
           Map<String, Token> tokens = store.state.cashWalletState.tokens;
-          store.dispatch(getFuseBalance());
+          //store.dispatch(getFuseBalance());
           for (Token token in tokens.values) {
             if (![null, ''].contains(token.address)) {
               store.dispatch(getTokenBalanceCall(token));
@@ -339,7 +339,7 @@ ThunkAction startFetchingCall() {
 ThunkAction createAccountWalletCall(String accountAddress) {
   return (Store store) async {
     try {
-      Map<String, dynamic> response = await api.createWallet(
+      Map<String, dynamic> response = await walletApi.createWallet(
         communityAddress: defaultCommunityAddress,
       );
       if (!response.containsKey('job')) {
@@ -353,7 +353,7 @@ ThunkAction createAccountWalletCall(String accountAddress) {
         Community? community =
             cashWalletState.communities[defaultCommunityAddress.toLowerCase()];
         if (!cashWalletState.tokens.containsKey(community?.homeTokenAddress)) {
-          final response = await api.getWallet();
+          final response = await walletApi.getWallet();
           store.dispatch(generateWalletSuccessCall(response));
           store.dispatch(
             switchCommunityCall(
@@ -379,7 +379,7 @@ ThunkAction generateWalletSuccessCall(dynamic walletData) {
     log.info('walletAddress walletAddress $walletAddress');
     if (walletAddress != null && walletAddress.isNotEmpty) {
       store.dispatch(setupWalletCall(walletData));
-      store.dispatch(saveUserInDB(walletAddress));
+      store.dispatch(saveUserProfile(walletAddress));
       await AppTrackingTransparency.requestTrackingAuthorization();
       store.dispatch(enablePushNotifications());
       store.dispatch(identifyCall());
@@ -435,7 +435,7 @@ ThunkAction inviteAndSendCall(
   return (Store store) async {
     try {
       String senderName = store.state.userState.displayName;
-      final response = await api.invite(
+      final response = await walletApi.invite(
         contactPhoneNumber,
         communityAddress: defaultCommunityAddress,
         name: senderName,
@@ -530,9 +530,9 @@ ThunkAction sendTokenToForeignMultiBridge(
         walletAddress,
         tokenAddress,
         Addresses.FEE_ADDRESS,
-        feeAmount,
+        feeAmount.toString(),
       );
-      response = await api.multiRelay([...transferData, feeTransferData]);
+      response = await walletApi.multiRelay([...transferData, feeTransferData]);
 
       dynamic jobId = response['job']['_id'];
       log.info('Job $jobId for sending token sent to the relay service');
@@ -554,11 +554,11 @@ ThunkAction sendNativeTokenCall(
   return (Store store) async {
     try {
       String walletAddress = store.state.userState.walletAddress;
-      dynamic response = await api.transfer(
+      dynamic response = await walletApi.transfer(
         fuseWeb3!,
         walletAddress,
         receiverAddress,
-        num.parse(toBigInt(tokensAmount, 18).toString()),
+        tokensAmount: toBigInt(tokensAmount, 18).toString(),
         transactionBody: {
           "from": walletAddress,
           "to": receiverAddress,
@@ -614,12 +614,12 @@ ThunkAction sendTokenCall(
 
         log.info(
             'Sending ${token.name} $tokensAmount from $walletAddress to $receiverAddress');
-        dynamic response = await api.tokenTransfer(
+        dynamic response = await walletApi.tokenTransfer(
           fuseWeb3!,
           walletAddress,
           token.address,
           receiverAddress,
-          tokensAmount,
+          tokensAmount.toString(),
         );
 
         dynamic jobId = response['job']['_id'];
@@ -654,7 +654,7 @@ ThunkAction joinCommunityCall(
       if (isMember) {
         store.dispatch(AlreadyJoinedCommunity(community.address));
       } else {
-        await api.joinCommunity(
+        await walletApi.joinCommunity(
           fuseWeb3!,
           walletAddress,
           community.address,
@@ -1087,7 +1087,7 @@ ThunkAction getWalletActionsCall() {
     try {
       String walletAddress = store.state.userState.walletAddress;
       WalletActions walletActions = store.state.cashWalletState.walletActions;
-      Map<String, dynamic> response = await api.getActionsByWalletAddress(
+      Map<String, dynamic> response = await walletApi.getActionsByWalletAddress(
         walletAddress,
         updatedAt: walletActions.updatedAt.toInt(),
       );
@@ -1218,7 +1218,7 @@ ThunkAction getTokenWalletActionsCall(Token token) {
   return (Store store) async {
     try {
       String walletAddress = store.state.userState.walletAddress;
-      Map<String, dynamic> response = await api.getActionsByWalletAddress(
+      Map<String, dynamic> response = await walletApi.getActionsByWalletAddress(
         walletAddress,
         updatedAt: token.walletActions!.updatedAt.toInt(),
         tokenAddress: token.address,
@@ -1249,7 +1249,7 @@ ThunkAction sendTokenToContactCall(
 }) {
   return (Store store) async {
     try {
-      Map? wallet = await api.getWalletByPhoneNumber(contactPhoneNumber);
+      Map? wallet = await walletApi.getWalletByPhoneNumber(contactPhoneNumber);
       log.info('Trying to send $tokensAmount to phone $contactPhoneNumber');
       String? walletAddress = (wallet != null) ? wallet["walletAddress"] : null;
       if (walletAddress == null || walletAddress.isEmpty) {
@@ -1291,14 +1291,15 @@ ThunkAction swapHandler(
         '0x',
         '',
       );
-      Map<String, dynamic> response = await api.approveTokenAndCallContract(
+      Map<String, dynamic> response =
+          await walletApi.approveTokenAndCallContract(
         fuseWeb3!,
         swapRequestBody.recipient,
         swapRequestBody.currencyIn,
         swapCallParameters.rawTxn['to'],
-        num.parse(swapRequestBody.amountIn),
         swapData,
         network: 'fuse',
+        amountInWei: BigInt.parse(swapCallParameters.value),
         transactionBody: Map.from(
           {
             "to": swapRequestBody.recipient,
@@ -1376,12 +1377,12 @@ ThunkAction sendTokenFromWebViewCall(
             token.symbol.toLowerCase() == currency.toString().toLowerCase(),
       );
       String walletAddress = store.state.userState.walletAddress;
-      dynamic response = await api.tokenTransfer(
+      dynamic response = await walletApi.tokenTransfer(
         fuseWeb3!,
         walletAddress,
         token.address,
         receiverAddress,
-        tokensAmount,
+        tokensAmount.toString(),
         externalId: orderId,
       );
       dynamic jobId = response['job']['_id'];
@@ -1420,12 +1421,12 @@ ThunkAction sendTokenFromPeeplPaySheet({
             token.symbol.toLowerCase() == currency.toString().toLowerCase(),
       );
       String walletAddress = store.state.userState.walletAddress;
-      dynamic response = await api.tokenTransfer(
+      dynamic response = await walletApi.tokenTransfer(
         fuseWeb3!,
         walletAddress,
         token.address,
         receiverAddress,
-        tokensAmount,
+        tokensAmount.toString(),
         externalId: orderId,
       );
       //Create a call to check if the payment is gone through

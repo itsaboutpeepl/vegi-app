@@ -420,12 +420,12 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
 
       //If Selected GBPx amount is not 0, transfer GBPx
       dynamic GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
-          ? await api.tokenTransfer(
+          ? await walletApi.tokenTransfer(
               fuseWeb3!,
               store.state.userState.walletAddress,
               GBPxToken.address,
               "0xf039CD9391cB28a7e632D07821deeBc249a32410",
-              store.state.cartState.selectedGBPxAmount,
+              store.state.cartState.selectedGBPxAmount.toString(),
               externalId: store.state.cartState.paymentIntentID,
             )
           : null;
@@ -434,12 +434,12 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
 
       //If Selected PPL Amount is not 0, transfer PPL
       dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
-          ? await api.tokenTransfer(
+          ? await walletApi.tokenTransfer(
               fuseWeb3!,
               store.state.userState.walletAddress,
               PPLToken.address,
               "0xf039CD9391cB28a7e632D07821deeBc249a32410",
-              store.state.cartState.selectedPPLAmount,
+              store.state.cartState.selectedPPLAmount.toString(),
               externalId: store.state.cartState.paymentIntentID,
             )
           : null;

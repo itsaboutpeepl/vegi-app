@@ -233,7 +233,7 @@ ThunkAction startFetchBalancesOnForeign() {
           timer.cancel();
           return;
         }
-        Map walletData = await api.getWallet();
+        Map walletData = await walletApi.getWallet();
         ProWalletState proWalletState = store.state.proWalletState;
         List<String> tokenAddresses = [];
         if (walletData['balancesOnForeign'] != null) {
@@ -411,7 +411,7 @@ ThunkAction sendErc20TokenCall(
           await ethereumWeb3!.approveTokenOffChain(
         walletAddress,
         token.address,
-        tokensAmount,
+        tokensAmount: tokensAmount,
         network: foreignNetwork,
       );
       Map<String, dynamic> transferTokenData =
@@ -419,7 +419,7 @@ ThunkAction sendErc20TokenCall(
         walletAddress,
         token.address,
         receiverAddress,
-        tokensAmount,
+        tokensAmount.toString(),
         network: foreignNetwork,
       );
       Map<String, dynamic> feeTransferData =
@@ -427,10 +427,10 @@ ThunkAction sendErc20TokenCall(
         walletAddress,
         token.address,
         Addresses.FEE_ADDRESS,
-        feeAmount,
+        feeAmount.toString(),
         network: foreignNetwork,
       );
-      dynamic approveTransfer = await api
+      dynamic approveTransfer = await walletApi
           .multiRelay([approveTokenData, transferTokenData, feeTransferData]);
       sendSuccessCallback();
       dynamic approveJobId = approveTransfer['job']['_id'];
@@ -473,9 +473,9 @@ ThunkAction sendTokenToHomeMultiBridge(
         walletAddress,
         tokenAddress,
         Addresses.FEE_ADDRESS,
-        feeAmount,
+        feeAmount.toString(),
       );
-      response = await api.multiRelay([...transferData, feeTransferData]);
+      response = await walletApi.multiRelay([...transferData, feeTransferData]);
 
       dynamic jobId = response['job']['_id'];
       log.info('Job $jobId for sending token sent to the relay service');
@@ -500,7 +500,7 @@ ThunkAction inviteAndSendCall(
   return (Store store) async {
     try {
       String senderName = store.state.userState.displayName;
-      dynamic response = await api.invite(
+      dynamic response = await walletApi.invite(
         contactPhoneNumber,
         communityAddress: defaultCommunityAddress,
         name: senderName,
@@ -539,7 +539,7 @@ ThunkAction sendErc20TokenToContactCall(
   return (Store store) async {
     try {
       log.info('Trying to send $tokensAmount to phone $contactPhoneNumber');
-      Map? wallet = await api.getWalletByPhoneNumber(contactPhoneNumber);
+      Map? wallet = await walletApi.getWalletByPhoneNumber(contactPhoneNumber);
       log.info("wallet $wallet");
       String? walletAddress = (wallet != null) ? wallet["walletAddress"] : null;
       if (walletAddress == null || walletAddress.isEmpty) {
