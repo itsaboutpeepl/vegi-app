@@ -1,3 +1,4 @@
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
@@ -15,7 +16,7 @@ RestaurantItem restaurantItem1 = new RestaurantItem(
   costLevel: "\$\$",
   deliveryTime: "45-120 Min",
   rating: "3.5",
-  address: "Liverpool, L17 0AB",
+  address: demoAddress,
   listOfMenuItems: [bagel1, bagel3, bagel2],
 );
 
@@ -28,7 +29,7 @@ RestaurantItem restaurantItem2 = new RestaurantItem(
   costLevel: "\$\$\$",
   deliveryTime: "30-60 Min",
   rating: "2.5",
-  address: "Liverpool, L11 0AB",
+  address: demoAddress,
   listOfMenuItems: [bagel1, bagel2, bagel3],
 );
 
@@ -41,8 +42,18 @@ RestaurantItem restaurantItem3 = new RestaurantItem(
   costLevel: "\$\$",
   deliveryTime: "45-90 Min",
   rating: "4.5",
-  address: "Liverpool, L99 5AB",
+  address: demoAddress,
   listOfMenuItems: [bagel3, bagel2, bagel1],
+);
+
+DeliveryAddresses demoAddress = new DeliveryAddresses(
+  internalID: 80085,
+  houseNumber: "Shop 69",
+  buildingName: "221B Baker Street",
+  townCity: "Liverpool",
+  postalCode: "L7 0HG",
+  latitude: 3.41231123,
+  longitude: 69.420,
 );
 
 RestaurantCategory restaurantCategory1 = new RestaurantCategory(
@@ -61,7 +72,8 @@ RestaurantCategory restaurantCategory2 = new RestaurantCategory(
 
 final MenuItem bagel1 = new MenuItem(
   isFeatured: true,
-  menuID: "menuID1",
+  menuItemID: "menuID1",
+  restaurantID: "DEMO",
   name: "Blueberry Bagel",
   imageURLs: [
     "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
@@ -90,7 +102,8 @@ final MenuItem bagel1 = new MenuItem(
 
 final MenuItem bagel2 = new MenuItem(
   isFeatured: true,
-  menuID: "menuID2",
+  menuItemID: "menuID2",
+  restaurantID: "DEMO",
   name: "Poppy Seed Bagel",
   imageURLs: [
     "https://img.taste.com.au/DGaf7toO/taste/2016/11/poppy-seed-bagels-74845-1.jpeg",
@@ -119,7 +132,8 @@ final MenuItem bagel2 = new MenuItem(
 
 final MenuItem bagel3 = new MenuItem(
   isFeatured: true,
-  menuID: "menuID3",
+  menuItemID: "menuID3",
+  restaurantID: "DEMO",
   name: "Everything Bagel",
   imageURLs: [
     "https://simmerandsauce.com/wp-content/uploads/2019/02/fullsizeoutput_1badf.jpeg",
