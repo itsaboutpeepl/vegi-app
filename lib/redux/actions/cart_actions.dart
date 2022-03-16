@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux/redux.dart';
+import 'package:intl/intl.dart';
 
 class UpdateCartItems {
   final List<OrderItem> cartItems;
@@ -91,16 +92,45 @@ class UpdateSelectedAmounts {
   UpdateSelectedAmounts(this.GBPxAmount, this.PPLAmount);
 }
 
-ThunkAction getFullfillmentMethods() {
+class SetRestaurantDetails {
+  final String restaurantID;
+  final String restaurantName;
+  final DeliveryAddresses restaurantAddress;
+
+  SetRestaurantDetails(
+      this.restaurantID, this.restaurantName, this.restaurantAddress);
+}
+
+ThunkAction getFullfillmentMethods({DateTime? newDate}) {
   return (Store store) async {
     try {
-      List<Map<String, String>> deliverySlots =
-          await vegiEatsService.getDeliverySlots();
+      DateFormat formatter = DateFormat('dd-MM-yyyy');
 
-      List<Map<String, String>> collectionSlots =
-          await vegiEatsService.getCollectionSlots();
+      if ([null, ""].contains(newDate)) {
+        List<Map<String, String>> deliverySlots =
+            await vegiEatsService.getDeliverySlots(
+                vendorID: store.state.cartState.restaurantID,
+                dateRequired: formatter.format(DateTime.now()));
 
-      store.dispatch(UpdateSlots(deliverySlots, collectionSlots));
+        List<Map<String, String>> collectionSlots =
+            await vegiEatsService.getCollectionSlots(
+                vendorID: store.state.cartState.restaurantID,
+                dateRequired: formatter.format(DateTime.now()));
+
+        store.dispatch(UpdateSlots(deliverySlots, collectionSlots));
+      } else {
+        List<Map<String, String>> deliverySlots =
+            await vegiEatsService.getDeliverySlots(
+                vendorID: store.state.cartState.restaurantID,
+                dateRequired: formatter.format(newDate!));
+
+        List<Map<String, String>> collectionSlots =
+            await vegiEatsService.getCollectionSlots(
+                vendorID: store.state.cartState.restaurantID,
+                dateRequired: formatter.format(newDate));
+
+        store.dispatch(UpdateSlots(deliverySlots, collectionSlots));
+      }
     } catch (e, s) {
       log.error('ERROR - getFullfillmentMethods $e');
       await Sentry.captureException(
@@ -128,7 +158,8 @@ ThunkAction updateCartTip(int newTip) {
   };
 }
 
-ThunkAction updateCartDiscount(String newDiscountCode) {
+ThunkAction updateCartDiscount(
+    String newDiscountCode, VoidCallback errorCallback) {
   return (Store store) async {
     try {
       if (newDiscountCode == 'REMOVE') {
@@ -136,13 +167,21 @@ ThunkAction updateCartDiscount(String newDiscountCode) {
         store.dispatch(computeCartTotals());
       } else {
         int discountPercent =
-            await vegiEatsService.checkDiscountCode(newDiscountCode);
+            await vegiEatsService.checkDiscountCode(newDiscountCode).onError(
+          (error, stackTrace) {
+            errorCallback();
+            return 0;
+          },
+        );
 
-        store.dispatch(UpdateCartDiscount(discountPercent, newDiscountCode));
-        store.dispatch(computeCartTotals());
+        if (discountPercent != 0) {
+          store.dispatch(UpdateCartDiscount(discountPercent, newDiscountCode));
+          store.dispatch(computeCartTotals());
+        }
       }
     } catch (e, s) {
       log.error('ERROR - updateComputeUserCart $e');
+      errorCallback();
       await Sentry.captureException(
         e,
         stackTrace: s,
@@ -260,7 +299,7 @@ ThunkAction prepareAndSendOrder(
         "items": store.state.cartState.cartItems
             .map(
               (e) => {
-                "id": int.parse(e.menuItem.menuID),
+                "id": int.parse(e.menuItem.menuItemID),
                 "options": e.selectedProductOptions.map(
                   (key, value) =>
                       MapEntry<String, int>(key.toString(), value.optionID),
@@ -281,6 +320,7 @@ ThunkAction prepareAndSendOrder(
           "deliveryInstructions": " ",
         },
         "total": store.state.cartState.cartTotal,
+        "tipAmount": store.state.cartState.selectedTipAmount,
         "marketingOptIn": false,
         "discountCode": store.state.cartState.discountCode,
         "vendor": 1,
@@ -334,7 +374,7 @@ ThunkAction prepareAndSendOrder(
         print("order result $result");
 
         //Crosscheck the PaymentIntentID with the amount calculcated on device.
-        if (checkResult['paymentIntent']['amount'] == 2160) {
+        if (checkResult['paymentIntent']['amount'] == 2400) {
           store.dispatch(CreateOrder(
               result['orderID'].toString(), result['paymentIntentID']));
           successCallback();
@@ -360,6 +400,11 @@ ThunkAction prepareAndSendOrder(
 ThunkAction sendTokenPayment(VoidCallback successCallback) {
   return (Store store) async {
     try {
+      //TODO: Remove please
+      if (store.state.cartState.discountCode == "") {
+        successCallback();
+        return;
+      }
       //Set loading to true
       store.dispatch(SetTransferringPayment(true));
 
@@ -429,6 +474,47 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
         e,
         stackTrace: s,
         hint: 'ERROR - updateComputeUserCart $e',
+      );
+    }
+  };
+}
+
+ThunkAction setRestaurantDetails(String restaurantID, String restaurantName,
+    DeliveryAddresses restaurantAddress, VoidCallback sendSnackBar) {
+  return (Store store) async {
+    try {
+      //If cart has existing items -> clear cart, set new restaurant details, show snackbar if cart had items.
+
+      if (store.state.cartState.restaurantName.isNotEmpty &&
+          store.state.cartState.restaurantID.isNotEmpty) {
+        sendSnackBar();
+        store.dispatch(ClearCart());
+        store.dispatch(
+          SetRestaurantDetails(
+            restaurantID,
+            restaurantName,
+            restaurantAddress,
+          ),
+        );
+      } else {
+        store.dispatch(
+          SetRestaurantDetails(
+            restaurantID,
+            restaurantName,
+            restaurantAddress,
+          ),
+        );
+      }
+
+      // If cart does not have existing items -> set new restaurant details
+
+    } catch (e, s) {
+      store.dispatch(SetError(true));
+      log.error('ERROR - setRestaurantDetails $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - setRestaurantDetails $e',
       );
     }
   };
