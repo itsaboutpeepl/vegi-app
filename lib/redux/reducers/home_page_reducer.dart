@@ -8,6 +8,7 @@ final HomePageReducers = combineReducers<HomePageState>(
         _getFeaturedRestaurants),
     TypedReducer<HomePageState, UpdateRestaurantCategories>(
         _getRestaurantCategories),
+    TypedReducer<HomePageState, SetIsLoadingHomePage>(_setIsLoadingHomePage),
   ],
 );
 
@@ -22,4 +23,9 @@ HomePageState _getRestaurantCategories(
     HomePageState state, UpdateRestaurantCategories action) {
   return state.copyWith(
       restaurantCategories: action.listOfRestaurantCategories);
+}
+
+HomePageState _setIsLoadingHomePage(
+    HomePageState state, SetIsLoadingHomePage action) {
+  return state.copyWith(isLoadingHomePage: action.isLoading);
 }
