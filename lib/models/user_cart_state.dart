@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 part 'user_cart_state.freezed.dart';
 part 'user_cart_state.g.dart';
@@ -29,6 +31,9 @@ class UserCartState with _$UserCartState {
     required bool transferringTokens,
     required bool errorCompletingPayment,
     required bool confirmedPayment,
+    required String restaurantName,
+    required String restaurantID,
+    required DeliveryAddresses restaurantAddress,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(
@@ -51,6 +56,9 @@ class UserCartState with _$UserCartState {
         transferringTokens: false,
         errorCompletingPayment: false,
         confirmedPayment: false,
+        restaurantName: "",
+        restaurantID: "",
+        restaurantAddress: demoAddress,
       );
 
   factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);

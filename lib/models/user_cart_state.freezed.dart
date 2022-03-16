@@ -40,7 +40,10 @@ class _$UserCartStateTearOff {
       required double selectedPPLAmount,
       required bool transferringTokens,
       required bool errorCompletingPayment,
-      required bool confirmedPayment}) {
+      required bool confirmedPayment,
+      required String restaurantName,
+      required String restaurantID,
+      required DeliveryAddresses restaurantAddress}) {
     return _UserCartState(
       cartItems: cartItems,
       cartSubTotal: cartSubTotal,
@@ -61,6 +64,9 @@ class _$UserCartStateTearOff {
       transferringTokens: transferringTokens,
       errorCompletingPayment: errorCompletingPayment,
       confirmedPayment: confirmedPayment,
+      restaurantName: restaurantName,
+      restaurantID: restaurantID,
+      restaurantAddress: restaurantAddress,
     );
   }
 
@@ -95,6 +101,9 @@ mixin _$UserCartState {
   bool get transferringTokens => throw _privateConstructorUsedError;
   bool get errorCompletingPayment => throw _privateConstructorUsedError;
   bool get confirmedPayment => throw _privateConstructorUsedError;
+  String get restaurantName => throw _privateConstructorUsedError;
+  String get restaurantID => throw _privateConstructorUsedError;
+  DeliveryAddresses get restaurantAddress => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -126,7 +135,12 @@ abstract class $UserCartStateCopyWith<$Res> {
       double selectedPPLAmount,
       bool transferringTokens,
       bool errorCompletingPayment,
-      bool confirmedPayment});
+      bool confirmedPayment,
+      String restaurantName,
+      String restaurantID,
+      DeliveryAddresses restaurantAddress});
+
+  $DeliveryAddressesCopyWith<$Res> get restaurantAddress;
 }
 
 /// @nodoc
@@ -159,6 +173,9 @@ class _$UserCartStateCopyWithImpl<$Res>
     Object? transferringTokens = freezed,
     Object? errorCompletingPayment = freezed,
     Object? confirmedPayment = freezed,
+    Object? restaurantName = freezed,
+    Object? restaurantID = freezed,
+    Object? restaurantAddress = freezed,
   }) {
     return _then(_value.copyWith(
       cartItems: cartItems == freezed
@@ -237,7 +254,26 @@ class _$UserCartStateCopyWithImpl<$Res>
           ? _value.confirmedPayment
           : confirmedPayment // ignore: cast_nullable_to_non_nullable
               as bool,
+      restaurantName: restaurantName == freezed
+          ? _value.restaurantName
+          : restaurantName // ignore: cast_nullable_to_non_nullable
+              as String,
+      restaurantID: restaurantID == freezed
+          ? _value.restaurantID
+          : restaurantID // ignore: cast_nullable_to_non_nullable
+              as String,
+      restaurantAddress: restaurantAddress == freezed
+          ? _value.restaurantAddress
+          : restaurantAddress // ignore: cast_nullable_to_non_nullable
+              as DeliveryAddresses,
     ));
+  }
+
+  @override
+  $DeliveryAddressesCopyWith<$Res> get restaurantAddress {
+    return $DeliveryAddressesCopyWith<$Res>(_value.restaurantAddress, (value) {
+      return _then(_value.copyWith(restaurantAddress: value));
+    });
   }
 }
 
@@ -267,7 +303,13 @@ abstract class _$UserCartStateCopyWith<$Res>
       double selectedPPLAmount,
       bool transferringTokens,
       bool errorCompletingPayment,
-      bool confirmedPayment});
+      bool confirmedPayment,
+      String restaurantName,
+      String restaurantID,
+      DeliveryAddresses restaurantAddress});
+
+  @override
+  $DeliveryAddressesCopyWith<$Res> get restaurantAddress;
 }
 
 /// @nodoc
@@ -302,6 +344,9 @@ class __$UserCartStateCopyWithImpl<$Res>
     Object? transferringTokens = freezed,
     Object? errorCompletingPayment = freezed,
     Object? confirmedPayment = freezed,
+    Object? restaurantName = freezed,
+    Object? restaurantID = freezed,
+    Object? restaurantAddress = freezed,
   }) {
     return _then(_UserCartState(
       cartItems: cartItems == freezed
@@ -380,6 +425,18 @@ class __$UserCartStateCopyWithImpl<$Res>
           ? _value.confirmedPayment
           : confirmedPayment // ignore: cast_nullable_to_non_nullable
               as bool,
+      restaurantName: restaurantName == freezed
+          ? _value.restaurantName
+          : restaurantName // ignore: cast_nullable_to_non_nullable
+              as String,
+      restaurantID: restaurantID == freezed
+          ? _value.restaurantID
+          : restaurantID // ignore: cast_nullable_to_non_nullable
+              as String,
+      restaurantAddress: restaurantAddress == freezed
+          ? _value.restaurantAddress
+          : restaurantAddress // ignore: cast_nullable_to_non_nullable
+              as DeliveryAddresses,
     ));
   }
 }
@@ -407,7 +464,10 @@ class _$_UserCartState extends _UserCartState {
       required this.selectedPPLAmount,
       required this.transferringTokens,
       required this.errorCompletingPayment,
-      required this.confirmedPayment})
+      required this.confirmedPayment,
+      required this.restaurantName,
+      required this.restaurantID,
+      required this.restaurantAddress})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>
@@ -451,10 +511,16 @@ class _$_UserCartState extends _UserCartState {
   final bool errorCompletingPayment;
   @override
   final bool confirmedPayment;
+  @override
+  final String restaurantName;
+  @override
+  final String restaurantID;
+  @override
+  final DeliveryAddresses restaurantAddress;
 
   @override
   String toString() {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedSlotIndex: $selectedSlotIndex, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, selectedDeliveryAddressIndex: $selectedDeliveryAddressIndex, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedSlotIndex: $selectedSlotIndex, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, selectedDeliveryAddressIndex: $selectedDeliveryAddressIndex, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress)';
   }
 
   @override
@@ -518,7 +584,11 @@ class _$_UserCartState extends _UserCartState {
                     other.errorCompletingPayment, errorCompletingPayment)) &&
             (identical(other.confirmedPayment, confirmedPayment) ||
                 const DeepCollectionEquality()
-                    .equals(other.confirmedPayment, confirmedPayment)));
+                    .equals(other.confirmedPayment, confirmedPayment)) &&
+            (identical(other.restaurantName, restaurantName) ||
+                const DeepCollectionEquality().equals(other.restaurantName, restaurantName)) &&
+            (identical(other.restaurantID, restaurantID) || const DeepCollectionEquality().equals(other.restaurantID, restaurantID)) &&
+            (identical(other.restaurantAddress, restaurantAddress) || const DeepCollectionEquality().equals(other.restaurantAddress, restaurantAddress)));
   }
 
   @override
@@ -542,7 +612,10 @@ class _$_UserCartState extends _UserCartState {
       const DeepCollectionEquality().hash(selectedPPLAmount) ^
       const DeepCollectionEquality().hash(transferringTokens) ^
       const DeepCollectionEquality().hash(errorCompletingPayment) ^
-      const DeepCollectionEquality().hash(confirmedPayment);
+      const DeepCollectionEquality().hash(confirmedPayment) ^
+      const DeepCollectionEquality().hash(restaurantName) ^
+      const DeepCollectionEquality().hash(restaurantID) ^
+      const DeepCollectionEquality().hash(restaurantAddress);
 
   @JsonKey(ignore: true)
   @override
@@ -575,7 +648,10 @@ abstract class _UserCartState extends UserCartState {
       required double selectedPPLAmount,
       required bool transferringTokens,
       required bool errorCompletingPayment,
-      required bool confirmedPayment}) = _$_UserCartState;
+      required bool confirmedPayment,
+      required String restaurantName,
+      required String restaurantID,
+      required DeliveryAddresses restaurantAddress}) = _$_UserCartState;
   _UserCartState._() : super._();
 
   factory _UserCartState.fromJson(Map<String, dynamic> json) =
@@ -621,6 +697,12 @@ abstract class _UserCartState extends UserCartState {
   bool get errorCompletingPayment => throw _privateConstructorUsedError;
   @override
   bool get confirmedPayment => throw _privateConstructorUsedError;
+  @override
+  String get restaurantName => throw _privateConstructorUsedError;
+  @override
+  String get restaurantID => throw _privateConstructorUsedError;
+  @override
+  DeliveryAddresses get restaurantAddress => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserCartStateCopyWith<_UserCartState> get copyWith =>

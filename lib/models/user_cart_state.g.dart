@@ -33,6 +33,9 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       transferringTokens: json['transferringTokens'] as bool,
       errorCompletingPayment: json['errorCompletingPayment'] as bool,
       confirmedPayment: json['confirmedPayment'] as bool,
+      restaurantName: json['restaurantName'] as String,
+      restaurantID: json['restaurantID'] as String,
+      restaurantAddress: DeliveryAddresses.fromJson(json['restaurantAddress']),
     );
 
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
@@ -56,4 +59,7 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'transferringTokens': instance.transferringTokens,
       'errorCompletingPayment': instance.errorCompletingPayment,
       'confirmedPayment': instance.confirmedPayment,
+      'restaurantName': instance.restaurantName,
+      'restaurantID': instance.restaurantID,
+      'restaurantAddress': instance.restaurantAddress.toJson(),
     };
