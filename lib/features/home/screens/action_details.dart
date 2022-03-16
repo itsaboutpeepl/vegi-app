@@ -1,4 +1,5 @@
 import 'package:contacts_service/contacts_service.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -77,7 +78,7 @@ class ActionDetailsScreen extends StatelessWidget {
         final String amount = hasPriceInfo
             ? '\$' +
                 action.getAmount(
-                  priceInfo: token.priceInfo,
+                  token.priceInfo,
                 ) +
                 ' (' +
                 action.getAmount() +
@@ -187,14 +188,15 @@ class ActionDetailsScreen extends StatelessWidget {
                                                     element.symbol ==
                                                     value.tradeInfo!.inputToken,
                                               );
-                                              final String amount =
-                                                  smallNumberTest(num.parse(
-                                                          value.tradeInfo!
-                                                              .inputAmount))
-                                                      ? value.tradeInfo!
-                                                          .inputAmount
-                                                      : smallValuesConvertor(
-                                                          num.parse(value
+                                              final String amount = Formatter
+                                                      .isSmallThan(
+                                                          Decimal.parse(
+                                                              value.tradeInfo!
+                                                                  .inputAmount))
+                                                  ? value.tradeInfo!.inputAmount
+                                                  : Formatter
+                                                      .smallNumbersConvertor(
+                                                          Decimal.parse(value
                                                               .tradeInfo!
                                                               .inputAmount));
 
@@ -204,7 +206,7 @@ class ActionDetailsScreen extends StatelessWidget {
                                                       '0') *
                                                   double.parse(
                                                       _token.priceInfo!.quote);
-                                              return '${amount + ' ' + value.tradeInfo!.inputToken} (\$${display(num.tryParse(a.toString()))})';
+                                              return '${amount + ' ' + value.tradeInfo!.inputToken} (\$${display2(num.tryParse(a.toString()))})';
                                             },
                                           )
                                         : displayName,
@@ -243,17 +245,22 @@ class ActionDetailsScreen extends StatelessWidget {
                                 send: (value) => '',
                                 receive: (value) => '',
                                 swap: (value) {
-                                  final String amount = smallNumberTest(
-                                          num.parse(
-                                              value.tradeInfo!.outputAmount))
-                                      ? value.tradeInfo!.outputAmount
-                                      : smallValuesConvertor(num.parse(
-                                          value.tradeInfo!.outputAmount));
+                                  final String amount = Formatter.isSmallThan(
+                                          Decimal.parse(
+                                              value.tradeInfo?.outputAmount ??
+                                                  '0'))
+                                      ? value.tradeInfo?.outputAmount ?? '0'
+                                      : Formatter.smallNumbersConvertor(
+                                          Decimal.parse(
+                                              value.tradeInfo?.outputAmount ??
+                                                  '0'));
 
                                   double val = double.parse(
-                                          value.tradeInfo!.outputAmount) *
-                                      double.parse(token.priceInfo!.quote);
-                                  return '${amount + ' ' + value.tradeInfo!.outputToken} (\$${display(num.tryParse(val.toString()))})';
+                                          value.tradeInfo?.outputAmount ??
+                                              '0') *
+                                      double.parse(
+                                          token.priceInfo?.quote ?? '0');
+                                  return '${amount + ' ' + (value.tradeInfo?.outputToken ?? '0')} (\$${display2(num.tryParse(val.toString()))})';
                                 },
                               ),
                             ),
@@ -271,7 +278,7 @@ class ActionDetailsScreen extends StatelessWidget {
                           : rowItem(
                               context,
                               I10n.of(context).address,
-                              formatAddress(accountAddress),
+                              Formatter.formatEthAddress(accountAddress),
                               withCopy: true,
                               onTap: () {
                                 Clipboard.setData(
@@ -320,7 +327,7 @@ class ActionDetailsScreen extends StatelessWidget {
                           : rowItem(
                               context,
                               I10n.of(context).txn,
-                              formatAddress(action.txHash),
+                              Formatter.formatEthAddress(action.txHash),
                               withCopy: true,
                               onTap: () {
                                 Clipboard.setData(

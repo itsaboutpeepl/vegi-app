@@ -24,7 +24,6 @@ class _$AppStateTearOff {
   _AppState call(
       {@UserStateConverter() required UserState userState,
       @CashWalletStateConverter() required CashWalletState cashWalletState,
-      @ProWalletStateConverter() required ProWalletState proWalletState,
       @SwapStateConverter() required SwapState swapState,
       @HomePageStateConverter() required HomePageState homePageState,
       @UserCartStateConverter() required UserCartState cartState,
@@ -32,7 +31,6 @@ class _$AppStateTearOff {
     return _AppState(
       userState: userState,
       cashWalletState: cashWalletState,
-      proWalletState: proWalletState,
       swapState: swapState,
       homePageState: homePageState,
       cartState: cartState,
@@ -54,8 +52,6 @@ mixin _$AppState {
   UserState get userState => throw _privateConstructorUsedError;
   @CashWalletStateConverter()
   CashWalletState get cashWalletState => throw _privateConstructorUsedError;
-  @ProWalletStateConverter()
-  ProWalletState get proWalletState => throw _privateConstructorUsedError;
   @SwapStateConverter()
   SwapState get swapState => throw _privateConstructorUsedError;
   @HomePageStateConverter()
@@ -78,7 +74,6 @@ abstract class $AppStateCopyWith<$Res> {
   $Res call(
       {@UserStateConverter() UserState userState,
       @CashWalletStateConverter() CashWalletState cashWalletState,
-      @ProWalletStateConverter() ProWalletState proWalletState,
       @SwapStateConverter() SwapState swapState,
       @HomePageStateConverter() HomePageState homePageState,
       @UserCartStateConverter() UserCartState cartState,
@@ -86,7 +81,6 @@ abstract class $AppStateCopyWith<$Res> {
 
   $UserStateCopyWith<$Res> get userState;
   $CashWalletStateCopyWith<$Res> get cashWalletState;
-  $ProWalletStateCopyWith<$Res> get proWalletState;
   $SwapStateCopyWith<$Res> get swapState;
   $HomePageStateCopyWith<$Res> get homePageState;
   $UserCartStateCopyWith<$Res> get cartState;
@@ -105,7 +99,6 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
   $Res call({
     Object? userState = freezed,
     Object? cashWalletState = freezed,
-    Object? proWalletState = freezed,
     Object? swapState = freezed,
     Object? homePageState = freezed,
     Object? cartState = freezed,
@@ -120,10 +113,6 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
           ? _value.cashWalletState
           : cashWalletState // ignore: cast_nullable_to_non_nullable
               as CashWalletState,
-      proWalletState: proWalletState == freezed
-          ? _value.proWalletState
-          : proWalletState // ignore: cast_nullable_to_non_nullable
-              as ProWalletState,
       swapState: swapState == freezed
           ? _value.swapState
           : swapState // ignore: cast_nullable_to_non_nullable
@@ -154,13 +143,6 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
   $CashWalletStateCopyWith<$Res> get cashWalletState {
     return $CashWalletStateCopyWith<$Res>(_value.cashWalletState, (value) {
       return _then(_value.copyWith(cashWalletState: value));
-    });
-  }
-
-  @override
-  $ProWalletStateCopyWith<$Res> get proWalletState {
-    return $ProWalletStateCopyWith<$Res>(_value.proWalletState, (value) {
-      return _then(_value.copyWith(proWalletState: value));
     });
   }
 
@@ -201,7 +183,6 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   $Res call(
       {@UserStateConverter() UserState userState,
       @CashWalletStateConverter() CashWalletState cashWalletState,
-      @ProWalletStateConverter() ProWalletState proWalletState,
       @SwapStateConverter() SwapState swapState,
       @HomePageStateConverter() HomePageState homePageState,
       @UserCartStateConverter() UserCartState cartState,
@@ -211,8 +192,6 @@ abstract class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   $UserStateCopyWith<$Res> get userState;
   @override
   $CashWalletStateCopyWith<$Res> get cashWalletState;
-  @override
-  $ProWalletStateCopyWith<$Res> get proWalletState;
   @override
   $SwapStateCopyWith<$Res> get swapState;
   @override
@@ -236,7 +215,6 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
   $Res call({
     Object? userState = freezed,
     Object? cashWalletState = freezed,
-    Object? proWalletState = freezed,
     Object? swapState = freezed,
     Object? homePageState = freezed,
     Object? cartState = freezed,
@@ -251,10 +229,6 @@ class __$AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
           ? _value.cashWalletState
           : cashWalletState // ignore: cast_nullable_to_non_nullable
               as CashWalletState,
-      proWalletState: proWalletState == freezed
-          ? _value.proWalletState
-          : proWalletState // ignore: cast_nullable_to_non_nullable
-              as ProWalletState,
       swapState: swapState == freezed
           ? _value.swapState
           : swapState // ignore: cast_nullable_to_non_nullable
@@ -282,7 +256,6 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
   _$_AppState(
       {@UserStateConverter() required this.userState,
       @CashWalletStateConverter() required this.cashWalletState,
-      @ProWalletStateConverter() required this.proWalletState,
       @SwapStateConverter() required this.swapState,
       @HomePageStateConverter() required this.homePageState,
       @UserCartStateConverter() required this.cartState,
@@ -299,9 +272,6 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
   @CashWalletStateConverter()
   final CashWalletState cashWalletState;
   @override
-  @ProWalletStateConverter()
-  final ProWalletState proWalletState;
-  @override
   @SwapStateConverter()
   final SwapState swapState;
   @override
@@ -316,7 +286,7 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AppState(userState: $userState, cashWalletState: $cashWalletState, proWalletState: $proWalletState, swapState: $swapState, homePageState: $homePageState, cartState: $cartState, menuItemState: $menuItemState)';
+    return 'AppState(userState: $userState, cashWalletState: $cashWalletState, swapState: $swapState, homePageState: $homePageState, cartState: $cartState, menuItemState: $menuItemState)';
   }
 
   @override
@@ -326,7 +296,6 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'AppState'))
       ..add(DiagnosticsProperty('userState', userState))
       ..add(DiagnosticsProperty('cashWalletState', cashWalletState))
-      ..add(DiagnosticsProperty('proWalletState', proWalletState))
       ..add(DiagnosticsProperty('swapState', swapState))
       ..add(DiagnosticsProperty('homePageState', homePageState))
       ..add(DiagnosticsProperty('cartState', cartState))
@@ -343,9 +312,6 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
             (identical(other.cashWalletState, cashWalletState) ||
                 const DeepCollectionEquality()
                     .equals(other.cashWalletState, cashWalletState)) &&
-            (identical(other.proWalletState, proWalletState) ||
-                const DeepCollectionEquality()
-                    .equals(other.proWalletState, proWalletState)) &&
             (identical(other.swapState, swapState) ||
                 const DeepCollectionEquality()
                     .equals(other.swapState, swapState)) &&
@@ -365,7 +331,6 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(userState) ^
       const DeepCollectionEquality().hash(cashWalletState) ^
-      const DeepCollectionEquality().hash(proWalletState) ^
       const DeepCollectionEquality().hash(swapState) ^
       const DeepCollectionEquality().hash(homePageState) ^
       const DeepCollectionEquality().hash(cartState) ^
@@ -386,7 +351,6 @@ abstract class _AppState extends AppState {
   factory _AppState(
           {@UserStateConverter() required UserState userState,
           @CashWalletStateConverter() required CashWalletState cashWalletState,
-          @ProWalletStateConverter() required ProWalletState proWalletState,
           @SwapStateConverter() required SwapState swapState,
           @HomePageStateConverter() required HomePageState homePageState,
           @UserCartStateConverter() required UserCartState cartState,
@@ -402,9 +366,6 @@ abstract class _AppState extends AppState {
   @override
   @CashWalletStateConverter()
   CashWalletState get cashWalletState => throw _privateConstructorUsedError;
-  @override
-  @ProWalletStateConverter()
-  ProWalletState get proWalletState => throw _privateConstructorUsedError;
   @override
   @SwapStateConverter()
   SwapState get swapState => throw _privateConstructorUsedError;

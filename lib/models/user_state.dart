@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/wallet/wallet_modules.dart';
 
 part 'user_state.freezed.dart';
 part 'user_state.g.dart';
@@ -67,6 +68,7 @@ class UserState with _$UserState {
         Locale? locale,
     @JsonKey(ignore: true) @Default([]) List<Contact> contacts,
     @Default(null) @JsonKey(ignore: true) PhoneAuthCredential? credentials,
+    WalletModules? walletModules,
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
   }) = _UserState;
 

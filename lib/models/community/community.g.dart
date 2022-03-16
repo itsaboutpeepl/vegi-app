@@ -12,10 +12,11 @@ _$_Community _$$_CommunityFromJson(Map<String, dynamic> json) => _$_Community(
       isMultiBridge: json['isMultiBridge'] as bool? ?? false,
       isClosed: json['isClosed'] as bool? ?? false,
       isMember: json['isMember'] as bool? ?? false,
-      homeTokenAddress: json['homeTokenAddress'] as String?,
-      secondaryTokenAddress: json['secondaryTokenAddress'] as String?,
-      metadata: const CommunityMetadataConverter()
-          .fromJson(json['metadata'] as Map<String, dynamic>?),
+      homeTokenAddress: json['homeTokenAddress'] as String? ?? '',
+      metadata: json['metadata'] == null
+          ? null
+          : CommunityMetadata.fromJson(
+              json['metadata'] as Map<String, dynamic>),
       webUrl: json['webUrl'] as String?,
       bridgeType: json['bridgeType'] as String?,
       bridgeDirection: json['bridgeDirection'] as String?,
@@ -37,6 +38,7 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) {
     'isMultiBridge': instance.isMultiBridge,
     'isClosed': instance.isClosed,
     'isMember': instance.isMember,
+    'homeTokenAddress': instance.homeTokenAddress,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -45,10 +47,7 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) {
     }
   }
 
-  writeNotNull('homeTokenAddress', instance.homeTokenAddress);
-  writeNotNull('secondaryTokenAddress', instance.secondaryTokenAddress);
-  writeNotNull(
-      'metadata', const CommunityMetadataConverter().toJson(instance.metadata));
+  writeNotNull('metadata', instance.metadata?.toJson());
   writeNotNull('webUrl', instance.webUrl);
   writeNotNull('bridgeType', instance.bridgeType);
   writeNotNull('bridgeDirection', instance.bridgeDirection);

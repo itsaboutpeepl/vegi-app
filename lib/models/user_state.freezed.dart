@@ -65,6 +65,7 @@ class _$UserStateTearOff {
           List<Contact> contacts = const [],
       @JsonKey(ignore: true)
           PhoneAuthCredential? credentials = null,
+      WalletModules? walletModules,
       List<DeliveryAddresses> listOfDeliveryAddresses = const []}) {
     return _UserState(
       installedAt: installedAt,
@@ -101,6 +102,7 @@ class _$UserStateTearOff {
       locale: locale,
       contacts: contacts,
       credentials: credentials,
+      walletModules: walletModules,
       listOfDeliveryAddresses: listOfDeliveryAddresses,
     );
   }
@@ -158,6 +160,7 @@ mixin _$UserState {
   List<Contact> get contacts => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
+  WalletModules? get walletModules => throw _privateConstructorUsedError;
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
       throw _privateConstructorUsedError;
 
@@ -215,7 +218,10 @@ abstract class $UserStateCopyWith<$Res> {
           List<Contact> contacts,
       @JsonKey(ignore: true)
           PhoneAuthCredential? credentials,
+      WalletModules? walletModules,
       List<DeliveryAddresses> listOfDeliveryAddresses});
+
+  $WalletModulesCopyWith<$Res>? get walletModules;
 }
 
 /// @nodoc
@@ -262,6 +268,7 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
     Object? locale = freezed,
     Object? contacts = freezed,
     Object? credentials = freezed,
+    Object? walletModules = freezed,
     Object? listOfDeliveryAddresses = freezed,
   }) {
     return _then(_value.copyWith(
@@ -401,11 +408,26 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
           ? _value.credentials
           : credentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
+      walletModules: walletModules == freezed
+          ? _value.walletModules
+          : walletModules // ignore: cast_nullable_to_non_nullable
+              as WalletModules?,
       listOfDeliveryAddresses: listOfDeliveryAddresses == freezed
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
               as List<DeliveryAddresses>,
     ));
+  }
+
+  @override
+  $WalletModulesCopyWith<$Res>? get walletModules {
+    if (_value.walletModules == null) {
+      return null;
+    }
+
+    return $WalletModulesCopyWith<$Res>(_value.walletModules!, (value) {
+      return _then(_value.copyWith(walletModules: value));
+    });
   }
 }
 
@@ -459,7 +481,11 @@ abstract class _$UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
           List<Contact> contacts,
       @JsonKey(ignore: true)
           PhoneAuthCredential? credentials,
+      WalletModules? walletModules,
       List<DeliveryAddresses> listOfDeliveryAddresses});
+
+  @override
+  $WalletModulesCopyWith<$Res>? get walletModules;
 }
 
 /// @nodoc
@@ -507,6 +533,7 @@ class __$UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
     Object? locale = freezed,
     Object? contacts = freezed,
     Object? credentials = freezed,
+    Object? walletModules = freezed,
     Object? listOfDeliveryAddresses = freezed,
   }) {
     return _then(_UserState(
@@ -646,6 +673,10 @@ class __$UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
           ? _value.credentials
           : credentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
+      walletModules: walletModules == freezed
+          ? _value.walletModules
+          : walletModules // ignore: cast_nullable_to_non_nullable
+              as WalletModules?,
       listOfDeliveryAddresses: listOfDeliveryAddresses == freezed
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
@@ -702,6 +733,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
           this.contacts = const [],
       @JsonKey(ignore: true)
           this.credentials = null,
+      this.walletModules,
       this.listOfDeliveryAddresses = const []})
       : super._();
 
@@ -809,13 +841,15 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey(ignore: true)
   final PhoneAuthCredential? credentials;
+  @override
+  final WalletModules? walletModules;
   @JsonKey(defaultValue: const [])
   @override
   final List<DeliveryAddresses> listOfDeliveryAddresses;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses)';
+    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials, walletModules: $walletModules, listOfDeliveryAddresses: $listOfDeliveryAddresses)';
   }
 
   @override
@@ -859,6 +893,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('locale', locale))
       ..add(DiagnosticsProperty('contacts', contacts))
       ..add(DiagnosticsProperty('credentials', credentials))
+      ..add(DiagnosticsProperty('walletModules', walletModules))
       ..add(DiagnosticsProperty(
           'listOfDeliveryAddresses', listOfDeliveryAddresses));
   }
@@ -942,6 +977,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             (identical(other.locale, locale) || const DeepCollectionEquality().equals(other.locale, locale)) &&
             (identical(other.contacts, contacts) || const DeepCollectionEquality().equals(other.contacts, contacts)) &&
             (identical(other.credentials, credentials) || const DeepCollectionEquality().equals(other.credentials, credentials)) &&
+            (identical(other.walletModules, walletModules) || const DeepCollectionEquality().equals(other.walletModules, walletModules)) &&
             (identical(other.listOfDeliveryAddresses, listOfDeliveryAddresses) || const DeepCollectionEquality().equals(other.listOfDeliveryAddresses, listOfDeliveryAddresses)));
   }
 
@@ -982,6 +1018,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(locale) ^
       const DeepCollectionEquality().hash(contacts) ^
       const DeepCollectionEquality().hash(credentials) ^
+      const DeepCollectionEquality().hash(walletModules) ^
       const DeepCollectionEquality().hash(listOfDeliveryAddresses);
 
   @JsonKey(ignore: true)
@@ -1040,6 +1077,7 @@ abstract class _UserState extends UserState {
           List<Contact> contacts,
       @JsonKey(ignore: true)
           PhoneAuthCredential? credentials,
+      WalletModules? walletModules,
       List<DeliveryAddresses> listOfDeliveryAddresses}) = _$_UserState;
   _UserState._() : super._();
 
@@ -1123,6 +1161,8 @@ abstract class _UserState extends UserState {
   @override
   @JsonKey(ignore: true)
   PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
+  @override
+  WalletModules? get walletModules => throw _privateConstructorUsedError;
   @override
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
       throw _privateConstructorUsedError;

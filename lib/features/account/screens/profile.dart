@@ -181,7 +181,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              formatAddress(viewModel.walletAddress),
+                              Formatter.formatEthAddress(
+                                  viewModel.walletAddress),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.grey,

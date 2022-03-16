@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:vegan_liverpool/models/tokens/token.dart';
-import 'package:vegan_liverpool/utils/format.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/utils/format.dart';
 // import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 @injectable
@@ -33,24 +33,26 @@ class Explorer {
     // }
   }
 
-  Future<List<Token>> getListOfTokensByAddress(String address) async {
+  Future<List<Token>> fetchTokenlist(String address) async {
     Response response =
         await dio.get('?module=account&action=tokenlist&address=$address');
     if (response.data['message'] == 'OK' && response.data['status'] == '1') {
       List<Token> tokens = [];
       for (dynamic token in response.data['result']) {
-        tokens.add(
-          Token.fromJson({
-            "amount": token['balance'],
-            "originNetwork": 'mainnet',
-            "address": token['contractAddress'].toLowerCase(),
-            "decimals": int.parse(token['decimals']),
-            "name": formatTokenName(token["name"]),
-            "symbol": token['symbol'],
-          }).copyWith(
-            timestamp: 0,
-          ),
-        );
+        if (token['type'] == 'ERC-20') {
+          tokens.add(
+            Token.fromJson({
+              "amount": token['balance'],
+              "originNetwork": 'mainnet',
+              "address": token['contractAddress'].toLowerCase(),
+              "decimals": int.parse(token['decimals']),
+              "name": Formatter.formatTokenName(token["name"]),
+              "symbol": token['symbol'],
+            }).copyWith(
+              timestamp: 0,
+            ),
+          );
+        }
       }
       return tokens;
     } else {

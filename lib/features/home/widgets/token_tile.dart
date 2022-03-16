@@ -145,7 +145,7 @@ class _TokenTileState extends State<TokenTile> {
                                     softWrap: true,
                                   ),
                                   Text(
-                                    '\$${display(num.parse(widget.token.priceInfo?.quote ?? '0'))}',
+                                    '\$${display2(num.parse(widget.token.priceInfo?.quote ?? '0'))}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Europa',
@@ -324,7 +324,7 @@ class _TokenTileState extends State<TokenTile> {
         final bool isCommunityToken = viewModel.communities.any(
           (element) =>
               ![null, ''].contains(element.homeTokenAddress) &&
-              element.homeTokenAddress!.toLowerCase() == widget.token.address &&
+              element.homeTokenAddress.toLowerCase() == widget.token.address &&
               ![false, null].contains(element.metadata?.isDefaultImage),
         );
         final Widget leading = Stack(

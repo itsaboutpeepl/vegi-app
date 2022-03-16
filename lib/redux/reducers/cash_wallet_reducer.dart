@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ethereum_address/ethereum_address.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
@@ -6,10 +8,18 @@ import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
-import 'package:vegan_liverpool/redux/reducers/pro_mode_reducer.dart';
 import 'package:redux/redux.dart';
 
+bool clearTokensWithZero(key, token) {
+  if (token.timestamp == 0) return false;
+  double formattedValue = token.amount / BigInt.from(pow(10, token.decimals));
+  return num.parse(formattedValue.toString()).compareTo(0) != 1;
+}
+
 final cashWalletReducers = combineReducers<CashWalletState>([
+  TypedReducer<CashWalletState, CreateLocalAccountSuccess>(
+    _createNewWalletSuccess,
+  ),
   TypedReducer<CashWalletState, GetTokenPriceDiffSuccess>(
       _getTokenPriceDiffSuccess),
   TypedReducer<CashWalletState, GetTokenStatsSuccess>(_getTokenStatsSuccess),
@@ -40,8 +50,6 @@ final cashWalletReducers = combineReducers<CashWalletState>([
   TypedReducer<CashWalletState, SwitchToNewCommunity>(_switchToNewCommunity),
   TypedReducer<CashWalletState, SetIsTransfersFetching>(
       _setIsTransfersFetching),
-  TypedReducer<CashWalletState, CreateLocalAccountSuccess>(
-      _createNewWalletSuccess),
   TypedReducer<CashWalletState, StartFetchingBusinessList>(
       _startFetchingBusinessList),
   TypedReducer<CashWalletState, FetchingBusinessListSuccess>(
@@ -49,8 +57,15 @@ final cashWalletReducers = combineReducers<CashWalletState>([
   TypedReducer<CashWalletState, FetchingBusinessListFailed>(
       _fetchingBusinessListFailed),
   TypedReducer<CashWalletState, SetIsFetchingBalances>(_setIsFetchingBalances),
-  TypedReducer<CashWalletState, SetShowDepositBanner>(_setShowDepositBanner)
+  TypedReducer<CashWalletState, SetShowDepositBanner>(_setShowDepositBanner),
 ]);
+
+CashWalletState _createNewWalletSuccess(
+  CashWalletState state,
+  CreateLocalAccountSuccess action,
+) {
+  return CashWalletState.initial();
+}
 
 CashWalletState _getTokenPriceDiffSuccess(
   CashWalletState state,
@@ -122,8 +137,8 @@ CashWalletState _getActionsSuccess(
   }
   return state.copyWith(
     walletActions: WalletActions().copyWith(
-      list: list,
-      updatedAt: action.updateAt + 1,
+      list: list..sort(),
+      currentPage: action.nextPage,
     ),
   );
 }
@@ -169,7 +184,7 @@ CashWalletState _resetTokensTxs(
   ResetTokenTxs action,
 ) {
   Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
-  Map<String, Token> tokens = Map<String, Token>();
+  Map<String, Token> tokens = {};
   final List<String> tokenAddresses = List<String>.from(
       newOne.keys.map((e) => e.toLowerCase()).toSet().toList());
   for (String tokenAddress in tokenAddresses) {
@@ -379,13 +394,6 @@ CashWalletState _setIsTransfersFetching(
   SetIsTransfersFetching action,
 ) {
   return state.copyWith(isTransfersFetchingStarted: action.isFetching);
-}
-
-CashWalletState _createNewWalletSuccess(
-  CashWalletState state,
-  CreateLocalAccountSuccess action,
-) {
-  return CashWalletState.initial();
 }
 
 CashWalletState _setIsFetchingBalances(

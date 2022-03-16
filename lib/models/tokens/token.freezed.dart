@@ -29,11 +29,11 @@ class _$TokenTearOff {
       required int decimals,
       bool isNative = false,
       String? imageUrl,
-      @JsonKey(ignore: true) String? subtitle = null,
-      int? timestamp = null,
-      Price? priceInfo = null,
-      String? communityAddress = null,
-      String? originNetwork = null,
+      @JsonKey(ignore: true) String? subtitle,
+      int? timestamp,
+      Price? priceInfo,
+      String? communityAddress,
+      String? originNetwork,
       num priceChange = 0,
       @JsonKey(ignore: true) num priceDiff = 0,
       @JsonKey(ignore: true) int priceDiffLimitInDays = 0,
@@ -392,11 +392,11 @@ class _$_Token extends _Token with DiagnosticableTreeMixin {
       required this.decimals,
       this.isNative = false,
       this.imageUrl,
-      @JsonKey(ignore: true) this.subtitle = null,
-      this.timestamp = null,
-      this.priceInfo = null,
-      this.communityAddress = null,
-      this.originNetwork = null,
+      @JsonKey(ignore: true) this.subtitle,
+      this.timestamp,
+      this.priceInfo,
+      this.communityAddress,
+      this.originNetwork,
       this.priceChange = 0,
       @JsonKey(ignore: true) this.priceDiff = 0,
       @JsonKey(ignore: true) this.priceDiffLimitInDays = 0,
@@ -425,16 +425,12 @@ class _$_Token extends _Token with DiagnosticableTreeMixin {
   @override
   @JsonKey(ignore: true)
   final String? subtitle;
-  @JsonKey(defaultValue: null)
   @override
   final int? timestamp;
-  @JsonKey(defaultValue: null)
   @override
   final Price? priceInfo;
-  @JsonKey(defaultValue: null)
   @override
   final String? communityAddress;
-  @JsonKey(defaultValue: null)
   @override
   final String? originNetwork;
   @JsonKey(defaultValue: 0)

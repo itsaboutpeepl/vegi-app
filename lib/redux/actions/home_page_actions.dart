@@ -99,8 +99,6 @@ ThunkAction fetchHomePageData() {
     try {
       store.dispatch(fetchRestaurantCategories());
       store.dispatch(fetchFeaturedRestaurants());
-      store.dispatch(fetchListOfTokensByAddress());
-      store.dispatch(startFetchTokensBalances());
     } catch (e, s) {
       log.error('ERROR - fetchHomePageData $e');
       await Sentry.captureException(

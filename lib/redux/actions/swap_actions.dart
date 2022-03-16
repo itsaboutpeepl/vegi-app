@@ -59,7 +59,7 @@ ThunkAction fetchSwapList() {
       Map<String, Token> tokens = Map();
       Map<String, String> tokensImages = Map();
       for (Map token in data['tokens']) {
-        final String name = formatTokenName(token["name"]);
+        final String name = Formatter.formatTokenName(token["name"]);
         if (name.startsWith('Dai')) {
           continue;
         }
@@ -138,19 +138,19 @@ ThunkAction fetchSwapBalances() {
     try {
       SwapState swapState = store.state.swapState;
       String walletAddress = store.state.userState.walletAddress;
-      if (fuseWeb3 == null) {
-        throw 'web3 is empty';
-      }
-      for (Token token in swapState.tokens.values) {
-        final BigInt balance = await fuseWeb3!.getTokenBalance(
-          token.address,
-          address: walletAddress,
-        );
-        store.dispatch(UpdateTokenBalance(
-          tokenAddress: token.address,
-          balance: balance,
-        ));
-      }
+      // if (fuseWeb3 == null) {
+      //   throw 'web3 is empty';
+      // }
+      // for (Token token in swapState.tokens.values) {
+      //   final BigInt balance = await fuseWeb3!.getTokenBalance(
+      //     token.address,
+      //     address: walletAddress,
+      //   );
+      //   store.dispatch(UpdateTokenBalance(
+      //     tokenAddress: token.address,
+      //     balance: balance,
+      //   ));
+      // }
       store.dispatch(fetchSwapListPrices());
     } catch (e, s) {
       log.error('ERROR - fetchSwapBalances ${e.toString()} ${s.toString()}');

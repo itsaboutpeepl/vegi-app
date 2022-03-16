@@ -6,7 +6,6 @@ import 'package:vegan_liverpool/models/swap_state.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
-import 'package:vegan_liverpool/models/pro_wallet_state.dart';
 
 part 'app_state.freezed.dart';
 part 'app_state.g.dart';
@@ -20,7 +19,6 @@ class AppState with _$AppState {
   factory AppState({
     @UserStateConverter() required UserState userState,
     @CashWalletStateConverter() required CashWalletState cashWalletState,
-    @ProWalletStateConverter() required ProWalletState proWalletState,
     @SwapStateConverter() required SwapState swapState,
     @HomePageStateConverter() required HomePageState homePageState,
     @UserCartStateConverter() required UserCartState cartState,
@@ -31,7 +29,6 @@ class AppState with _$AppState {
     return AppState(
       userState: UserState.initial(),
       cashWalletState: CashWalletState.initial(),
-      proWalletState: ProWalletState.initial(),
       swapState: SwapState.initial(),
       homePageState: HomePageState.initial(),
       cartState: UserCartState.initial(),

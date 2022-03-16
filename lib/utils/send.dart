@@ -122,7 +122,7 @@ void sendToPastedAddress(
   final args = SendFlowArguments(
     accountAddress: accountAddress,
     avatar: AssetImage('assets/images/anom.png'),
-    name: formatAddress(accountAddress),
+    name: Formatter.formatEthAddress(accountAddress),
     tokenToSend: token,
   );
   context.navigateTo(

@@ -23,7 +23,6 @@ import '../../services/apis/vegiEats.dart' as _i17;
 import '../../utils/log/log_it.dart' as _i18;
 import '../../utils/onboard/Istrategy.dart' as _i10;
 import '../network/services.dart' as _i19;
-import '../network/web3.dart' as _i26;
 import '../router/routes.dart' as _i16;
 import 'dio.dart' as _i20;
 import 'firebase.dart' as _i21;
@@ -44,7 +43,6 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   final loggerDi = _$LoggerDi();
   final packageInfoDi = _$PackageInfoDi();
   final phone = _$Phone();
-  final web3Di = _$Web3Di();
   gh.lazySingleton<_i3.API>(() => servicesModule.api);
   gh.factory<_i4.Dio>(() => dioDi.dio);
   gh.factoryParam<_i5.Explorer, String?, String?>(
@@ -69,18 +67,9 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i14.PeeplPaySerivce(get<_i4.Dio>()));
   gh.lazySingleton<_i15.PhoneNumberUtil>(() => phone.phoneNumberUtil);
   gh.singleton<_i16.RootRouter>(servicesModule.rootRouter);
-  gh.factory<String>(() => web3Di.defaultCommunityAddress,
-      instanceName: 'defaultCommunityAddress');
   gh.lazySingleton<_i17.VegiEatsService>(
       () => _i17.VegiEatsService(get<_i4.Dio>()));
-  gh.factoryParam<_i3.Web3, Map<dynamic, dynamic>?, dynamic>(
-      (walletModules, _) => web3Di.fuseWeb3(
-          get<String>(instanceName: 'defaultCommunityAddress'), walletModules),
-      instanceName: 'fuseWeb3');
-  gh.factoryParam<_i3.Web3, Map<dynamic, dynamic>?, dynamic>(
-      (walletModules, _) => web3Di.ethereumWeb3(
-          get<String>(instanceName: 'defaultCommunityAddress'), walletModules),
-      instanceName: 'ethereumWeb3');
+  gh.lazySingleton<_i3.WalletApi>(() => servicesModule.walletApi);
   gh.lazySingleton<_i18.LogIt>(() => _i18.LogIt(get<_i11.Logger>()));
   return get;
 }
@@ -98,5 +87,3 @@ class _$LoggerDi extends _i23.LoggerDi {}
 class _$PackageInfoDi extends _i24.PackageInfoDi {}
 
 class _$Phone extends _i25.Phone {}
-
-class _$Web3Di extends _i26.Web3Di {}

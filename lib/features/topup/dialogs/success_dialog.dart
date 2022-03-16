@@ -101,17 +101,6 @@ class _TopUpSuccessState extends State<TopUpSuccess>
                             fontSize: 20,
                             onPressed: () {
                               context.router.popUntilRoot();
-                              context.navigateTo(
-                                WebviewTab(
-                                  children: [
-                                    WebViewWidget(
-                                      url:
-                                          '$peeplUrl/vendors?wallet=${viewModel.walletAddress}',
-                                      walletAddress: viewModel.walletAddress,
-                                    )
-                                  ],
-                                ),
-                              );
                             },
                           ),
                         ),

@@ -14,7 +14,7 @@ dependencies:
   auto_size_text_field: ^1.0.0-nullsafety.1
   cached_network_image: ^3.2.0
   carousel_slider: ^4.0.0
-  chewie: ^1.2.2
+  carrier_info: ^2.0.4
   confetti: ^0.6.0
   contacts_service: ^0.6.1
   country_code_picker: ^2.0.2
@@ -54,7 +54,7 @@ dependencies:
   google_maps_flutter: ^2.1.1
   grouped_list: ^4.0.0
   image_picker: ^0.8.2
-  injectable: ^1.4.1
+  injectable: ^1.5.3
   json_annotation: ^4.0.1
   local_auth: ^1.1.6
   logger: ^1.0.0

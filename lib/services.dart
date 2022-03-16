@@ -12,8 +12,6 @@ import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:wallet_core/wallet_core.dart';
 
-Web3? fuseWeb3;
-Web3? ethereumWeb3;
 final RootRouter rootRouter = getIt<RootRouter>();
 
 final Explorer fuseExplorerApi = getIt<Explorer>(

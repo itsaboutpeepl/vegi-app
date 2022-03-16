@@ -13,7 +13,6 @@ class TokenTileViewModel extends Equatable {
   final Function(Token token) fetchTokenAction;
   final Function(Token token) fetchTokenPrice;
   final Plugins plugins;
-  final Function getSwapListBalances;
 
   TokenTileViewModel({
     required this.communities,
@@ -21,7 +20,6 @@ class TokenTileViewModel extends Equatable {
     required this.tokensImages,
     required this.fetchTokenAction,
     required this.fetchTokenPrice,
-    required this.getSwapListBalances,
   });
 
   static TokenTileViewModel fromStore(Store<AppState> store) {
@@ -37,9 +35,6 @@ class TokenTileViewModel extends Equatable {
       },
       fetchTokenPrice: (Token token) {
         store.dispatch(getTokenPriceCall(token));
-      },
-      getSwapListBalances: () {
-        store.dispatch(fetchSwapBalances());
       },
     );
   }

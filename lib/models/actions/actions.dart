@@ -1,11 +1,11 @@
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 part 'actions.freezed.dart';
 part 'actions.g.dart';
 
-@immutable
 @freezed
 class WalletActions with _$WalletActions {
   const WalletActions._();
@@ -14,6 +14,7 @@ class WalletActions with _$WalletActions {
   factory WalletActions({
     @Default(<WalletAction>[]) List<WalletAction> list,
     @Default(0) num updatedAt,
+    @Default(1) int currentPage,
   }) = _WalletActions;
 
   factory WalletActions.initial() {
@@ -29,9 +30,6 @@ class WalletActions with _$WalletActions {
 
 class WalletActionFactory {
   static WalletAction create(Map<String, dynamic> json) {
-    print("Printing json");
-    print(json);
-
     json =
         json.containsKey('data') ? Map.from({...json, ...json['data']}) : json;
     json['timestamp'] =
@@ -61,7 +59,16 @@ class WalletActionFactory {
   }
 
   static List<WalletAction> actionsFromJson(Iterable<dynamic> docs) =>
-      List<WalletAction>.from(docs.map(
-        (json) => WalletActionFactory.create(json),
-      ));
+      List.from(docs).fold<List<WalletAction>>([], (previousValue, action) {
+        try {
+          return [...previousValue, WalletActionFactory.create(action)];
+        } catch (e, s) {
+          log.info(
+            'Error while trying to add WalletAction',
+            error: e,
+            stackTrace: s,
+          );
+          return previousValue;
+        }
+      });
 }

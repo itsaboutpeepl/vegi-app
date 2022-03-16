@@ -22,10 +22,13 @@ class _$WalletActionsTearOff {
   const _$WalletActionsTearOff();
 
   _WalletActions call(
-      {List<WalletAction> list = const <WalletAction>[], num updatedAt = 0}) {
+      {List<WalletAction> list = const <WalletAction>[],
+      num updatedAt = 0,
+      int currentPage = 1}) {
     return _WalletActions(
       list: list,
       updatedAt: updatedAt,
+      currentPage: currentPage,
     );
   }
 
@@ -41,6 +44,7 @@ const $WalletActions = _$WalletActionsTearOff();
 mixin _$WalletActions {
   List<WalletAction> get list => throw _privateConstructorUsedError;
   num get updatedAt => throw _privateConstructorUsedError;
+  int get currentPage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -53,7 +57,7 @@ abstract class $WalletActionsCopyWith<$Res> {
   factory $WalletActionsCopyWith(
           WalletActions value, $Res Function(WalletActions) then) =
       _$WalletActionsCopyWithImpl<$Res>;
-  $Res call({List<WalletAction> list, num updatedAt});
+  $Res call({List<WalletAction> list, num updatedAt, int currentPage});
 }
 
 /// @nodoc
@@ -69,6 +73,7 @@ class _$WalletActionsCopyWithImpl<$Res>
   $Res call({
     Object? list = freezed,
     Object? updatedAt = freezed,
+    Object? currentPage = freezed,
   }) {
     return _then(_value.copyWith(
       list: list == freezed
@@ -79,6 +84,10 @@ class _$WalletActionsCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as num,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -90,7 +99,7 @@ abstract class _$WalletActionsCopyWith<$Res>
           _WalletActions value, $Res Function(_WalletActions) then) =
       __$WalletActionsCopyWithImpl<$Res>;
   @override
-  $Res call({List<WalletAction> list, num updatedAt});
+  $Res call({List<WalletAction> list, num updatedAt, int currentPage});
 }
 
 /// @nodoc
@@ -108,6 +117,7 @@ class __$WalletActionsCopyWithImpl<$Res>
   $Res call({
     Object? list = freezed,
     Object? updatedAt = freezed,
+    Object? currentPage = freezed,
   }) {
     return _then(_WalletActions(
       list: list == freezed
@@ -118,6 +128,10 @@ class __$WalletActionsCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as num,
+      currentPage: currentPage == freezed
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -126,7 +140,10 @@ class __$WalletActionsCopyWithImpl<$Res>
 
 @JsonSerializable()
 class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
-  _$_WalletActions({this.list = const <WalletAction>[], this.updatedAt = 0})
+  _$_WalletActions(
+      {this.list = const <WalletAction>[],
+      this.updatedAt = 0,
+      this.currentPage = 1})
       : super._();
 
   factory _$_WalletActions.fromJson(Map<String, dynamic> json) =>
@@ -138,10 +155,13 @@ class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
   @JsonKey(defaultValue: 0)
   @override
   final num updatedAt;
+  @JsonKey(defaultValue: 1)
+  @override
+  final int currentPage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'WalletActions(list: $list, updatedAt: $updatedAt)';
+    return 'WalletActions(list: $list, updatedAt: $updatedAt, currentPage: $currentPage)';
   }
 
   @override
@@ -150,7 +170,8 @@ class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'WalletActions'))
       ..add(DiagnosticsProperty('list', list))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt));
+      ..add(DiagnosticsProperty('updatedAt', updatedAt))
+      ..add(DiagnosticsProperty('currentPage', currentPage));
   }
 
   @override
@@ -161,14 +182,18 @@ class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
                 const DeepCollectionEquality().equals(other.list, list)) &&
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)));
+                    .equals(other.updatedAt, updatedAt)) &&
+            (identical(other.currentPage, currentPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.currentPage, currentPage)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(list) ^
-      const DeepCollectionEquality().hash(updatedAt);
+      const DeepCollectionEquality().hash(updatedAt) ^
+      const DeepCollectionEquality().hash(currentPage);
 
   @JsonKey(ignore: true)
   @override
@@ -182,8 +207,10 @@ class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
 }
 
 abstract class _WalletActions extends WalletActions {
-  factory _WalletActions({List<WalletAction> list, num updatedAt}) =
-      _$_WalletActions;
+  factory _WalletActions(
+      {List<WalletAction> list,
+      num updatedAt,
+      int currentPage}) = _$_WalletActions;
   _WalletActions._() : super._();
 
   factory _WalletActions.fromJson(Map<String, dynamic> json) =
@@ -193,6 +220,8 @@ abstract class _WalletActions extends WalletActions {
   List<WalletAction> get list => throw _privateConstructorUsedError;
   @override
   num get updatedAt => throw _privateConstructorUsedError;
+  @override
+  int get currentPage => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$WalletActionsCopyWith<_WalletActions> get copyWith =>

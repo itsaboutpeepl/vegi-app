@@ -3,8 +3,6 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/router/router.dart';
 import 'package:vegan_liverpool/features/buy/router/router.dart';
 import 'package:vegan_liverpool/features/contacts/router/router.dart';
-import 'package:vegan_liverpool/features/help/router/router.dart';
-// import 'package:vegan_liverpool/features/earn/router/router.dart';
 import 'package:vegan_liverpool/features/home/router/router.dart';
 import 'package:vegan_liverpool/features/screens/main_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
@@ -16,10 +14,8 @@ import 'package:vegan_liverpool/features/screens/on_board_screen.dart';
 import 'package:vegan_liverpool/features/screens/pincode_screen.dart';
 import 'package:vegan_liverpool/features/screens/splash_screen.dart';
 import 'package:vegan_liverpool/features/screens/webview_screen.dart';
-import 'package:vegan_liverpool/features/swap/router/swap_router.dart';
 import 'package:vegan_liverpool/features/topup/router/topup_router.dart';
 import 'package:vegan_liverpool/features/veganHome/router/router.dart';
-import 'package:vegan_liverpool/features/webview/router/router.dart';
 
 export 'routes.gr.dart';
 
@@ -42,11 +38,8 @@ export 'routes.gr.dart';
         veganHomeTab,
         homeTab,
         topupTab,
-        helpTab,
         contactsTab,
-        webviewTab,
         buyTab,
-        swapTab,
         accountTab,
       ],
     ),

@@ -3,6 +3,8 @@ PODS:
   - Analytics (3.7.0)
   - app_tracking_transparency (0.0.1):
     - Flutter
+  - carrier_info (0.0.1):
+    - Flutter
   - contacts_service (0.2.2):
     - Flutter
   - Firebase/Analytics (8.11.0):
@@ -226,15 +228,12 @@ PODS:
   - StripeCore (21.7.0)
   - url_launcher (0.0.1):
     - Flutter
-  - video_player (0.0.1):
-    - Flutter
-  - wakelock (0.0.1):
-    - Flutter
   - webview_flutter (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
+  - carrier_info (from `.symlinks/plugins/carrier_info/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - Firebase/Analytics
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -265,8 +264,6 @@ DEPENDENCIES:
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
-  - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
@@ -302,6 +299,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
+  carrier_info:
+    :path: ".symlinks/plugins/carrier_info/ios"
   contacts_service:
     :path: ".symlinks/plugins/contacts_service/ios"
   firebase_auth:
@@ -360,10 +359,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/stripe_ios/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
-  wakelock:
-    :path: ".symlinks/plugins/wakelock/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
@@ -371,6 +366,7 @@ SPEC CHECKSUMS:
   Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
   Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
+  carrier_info: 74da91657834617c4409e6afdb706ac4685efe66
   contacts_service: 849e1f84281804c8bfbec1b4c3eedcb23c5d3eca
   Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
   firebase_auth: bdfbd5b10da1db6d5eb6ae7dbda5d81365b9cc9d
@@ -425,8 +421,6 @@ SPEC CHECKSUMS:
   stripe_ios: 669a91fd06d17954dedeaebec35c56bf1c72a602
   StripeCore: c09b492efc3b269a6ff875ad738ca366db97e03b
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
-  video_player: ecd305f42e9044793efd34846e1ce64c31ea6fcb
-  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
 PODFILE CHECKSUM: 835d2a544ddc14d3cdbc55f680b333948cc85511

@@ -419,32 +419,32 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
       );
 
       //If Selected GBPx amount is not 0, transfer GBPx
-      dynamic GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
-          ? await walletApi.tokenTransfer(
-              fuseWeb3!,
-              store.state.userState.walletAddress,
-              GBPxToken.address,
-              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
-              store.state.cartState.selectedGBPxAmount.toString(),
-              externalId: store.state.cartState.paymentIntentID,
-            )
-          : null;
+      // dynamic GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
+      //     ? await walletApi.tokenTransfer(
+      //         fuseWeb3!,
+      //         store.state.userState.walletAddress,
+      //         GBPxToken.address,
+      //         "0xf039CD9391cB28a7e632D07821deeBc249a32410",
+      //         store.state.cartState.selectedGBPxAmount.toString(),
+      //         externalId: store.state.cartState.paymentIntentID,
+      //       )
+      //     : null;
 
-      print(GBPxResponse);
+      //print(GBPxResponse);
 
       //If Selected PPL Amount is not 0, transfer PPL
-      dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
-          ? await walletApi.tokenTransfer(
-              fuseWeb3!,
-              store.state.userState.walletAddress,
-              PPLToken.address,
-              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
-              store.state.cartState.selectedPPLAmount.toString(),
-              externalId: store.state.cartState.paymentIntentID,
-            )
-          : null;
+      // dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
+      //     ? await walletApi.tokenTransfer(
+      //         fuseWeb3!,
+      //         store.state.userState.walletAddress,
+      //         PPLToken.address,
+      //         "0xf039CD9391cB28a7e632D07821deeBc249a32410",
+      //         store.state.cartState.selectedPPLAmount.toString(),
+      //         externalId: store.state.cartState.paymentIntentID,
+      //       )
+      //     : null;
 
-      print(PPLResponse);
+      // print(PPLResponse);
 
       //Make periodic API calls to check the order status
       //If status is paid, then set loading = false, and confirmed = true

@@ -117,8 +117,8 @@ class __$PriceCopyWithImpl<$Res> extends _$PriceCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable()
-class _$_Price with DiagnosticableTreeMixin implements _Price {
-  _$_Price({this.currency = 'usd', this.quote = '0'});
+class _$_Price extends _Price with DiagnosticableTreeMixin {
+  _$_Price({this.currency = 'usd', this.quote = '0'}) : super._();
 
   factory _$_Price.fromJson(Map<String, dynamic> json) =>
       _$$_PriceFromJson(json);
@@ -172,8 +172,9 @@ class _$_Price with DiagnosticableTreeMixin implements _Price {
   }
 }
 
-abstract class _Price implements Price {
+abstract class _Price extends Price {
   factory _Price({String currency, String quote}) = _$_Price;
+  _Price._() : super._();
 
   factory _Price.fromJson(Map<String, dynamic> json) = _$_Price.fromJson;
 

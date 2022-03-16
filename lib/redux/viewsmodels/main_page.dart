@@ -10,7 +10,6 @@ class HomeScreenViewModel extends Equatable {
   final bool backup;
   final bool isBackupDialogShowed;
   final Function setShowDialog;
-  final Function getSwapListBalances;
   final bool isDefaultCommunity;
 
   HomeScreenViewModel({
@@ -19,7 +18,6 @@ class HomeScreenViewModel extends Equatable {
     required this.isBackupDialogShowed,
     required this.isDefaultCommunity,
     required this.setShowDialog,
-    required this.getSwapListBalances,
   });
 
   static HomeScreenViewModel fromStore(Store<AppState> store) {
@@ -31,9 +29,6 @@ class HomeScreenViewModel extends Equatable {
       isBackupDialogShowed: store.state.userState.receiveBackupDialogShowed,
       setShowDialog: () {
         store.dispatch(ReceiveBackupDialogShowed());
-      },
-      getSwapListBalances: () {
-        store.dispatch(fetchSwapBalances());
       },
     );
   }

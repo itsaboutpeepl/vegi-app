@@ -1,11 +1,10 @@
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
-import 'package:vegan_liverpool/constants/strings.dart';
 
 class SmsStrategy implements IOnBoardStrategy {
+  @override
   final OnboardStrategy strategy;
   SmsStrategy({this.strategy = OnboardStrategy.sms});
 
@@ -13,12 +12,12 @@ class SmsStrategy implements IOnBoardStrategy {
   Future login(
     store,
     phoneNumber,
+    Function onSuccess,
+    Function(dynamic error) onError,
   ) async {
-    await walletApi.loginWithSMS(
-      phoneNumber,
-    );
-    store.dispatch(SetIsLoginRequest(isLoading: false));
+    await walletApi.loginWithSMS(phoneNumber);
     rootRouter.push(VerifyPhoneNumber());
+    onSuccess();
   }
 
   @override
@@ -29,7 +28,6 @@ class SmsStrategy implements IOnBoardStrategy {
       verificationCode,
       phoneNumber,
       accountAddress,
-      appName: Strings.appName,
     );
     onSuccess(jwtToken);
   }

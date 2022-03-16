@@ -11,7 +11,6 @@ AppState appReducer(AppState state, dynamic action) {
   return AppState(
     userState: userReducers(state.userState, action),
     cashWalletState: cashWalletReducers(state.cashWalletState, action),
-    proWalletState: proWalletReducers(state.proWalletState, action),
     swapState: swapReducers(state.swapState, action),
     homePageState: HomePageReducers(state.homePageState, action),
     cartState: CartStateReducers(state.cartState, action),

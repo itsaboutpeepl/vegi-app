@@ -11,7 +11,9 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/constants/strings.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux/redux.dart';
@@ -46,6 +48,7 @@ class _MyAppState extends State<MyApp> {
       isAuthenticated = true;
       log.info('JWT: $jwtToken');
       api.setJwtToken(jwtToken);
+      store.dispatch(setUpFuseWeb3());
     }
   }
 
