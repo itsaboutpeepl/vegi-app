@@ -33,74 +33,78 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             centerText: "",
             pageTitle: "Checkout",
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AddressList(),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Slide left for Pickup",
-                    style: TextStyle(color: Colors.grey[400]),
-                  ),
-                ),
-                SizedBox(height: 10),
-                SlotTimingsView(),
-                TipCardView(),
-                DiscountCard(),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 25.0),
-                  child: ShimmerButton(
-                    baseColor: themeShade500,
-                    highlightColor: themeShade100,
-                    buttonAction: () {
-                      viewmodel.createOrder(() {
-                        //errorCallBack
-                        print("error took place");
-                        showErrorSnack(
-                            context: context, title: "Something went wrong");
-                      }, () {
-                        //successCallBack
-                        showModalBottomSheet(
-                          backgroundColor: Colors.grey[900],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
-                          ),
-                          elevation: 5,
-                          context: context,
-                          builder: (context) => PaymentSheet(),
-                        );
-                      });
-                    },
-                    buttonContent: Row(
-                      children: [
-                        Text(
-                          'Pay',
-                          style: TextStyle(
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w900,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          cFPrice(viewmodel.cartTotal),
-                          style: TextStyle(
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w900,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ],
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AddressList(),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Slide left for Pickup",
+                        style: TextStyle(color: Colors.grey[400]),
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 10),
+                    SlotTimingsView(),
+                    TipCardView(),
+                    DiscountCard(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 25.0),
+                      child: ShimmerButton(
+                        baseColor: themeShade400,
+                        highlightColor: themeShade300,
+                        buttonAction: () {
+                          viewmodel.createOrder(() {
+                            //errorCallBack
+                            print("error took place");
+                            showErrorSnack(
+                                context: context,
+                                title: "Something went wrong");
+                          }, () {
+                            //successCallBack
+                            showModalBottomSheet(
+                              backgroundColor: Colors.grey[900],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              elevation: 5,
+                              context: context,
+                              builder: (context) => PaymentSheet(),
+                            );
+                          });
+                        },
+                        buttonContent: Row(
+                          children: [
+                            Text(
+                              'Pay',
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w900,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              cFPrice(viewmodel.cartTotal),
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w900,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         );
