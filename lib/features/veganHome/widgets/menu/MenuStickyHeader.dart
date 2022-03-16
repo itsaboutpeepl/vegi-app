@@ -15,7 +15,7 @@ class MenuStickyHeader extends StatelessWidget {
         margin: const EdgeInsets.only(left: 20, right: 20, bottom: 0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: themeShade100,
+          color: themeShade200,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.4),

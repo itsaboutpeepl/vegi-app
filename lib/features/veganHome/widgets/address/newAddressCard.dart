@@ -36,7 +36,10 @@ class NewAddressCard extends StatelessWidget {
                       context: context,
                       builder: (context) => AddressView(),
                     ),
-                    icon: Icon(Icons.add),
+                    icon: Icon(
+                      Icons.add,
+                      color: Colors.grey[800],
+                    ),
                   ),
                 ),
                 SizedBox(

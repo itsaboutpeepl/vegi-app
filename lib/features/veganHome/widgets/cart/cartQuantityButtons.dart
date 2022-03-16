@@ -28,7 +28,7 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
               height: 25,
               width: 25,
               decoration: BoxDecoration(
-                color: themeShade500,
+                color: themeShade300,
                 borderRadius: BorderRadius.horizontal(
                   left: Radius.circular(5),
                 ),
@@ -85,7 +85,7 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
               height: 25,
               width: 25,
               decoration: BoxDecoration(
-                color: themeShade500,
+                color: themeShade300,
                 borderRadius: BorderRadius.horizontal(
                   right: Radius.circular(5),
                 ),

@@ -104,7 +104,7 @@ class _NavDrawerState extends State<NavDrawer> {
                   ],
                 ),
                 decoration: BoxDecoration(
-                  color: flexColorSchemeLight.primary,
+                  color: themeShade300,
                 ),
               ),
               ListTile(

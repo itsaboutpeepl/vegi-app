@@ -78,8 +78,8 @@ class _ToteScreenState extends State<ToteScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 20),
                             child: ShimmerButton(
-                              baseColor: themeShade500,
-                              highlightColor: themeShade100,
+                              baseColor: themeShade400,
+                              highlightColor: themeShade300,
                               buttonAction: () =>
                                   context.router.push(CheckoutScreen()),
                               buttonContent: Row(

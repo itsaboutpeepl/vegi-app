@@ -27,7 +27,7 @@ class MyScaffold extends StatelessWidget {
                 .onSurface, //change your color here
           ),
           automaticallyImplyLeading: automaticallyImplyLeading,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
           title: Text(
             title,
