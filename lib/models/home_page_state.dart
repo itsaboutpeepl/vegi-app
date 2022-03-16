@@ -15,12 +15,14 @@ class HomePageState with _$HomePageState {
     required List<RestaurantCategory> restaurantCategories,
     required List<RestaurantItem> featuredRestaurants,
     required UserCart currentUserCart,
+    required bool isLoadingHomePage,
   }) = _HomePageState;
 
   factory HomePageState.initial() => HomePageState(
         restaurantCategories: [],
         featuredRestaurants: [],
         currentUserCart: UserCart.initial(),
+        isLoadingHomePage: false,
       );
 
   factory HomePageState.fromJson(dynamic json) => _$HomePageStateFromJson(json);

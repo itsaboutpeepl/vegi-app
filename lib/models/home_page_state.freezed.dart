@@ -24,11 +24,13 @@ class _$HomePageStateTearOff {
   _HomePageState call(
       {required List<RestaurantCategory> restaurantCategories,
       required List<RestaurantItem> featuredRestaurants,
-      required UserCart currentUserCart}) {
+      required UserCart currentUserCart,
+      required bool isLoadingHomePage}) {
     return _HomePageState(
       restaurantCategories: restaurantCategories,
       featuredRestaurants: featuredRestaurants,
       currentUserCart: currentUserCart,
+      isLoadingHomePage: isLoadingHomePage,
     );
   }
 
@@ -47,6 +49,7 @@ mixin _$HomePageState {
   List<RestaurantItem> get featuredRestaurants =>
       throw _privateConstructorUsedError;
   UserCart get currentUserCart => throw _privateConstructorUsedError;
+  bool get isLoadingHomePage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -62,7 +65,8 @@ abstract class $HomePageStateCopyWith<$Res> {
   $Res call(
       {List<RestaurantCategory> restaurantCategories,
       List<RestaurantItem> featuredRestaurants,
-      UserCart currentUserCart});
+      UserCart currentUserCart,
+      bool isLoadingHomePage});
 
   $UserCartCopyWith<$Res> get currentUserCart;
 }
@@ -81,6 +85,7 @@ class _$HomePageStateCopyWithImpl<$Res>
     Object? restaurantCategories = freezed,
     Object? featuredRestaurants = freezed,
     Object? currentUserCart = freezed,
+    Object? isLoadingHomePage = freezed,
   }) {
     return _then(_value.copyWith(
       restaurantCategories: restaurantCategories == freezed
@@ -95,6 +100,10 @@ class _$HomePageStateCopyWithImpl<$Res>
           ? _value.currentUserCart
           : currentUserCart // ignore: cast_nullable_to_non_nullable
               as UserCart,
+      isLoadingHomePage: isLoadingHomePage == freezed
+          ? _value.isLoadingHomePage
+          : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -116,7 +125,8 @@ abstract class _$HomePageStateCopyWith<$Res>
   $Res call(
       {List<RestaurantCategory> restaurantCategories,
       List<RestaurantItem> featuredRestaurants,
-      UserCart currentUserCart});
+      UserCart currentUserCart,
+      bool isLoadingHomePage});
 
   @override
   $UserCartCopyWith<$Res> get currentUserCart;
@@ -138,6 +148,7 @@ class __$HomePageStateCopyWithImpl<$Res>
     Object? restaurantCategories = freezed,
     Object? featuredRestaurants = freezed,
     Object? currentUserCart = freezed,
+    Object? isLoadingHomePage = freezed,
   }) {
     return _then(_HomePageState(
       restaurantCategories: restaurantCategories == freezed
@@ -152,6 +163,10 @@ class __$HomePageStateCopyWithImpl<$Res>
           ? _value.currentUserCart
           : currentUserCart // ignore: cast_nullable_to_non_nullable
               as UserCart,
+      isLoadingHomePage: isLoadingHomePage == freezed
+          ? _value.isLoadingHomePage
+          : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -163,7 +178,8 @@ class _$_HomePageState extends _HomePageState {
   _$_HomePageState(
       {required this.restaurantCategories,
       required this.featuredRestaurants,
-      required this.currentUserCart})
+      required this.currentUserCart,
+      required this.isLoadingHomePage})
       : super._();
 
   factory _$_HomePageState.fromJson(Map<String, dynamic> json) =>
@@ -175,10 +191,12 @@ class _$_HomePageState extends _HomePageState {
   final List<RestaurantItem> featuredRestaurants;
   @override
   final UserCart currentUserCart;
+  @override
+  final bool isLoadingHomePage;
 
   @override
   String toString() {
-    return 'HomePageState(restaurantCategories: $restaurantCategories, featuredRestaurants: $featuredRestaurants, currentUserCart: $currentUserCart)';
+    return 'HomePageState(restaurantCategories: $restaurantCategories, featuredRestaurants: $featuredRestaurants, currentUserCart: $currentUserCart, isLoadingHomePage: $isLoadingHomePage)';
   }
 
   @override
@@ -193,7 +211,10 @@ class _$_HomePageState extends _HomePageState {
                     .equals(other.featuredRestaurants, featuredRestaurants)) &&
             (identical(other.currentUserCart, currentUserCart) ||
                 const DeepCollectionEquality()
-                    .equals(other.currentUserCart, currentUserCart)));
+                    .equals(other.currentUserCart, currentUserCart)) &&
+            (identical(other.isLoadingHomePage, isLoadingHomePage) ||
+                const DeepCollectionEquality()
+                    .equals(other.isLoadingHomePage, isLoadingHomePage)));
   }
 
   @override
@@ -201,7 +222,8 @@ class _$_HomePageState extends _HomePageState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(restaurantCategories) ^
       const DeepCollectionEquality().hash(featuredRestaurants) ^
-      const DeepCollectionEquality().hash(currentUserCart);
+      const DeepCollectionEquality().hash(currentUserCart) ^
+      const DeepCollectionEquality().hash(isLoadingHomePage);
 
   @JsonKey(ignore: true)
   @override
@@ -218,7 +240,8 @@ abstract class _HomePageState extends HomePageState {
   factory _HomePageState(
       {required List<RestaurantCategory> restaurantCategories,
       required List<RestaurantItem> featuredRestaurants,
-      required UserCart currentUserCart}) = _$_HomePageState;
+      required UserCart currentUserCart,
+      required bool isLoadingHomePage}) = _$_HomePageState;
   _HomePageState._() : super._();
 
   factory _HomePageState.fromJson(Map<String, dynamic> json) =
@@ -232,6 +255,8 @@ abstract class _HomePageState extends HomePageState {
       throw _privateConstructorUsedError;
   @override
   UserCart get currentUserCart => throw _privateConstructorUsedError;
+  @override
+  bool get isLoadingHomePage => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HomePageStateCopyWith<_HomePageState> get copyWith =>
