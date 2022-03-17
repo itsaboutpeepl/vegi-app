@@ -21,20 +21,21 @@ class CheckoutViewModel extends Equatable {
     DateTime newDate,
   ) updateSlotTimes;
 
-  CheckoutViewModel(
-      {required this.deliverySlots,
-      required this.collectionSlots,
-      required this.selectedUserTip,
-      required this.selectedDeliveryAddressIndex,
-      required this.discountCode,
-      required this.discountPercent,
-      required this.updateDiscount,
-      required this.cartTotal,
-      required this.selectedSlotIndex,
-      required this.updateSlotIndex,
-      required this.updateTipAmount,
-      required this.createOrder,
-      required this.updateSlotTimes});
+  CheckoutViewModel({
+    required this.deliverySlots,
+    required this.collectionSlots,
+    required this.selectedUserTip,
+    required this.selectedDeliveryAddressIndex,
+    required this.discountCode,
+    required this.discountPercent,
+    required this.updateDiscount,
+    required this.cartTotal,
+    required this.selectedSlotIndex,
+    required this.updateSlotIndex,
+    required this.updateTipAmount,
+    required this.createOrder,
+    required this.updateSlotTimes,
+  });
 
   static CheckoutViewModel fromStore(Store<AppState> store) {
     return CheckoutViewModel(
