@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/features/onboard/widegts/flare_controller.dart';
+import 'package:vegan_liverpool/constants/CustomPainterWidgets/customButton1.dart';
+import 'package:vegan_liverpool/constants/CustomPainterWidgets/customButton2.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/onboard/widegts/firstOnboardingPage.dart';
 import 'package:vegan_liverpool/features/onboard/widegts/on_boarding_page.dart';
 import 'package:vegan_liverpool/features/onboard/widegts/sign_up_buttons.dart';
-import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 class OnBoardScreen extends StatefulWidget {
   @override
@@ -15,26 +18,18 @@ class _OnBoardScreenState extends State<OnBoardScreen>
   late PageController _pageController;
   static const _kDuration = Duration(milliseconds: 2000);
   static const _kCurve = Curves.ease;
-  late HouseController _slideController;
-  late ValueNotifier<double> notifier;
-  double page = 0;
-  int cont = 0;
-  bool animate = false;
 
-  void _onScroll() {
-    _slideController.rooms = _pageController.page!;
-  }
+  Color screenColor = Colors.white;
+
+  double _bottomRowOpacity = 1;
 
   @override
   void initState() {
     super.initState();
-    _slideController = HouseController(onUpdated: _update);
     _pageController = PageController(
       initialPage: 0,
-    )..addListener(_onScroll);
+    );
   }
-
-  _update() => setState(() {});
 
   @override
   void dispose() {
@@ -50,80 +45,179 @@ class _OnBoardScreenState extends State<OnBoardScreen>
     );
   }
 
+  void nextPage() {
+    _pageController.nextPage(
+        duration: Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+  }
+
+  void previousPage() {
+    if (_pageController.page!.toInt() == 0) {
+      return;
+    }
+    _pageController.previousPage(
+        duration: Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+  }
+
+  final tween = MultiTween();
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> welcomeScreens = [
-      WelcomeFrame(
-        I10n.of(context).simple,
-        I10n.of(context).intro_text_one,
-        '1-cake.png',
+      FirstOnboardingPage(),
+      OnBoardingScreenGeneric(
+        "Shop plant-based",
+        "Find plant-based, planet-kind and ethical products from local businesses and growers",
+        "plant-icon.svg",
       ),
-      WelcomeFrame(
-        I10n.of(context).useful,
-        I10n.of(context).intro_text_two,
-        '2-rewards.png',
+      OnBoardingScreenGeneric(
+        "Shop local",
+        "vegi is a digital wallet that supports independents only. Top your wallet and spend with Liverpool locals",
+        "local-icon.svg",
       ),
-      WelcomeFrame(
-        I10n.of(context).smart,
-        I10n.of(context).intro_text_three,
-        '3-wallet.png',
+      OnBoardingScreenGeneric(
+        "Earn rewards",
+        "Receive 5% back to spend next time from Peepl Rewards (PPL Tokens)",
+        "rewards-icon.svg",
       ),
-      // WelcomeFrame(
-      //   "Top up. Pay. Enjoy.",
-      //   "We’re bringing people and restaurants together, over the food we all love. Thank you for joining us at the start of our journey!",
-      //   '4-enjoy.png',
-      // ),
       SignUpButtons()
     ];
+
+    final _tween = TimelineTween<Color>()
+      ..addScene(
+              begin: const Duration(seconds: 0),
+              duration: const Duration(seconds: 1))
+          .animate(
+        screenColor,
+        tween: ColorTween(begin: themeShade200, end: themeShade700),
+      )
+      ..addScene(
+              begin: const Duration(seconds: 1),
+              end: const Duration(seconds: 3))
+          .animate(screenColor,
+              tween: ColorTween(begin: themeShade700, end: themeShade1100))
+      ..addScene(
+              begin: const Duration(seconds: 3),
+              duration: const Duration(seconds: 1))
+          .animate(screenColor,
+              tween: ColorTween(begin: themeShade1100, end: themeShade1200));
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 20,
-              child: Container(
-                color: Color(0xFF011C35),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Stack(
-                        children: <Widget>[
-                          PageView.builder(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemCount: welcomeScreens.length,
-                            controller: _pageController,
-                            itemBuilder: (BuildContext context, int index) =>
-                                welcomeScreens[index % welcomeScreens.length],
-                          ),
-                          Positioned(
-                            bottom: 15.0,
-                            left: 0.0,
-                            right: 0.0,
-                            child: Container(
-                              padding: EdgeInsets.all(20.0),
-                              child: Center(
-                                child: SmoothPageIndicator(
-                                  controller: _pageController,
-                                  count: welcomeScreens.length,
-                                  effect: JumpingDotEffect(
-                                    dotWidth: 9.0,
-                                    dotHeight: 9.0,
-                                    activeDotColor: Color(0xFF696B6D),
-                                  ),
-                                  onDotClicked: gotoPage,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 20,
+            child: CustomAnimation<TimelineValue<Color>>(
+              tween: _tween, // Pass in tween
+              duration: _tween.duration, // Obtain duration
+              builder: (context, child, value) {
+                return Container(
+                  color: value.get(screenColor),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Stack(
+                          children: <Widget>[
+                            PageView.builder(
+                              onPageChanged: (page) {
+                                if (_pageController.page!.toInt() ==
+                                    (welcomeScreens.length - 2)) {
+                                  setState(() {
+                                    _bottomRowOpacity = 0;
+                                  });
+                                }
+                              },
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: welcomeScreens.length,
+                              controller: _pageController,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  welcomeScreens[index % welcomeScreens.length],
+                            ),
+                            Positioned(
+                              bottom: 25.0,
+                              left: MediaQuery.of(context).size.width * 0.05,
+                              right: MediaQuery.of(context).size.width * 0.05,
+                              child: AnimatedOpacity(
+                                duration: Duration(seconds: 1),
+                                opacity: _bottomRowOpacity,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => previousPage(),
+                                      child: CustomPaint(
+                                        painter: CustomButton1(),
+                                        child: SizedBox(
+                                          child: Center(
+                                            child: Text(
+                                              "Back",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: "Fat Cheeks",
+                                                fontSize: 22,
+                                              ),
+                                            ),
+                                          ),
+                                          width: 70,
+                                          height: 70 * 0.7746031746031746,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.075,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(20.0),
+                                      child: Center(
+                                        child: SmoothPageIndicator(
+                                          controller: _pageController,
+                                          count: welcomeScreens.length,
+                                          effect: JumpingDotEffect(
+                                            dotWidth: 9.0,
+                                            dotHeight: 9.0,
+                                            activeDotColor: Color(0xFF696B6D),
+                                          ),
+                                          onDotClicked: gotoPage,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.075,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () => nextPage(),
+                                      child: CustomPaint(
+                                        painter: CustomButton2(),
+                                        child: SizedBox(
+                                          child: Center(
+                                            child: Text(
+                                              "Next",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Fat Cheeks",
+                                                fontSize: 22,
+                                              ),
+                                            ),
+                                          ),
+                                          width: 75,
+                                          height: 75 * 0.6551102204408818,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
