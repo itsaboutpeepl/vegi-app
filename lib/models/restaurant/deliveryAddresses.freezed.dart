@@ -28,7 +28,8 @@ class _$DeliveryAddressesTearOff {
       required String townCity,
       required String postalCode,
       required double latitude,
-      required double longitude}) {
+      required double longitude,
+      String? phoneNumber}) {
     return _DeliveryAddresses(
       internalID: internalID,
       houseNumber: houseNumber,
@@ -37,6 +38,7 @@ class _$DeliveryAddressesTearOff {
       postalCode: postalCode,
       latitude: latitude,
       longitude: longitude,
+      phoneNumber: phoneNumber,
     );
   }
 
@@ -57,6 +59,7 @@ mixin _$DeliveryAddresses {
   String get postalCode => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -76,7 +79,8 @@ abstract class $DeliveryAddressesCopyWith<$Res> {
       String townCity,
       String postalCode,
       double latitude,
-      double longitude});
+      double longitude,
+      String? phoneNumber});
 }
 
 /// @nodoc
@@ -97,6 +101,7 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
     Object? postalCode = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_value.copyWith(
       internalID: internalID == freezed
@@ -127,6 +132,10 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      phoneNumber: phoneNumber == freezed
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -145,7 +154,8 @@ abstract class _$DeliveryAddressesCopyWith<$Res>
       String townCity,
       String postalCode,
       double latitude,
-      double longitude});
+      double longitude,
+      String? phoneNumber});
 }
 
 /// @nodoc
@@ -168,6 +178,7 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
     Object? postalCode = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_DeliveryAddresses(
       internalID: internalID == freezed
@@ -198,6 +209,10 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      phoneNumber: phoneNumber == freezed
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -213,7 +228,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
       required this.townCity,
       required this.postalCode,
       required this.latitude,
-      required this.longitude})
+      required this.longitude,
+      this.phoneNumber})
       : super._();
 
   factory _$_DeliveryAddresses.fromJson(Map<String, dynamic> json) =>
@@ -233,10 +249,12 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   final double latitude;
   @override
   final double longitude;
+  @override
+  final String? phoneNumber;
 
   @override
   String toString() {
-    return 'DeliveryAddresses(internalID: $internalID, houseNumber: $houseNumber, buildingName: $buildingName, townCity: $townCity, postalCode: $postalCode, latitude: $latitude, longitude: $longitude)';
+    return 'DeliveryAddresses(internalID: $internalID, houseNumber: $houseNumber, buildingName: $buildingName, townCity: $townCity, postalCode: $postalCode, latitude: $latitude, longitude: $longitude, phoneNumber: $phoneNumber)';
   }
 
   @override
@@ -263,7 +281,10 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
                     .equals(other.latitude, latitude)) &&
             (identical(other.longitude, longitude) ||
                 const DeepCollectionEquality()
-                    .equals(other.longitude, longitude)));
+                    .equals(other.longitude, longitude)) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                const DeepCollectionEquality()
+                    .equals(other.phoneNumber, phoneNumber)));
   }
 
   @override
@@ -275,7 +296,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
       const DeepCollectionEquality().hash(townCity) ^
       const DeepCollectionEquality().hash(postalCode) ^
       const DeepCollectionEquality().hash(latitude) ^
-      const DeepCollectionEquality().hash(longitude);
+      const DeepCollectionEquality().hash(longitude) ^
+      const DeepCollectionEquality().hash(phoneNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -296,7 +318,8 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
       required String townCity,
       required String postalCode,
       required double latitude,
-      required double longitude}) = _$_DeliveryAddresses;
+      required double longitude,
+      String? phoneNumber}) = _$_DeliveryAddresses;
   _DeliveryAddresses._() : super._();
 
   factory _DeliveryAddresses.fromJson(Map<String, dynamic> json) =
@@ -316,6 +339,8 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
   double get latitude => throw _privateConstructorUsedError;
   @override
   double get longitude => throw _privateConstructorUsedError;
+  @override
+  String? get phoneNumber => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$DeliveryAddressesCopyWith<_DeliveryAddresses> get copyWith =>

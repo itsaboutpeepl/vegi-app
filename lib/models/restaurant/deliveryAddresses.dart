@@ -16,6 +16,7 @@ class DeliveryAddresses with _$DeliveryAddresses {
     required String postalCode,
     required double latitude,
     required double longitude,
+    String? phoneNumber,
   }) = _DeliveryAddresses;
 
   factory DeliveryAddresses.fromJson(dynamic json) =>

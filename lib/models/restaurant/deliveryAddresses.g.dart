@@ -15,6 +15,7 @@ _$_DeliveryAddresses _$$_DeliveryAddressesFromJson(Map<String, dynamic> json) =>
       postalCode: json['postalCode'] as String,
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
+      phoneNumber: json['phoneNumber'] as String?,
     );
 
 Map<String, dynamic> _$$_DeliveryAddressesToJson(
@@ -27,4 +28,5 @@ Map<String, dynamic> _$$_DeliveryAddressesToJson(
       'postalCode': instance.postalCode,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
+      'phoneNumber': instance.phoneNumber,
     };
