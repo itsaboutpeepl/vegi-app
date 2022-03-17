@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
+import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -20,7 +22,7 @@ class VegiEatsService {
 
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
     Response response =
-        await dio.get('api/v1/vendors?wallet=test&outCode=$outCode');
+        await dio.get('api/v1/vendors?wallet=test&outcode=$outCode');
 
     List<dynamic> results = response.data['vendors'] as List;
 
@@ -130,27 +132,33 @@ class VegiEatsService {
     return results['percentage'];
   }
 
-  Future<List<Map<String, String>>> getDeliverySlots(
+  Future<FullfilmentMethods> getDeliverySlots(
       {required String vendorID, required String dateRequired}) async {
     Response response = await dio.get(
-        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=03-03-2022');
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=2022-03-03');
     //TODO: Change
 
-    List<dynamic> results = response.data['deliverySlots'] as List<dynamic>;
+    FullfilmentMethods methods = FullfilmentMethods.fromJson(response.data);
 
-    List<Map<String, String>> listOfDeliverySlots = [];
+    // List<dynamic> deliverySlots =
+    //     response.data['deliverySlots'] as List<dynamic>;
 
-    results.forEach((element) {
-      listOfDeliverySlots.add(Map.from(element));
-    });
+    // Map<String, dynamic> deliveryMethod =
+    //     response.data['deliveryMethod'] as Map<String, dynamic>;
 
-    return listOfDeliverySlots;
+    // List<Map<String, String>> listOfDeliverySlots = [];
+
+    // deliverySlots.forEach((element) {
+    //   listOfDeliverySlots.add(Map.from(element));
+    // });
+
+    return methods;
   }
 
   Future<List<Map<String, String>>> getCollectionSlots(
       {required String vendorID, required String dateRequired}) async {
     Response response = await dio.get(
-        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=03-03-2022');
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=2022-03-03');
     //TODO: Change
 
     List<dynamic> results = response.data['collectionSlots'] as List<dynamic>;
