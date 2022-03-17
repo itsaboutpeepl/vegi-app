@@ -68,7 +68,6 @@ const List<Color> screenGradient = [
 ];
 
 const List<Color> themeColors = [
-  themeShade900,
   themeShade1000,
   themeShade1100,
   themeShade1200,
