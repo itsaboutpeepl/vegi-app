@@ -63,6 +63,10 @@ class _ToteScreenState extends State<ToteScreen> {
                             "Subtotal",
                             cFPrice(viewmodel.cartSubTotal),
                           ),
+                          totalsPriceItemTile(
+                            "Delivery Charge",
+                            cFPrice(viewmodel.cartDeliveryCharge),
+                          ),
                           Divider(
                             height: 20,
                             thickness: 1,
