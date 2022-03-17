@@ -6,8 +6,8 @@ final FlexColorScheme flexColorSchemeLight = FlexColorScheme.light(
   colors: FlexSchemeColor.from(
     secondary: Colors.grey[800],
     secondaryVariant: Colors.grey[700]!,
-    primary: themeShade200, //makes 'Feed' text white
-    primaryVariant: themeShade100,
+    primary: themeShade600, //makes 'Feed' text white
+    primaryVariant: themeShade400,
     appBarColor: themeShade200,
   ),
 );
