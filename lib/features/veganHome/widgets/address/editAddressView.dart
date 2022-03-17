@@ -115,8 +115,6 @@ class _AddressViewState extends State<AddressView> {
                               fillColor: Colors.transparent,
                               labelText: 'Building',
                             ),
-                            onChanged: (value) {},
-                            // valueTransformer: (text) => num.tryParse(text),
                             keyboardType: TextInputType.streetAddress,
                             validator: FormBuilderValidators.required(context)),
                         FormBuilderTextField(
@@ -135,48 +133,79 @@ class _AddressViewState extends State<AddressView> {
                               fillColor: Colors.transparent,
                               labelText: 'Street',
                             ),
-                            onChanged: (value) {},
-                            // valueTransformer: (text) => num.tryParse(text),
                             keyboardType: TextInputType.text,
                             validator: FormBuilderValidators.required(context)),
-                        FormBuilderTextField(
-                            initialValue: _isExistingAddress
-                                ? widget.existingAddress!.townCity
-                                : null,
-                            name: 'townCity',
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeShade300, width: 3.0),
-                              ),
-                              fillColor: Colors.transparent,
-                              labelText: 'Town or City',
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child: FormBuilderTextField(
+                                  initialValue: _isExistingAddress
+                                      ? widget.existingAddress!.townCity
+                                      : null,
+                                  name: 'townCity',
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: themeShade300, width: 3.0),
+                                    ),
+                                    fillColor: Colors.transparent,
+                                    labelText: 'Town or City',
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                  validator:
+                                      FormBuilderValidators.required(context)),
                             ),
-                            onChanged: (value) {},
-                            // valueTransformer: (text) => num.tryParse(text),
-                            keyboardType: TextInputType.text,
-                            validator: FormBuilderValidators.required(context)),
-                        FormBuilderTextField(
-                            initialValue: _isExistingAddress
-                                ? widget.existingAddress!.postalCode
-                                : null,
-                            name: 'postalCode',
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeShade300, width: 3.0),
-                              ),
-                              fillColor: Colors.transparent,
-                              labelText: 'Postal Code',
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child: FormBuilderTextField(
+                                  initialValue: _isExistingAddress
+                                      ? widget.existingAddress!.postalCode
+                                      : null,
+                                  name: 'postalCode',
+                                  decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: themeShade300, width: 3.0),
+                                    ),
+                                    fillColor: Colors.transparent,
+                                    labelText: 'Postal Code',
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                  validator:
+                                      FormBuilderValidators.required(context)),
                             ),
-                            keyboardType: TextInputType.text,
-                            validator: FormBuilderValidators.required(context)),
+                          ],
+                        ),
+                        FormBuilderTextField(
+                          initialValue: _isExistingAddress
+                              ? widget.existingAddress!.phoneNumber
+                              : null,
+                          name: 'phoneNumber',
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: themeShade300, width: 3.0),
+                            ),
+                            fillColor: Colors.transparent,
+                            labelText: 'Phone Number',
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: FormBuilderValidators.numeric(context),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -248,6 +277,7 @@ class _AddressViewState extends State<AddressView> {
       buildingName: formValue['streetName'],
       townCity: formValue['townCity'],
       postalCode: formValue['postalCode'],
+      phoneNumber: formValue['phoneNumber'],
       latitude:
           position != null ? position.latitude : formValue['latitude'] ?? 0.0,
       longitude:
