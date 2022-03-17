@@ -28,6 +28,7 @@ class _$UserCartStateTearOff {
       required int cartTotal,
       required int cartDiscountPercent,
       required int cartDiscountComputed,
+      required int cartDeliveryCharge,
       required List<Map<String, String>> deliverySlots,
       required List<Map<String, String>> collectionSlots,
       required int selectedSlotIndex,
@@ -51,6 +52,7 @@ class _$UserCartStateTearOff {
       cartTotal: cartTotal,
       cartDiscountPercent: cartDiscountPercent,
       cartDiscountComputed: cartDiscountComputed,
+      cartDeliveryCharge: cartDeliveryCharge,
       deliverySlots: deliverySlots,
       collectionSlots: collectionSlots,
       selectedSlotIndex: selectedSlotIndex,
@@ -86,6 +88,7 @@ mixin _$UserCartState {
   int get cartTotal => throw _privateConstructorUsedError;
   int get cartDiscountPercent => throw _privateConstructorUsedError;
   int get cartDiscountComputed => throw _privateConstructorUsedError;
+  int get cartDeliveryCharge => throw _privateConstructorUsedError;
   List<Map<String, String>> get deliverySlots =>
       throw _privateConstructorUsedError;
   List<Map<String, String>> get collectionSlots =>
@@ -123,6 +126,7 @@ abstract class $UserCartStateCopyWith<$Res> {
       int cartTotal,
       int cartDiscountPercent,
       int cartDiscountComputed,
+      int cartDeliveryCharge,
       List<Map<String, String>> deliverySlots,
       List<Map<String, String>> collectionSlots,
       int selectedSlotIndex,
@@ -160,6 +164,7 @@ class _$UserCartStateCopyWithImpl<$Res>
     Object? cartTotal = freezed,
     Object? cartDiscountPercent = freezed,
     Object? cartDiscountComputed = freezed,
+    Object? cartDeliveryCharge = freezed,
     Object? deliverySlots = freezed,
     Object? collectionSlots = freezed,
     Object? selectedSlotIndex = freezed,
@@ -201,6 +206,10 @@ class _$UserCartStateCopyWithImpl<$Res>
       cartDiscountComputed: cartDiscountComputed == freezed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
+              as int,
+      cartDeliveryCharge: cartDeliveryCharge == freezed
+          ? _value.cartDeliveryCharge
+          : cartDeliveryCharge // ignore: cast_nullable_to_non_nullable
               as int,
       deliverySlots: deliverySlots == freezed
           ? _value.deliverySlots
@@ -291,6 +300,7 @@ abstract class _$UserCartStateCopyWith<$Res>
       int cartTotal,
       int cartDiscountPercent,
       int cartDiscountComputed,
+      int cartDeliveryCharge,
       List<Map<String, String>> deliverySlots,
       List<Map<String, String>> collectionSlots,
       int selectedSlotIndex,
@@ -331,6 +341,7 @@ class __$UserCartStateCopyWithImpl<$Res>
     Object? cartTotal = freezed,
     Object? cartDiscountPercent = freezed,
     Object? cartDiscountComputed = freezed,
+    Object? cartDeliveryCharge = freezed,
     Object? deliverySlots = freezed,
     Object? collectionSlots = freezed,
     Object? selectedSlotIndex = freezed,
@@ -372,6 +383,10 @@ class __$UserCartStateCopyWithImpl<$Res>
       cartDiscountComputed: cartDiscountComputed == freezed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
+              as int,
+      cartDeliveryCharge: cartDeliveryCharge == freezed
+          ? _value.cartDeliveryCharge
+          : cartDeliveryCharge // ignore: cast_nullable_to_non_nullable
               as int,
       deliverySlots: deliverySlots == freezed
           ? _value.deliverySlots
@@ -452,6 +467,7 @@ class _$_UserCartState extends _UserCartState {
       required this.cartTotal,
       required this.cartDiscountPercent,
       required this.cartDiscountComputed,
+      required this.cartDeliveryCharge,
       required this.deliverySlots,
       required this.collectionSlots,
       required this.selectedSlotIndex,
@@ -485,6 +501,8 @@ class _$_UserCartState extends _UserCartState {
   final int cartDiscountPercent;
   @override
   final int cartDiscountComputed;
+  @override
+  final int cartDeliveryCharge;
   @override
   final List<Map<String, String>> deliverySlots;
   @override
@@ -520,7 +538,7 @@ class _$_UserCartState extends _UserCartState {
 
   @override
   String toString() {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedSlotIndex: $selectedSlotIndex, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, selectedDeliveryAddressIndex: $selectedDeliveryAddressIndex, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, cartDeliveryCharge: $cartDeliveryCharge, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedSlotIndex: $selectedSlotIndex, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, selectedDeliveryAddressIndex: $selectedDeliveryAddressIndex, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress)';
   }
 
   @override
@@ -545,6 +563,9 @@ class _$_UserCartState extends _UserCartState {
             (identical(other.cartDiscountComputed, cartDiscountComputed) ||
                 const DeepCollectionEquality().equals(
                     other.cartDiscountComputed, cartDiscountComputed)) &&
+            (identical(other.cartDeliveryCharge, cartDeliveryCharge) ||
+                const DeepCollectionEquality()
+                    .equals(other.cartDeliveryCharge, cartDeliveryCharge)) &&
             (identical(other.deliverySlots, deliverySlots) ||
                 const DeepCollectionEquality()
                     .equals(other.deliverySlots, deliverySlots)) &&
@@ -583,10 +604,8 @@ class _$_UserCartState extends _UserCartState {
                 const DeepCollectionEquality().equals(
                     other.errorCompletingPayment, errorCompletingPayment)) &&
             (identical(other.confirmedPayment, confirmedPayment) ||
-                const DeepCollectionEquality()
-                    .equals(other.confirmedPayment, confirmedPayment)) &&
-            (identical(other.restaurantName, restaurantName) ||
-                const DeepCollectionEquality().equals(other.restaurantName, restaurantName)) &&
+                const DeepCollectionEquality().equals(other.confirmedPayment, confirmedPayment)) &&
+            (identical(other.restaurantName, restaurantName) || const DeepCollectionEquality().equals(other.restaurantName, restaurantName)) &&
             (identical(other.restaurantID, restaurantID) || const DeepCollectionEquality().equals(other.restaurantID, restaurantID)) &&
             (identical(other.restaurantAddress, restaurantAddress) || const DeepCollectionEquality().equals(other.restaurantAddress, restaurantAddress)));
   }
@@ -600,6 +619,7 @@ class _$_UserCartState extends _UserCartState {
       const DeepCollectionEquality().hash(cartTotal) ^
       const DeepCollectionEquality().hash(cartDiscountPercent) ^
       const DeepCollectionEquality().hash(cartDiscountComputed) ^
+      const DeepCollectionEquality().hash(cartDeliveryCharge) ^
       const DeepCollectionEquality().hash(deliverySlots) ^
       const DeepCollectionEquality().hash(collectionSlots) ^
       const DeepCollectionEquality().hash(selectedSlotIndex) ^
@@ -636,6 +656,7 @@ abstract class _UserCartState extends UserCartState {
       required int cartTotal,
       required int cartDiscountPercent,
       required int cartDiscountComputed,
+      required int cartDeliveryCharge,
       required List<Map<String, String>> deliverySlots,
       required List<Map<String, String>> collectionSlots,
       required int selectedSlotIndex,
@@ -669,6 +690,8 @@ abstract class _UserCartState extends UserCartState {
   int get cartDiscountPercent => throw _privateConstructorUsedError;
   @override
   int get cartDiscountComputed => throw _privateConstructorUsedError;
+  @override
+  int get cartDeliveryCharge => throw _privateConstructorUsedError;
   @override
   List<Map<String, String>> get deliverySlots =>
       throw _privateConstructorUsedError;

@@ -16,6 +16,7 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       cartTotal: json['cartTotal'] as int,
       cartDiscountPercent: json['cartDiscountPercent'] as int,
       cartDiscountComputed: json['cartDiscountComputed'] as int,
+      cartDeliveryCharge: json['cartDeliveryCharge'] as int,
       deliverySlots: (json['deliverySlots'] as List<dynamic>)
           .map((e) => Map<String, String>.from(e as Map))
           .toList(),
@@ -46,6 +47,7 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'cartTotal': instance.cartTotal,
       'cartDiscountPercent': instance.cartDiscountPercent,
       'cartDiscountComputed': instance.cartDiscountComputed,
+      'cartDeliveryCharge': instance.cartDeliveryCharge,
       'deliverySlots': instance.deliverySlots,
       'collectionSlots': instance.collectionSlots,
       'selectedSlotIndex': instance.selectedSlotIndex,
