@@ -18,7 +18,7 @@ class PeeplPaySerivce {
 
     Map<dynamic, dynamic> result = response.data;
 
-    print(result);
+    print("Payment Intent Result $result");
 
     return result;
   }
