@@ -7,6 +7,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -103,35 +104,39 @@ class SetRestaurantDetails {
       this.restaurantID, this.restaurantName, this.restaurantAddress);
 }
 
+class SetDeliveryCharge {
+  final int deliveryCharge;
+
+  SetDeliveryCharge(this.deliveryCharge);
+}
+
 ThunkAction getFullfillmentMethods({DateTime? newDate}) {
   return (Store store) async {
     try {
-      DateFormat formatter = DateFormat('dd-MM-yyyy');
+      DateFormat formatter = DateFormat('yyyy-MM-dd');
 
       if ([null, ""].contains(newDate)) {
-        List<Map<String, String>> deliverySlots =
+        FullfilmentMethods fullfilmentMethods =
             await vegiEatsService.getDeliverySlots(
                 vendorID: store.state.cartState.restaurantID,
                 dateRequired: formatter.format(DateTime.now()));
 
-        List<Map<String, String>> collectionSlots =
-            await vegiEatsService.getCollectionSlots(
-                vendorID: store.state.cartState.restaurantID,
-                dateRequired: formatter.format(DateTime.now()));
-
-        store.dispatch(UpdateSlots(deliverySlots, collectionSlots));
+        store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
+            fullfilmentMethods.collectionSlots));
+        store.dispatch(SetDeliveryCharge(
+            fullfilmentMethods.deliveryMethod!['priceModifier']));
+        store.dispatch(
+            computeCartTotals()); //TODO: cannot update this here, delivery cost is fine but what about collection
       } else {
-        List<Map<String, String>> deliverySlots =
+        FullfilmentMethods fullfilmentMethods =
             await vegiEatsService.getDeliverySlots(
                 vendorID: store.state.cartState.restaurantID,
-                dateRequired: formatter.format(newDate!));
+                dateRequired: formatter.format(DateTime.now()));
 
-        List<Map<String, String>> collectionSlots =
-            await vegiEatsService.getCollectionSlots(
-                vendorID: store.state.cartState.restaurantID,
-                dateRequired: formatter.format(newDate));
-
-        store.dispatch(UpdateSlots(deliverySlots, collectionSlots));
+        store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
+            fullfilmentMethods.collectionSlots));
+        store.dispatch(SetDeliveryCharge(
+            fullfilmentMethods.deliveryMethod!['priceModifier']));
       }
     } catch (e, s) {
       log.error('ERROR - getFullfillmentMethods $e');
@@ -253,14 +258,17 @@ ThunkAction computeCartTotals() {
       int cartSubTotal = 0;
       int cartTax = 0;
       int cartTotal = 0;
-      int deliveryPrice = 0; //TODO: fetch from API
+      int deliveryPrice =
+          store.state.cartState.cartDeliveryCharge; //TODO: fetch from API
       int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
       int cartDiscountComputed = 0;
       int cartTip = store.state.cartState.selectedTipAmount * 100;
 
       cartItems.forEach((element) {
         cartSubTotal += element.totalItemPrice;
-      }); // add price of each order Item (which has options included)
+      });
+
+      // add price of each order Item (which has options included)
 
       cartDiscountComputed =
           (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
@@ -357,6 +365,7 @@ ThunkAction prepareAndSendOrder(
                 .entries
                 .last
                 .value),
+        "walletAddress": store.state.userState.walletAddress,
       };
 
       print(json.encode(orderObject).toString());
@@ -408,11 +417,6 @@ ThunkAction prepareAndSendOrder(
 ThunkAction sendTokenPayment(VoidCallback successCallback) {
   return (Store store) async {
     try {
-      //TODO: Remove please
-      if (store.state.cartState.discountCode == "") {
-        successCallback();
-        return;
-      }
       //Set loading to true
       store.dispatch(SetTransferringPayment(true));
 
@@ -477,11 +481,11 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
       );
     } catch (e, s) {
       store.dispatch(SetError(true));
-      log.error('ERROR - updateComputeUserCart $e');
+      log.error('ERROR - sendTokenPayment $e');
       await Sentry.captureException(
         e,
         stackTrace: s,
-        hint: 'ERROR - updateComputeUserCart $e',
+        hint: 'ERROR - sendTokenPayment $e',
       );
     }
   };
