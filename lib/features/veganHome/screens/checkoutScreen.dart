@@ -30,7 +30,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       builder: (_, viewmodel) {
         return Scaffold(
           appBar: CustomAppBar(
-            centerText: "",
             pageTitle: "Checkout",
           ),
           body: SingleChildScrollView(
