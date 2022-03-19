@@ -50,20 +50,27 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
               ),
               SizedBox(
+                height: 5,
+              ),
+              Text(
+                widget.restaurantItem.description,
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
+              SizedBox(
                 height: 8,
               ),
               Row(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(4),
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey[400]!),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      height: 32,
+                      height: 25,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
                         child: Center(
                           child: Row(
                             children: List.generate(
@@ -72,7 +79,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                                 return index < widget.restaurantItem.costLevel
                                     ? Icon(
                                         Icons.attach_money,
-                                        size: 20,
+                                        size: 18,
                                         color: Colors.grey[600],
                                       )
                                     : SizedBox.shrink();
@@ -83,54 +90,21 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 10,
-                  // ),
-                  // ClipRRect(
-                  //   borderRadius: BorderRadius.circular(8),
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       border: Border.all(color: Colors.grey[400]!),
-                  //       borderRadius: BorderRadius.circular(8),
-                  //     ),
-                  //     height: 32,
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  //       child: Center(
-                  //         child: Row(
-                  //           children: [
-                  //             Icon(
-                  //               Icons.timer_rounded,
-                  //               size: 20,
-                  //             ),
-                  //             SizedBox(
-                  //               width: 5,
-                  //             ),
-                  //             Text(
-                  //               widget.restaurantItem,
-                  //               style: TextStyle(fontWeight: FontWeight.bold),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     width: 10,
                   ),
                   widget.restaurantItem.rating != 0
                       ? ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey[400]!),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(4),
                             ),
-                            height: 32,
+                            height: 25,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                                  const EdgeInsets.symmetric(horizontal: 2.0),
                               child: Center(
                                 child: Row(
                                   children: List.generate(
@@ -140,12 +114,12 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                                               widget.restaurantItem.rating
                                           ? Icon(
                                               Icons.star,
-                                              size: 20,
+                                              size: 18,
                                               color: Colors.grey[600],
                                             )
                                           : Icon(
                                               Icons.star_outline,
-                                              size: 20,
+                                              size: 18,
                                               color: Colors.grey[600],
                                             );
                                     },
