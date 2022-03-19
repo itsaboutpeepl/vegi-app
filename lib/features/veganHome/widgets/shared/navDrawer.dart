@@ -122,7 +122,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 leading: Icon(FontAwesomeIcons.history),
                 title: Text('My Orders'),
                 onTap: () {
-                  context.router.push(TopUpScreen());
+                  context.router.push(MyOrdersPage());
                 },
               ),
               ListTile(
