@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
@@ -33,15 +33,19 @@ class VegiEatsService {
         restaurants.add(
           RestaurantItem(
             restaurantID: element["id"].toString(),
-            name: element['name'],
+            name: element['name'] ?? "",
+            description: element["description"] ?? "",
+            phoneNumber: element['phoneNumber'] ?? "",
+            deliveryRestrictionDetails:
+                element["deliveryRestrictionDetails"] ?? [],
             imageURL: UrlConstants.VEGI_EATS_BACKEND +
                 "vendors/download-image/" +
                 element['id'].toString(),
             category: "Category",
-            costLevel: "Cost Level",
-            deliveryTime: "Delivery Time",
-            rating: "Rating",
-            address: demoAddress, //TODO: Change this
+            costLevel: element['costLevel'] ?? 2,
+            rating: element['rating'] ?? 2,
+            address: demoAddress,
+            walletAddress: element['walletAddress'], //TODO: Change this
             listOfMenuItems: [],
           ),
         );
@@ -189,5 +193,16 @@ class VegiEatsService {
     Map<dynamic, dynamic> result = response.data;
 
     return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getPastOrders(String walletAddress) async {
+    Response response = await dio.get('/api/v1/orders?walletId=$walletAddress');
+
+    //return sanitizeOrdersList(response.data);
+
+    //TODO: Fix with actual call.
+    return Future.delayed(Duration(seconds: 1), () {
+      return sanitizeOrdersList(testOrdersList);
+    });
   }
 }
