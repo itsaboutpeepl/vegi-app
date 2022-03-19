@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 class EmptyStatePage extends StatelessWidget {
   const EmptyStatePage(
       {Key? key,
-      required this.iconName,
+      required this.emoji,
       required this.title,
       required this.subtitle})
       : super(key: key);
-
-  final IconData iconName;
+  final String emoji;
   final String title;
   final String subtitle;
 
@@ -24,16 +23,20 @@ class EmptyStatePage extends StatelessWidget {
             width: double.infinity,
             height: 100,
           ),
-          Icon(
-            iconName,
-            size: 200,
-            color: Colors.grey,
+          Text(
+            emoji,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 150,
+              fontWeight: FontWeight.w900,
+            ),
           ),
           const SizedBox(
             height: 20,
           ),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35,
               fontWeight: FontWeight.w900,
