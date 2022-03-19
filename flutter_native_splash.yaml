@@ -1,5 +1,4 @@
 flutter_native_splash:
-  image: assets/images/Vegi-Logo-square-black.png
   fill: false
   android_gravity: center
   ios_content_mode: center
