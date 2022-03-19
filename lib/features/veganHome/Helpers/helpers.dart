@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -26,4 +27,67 @@ String mapToString(Map<String, String> map) {
 
 String formatDateForOrderObject(String date) {
   return date.replaceFirst("T", " ").replaceFirst(".000Z", "");
+}
+
+String formatDate(DateTime dateToFormat) {
+  DateFormat formatter = DateFormat("HH:mm - EEE, dd MMM");
+
+  return formatter.format(dateToFormat);
+}
+
+List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
+  List<Map<String, dynamic>> listOfOrders = [];
+
+  orderObj['orders'].forEach((Map<String, dynamic> singleOrder) {
+    //Order Details
+    Map<String, dynamic> sanitizedOrderObject = {};
+
+    sanitizedOrderObject["orderID"] = singleOrder['id'];
+    sanitizedOrderObject["total"] = cFPrice(singleOrder['total']);
+    sanitizedOrderObject["orderedDateTime"] = formatDate(
+        DateTime.fromMillisecondsSinceEpoch(singleOrder['orderedDateTime'])
+            .toLocal());
+    sanitizedOrderObject["deliveryName"] = singleOrder['deliveryName'];
+    sanitizedOrderObject["deliveryEmail"] = singleOrder['deliveryEmail'];
+    sanitizedOrderObject["deliveryPhoneNumber"] =
+        singleOrder['deliveryPhoneNumber'];
+    sanitizedOrderObject["deliveryAddressLineOne"] =
+        singleOrder['deliveryAddressLineOne'];
+    sanitizedOrderObject["deliveryAddressLineTwo"] =
+        singleOrder['deliveryAddressLineTwo'];
+    sanitizedOrderObject["deliveryAddressPostCode"] =
+        singleOrder['deliveryAddressPostCode'];
+    sanitizedOrderObject["paymentStatus"] =
+        singleOrder['paymentStatus'][0].toUpperCase() +
+            singleOrder['paymentStatus'].substring(1);
+
+    List<Map<String, dynamic>> listOfProductsOrdered = [];
+    //Products in Order
+    singleOrder['items'].forEach((Map<String, dynamic> productItem) {
+      Map<String, dynamic> singleProductItem = {};
+      singleProductItem['name'] = productItem['product']['name'];
+      singleProductItem['basePrice'] =
+          cFPrice(productItem['product']['basePrice']);
+
+      //Options in Product
+      if (productItem.containsKey("optionValues")) {
+        List<Map<String, dynamic>> listOfChosenProductOptions = [];
+        productItem['optionValues']
+            .forEach((Map<String, dynamic> productOption) {
+          //Add Options in Product to ListOfProductOptions.
+          listOfChosenProductOptions.add({
+            'name': productOption['option']['name'],
+            'chosenOption': productOption['optionValue']['name'],
+            'priceModifier': productOption['optionValue']['priceModifier'],
+          });
+        });
+        singleProductItem['options'] = listOfChosenProductOptions;
+      }
+      //Add SingleProductItem to listOfProductsOrdered, clear listOfProductOptions
+      listOfProductsOrdered.add(singleProductItem);
+    });
+    sanitizedOrderObject['products'] = listOfProductsOrdered;
+    listOfOrders.add(sanitizedOrderObject);
+  });
+  return listOfOrders;
 }
