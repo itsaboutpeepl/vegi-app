@@ -22,7 +22,20 @@ class VegiEatsService {
 
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
     Response response =
-        await dio.get('api/v1/vendors?wallet=test&outcode=$outCode');
+        await dio.get('api/v1/vendors?wallet=test&outcode=$outCode').timeout(
+      Duration(seconds: 5),
+      onTimeout: () {
+        return Response(
+          data: {"vendors": []},
+          requestOptions: RequestOptions(path: ""),
+        );
+      },
+    ).onError(
+      (error, stackTrace) => Response(
+        data: {"vendors": []},
+        requestOptions: RequestOptions(path: ""),
+      ),
+    );
 
     List<dynamic> results = response.data['vendors'] as List;
 
