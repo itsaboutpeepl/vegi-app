@@ -6,7 +6,7 @@ import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class RestaurantItemViewModel extends Equatable {
-  final Function(String, String, DeliveryAddresses, VoidCallback)
+  final Function(String, String, DeliveryAddresses, String, VoidCallback)
       updateRestaurantDetails;
 
   RestaurantItemViewModel({required this.updateRestaurantDetails});
@@ -14,9 +14,9 @@ class RestaurantItemViewModel extends Equatable {
   static RestaurantItemViewModel fromStore(Store<AppState> store) {
     return RestaurantItemViewModel(
       updateRestaurantDetails: (restaurantID, restaurantName, restaurantAddress,
-              sendSnackBar) =>
-          store.dispatch(setRestaurantDetails(
-              restaurantID, restaurantName, restaurantAddress, sendSnackBar)),
+              walletAddress, sendSnackBar) =>
+          store.dispatch(setRestaurantDetails(restaurantID, restaurantName,
+              restaurantAddress, walletAddress, sendSnackBar)),
     );
   }
 
