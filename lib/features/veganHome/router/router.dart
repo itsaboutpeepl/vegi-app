@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/myOrdersPage.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
@@ -52,5 +53,10 @@ const veganHomeTab = AutoRoute(
       name: 'TopUpScreen',
       guards: [AuthGuard],
     ),
+    AutoRoute(
+      page: MyOrdersPage,
+      name: 'MyOrdersPage',
+      guards: [AuthGuard],
+    )
   ],
 );
