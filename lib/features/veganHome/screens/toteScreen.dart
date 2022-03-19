@@ -31,7 +31,6 @@ class _ToteScreenState extends State<ToteScreen> {
       builder: (_, viewmodel) {
         return Scaffold(
           appBar: CustomAppBar(
-            centerText: "",
             pageTitle: "Cart",
             otherAction: IconButton(
               onPressed: () => viewmodel.clearCart(),
@@ -115,10 +114,11 @@ class _ToteScreenState extends State<ToteScreen> {
                   ),
                 )
               : EmptyStatePage(
-                  iconName: Icons.shopping_cart_outlined,
-                  title: "Cart is Empty",
+                  emoji: "😐",
+                  title: "Pretty empty here, isn't it?",
                   subtitle:
-                      "Looks like you haven't added anything to your cart yet!"),
+                      "Try adding an item from one of our amazing restauarants to fill this page up!",
+                ),
         );
       },
     );
