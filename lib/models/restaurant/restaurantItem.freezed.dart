@@ -24,23 +24,29 @@ class _$RestaurantItemTearOff {
   _RestaurantItem call(
       {required String restaurantID,
       required String name,
+      required String phoneNumber,
+      required String description,
+      required List<String> deliveryRestrictionDetails,
       required String imageURL,
       required String category,
-      required String costLevel,
-      required String deliveryTime,
-      required String rating,
+      required int costLevel,
+      required int rating,
       required DeliveryAddresses address,
-      required List<MenuItem> listOfMenuItems}) {
+      required List<MenuItem> listOfMenuItems,
+      required String walletAddress}) {
     return _RestaurantItem(
       restaurantID: restaurantID,
       name: name,
+      phoneNumber: phoneNumber,
+      description: description,
+      deliveryRestrictionDetails: deliveryRestrictionDetails,
       imageURL: imageURL,
       category: category,
       costLevel: costLevel,
-      deliveryTime: deliveryTime,
       rating: rating,
       address: address,
       listOfMenuItems: listOfMenuItems,
+      walletAddress: walletAddress,
     );
   }
 
@@ -56,13 +62,17 @@ const $RestaurantItem = _$RestaurantItemTearOff();
 mixin _$RestaurantItem {
   String get restaurantID => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  List<String> get deliveryRestrictionDetails =>
+      throw _privateConstructorUsedError;
   String get imageURL => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
-  String get costLevel => throw _privateConstructorUsedError;
-  String get deliveryTime => throw _privateConstructorUsedError;
-  String get rating => throw _privateConstructorUsedError;
+  int get costLevel => throw _privateConstructorUsedError;
+  int get rating => throw _privateConstructorUsedError;
   DeliveryAddresses get address => throw _privateConstructorUsedError;
   List<MenuItem> get listOfMenuItems => throw _privateConstructorUsedError;
+  String get walletAddress => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -78,13 +88,16 @@ abstract class $RestaurantItemCopyWith<$Res> {
   $Res call(
       {String restaurantID,
       String name,
+      String phoneNumber,
+      String description,
+      List<String> deliveryRestrictionDetails,
       String imageURL,
       String category,
-      String costLevel,
-      String deliveryTime,
-      String rating,
+      int costLevel,
+      int rating,
       DeliveryAddresses address,
-      List<MenuItem> listOfMenuItems});
+      List<MenuItem> listOfMenuItems,
+      String walletAddress});
 
   $DeliveryAddressesCopyWith<$Res> get address;
 }
@@ -102,13 +115,16 @@ class _$RestaurantItemCopyWithImpl<$Res>
   $Res call({
     Object? restaurantID = freezed,
     Object? name = freezed,
+    Object? phoneNumber = freezed,
+    Object? description = freezed,
+    Object? deliveryRestrictionDetails = freezed,
     Object? imageURL = freezed,
     Object? category = freezed,
     Object? costLevel = freezed,
-    Object? deliveryTime = freezed,
     Object? rating = freezed,
     Object? address = freezed,
     Object? listOfMenuItems = freezed,
+    Object? walletAddress = freezed,
   }) {
     return _then(_value.copyWith(
       restaurantID: restaurantID == freezed
@@ -119,6 +135,18 @@ class _$RestaurantItemCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      phoneNumber: phoneNumber == freezed
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      deliveryRestrictionDetails: deliveryRestrictionDetails == freezed
+          ? _value.deliveryRestrictionDetails
+          : deliveryRestrictionDetails // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       imageURL: imageURL == freezed
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
@@ -130,15 +158,11 @@ class _$RestaurantItemCopyWithImpl<$Res>
       costLevel: costLevel == freezed
           ? _value.costLevel
           : costLevel // ignore: cast_nullable_to_non_nullable
-              as String,
-      deliveryTime: deliveryTime == freezed
-          ? _value.deliveryTime
-          : deliveryTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       rating: rating == freezed
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -147,6 +171,10 @@ class _$RestaurantItemCopyWithImpl<$Res>
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
               as List<MenuItem>,
+      walletAddress: walletAddress == freezed
+          ? _value.walletAddress
+          : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 
@@ -168,13 +196,16 @@ abstract class _$RestaurantItemCopyWith<$Res>
   $Res call(
       {String restaurantID,
       String name,
+      String phoneNumber,
+      String description,
+      List<String> deliveryRestrictionDetails,
       String imageURL,
       String category,
-      String costLevel,
-      String deliveryTime,
-      String rating,
+      int costLevel,
+      int rating,
       DeliveryAddresses address,
-      List<MenuItem> listOfMenuItems});
+      List<MenuItem> listOfMenuItems,
+      String walletAddress});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get address;
@@ -195,13 +226,16 @@ class __$RestaurantItemCopyWithImpl<$Res>
   $Res call({
     Object? restaurantID = freezed,
     Object? name = freezed,
+    Object? phoneNumber = freezed,
+    Object? description = freezed,
+    Object? deliveryRestrictionDetails = freezed,
     Object? imageURL = freezed,
     Object? category = freezed,
     Object? costLevel = freezed,
-    Object? deliveryTime = freezed,
     Object? rating = freezed,
     Object? address = freezed,
     Object? listOfMenuItems = freezed,
+    Object? walletAddress = freezed,
   }) {
     return _then(_RestaurantItem(
       restaurantID: restaurantID == freezed
@@ -212,6 +246,18 @@ class __$RestaurantItemCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      phoneNumber: phoneNumber == freezed
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      deliveryRestrictionDetails: deliveryRestrictionDetails == freezed
+          ? _value.deliveryRestrictionDetails
+          : deliveryRestrictionDetails // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       imageURL: imageURL == freezed
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
@@ -223,15 +269,11 @@ class __$RestaurantItemCopyWithImpl<$Res>
       costLevel: costLevel == freezed
           ? _value.costLevel
           : costLevel // ignore: cast_nullable_to_non_nullable
-              as String,
-      deliveryTime: deliveryTime == freezed
-          ? _value.deliveryTime
-          : deliveryTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       rating: rating == freezed
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -240,6 +282,10 @@ class __$RestaurantItemCopyWithImpl<$Res>
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
               as List<MenuItem>,
+      walletAddress: walletAddress == freezed
+          ? _value.walletAddress
+          : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -251,13 +297,16 @@ class _$_RestaurantItem extends _RestaurantItem {
   _$_RestaurantItem(
       {required this.restaurantID,
       required this.name,
+      required this.phoneNumber,
+      required this.description,
+      required this.deliveryRestrictionDetails,
       required this.imageURL,
       required this.category,
       required this.costLevel,
-      required this.deliveryTime,
       required this.rating,
       required this.address,
-      required this.listOfMenuItems})
+      required this.listOfMenuItems,
+      required this.walletAddress})
       : super._();
 
   factory _$_RestaurantItem.fromJson(Map<String, dynamic> json) =>
@@ -268,23 +317,29 @@ class _$_RestaurantItem extends _RestaurantItem {
   @override
   final String name;
   @override
+  final String phoneNumber;
+  @override
+  final String description;
+  @override
+  final List<String> deliveryRestrictionDetails;
+  @override
   final String imageURL;
   @override
   final String category;
   @override
-  final String costLevel;
+  final int costLevel;
   @override
-  final String deliveryTime;
-  @override
-  final String rating;
+  final int rating;
   @override
   final DeliveryAddresses address;
   @override
   final List<MenuItem> listOfMenuItems;
+  @override
+  final String walletAddress;
 
   @override
   String toString() {
-    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, imageURL: $imageURL, category: $category, costLevel: $costLevel, deliveryTime: $deliveryTime, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems)';
+    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, walletAddress: $walletAddress)';
   }
 
   @override
@@ -296,6 +351,17 @@ class _$_RestaurantItem extends _RestaurantItem {
                     .equals(other.restaurantID, restaurantID)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                const DeepCollectionEquality()
+                    .equals(other.phoneNumber, phoneNumber)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.deliveryRestrictionDetails,
+                    deliveryRestrictionDetails) ||
+                const DeepCollectionEquality().equals(
+                    other.deliveryRestrictionDetails,
+                    deliveryRestrictionDetails)) &&
             (identical(other.imageURL, imageURL) ||
                 const DeepCollectionEquality()
                     .equals(other.imageURL, imageURL)) &&
@@ -305,9 +371,6 @@ class _$_RestaurantItem extends _RestaurantItem {
             (identical(other.costLevel, costLevel) ||
                 const DeepCollectionEquality()
                     .equals(other.costLevel, costLevel)) &&
-            (identical(other.deliveryTime, deliveryTime) ||
-                const DeepCollectionEquality()
-                    .equals(other.deliveryTime, deliveryTime)) &&
             (identical(other.rating, rating) ||
                 const DeepCollectionEquality().equals(other.rating, rating)) &&
             (identical(other.address, address) ||
@@ -315,7 +378,10 @@ class _$_RestaurantItem extends _RestaurantItem {
                     .equals(other.address, address)) &&
             (identical(other.listOfMenuItems, listOfMenuItems) ||
                 const DeepCollectionEquality()
-                    .equals(other.listOfMenuItems, listOfMenuItems)));
+                    .equals(other.listOfMenuItems, listOfMenuItems)) &&
+            (identical(other.walletAddress, walletAddress) ||
+                const DeepCollectionEquality()
+                    .equals(other.walletAddress, walletAddress)));
   }
 
   @override
@@ -323,13 +389,16 @@ class _$_RestaurantItem extends _RestaurantItem {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(restaurantID) ^
       const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(phoneNumber) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(deliveryRestrictionDetails) ^
       const DeepCollectionEquality().hash(imageURL) ^
       const DeepCollectionEquality().hash(category) ^
       const DeepCollectionEquality().hash(costLevel) ^
-      const DeepCollectionEquality().hash(deliveryTime) ^
       const DeepCollectionEquality().hash(rating) ^
       const DeepCollectionEquality().hash(address) ^
-      const DeepCollectionEquality().hash(listOfMenuItems);
+      const DeepCollectionEquality().hash(listOfMenuItems) ^
+      const DeepCollectionEquality().hash(walletAddress);
 
   @JsonKey(ignore: true)
   @override
@@ -346,13 +415,16 @@ abstract class _RestaurantItem extends RestaurantItem {
   factory _RestaurantItem(
       {required String restaurantID,
       required String name,
+      required String phoneNumber,
+      required String description,
+      required List<String> deliveryRestrictionDetails,
       required String imageURL,
       required String category,
-      required String costLevel,
-      required String deliveryTime,
-      required String rating,
+      required int costLevel,
+      required int rating,
       required DeliveryAddresses address,
-      required List<MenuItem> listOfMenuItems}) = _$_RestaurantItem;
+      required List<MenuItem> listOfMenuItems,
+      required String walletAddress}) = _$_RestaurantItem;
   _RestaurantItem._() : super._();
 
   factory _RestaurantItem.fromJson(Map<String, dynamic> json) =
@@ -363,19 +435,26 @@ abstract class _RestaurantItem extends RestaurantItem {
   @override
   String get name => throw _privateConstructorUsedError;
   @override
+  String get phoneNumber => throw _privateConstructorUsedError;
+  @override
+  String get description => throw _privateConstructorUsedError;
+  @override
+  List<String> get deliveryRestrictionDetails =>
+      throw _privateConstructorUsedError;
+  @override
   String get imageURL => throw _privateConstructorUsedError;
   @override
   String get category => throw _privateConstructorUsedError;
   @override
-  String get costLevel => throw _privateConstructorUsedError;
+  int get costLevel => throw _privateConstructorUsedError;
   @override
-  String get deliveryTime => throw _privateConstructorUsedError;
-  @override
-  String get rating => throw _privateConstructorUsedError;
+  int get rating => throw _privateConstructorUsedError;
   @override
   DeliveryAddresses get address => throw _privateConstructorUsedError;
   @override
   List<MenuItem> get listOfMenuItems => throw _privateConstructorUsedError;
+  @override
+  String get walletAddress => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$RestaurantItemCopyWith<_RestaurantItem> get copyWith =>

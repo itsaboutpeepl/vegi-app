@@ -13,13 +13,16 @@ class RestaurantItem with _$RestaurantItem {
   factory RestaurantItem({
     required String restaurantID,
     required String name,
+    required String phoneNumber,
+    required String description,
+    required List<String> deliveryRestrictionDetails,
     required String imageURL,
     required String category,
-    required String costLevel,
-    required String deliveryTime,
-    required String rating,
+    required int costLevel,
+    required int rating,
     required DeliveryAddresses address,
     required List<MenuItem> listOfMenuItems,
+    required String walletAddress,
   }) = _RestaurantItem;
 
   factory RestaurantItem.fromJson(dynamic json) =>
