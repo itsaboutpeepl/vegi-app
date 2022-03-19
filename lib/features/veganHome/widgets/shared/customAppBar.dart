@@ -2,18 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomAppBar(
-      {Key? key,
-      required this.centerText,
-      required this.pageTitle,
-      this.otherAction})
+  CustomAppBar({Key? key, required this.pageTitle, this.otherAction})
       : preferredSize = Size.fromHeight(115),
         super(key: key);
 
   @override
   final Size preferredSize;
 
-  final String centerText;
   final String pageTitle;
   final Widget? otherAction;
 
@@ -52,13 +47,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
                 Spacer(
                   flex: 2,
-                ),
-                Text(
-                  widget.centerText,
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
                 ),
                 Spacer(
                   flex: 3,
