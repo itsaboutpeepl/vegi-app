@@ -35,6 +35,7 @@ class UserCartState with _$UserCartState {
     required String restaurantName,
     required String restaurantID,
     required DeliveryAddresses restaurantAddress,
+    required String restaurantWalletAddress,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(
@@ -61,6 +62,7 @@ class UserCartState with _$UserCartState {
         restaurantName: "",
         restaurantID: "",
         restaurantAddress: demoAddress,
+        restaurantWalletAddress: "",
       );
 
   factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);

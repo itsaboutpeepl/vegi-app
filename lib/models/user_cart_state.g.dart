@@ -37,6 +37,7 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       restaurantName: json['restaurantName'] as String,
       restaurantID: json['restaurantID'] as String,
       restaurantAddress: DeliveryAddresses.fromJson(json['restaurantAddress']),
+      restaurantWalletAddress: json['restaurantWalletAddress'] as String,
     );
 
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
@@ -64,4 +65,5 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'restaurantName': instance.restaurantName,
       'restaurantID': instance.restaurantID,
       'restaurantAddress': instance.restaurantAddress.toJson(),
+      'restaurantWalletAddress': instance.restaurantWalletAddress,
     };

@@ -44,7 +44,8 @@ class _$UserCartStateTearOff {
       required bool confirmedPayment,
       required String restaurantName,
       required String restaurantID,
-      required DeliveryAddresses restaurantAddress}) {
+      required DeliveryAddresses restaurantAddress,
+      required String restaurantWalletAddress}) {
     return _UserCartState(
       cartItems: cartItems,
       cartSubTotal: cartSubTotal,
@@ -69,6 +70,7 @@ class _$UserCartStateTearOff {
       restaurantName: restaurantName,
       restaurantID: restaurantID,
       restaurantAddress: restaurantAddress,
+      restaurantWalletAddress: restaurantWalletAddress,
     );
   }
 
@@ -107,6 +109,7 @@ mixin _$UserCartState {
   String get restaurantName => throw _privateConstructorUsedError;
   String get restaurantID => throw _privateConstructorUsedError;
   DeliveryAddresses get restaurantAddress => throw _privateConstructorUsedError;
+  String get restaurantWalletAddress => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -142,7 +145,8 @@ abstract class $UserCartStateCopyWith<$Res> {
       bool confirmedPayment,
       String restaurantName,
       String restaurantID,
-      DeliveryAddresses restaurantAddress});
+      DeliveryAddresses restaurantAddress,
+      String restaurantWalletAddress});
 
   $DeliveryAddressesCopyWith<$Res> get restaurantAddress;
 }
@@ -181,6 +185,7 @@ class _$UserCartStateCopyWithImpl<$Res>
     Object? restaurantName = freezed,
     Object? restaurantID = freezed,
     Object? restaurantAddress = freezed,
+    Object? restaurantWalletAddress = freezed,
   }) {
     return _then(_value.copyWith(
       cartItems: cartItems == freezed
@@ -275,6 +280,10 @@ class _$UserCartStateCopyWithImpl<$Res>
           ? _value.restaurantAddress
           : restaurantAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses,
+      restaurantWalletAddress: restaurantWalletAddress == freezed
+          ? _value.restaurantWalletAddress
+          : restaurantWalletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 
@@ -316,7 +325,8 @@ abstract class _$UserCartStateCopyWith<$Res>
       bool confirmedPayment,
       String restaurantName,
       String restaurantID,
-      DeliveryAddresses restaurantAddress});
+      DeliveryAddresses restaurantAddress,
+      String restaurantWalletAddress});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get restaurantAddress;
@@ -358,6 +368,7 @@ class __$UserCartStateCopyWithImpl<$Res>
     Object? restaurantName = freezed,
     Object? restaurantID = freezed,
     Object? restaurantAddress = freezed,
+    Object? restaurantWalletAddress = freezed,
   }) {
     return _then(_UserCartState(
       cartItems: cartItems == freezed
@@ -452,6 +463,10 @@ class __$UserCartStateCopyWithImpl<$Res>
           ? _value.restaurantAddress
           : restaurantAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses,
+      restaurantWalletAddress: restaurantWalletAddress == freezed
+          ? _value.restaurantWalletAddress
+          : restaurantWalletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -483,7 +498,8 @@ class _$_UserCartState extends _UserCartState {
       required this.confirmedPayment,
       required this.restaurantName,
       required this.restaurantID,
-      required this.restaurantAddress})
+      required this.restaurantAddress,
+      required this.restaurantWalletAddress})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>
@@ -535,10 +551,12 @@ class _$_UserCartState extends _UserCartState {
   final String restaurantID;
   @override
   final DeliveryAddresses restaurantAddress;
+  @override
+  final String restaurantWalletAddress;
 
   @override
   String toString() {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, cartDeliveryCharge: $cartDeliveryCharge, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedSlotIndex: $selectedSlotIndex, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, selectedDeliveryAddressIndex: $selectedDeliveryAddressIndex, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, cartDeliveryCharge: $cartDeliveryCharge, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedSlotIndex: $selectedSlotIndex, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, selectedDeliveryAddressIndex: $selectedDeliveryAddressIndex, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress)';
   }
 
   @override
@@ -607,7 +625,8 @@ class _$_UserCartState extends _UserCartState {
                 const DeepCollectionEquality().equals(other.confirmedPayment, confirmedPayment)) &&
             (identical(other.restaurantName, restaurantName) || const DeepCollectionEquality().equals(other.restaurantName, restaurantName)) &&
             (identical(other.restaurantID, restaurantID) || const DeepCollectionEquality().equals(other.restaurantID, restaurantID)) &&
-            (identical(other.restaurantAddress, restaurantAddress) || const DeepCollectionEquality().equals(other.restaurantAddress, restaurantAddress)));
+            (identical(other.restaurantAddress, restaurantAddress) || const DeepCollectionEquality().equals(other.restaurantAddress, restaurantAddress)) &&
+            (identical(other.restaurantWalletAddress, restaurantWalletAddress) || const DeepCollectionEquality().equals(other.restaurantWalletAddress, restaurantWalletAddress)));
   }
 
   @override
@@ -635,7 +654,8 @@ class _$_UserCartState extends _UserCartState {
       const DeepCollectionEquality().hash(confirmedPayment) ^
       const DeepCollectionEquality().hash(restaurantName) ^
       const DeepCollectionEquality().hash(restaurantID) ^
-      const DeepCollectionEquality().hash(restaurantAddress);
+      const DeepCollectionEquality().hash(restaurantAddress) ^
+      const DeepCollectionEquality().hash(restaurantWalletAddress);
 
   @JsonKey(ignore: true)
   @override
@@ -672,7 +692,8 @@ abstract class _UserCartState extends UserCartState {
       required bool confirmedPayment,
       required String restaurantName,
       required String restaurantID,
-      required DeliveryAddresses restaurantAddress}) = _$_UserCartState;
+      required DeliveryAddresses restaurantAddress,
+      required String restaurantWalletAddress}) = _$_UserCartState;
   _UserCartState._() : super._();
 
   factory _UserCartState.fromJson(Map<String, dynamic> json) =
@@ -726,6 +747,8 @@ abstract class _UserCartState extends UserCartState {
   String get restaurantID => throw _privateConstructorUsedError;
   @override
   DeliveryAddresses get restaurantAddress => throw _privateConstructorUsedError;
+  @override
+  String get restaurantWalletAddress => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserCartStateCopyWith<_UserCartState> get copyWith =>
