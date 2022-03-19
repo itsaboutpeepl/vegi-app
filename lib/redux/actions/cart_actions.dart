@@ -99,9 +99,10 @@ class SetRestaurantDetails {
   final String restaurantID;
   final String restaurantName;
   final DeliveryAddresses restaurantAddress;
+  final String walletAddress;
 
-  SetRestaurantDetails(
-      this.restaurantID, this.restaurantName, this.restaurantAddress);
+  SetRestaurantDetails(this.restaurantID, this.restaurantName,
+      this.restaurantAddress, this.walletAddress);
 }
 
 class SetDeliveryCharge {
@@ -319,15 +320,17 @@ ThunkAction prepareAndSendOrder(
             .toList(),
         "address": {
           "name": store.state.userState.displayName,
-          "phoneNumber": store.state.userState.phoneNumber,
+          "phoneNumber": selectedAddress.phoneNumber ??
+              store.state.userState.phoneNumber ??
+              "",
           "email": store.state.userState.email == ""
-              ? "surti.huss@gmail.com"
+              ? "email@notprovided.com"
               : store.state.userState.email,
           "lineOne": selectedAddress.houseNumber,
           "lineTwo":
               selectedAddress.buildingName + ", " + selectedAddress.townCity,
           "postCode": selectedAddress.postalCode,
-          "deliveryInstructions": " ",
+          "deliveryInstructions": "",
         },
         "total": store.state.cartState.cartTotal,
         "tipAmount": store.state.cartState.selectedTipAmount,
@@ -368,7 +371,7 @@ ThunkAction prepareAndSendOrder(
         "walletAddress": store.state.userState.walletAddress,
       };
 
-      print(json.encode(orderObject).toString());
+      print("Order Object Created: ${json.encode(orderObject).toString()}");
 
       //Call create order API with prepared orderobject
       Map result = await vegiEatsService
@@ -382,7 +385,7 @@ ThunkAction prepareAndSendOrder(
         Map checkResult = await peeplPayService
             .startPaymentIntentCheck(result['paymentIntentID']);
 
-        print("order result $result");
+        print("Order Result $result");
 
         //Crosscheck the PaymentIntentID with the amount calculcated on device.
         if (checkResult['paymentIntent']['amount'] ==
@@ -417,6 +420,9 @@ ThunkAction prepareAndSendOrder(
 ThunkAction sendTokenPayment(VoidCallback successCallback) {
   return (Store store) async {
     try {
+      if (store.state.cartState.discountCode == "") {
+        successCallback();
+      }
       //Set loading to true
       store.dispatch(SetTransferringPayment(true));
 
@@ -436,7 +442,7 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
               getIt<Web3>(instanceName: 'fuseWeb3'),
               store.state.userState.walletAddress,
               GBPxToken.address,
-              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
+              store.state.cartState.restaurantWalletAddress,
               store.state.cartState.selectedGBPxAmount.toString(),
               externalId: store.state.cartState.paymentIntentID,
             )
@@ -450,7 +456,7 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
               getIt<Web3>(instanceName: 'fuseWeb3'),
               store.state.userState.walletAddress,
               PPLToken.address,
-              "0xf039CD9391cB28a7e632D07821deeBc249a32410",
+              store.state.cartState.restaurantWalletAddress,
               store.state.cartState.selectedPPLAmount.toString(),
               externalId: store.state.cartState.paymentIntentID,
             )
@@ -491,8 +497,12 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
   };
 }
 
-ThunkAction setRestaurantDetails(String restaurantID, String restaurantName,
-    DeliveryAddresses restaurantAddress, VoidCallback sendSnackBar) {
+ThunkAction setRestaurantDetails(
+    String restaurantID,
+    String restaurantName,
+    DeliveryAddresses restaurantAddress,
+    String walletAddress,
+    VoidCallback sendSnackBar) {
   return (Store store) async {
     try {
       //If cart has existing items -> clear cart, set new restaurant details, show snackbar if cart had items.
@@ -506,6 +516,7 @@ ThunkAction setRestaurantDetails(String restaurantID, String restaurantName,
             restaurantID,
             restaurantName,
             restaurantAddress,
+            walletAddress,
           ),
         );
       } else {
@@ -514,10 +525,10 @@ ThunkAction setRestaurantDetails(String restaurantID, String restaurantName,
             restaurantID,
             restaurantName,
             restaurantAddress,
+            walletAddress,
           ),
         );
       }
-
       // If cart does not have existing items -> set new restaurant details
 
     } catch (e, s) {
