@@ -75,7 +75,7 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                         }
                       }),
                       icon: Icon(
-                        Icons.edit_calendar,
+                        Icons.calendar_today,
                         size: 20,
                       ),
                     )
