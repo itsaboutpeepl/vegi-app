@@ -153,6 +153,7 @@ UserCartState _setRestaurantDetails(
     restaurantID: action.restaurantID,
     restaurantName: action.restaurantName,
     restaurantAddress: action.restaurantAddress,
+    restaurantWalletAddress: action.walletAddress,
   );
 }
 
