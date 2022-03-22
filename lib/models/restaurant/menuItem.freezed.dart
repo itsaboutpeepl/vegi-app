@@ -25,7 +25,7 @@ class _$MenuItemTearOff {
       {required String menuItemID,
       required String restaurantID,
       required String name,
-      required List<String> imageURLs,
+      required String imageURL,
       required String category,
       required int price,
       required String description,
@@ -36,7 +36,7 @@ class _$MenuItemTearOff {
       menuItemID: menuItemID,
       restaurantID: restaurantID,
       name: name,
-      imageURLs: imageURLs,
+      imageURL: imageURL,
       category: category,
       price: price,
       description: description,
@@ -59,7 +59,7 @@ mixin _$MenuItem {
   String get menuItemID => throw _privateConstructorUsedError;
   String get restaurantID => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  List<String> get imageURLs => throw _privateConstructorUsedError;
+  String get imageURL => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -82,7 +82,7 @@ abstract class $MenuItemCopyWith<$Res> {
       {String menuItemID,
       String restaurantID,
       String name,
-      List<String> imageURLs,
+      String imageURL,
       String category,
       int price,
       String description,
@@ -104,7 +104,7 @@ class _$MenuItemCopyWithImpl<$Res> implements $MenuItemCopyWith<$Res> {
     Object? menuItemID = freezed,
     Object? restaurantID = freezed,
     Object? name = freezed,
-    Object? imageURLs = freezed,
+    Object? imageURL = freezed,
     Object? category = freezed,
     Object? price = freezed,
     Object? description = freezed,
@@ -125,10 +125,10 @@ class _$MenuItemCopyWithImpl<$Res> implements $MenuItemCopyWith<$Res> {
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURLs: imageURLs == freezed
-          ? _value.imageURLs
-          : imageURLs // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      imageURL: imageURL == freezed
+          ? _value.imageURL
+          : imageURL // ignore: cast_nullable_to_non_nullable
+              as String,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -166,7 +166,7 @@ abstract class _$MenuItemCopyWith<$Res> implements $MenuItemCopyWith<$Res> {
       {String menuItemID,
       String restaurantID,
       String name,
-      List<String> imageURLs,
+      String imageURL,
       String category,
       int price,
       String description,
@@ -189,7 +189,7 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
     Object? menuItemID = freezed,
     Object? restaurantID = freezed,
     Object? name = freezed,
-    Object? imageURLs = freezed,
+    Object? imageURL = freezed,
     Object? category = freezed,
     Object? price = freezed,
     Object? description = freezed,
@@ -210,10 +210,10 @@ class __$MenuItemCopyWithImpl<$Res> extends _$MenuItemCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURLs: imageURLs == freezed
-          ? _value.imageURLs
-          : imageURLs // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      imageURL: imageURL == freezed
+          ? _value.imageURL
+          : imageURL // ignore: cast_nullable_to_non_nullable
+              as String,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -250,7 +250,7 @@ class _$_MenuItem extends _MenuItem {
       {required this.menuItemID,
       required this.restaurantID,
       required this.name,
-      required this.imageURLs,
+      required this.imageURL,
       required this.category,
       required this.price,
       required this.description,
@@ -269,7 +269,7 @@ class _$_MenuItem extends _MenuItem {
   @override
   final String name;
   @override
-  final List<String> imageURLs;
+  final String imageURL;
   @override
   final String category;
   @override
@@ -285,7 +285,7 @@ class _$_MenuItem extends _MenuItem {
 
   @override
   String toString() {
-    return 'MenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURLs: $imageURLs, category: $category, price: $price, description: $description, extras: $extras, listOfProductOptions: $listOfProductOptions, isFeatured: $isFeatured)';
+    return 'MenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURL: $imageURL, category: $category, price: $price, description: $description, extras: $extras, listOfProductOptions: $listOfProductOptions, isFeatured: $isFeatured)';
   }
 
   @override
@@ -300,9 +300,9 @@ class _$_MenuItem extends _MenuItem {
                     .equals(other.restaurantID, restaurantID)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.imageURLs, imageURLs) ||
+            (identical(other.imageURL, imageURL) ||
                 const DeepCollectionEquality()
-                    .equals(other.imageURLs, imageURLs)) &&
+                    .equals(other.imageURL, imageURL)) &&
             (identical(other.category, category) ||
                 const DeepCollectionEquality()
                     .equals(other.category, category)) &&
@@ -327,7 +327,7 @@ class _$_MenuItem extends _MenuItem {
       const DeepCollectionEquality().hash(menuItemID) ^
       const DeepCollectionEquality().hash(restaurantID) ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(imageURLs) ^
+      const DeepCollectionEquality().hash(imageURL) ^
       const DeepCollectionEquality().hash(category) ^
       const DeepCollectionEquality().hash(price) ^
       const DeepCollectionEquality().hash(description) ^
@@ -351,7 +351,7 @@ abstract class _MenuItem extends MenuItem {
       {required String menuItemID,
       required String restaurantID,
       required String name,
-      required List<String> imageURLs,
+      required String imageURL,
       required String category,
       required int price,
       required String description,
@@ -369,7 +369,7 @@ abstract class _MenuItem extends MenuItem {
   @override
   String get name => throw _privateConstructorUsedError;
   @override
-  List<String> get imageURLs => throw _privateConstructorUsedError;
+  String get imageURL => throw _privateConstructorUsedError;
   @override
   String get category => throw _privateConstructorUsedError;
   @override

@@ -29,7 +29,7 @@ class _SingleOrderItemState extends State<SingleOrderItem> {
               height: MediaQuery.of(context).size.width * 0.2,
               width: MediaQuery.of(context).size.width * 0.2,
               child: CachedNetworkImage(
-                imageUrl: widget.orderItem.menuItem.imageURLs[0],
+                imageUrl: widget.orderItem.menuItem.imageURL,
                 fit: BoxFit.cover,
               ),
             ),

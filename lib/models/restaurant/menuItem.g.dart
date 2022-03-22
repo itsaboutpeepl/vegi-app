@@ -10,8 +10,7 @@ _$_MenuItem _$$_MenuItemFromJson(Map<String, dynamic> json) => _$_MenuItem(
       menuItemID: json['menuItemID'] as String,
       restaurantID: json['restaurantID'] as String,
       name: json['name'] as String,
-      imageURLs:
-          (json['imageURLs'] as List<dynamic>).map((e) => e as String).toList(),
+      imageURL: json['imageURL'] as String,
       category: json['category'] as String,
       price: json['price'] as int,
       description: json['description'] as String,
@@ -27,7 +26,7 @@ Map<String, dynamic> _$$_MenuItemToJson(_$_MenuItem instance) =>
       'menuItemID': instance.menuItemID,
       'restaurantID': instance.restaurantID,
       'name': instance.name,
-      'imageURLs': instance.imageURLs,
+      'imageURL': instance.imageURL,
       'category': instance.category,
       'price': instance.price,
       'description': instance.description,

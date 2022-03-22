@@ -41,7 +41,7 @@ class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
                     child: Image(
                       width: MediaQuery.of(context).size.width * 0.3,
                       image: CachedNetworkImageProvider(
-                        widget.menuItem.imageURLs[0],
+                        widget.menuItem.imageURL,
                       ),
                       errorBuilder: (context, error, stackTrace) {
                         print("ERROR:");

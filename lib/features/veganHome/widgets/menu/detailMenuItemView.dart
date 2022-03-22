@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuViewFloatingBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/productOptionsView.dart';
@@ -18,10 +16,6 @@ class DetailMenuItemView extends StatefulWidget {
 }
 
 class _DetailMenuItemViewState extends State<DetailMenuItemView> {
-  int _imageIndex = 0;
-  // ignore: unused_field
-  late Timer _timer;
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, DetailMenuItem>(
@@ -29,18 +23,18 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
       onInit: (store) {
         store.dispatch(
             fetchProductOptions(store.state.menuItemState.menuItem.menuItemID));
-        _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
-          if (mounted) {
-            setState(() {
-              if (_imageIndex + 1 ==
-                  store.state.menuItemState.menuItem.imageURLs.length) {
-                _imageIndex = 0;
-              } else {
-                _imageIndex = _imageIndex + 1;
-              }
-            });
-          }
-        });
+        // _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+        //   if (mounted) {
+        //     setState(() {
+        //       if (_imageIndex + 1 ==
+        //           store.state.menuItemState.menuItem.imageURLs.length) {
+        //         _imageIndex = 0;
+        //       } else {
+        //         _imageIndex = _imageIndex + 1;
+        //       }
+        //     });
+        //   }
+        // });
       },
       builder: (_, viewmodel) {
         return Stack(
@@ -58,22 +52,26 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                           Container(
                             width: double.infinity,
                             height: 350.0,
-                            child: CarouselSlider(
-                              items: viewmodel.menuItem.imageURLs
-                                  .map(
-                                    (item) => CachedNetworkImage(
-                                      imageUrl: item,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                  .toList(),
-                              options: CarouselOptions(
-                                autoPlay: true,
-                                height: double.infinity,
-                                viewportFraction: 1,
-                                autoPlayCurve: Curves.slowMiddle,
-                              ),
+                            child: CachedNetworkImage(
+                              imageUrl: viewmodel.menuItem.imageURL,
+                              fit: BoxFit.cover,
                             ),
+                            //   child: CarouselSlider(
+                            //     items: viewmodel.menuItem.imageURLs
+                            //         .map(
+                            //           (item) => CachedNetworkImage(
+                            //             imageUrl: item,
+                            //             fit: BoxFit.cover,
+                            //           ),
+                            //         )
+                            //         .toList(),
+                            //     options: CarouselOptions(
+                            //       autoPlay: true,
+                            //       height: double.infinity,
+                            //       viewportFraction: 1,
+                            //       autoPlayCurve: Curves.slowMiddle,
+                            //     ),
+                            //   ),
                           ),
                           Positioned(
                             bottom: -1,

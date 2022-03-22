@@ -51,9 +51,12 @@ class VegiEatsService {
             phoneNumber: element['phoneNumber'] ?? "",
             deliveryRestrictionDetails:
                 element["deliveryRestrictionDetails"] ?? [],
-            imageURL: UrlConstants.VEGI_EATS_BACKEND +
-                "vendors/download-image/" +
-                element['id'].toString(),
+            imageURL: Uri(
+                    scheme: "https",
+                    host: "vegi.itsaboutpeepl.com",
+                    path: "vendors/download-image/${element['id'].toString()}")
+                .toString(),
+
             category: "Category",
             costLevel: element['costLevel'] ?? 2,
             rating: element['rating'] ?? 2,
@@ -84,11 +87,9 @@ class VegiEatsService {
             menuItemID: element["id"].toString(),
             restaurantID: restaurantID,
             name: element['name'],
-            imageURLs: [
-              UrlConstants.VEGI_EATS_BACKEND +
-                  "products/download-image/" +
-                  element['id'].toString()
-            ],
+            imageURL: UrlConstants.VEGI_EATS_BACKEND +
+                "products/download-image/" +
+                element['id'].toString(),
             category: "Category",
             price: element['basePrice'],
             description: element['description'],

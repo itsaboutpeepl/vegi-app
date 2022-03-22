@@ -39,7 +39,7 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
                   borderRadius: BorderRadius.circular(20),
                   child: Image(
                     image: CachedNetworkImageProvider(
-                      widget.menuItem.imageURLs[0],
+                      widget.menuItem.imageURL,
                     ),
                     errorBuilder: (context, error, stackTrace) {
                       print("ERROR:");
