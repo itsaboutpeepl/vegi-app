@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
-import 'package:vegan_liverpool/constants/urls.dart';
 
 @lazySingleton
 class PeeplPaySerivce {
   final Dio dio;
 
   PeeplPaySerivce(this.dio) {
-    dio.options.baseUrl = UrlConstants.PEEPL_PAY_BACKEND;
+    dio.options.baseUrl = dotenv.env['PEEPL_PAY_BACKEND']!;
     dio.options.headers = Map.from({"Content-Type": 'application/json'});
   }
 

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
@@ -10,13 +11,14 @@ import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
+import 'package:vegan_liverpool/services.dart';
 
 @lazySingleton
 class VegiEatsService {
   final Dio dio;
 
   VegiEatsService(this.dio) {
-    dio.options.baseUrl = UrlConstants.VEGI_EATS_BACKEND;
+    dio.options.baseUrl = dotenv.env['VEGI_EATS_BACKEND']!;
     dio.options.headers = Map.from({"Content-Type": 'application/json'});
   }
 
@@ -87,7 +89,7 @@ class VegiEatsService {
             menuItemID: element["id"].toString(),
             restaurantID: restaurantID,
             name: element['name'],
-            imageURL: UrlConstants.VEGI_EATS_BACKEND +
+            imageURL: dotenv.env['VEGI_EATS_BACKEND']! +
                 "products/download-image/" +
                 element['id'].toString(),
             category: "Category",

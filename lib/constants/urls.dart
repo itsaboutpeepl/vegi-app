@@ -8,9 +8,6 @@ class UrlConstants {
       'https://raw.githubusercontent.com/fuseio/fuseswap-default-token-list/master/build/fuseswap-default.tokenlist.json';
   static const String FUSESWAP_SERVICE_API = 'https://api.fuseswap.com/api/v1';
   static const String THEGUIDE_WORDPRESS_API = "https://newsapi.org/v2/";
-  static const String VEGI_EATS_BACKEND = "https://vegi.itsaboutpeepl.com/";
-  static const String PEEPL_PAY_BACKEND = "http://pay.itsaboutpeepl.com/";
-
   // APIs
   static const String COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
 }
