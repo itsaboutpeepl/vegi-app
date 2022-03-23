@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -53,12 +54,9 @@ class VegiEatsService {
             phoneNumber: element['phoneNumber'] ?? "",
             deliveryRestrictionDetails:
                 element["deliveryRestrictionDetails"] ?? [],
-            imageURL: Uri(
-                    scheme: "https",
-                    host: dotenv.env['VEGI_EATS_BACKEND'],
-                    path: "vendors/download-image/${element['id'].toString()}")
-                .toString(),
-
+            imageURL: dotenv.env['VEGI_EATS_BACKEND']! +
+                "vendors/download-image/" +
+                element['id'].toString(),
             category: "Category",
             costLevel: element['costLevel'] ?? 2,
             rating: element['rating'] ?? 2,
