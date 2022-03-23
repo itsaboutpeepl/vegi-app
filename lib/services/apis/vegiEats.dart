@@ -55,7 +55,7 @@ class VegiEatsService {
                 element["deliveryRestrictionDetails"] ?? [],
             imageURL: Uri(
                     scheme: "https",
-                    host: "vegi.itsaboutpeepl.com",
+                    host: dotenv.env['VEGI_EATS_BACKEND'],
                     path: "vendors/download-image/${element['id'].toString()}")
                 .toString(),
 
