@@ -152,8 +152,7 @@ class VegiEatsService {
   Future<FullfilmentMethods> getDeliverySlots(
       {required String vendorID, required String dateRequired}) async {
     Response response = await dio.get(
-        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=2022-03-03');
-    //TODO: Change
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
 
     FullfilmentMethods methods = FullfilmentMethods.fromJson(response.data);
 
@@ -175,8 +174,7 @@ class VegiEatsService {
   Future<List<Map<String, String>>> getCollectionSlots(
       {required String vendorID, required String dateRequired}) async {
     Response response = await dio.get(
-        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=2022-03-03');
-    //TODO: Change
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
 
     List<dynamic> results = response.data['collectionSlots'] as List<dynamic>;
 
