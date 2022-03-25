@@ -15,6 +15,7 @@ class PaymentSheetViewModel extends Equatable {
   final bool transferringTokens;
   final bool errorCompletingPayment;
   final bool confirmedPayment;
+  final String restaurantName;
   final Function(double GBPxAmount, double PPLAmount) updateSelectedValues;
   final Function(VoidCallback successCallBack) sendToken;
   final Function(bool) setTransferringPayment;
@@ -33,6 +34,7 @@ class PaymentSheetViewModel extends Equatable {
     required this.transferringTokens,
     required this.errorCompletingPayment,
     required this.confirmedPayment,
+    required this.restaurantName,
     required this.setTransferringPayment,
     required this.setError,
     required this.setConfirmed,
@@ -51,6 +53,7 @@ class PaymentSheetViewModel extends Equatable {
       transferringTokens: store.state.cartState.transferringTokens,
       errorCompletingPayment: store.state.cartState.errorCompletingPayment,
       confirmedPayment: store.state.cartState.confirmedPayment,
+      restaurantName: store.state.cartState.restaurantName,
       updateSelectedValues: (GBPxAmount, PPLAmount) {
         store.dispatch(UpdateSelectedAmounts(GBPxAmount, PPLAmount));
       },

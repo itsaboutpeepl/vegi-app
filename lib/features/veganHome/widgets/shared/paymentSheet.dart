@@ -320,7 +320,7 @@ class _PPLSliderState extends State<PPLSlider> {
                     : <Widget>[SizedBox.shrink()]) +
                 [
                   Text(
-                    "Pay Delifonesca",
+                    "Pay ${viewmodel.restaurantName}",
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 14,
