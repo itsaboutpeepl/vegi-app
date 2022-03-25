@@ -53,7 +53,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
                 widget.otherAction != null
                     ? Padding(
-                        //  TODO: Use MediaQuery
                         padding: const EdgeInsets.only(left: 0),
                         child: Container(height: 40, child: widget.otherAction),
                       )

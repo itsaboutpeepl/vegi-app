@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/singleRestaurantItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
 
 class FeaturedRestaurantList extends StatefulWidget {
@@ -19,7 +20,9 @@ class _FeaturedRestaurantListState extends State<FeaturedRestaurantList> {
     return StoreConnector<AppState, FeaturedRestaurantsVM>(
       converter: FeaturedRestaurantsVM.fromStore,
       distinct: true,
-      onInit: (store) {},
+      onInit: (store) {
+        store.dispatch(startFetchTokensBalances());
+      },
       builder: (_, viewmodel) {
         return viewmodel.isLoadingHomePage
             ? Center(

@@ -74,7 +74,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                             ),
                           )
                         : SizedBox.shrink(),
-                  ] + //TODO: Fix this please
+                  ] +
                   widget.orderItem.selectedProductOptions.entries
                       .map<Widget>(
                         (e) => Text.rich(

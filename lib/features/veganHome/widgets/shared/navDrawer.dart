@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
 
 class NavDrawer extends StatefulWidget {
@@ -20,9 +19,6 @@ class _NavDrawerState extends State<NavDrawer> {
     return StoreConnector<AppState, DrawerViewModel>(
       distinct: true,
       converter: DrawerViewModel.fromStore,
-      onInit: (store) {
-        store.dispatch(startFetchTokensBalances());
-      },
       builder: (_, viewModel) {
         return Drawer(
           child: Column(
