@@ -111,34 +111,39 @@ class SetDeliveryCharge {
   SetDeliveryCharge(this.deliveryCharge);
 }
 
+class SetFulfilmentFees {
+  final int deliveryCharge;
+  final int collectionCharge;
+
+  SetFulfilmentFees(this.deliveryCharge, this.collectionCharge);
+}
+
 ThunkAction getFullfillmentMethods({DateTime? newDate}) {
   return (Store store) async {
     try {
       DateFormat formatter = DateFormat('yyyy-MM-dd');
+      FullfilmentMethods fullfilmentMethods;
 
       if ([null, ""].contains(newDate)) {
-        FullfilmentMethods fullfilmentMethods =
-            await vegiEatsService.getDeliverySlots(
-                vendorID: store.state.cartState.restaurantID,
-                dateRequired: formatter.format(DateTime.now()));
-
-        store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
-            fullfilmentMethods.collectionSlots));
-        store.dispatch(SetDeliveryCharge(
-            fullfilmentMethods.deliveryMethod!['priceModifier']));
-        store.dispatch(
-            computeCartTotals()); //TODO: cannot update this here, delivery cost is fine but what about collection
+        fullfilmentMethods = await vegiEatsService.getFulfilmentSlots(
+            vendorID: store.state.cartState.restaurantID,
+            dateRequired: formatter.format(DateTime.now()));
       } else {
-        FullfilmentMethods fullfilmentMethods =
-            await vegiEatsService.getDeliverySlots(
-                vendorID: store.state.cartState.restaurantID,
-                dateRequired: formatter.format(DateTime.now()));
-
-        store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
-            fullfilmentMethods.collectionSlots));
-        store.dispatch(SetDeliveryCharge(
-            fullfilmentMethods.deliveryMethod!['priceModifier']));
+        fullfilmentMethods = await vegiEatsService.getFulfilmentSlots(
+            vendorID: store.state.cartState.restaurantID,
+            dateRequired: formatter.format(newDate!));
       }
+      store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
+          fullfilmentMethods.collectionSlots));
+
+      store.dispatch(SetFulfilmentFees(
+        fullfilmentMethods.deliveryMethod == null
+            ? 0
+            : fullfilmentMethods.deliveryMethod!['priceModifier'] ?? 0,
+        fullfilmentMethods.collectionMethod == null
+            ? 0
+            : fullfilmentMethods.collectionMethod!['priceModifier'] ?? 0,
+      ));
     } catch (e, s) {
       log.error('ERROR - getFullfillmentMethods $e');
       await Sentry.captureException(
@@ -259,8 +264,7 @@ ThunkAction computeCartTotals() {
       int cartSubTotal = 0;
       int cartTax = 0;
       int cartTotal = 0;
-      int deliveryPrice =
-          store.state.cartState.cartDeliveryCharge; //TODO: fetch from API
+      int deliveryPrice = store.state.cartState.cartDeliveryCharge;
       int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
       int cartDiscountComputed = 0;
       int cartTip = store.state.cartState.selectedTipAmount * 100;
@@ -420,9 +424,6 @@ ThunkAction prepareAndSendOrder(
 ThunkAction sendTokenPayment(VoidCallback successCallback) {
   return (Store store) async {
     try {
-      if (store.state.cartState.discountCode == "") {
-        successCallback();
-      }
       //Set loading to true
       store.dispatch(SetTransferringPayment(true));
 
@@ -437,54 +438,65 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
       );
 
       //If Selected GBPx amount is not 0, transfer GBPx
-      dynamic GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
-          ? await walletApi.tokenTransfer(
-              getIt<Web3>(instanceName: 'fuseWeb3'),
-              store.state.userState.walletAddress,
-              GBPxToken.address,
-              store.state.cartState.restaurantWalletAddress,
-              store.state.cartState.selectedGBPxAmount.toString(),
-              externalId: store.state.cartState.paymentIntentID,
-            )
-          : null;
+      Map<String, dynamic> GBPxResponse =
+          store.state.cartState.selectedGBPxAmount != 0.0
+              ? double.parse(GBPxToken.getBalance().replaceAll(",", "")) >
+                      store.state.cartState.selectedGBPxAmount
+                  ? await walletApi.tokenTransfer(
+                      getIt<Web3>(instanceName: 'fuseWeb3'),
+                      store.state.userState.walletAddress,
+                      GBPxToken.address,
+                      store.state.cartState.restaurantWalletAddress,
+                      store.state.cartState.selectedGBPxAmount.toString(),
+                      externalId: store.state.cartState.paymentIntentID,
+                    )
+                  : null
+              : null;
 
       print(GBPxResponse);
 
       //If Selected PPL Amount is not 0, transfer PPL
-      dynamic PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
-          ? await walletApi.tokenTransfer(
-              getIt<Web3>(instanceName: 'fuseWeb3'),
-              store.state.userState.walletAddress,
-              PPLToken.address,
-              store.state.cartState.restaurantWalletAddress,
-              store.state.cartState.selectedPPLAmount.toString(),
-              externalId: store.state.cartState.paymentIntentID,
-            )
-          : null;
+      Map<String, dynamic> PPLResponse =
+          store.state.cartState.selectedPPLAmount != 0.0
+              ? double.parse(PPLToken.getBalance().replaceAll(",", "")) >
+                      store.state.cartState.selectedPPLAmount
+                  ? await walletApi.tokenTransfer(
+                      getIt<Web3>(instanceName: 'fuseWeb3'),
+                      store.state.userState.walletAddress,
+                      PPLToken.address,
+                      store.state.cartState.restaurantWalletAddress,
+                      store.state.cartState.selectedPPLAmount.toString(),
+                      externalId: store.state.cartState.paymentIntentID,
+                    )
+                  : null
+              : null;
 
       print(PPLResponse);
 
       //Make periodic API calls to check the order status
       //If status is paid, then set loading = false, and confirmed = true
 
-      Timer.periodic(
-        const Duration(seconds: 4),
-        (timer) async {
-          final Future<Map<dynamic, dynamic>> checkOrderResponse =
-              vegiEatsService.checkOrderStatus(store.state.cartState.orderID);
+      if (GBPxResponse['job']['status'] == 'pending' ||
+          PPLResponse['job']['status'] == 'pending') {
+        Timer.periodic(
+          const Duration(seconds: 4),
+          (timer) async {
+            final Future<Map<dynamic, dynamic>> checkOrderResponse =
+                vegiEatsService.checkOrderStatus(store.state.cartState.orderID);
 
-          checkOrderResponse.then(
-            (completedValue) {
-              if (completedValue['paymentStatus'] == "paid") {
-                store.dispatch(SetTransferringPayment(false));
-                store.dispatch(SetConfirmed(true));
-                successCallback();
-                timer.cancel();
-              }
-            },
-          );
-        },
-      );
+            checkOrderResponse.then(
+              (completedValue) {
+                if (completedValue['paymentStatus'] == "paid") {
+                  store.dispatch(SetTransferringPayment(false));
+                  store.dispatch(SetConfirmed(true));
+                  successCallback();
+                  timer.cancel();
+                }
+              },
+            );
+          },
+        );
+      }
     } catch (e, s) {
       store.dispatch(SetError(true));
       log.error('ERROR - sendTokenPayment $e');
