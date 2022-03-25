@@ -36,6 +36,8 @@ class UserCartState with _$UserCartState {
     required String restaurantID,
     required DeliveryAddresses restaurantAddress,
     required String restaurantWalletAddress,
+    required int deliveryCharge,
+    required int collectionCharge,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(
@@ -48,7 +50,7 @@ class UserCartState with _$UserCartState {
         cartDeliveryCharge: 0,
         deliverySlots: [],
         collectionSlots: [],
-        selectedSlotIndex: 0,
+        selectedSlotIndex: -1,
         selectedTipAmount: 0,
         discountCode: "",
         selectedDeliveryAddressIndex: 1,
@@ -63,6 +65,8 @@ class UserCartState with _$UserCartState {
         restaurantID: "",
         restaurantAddress: demoAddress,
         restaurantWalletAddress: "",
+        deliveryCharge: 0,
+        collectionCharge: 0,
       );
 
   factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);

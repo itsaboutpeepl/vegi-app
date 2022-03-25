@@ -17,9 +17,7 @@ class CheckoutViewModel extends Equatable {
   final Function(int index) updateSlotIndex;
   final Function(int tipAmount) updateTipAmount;
   final Function(VoidCallback, VoidCallback) createOrder;
-  final Function(
-    DateTime newDate,
-  ) updateSlotTimes;
+  final Function(DateTime newDate) updateSlotTimes;
 
   CheckoutViewModel({
     required this.deliverySlots,
@@ -53,6 +51,12 @@ class CheckoutViewModel extends Equatable {
       },
       updateSlotIndex: (int index) {
         store.dispatch(UpdateSlotIndex(index));
+        store.state.cartState.selectedDeliveryAddressIndex == 0
+            ? store.dispatch(
+                SetDeliveryCharge(store.state.cartState.collectionCharge))
+            : store.dispatch(
+                SetDeliveryCharge(store.state.cartState.deliveryCharge));
+        store.dispatch(computeCartTotals());
       },
       updateTipAmount: (int tipAmount) {
         store.dispatch(updateCartTip(tipAmount));

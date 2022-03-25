@@ -20,6 +20,7 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateSelectedAmounts>(_updateSelectedAmounts),
   TypedReducer<UserCartState, SetRestaurantDetails>(_setRestaurantDetails),
   TypedReducer<UserCartState, SetDeliveryCharge>(_setDeliveryCharge),
+  TypedReducer<UserCartState, SetFulfilmentFees>(_setFulfilmentFees),
 ]);
 
 UserCartState _updateCartItems(
@@ -163,5 +164,15 @@ UserCartState _setDeliveryCharge(
 ) {
   return state.copyWith(
     cartDeliveryCharge: action.deliveryCharge,
+  );
+}
+
+UserCartState _setFulfilmentFees(
+  UserCartState state,
+  SetFulfilmentFees action,
+) {
+  return state.copyWith(
+    deliveryCharge: action.deliveryCharge,
+    collectionCharge: action.collectionCharge,
   );
 }
