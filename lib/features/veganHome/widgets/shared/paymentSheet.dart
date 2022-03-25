@@ -29,9 +29,8 @@ class _PaymentSheetState extends State<PaymentSheet> {
       converter: PaymentSheetViewModel.fromStore,
       onInit: (store) {
         store.dispatch(SetTransferringPayment(false));
-        store
-          ..dispatch(UpdateSelectedAmounts(
-              (store.state.cartState.cartTotal) / 100, 0));
+        store.dispatch(
+            UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
         _gbpXBalance = double.parse(store
             .state.cashWalletState.tokens[GBPxToken.address]!
             .getBalance(true));
@@ -175,29 +174,41 @@ class _PaymentSheetState extends State<PaymentSheet> {
                           ),
                         ),
                         buttonAction: () async {
-                          final BiometricAuth biometricAuth =
-                              await BiometricUtils.getAvailableBiometrics();
-                          final String biometric =
-                              BiometricUtils.getBiometricString(
-                            context,
-                            biometricAuth,
-                          );
-                          await BiometricUtils
-                              .showDefaultPopupCheckBiometricAuth(
-                            message:
-                                '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
-                            callback: (bool result) {
-                              result
-                                  ? (_gbpXBalance <=
-                                          viewmodel.selectedGBPxAmount)
-                                      ? context.router.push(TopUpScreen())
-                                      : viewmodel.sendToken(() {
-                                          context.router
-                                              .push(OrderConfirmedScreen());
-                                        })
-                                  : context.router.pop();
-                            },
-                          );
+                          if (await BiometricUtils.authenticateIsAvailable()) {
+                            final BiometricAuth biometricAuth =
+                                await BiometricUtils.getAvailableBiometrics();
+                            final String biometric =
+                                BiometricUtils.getBiometricString(
+                              context,
+                              biometricAuth,
+                            );
+                            await BiometricUtils
+                                .showDefaultPopupCheckBiometricAuth(
+                              message:
+                                  '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
+                              callback: (bool result) {
+                                result
+                                    ? (_gbpXBalance <=
+                                            viewmodel.selectedGBPxAmount)
+                                        ? context.router.push(TopUpScreen())
+                                        : viewmodel.sendToken(() {
+                                            context.router
+                                                .push(OrderConfirmedScreen());
+                                          })
+                                    : context.router.pop();
+                              },
+                            );
+                          } else {
+                            //TODO: add pincode screen verification.
+                            (_gbpXBalance <= viewmodel.selectedGBPxAmount)
+                                ? context.router.push(TopUpScreen())
+                                : viewmodel.sendToken(
+                                    () {
+                                      context.router
+                                          .push(OrderConfirmedScreen());
+                                    },
+                                  );
+                          }
                         },
                         baseColor: Colors.grey[800]!,
                         highlightColor: Colors.grey[850]!),
