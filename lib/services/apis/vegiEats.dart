@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -22,7 +23,7 @@ class VegiEatsService {
 
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
     Response response =
-        await dio.get('api/v1/vendors?wallet=test&outcode=$outCode').timeout(
+        await dio.get('api/v1/vendors?outcode=$outCode').timeout(
       Duration(seconds: 5),
       onTimeout: () {
         return Response(
@@ -51,11 +52,9 @@ class VegiEatsService {
             phoneNumber: element['phoneNumber'] ?? "",
             deliveryRestrictionDetails:
                 element["deliveryRestrictionDetails"] ?? [],
-            imageURL: Uri(
-                    scheme: "https",
-                    host: "vegi.itsaboutpeepl.com",
-                    path: "vendors/download-image/${element['id'].toString()}")
-                .toString(),
+            imageURL: dotenv.env['VEGI_EATS_BACKEND']! +
+                "vendors/download-image/" +
+                element['id'].toString(),
             category: "Category",
             costLevel: element['costLevel'] ?? 2,
             rating: element['rating'] ?? 2,
@@ -71,8 +70,7 @@ class VegiEatsService {
   }
 
   Future<List<MenuItem>> getRestaurantMenuItems(String restaurantID) async {
-    Response response =
-        await dio.get('api/v1/vendors/$restaurantID?wallet=test');
+    Response response = await dio.get('api/v1/vendors/$restaurantID?');
 
     List<dynamic> results = response.data['vendor']['products'] as List;
 
@@ -103,8 +101,8 @@ class VegiEatsService {
   }
 
   Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {
-    Response response = await dio
-        .get('api/v1/products/get-product-options/$itemID?wallet=test');
+    Response response =
+        await dio.get('api/v1/products/get-product-options/$itemID?');
 
     List<dynamic> results = response.data as List;
 
@@ -141,8 +139,8 @@ class VegiEatsService {
   }
 
   Future<int> checkDiscountCode(String discountCode) async {
-    Response response = await dio
-        .get('api/v1/discounts/check-discount-code/$discountCode?wallet=test');
+    Response response =
+        await dio.get('api/v1/discounts/check-discount-code/$discountCode?');
 
     Map<dynamic, dynamic> results = response.data['discount'] as Map;
 
@@ -161,8 +159,8 @@ class VegiEatsService {
 
   Future<Map<dynamic, dynamic>> createOrder(
       Map<String, dynamic> orderObject) async {
-    Response response = await dio
-        .post('/api/v1/orders/create-order?wallet=test', data: orderObject);
+    Response response =
+        await dio.post('/api/v1/orders/create-order?', data: orderObject);
 
     Map<dynamic, dynamic> result = response.data;
 
