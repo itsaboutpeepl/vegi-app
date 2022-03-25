@@ -38,7 +38,7 @@ String formatDate(DateTime dateToFormat) {
 List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
   List<Map<String, dynamic>> listOfOrders = [];
 
-  orderObj['orders'].forEach((Map<String, dynamic> singleOrder) {
+  orderObj['orders'].forEach((singleOrder) {
     //Order Details
     Map<String, dynamic> sanitizedOrderObject = {};
 
@@ -63,7 +63,7 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
 
     List<Map<String, dynamic>> listOfProductsOrdered = [];
     //Products in Order
-    singleOrder['items'].forEach((Map<String, dynamic> productItem) {
+    singleOrder['items'].forEach((productItem) {
       Map<String, dynamic> singleProductItem = {};
       singleProductItem['name'] = productItem['product']['name'];
       singleProductItem['basePrice'] =
@@ -72,8 +72,7 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
       //Options in Product
       if (productItem.containsKey("optionValues")) {
         List<Map<String, dynamic>> listOfChosenProductOptions = [];
-        productItem['optionValues']
-            .forEach((Map<String, dynamic> productOption) {
+        productItem['optionValues'].forEach((productOption) {
           //Add Options in Product to ListOfProductOptions.
           listOfChosenProductOptions.add({
             'name': productOption['option']['name'],
