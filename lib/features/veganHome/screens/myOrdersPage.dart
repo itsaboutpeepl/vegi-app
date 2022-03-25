@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/contacts/widgets/empty_state.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/services.dart';
 
 class MyOrdersPage extends StatefulWidget {
@@ -19,14 +22,9 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   bool _isLoading = true;
   bool _isEmpty = false;
 
-  @override
-  void initState() {
-    fetchOrdersList();
-    super.initState();
-  }
-
-  void fetchOrdersList() async {
-    listOfOrders = await vegiEatsService.getPastOrders("test");
+  void fetchOrdersList(String walletAddress) async {
+    listOfOrders =
+        (await vegiEatsService.getPastOrders(walletAddress)).reversed.toList();
 
     setState(() {
       listOfOrders;
@@ -37,25 +35,33 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        pageTitle: "My Orders",
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _isEmpty
-              ? EmptyStatePage(
-                  emoji: "😐",
-                  title: "Pretty empty here, isn't it?",
-                  subtitle:
-                      "Try ordering from one of our amazing restauarants to fill this page up!",
-                )
-              : ListView.separated(
-                  itemBuilder: (_, index) =>
-                      SingleOrderCard(order: listOfOrders[index]),
-                  separatorBuilder: (_, index) =>
-                      Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                  itemCount: listOfOrders.length),
+    return StoreConnector<AppState, AccountViewModel>(
+      converter: AccountViewModel.fromStore,
+      onInit: (store) => fetchOrdersList(store.state.userState.walletAddress),
+      builder: (_, viewmodel) {
+        return Scaffold(
+          appBar: CustomAppBar(
+            pageTitle: "My Orders",
+          ),
+          body: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : _isEmpty
+                  ? EmptyStatePage(
+                      emoji: "😐",
+                      title: "Pretty empty here, isn't it?",
+                      subtitle:
+                          "Try ordering from one of our amazing restauarants to fill this page up!",
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      itemBuilder: (_, index) =>
+                          SingleOrderCard(order: listOfOrders[index]),
+                      separatorBuilder: (_, index) => Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                          ),
+                      itemCount: listOfOrders.length),
+        );
+      },
     );
   }
 }
@@ -132,11 +138,11 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (_, index) => SingleProductOrderItem(
-                    product: widget.order['products'][0]),
+                    product: widget.order['products'][index]),
                 separatorBuilder: (_, index) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                 ),
-                itemCount: 3,
+                itemCount: widget.order['products'].length,
               ),
               SizedBox(
                 height: 10,
