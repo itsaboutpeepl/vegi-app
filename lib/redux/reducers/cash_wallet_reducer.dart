@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:ethereum_address/ethereum_address.dart';
+import 'package:ethereum_addresses/ethereum_addresses.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
 import 'package:vegan_liverpool/models/community/community.dart';

@@ -26,7 +26,9 @@ class _ToteScreenState extends State<ToteScreen> {
       converter: UserCartViewModel.fromStore,
       distinct: true,
       onInit: (store) {
-        store.dispatch(getFullfillmentMethods());
+        store.state.cartState.restaurantID != ""
+            ? store.dispatch(getFullfillmentMethods())
+            : null;
       },
       builder: (_, viewmodel) {
         return Scaffold(

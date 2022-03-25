@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'wallet_modules.dart';
@@ -53,7 +54,7 @@ class _$WalletModulesTearOff {
     );
   }
 
-  WalletModules fromJson(Map<String, Object> json) {
+  WalletModules fromJson(Map<String, Object?> json) {
     return WalletModules.fromJson(json);
   }
 }
@@ -313,48 +314,40 @@ class _$_WalletModules implements _WalletModules {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _WalletModules &&
-            (identical(other.guardianManager, guardianManager) ||
-                const DeepCollectionEquality()
-                    .equals(other.guardianManager, guardianManager)) &&
-            (identical(other.lockManager, lockManager) ||
-                const DeepCollectionEquality()
-                    .equals(other.lockManager, lockManager)) &&
-            (identical(other.recoveryManager, recoveryManager) ||
-                const DeepCollectionEquality()
-                    .equals(other.recoveryManager, recoveryManager)) &&
-            (identical(other.approvedTransfer, approvedTransfer) ||
-                const DeepCollectionEquality()
-                    .equals(other.approvedTransfer, approvedTransfer)) &&
-            (identical(other.tokenExchanger, tokenExchanger) ||
-                const DeepCollectionEquality()
-                    .equals(other.tokenExchanger, tokenExchanger)) &&
-            (identical(other.communityManager, communityManager) ||
-                const DeepCollectionEquality()
-                    .equals(other.communityManager, communityManager)) &&
-            (identical(other.walletOwnershipManager, walletOwnershipManager) ||
-                const DeepCollectionEquality().equals(
-                    other.walletOwnershipManager, walletOwnershipManager)) &&
-            (identical(other.daiPointsManager, daiPointsManager) ||
-                const DeepCollectionEquality()
-                    .equals(other.daiPointsManager, daiPointsManager)) &&
-            (identical(other.transferManager, transferManager) ||
-                const DeepCollectionEquality()
-                    .equals(other.transferManager, transferManager)));
+        (other.runtimeType == runtimeType &&
+            other is _WalletModules &&
+            const DeepCollectionEquality()
+                .equals(other.guardianManager, guardianManager) &&
+            const DeepCollectionEquality()
+                .equals(other.lockManager, lockManager) &&
+            const DeepCollectionEquality()
+                .equals(other.recoveryManager, recoveryManager) &&
+            const DeepCollectionEquality()
+                .equals(other.approvedTransfer, approvedTransfer) &&
+            const DeepCollectionEquality()
+                .equals(other.tokenExchanger, tokenExchanger) &&
+            const DeepCollectionEquality()
+                .equals(other.communityManager, communityManager) &&
+            const DeepCollectionEquality()
+                .equals(other.walletOwnershipManager, walletOwnershipManager) &&
+            const DeepCollectionEquality()
+                .equals(other.daiPointsManager, daiPointsManager) &&
+            const DeepCollectionEquality()
+                .equals(other.transferManager, transferManager));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(guardianManager) ^
-      const DeepCollectionEquality().hash(lockManager) ^
-      const DeepCollectionEquality().hash(recoveryManager) ^
-      const DeepCollectionEquality().hash(approvedTransfer) ^
-      const DeepCollectionEquality().hash(tokenExchanger) ^
-      const DeepCollectionEquality().hash(communityManager) ^
-      const DeepCollectionEquality().hash(walletOwnershipManager) ^
-      const DeepCollectionEquality().hash(daiPointsManager) ^
-      const DeepCollectionEquality().hash(transferManager);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(guardianManager),
+      const DeepCollectionEquality().hash(lockManager),
+      const DeepCollectionEquality().hash(recoveryManager),
+      const DeepCollectionEquality().hash(approvedTransfer),
+      const DeepCollectionEquality().hash(tokenExchanger),
+      const DeepCollectionEquality().hash(communityManager),
+      const DeepCollectionEquality().hash(walletOwnershipManager),
+      const DeepCollectionEquality().hash(daiPointsManager),
+      const DeepCollectionEquality().hash(transferManager));
 
   @JsonKey(ignore: true)
   @override
@@ -393,31 +386,31 @@ abstract class _WalletModules implements WalletModules {
 
   @override
   @JsonKey(name: 'GuardianManager')
-  String get guardianManager => throw _privateConstructorUsedError;
+  String get guardianManager;
   @override
   @JsonKey(name: 'LockManager')
-  String get lockManager => throw _privateConstructorUsedError;
+  String get lockManager;
   @override
   @JsonKey(name: 'RecoveryManager')
-  String get recoveryManager => throw _privateConstructorUsedError;
+  String get recoveryManager;
   @override
   @JsonKey(name: 'ApprovedTransfer')
-  String get approvedTransfer => throw _privateConstructorUsedError;
+  String get approvedTransfer;
   @override
   @JsonKey(name: 'TokenExchanger')
-  String get tokenExchanger => throw _privateConstructorUsedError;
+  String get tokenExchanger;
   @override
   @JsonKey(name: 'CommunityManager')
-  String get communityManager => throw _privateConstructorUsedError;
+  String get communityManager;
   @override
   @JsonKey(name: 'WalletOwnershipManager')
-  String get walletOwnershipManager => throw _privateConstructorUsedError;
+  String get walletOwnershipManager;
   @override
   @JsonKey(name: 'DAIPointsManager')
-  String get daiPointsManager => throw _privateConstructorUsedError;
+  String get daiPointsManager;
   @override
   @JsonKey(name: 'TransferManager')
-  String get transferManager => throw _privateConstructorUsedError;
+  String get transferManager;
   @override
   @JsonKey(ignore: true)
   _$WalletModulesCopyWith<_WalletModules> get copyWith =>

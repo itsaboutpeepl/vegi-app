@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'home_page_state.dart';
@@ -34,7 +35,7 @@ class _$HomePageStateTearOff {
     );
   }
 
-  HomePageState fromJson(Map<String, Object> json) {
+  HomePageState fromJson(Map<String, Object?> json) {
     return HomePageState.fromJson(json);
   }
 }
@@ -202,28 +203,25 @@ class _$_HomePageState extends _HomePageState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HomePageState &&
-            (identical(other.restaurantCategories, restaurantCategories) ||
-                const DeepCollectionEquality().equals(
-                    other.restaurantCategories, restaurantCategories)) &&
-            (identical(other.featuredRestaurants, featuredRestaurants) ||
-                const DeepCollectionEquality()
-                    .equals(other.featuredRestaurants, featuredRestaurants)) &&
-            (identical(other.currentUserCart, currentUserCart) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentUserCart, currentUserCart)) &&
-            (identical(other.isLoadingHomePage, isLoadingHomePage) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoadingHomePage, isLoadingHomePage)));
+        (other.runtimeType == runtimeType &&
+            other is _HomePageState &&
+            const DeepCollectionEquality()
+                .equals(other.restaurantCategories, restaurantCategories) &&
+            const DeepCollectionEquality()
+                .equals(other.featuredRestaurants, featuredRestaurants) &&
+            const DeepCollectionEquality()
+                .equals(other.currentUserCart, currentUserCart) &&
+            const DeepCollectionEquality()
+                .equals(other.isLoadingHomePage, isLoadingHomePage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(restaurantCategories) ^
-      const DeepCollectionEquality().hash(featuredRestaurants) ^
-      const DeepCollectionEquality().hash(currentUserCart) ^
-      const DeepCollectionEquality().hash(isLoadingHomePage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(restaurantCategories),
+      const DeepCollectionEquality().hash(featuredRestaurants),
+      const DeepCollectionEquality().hash(currentUserCart),
+      const DeepCollectionEquality().hash(isLoadingHomePage));
 
   @JsonKey(ignore: true)
   @override
@@ -248,15 +246,13 @@ abstract class _HomePageState extends HomePageState {
       _$_HomePageState.fromJson;
 
   @override
-  List<RestaurantCategory> get restaurantCategories =>
-      throw _privateConstructorUsedError;
+  List<RestaurantCategory> get restaurantCategories;
   @override
-  List<RestaurantItem> get featuredRestaurants =>
-      throw _privateConstructorUsedError;
+  List<RestaurantItem> get featuredRestaurants;
   @override
-  UserCart get currentUserCart => throw _privateConstructorUsedError;
+  UserCart get currentUserCart;
   @override
-  bool get isLoadingHomePage => throw _privateConstructorUsedError;
+  bool get isLoadingHomePage;
   @override
   @JsonKey(ignore: true)
   _$HomePageStateCopyWith<_HomePageState> get copyWith =>

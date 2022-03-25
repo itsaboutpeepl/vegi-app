@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'user_cart_state.dart';
@@ -78,7 +79,7 @@ class _$UserCartStateTearOff {
     );
   }
 
-  UserCartState fromJson(Map<String, Object> json) {
+  UserCartState fromJson(Map<String, Object?> json) {
     return UserCartState.fromJson(json);
   }
 }
@@ -598,104 +599,89 @@ class _$_UserCartState extends _UserCartState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UserCartState &&
-            (identical(other.cartItems, cartItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartItems, cartItems)) &&
-            (identical(other.cartSubTotal, cartSubTotal) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartSubTotal, cartSubTotal)) &&
-            (identical(other.cartTax, cartTax) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartTax, cartTax)) &&
-            (identical(other.cartTotal, cartTotal) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartTotal, cartTotal)) &&
-            (identical(other.cartDiscountPercent, cartDiscountPercent) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartDiscountPercent, cartDiscountPercent)) &&
-            (identical(other.cartDiscountComputed, cartDiscountComputed) ||
-                const DeepCollectionEquality().equals(
-                    other.cartDiscountComputed, cartDiscountComputed)) &&
-            (identical(other.cartDeliveryCharge, cartDeliveryCharge) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartDeliveryCharge, cartDeliveryCharge)) &&
-            (identical(other.deliverySlots, deliverySlots) ||
-                const DeepCollectionEquality()
-                    .equals(other.deliverySlots, deliverySlots)) &&
-            (identical(other.collectionSlots, collectionSlots) ||
-                const DeepCollectionEquality()
-                    .equals(other.collectionSlots, collectionSlots)) &&
-            (identical(other.selectedSlotIndex, selectedSlotIndex) ||
-                const DeepCollectionEquality()
-                    .equals(other.selectedSlotIndex, selectedSlotIndex)) &&
-            (identical(other.selectedTipAmount, selectedTipAmount) ||
-                const DeepCollectionEquality()
-                    .equals(other.selectedTipAmount, selectedTipAmount)) &&
-            (identical(other.discountCode, discountCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.discountCode, discountCode)) &&
-            (identical(other.selectedDeliveryAddressIndex, selectedDeliveryAddressIndex) ||
-                const DeepCollectionEquality().equals(
-                    other.selectedDeliveryAddressIndex,
-                    selectedDeliveryAddressIndex)) &&
-            (identical(other.paymentIntentID, paymentIntentID) ||
-                const DeepCollectionEquality()
-                    .equals(other.paymentIntentID, paymentIntentID)) &&
-            (identical(other.orderID, orderID) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderID, orderID)) &&
-            (identical(other.selectedGBPxAmount, selectedGBPxAmount) ||
-                const DeepCollectionEquality()
-                    .equals(other.selectedGBPxAmount, selectedGBPxAmount)) &&
-            (identical(other.selectedPPLAmount, selectedPPLAmount) ||
-                const DeepCollectionEquality()
-                    .equals(other.selectedPPLAmount, selectedPPLAmount)) &&
-            (identical(other.transferringTokens, transferringTokens) ||
-                const DeepCollectionEquality()
-                    .equals(other.transferringTokens, transferringTokens)) &&
-            (identical(other.errorCompletingPayment, errorCompletingPayment) ||
-                const DeepCollectionEquality().equals(
-                    other.errorCompletingPayment, errorCompletingPayment)) &&
-            (identical(other.confirmedPayment, confirmedPayment) ||
-                const DeepCollectionEquality().equals(other.confirmedPayment, confirmedPayment)) &&
-            (identical(other.restaurantName, restaurantName) || const DeepCollectionEquality().equals(other.restaurantName, restaurantName)) &&
-            (identical(other.restaurantID, restaurantID) || const DeepCollectionEquality().equals(other.restaurantID, restaurantID)) &&
-            (identical(other.restaurantAddress, restaurantAddress) || const DeepCollectionEquality().equals(other.restaurantAddress, restaurantAddress)) &&
-            (identical(other.restaurantWalletAddress, restaurantWalletAddress) || const DeepCollectionEquality().equals(other.restaurantWalletAddress, restaurantWalletAddress)) &&
-            (identical(other.deliveryCharge, deliveryCharge) || const DeepCollectionEquality().equals(other.deliveryCharge, deliveryCharge)) &&
-            (identical(other.collectionCharge, collectionCharge) || const DeepCollectionEquality().equals(other.collectionCharge, collectionCharge)));
+        (other.runtimeType == runtimeType &&
+            other is _UserCartState &&
+            const DeepCollectionEquality().equals(other.cartItems, cartItems) &&
+            const DeepCollectionEquality()
+                .equals(other.cartSubTotal, cartSubTotal) &&
+            const DeepCollectionEquality().equals(other.cartTax, cartTax) &&
+            const DeepCollectionEquality().equals(other.cartTotal, cartTotal) &&
+            const DeepCollectionEquality()
+                .equals(other.cartDiscountPercent, cartDiscountPercent) &&
+            const DeepCollectionEquality()
+                .equals(other.cartDiscountComputed, cartDiscountComputed) &&
+            const DeepCollectionEquality()
+                .equals(other.cartDeliveryCharge, cartDeliveryCharge) &&
+            const DeepCollectionEquality()
+                .equals(other.deliverySlots, deliverySlots) &&
+            const DeepCollectionEquality()
+                .equals(other.collectionSlots, collectionSlots) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedSlotIndex, selectedSlotIndex) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedTipAmount, selectedTipAmount) &&
+            const DeepCollectionEquality()
+                .equals(other.discountCode, discountCode) &&
+            const DeepCollectionEquality().equals(
+                other.selectedDeliveryAddressIndex,
+                selectedDeliveryAddressIndex) &&
+            const DeepCollectionEquality()
+                .equals(other.paymentIntentID, paymentIntentID) &&
+            const DeepCollectionEquality().equals(other.orderID, orderID) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedGBPxAmount, selectedGBPxAmount) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedPPLAmount, selectedPPLAmount) &&
+            const DeepCollectionEquality()
+                .equals(other.transferringTokens, transferringTokens) &&
+            const DeepCollectionEquality()
+                .equals(other.errorCompletingPayment, errorCompletingPayment) &&
+            const DeepCollectionEquality()
+                .equals(other.confirmedPayment, confirmedPayment) &&
+            const DeepCollectionEquality()
+                .equals(other.restaurantName, restaurantName) &&
+            const DeepCollectionEquality()
+                .equals(other.restaurantID, restaurantID) &&
+            const DeepCollectionEquality()
+                .equals(other.restaurantAddress, restaurantAddress) &&
+            const DeepCollectionEquality().equals(
+                other.restaurantWalletAddress, restaurantWalletAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.deliveryCharge, deliveryCharge) &&
+            const DeepCollectionEquality()
+                .equals(other.collectionCharge, collectionCharge));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(cartItems) ^
-      const DeepCollectionEquality().hash(cartSubTotal) ^
-      const DeepCollectionEquality().hash(cartTax) ^
-      const DeepCollectionEquality().hash(cartTotal) ^
-      const DeepCollectionEquality().hash(cartDiscountPercent) ^
-      const DeepCollectionEquality().hash(cartDiscountComputed) ^
-      const DeepCollectionEquality().hash(cartDeliveryCharge) ^
-      const DeepCollectionEquality().hash(deliverySlots) ^
-      const DeepCollectionEquality().hash(collectionSlots) ^
-      const DeepCollectionEquality().hash(selectedSlotIndex) ^
-      const DeepCollectionEquality().hash(selectedTipAmount) ^
-      const DeepCollectionEquality().hash(discountCode) ^
-      const DeepCollectionEquality().hash(selectedDeliveryAddressIndex) ^
-      const DeepCollectionEquality().hash(paymentIntentID) ^
-      const DeepCollectionEquality().hash(orderID) ^
-      const DeepCollectionEquality().hash(selectedGBPxAmount) ^
-      const DeepCollectionEquality().hash(selectedPPLAmount) ^
-      const DeepCollectionEquality().hash(transferringTokens) ^
-      const DeepCollectionEquality().hash(errorCompletingPayment) ^
-      const DeepCollectionEquality().hash(confirmedPayment) ^
-      const DeepCollectionEquality().hash(restaurantName) ^
-      const DeepCollectionEquality().hash(restaurantID) ^
-      const DeepCollectionEquality().hash(restaurantAddress) ^
-      const DeepCollectionEquality().hash(restaurantWalletAddress) ^
-      const DeepCollectionEquality().hash(deliveryCharge) ^
-      const DeepCollectionEquality().hash(collectionCharge);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(cartItems),
+        const DeepCollectionEquality().hash(cartSubTotal),
+        const DeepCollectionEquality().hash(cartTax),
+        const DeepCollectionEquality().hash(cartTotal),
+        const DeepCollectionEquality().hash(cartDiscountPercent),
+        const DeepCollectionEquality().hash(cartDiscountComputed),
+        const DeepCollectionEquality().hash(cartDeliveryCharge),
+        const DeepCollectionEquality().hash(deliverySlots),
+        const DeepCollectionEquality().hash(collectionSlots),
+        const DeepCollectionEquality().hash(selectedSlotIndex),
+        const DeepCollectionEquality().hash(selectedTipAmount),
+        const DeepCollectionEquality().hash(discountCode),
+        const DeepCollectionEquality().hash(selectedDeliveryAddressIndex),
+        const DeepCollectionEquality().hash(paymentIntentID),
+        const DeepCollectionEquality().hash(orderID),
+        const DeepCollectionEquality().hash(selectedGBPxAmount),
+        const DeepCollectionEquality().hash(selectedPPLAmount),
+        const DeepCollectionEquality().hash(transferringTokens),
+        const DeepCollectionEquality().hash(errorCompletingPayment),
+        const DeepCollectionEquality().hash(confirmedPayment),
+        const DeepCollectionEquality().hash(restaurantName),
+        const DeepCollectionEquality().hash(restaurantID),
+        const DeepCollectionEquality().hash(restaurantAddress),
+        const DeepCollectionEquality().hash(restaurantWalletAddress),
+        const DeepCollectionEquality().hash(deliveryCharge),
+        const DeepCollectionEquality().hash(collectionCharge)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -742,59 +728,57 @@ abstract class _UserCartState extends UserCartState {
       _$_UserCartState.fromJson;
 
   @override
-  List<OrderItem> get cartItems => throw _privateConstructorUsedError;
+  List<OrderItem> get cartItems;
   @override
-  int get cartSubTotal => throw _privateConstructorUsedError;
+  int get cartSubTotal;
   @override
-  int get cartTax => throw _privateConstructorUsedError;
+  int get cartTax;
   @override
-  int get cartTotal => throw _privateConstructorUsedError;
+  int get cartTotal;
   @override
-  int get cartDiscountPercent => throw _privateConstructorUsedError;
+  int get cartDiscountPercent;
   @override
-  int get cartDiscountComputed => throw _privateConstructorUsedError;
+  int get cartDiscountComputed;
   @override
-  int get cartDeliveryCharge => throw _privateConstructorUsedError;
+  int get cartDeliveryCharge;
   @override
-  List<Map<String, String>> get deliverySlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get deliverySlots;
   @override
-  List<Map<String, String>> get collectionSlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get collectionSlots;
   @override
-  int get selectedSlotIndex => throw _privateConstructorUsedError;
+  int get selectedSlotIndex;
   @override
-  int get selectedTipAmount => throw _privateConstructorUsedError;
+  int get selectedTipAmount;
   @override
-  String get discountCode => throw _privateConstructorUsedError;
+  String get discountCode;
   @override
-  int get selectedDeliveryAddressIndex => throw _privateConstructorUsedError;
+  int get selectedDeliveryAddressIndex;
   @override
-  String get paymentIntentID => throw _privateConstructorUsedError;
+  String get paymentIntentID;
   @override
-  String get orderID => throw _privateConstructorUsedError;
+  String get orderID;
   @override
-  double get selectedGBPxAmount => throw _privateConstructorUsedError;
+  double get selectedGBPxAmount;
   @override
-  double get selectedPPLAmount => throw _privateConstructorUsedError;
+  double get selectedPPLAmount;
   @override
-  bool get transferringTokens => throw _privateConstructorUsedError;
+  bool get transferringTokens;
   @override
-  bool get errorCompletingPayment => throw _privateConstructorUsedError;
+  bool get errorCompletingPayment;
   @override
-  bool get confirmedPayment => throw _privateConstructorUsedError;
+  bool get confirmedPayment;
   @override
-  String get restaurantName => throw _privateConstructorUsedError;
+  String get restaurantName;
   @override
-  String get restaurantID => throw _privateConstructorUsedError;
+  String get restaurantID;
   @override
-  DeliveryAddresses get restaurantAddress => throw _privateConstructorUsedError;
+  DeliveryAddresses get restaurantAddress;
   @override
-  String get restaurantWalletAddress => throw _privateConstructorUsedError;
+  String get restaurantWalletAddress;
   @override
-  int get deliveryCharge => throw _privateConstructorUsedError;
+  int get deliveryCharge;
   @override
-  int get collectionCharge => throw _privateConstructorUsedError;
+  int get collectionCharge;
   @override
   @JsonKey(ignore: true)
   _$UserCartStateCopyWith<_UserCartState> get copyWith =>

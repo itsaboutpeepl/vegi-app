@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:dio/dio.dart';
-import 'package:ethereum_address/ethereum_address.dart';
+import 'package:ethereum_addresses/ethereum_addresses.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_segment/flutter_segment.dart';
+import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
-import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/constants/variables.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
@@ -20,7 +17,6 @@ import 'package:vegan_liverpool/models/tokens/price.dart';
 import 'package:vegan_liverpool/models/tokens/stats.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
-import 'package:vegan_liverpool/models/wallet/wallet_modules.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/utils/addresses.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -1257,30 +1253,30 @@ ThunkAction refresh() {
   };
 }
 
-ThunkAction sendTokenFromPeeplPaySheet({
-  required String currency,
-  required String receiverAddress,
-  required double tokensAmount,
-  required String orderId,
-}) {
-  return (Store store) async {
-    try {
-      Token token = store.state.cashWalletState.tokens.values.firstWhere(
-        (token) =>
-            token.symbol.toLowerCase() == currency.toString().toLowerCase(),
-      );
-      String walletAddress = store.state.userState.walletAddress;
-      // dynamic response = await walletApi.tokenTransfer(
-      //   fuseWeb3!,
-      //   walletAddress,
-      //   token.address,
-      //   receiverAddress,
-      //   tokensAmount.toString(),
-      //   externalId: orderId,
-      // );
-      //Create a call to check if the payment is gone through
-    } catch (e) {
-      log.error('ERROR - sendTokenFromWebViewCall $e');
-    }
-  };
-}
+// ThunkAction sendTokenFromPeeplPaySheet({
+//   required String currency,
+//   required String receiverAddress,
+//   required double tokensAmount,
+//   required String orderId,
+// }) {
+//   return (Store store) async {
+//     try {
+//       Token token = store.state.cashWalletState.tokens.values.firstWhere(
+//         (token) =>
+//             token.symbol.toLowerCase() == currency.toString().toLowerCase(),
+//       );
+//       String walletAddress = store.state.userState.walletAddress;
+//       // dynamic response = await walletApi.tokenTransfer(
+//       //   fuseWeb3!,
+//       //   walletAddress,
+//       //   token.address,
+//       //   receiverAddress,
+//       //   tokensAmount.toString(),
+//       //   externalId: orderId,
+//       // );
+//       //Create a call to check if the payment is gone through
+//     } catch (e) {
+//       log.error('ERROR - sendTokenFromWebViewCall $e');
+//     }
+//   };
+// }

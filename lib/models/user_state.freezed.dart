@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'user_state.dart';
@@ -107,7 +108,7 @@ class _$UserStateTearOff {
     );
   }
 
-  UserState fromJson(Map<String, Object> json) {
+  UserState fromJson(Map<String, Object?> json) {
     return UserState.fromJson(json);
   }
 }
@@ -742,76 +743,76 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   final DateTime? installedAt;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final bool? isContactsSynced;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoggedOut;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool backup;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool? depositBannerShowed;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool? homeBackupDialogShowed;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String walletAddress;
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<String> networks;
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<String> mnemonic;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String privateKey;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String pincode;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String accountAddress;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String countryCode;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String phoneNumber;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool receiveBackupDialogShowed;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool warnSendDialogShowed;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String isoCode;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String jwtToken;
-  @JsonKey(defaultValue: 'Anom')
+  @JsonKey()
   @override
   final String displayName;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String avatarUrl;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String email;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final String? verificationId;
-  @JsonKey(defaultValue: '')
+  @JsonKey()
   @override
   final String identifier;
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<String> syncedContacts;
-  @JsonKey(defaultValue: const {})
+  @JsonKey()
   @override
   final Map<String, String> reverseContacts;
   @override
@@ -843,7 +844,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final PhoneAuthCredential? credentials;
   @override
   final WalletModules? walletModules;
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<DeliveryAddresses> listOfDeliveryAddresses;
 
@@ -901,125 +902,110 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UserState &&
-            (identical(other.installedAt, installedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.installedAt, installedAt)) &&
-            (identical(other.isContactsSynced, isContactsSynced) ||
-                const DeepCollectionEquality()
-                    .equals(other.isContactsSynced, isContactsSynced)) &&
-            (identical(other.isLoggedOut, isLoggedOut) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoggedOut, isLoggedOut)) &&
-            (identical(other.backup, backup) ||
-                const DeepCollectionEquality().equals(other.backup, backup)) &&
-            (identical(other.depositBannerShowed, depositBannerShowed) ||
-                const DeepCollectionEquality()
-                    .equals(other.depositBannerShowed, depositBannerShowed)) &&
-            (identical(other.homeBackupDialogShowed, homeBackupDialogShowed) ||
-                const DeepCollectionEquality().equals(
-                    other.homeBackupDialogShowed, homeBackupDialogShowed)) &&
-            (identical(other.walletAddress, walletAddress) ||
-                const DeepCollectionEquality()
-                    .equals(other.walletAddress, walletAddress)) &&
-            (identical(other.networks, networks) ||
-                const DeepCollectionEquality()
-                    .equals(other.networks, networks)) &&
-            (identical(other.mnemonic, mnemonic) ||
-                const DeepCollectionEquality()
-                    .equals(other.mnemonic, mnemonic)) &&
-            (identical(other.privateKey, privateKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.privateKey, privateKey)) &&
-            (identical(other.pincode, pincode) ||
-                const DeepCollectionEquality()
-                    .equals(other.pincode, pincode)) &&
-            (identical(other.accountAddress, accountAddress) ||
-                const DeepCollectionEquality()
-                    .equals(other.accountAddress, accountAddress)) &&
-            (identical(other.countryCode, countryCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.countryCode, countryCode)) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.phoneNumber, phoneNumber)) &&
-            (identical(other.receiveBackupDialogShowed, receiveBackupDialogShowed) ||
-                const DeepCollectionEquality().equals(
-                    other.receiveBackupDialogShowed,
-                    receiveBackupDialogShowed)) &&
-            (identical(other.warnSendDialogShowed, warnSendDialogShowed) ||
-                const DeepCollectionEquality().equals(
-                    other.warnSendDialogShowed, warnSendDialogShowed)) &&
-            (identical(other.isoCode, isoCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.isoCode, isoCode)) &&
-            (identical(other.jwtToken, jwtToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.jwtToken, jwtToken)) &&
-            (identical(other.displayName, displayName) ||
-                const DeepCollectionEquality()
-                    .equals(other.displayName, displayName)) &&
-            (identical(other.avatarUrl, avatarUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.avatarUrl, avatarUrl)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.verificationId, verificationId) || const DeepCollectionEquality().equals(other.verificationId, verificationId)) &&
-            (identical(other.identifier, identifier) || const DeepCollectionEquality().equals(other.identifier, identifier)) &&
-            (identical(other.syncedContacts, syncedContacts) || const DeepCollectionEquality().equals(other.syncedContacts, syncedContacts)) &&
-            (identical(other.reverseContacts, reverseContacts) || const DeepCollectionEquality().equals(other.reverseContacts, reverseContacts)) &&
-            (identical(other.signupErrorMessage, signupErrorMessage) || const DeepCollectionEquality().equals(other.signupErrorMessage, signupErrorMessage)) &&
-            (identical(other.verifyErrorMessage, verifyErrorMessage) || const DeepCollectionEquality().equals(other.verifyErrorMessage, verifyErrorMessage)) &&
-            (identical(other.currency, currency) || const DeepCollectionEquality().equals(other.currency, currency)) &&
-            (identical(other.isLoginRequest, isLoginRequest) || const DeepCollectionEquality().equals(other.isLoginRequest, isLoginRequest)) &&
-            (identical(other.isVerifyRequest, isVerifyRequest) || const DeepCollectionEquality().equals(other.isVerifyRequest, isVerifyRequest)) &&
-            (identical(other.authType, authType) || const DeepCollectionEquality().equals(other.authType, authType)) &&
-            (identical(other.locale, locale) || const DeepCollectionEquality().equals(other.locale, locale)) &&
-            (identical(other.contacts, contacts) || const DeepCollectionEquality().equals(other.contacts, contacts)) &&
-            (identical(other.credentials, credentials) || const DeepCollectionEquality().equals(other.credentials, credentials)) &&
-            (identical(other.walletModules, walletModules) || const DeepCollectionEquality().equals(other.walletModules, walletModules)) &&
-            (identical(other.listOfDeliveryAddresses, listOfDeliveryAddresses) || const DeepCollectionEquality().equals(other.listOfDeliveryAddresses, listOfDeliveryAddresses)));
+        (other.runtimeType == runtimeType &&
+            other is _UserState &&
+            const DeepCollectionEquality()
+                .equals(other.installedAt, installedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.isContactsSynced, isContactsSynced) &&
+            const DeepCollectionEquality()
+                .equals(other.isLoggedOut, isLoggedOut) &&
+            const DeepCollectionEquality().equals(other.backup, backup) &&
+            const DeepCollectionEquality()
+                .equals(other.depositBannerShowed, depositBannerShowed) &&
+            const DeepCollectionEquality()
+                .equals(other.homeBackupDialogShowed, homeBackupDialogShowed) &&
+            const DeepCollectionEquality()
+                .equals(other.walletAddress, walletAddress) &&
+            const DeepCollectionEquality().equals(other.networks, networks) &&
+            const DeepCollectionEquality().equals(other.mnemonic, mnemonic) &&
+            const DeepCollectionEquality()
+                .equals(other.privateKey, privateKey) &&
+            const DeepCollectionEquality().equals(other.pincode, pincode) &&
+            const DeepCollectionEquality()
+                .equals(other.accountAddress, accountAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.countryCode, countryCode) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneNumber, phoneNumber) &&
+            const DeepCollectionEquality().equals(
+                other.receiveBackupDialogShowed, receiveBackupDialogShowed) &&
+            const DeepCollectionEquality()
+                .equals(other.warnSendDialogShowed, warnSendDialogShowed) &&
+            const DeepCollectionEquality().equals(other.isoCode, isoCode) &&
+            const DeepCollectionEquality().equals(other.jwtToken, jwtToken) &&
+            const DeepCollectionEquality()
+                .equals(other.displayName, displayName) &&
+            const DeepCollectionEquality().equals(other.avatarUrl, avatarUrl) &&
+            const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality()
+                .equals(other.verificationId, verificationId) &&
+            const DeepCollectionEquality()
+                .equals(other.identifier, identifier) &&
+            const DeepCollectionEquality()
+                .equals(other.syncedContacts, syncedContacts) &&
+            const DeepCollectionEquality()
+                .equals(other.reverseContacts, reverseContacts) &&
+            const DeepCollectionEquality()
+                .equals(other.signupErrorMessage, signupErrorMessage) &&
+            const DeepCollectionEquality()
+                .equals(other.verifyErrorMessage, verifyErrorMessage) &&
+            const DeepCollectionEquality().equals(other.currency, currency) &&
+            const DeepCollectionEquality()
+                .equals(other.isLoginRequest, isLoginRequest) &&
+            const DeepCollectionEquality()
+                .equals(other.isVerifyRequest, isVerifyRequest) &&
+            const DeepCollectionEquality().equals(other.authType, authType) &&
+            const DeepCollectionEquality().equals(other.locale, locale) &&
+            const DeepCollectionEquality().equals(other.contacts, contacts) &&
+            const DeepCollectionEquality()
+                .equals(other.credentials, credentials) &&
+            const DeepCollectionEquality()
+                .equals(other.walletModules, walletModules) &&
+            const DeepCollectionEquality().equals(
+                other.listOfDeliveryAddresses, listOfDeliveryAddresses));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(installedAt) ^
-      const DeepCollectionEquality().hash(isContactsSynced) ^
-      const DeepCollectionEquality().hash(isLoggedOut) ^
-      const DeepCollectionEquality().hash(backup) ^
-      const DeepCollectionEquality().hash(depositBannerShowed) ^
-      const DeepCollectionEquality().hash(homeBackupDialogShowed) ^
-      const DeepCollectionEquality().hash(walletAddress) ^
-      const DeepCollectionEquality().hash(networks) ^
-      const DeepCollectionEquality().hash(mnemonic) ^
-      const DeepCollectionEquality().hash(privateKey) ^
-      const DeepCollectionEquality().hash(pincode) ^
-      const DeepCollectionEquality().hash(accountAddress) ^
-      const DeepCollectionEquality().hash(countryCode) ^
-      const DeepCollectionEquality().hash(phoneNumber) ^
-      const DeepCollectionEquality().hash(receiveBackupDialogShowed) ^
-      const DeepCollectionEquality().hash(warnSendDialogShowed) ^
-      const DeepCollectionEquality().hash(isoCode) ^
-      const DeepCollectionEquality().hash(jwtToken) ^
-      const DeepCollectionEquality().hash(displayName) ^
-      const DeepCollectionEquality().hash(avatarUrl) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(verificationId) ^
-      const DeepCollectionEquality().hash(identifier) ^
-      const DeepCollectionEquality().hash(syncedContacts) ^
-      const DeepCollectionEquality().hash(reverseContacts) ^
-      const DeepCollectionEquality().hash(signupErrorMessage) ^
-      const DeepCollectionEquality().hash(verifyErrorMessage) ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(isLoginRequest) ^
-      const DeepCollectionEquality().hash(isVerifyRequest) ^
-      const DeepCollectionEquality().hash(authType) ^
-      const DeepCollectionEquality().hash(locale) ^
-      const DeepCollectionEquality().hash(contacts) ^
-      const DeepCollectionEquality().hash(credentials) ^
-      const DeepCollectionEquality().hash(walletModules) ^
-      const DeepCollectionEquality().hash(listOfDeliveryAddresses);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(installedAt),
+        const DeepCollectionEquality().hash(isContactsSynced),
+        const DeepCollectionEquality().hash(isLoggedOut),
+        const DeepCollectionEquality().hash(backup),
+        const DeepCollectionEquality().hash(depositBannerShowed),
+        const DeepCollectionEquality().hash(homeBackupDialogShowed),
+        const DeepCollectionEquality().hash(walletAddress),
+        const DeepCollectionEquality().hash(networks),
+        const DeepCollectionEquality().hash(mnemonic),
+        const DeepCollectionEquality().hash(privateKey),
+        const DeepCollectionEquality().hash(pincode),
+        const DeepCollectionEquality().hash(accountAddress),
+        const DeepCollectionEquality().hash(countryCode),
+        const DeepCollectionEquality().hash(phoneNumber),
+        const DeepCollectionEquality().hash(receiveBackupDialogShowed),
+        const DeepCollectionEquality().hash(warnSendDialogShowed),
+        const DeepCollectionEquality().hash(isoCode),
+        const DeepCollectionEquality().hash(jwtToken),
+        const DeepCollectionEquality().hash(displayName),
+        const DeepCollectionEquality().hash(avatarUrl),
+        const DeepCollectionEquality().hash(email),
+        const DeepCollectionEquality().hash(verificationId),
+        const DeepCollectionEquality().hash(identifier),
+        const DeepCollectionEquality().hash(syncedContacts),
+        const DeepCollectionEquality().hash(reverseContacts),
+        const DeepCollectionEquality().hash(signupErrorMessage),
+        const DeepCollectionEquality().hash(verifyErrorMessage),
+        const DeepCollectionEquality().hash(currency),
+        const DeepCollectionEquality().hash(isLoginRequest),
+        const DeepCollectionEquality().hash(isVerifyRequest),
+        const DeepCollectionEquality().hash(authType),
+        const DeepCollectionEquality().hash(locale),
+        const DeepCollectionEquality().hash(contacts),
+        const DeepCollectionEquality().hash(credentials),
+        const DeepCollectionEquality().hash(walletModules),
+        const DeepCollectionEquality().hash(listOfDeliveryAddresses)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -1085,87 +1071,86 @@ abstract class _UserState extends UserState {
       _$_UserState.fromJson;
 
   @override
-  DateTime? get installedAt => throw _privateConstructorUsedError;
+  DateTime? get installedAt;
   @override
-  bool? get isContactsSynced => throw _privateConstructorUsedError;
+  bool? get isContactsSynced;
   @override
-  bool get isLoggedOut => throw _privateConstructorUsedError;
+  bool get isLoggedOut;
   @override
-  bool get backup => throw _privateConstructorUsedError;
+  bool get backup;
   @override
-  bool? get depositBannerShowed => throw _privateConstructorUsedError;
+  bool? get depositBannerShowed;
   @override
-  bool? get homeBackupDialogShowed => throw _privateConstructorUsedError;
+  bool? get homeBackupDialogShowed;
   @override
-  String get walletAddress => throw _privateConstructorUsedError;
+  String get walletAddress;
   @override
-  List<String> get networks => throw _privateConstructorUsedError;
+  List<String> get networks;
   @override
-  List<String> get mnemonic => throw _privateConstructorUsedError;
+  List<String> get mnemonic;
   @override
-  String get privateKey => throw _privateConstructorUsedError;
+  String get privateKey;
   @override
-  String get pincode => throw _privateConstructorUsedError;
+  String get pincode;
   @override
-  String get accountAddress => throw _privateConstructorUsedError;
+  String get accountAddress;
   @override
-  String get countryCode => throw _privateConstructorUsedError;
+  String get countryCode;
   @override
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String get phoneNumber;
   @override
-  bool get receiveBackupDialogShowed => throw _privateConstructorUsedError;
+  bool get receiveBackupDialogShowed;
   @override
-  bool get warnSendDialogShowed => throw _privateConstructorUsedError;
+  bool get warnSendDialogShowed;
   @override
-  String get isoCode => throw _privateConstructorUsedError;
+  String get isoCode;
   @override
-  String get jwtToken => throw _privateConstructorUsedError;
+  String get jwtToken;
   @override
-  String get displayName => throw _privateConstructorUsedError;
+  String get displayName;
   @override
-  String get avatarUrl => throw _privateConstructorUsedError;
+  String get avatarUrl;
   @override
-  String get email => throw _privateConstructorUsedError;
+  String get email;
   @override
-  String? get verificationId => throw _privateConstructorUsedError;
+  String? get verificationId;
   @override
-  String get identifier => throw _privateConstructorUsedError;
+  String get identifier;
   @override
-  List<String> get syncedContacts => throw _privateConstructorUsedError;
+  List<String> get syncedContacts;
   @override
-  Map<String, String> get reverseContacts => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  dynamic get signupErrorMessage => throw _privateConstructorUsedError;
+  Map<String, String> get reverseContacts;
   @override
   @JsonKey(ignore: true)
-  dynamic get verifyErrorMessage => throw _privateConstructorUsedError;
+  dynamic get signupErrorMessage;
+  @override
+  @JsonKey(ignore: true)
+  dynamic get verifyErrorMessage;
   @override
   @JsonKey(fromJson: currencyJson)
-  String get currency => throw _privateConstructorUsedError;
+  String get currency;
   @override
   @JsonKey(ignore: true)
-  bool get isLoginRequest => throw _privateConstructorUsedError;
+  bool get isLoginRequest;
   @override
   @JsonKey(ignore: true)
-  bool get isVerifyRequest => throw _privateConstructorUsedError;
+  bool get isVerifyRequest;
   @override
   @JsonKey(fromJson: authTypeFromJson, toJson: EnumToString.convertToString)
-  BiometricAuth get authType => throw _privateConstructorUsedError;
+  BiometricAuth get authType;
   @override
   @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
-  Locale? get locale => throw _privateConstructorUsedError;
+  Locale? get locale;
   @override
   @JsonKey(ignore: true)
-  List<Contact> get contacts => throw _privateConstructorUsedError;
+  List<Contact> get contacts;
   @override
   @JsonKey(ignore: true)
-  PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
+  PhoneAuthCredential? get credentials;
   @override
-  WalletModules? get walletModules => throw _privateConstructorUsedError;
+  WalletModules? get walletModules;
   @override
-  List<DeliveryAddresses> get listOfDeliveryAddresses =>
-      throw _privateConstructorUsedError;
+  List<DeliveryAddresses> get listOfDeliveryAddresses;
   @override
   @JsonKey(ignore: true)
   _$UserStateCopyWith<_UserState> get copyWith =>

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'restaurantItem.dart';
@@ -50,7 +51,7 @@ class _$RestaurantItemTearOff {
     );
   }
 
-  RestaurantItem fromJson(Map<String, Object> json) {
+  RestaurantItem fromJson(Map<String, Object?> json) {
     return RestaurantItem.fromJson(json);
   }
 }
@@ -345,60 +346,43 @@ class _$_RestaurantItem extends _RestaurantItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RestaurantItem &&
-            (identical(other.restaurantID, restaurantID) ||
-                const DeepCollectionEquality()
-                    .equals(other.restaurantID, restaurantID)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.phoneNumber, phoneNumber)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.deliveryRestrictionDetails,
-                    deliveryRestrictionDetails) ||
-                const DeepCollectionEquality().equals(
-                    other.deliveryRestrictionDetails,
-                    deliveryRestrictionDetails)) &&
-            (identical(other.imageURL, imageURL) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageURL, imageURL)) &&
-            (identical(other.category, category) ||
-                const DeepCollectionEquality()
-                    .equals(other.category, category)) &&
-            (identical(other.costLevel, costLevel) ||
-                const DeepCollectionEquality()
-                    .equals(other.costLevel, costLevel)) &&
-            (identical(other.rating, rating) ||
-                const DeepCollectionEquality().equals(other.rating, rating)) &&
-            (identical(other.address, address) ||
-                const DeepCollectionEquality()
-                    .equals(other.address, address)) &&
-            (identical(other.listOfMenuItems, listOfMenuItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.listOfMenuItems, listOfMenuItems)) &&
-            (identical(other.walletAddress, walletAddress) ||
-                const DeepCollectionEquality()
-                    .equals(other.walletAddress, walletAddress)));
+        (other.runtimeType == runtimeType &&
+            other is _RestaurantItem &&
+            const DeepCollectionEquality()
+                .equals(other.restaurantID, restaurantID) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneNumber, phoneNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(
+                other.deliveryRestrictionDetails, deliveryRestrictionDetails) &&
+            const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
+            const DeepCollectionEquality().equals(other.category, category) &&
+            const DeepCollectionEquality().equals(other.costLevel, costLevel) &&
+            const DeepCollectionEquality().equals(other.rating, rating) &&
+            const DeepCollectionEquality().equals(other.address, address) &&
+            const DeepCollectionEquality()
+                .equals(other.listOfMenuItems, listOfMenuItems) &&
+            const DeepCollectionEquality()
+                .equals(other.walletAddress, walletAddress));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(restaurantID) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(phoneNumber) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(deliveryRestrictionDetails) ^
-      const DeepCollectionEquality().hash(imageURL) ^
-      const DeepCollectionEquality().hash(category) ^
-      const DeepCollectionEquality().hash(costLevel) ^
-      const DeepCollectionEquality().hash(rating) ^
-      const DeepCollectionEquality().hash(address) ^
-      const DeepCollectionEquality().hash(listOfMenuItems) ^
-      const DeepCollectionEquality().hash(walletAddress);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(restaurantID),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(phoneNumber),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(deliveryRestrictionDetails),
+      const DeepCollectionEquality().hash(imageURL),
+      const DeepCollectionEquality().hash(category),
+      const DeepCollectionEquality().hash(costLevel),
+      const DeepCollectionEquality().hash(rating),
+      const DeepCollectionEquality().hash(address),
+      const DeepCollectionEquality().hash(listOfMenuItems),
+      const DeepCollectionEquality().hash(walletAddress));
 
   @JsonKey(ignore: true)
   @override
@@ -431,30 +415,29 @@ abstract class _RestaurantItem extends RestaurantItem {
       _$_RestaurantItem.fromJson;
 
   @override
-  String get restaurantID => throw _privateConstructorUsedError;
+  String get restaurantID;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String get phoneNumber;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  List<String> get deliveryRestrictionDetails =>
-      throw _privateConstructorUsedError;
+  List<String> get deliveryRestrictionDetails;
   @override
-  String get imageURL => throw _privateConstructorUsedError;
+  String get imageURL;
   @override
-  String get category => throw _privateConstructorUsedError;
+  String get category;
   @override
-  int get costLevel => throw _privateConstructorUsedError;
+  int get costLevel;
   @override
-  int get rating => throw _privateConstructorUsedError;
+  int get rating;
   @override
-  DeliveryAddresses get address => throw _privateConstructorUsedError;
+  DeliveryAddresses get address;
   @override
-  List<MenuItem> get listOfMenuItems => throw _privateConstructorUsedError;
+  List<MenuItem> get listOfMenuItems;
   @override
-  String get walletAddress => throw _privateConstructorUsedError;
+  String get walletAddress;
   @override
   @JsonKey(ignore: true)
   _$RestaurantItemCopyWith<_RestaurantItem> get copyWith =>

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'userCart.dart';
@@ -36,7 +37,7 @@ class _$UserCartTearOff {
     );
   }
 
-  UserCart fromJson(Map<String, Object> json) {
+  UserCart fromJson(Map<String, Object?> json) {
     return UserCart.fromJson(json);
   }
 }
@@ -200,32 +201,25 @@ class _$_UserCart extends _UserCart {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UserCart &&
-            (identical(other.cartItems, cartItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartItems, cartItems)) &&
-            (identical(other.cartSubTotal, cartSubTotal) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartSubTotal, cartSubTotal)) &&
-            (identical(other.cartTax, cartTax) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartTax, cartTax)) &&
-            (identical(other.cartTotal, cartTotal) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartTotal, cartTotal)) &&
-            (identical(other.cartDiscount, cartDiscount) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartDiscount, cartDiscount)));
+        (other.runtimeType == runtimeType &&
+            other is _UserCart &&
+            const DeepCollectionEquality().equals(other.cartItems, cartItems) &&
+            const DeepCollectionEquality()
+                .equals(other.cartSubTotal, cartSubTotal) &&
+            const DeepCollectionEquality().equals(other.cartTax, cartTax) &&
+            const DeepCollectionEquality().equals(other.cartTotal, cartTotal) &&
+            const DeepCollectionEquality()
+                .equals(other.cartDiscount, cartDiscount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(cartItems) ^
-      const DeepCollectionEquality().hash(cartSubTotal) ^
-      const DeepCollectionEquality().hash(cartTax) ^
-      const DeepCollectionEquality().hash(cartTotal) ^
-      const DeepCollectionEquality().hash(cartDiscount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(cartItems),
+      const DeepCollectionEquality().hash(cartSubTotal),
+      const DeepCollectionEquality().hash(cartTax),
+      const DeepCollectionEquality().hash(cartTotal),
+      const DeepCollectionEquality().hash(cartDiscount));
 
   @JsonKey(ignore: true)
   @override
@@ -250,15 +244,15 @@ abstract class _UserCart extends UserCart {
   factory _UserCart.fromJson(Map<String, dynamic> json) = _$_UserCart.fromJson;
 
   @override
-  List<OrderItem> get cartItems => throw _privateConstructorUsedError;
+  List<OrderItem> get cartItems;
   @override
-  int get cartSubTotal => throw _privateConstructorUsedError;
+  int get cartSubTotal;
   @override
-  int get cartTax => throw _privateConstructorUsedError;
+  int get cartTax;
   @override
-  int get cartTotal => throw _privateConstructorUsedError;
+  int get cartTotal;
   @override
-  int get cartDiscount => throw _privateConstructorUsedError;
+  int get cartDiscount;
   @override
   @JsonKey(ignore: true)
   _$UserCartCopyWith<_UserCart> get copyWith =>

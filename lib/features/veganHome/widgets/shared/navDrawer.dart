@@ -115,7 +115,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 },
               ),
               ListTile(
-                leading: Icon(FontAwesomeIcons.history),
+                leading: Icon(FontAwesomeIcons.clockRotateLeft),
                 title: Text('My Orders'),
                 onTap: () {
                   context.router.push(MyOrdersPage());

@@ -42,7 +42,7 @@ void main() async {
 // initialize stripe for payment
   new StripeService()..init();
 
-  configureDependencies();
+  await configureDependencies();
 
 //gets the entire app state from the user device storage.
   final Persistor<AppState> persistor = Persistor<AppState>(

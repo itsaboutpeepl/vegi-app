@@ -19,11 +19,11 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       networks: (json['networks'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          [],
+          const [],
       mnemonic: (json['mnemonic'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          [],
+          const [],
       privateKey: json['privateKey'] as String? ?? '',
       pincode: json['pincode'] as String? ?? '',
       accountAddress: json['accountAddress'] as String? ?? '',
@@ -42,11 +42,11 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       syncedContacts: (json['syncedContacts'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
-          [],
+          const [],
       reverseContacts: (json['reverseContacts'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, e as String),
           ) ??
-          {},
+          const {},
       currency: json['currency'] == null
           ? 'usd'
           : currencyJson(json['currency'] as String?),
@@ -64,7 +64,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
           (json['listOfDeliveryAddresses'] as List<dynamic>?)
                   ?.map((e) => DeliveryAddresses.fromJson(e))
                   .toList() ??
-              [],
+              const [],
     );
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>

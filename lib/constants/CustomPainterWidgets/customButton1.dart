@@ -4,7 +4,6 @@
 // )
 
 import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/constants/theme.dart';
 
 class CustomButton1 extends CustomPainter {
   @override

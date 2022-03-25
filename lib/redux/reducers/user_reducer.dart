@@ -1,4 +1,3 @@
-import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:redux/redux.dart';

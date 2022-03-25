@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'restaurantCategory.dart';
@@ -32,7 +33,7 @@ class _$RestaurantCategoryTearOff {
     );
   }
 
-  RestaurantCategory fromJson(Map<String, Object> json) {
+  RestaurantCategory fromJson(Map<String, Object?> json) {
     return RestaurantCategory.fromJson(json);
   }
 }
@@ -171,24 +172,21 @@ class _$_RestaurantCategory extends _RestaurantCategory {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RestaurantCategory &&
-            (identical(other.categoryName, categoryName) ||
-                const DeepCollectionEquality()
-                    .equals(other.categoryName, categoryName)) &&
-            (identical(other.imageURL, imageURL) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageURL, imageURL)) &&
-            (identical(other.listOfRestaurants, listOfRestaurants) ||
-                const DeepCollectionEquality()
-                    .equals(other.listOfRestaurants, listOfRestaurants)));
+        (other.runtimeType == runtimeType &&
+            other is _RestaurantCategory &&
+            const DeepCollectionEquality()
+                .equals(other.categoryName, categoryName) &&
+            const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
+            const DeepCollectionEquality()
+                .equals(other.listOfRestaurants, listOfRestaurants));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(categoryName) ^
-      const DeepCollectionEquality().hash(imageURL) ^
-      const DeepCollectionEquality().hash(listOfRestaurants);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(categoryName),
+      const DeepCollectionEquality().hash(imageURL),
+      const DeepCollectionEquality().hash(listOfRestaurants));
 
   @JsonKey(ignore: true)
   @override
@@ -212,12 +210,11 @@ abstract class _RestaurantCategory extends RestaurantCategory {
       _$_RestaurantCategory.fromJson;
 
   @override
-  String get categoryName => throw _privateConstructorUsedError;
+  String get categoryName;
   @override
-  String get imageURL => throw _privateConstructorUsedError;
+  String get imageURL;
   @override
-  List<RestaurantItem> get listOfRestaurants =>
-      throw _privateConstructorUsedError;
+  List<RestaurantItem> get listOfRestaurants;
   @override
   @JsonKey(ignore: true)
   _$RestaurantCategoryCopyWith<_RestaurantCategory> get copyWith =>

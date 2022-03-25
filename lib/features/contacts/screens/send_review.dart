@@ -219,7 +219,7 @@ class _SendReviewScreenState extends State<SendReviewScreen>
                                                       fontSize: 13,
                                                       color: Theme.of(context)
                                                           .colorScheme
-                                                          .secondaryVariant,
+                                                          .secondary,
                                                     ),
                                                   )
                                           ]
@@ -231,7 +231,7 @@ class _SendReviewScreenState extends State<SendReviewScreen>
                                                 fontSize: 13,
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .secondaryVariant,
+                                                    .secondary,
                                               ),
                                             )
                                           ],

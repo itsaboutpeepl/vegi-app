@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'price.dart';
@@ -28,7 +29,7 @@ class _$PriceTearOff {
     );
   }
 
-  Price fromJson(Map<String, Object> json) {
+  Price fromJson(Map<String, Object?> json) {
     return Price.fromJson(json);
   }
 }
@@ -123,10 +124,10 @@ class _$_Price extends _Price with DiagnosticableTreeMixin {
   factory _$_Price.fromJson(Map<String, dynamic> json) =>
       _$$_PriceFromJson(json);
 
-  @JsonKey(defaultValue: 'usd')
+  @JsonKey()
   @override
   final String currency;
-  @JsonKey(defaultValue: '0')
+  @JsonKey()
   @override
   final String quote;
 
@@ -147,19 +148,17 @@ class _$_Price extends _Price with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Price &&
-            (identical(other.currency, currency) ||
-                const DeepCollectionEquality()
-                    .equals(other.currency, currency)) &&
-            (identical(other.quote, quote) ||
-                const DeepCollectionEquality().equals(other.quote, quote)));
+        (other.runtimeType == runtimeType &&
+            other is _Price &&
+            const DeepCollectionEquality().equals(other.currency, currency) &&
+            const DeepCollectionEquality().equals(other.quote, quote));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(quote);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(currency),
+      const DeepCollectionEquality().hash(quote));
 
   @JsonKey(ignore: true)
   @override
@@ -179,9 +178,9 @@ abstract class _Price extends Price {
   factory _Price.fromJson(Map<String, dynamic> json) = _$_Price.fromJson;
 
   @override
-  String get currency => throw _privateConstructorUsedError;
+  String get currency;
   @override
-  String get quote => throw _privateConstructorUsedError;
+  String get quote;
   @override
   @JsonKey(ignore: true)
   _$PriceCopyWith<_Price> get copyWith => throw _privateConstructorUsedError;

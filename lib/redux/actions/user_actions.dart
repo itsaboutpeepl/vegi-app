@@ -13,7 +13,6 @@ import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/models/wallet/wallet_modules.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
-import 'package:vegan_liverpool/redux/actions/pro_mode_wallet_actions.dart';
 import 'package:vegan_liverpool/utils/addresses.dart';
 import 'package:vegan_liverpool/utils/contacts.dart';
 import 'package:image_picker/image_picker.dart';

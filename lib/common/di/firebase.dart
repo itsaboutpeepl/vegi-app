@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:injectable/injectable.dart';
+import 'package:vegan_liverpool/constants/firebaseConfig.dart';
 
 @module
 abstract class FirebaseInjectableModule {
@@ -12,5 +13,6 @@ abstract class FirebaseInjectableModule {
   FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
 
   @preResolve
-  Future<FirebaseApp> get firebaseApp => Firebase.initializeApp();
+  Future<FirebaseApp> get firebaseApp =>
+      Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
 }

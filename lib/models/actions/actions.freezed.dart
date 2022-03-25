@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'actions.dart';
@@ -32,7 +33,7 @@ class _$WalletActionsTearOff {
     );
   }
 
-  WalletActions fromJson(Map<String, Object> json) {
+  WalletActions fromJson(Map<String, Object?> json) {
     return WalletActions.fromJson(json);
   }
 }
@@ -149,13 +150,13 @@ class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
   factory _$_WalletActions.fromJson(Map<String, dynamic> json) =>
       _$$_WalletActionsFromJson(json);
 
-  @JsonKey(defaultValue: const <WalletAction>[])
+  @JsonKey()
   @override
   final List<WalletAction> list;
-  @JsonKey(defaultValue: 0)
+  @JsonKey()
   @override
   final num updatedAt;
-  @JsonKey(defaultValue: 1)
+  @JsonKey()
   @override
   final int currentPage;
 
@@ -177,23 +178,20 @@ class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _WalletActions &&
-            (identical(other.list, list) ||
-                const DeepCollectionEquality().equals(other.list, list)) &&
-            (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.currentPage, currentPage) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentPage, currentPage)));
+        (other.runtimeType == runtimeType &&
+            other is _WalletActions &&
+            const DeepCollectionEquality().equals(other.list, list) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.currentPage, currentPage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(list) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(currentPage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(list),
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(currentPage));
 
   @JsonKey(ignore: true)
   @override
@@ -217,11 +215,11 @@ abstract class _WalletActions extends WalletActions {
       _$_WalletActions.fromJson;
 
   @override
-  List<WalletAction> get list => throw _privateConstructorUsedError;
+  List<WalletAction> get list;
   @override
-  num get updatedAt => throw _privateConstructorUsedError;
+  num get updatedAt;
   @override
-  int get currentPage => throw _privateConstructorUsedError;
+  int get currentPage;
   @override
   @JsonKey(ignore: true)
   _$WalletActionsCopyWith<_WalletActions> get copyWith =>

@@ -11,7 +11,7 @@ _$_WalletActions _$$_WalletActionsFromJson(Map<String, dynamic> json) =>
       list: (json['list'] as List<dynamic>?)
               ?.map((e) => WalletAction.fromJson(e))
               .toList() ??
-          [],
+          const <WalletAction>[],
       updatedAt: json['updatedAt'] as num? ?? 0,
       currentPage: json['currentPage'] as int? ?? 1,
     );

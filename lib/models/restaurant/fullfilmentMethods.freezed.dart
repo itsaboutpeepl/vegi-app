@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'fullfilmentMethods.dart';
@@ -34,7 +35,7 @@ class _$FullfilmentMethodsTearOff {
     );
   }
 
-  FullfilmentMethods fromJson(Map<String, Object> json) {
+  FullfilmentMethods fromJson(Map<String, Object?> json) {
     return FullfilmentMethods.fromJson(json);
   }
 }
@@ -192,28 +193,25 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FullfilmentMethods &&
-            (identical(other.collectionMethod, collectionMethod) ||
-                const DeepCollectionEquality()
-                    .equals(other.collectionMethod, collectionMethod)) &&
-            (identical(other.deliveryMethod, deliveryMethod) ||
-                const DeepCollectionEquality()
-                    .equals(other.deliveryMethod, deliveryMethod)) &&
-            (identical(other.collectionSlots, collectionSlots) ||
-                const DeepCollectionEquality()
-                    .equals(other.collectionSlots, collectionSlots)) &&
-            (identical(other.deliverySlots, deliverySlots) ||
-                const DeepCollectionEquality()
-                    .equals(other.deliverySlots, deliverySlots)));
+        (other.runtimeType == runtimeType &&
+            other is _FullfilmentMethods &&
+            const DeepCollectionEquality()
+                .equals(other.collectionMethod, collectionMethod) &&
+            const DeepCollectionEquality()
+                .equals(other.deliveryMethod, deliveryMethod) &&
+            const DeepCollectionEquality()
+                .equals(other.collectionSlots, collectionSlots) &&
+            const DeepCollectionEquality()
+                .equals(other.deliverySlots, deliverySlots));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(collectionMethod) ^
-      const DeepCollectionEquality().hash(deliveryMethod) ^
-      const DeepCollectionEquality().hash(collectionSlots) ^
-      const DeepCollectionEquality().hash(deliverySlots);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(collectionMethod),
+      const DeepCollectionEquality().hash(deliveryMethod),
+      const DeepCollectionEquality().hash(collectionSlots),
+      const DeepCollectionEquality().hash(deliverySlots));
 
   @JsonKey(ignore: true)
   @override
@@ -239,17 +237,13 @@ abstract class _FullfilmentMethods extends FullfilmentMethods {
       _$_FullfilmentMethods.fromJson;
 
   @override
-  Map<String, dynamic>? get collectionMethod =>
-      throw _privateConstructorUsedError;
+  Map<String, dynamic>? get collectionMethod;
   @override
-  Map<String, dynamic>? get deliveryMethod =>
-      throw _privateConstructorUsedError;
+  Map<String, dynamic>? get deliveryMethod;
   @override
-  List<Map<String, String>> get collectionSlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get collectionSlots;
   @override
-  List<Map<String, String>> get deliverySlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get deliverySlots;
   @override
   @JsonKey(ignore: true)
   _$FullfilmentMethodsCopyWith<_FullfilmentMethods> get copyWith =>

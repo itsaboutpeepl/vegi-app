@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'productOptions.dart';
@@ -36,7 +37,7 @@ class _$ProductOptionsTearOff {
     );
   }
 
-  ProductOptions fromJson(Map<String, Object> json) {
+  ProductOptions fromJson(Map<String, Object?> json) {
     return ProductOptions.fromJson(json);
   }
 }
@@ -206,30 +207,25 @@ class _$_ProductOptions extends _ProductOptions {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ProductOptions &&
-            (identical(other.optionID, optionID) ||
-                const DeepCollectionEquality()
-                    .equals(other.optionID, optionID)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.price, price) ||
-                const DeepCollectionEquality().equals(other.price, price)) &&
-            (identical(other.isAvaliable, isAvaliable) ||
-                const DeepCollectionEquality()
-                    .equals(other.isAvaliable, isAvaliable)));
+        (other.runtimeType == runtimeType &&
+            other is _ProductOptions &&
+            const DeepCollectionEquality().equals(other.optionID, optionID) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.price, price) &&
+            const DeepCollectionEquality()
+                .equals(other.isAvaliable, isAvaliable));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(optionID) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(price) ^
-      const DeepCollectionEquality().hash(isAvaliable);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(optionID),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(price),
+      const DeepCollectionEquality().hash(isAvaliable));
 
   @JsonKey(ignore: true)
   @override
@@ -255,15 +251,15 @@ abstract class _ProductOptions extends ProductOptions {
       _$_ProductOptions.fromJson;
 
   @override
-  int get optionID => throw _privateConstructorUsedError;
+  int get optionID;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  int get price => throw _privateConstructorUsedError;
+  int get price;
   @override
-  bool get isAvaliable => throw _privateConstructorUsedError;
+  bool get isAvaliable;
   @override
   @JsonKey(ignore: true)
   _$ProductOptionsCopyWith<_ProductOptions> get copyWith =>

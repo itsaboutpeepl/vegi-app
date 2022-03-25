@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'orderItem.dart';
@@ -36,7 +37,7 @@ class _$OrderItemTearOff {
     );
   }
 
-  OrderItem fromJson(Map<String, Object> json) {
+  OrderItem fromJson(Map<String, Object?> json) {
     return OrderItem.fromJson(json);
   }
 }
@@ -214,32 +215,27 @@ class _$_OrderItem extends _OrderItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _OrderItem &&
-            (identical(other.internalID, internalID) ||
-                const DeepCollectionEquality()
-                    .equals(other.internalID, internalID)) &&
-            (identical(other.menuItem, menuItem) ||
-                const DeepCollectionEquality()
-                    .equals(other.menuItem, menuItem)) &&
-            (identical(other.totalItemPrice, totalItemPrice) ||
-                const DeepCollectionEquality()
-                    .equals(other.totalItemPrice, totalItemPrice)) &&
-            (identical(other.itemQuantity, itemQuantity) ||
-                const DeepCollectionEquality()
-                    .equals(other.itemQuantity, itemQuantity)) &&
-            (identical(other.selectedProductOptions, selectedProductOptions) ||
-                const DeepCollectionEquality().equals(
-                    other.selectedProductOptions, selectedProductOptions)));
+        (other.runtimeType == runtimeType &&
+            other is _OrderItem &&
+            const DeepCollectionEquality()
+                .equals(other.internalID, internalID) &&
+            const DeepCollectionEquality().equals(other.menuItem, menuItem) &&
+            const DeepCollectionEquality()
+                .equals(other.totalItemPrice, totalItemPrice) &&
+            const DeepCollectionEquality()
+                .equals(other.itemQuantity, itemQuantity) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedProductOptions, selectedProductOptions));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(internalID) ^
-      const DeepCollectionEquality().hash(menuItem) ^
-      const DeepCollectionEquality().hash(totalItemPrice) ^
-      const DeepCollectionEquality().hash(itemQuantity) ^
-      const DeepCollectionEquality().hash(selectedProductOptions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(internalID),
+      const DeepCollectionEquality().hash(menuItem),
+      const DeepCollectionEquality().hash(totalItemPrice),
+      const DeepCollectionEquality().hash(itemQuantity),
+      const DeepCollectionEquality().hash(selectedProductOptions));
 
   @JsonKey(ignore: true)
   @override
@@ -265,16 +261,15 @@ abstract class _OrderItem extends OrderItem {
       _$_OrderItem.fromJson;
 
   @override
-  int get internalID => throw _privateConstructorUsedError;
+  int get internalID;
   @override
-  MenuItem get menuItem => throw _privateConstructorUsedError;
+  MenuItem get menuItem;
   @override
-  int get totalItemPrice => throw _privateConstructorUsedError;
+  int get totalItemPrice;
   @override
-  int get itemQuantity => throw _privateConstructorUsedError;
+  int get itemQuantity;
   @override
-  Map<int, ProductOptions> get selectedProductOptions =>
-      throw _privateConstructorUsedError;
+  Map<int, ProductOptions> get selectedProductOptions;
   @override
   @JsonKey(ignore: true)
   _$OrderItemCopyWith<_OrderItem> get copyWith =>

@@ -100,7 +100,7 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                               colors: [
                                                 Theme.of(context)
                                                     .colorScheme
-                                                    .primaryVariant,
+                                                    .primary,
                                                 Theme.of(context)
                                                     .colorScheme
                                                     .primary,

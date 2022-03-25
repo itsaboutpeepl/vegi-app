@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'menuItem.dart';
@@ -46,7 +47,7 @@ class _$MenuItemTearOff {
     );
   }
 
-  MenuItem fromJson(Map<String, Object> json) {
+  MenuItem fromJson(Map<String, Object?> json) {
     return MenuItem.fromJson(json);
   }
 }
@@ -291,49 +292,38 @@ class _$_MenuItem extends _MenuItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MenuItem &&
-            (identical(other.menuItemID, menuItemID) ||
-                const DeepCollectionEquality()
-                    .equals(other.menuItemID, menuItemID)) &&
-            (identical(other.restaurantID, restaurantID) ||
-                const DeepCollectionEquality()
-                    .equals(other.restaurantID, restaurantID)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.imageURL, imageURL) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageURL, imageURL)) &&
-            (identical(other.category, category) ||
-                const DeepCollectionEquality()
-                    .equals(other.category, category)) &&
-            (identical(other.price, price) ||
-                const DeepCollectionEquality().equals(other.price, price)) &&
-            (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.extras, extras) ||
-                const DeepCollectionEquality().equals(other.extras, extras)) &&
-            (identical(other.listOfProductOptions, listOfProductOptions) ||
-                const DeepCollectionEquality().equals(
-                    other.listOfProductOptions, listOfProductOptions)) &&
-            (identical(other.isFeatured, isFeatured) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFeatured, isFeatured)));
+        (other.runtimeType == runtimeType &&
+            other is _MenuItem &&
+            const DeepCollectionEquality()
+                .equals(other.menuItemID, menuItemID) &&
+            const DeepCollectionEquality()
+                .equals(other.restaurantID, restaurantID) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
+            const DeepCollectionEquality().equals(other.category, category) &&
+            const DeepCollectionEquality().equals(other.price, price) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.extras, extras) &&
+            const DeepCollectionEquality()
+                .equals(other.listOfProductOptions, listOfProductOptions) &&
+            const DeepCollectionEquality()
+                .equals(other.isFeatured, isFeatured));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(menuItemID) ^
-      const DeepCollectionEquality().hash(restaurantID) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(imageURL) ^
-      const DeepCollectionEquality().hash(category) ^
-      const DeepCollectionEquality().hash(price) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(extras) ^
-      const DeepCollectionEquality().hash(listOfProductOptions) ^
-      const DeepCollectionEquality().hash(isFeatured);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(menuItemID),
+      const DeepCollectionEquality().hash(restaurantID),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(imageURL),
+      const DeepCollectionEquality().hash(category),
+      const DeepCollectionEquality().hash(price),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(extras),
+      const DeepCollectionEquality().hash(listOfProductOptions),
+      const DeepCollectionEquality().hash(isFeatured));
 
   @JsonKey(ignore: true)
   @override
@@ -363,26 +353,25 @@ abstract class _MenuItem extends MenuItem {
   factory _MenuItem.fromJson(Map<String, dynamic> json) = _$_MenuItem.fromJson;
 
   @override
-  String get menuItemID => throw _privateConstructorUsedError;
+  String get menuItemID;
   @override
-  String get restaurantID => throw _privateConstructorUsedError;
+  String get restaurantID;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get imageURL => throw _privateConstructorUsedError;
+  String get imageURL;
   @override
-  String get category => throw _privateConstructorUsedError;
+  String get category;
   @override
-  int get price => throw _privateConstructorUsedError;
+  int get price;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  Map<String, int> get extras => throw _privateConstructorUsedError;
+  Map<String, int> get extras;
   @override
-  List<ProductOptionsCategory> get listOfProductOptions =>
-      throw _privateConstructorUsedError;
+  List<ProductOptionsCategory> get listOfProductOptions;
   @override
-  bool get isFeatured => throw _privateConstructorUsedError;
+  bool get isFeatured;
   @override
   @JsonKey(ignore: true)
   _$MenuItemCopyWith<_MenuItem> get copyWith =>

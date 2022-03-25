@@ -2,7 +2,6 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/plugins/plugins.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
-import 'package:vegan_liverpool/redux/actions/swap_actions.dart';
 import 'package:redux/redux.dart';
 import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/community/community.dart';

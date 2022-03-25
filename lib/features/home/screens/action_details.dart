@@ -214,7 +214,7 @@ class ActionDetailsScreen extends StatelessWidget {
                                     style: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .secondaryVariant,
+                                          .secondary,
                                     ),
                                   ),
                                 )
@@ -397,7 +397,7 @@ class ActionDetailsScreen extends StatelessWidget {
                   Text(
                     value,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondaryVariant,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   )
                 ],
@@ -418,7 +418,7 @@ class ActionDetailsScreen extends StatelessWidget {
             Text(
               value,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme.of(context).colorScheme.secondary,
               ),
             )
           ],

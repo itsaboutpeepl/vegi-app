@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'deliveryAddresses.dart';
@@ -42,7 +43,7 @@ class _$DeliveryAddressesTearOff {
     );
   }
 
-  DeliveryAddresses fromJson(Map<String, Object> json) {
+  DeliveryAddresses fromJson(Map<String, Object?> json) {
     return DeliveryAddresses.fromJson(json);
   }
 }
@@ -260,44 +261,34 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DeliveryAddresses &&
-            (identical(other.internalID, internalID) ||
-                const DeepCollectionEquality()
-                    .equals(other.internalID, internalID)) &&
-            (identical(other.houseNumber, houseNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.houseNumber, houseNumber)) &&
-            (identical(other.buildingName, buildingName) ||
-                const DeepCollectionEquality()
-                    .equals(other.buildingName, buildingName)) &&
-            (identical(other.townCity, townCity) ||
-                const DeepCollectionEquality()
-                    .equals(other.townCity, townCity)) &&
-            (identical(other.postalCode, postalCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.postalCode, postalCode)) &&
-            (identical(other.latitude, latitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.latitude, latitude)) &&
-            (identical(other.longitude, longitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.longitude, longitude)) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.phoneNumber, phoneNumber)));
+        (other.runtimeType == runtimeType &&
+            other is _DeliveryAddresses &&
+            const DeepCollectionEquality()
+                .equals(other.internalID, internalID) &&
+            const DeepCollectionEquality()
+                .equals(other.houseNumber, houseNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.buildingName, buildingName) &&
+            const DeepCollectionEquality().equals(other.townCity, townCity) &&
+            const DeepCollectionEquality()
+                .equals(other.postalCode, postalCode) &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneNumber, phoneNumber));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(internalID) ^
-      const DeepCollectionEquality().hash(houseNumber) ^
-      const DeepCollectionEquality().hash(buildingName) ^
-      const DeepCollectionEquality().hash(townCity) ^
-      const DeepCollectionEquality().hash(postalCode) ^
-      const DeepCollectionEquality().hash(latitude) ^
-      const DeepCollectionEquality().hash(longitude) ^
-      const DeepCollectionEquality().hash(phoneNumber);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(internalID),
+      const DeepCollectionEquality().hash(houseNumber),
+      const DeepCollectionEquality().hash(buildingName),
+      const DeepCollectionEquality().hash(townCity),
+      const DeepCollectionEquality().hash(postalCode),
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude),
+      const DeepCollectionEquality().hash(phoneNumber));
 
   @JsonKey(ignore: true)
   @override
@@ -326,21 +317,21 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
       _$_DeliveryAddresses.fromJson;
 
   @override
-  int get internalID => throw _privateConstructorUsedError;
+  int get internalID;
   @override
-  String get houseNumber => throw _privateConstructorUsedError;
+  String get houseNumber;
   @override
-  String get buildingName => throw _privateConstructorUsedError;
+  String get buildingName;
   @override
-  String get townCity => throw _privateConstructorUsedError;
+  String get townCity;
   @override
-  String get postalCode => throw _privateConstructorUsedError;
+  String get postalCode;
   @override
-  double get latitude => throw _privateConstructorUsedError;
+  double get latitude;
   @override
-  double get longitude => throw _privateConstructorUsedError;
+  double get longitude;
   @override
-  String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get phoneNumber;
   @override
   @JsonKey(ignore: true)
   _$DeliveryAddressesCopyWith<_DeliveryAddresses> get copyWith =>

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/actions/swap_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/utils/addresses.dart' as util;

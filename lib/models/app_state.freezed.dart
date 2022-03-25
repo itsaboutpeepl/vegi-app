@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'app_state.dart';
@@ -38,7 +39,7 @@ class _$AppStateTearOff {
     );
   }
 
-  AppState fromJson(Map<String, Object> json) {
+  AppState fromJson(Map<String, Object?> json) {
     return AppState.fromJson(json);
   }
 }
@@ -305,36 +306,28 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AppState &&
-            (identical(other.userState, userState) ||
-                const DeepCollectionEquality()
-                    .equals(other.userState, userState)) &&
-            (identical(other.cashWalletState, cashWalletState) ||
-                const DeepCollectionEquality()
-                    .equals(other.cashWalletState, cashWalletState)) &&
-            (identical(other.swapState, swapState) ||
-                const DeepCollectionEquality()
-                    .equals(other.swapState, swapState)) &&
-            (identical(other.homePageState, homePageState) ||
-                const DeepCollectionEquality()
-                    .equals(other.homePageState, homePageState)) &&
-            (identical(other.cartState, cartState) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartState, cartState)) &&
-            (identical(other.menuItemState, menuItemState) ||
-                const DeepCollectionEquality()
-                    .equals(other.menuItemState, menuItemState)));
+        (other.runtimeType == runtimeType &&
+            other is _AppState &&
+            const DeepCollectionEquality().equals(other.userState, userState) &&
+            const DeepCollectionEquality()
+                .equals(other.cashWalletState, cashWalletState) &&
+            const DeepCollectionEquality().equals(other.swapState, swapState) &&
+            const DeepCollectionEquality()
+                .equals(other.homePageState, homePageState) &&
+            const DeepCollectionEquality().equals(other.cartState, cartState) &&
+            const DeepCollectionEquality()
+                .equals(other.menuItemState, menuItemState));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(userState) ^
-      const DeepCollectionEquality().hash(cashWalletState) ^
-      const DeepCollectionEquality().hash(swapState) ^
-      const DeepCollectionEquality().hash(homePageState) ^
-      const DeepCollectionEquality().hash(cartState) ^
-      const DeepCollectionEquality().hash(menuItemState);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(userState),
+      const DeepCollectionEquality().hash(cashWalletState),
+      const DeepCollectionEquality().hash(swapState),
+      const DeepCollectionEquality().hash(homePageState),
+      const DeepCollectionEquality().hash(cartState),
+      const DeepCollectionEquality().hash(menuItemState));
 
   @JsonKey(ignore: true)
   @override
@@ -362,22 +355,22 @@ abstract class _AppState extends AppState {
 
   @override
   @UserStateConverter()
-  UserState get userState => throw _privateConstructorUsedError;
+  UserState get userState;
   @override
   @CashWalletStateConverter()
-  CashWalletState get cashWalletState => throw _privateConstructorUsedError;
+  CashWalletState get cashWalletState;
   @override
   @SwapStateConverter()
-  SwapState get swapState => throw _privateConstructorUsedError;
+  SwapState get swapState;
   @override
   @HomePageStateConverter()
-  HomePageState get homePageState => throw _privateConstructorUsedError;
+  HomePageState get homePageState;
   @override
   @UserCartStateConverter()
-  UserCartState get cartState => throw _privateConstructorUsedError;
+  UserCartState get cartState;
   @override
   @MenuItemStateConverter()
-  MenuItemState get menuItemState => throw _privateConstructorUsedError;
+  MenuItemState get menuItemState;
   @override
   @JsonKey(ignore: true)
   _$AppStateCopyWith<_AppState> get copyWith =>

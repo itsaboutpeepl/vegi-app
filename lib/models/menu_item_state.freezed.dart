@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'menu_item_state.dart';
@@ -36,7 +37,7 @@ class _$MenuItemStateTearOff {
     );
   }
 
-  MenuItemState fromJson(Map<String, Object> json) {
+  MenuItemState fromJson(Map<String, Object?> json) {
     return MenuItemState.fromJson(json);
   }
 }
@@ -221,34 +222,27 @@ class _$_MenuItemState extends _MenuItemState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MenuItemState &&
-            (identical(other.menuItem, menuItem) ||
-                const DeepCollectionEquality()
-                    .equals(other.menuItem, menuItem)) &&
-            (identical(other.totalPrice, totalPrice) ||
-                const DeepCollectionEquality()
-                    .equals(other.totalPrice, totalPrice)) &&
-            (identical(other.itemReward, itemReward) ||
-                const DeepCollectionEquality()
-                    .equals(other.itemReward, itemReward)) &&
-            (identical(other.selectedProductOptionsForCategory,
-                    selectedProductOptionsForCategory) ||
-                const DeepCollectionEquality().equals(
-                    other.selectedProductOptionsForCategory,
-                    selectedProductOptionsForCategory)) &&
-            (identical(other.quantity, quantity) ||
-                const DeepCollectionEquality()
-                    .equals(other.quantity, quantity)));
+        (other.runtimeType == runtimeType &&
+            other is _MenuItemState &&
+            const DeepCollectionEquality().equals(other.menuItem, menuItem) &&
+            const DeepCollectionEquality()
+                .equals(other.totalPrice, totalPrice) &&
+            const DeepCollectionEquality()
+                .equals(other.itemReward, itemReward) &&
+            const DeepCollectionEquality().equals(
+                other.selectedProductOptionsForCategory,
+                selectedProductOptionsForCategory) &&
+            const DeepCollectionEquality().equals(other.quantity, quantity));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(menuItem) ^
-      const DeepCollectionEquality().hash(totalPrice) ^
-      const DeepCollectionEquality().hash(itemReward) ^
-      const DeepCollectionEquality().hash(selectedProductOptionsForCategory) ^
-      const DeepCollectionEquality().hash(quantity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(menuItem),
+      const DeepCollectionEquality().hash(totalPrice),
+      const DeepCollectionEquality().hash(itemReward),
+      const DeepCollectionEquality().hash(selectedProductOptionsForCategory),
+      const DeepCollectionEquality().hash(quantity));
 
   @JsonKey(ignore: true)
   @override
@@ -274,16 +268,15 @@ abstract class _MenuItemState extends MenuItemState {
       _$_MenuItemState.fromJson;
 
   @override
-  MenuItem get menuItem => throw _privateConstructorUsedError;
+  MenuItem get menuItem;
   @override
-  int get totalPrice => throw _privateConstructorUsedError;
+  int get totalPrice;
   @override
-  int get itemReward => throw _privateConstructorUsedError;
+  int get itemReward;
   @override
-  Map<int, ProductOptions> get selectedProductOptionsForCategory =>
-      throw _privateConstructorUsedError;
+  Map<int, ProductOptions> get selectedProductOptionsForCategory;
   @override
-  int get quantity => throw _privateConstructorUsedError;
+  int get quantity;
   @override
   @JsonKey(ignore: true)
   _$MenuItemStateCopyWith<_MenuItemState> get copyWith =>

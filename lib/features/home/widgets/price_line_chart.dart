@@ -40,7 +40,7 @@ class PriceLineChart extends StatelessWidget {
                 .values
                 .toList(),
             isCurved: true,
-            colors: [Colors.black, Colors.black],
+            color: Colors.black,
             barWidth: 3,
             isStrokeCapRound: true,
             dotData: FlDotData(

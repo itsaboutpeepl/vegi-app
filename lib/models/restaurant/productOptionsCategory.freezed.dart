@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'productOptionsCategory.dart';
@@ -33,7 +34,7 @@ class _$ProductOptionsCategoryTearOff {
     );
   }
 
-  ProductOptionsCategory fromJson(Map<String, Object> json) {
+  ProductOptionsCategory fromJson(Map<String, Object?> json) {
     return ProductOptionsCategory.fromJson(json);
   }
 }
@@ -165,23 +166,21 @@ class _$_ProductOptionsCategory extends _ProductOptionsCategory {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ProductOptionsCategory &&
-            (identical(other.categoryID, categoryID) ||
-                const DeepCollectionEquality()
-                    .equals(other.categoryID, categoryID)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.listOfOptions, listOfOptions) ||
-                const DeepCollectionEquality()
-                    .equals(other.listOfOptions, listOfOptions)));
+        (other.runtimeType == runtimeType &&
+            other is _ProductOptionsCategory &&
+            const DeepCollectionEquality()
+                .equals(other.categoryID, categoryID) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.listOfOptions, listOfOptions));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(categoryID) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(listOfOptions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(categoryID),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(listOfOptions));
 
   @JsonKey(ignore: true)
   @override
@@ -206,11 +205,11 @@ abstract class _ProductOptionsCategory extends ProductOptionsCategory {
       _$_ProductOptionsCategory.fromJson;
 
   @override
-  int get categoryID => throw _privateConstructorUsedError;
+  int get categoryID;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  List<ProductOptions> get listOfOptions => throw _privateConstructorUsedError;
+  List<ProductOptions> get listOfOptions;
   @override
   @JsonKey(ignore: true)
   _$ProductOptionsCategoryCopyWith<_ProductOptionsCategory> get copyWith =>
