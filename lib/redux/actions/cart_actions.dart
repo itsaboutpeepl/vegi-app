@@ -449,8 +449,8 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
                       store.state.cartState.selectedGBPxAmount.toString(),
                       externalId: store.state.cartState.paymentIntentID,
                     )
-                  : null
-              : null;
+                  : {}
+              : {};
 
       print(GBPxResponse);
 
@@ -467,16 +467,15 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
                       store.state.cartState.selectedPPLAmount.toString(),
                       externalId: store.state.cartState.paymentIntentID,
                     )
-                  : null
-              : null;
+                  : {}
+              : {};
 
       print(PPLResponse);
 
       //Make periodic API calls to check the order status
       //If status is paid, then set loading = false, and confirmed = true
 
-      if (GBPxResponse['job']['status'] == 'pending' ||
-          PPLResponse['job']['status'] == 'pending') {
+      if (GBPxResponse.isNotEmpty || PPLResponse.isNotEmpty) {
         Timer.periodic(
           const Duration(seconds: 4),
           (timer) async {
