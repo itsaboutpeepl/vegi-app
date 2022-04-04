@@ -9,6 +9,7 @@ class ProfileViewModel extends Equatable {
   final String walletAddress;
   final String avatarUrl;
   final String displayName;
+  final List<String> seedPhrase;
   final void Function(String displayName) updateDisplayName;
   final void Function(ImageSource source) editAvatar;
 
@@ -16,6 +17,7 @@ class ProfileViewModel extends Equatable {
     required this.phone,
     required this.walletAddress,
     required this.displayName,
+    required this.seedPhrase,
     required this.editAvatar,
     required this.avatarUrl,
     required this.updateDisplayName,
@@ -26,6 +28,7 @@ class ProfileViewModel extends Equatable {
       displayName: store.state.userState.displayName,
       phone: store.state.userState.phoneNumber,
       avatarUrl: store.state.userState.avatarUrl,
+      seedPhrase: store.state.userState.mnemonic,
       walletAddress: store.state.userState.walletAddress,
       editAvatar: (source) {
         store.dispatch(updateUserAvatarCall(source));
