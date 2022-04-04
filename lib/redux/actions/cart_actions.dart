@@ -398,7 +398,8 @@ ThunkAction prepareAndSendOrder(
 
           //subscribe to firebase topic of orderID
 
-          firebaseMessaging.subscribeToTopic(result['orderID'].toString());
+          firebaseMessaging
+              .subscribeToTopic('order-' + result['orderID'].toString());
 
           successCallback();
         } else {
