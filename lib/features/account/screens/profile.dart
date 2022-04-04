@@ -220,6 +220,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       Divider(),
+                      _buildGroup(
+                        "Seed Phrase",
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Text(
+                                viewModel.seedPhrase.toString().substring(1,
+                                    viewModel.seedPhrase.toString().length - 1),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              focusColor: Theme.of(context).canvasColor,
+                              highlightColor: Theme.of(context).canvasColor,
+                              onTap: () {
+                                Clipboard.setData(
+                                  ClipboardData(
+                                    text: viewModel.seedPhrase
+                                        .toString()
+                                        .substring(
+                                            1,
+                                            viewModel.seedPhrase
+                                                    .toString()
+                                                    .length -
+                                                1),
+                                  ),
+                                );
+                                showCopiedFlushbar(context);
+                              },
+                              child: Icon(
+                                FaIcon(FontAwesomeIcons.copy).icon,
+                                size: 14,
+                                color: Colors.grey,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Divider(),
                     ],
                   )
                 ],

@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_app_bar.dart';
 
 class MyScaffold extends StatelessWidget {
@@ -27,7 +28,7 @@ class MyScaffold extends StatelessWidget {
                 .onSurface, //change your color here
           ),
           automaticallyImplyLeading: automaticallyImplyLeading,
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: themeShade300,
           centerTitle: true,
           title: Text(
             title,
