@@ -48,11 +48,8 @@ class VegiEatsService {
             name: element['name'] ?? "",
             description: element["description"] ?? "",
             phoneNumber: element['phoneNumber'] ?? "",
-            deliveryRestrictionDetails:
-                element["deliveryRestrictionDetails"] ?? [],
-            imageURL: dotenv.env['VEGI_EATS_BACKEND']! +
-                "vendors/download-image/" +
-                element['id'].toString(),
+            deliveryRestrictionDetails: [], // TODO: Remove this entirely
+            imageURL: element["imageUrl"],
             category: "Category",
             costLevel: element['costLevel'] ?? 2,
             rating: element['rating'] ?? 2,
