@@ -93,8 +93,6 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
             onTap: () => {
               viewmodel.setMenuItem(widget.menuItem),
               showBarModalBottomSheet(
-                useRootNavigator: true,
-                isDismissible: true,
                 context: context,
                 builder: (context) => DetailMenuItemView(),
               ),
