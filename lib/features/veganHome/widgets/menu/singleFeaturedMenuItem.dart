@@ -9,8 +9,7 @@ import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 
 class SingleFeaturedMenuItem extends StatefulWidget {
-  const SingleFeaturedMenuItem({Key? key, required this.menuItem})
-      : super(key: key);
+  const SingleFeaturedMenuItem({Key? key, required this.menuItem}) : super(key: key);
 
   final MenuItem menuItem;
 
@@ -38,15 +37,14 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image(
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     image: CachedNetworkImageProvider(
                       widget.menuItem.imageURL,
                     ),
                     errorBuilder: (context, error, stackTrace) {
-                      print("ERROR:");
-                      print(error);
-                      print("STACKTRACE:");
-                      print(stackTrace);
-                      return SizedBox.shrink();
+                      return SizedBox.shrink(); //TODO: Change to default image
                     },
                   ),
                 ),
@@ -57,6 +55,7 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(

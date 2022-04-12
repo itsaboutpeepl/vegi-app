@@ -8,8 +8,7 @@ import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 
 class SingleRegularMenuItem extends StatefulWidget {
-  const SingleRegularMenuItem({Key? key, required this.menuItem})
-      : super(key: key);
+  const SingleRegularMenuItem({Key? key, required this.menuItem}) : super(key: key);
 
   final MenuItem menuItem;
 
@@ -31,62 +30,56 @@ class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
           child: GestureDetector(
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      image: CachedNetworkImageProvider(
-                        widget.menuItem.imageURL,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.menuItem.name,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
                       ),
-                      errorBuilder: (context, error, stackTrace) {
-                        print("ERROR:");
-                        print(error);
-                        print("STACKTRACE:");
-                        print(stackTrace);
-                        return SizedBox.shrink();
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    child: Text(
-                      widget.menuItem.name,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
+                      SizedBox(height: 10),
+                      Text(
+                        widget.menuItem.formattedPrice,
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                        ),
                       ),
-                    ),
+                      Text(
+                        widget.menuItem.description,
+                        maxLines: 3,
+                      )
+                    ],
                   ),
-                  Spacer(),
-                  Text(
-                    widget.menuItem.formattedPrice,
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.width * 0.2,
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      widget.menuItem.imageURL,
                     ),
+                    errorBuilder: (context, error, stackTrace) {
+                      return SizedBox.shrink(); //TODO: ADD default Image
+                    },
                   ),
-
-                  // Text(
-                  //   parseHtmlString(widget.menuItem.description),
-                  //   maxLines: 3,
-                  // ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(widget.menuItem.description)
-            ]),
+                ),
+              ],
+            ),
             onTap: () => {
               viewmodel.setMenuItem(widget.menuItem),
               showBarModalBottomSheet(

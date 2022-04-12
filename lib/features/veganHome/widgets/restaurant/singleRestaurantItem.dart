@@ -37,7 +37,11 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                   borderRadius: BorderRadius.circular(30),
                   child: Image(
                     image: CachedNetworkImageProvider(
-                        widget.restaurantItem.imageURL),
+                      widget.restaurantItem.imageURL,
+                    ),
+                    errorBuilder: (context, error, stackTrace) {
+                      return SizedBox.shrink(); //TODO: Change to default image
+                    },
                     width: MediaQuery.of(context).size.width * 0.9,
                   ),
                 ),
@@ -103,15 +107,13 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                             ),
                             height: 25,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 2.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 2.0),
                               child: Center(
                                 child: Row(
                                   children: List.generate(
                                     5,
                                     (index) {
-                                      return index <
-                                              widget.restaurantItem.rating
+                                      return index < widget.restaurantItem.rating
                                           ? Icon(
                                               Icons.star,
                                               size: 18,
@@ -140,12 +142,9 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
               widget.restaurantItem.name,
               widget.restaurantItem.address,
               widget.restaurantItem.walletAddress,
-              () => showErrorSnack(
-                  context: context,
-                  title: "Existing Items in cart were removed"),
+              () => showErrorSnack(context: context, title: "Existing Items in cart were removed"),
             );
-            context.router.push(RestaurantMenuScreen(
-                menuList: widget.restaurantItem.listOfMenuItems));
+            context.router.push(RestaurantMenuScreen(menuList: widget.restaurantItem.listOfMenuItems));
           },
         );
       },
