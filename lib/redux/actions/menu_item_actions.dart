@@ -1,6 +1,7 @@
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -35,13 +36,11 @@ class UpdateMenuItemWithProductOptions {
 ThunkAction fetchProductOptions(String itemID) {
   return (Store store) async {
     try {
-      List<ProductOptionsCategory> listOfProductOptionCategories =
-          await vegiEatsService.getProductOptions(itemID);
+      List<ProductOptionsCategory> listOfProductOptionCategories = await vegiEatsService.getProductOptions(itemID);
 
       MenuItem currentItem = store.state.menuItemState.menuItem;
 
-      MenuItem newItem = currentItem.copyWith(
-          listOfProductOptions: listOfProductOptionCategories);
+      MenuItem newItem = currentItem.copyWith(listOfProductOptions: listOfProductOptionCategories);
 
       store.dispatch(UpdateMenuItemWithProductOptions(newItem));
     } catch (e, s) {
@@ -67,7 +66,7 @@ ThunkAction updateComputeQuantity(bool isAdd) {
               : oldQuantity--;
 
       store.dispatch(UpdateQuantity(oldQuantity));
-      store.dispatch(calculateTotalPrice());
+      store.dispatch(calculateItemTotalPrice());
     } catch (e, s) {
       log.error('ERROR - updateQuantity $e');
       await Sentry.captureException(
@@ -79,17 +78,16 @@ ThunkAction updateComputeQuantity(bool isAdd) {
   };
 }
 
-ThunkAction calculateTotalPrice() {
+ThunkAction calculateItemTotalPrice() {
   return (Store store) async {
     try {
       int total = 0;
 
-      total = store.state.menuItemState.quantity *
-          store.state.menuItemState.menuItem.price;
+      total = store.state.menuItemState.quantity * store.state.menuItemState.menuItem.price;
 
-      store.state.menuItemState.selectedExtrasMap
-          .forEach((String key, int value) {
-        total += value;
+      store.state.menuItemState.selectedProductOptionsForCategory
+          .forEach((int optionID, ProductOptions productOptions) {
+        total += productOptions.price;
       });
 
       store.dispatch(
@@ -99,11 +97,11 @@ ThunkAction calculateTotalPrice() {
         ),
       );
     } catch (e, s) {
-      log.error('ERROR - calculateTotalPrice $e');
+      log.error('ERROR - calculateItemTotalPrice $e');
       await Sentry.captureException(
         e,
         stackTrace: s,
-        hint: 'ERROR - calculateTotalPrice $e',
+        hint: 'ERROR - calculateItemTotalPrice $e',
       );
     }
   };
@@ -117,8 +115,7 @@ ThunkAction setUpMenuItemStructures(MenuItem? menuItem) {
           : store.dispatch(
               SetMenuItem(
                 menuItem: menuItem,
-                selectedExtras:
-                    List.generate(menuItem.extras.length, (i) => false),
+                selectedExtras: List.generate(menuItem.extras.length, (i) => false),
               ),
             );
     } catch (e, s) {

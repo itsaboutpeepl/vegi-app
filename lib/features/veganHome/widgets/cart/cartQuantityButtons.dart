@@ -6,8 +6,7 @@ import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 class CartQuantityButtons extends StatefulWidget {
-  const CartQuantityButtons({Key? key, required this.orderItem})
-      : super(key: key);
+  const CartQuantityButtons({Key? key, required this.orderItem}) : super(key: key);
 
   final OrderItem orderItem;
 
@@ -47,10 +46,8 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
                   onPressed: () {
                     OrderItem newOrderItem = widget.orderItem.copyWith(
                       itemQuantity: widget.orderItem.itemQuantity - 1,
-                      totalItemPrice: widget.orderItem.totalItemPrice -
-                          widget.orderItem.menuItem.price,
+                      totalItemPrice: widget.orderItem.totalItemPrice - widget.orderItem.menuItem.price,
                     );
-
                     viewmodel.updateOrderItem(newOrderItem);
                   },
                   icon: Icon(Icons.remove, size: 15),
@@ -104,8 +101,7 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
                   onPressed: () {
                     OrderItem newOrderItem = widget.orderItem.copyWith(
                       itemQuantity: widget.orderItem.itemQuantity + 1,
-                      totalItemPrice: widget.orderItem.totalItemPrice +
-                          widget.orderItem.menuItem.price,
+                      totalItemPrice: widget.orderItem.totalItemPrice + widget.orderItem.menuItem.price,
                     );
                     viewmodel.updateOrderItem(newOrderItem);
                   },
