@@ -47,8 +47,8 @@ class VegiEatsService {
             name: element['name'] ?? "",
             description: element["description"] ?? "",
             phoneNumber: element['phoneNumber'] ?? "",
-            deliveryRestrictionDetails: element["deliveryRestrictionDetails"] ?? [],
-            imageURL: element["imageUrl"] ?? "",
+            deliveryRestrictionDetails: [], // TODO: Remove this entirely
+            imageURL: element["imageUrl"],
             category: "Category",
             costLevel: element['costLevel'] ?? 2,
             rating: element['rating'] ?? 2,
