@@ -10,8 +10,7 @@ import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 RestaurantItem restaurantItem1 = new RestaurantItem(
   restaurantID: "restaurantID1",
   name: "Da Cimino",
-  imageURL:
-      "https://cdn.pixabay.com/photo/2018/03/21/06/54/food-3245765_1280.jpg",
+  imageURL: "https://cdn.pixabay.com/photo/2018/03/21/06/54/food-3245765_1280.jpg",
   category: "Bakery",
   costLevel: 4,
   phoneNumber: "231321",
@@ -26,8 +25,7 @@ RestaurantItem restaurantItem1 = new RestaurantItem(
 RestaurantItem restaurantItem2 = new RestaurantItem(
   restaurantID: "restaurantID2",
   name: "Veggies 'n More",
-  imageURL:
-      "https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/content9442.jpg",
+  imageURL: "https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/content9442.jpg",
   category: "Cafe",
   costLevel: 4,
   phoneNumber: "231321",
@@ -67,8 +65,7 @@ DeliveryAddresses demoAddress = new DeliveryAddresses(
 
 RestaurantCategory restaurantCategory1 = new RestaurantCategory(
   categoryName: "Bakery",
-  imageURL:
-      "https://cf.ltkcdn.net/vegetarian/images/orig/228069-2121x1414-Rye-bread-with-seeds.jpg",
+  imageURL: "https://cf.ltkcdn.net/vegetarian/images/orig/228069-2121x1414-Rye-bread-with-seeds.jpg",
   listOfRestaurants: [restaurantItem3, restaurantItem2, restaurantItem1],
 );
 
@@ -84,12 +81,10 @@ final MenuItem bagel1 = new MenuItem(
   menuItemID: "menuID1",
   restaurantID: "DEMO",
   name: "Blueberry Bagel",
-  imageURL:
-      "https://www.bakerita.com/wp-content/uploads/2015/02/Blueberry-Bagels-8.jpg",
+  imageURL: "https://picsum.photos/500",
   category: "Bakery",
   price: 390,
-  description:
-      "Freshiy Baked Bagel made with a mix of wild and cultured blueberries baked inside",
+  description: "Freshiy Baked Bagel made with a mix of wild and cultured blueberries baked inside",
   extras: {
     "Cream Cheese": 100,
     "Extra Blueberries": 185,
@@ -115,8 +110,7 @@ final MenuItem bagel2 = new MenuItem(
       "https://marvel-b1-cdn.bc0a.com/f00000000219322/images.squarespace-cdn.com/content/v1/5eac4cadbad0a7612d8c693a/1617720715176-6EYY7BWKPD1W62SZ79L2/poppyseed+%281%29.jpg?format=1500w",
   category: "Bakery",
   price: 390,
-  description:
-      "Freshiy Baked Bagel made with a mix of wild and cultured poppy seeds",
+  description: "Freshiy Baked Bagel made with a mix of wild and cultured poppy seeds",
   extras: {
     "Cream Cheese": 100,
     "Extra Blueberries": 185,
@@ -138,8 +132,7 @@ final MenuItem bagel3 = new MenuItem(
   menuItemID: "menuID3",
   restaurantID: "DEMO",
   name: "Everything Bagel",
-  imageURL:
-      "https://healthyfitnessmeals.com/wp-content/uploads/2019/05/Keto_Parmesan_Everything_Bagel_Square_0001.jpg",
+  imageURL: "https://healthyfitnessmeals.com/wp-content/uploads/2019/05/Keto_Parmesan_Everything_Bagel_Square_0001.jpg",
   category: "Bakery",
   price: 390,
   description:
@@ -187,8 +180,7 @@ final ProductOptionsCategory demoPOC1 = ProductOptionsCategory(
     new ProductOptions(
         optionID: 2,
         name: "Rabbit ‘cock-a-leekie’ terrine",
-        description:
-            "A chicken, rabbit and leek terrine served with whisky jelly and oatcakes",
+        description: "A chicken, rabbit and leek terrine served with whisky jelly and oatcakes",
         price: 0,
         isAvaliable: true),
   ],
@@ -201,8 +193,7 @@ final ProductOptionsCategory demoPOC2 = ProductOptionsCategory(
     new ProductOptions(
         optionID: 1,
         name: "Stew",
-        description:
-            "Venison, beef and beer stew, whiskey dumplings and creamy mash",
+        description: "Venison, beef and beer stew, whiskey dumplings and creamy mash",
         price: 0,
         isAvaliable: true),
     new ProductOptions(
@@ -218,18 +209,10 @@ final ProductOptionsCategory demoPOC2 = ProductOptionsCategory(
 final List<ProductOptionsCategory> demoPOCList = [demoPOC1, demoPOC2];
 
 OrderItem demoOrderItem1 = new OrderItem(
-    internalID: 4324,
-    menuItem: bagel3,
-    totalItemPrice: 3242,
-    itemQuantity: 3,
-    selectedProductOptions: {});
+    internalID: 4324, menuItem: bagel3, totalItemPrice: 3242, itemQuantity: 3, selectedProductOptions: {});
 
 OrderItem demoOrderItem2 = new OrderItem(
-    internalID: 3414,
-    menuItem: bagel1,
-    totalItemPrice: 8922,
-    itemQuantity: 5,
-    selectedProductOptions: {});
+    internalID: 3414, menuItem: bagel1, totalItemPrice: 8922, itemQuantity: 5, selectedProductOptions: {});
 
 final UserCart userCart = new UserCart(
   cartItems: [
@@ -262,8 +245,7 @@ Map<String, dynamic> testOrdersList = {
                 "Unfortunately, this year the 25th falls on a Monday. You won't be able to join us, so we've made our Dine@home Burns inspired instead.",
             "shortDescription": "",
             "basePrice": 2200, //Price
-            "imageFd":
-                "/Users/adam/development/peepl-app-sails/config/../assets/images/products/1.jpeg",
+            "imageFd": "/Users/adam/development/peepl-app-sails/config/../assets/images/products/1.jpeg",
             "imageMime": "image/jpeg",
             "image": "",
             "isAvailable": true,
@@ -290,8 +272,7 @@ Map<String, dynamic> testOrdersList = {
                 "createdAt": 1647347003880,
                 "updatedAt": 1647347003880,
                 "id": 3,
-                "name":
-                    "Classic traditional haggis, neeps and tatties", //Value of Option
+                "name": "Classic traditional haggis, neeps and tatties", //Value of Option
                 "description": "",
                 "priceModifier": 0, //Price of Option.
                 "isAvailable": true,
@@ -303,19 +284,12 @@ Map<String, dynamic> testOrdersList = {
               "createdAt": 1647347017064,
               "updatedAt": 1647347017111,
               "id": 2,
-              "option": {
-                "createdAt": 1647347003883,
-                "updatedAt": 1647347003883,
-                "id": 2,
-                "name": "Main",
-                "product": 1
-              },
+              "option": {"createdAt": 1647347003883, "updatedAt": 1647347003883, "id": 2, "name": "Main", "product": 1},
               "optionValue": {
                 "createdAt": 1647347003886,
                 "updatedAt": 1647347003886,
                 "id": 6,
-                "name":
-                    "Darne of Scottish salmon, kale, creamy mash and Loch Spelve mussel sauce (GF)",
+                "name": "Darne of Scottish salmon, kale, creamy mash and Loch Spelve mussel sauce (GF)",
                 "description": "",
                 "priceModifier": 0,
                 "isAvailable": true,
@@ -392,8 +366,7 @@ Map<String, dynamic> testOrdersList = {
                 "Unfortunately, this year the 25th falls on a Monday. You won't be able to join us, so we've made our Dine@home Burns inspired instead.",
             "shortDescription": "",
             "basePrice": 2200,
-            "imageFd":
-                "/Users/adam/development/peepl-app-sails/config/../assets/images/products/1.jpeg",
+            "imageFd": "/Users/adam/development/peepl-app-sails/config/../assets/images/products/1.jpeg",
             "imageMime": "image/jpeg",
             "image": "",
             "isAvailable": true,
@@ -429,19 +402,12 @@ Map<String, dynamic> testOrdersList = {
               "createdAt": 1647349811949,
               "updatedAt": 1647349812002,
               "id": 5,
-              "option": {
-                "createdAt": 1647347003883,
-                "updatedAt": 1647347003883,
-                "id": 2,
-                "name": "Main",
-                "product": 1
-              },
+              "option": {"createdAt": 1647347003883, "updatedAt": 1647347003883, "id": 2, "name": "Main", "product": 1},
               "optionValue": {
                 "createdAt": 1647347003886,
                 "updatedAt": 1647347003886,
                 "id": 6,
-                "name":
-                    "Darne of Scottish salmon, kale, creamy mash and Loch Spelve mussel sauce (GF)",
+                "name": "Darne of Scottish salmon, kale, creamy mash and Loch Spelve mussel sauce (GF)",
                 "description": "",
                 "priceModifier": 0,
                 "isAvailable": true,

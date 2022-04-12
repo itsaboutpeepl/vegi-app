@@ -13,8 +13,7 @@ class DetailMenuViewFloatingBar extends StatefulWidget {
   const DetailMenuViewFloatingBar({Key? key}) : super(key: key);
 
   @override
-  _DetailMenuViewFloatingBarState createState() =>
-      _DetailMenuViewFloatingBarState();
+  _DetailMenuViewFloatingBarState createState() => _DetailMenuViewFloatingBarState();
 }
 
 class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
@@ -52,9 +51,7 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                         onPressed: () => {
                           viewmodel.addOrderItem(
                             OrderItem(
-                              internalID:
-                                  Random(DateTime.now().millisecondsSinceEpoch)
-                                      .nextInt(10000),
+                              internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
                               menuItem: viewmodel.menuItem,
                               totalItemPrice: viewmodel.totalPrice,
                               itemQuantity: viewmodel.quantity,
@@ -62,7 +59,10 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                             ),
                           ),
                           Navigator.pop(context),
-                          viewmodel.setMenuItem(null),
+                          Future.delayed(
+                            Duration(seconds: 1),
+                            (() => viewmodel.setMenuItem(null)),
+                          )
                         },
                         child: Text("Add to Tote"),
                         style: ElevatedButton.styleFrom(
