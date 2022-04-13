@@ -24,15 +24,12 @@ class NewAddressCard extends StatelessWidget {
                   child: IconButton(
                     iconSize: 35,
                     padding: EdgeInsets.zero,
-                    onPressed: () => showBarModalBottomSheet(
+                    onPressed: () => showModalBottomSheet(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(10),
                         ),
                       ),
-                      isDismissible: true,
-                      enableDrag: false,
-                      useRootNavigator: true,
                       context: context,
                       builder: (context) => AddressView(),
                     ),

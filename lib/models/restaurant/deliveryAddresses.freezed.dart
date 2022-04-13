@@ -24,8 +24,8 @@ class _$DeliveryAddressesTearOff {
 
   _DeliveryAddresses call(
       {required int internalID,
-      required String houseNumber,
-      required String buildingName,
+      required String addressLine1,
+      required String addressLine2,
       required String townCity,
       required String postalCode,
       required double latitude,
@@ -33,8 +33,8 @@ class _$DeliveryAddressesTearOff {
       String? phoneNumber}) {
     return _DeliveryAddresses(
       internalID: internalID,
-      houseNumber: houseNumber,
-      buildingName: buildingName,
+      addressLine1: addressLine1,
+      addressLine2: addressLine2,
       townCity: townCity,
       postalCode: postalCode,
       latitude: latitude,
@@ -54,8 +54,8 @@ const $DeliveryAddresses = _$DeliveryAddressesTearOff();
 /// @nodoc
 mixin _$DeliveryAddresses {
   int get internalID => throw _privateConstructorUsedError;
-  String get houseNumber => throw _privateConstructorUsedError;
-  String get buildingName => throw _privateConstructorUsedError;
+  String get addressLine1 => throw _privateConstructorUsedError;
+  String get addressLine2 => throw _privateConstructorUsedError;
   String get townCity => throw _privateConstructorUsedError;
   String get postalCode => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
@@ -75,8 +75,8 @@ abstract class $DeliveryAddressesCopyWith<$Res> {
       _$DeliveryAddressesCopyWithImpl<$Res>;
   $Res call(
       {int internalID,
-      String houseNumber,
-      String buildingName,
+      String addressLine1,
+      String addressLine2,
       String townCity,
       String postalCode,
       double latitude,
@@ -96,8 +96,8 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
   @override
   $Res call({
     Object? internalID = freezed,
-    Object? houseNumber = freezed,
-    Object? buildingName = freezed,
+    Object? addressLine1 = freezed,
+    Object? addressLine2 = freezed,
     Object? townCity = freezed,
     Object? postalCode = freezed,
     Object? latitude = freezed,
@@ -109,13 +109,13 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
               as int,
-      houseNumber: houseNumber == freezed
-          ? _value.houseNumber
-          : houseNumber // ignore: cast_nullable_to_non_nullable
+      addressLine1: addressLine1 == freezed
+          ? _value.addressLine1
+          : addressLine1 // ignore: cast_nullable_to_non_nullable
               as String,
-      buildingName: buildingName == freezed
-          ? _value.buildingName
-          : buildingName // ignore: cast_nullable_to_non_nullable
+      addressLine2: addressLine2 == freezed
+          ? _value.addressLine2
+          : addressLine2 // ignore: cast_nullable_to_non_nullable
               as String,
       townCity: townCity == freezed
           ? _value.townCity
@@ -150,8 +150,8 @@ abstract class _$DeliveryAddressesCopyWith<$Res>
   @override
   $Res call(
       {int internalID,
-      String houseNumber,
-      String buildingName,
+      String addressLine1,
+      String addressLine2,
       String townCity,
       String postalCode,
       double latitude,
@@ -173,8 +173,8 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
   @override
   $Res call({
     Object? internalID = freezed,
-    Object? houseNumber = freezed,
-    Object? buildingName = freezed,
+    Object? addressLine1 = freezed,
+    Object? addressLine2 = freezed,
     Object? townCity = freezed,
     Object? postalCode = freezed,
     Object? latitude = freezed,
@@ -186,13 +186,13 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
               as int,
-      houseNumber: houseNumber == freezed
-          ? _value.houseNumber
-          : houseNumber // ignore: cast_nullable_to_non_nullable
+      addressLine1: addressLine1 == freezed
+          ? _value.addressLine1
+          : addressLine1 // ignore: cast_nullable_to_non_nullable
               as String,
-      buildingName: buildingName == freezed
-          ? _value.buildingName
-          : buildingName // ignore: cast_nullable_to_non_nullable
+      addressLine2: addressLine2 == freezed
+          ? _value.addressLine2
+          : addressLine2 // ignore: cast_nullable_to_non_nullable
               as String,
       townCity: townCity == freezed
           ? _value.townCity
@@ -224,8 +224,8 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
 class _$_DeliveryAddresses extends _DeliveryAddresses {
   _$_DeliveryAddresses(
       {required this.internalID,
-      required this.houseNumber,
-      required this.buildingName,
+      required this.addressLine1,
+      required this.addressLine2,
       required this.townCity,
       required this.postalCode,
       required this.latitude,
@@ -239,9 +239,9 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   @override
   final int internalID;
   @override
-  final String houseNumber;
+  final String addressLine1;
   @override
-  final String buildingName;
+  final String addressLine2;
   @override
   final String townCity;
   @override
@@ -255,7 +255,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
 
   @override
   String toString() {
-    return 'DeliveryAddresses(internalID: $internalID, houseNumber: $houseNumber, buildingName: $buildingName, townCity: $townCity, postalCode: $postalCode, latitude: $latitude, longitude: $longitude, phoneNumber: $phoneNumber)';
+    return 'DeliveryAddresses(internalID: $internalID, addressLine1: $addressLine1, addressLine2: $addressLine2, townCity: $townCity, postalCode: $postalCode, latitude: $latitude, longitude: $longitude, phoneNumber: $phoneNumber)';
   }
 
   @override
@@ -266,9 +266,9 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
             const DeepCollectionEquality()
                 .equals(other.internalID, internalID) &&
             const DeepCollectionEquality()
-                .equals(other.houseNumber, houseNumber) &&
+                .equals(other.addressLine1, addressLine1) &&
             const DeepCollectionEquality()
-                .equals(other.buildingName, buildingName) &&
+                .equals(other.addressLine2, addressLine2) &&
             const DeepCollectionEquality().equals(other.townCity, townCity) &&
             const DeepCollectionEquality()
                 .equals(other.postalCode, postalCode) &&
@@ -282,8 +282,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(internalID),
-      const DeepCollectionEquality().hash(houseNumber),
-      const DeepCollectionEquality().hash(buildingName),
+      const DeepCollectionEquality().hash(addressLine1),
+      const DeepCollectionEquality().hash(addressLine2),
       const DeepCollectionEquality().hash(townCity),
       const DeepCollectionEquality().hash(postalCode),
       const DeepCollectionEquality().hash(latitude),
@@ -304,8 +304,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
 abstract class _DeliveryAddresses extends DeliveryAddresses {
   factory _DeliveryAddresses(
       {required int internalID,
-      required String houseNumber,
-      required String buildingName,
+      required String addressLine1,
+      required String addressLine2,
       required String townCity,
       required String postalCode,
       required double latitude,
@@ -319,9 +319,9 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
   @override
   int get internalID;
   @override
-  String get houseNumber;
+  String get addressLine1;
   @override
-  String get buildingName;
+  String get addressLine2;
   @override
   String get townCity;
   @override

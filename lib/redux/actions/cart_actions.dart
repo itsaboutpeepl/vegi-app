@@ -26,8 +26,7 @@ class UpdateComputedCartValues {
   final int cartTotal;
   final int cartDiscountComputed;
 
-  UpdateComputedCartValues(this.cartSubTotal, this.cartTax, this.cartTotal,
-      this.cartDiscountComputed);
+  UpdateComputedCartValues(this.cartSubTotal, this.cartTax, this.cartTotal, this.cartDiscountComputed);
 }
 
 class UpdateCartDiscount {
@@ -100,8 +99,7 @@ class SetRestaurantDetails {
   final DeliveryAddresses restaurantAddress;
   final String walletAddress;
 
-  SetRestaurantDetails(this.restaurantID, this.restaurantName,
-      this.restaurantAddress, this.walletAddress);
+  SetRestaurantDetails(this.restaurantID, this.restaurantName, this.restaurantAddress, this.walletAddress);
 }
 
 class SetDeliveryCharge {
@@ -125,23 +123,16 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
 
       if ([null, ""].contains(newDate)) {
         fullfilmentMethods = await vegiEatsService.getFulfilmentSlots(
-            vendorID: store.state.cartState.restaurantID,
-            dateRequired: formatter.format(DateTime.now()));
+            vendorID: store.state.cartState.restaurantID, dateRequired: formatter.format(DateTime.now()));
       } else {
         fullfilmentMethods = await vegiEatsService.getFulfilmentSlots(
-            vendorID: store.state.cartState.restaurantID,
-            dateRequired: formatter.format(newDate!));
+            vendorID: store.state.cartState.restaurantID, dateRequired: formatter.format(newDate!));
       }
-      store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
-          fullfilmentMethods.collectionSlots));
+      store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots, fullfilmentMethods.collectionSlots));
 
       store.dispatch(SetFulfilmentFees(
-        fullfilmentMethods.deliveryMethod == null
-            ? 0
-            : fullfilmentMethods.deliveryMethod!['priceModifier'] ?? 0,
-        fullfilmentMethods.collectionMethod == null
-            ? 0
-            : fullfilmentMethods.collectionMethod!['priceModifier'] ?? 0,
+        fullfilmentMethods.deliveryMethod == null ? 0 : fullfilmentMethods.deliveryMethod!['priceModifier'] ?? 0,
+        fullfilmentMethods.collectionMethod == null ? 0 : fullfilmentMethods.collectionMethod!['priceModifier'] ?? 0,
       ));
     } catch (e, s) {
       log.error('ERROR - getFullfillmentMethods $e');
@@ -170,16 +161,14 @@ ThunkAction updateCartTip(int newTip) {
   };
 }
 
-ThunkAction updateCartDiscount(
-    String newDiscountCode, VoidCallback errorCallback) {
+ThunkAction updateCartDiscount(String newDiscountCode, VoidCallback errorCallback) {
   return (Store store) async {
     try {
       if (newDiscountCode == 'REMOVE') {
         store.dispatch(UpdateCartDiscount(0, ""));
         store.dispatch(computeCartTotals());
       } else {
-        int discountPercent =
-            await vegiEatsService.checkDiscountCode(newDiscountCode).onError(
+        int discountPercent = await vegiEatsService.checkDiscountCode(newDiscountCode).onError(
           (error, stackTrace) {
             errorCallback();
             return 0;
@@ -229,14 +218,11 @@ ThunkAction updateCartItemQuantity(OrderItem itemToAdd) {
     try {
       List<OrderItem> cartItems = store.state.cartState.cartItems;
       if (itemToAdd.itemQuantity == 0) {
-        cartItems.removeWhere(
-            (element) => element.internalID == itemToAdd.internalID);
+        cartItems.removeWhere((element) => element.internalID == itemToAdd.internalID);
       } else {
-        int index = cartItems.indexWhere(
-            (element) => element.internalID == itemToAdd.internalID);
+        int index = cartItems.indexWhere((element) => element.internalID == itemToAdd.internalID);
 
-        cartItems.removeWhere(
-            (element) => element.internalID == itemToAdd.internalID);
+        cartItems.removeWhere((element) => element.internalID == itemToAdd.internalID);
 
         cartItems.insert(index, itemToAdd);
       }
@@ -274,16 +260,13 @@ ThunkAction computeCartTotals() {
 
       // add price of each order Item (which has options included)
 
-      cartDiscountComputed =
-          (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
+      cartDiscountComputed = (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
 
       //cartTax = ((cartSubTotal - cartDiscountComputed) * 5) ~/ 100;
 
-      cartTotal = (cartSubTotal + cartTax + cartTip + deliveryPrice) -
-          cartDiscountComputed;
+      cartTotal = (cartSubTotal + cartTax + cartTip + deliveryPrice) - cartDiscountComputed;
 
-      store.dispatch(UpdateComputedCartValues(
-          cartSubTotal, cartTax, cartTotal, cartDiscountComputed));
+      store.dispatch(UpdateComputedCartValues(cartSubTotal, cartTax, cartTotal, cartDiscountComputed));
     } catch (e, s) {
       log.error('ERROR - updateComputeUserCart $e');
       await Sentry.captureException(
@@ -295,18 +278,14 @@ ThunkAction computeCartTotals() {
   };
 }
 
-ThunkAction prepareAndSendOrder(
-    VoidCallback errorCallback, VoidCallback successCallback) {
+ThunkAction prepareAndSendOrder(VoidCallback errorCallback, VoidCallback successCallback) {
   return (Store store) async {
     try {
       //Prepare fields for order object
       DeliveryAddresses selectedAddress =
-          store.state.userState.listOfDeliveryAddresses[
-              store.state.cartState.selectedDeliveryAddressIndex - 1];
+          store.state.userState.listOfDeliveryAddresses[store.state.cartState.selectedDeliveryAddressIndex - 1];
 
-      bool isDelivery = store.state.cartState.selectedDeliveryAddressIndex == 0
-          ? false
-          : true;
+      bool isDelivery = store.state.cartState.selectedDeliveryAddressIndex == 0 ? false : true;
 
       //Format Object for API
       Map<String, dynamic> orderObject = {
@@ -315,23 +294,17 @@ ThunkAction prepareAndSendOrder(
               (e) => {
                 "id": int.parse(e.menuItem.menuItemID),
                 "options": e.selectedProductOptions.map(
-                  (key, value) =>
-                      MapEntry<String, int>(key.toString(), value.optionID),
+                  (key, value) => MapEntry<String, int>(key.toString(), value.optionID),
                 ),
               },
             )
             .toList(),
         "address": {
           "name": store.state.userState.displayName,
-          "phoneNumber": selectedAddress.phoneNumber ??
-              store.state.userState.phoneNumber ??
-              "",
-          "email": store.state.userState.email == ""
-              ? "email@notprovided.com"
-              : store.state.userState.email,
-          "lineOne": selectedAddress.houseNumber,
-          "lineTwo":
-              selectedAddress.buildingName + ", " + selectedAddress.townCity,
+          "phoneNumber": selectedAddress.phoneNumber ?? store.state.userState.phoneNumber ?? "",
+          "email": store.state.userState.email == "" ? "email@notprovided.com" : store.state.userState.email,
+          "lineOne": selectedAddress.addressLine1,
+          "lineTwo": selectedAddress.addressLine2 + ", " + selectedAddress.townCity,
           "postCode": selectedAddress.postalCode,
           "deliveryInstructions": "",
         },
@@ -342,64 +315,38 @@ ThunkAction prepareAndSendOrder(
         "vendor": 1,
         "fulfilmentMethod": isDelivery ? 1 : 0,
         "fulfilmentSlotFrom": isDelivery
-            ? formatDateForOrderObject(store
-                .state
-                .cartState
-                .deliverySlots[store.state.cartState.selectedSlotIndex]
-                .entries
-                .first
-                .value)
-            : formatDateForOrderObject(store
-                .state
-                .cartState
-                .collectionSlots[store.state.cartState.selectedSlotIndex]
-                .entries
-                .first
-                .value),
+            ? formatDateForOrderObject(
+                store.state.cartState.deliverySlots[store.state.cartState.selectedSlotIndex].entries.first.value)
+            : formatDateForOrderObject(
+                store.state.cartState.collectionSlots[store.state.cartState.selectedSlotIndex].entries.first.value),
         "fulfilmentSlotTo": isDelivery
-            ? formatDateForOrderObject(store
-                .state
-                .cartState
-                .deliverySlots[store.state.cartState.selectedSlotIndex]
-                .entries
-                .last
-                .value)
-            : formatDateForOrderObject(store
-                .state
-                .cartState
-                .collectionSlots[store.state.cartState.selectedSlotIndex]
-                .entries
-                .last
-                .value),
+            ? formatDateForOrderObject(
+                store.state.cartState.deliverySlots[store.state.cartState.selectedSlotIndex].entries.last.value)
+            : formatDateForOrderObject(
+                store.state.cartState.collectionSlots[store.state.cartState.selectedSlotIndex].entries.last.value),
         "walletAddress": store.state.userState.walletAddress,
       };
 
       print("Order Object Created: ${json.encode(orderObject).toString()}");
 
       //Call create order API with prepared orderobject
-      Map result = await vegiEatsService
-          .createOrder(orderObject)
-          .timeout(Duration(seconds: 5), onTimeout: () {
+      Map result = await vegiEatsService.createOrder(orderObject).timeout(Duration(seconds: 5), onTimeout: () {
         return {}; //return empty map on timeout to trigger errorCallback
       });
 
       if (result.isNotEmpty) {
         //Call Peepl Pay API to start checking the paymentIntentID
-        Map checkResult = await peeplPayService
-            .startPaymentIntentCheck(result['paymentIntentID']);
+        Map checkResult = await peeplPayService.startPaymentIntentCheck(result['paymentIntentID']);
 
         print("Order Result $result");
 
         //Crosscheck the PaymentIntentID with the amount calculcated on device.
-        if (checkResult['paymentIntent']['amount'] ==
-            store.state.cartState.cartTotal) {
-          store.dispatch(CreateOrder(
-              result['orderID'].toString(), result['paymentIntentID']));
+        if (checkResult['paymentIntent']['amount'] == store.state.cartState.cartTotal) {
+          store.dispatch(CreateOrder(result['orderID'].toString(), result['paymentIntentID']));
 
           //subscribe to firebase topic of orderID
 
-          firebaseMessaging
-              .subscribeToTopic('order-' + result['orderID'].toString());
+          firebaseMessaging.subscribeToTopic('order-' + result['orderID'].toString());
 
           successCallback();
         } else {
@@ -429,8 +376,7 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
 
       //Get tokens for GBPx and PPL
       Token GBPxToken = store.state.cashWalletState.tokens.values.firstWhere(
-        (token) =>
-            token.symbol.toLowerCase() == "GBPx".toString().toLowerCase(),
+        (token) => token.symbol.toLowerCase() == "GBPx".toString().toLowerCase(),
       );
 
       Token PPLToken = store.state.cashWalletState.tokens.values.firstWhere(
@@ -438,38 +384,34 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
       );
 
       //If Selected GBPx amount is not 0, transfer GBPx
-      Map<String, dynamic> GBPxResponse =
-          store.state.cartState.selectedGBPxAmount != 0.0
-              ? double.parse(GBPxToken.getBalance().replaceAll(",", "")) >
-                      store.state.cartState.selectedGBPxAmount
-                  ? await walletApi.tokenTransfer(
-                      getIt<Web3>(instanceName: 'fuseWeb3'),
-                      store.state.userState.walletAddress,
-                      GBPxToken.address,
-                      store.state.cartState.restaurantWalletAddress,
-                      store.state.cartState.selectedGBPxAmount.toString(),
-                      externalId: store.state.cartState.paymentIntentID,
-                    )
-                  : {}
-              : {};
+      Map<String, dynamic> GBPxResponse = store.state.cartState.selectedGBPxAmount != 0.0
+          ? double.parse(GBPxToken.getBalance().replaceAll(",", "")) > store.state.cartState.selectedGBPxAmount
+              ? await walletApi.tokenTransfer(
+                  getIt<Web3>(instanceName: 'fuseWeb3'),
+                  store.state.userState.walletAddress,
+                  GBPxToken.address,
+                  store.state.cartState.restaurantWalletAddress,
+                  store.state.cartState.selectedGBPxAmount.toString(),
+                  externalId: store.state.cartState.paymentIntentID,
+                )
+              : {}
+          : {};
 
       print(GBPxResponse);
 
       //If Selected PPL Amount is not 0, transfer PPL
-      Map<String, dynamic> PPLResponse =
-          store.state.cartState.selectedPPLAmount != 0.0
-              ? double.parse(PPLToken.getBalance().replaceAll(",", "")) >
-                      store.state.cartState.selectedPPLAmount
-                  ? await walletApi.tokenTransfer(
-                      getIt<Web3>(instanceName: 'fuseWeb3'),
-                      store.state.userState.walletAddress,
-                      PPLToken.address,
-                      store.state.cartState.restaurantWalletAddress,
-                      store.state.cartState.selectedPPLAmount.toString(),
-                      externalId: store.state.cartState.paymentIntentID,
-                    )
-                  : {}
-              : {};
+      Map<String, dynamic> PPLResponse = store.state.cartState.selectedPPLAmount != 0.0
+          ? double.parse(PPLToken.getBalance().replaceAll(",", "")) > store.state.cartState.selectedPPLAmount
+              ? await walletApi.tokenTransfer(
+                  getIt<Web3>(instanceName: 'fuseWeb3'),
+                  store.state.userState.walletAddress,
+                  PPLToken.address,
+                  store.state.cartState.restaurantWalletAddress,
+                  store.state.cartState.selectedPPLAmount.toString(),
+                  externalId: store.state.cartState.paymentIntentID,
+                )
+              : {}
+          : {};
 
       print(PPLResponse);
 
@@ -508,18 +450,13 @@ ThunkAction sendTokenPayment(VoidCallback successCallback) {
   };
 }
 
-ThunkAction setRestaurantDetails(
-    String restaurantID,
-    String restaurantName,
-    DeliveryAddresses restaurantAddress,
-    String walletAddress,
-    VoidCallback sendSnackBar) {
+ThunkAction setRestaurantDetails(String restaurantID, String restaurantName, DeliveryAddresses restaurantAddress,
+    String walletAddress, VoidCallback sendSnackBar) {
   return (Store store) async {
     try {
       //If cart has existing items -> clear cart, set new restaurant details, show snackbar if cart had items.
 
-      if (store.state.cartState.restaurantName.isNotEmpty &&
-          store.state.cartState.restaurantID.isNotEmpty) {
+      if (store.state.cartState.restaurantName.isNotEmpty && store.state.cartState.restaurantID.isNotEmpty) {
         sendSnackBar();
         store.dispatch(ClearCart());
         store.dispatch(

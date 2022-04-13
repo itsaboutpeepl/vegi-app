@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/address/editAddressView.dart';
@@ -28,9 +27,7 @@ class _AddressCardState extends State<AddressCard> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: CachedNetworkImage(
-                imageUrl: mapPreviewImage(
-                    latitude: widget.address.latitude,
-                    longitude: widget.address.longitude),
+                imageUrl: mapPreviewImage(latitude: widget.address.latitude, longitude: widget.address.longitude),
                 fit: BoxFit.cover,
               ),
             ),
@@ -52,8 +49,7 @@ class _AddressCardState extends State<AddressCard> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              '${widget.address.houseNumber}, \n${widget.address.postalCode}'),
+                          child: Text('${widget.address.addressLine1}, \n${widget.address.postalCode}'),
                         ),
                         Spacer(),
                         CircleAvatar(
@@ -62,15 +58,12 @@ class _AddressCardState extends State<AddressCard> {
                               Icons.edit_outlined,
                               color: Colors.grey[800],
                             ),
-                            onPressed: () => showBarModalBottomSheet(
+                            onPressed: () => showModalBottomSheet(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(10),
                                 ),
                               ),
-                              isDismissible: true,
-                              enableDrag: false,
-                              useRootNavigator: true,
                               context: context,
                               builder: (context) => AddressView(
                                 existingAddress: widget.address,

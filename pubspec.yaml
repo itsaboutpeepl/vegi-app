@@ -33,6 +33,7 @@ dependencies:
   flutter_cupertino_localizations: ^1.0.1
   flutter_dotenv: ^5.0.0
   flutter_form_builder: ^7.1.0
+  form_builder_extra_fields: ^7.1.0
   form_builder_validators: ^7.4.0
   flutter_inappwebview: ^5.3.2
   flutter_localized_locales: ^2.0.2
@@ -52,6 +53,7 @@ dependencies:
   get_it: ^7.2.0
   google_fonts: ^2.1.0
   google_maps_flutter: ^2.1.1
+  google_api_headers: ^1.2.0
   grouped_list: ^4.0.0
   image_picker: ^0.8.2
   injectable: ^1.5.3
@@ -79,6 +81,7 @@ dependencies:
   simple_animations: ^4.0.1
   smooth_page_indicator: ^1.0.0+2
   url_launcher: ^6.0.9
+  uuid: ^3.0.6
   webview_flutter: ^3.0.1
   wallet_core:
     git:

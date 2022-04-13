@@ -138,10 +138,10 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.houseNumber + ", ",
+                                            text: viewmodel.orderAddress.addressLine1 + ", ",
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.buildingName + "\n",
+                                            text: viewmodel.orderAddress.addressLine2 + "\n",
                                           ),
                                           TextSpan(
                                             text: viewmodel.orderAddress.postalCode + ", ",

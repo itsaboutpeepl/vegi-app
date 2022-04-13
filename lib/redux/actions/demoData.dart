@@ -55,8 +55,8 @@ RestaurantItem restaurantItem3 = new RestaurantItem(
 
 DeliveryAddresses demoAddress = new DeliveryAddresses(
   internalID: 80085,
-  houseNumber: "Shop 69",
-  buildingName: "221B Baker Street",
+  addressLine1: "Shop 69",
+  addressLine2: "221B Baker Street",
   townCity: "Liverpool",
   postalCode: "L7 0HG",
   latitude: 3.41231123,

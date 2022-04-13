@@ -10,8 +10,8 @@ class DeliveryAddresses with _$DeliveryAddresses {
   @JsonSerializable()
   factory DeliveryAddresses({
     required int internalID,
-    required String houseNumber,
-    required String buildingName,
+    required String addressLine1,
+    required String addressLine2,
     required String townCity,
     required String postalCode,
     required double latitude,
@@ -19,6 +19,5 @@ class DeliveryAddresses with _$DeliveryAddresses {
     String? phoneNumber,
   }) = _DeliveryAddresses;
 
-  factory DeliveryAddresses.fromJson(dynamic json) =>
-      _$DeliveryAddressesFromJson(json);
+  factory DeliveryAddresses.fromJson(dynamic json) => _$DeliveryAddressesFromJson(json);
 }

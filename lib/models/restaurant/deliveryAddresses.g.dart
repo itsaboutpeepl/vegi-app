@@ -9,8 +9,8 @@ part of 'deliveryAddresses.dart';
 _$_DeliveryAddresses _$$_DeliveryAddressesFromJson(Map<String, dynamic> json) =>
     _$_DeliveryAddresses(
       internalID: json['internalID'] as int,
-      houseNumber: json['houseNumber'] as String,
-      buildingName: json['buildingName'] as String,
+      addressLine1: json['addressLine1'] as String,
+      addressLine2: json['addressLine2'] as String,
       townCity: json['townCity'] as String,
       postalCode: json['postalCode'] as String,
       latitude: (json['latitude'] as num).toDouble(),
@@ -22,8 +22,8 @@ Map<String, dynamic> _$$_DeliveryAddressesToJson(
         _$_DeliveryAddresses instance) =>
     <String, dynamic>{
       'internalID': instance.internalID,
-      'houseNumber': instance.houseNumber,
-      'buildingName': instance.buildingName,
+      'addressLine1': instance.addressLine1,
+      'addressLine2': instance.addressLine2,
       'townCity': instance.townCity,
       'postalCode': instance.postalCode,
       'latitude': instance.latitude,
