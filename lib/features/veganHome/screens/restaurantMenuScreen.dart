@@ -5,14 +5,12 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurantMenuAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/singleRegularMenuItem.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleRegularMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
-    as ts;
+import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart' as ts;
 
 class RestaurantMenuScreen extends StatefulWidget {
-  const RestaurantMenuScreen({Key? key, required this.menuList})
-      : super(key: key);
+  const RestaurantMenuScreen({Key? key, required this.menuList}) : super(key: key);
 
   @override
   State<RestaurantMenuScreen> createState() => _RestaurantMenuScreenState();
@@ -26,20 +24,9 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
 
   @override
   void initState() {
-    // widget.menuList.forEach((element) {
-    //   element.isFeatured
-    //       ? _featuredList.add(element)
-    //       : _regularList.add(element);
-    // });
-
-    //TODO: Remove Eventually
-    for (var i = 0; i < 2; i++) {
-      _featuredList.add(widget.menuList.first);
-    }
-
-    for (var i = 0; i < 4; i++) {
-      _regularList.add(widget.menuList.first);
-    }
+    widget.menuList.forEach((element) {
+      element.isFeatured ? _featuredList.add(element) : _regularList.add(element);
+    });
     super.initState();
   }
 
@@ -80,8 +67,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
               padding: const EdgeInsets.only(top: 10, bottom: 20),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) =>
-                      SingleFeaturedMenuItem(menuItem: _featuredList[index]),
+                  (context, index) => SingleFeaturedMenuItem(menuItem: _featuredList[index]),
                   childCount: _featuredList.length,
                 ),
               ),
@@ -95,8 +81,7 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
               padding: const EdgeInsets.only(top: 10, bottom: 20),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) =>
-                      SingleRegularMenuItem(menuItem: _regularList[index]),
+                  (context, index) => SingleRegularMenuItem(menuItem: _regularList[index]),
                   childCount: _regularList.length,
                 ),
               ),
