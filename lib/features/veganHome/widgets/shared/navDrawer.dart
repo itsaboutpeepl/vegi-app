@@ -26,19 +26,22 @@ class _NavDrawerState extends State<NavDrawer> {
               DrawerHeader(
                 child: Column(
                   children: [
-                    CachedNetworkImage(
-                      width: 50,
-                      height: 50,
-                      imageUrl: viewModel.avatarUrl,
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/anom.png'),
-                        radius: 30,
-                      ),
-                      imageBuilder: (context, imageProvider) => Image(
-                        image: imageProvider,
-                        fit: BoxFit.fill,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: CachedNetworkImage(
+                        width: 50,
+                        height: 50,
+                        imageUrl: viewModel.avatarUrl,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                          backgroundImage: AssetImage('assets/images/anom.png'),
+                          radius: 30,
+                        ),
+                        imageBuilder: (context, imageProvider) => Image(
+                          image: imageProvider,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                     Padding(
