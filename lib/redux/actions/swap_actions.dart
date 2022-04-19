@@ -53,8 +53,7 @@ ThunkAction fetchSwapList() {
     try {
       store.dispatch(ResetTokenList());
       final dio = getIt<Dio>();
-      Response<String> response =
-          await dio.get(UrlConstants.FUSESWAP_TOKEN_LIST);
+      Response<String> response = await dio.get(UrlConstants.FUSESWAP_TOKEN_LIST);
       Map data = jsonDecode(response.data!);
       Map<String, Token> tokens = Map();
       Map<String, String> tokensImages = Map();
@@ -111,10 +110,8 @@ ThunkAction fetchSwapListPrices() {
     try {
       SwapState swapState = store.state.swapState;
       for (Token token in swapState.tokens.values) {
-        Future<List<dynamic>> prices = Future.wait([
-          fuseSwapService.price(token.address),
-          fuseSwapService.priceChange(token.address)
-        ]);
+        Future<List<dynamic>> prices =
+            Future.wait([fuseSwapService.price(token.address), fuseSwapService.priceChange(token.address)]);
         List<dynamic> result = await prices;
         store.dispatch(UpdateTokenPrices(
           tokenAddress: token.address,
@@ -136,8 +133,8 @@ ThunkAction fetchSwapListPrices() {
 ThunkAction fetchSwapBalances() {
   return (Store store) async {
     try {
-      SwapState swapState = store.state.swapState;
-      String walletAddress = store.state.userState.walletAddress;
+      // SwapState swapState = store.state.swapState;
+      // String walletAddress = store.state.userState.walletAddress;
       // if (fuseWeb3 == null) {
       //   throw 'web3 is empty';
       // }

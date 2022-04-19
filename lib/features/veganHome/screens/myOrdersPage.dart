@@ -22,8 +22,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   bool _isEmpty = false;
 
   void fetchOrdersList(String walletAddress) async {
-    listOfOrders =
-        (await vegiEatsService.getPastOrders(walletAddress)).reversed.toList();
+    listOfOrders = (await vegiEatsService.getPastOrders(walletAddress)).reversed.toList();
 
     setState(() {
       listOfOrders;
@@ -48,13 +47,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                   ? EmptyStatePage(
                       emoji: "😐",
                       title: "Pretty empty here, isn't it?",
-                      subtitle:
-                          "Try ordering from one of our amazing restauarants to fill this page up!",
+                      subtitle: "Try ordering from one of our amazing restauarants to fill this page up!",
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.symmetric(vertical: 30),
-                      itemBuilder: (_, index) =>
-                          SingleOrderCard(order: listOfOrders[index]),
+                      itemBuilder: (_, index) => SingleOrderCard(order: listOfOrders[index]),
                       separatorBuilder: (_, index) => Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
                           ),
@@ -101,7 +98,25 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                       text: "Delifonesca \n",
                       children: [
                         TextSpan(
-                          text: widget.order['total'],
+                          text: widget.order['total'] + "\n",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: widget.order['rewardsIssued'].toString() + " ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        WidgetSpan(
+                          child: Image.asset(
+                            "assets/images/avatar-ppl-red.png",
+                            width: 25,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " earned",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
@@ -136,8 +151,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
               ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemBuilder: (_, index) => SingleProductOrderItem(
-                    product: widget.order['products'][index]),
+                itemBuilder: (_, index) => SingleProductOrderItem(product: widget.order['products'][index]),
                 separatorBuilder: (_, index) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                 ),
@@ -181,16 +195,13 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                   text: widget.order['deliveryEmail'] + "\n",
                                 ),
                                 TextSpan(
-                                  text: widget.order['deliveryPhoneNumber'] +
-                                      "\n",
+                                  text: widget.order['deliveryPhoneNumber'] + "\n",
                                 ),
                                 TextSpan(
-                                  text: widget.order['deliveryAddressLineOne'] +
-                                      ", ",
+                                  text: widget.order['deliveryAddressLineOne'] + ", ",
                                 ),
                                 TextSpan(
-                                  text: widget.order['deliveryAddressLineTwo'] +
-                                      "\n",
+                                  text: widget.order['deliveryAddressLineTwo'] + "\n",
                                 ),
                                 TextSpan(
                                   text: widget.order['deliveryAddressPostCode'],
@@ -212,8 +223,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
 }
 
 class SingleProductOrderItem extends StatefulWidget {
-  const SingleProductOrderItem({Key? key, required this.product})
-      : super(key: key);
+  const SingleProductOrderItem({Key? key, required this.product}) : super(key: key);
 
   final Map<String, dynamic> product;
 
@@ -233,9 +243,8 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text.rich(
-                  TextSpan(text: widget.product['name'], children: [
-                    TextSpan(text: "\n${widget.product['basePrice']}")
-                  ]),
+                  TextSpan(
+                      text: widget.product['name'], children: [TextSpan(text: "\n${widget.product['basePrice']}")]),
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

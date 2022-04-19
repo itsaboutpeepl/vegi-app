@@ -44,30 +44,24 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
 
     sanitizedOrderObject["orderID"] = singleOrder['id'];
     sanitizedOrderObject["total"] = cFPrice(singleOrder['total']);
-    sanitizedOrderObject["orderedDateTime"] = formatDate(
-        DateTime.fromMillisecondsSinceEpoch(singleOrder['orderedDateTime'])
-            .toLocal());
+    sanitizedOrderObject["orderedDateTime"] =
+        formatDate(DateTime.fromMillisecondsSinceEpoch(singleOrder['orderedDateTime']).toLocal());
     sanitizedOrderObject["deliveryName"] = singleOrder['deliveryName'];
     sanitizedOrderObject["deliveryEmail"] = singleOrder['deliveryEmail'];
-    sanitizedOrderObject["deliveryPhoneNumber"] =
-        singleOrder['deliveryPhoneNumber'];
-    sanitizedOrderObject["deliveryAddressLineOne"] =
-        singleOrder['deliveryAddressLineOne'];
-    sanitizedOrderObject["deliveryAddressLineTwo"] =
-        singleOrder['deliveryAddressLineTwo'];
-    sanitizedOrderObject["deliveryAddressPostCode"] =
-        singleOrder['deliveryAddressPostCode'];
+    sanitizedOrderObject["deliveryPhoneNumber"] = singleOrder['deliveryPhoneNumber'];
+    sanitizedOrderObject["deliveryAddressLineOne"] = singleOrder['deliveryAddressLineOne'];
+    sanitizedOrderObject["deliveryAddressLineTwo"] = singleOrder['deliveryAddressLineTwo'];
+    sanitizedOrderObject["deliveryAddressPostCode"] = singleOrder['deliveryAddressPostCode'];
     sanitizedOrderObject["paymentStatus"] =
-        singleOrder['paymentStatus'][0].toUpperCase() +
-            singleOrder['paymentStatus'].substring(1);
+        singleOrder['paymentStatus'][0].toUpperCase() + singleOrder['paymentStatus'].substring(1);
+    sanitizedOrderObject['rewardsIssued'] = singleOrder['rewardsIssued'];
 
     List<Map<String, dynamic>> listOfProductsOrdered = [];
     //Products in Order
     singleOrder['items'].forEach((productItem) {
       Map<String, dynamic> singleProductItem = {};
       singleProductItem['name'] = productItem['product']['name'];
-      singleProductItem['basePrice'] =
-          cFPrice(productItem['product']['basePrice']);
+      singleProductItem['basePrice'] = cFPrice(productItem['product']['basePrice']);
 
       //Options in Product
       if (productItem.containsKey("optionValues")) {
