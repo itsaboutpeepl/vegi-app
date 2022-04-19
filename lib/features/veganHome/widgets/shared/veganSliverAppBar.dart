@@ -123,26 +123,29 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                     ),
                     Spacer(),
                     Material(
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(50),
                       elevation: 3,
                       child: GestureDetector(
                         onTap: () {
                           Scaffold.of(context).openDrawer();
                         },
-                        child: CachedNetworkImage(
-                          width: 40,
-                          height: 40,
-                          imageUrl: viewmodel.avatarUrl,
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/images/anom.png'),
-                            radius: 30,
-                          ),
-                          imageBuilder: (context, imageProvider) => Image(
-                            image: imageProvider,
-                            fit: BoxFit.fill,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: CachedNetworkImage(
+                            width: 40,
+                            height: 40,
+                            imageUrl: viewmodel.avatarUrl,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('assets/images/anom.png'),
+                              radius: 30,
+                            ),
+                            imageBuilder: (context, imageProvider) => Image(
+                              image: imageProvider,
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
                       ),
