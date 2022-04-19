@@ -28,14 +28,12 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                 child: Row(
                   children: [
                     Text(
                       "Schedule Order",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                     ),
                     Spacer(),
                     IconButton(
@@ -94,46 +92,46 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                             viewmodel.selectedDeliveryAddressIndex ==
                                 0 //if collectionSlots are empty, and chosen method is collection (first list object)
                         ? Center(
-                            child: Text("No Slots Avaliable"),
+                            child: Text("No Slots Avaliable Currently!"),
                           )
-                        : viewmodel.deliverySlots
-                                .isEmpty //else if delivery slots are empty
+                        : viewmodel.selectedDeliveryAddressIndex == viewmodel.newAddressCardIndex
                             ? Center(
-                                child: Text("No Slots Avaliable"),
+                                child: Text("Please create an address to get slots"),
                               )
-                            : ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    viewmodel.selectedDeliveryAddressIndex == 0
+                            : viewmodel.deliverySlots.isEmpty //else if delivery slots are empty
+                                ? Center(
+                                    child: Text("No Slots Avaliable Currently!"),
+                                  )
+                                : ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: viewmodel.selectedDeliveryAddressIndex == 0
                                         ? viewmodel.collectionSlots.length
                                         : viewmodel.deliverySlots.length,
-                                itemBuilder: (context, index) => Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: ChoiceChip(
-                                    selectedColor: themeShade100,
-                                    avatar: Icon(
-                                      Icons.timer,
-                                      size: 18,
-                                    ),
-                                    label: Text(
-                                      mapToString(
-                                        viewmodel.selectedDeliveryAddressIndex ==
-                                                0
-                                            ? viewmodel.collectionSlots[index]
-                                            : viewmodel.deliverySlots[index],
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: ChoiceChip(
+                                        selectedColor: themeShade100,
+                                        avatar: Icon(
+                                          Icons.timer,
+                                          size: 18,
+                                        ),
+                                        label: Text(
+                                          mapToString(
+                                            viewmodel.selectedDeliveryAddressIndex == 0
+                                                ? viewmodel.collectionSlots[index]
+                                                : viewmodel.deliverySlots[index],
+                                          ),
+                                          style: TextStyle(color: Colors.grey[800]),
+                                        ),
+                                        selected: viewmodel.selectedSlotIndex == index,
+                                        onSelected: (bool selected) {
+                                          setState(() {
+                                            viewmodel.updateSlotIndex(index);
+                                          });
+                                        },
                                       ),
-                                      style: TextStyle(color: Colors.grey[800]),
                                     ),
-                                    selected:
-                                        viewmodel.selectedSlotIndex == index,
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        viewmodel.updateSlotIndex(index);
-                                      });
-                                    },
                                   ),
-                                ),
-                              ),
               )
             ],
           ),

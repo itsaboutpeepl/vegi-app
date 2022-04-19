@@ -14,8 +14,7 @@ class AddressList extends StatefulWidget {
 }
 
 class _AddressListState extends State<AddressList> {
-  late PageController _pageController =
-      PageController(viewportFraction: 0.9, initialPage: 1);
+  late PageController _pageController = PageController(viewportFraction: 0.9, initialPage: 1);
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +32,11 @@ class _AddressListState extends State<AddressList> {
                   ? PickUpCard() //Index zero of the page builder
                   : index == viewmodel.listOfDeliveryAddresses.length + 1
                       ? NewAddressCard() //Last index of the page builder, length of list + 1
-                      : AddressCard(
-                          address:
-                              viewmodel.listOfDeliveryAddresses[index - 1]);
+                      : AddressCard(address: viewmodel.listOfDeliveryAddresses[index - 1]);
             },
             itemCount: viewmodel.listOfDeliveryAddresses.length + 2,
             onPageChanged: (index) {
-              index == viewmodel.listOfDeliveryAddresses.length + 1
-                  ? null //Index has 2 plus the length, Last index is the add card, so that shouldnt trigger the func.
-                  : viewmodel.updateDeliveryAddressIndex(index);
+              viewmodel.updateDeliveryAddressIndex(index);
             },
           ),
         );

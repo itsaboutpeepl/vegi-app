@@ -66,14 +66,12 @@ class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
                 ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
-                  child: Image(
+                  child: CachedNetworkImage(
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.width * 0.2,
                     fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                      widget.menuItem.imageURL,
-                    ),
-                    errorBuilder: (context, error, stackTrace) {
+                    imageUrl: widget.menuItem.imageURL,
+                    errorWidget: (context, error, stackTrace) {
                       return SizedBox.shrink(); //TODO: ADD default Image
                     },
                   ),

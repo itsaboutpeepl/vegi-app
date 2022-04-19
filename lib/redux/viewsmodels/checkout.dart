@@ -13,6 +13,7 @@ class CheckoutViewModel extends Equatable {
   final String discountCode;
   final int discountPercent;
   final int cartTotal;
+  final int newAddressCardIndex;
   final Function(String discountCode, VoidCallback) updateDiscount;
   final Function(int index) updateSlotIndex;
   final Function(int tipAmount) updateTipAmount;
@@ -33,6 +34,7 @@ class CheckoutViewModel extends Equatable {
     required this.updateTipAmount,
     required this.createOrder,
     required this.updateSlotTimes,
+    required this.newAddressCardIndex,
   });
 
   static CheckoutViewModel fromStore(Store<AppState> store) {
@@ -40,22 +42,20 @@ class CheckoutViewModel extends Equatable {
       deliverySlots: store.state.cartState.deliverySlots,
       collectionSlots: store.state.cartState.collectionSlots,
       selectedUserTip: store.state.cartState.selectedTipAmount,
-      selectedDeliveryAddressIndex:
-          store.state.cartState.selectedDeliveryAddressIndex,
+      selectedDeliveryAddressIndex: store.state.cartState.selectedDeliveryAddressIndex,
       discountCode: store.state.cartState.discountCode,
       discountPercent: store.state.cartState.cartDiscountPercent,
       cartTotal: store.state.cartState.cartTotal,
       selectedSlotIndex: store.state.cartState.selectedSlotIndex,
+      newAddressCardIndex: store.state.userState.listOfDeliveryAddresses.length + 1,
       updateDiscount: (discountCode, errorCallback) {
         store.dispatch(updateCartDiscount(discountCode, errorCallback));
       },
       updateSlotIndex: (int index) {
         store.dispatch(UpdateSlotIndex(index));
         store.state.cartState.selectedDeliveryAddressIndex == 0
-            ? store.dispatch(
-                SetDeliveryCharge(store.state.cartState.collectionCharge))
-            : store.dispatch(
-                SetDeliveryCharge(store.state.cartState.deliveryCharge));
+            ? store.dispatch(SetDeliveryCharge(store.state.cartState.collectionCharge))
+            : store.dispatch(SetDeliveryCharge(store.state.cartState.deliveryCharge));
         store.dispatch(computeCartTotals());
       },
       updateTipAmount: (int tipAmount) {

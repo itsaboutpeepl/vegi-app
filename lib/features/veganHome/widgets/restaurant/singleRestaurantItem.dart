@@ -35,11 +35,9 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                 elevation: 20,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image(
-                    image: CachedNetworkImageProvider(
-                      widget.restaurantItem.imageURL,
-                    ),
-                    errorBuilder: (context, error, stackTrace) {
+                  child: CachedNetworkImage(
+                    imageUrl: widget.restaurantItem.imageURL,
+                    errorWidget: (context, error, stackTrace) {
                       return SizedBox.shrink(); //TODO: Change to default image
                     },
                     width: MediaQuery.of(context).size.width * 0.9,

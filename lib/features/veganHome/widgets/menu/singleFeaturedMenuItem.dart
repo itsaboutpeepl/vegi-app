@@ -36,17 +36,17 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image(
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    image: CachedNetworkImageProvider(
-                      widget.menuItem.imageURL,
-                    ),
-                    errorBuilder: (context, error, stackTrace) {
-                      return SizedBox.shrink(); //TODO: Change to default image
-                    },
-                  ),
+                  child: widget.menuItem.imageURL != ""
+                      ? CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          imageUrl: widget.menuItem.imageURL,
+                          errorWidget: (context, error, stackTrace) {
+                            return SizedBox.shrink(); //TODO: Change to default image
+                          },
+                        )
+                      : SizedBox.shrink(),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15),

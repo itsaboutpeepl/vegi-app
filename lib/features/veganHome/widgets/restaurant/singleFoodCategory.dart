@@ -2,9 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SingleCategoryItem extends StatefulWidget {
-  const SingleCategoryItem(
-      {Key? key, required this.imageURL, required this.title})
-      : super(key: key);
+  const SingleCategoryItem({Key? key, required this.imageURL, required this.title}) : super(key: key);
   final String imageURL;
   final String title;
 
@@ -28,9 +26,9 @@ class _SingleCategoryItemState extends State<SingleCategoryItem> {
               child: Container(
                 width: 300,
                 height: 200,
-                child: Image(
+                child: CachedNetworkImage(
                   fit: BoxFit.contain,
-                  image: CachedNetworkImageProvider(widget.imageURL),
+                  imageUrl: widget.imageURL,
                   width: MediaQuery.of(context).size.width * 0.8,
                 ),
               ),

@@ -29,11 +29,14 @@ class _AddressViewState extends State<AddressView> {
   bool _isExistingAddress = false;
   final _sessionToken = Uuid().v4();
   late PlaceApiProvider _placeApiProvider;
+  late GlobalKey<FormBuilderState> _addressFormKey;
 
   @override
   void initState() {
     widget.existingAddress == null ? _isExistingAddress = false : _isExistingAddress = true;
     _placeApiProvider = PlaceApiProvider(_sessionToken);
+
+    _addressFormKey = GlobalKey<FormBuilderState>();
     super.initState();
   }
 
@@ -49,7 +52,7 @@ class _AddressViewState extends State<AddressView> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: FormBuilder(
-                  key: AppKeys.addressFormKey,
+                  key: _addressFormKey,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -72,13 +75,12 @@ class _AddressViewState extends State<AddressView> {
                             labelText: 'Address Line 1',
                           ),
                           onSuggestionSelected: (suggestion) {
-                            //TODO: make the call to places api, get actual address place, and then autofill the fields with the stuff.
                             _placeApiProvider.getPlaceDetailFromId(suggestion.placeId).then((Place place) {
-                              AppKeys.addressFormKey.currentState!.setInternalFieldValue(
+                              _addressFormKey.currentState!.setInternalFieldValue(
                                   "addressLine1Internal", "${place.streetNumber} ${place.street}",
                                   isSetState: false);
-                              AppKeys.addressFormKey.currentState!.fields["townCity"]!.didChange(place.city);
-                              AppKeys.addressFormKey.currentState!.fields["postalCode"]!.didChange(place.zipCode);
+                              _addressFormKey.currentState!.fields["townCity"]!.didChange(place.city);
+                              _addressFormKey.currentState!.fields["postalCode"]!.didChange(place.zipCode);
                             });
                           },
                           itemBuilder: (context, Suggestion suggestion) {
@@ -182,11 +184,11 @@ class _AddressViewState extends State<AddressView> {
                             fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
                           ),
                           onPressed: () {
-                            if (AppKeys.addressFormKey.currentState!.saveAndValidate()) {
-                              _tryFetchMapLocation()
-                                  .then((LatLng? value) => vm.addDeliveryAddress(saveDeliveryAddress(position: value)));
-                              print(saveDeliveryAddress());
-                              Navigator.pop(context);
+                            if (_addressFormKey.currentState!.saveAndValidate()) {
+                              _tryFetchMapLocation().then((LatLng? value) {
+                                vm.addDeliveryAddress(saveDeliveryAddress(position: value));
+                                Navigator.pop(context);
+                              });
                             }
                           },
                           child: const Text('Save Address'),
@@ -205,7 +207,7 @@ class _AddressViewState extends State<AddressView> {
 
   Future<LatLng?> _tryFetchMapLocation() async {
     print("Hello from auto fill map location");
-    Suggestion address = AppKeys.addressFormKey.currentState!.fields["addressLine1"]!.value;
+    Suggestion address = _addressFormKey.currentState!.fields["addressLine1"]!.value;
 
     List<Location> possibleLocations =
         await locationFromAddress(address.description).onError((error, stackTrace) => []);
@@ -217,7 +219,7 @@ class _AddressViewState extends State<AddressView> {
   }
 
   DeliveryAddresses saveDeliveryAddress({LatLng? position}) {
-    Map<String, dynamic> formValue = AppKeys.addressFormKey.currentState!.value;
+    Map<String, dynamic> formValue = _addressFormKey.currentState!.value;
 
     return DeliveryAddresses(
       internalID: _isExistingAddress

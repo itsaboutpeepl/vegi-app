@@ -43,7 +43,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "Slide left for Pickup",
+                        "← Slide left for Pickup",
                         style: TextStyle(color: Colors.grey[400]),
                       ),
                     ),
@@ -60,9 +60,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           viewmodel.createOrder(() {
                             //errorCallBack
                             print("error took place");
-                            showErrorSnack(
-                                context: context,
-                                title: "Something went wrong");
+                            showErrorSnack(context: context, title: "Something went wrong");
                           }, () {
                             //successCallBack
                             showModalBottomSheet(
