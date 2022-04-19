@@ -13,8 +13,7 @@ class OnBoardScreen extends StatefulWidget {
   _OnBoardScreenState createState() => _OnBoardScreenState();
 }
 
-class _OnBoardScreenState extends State<OnBoardScreen>
-    with TickerProviderStateMixin {
+class _OnBoardScreenState extends State<OnBoardScreen> with TickerProviderStateMixin {
   late PageController _pageController;
   static const _kDuration = Duration(milliseconds: 2000);
   static const _kCurve = Curves.ease;
@@ -46,16 +45,17 @@ class _OnBoardScreenState extends State<OnBoardScreen>
   }
 
   void nextPage() {
-    _pageController.nextPage(
-        duration: Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+    if (_pageController.page!.toInt() == 4) {
+      return;
+    }
+    _pageController.nextPage(duration: Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
   }
 
   void previousPage() {
     if (_pageController.page!.toInt() == 0) {
       return;
     }
-    _pageController.previousPage(
-        duration: Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+    _pageController.previousPage(duration: Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
   }
 
   final tween = MultiTween();
@@ -83,23 +83,14 @@ class _OnBoardScreenState extends State<OnBoardScreen>
     ];
 
     final _tween = TimelineTween<Color>()
-      ..addScene(
-              begin: const Duration(seconds: 0),
-              duration: const Duration(seconds: 1))
-          .animate(
+      ..addScene(begin: const Duration(seconds: 0), duration: const Duration(seconds: 1)).animate(
         screenColor,
         tween: ColorTween(begin: themeShade200, end: themeShade700),
       )
-      ..addScene(
-              begin: const Duration(seconds: 1),
-              end: const Duration(seconds: 3))
-          .animate(screenColor,
-              tween: ColorTween(begin: themeShade700, end: themeShade1100))
-      ..addScene(
-              begin: const Duration(seconds: 3),
-              duration: const Duration(seconds: 1))
-          .animate(screenColor,
-              tween: ColorTween(begin: themeShade1100, end: themeShade1200));
+      ..addScene(begin: const Duration(seconds: 1), end: const Duration(seconds: 3))
+          .animate(screenColor, tween: ColorTween(begin: themeShade700, end: themeShade1100))
+      ..addScene(begin: const Duration(seconds: 3), duration: const Duration(seconds: 1))
+          .animate(screenColor, tween: ColorTween(begin: themeShade1100, end: themeShade1200));
     return Scaffold(
       body: Column(
         children: [
@@ -118,12 +109,14 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                           children: <Widget>[
                             PageView.builder(
                               onPageChanged: (page) {
-                                if (_pageController.page!.toInt() ==
-                                    (welcomeScreens.length - 2)) {
+                                if (page == (welcomeScreens.length - 1)) {
                                   setState(() {
                                     _bottomRowOpacity = 0;
                                   });
-                                }
+                                } else
+                                  setState(() {
+                                    _bottomRowOpacity = 1;
+                                  });
                               },
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: welcomeScreens.length,
@@ -162,8 +155,7 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                                       ),
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.075,
+                                      width: MediaQuery.of(context).size.width * 0.075,
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(20.0),
@@ -181,8 +173,7 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                                       ),
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.075,
+                                      width: MediaQuery.of(context).size.width * 0.075,
                                     ),
                                     GestureDetector(
                                       onTap: () => nextPage(),
