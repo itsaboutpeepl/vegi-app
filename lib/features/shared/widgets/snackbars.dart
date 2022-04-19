@@ -29,12 +29,7 @@ void showErrorSnack({
         ),
       ),
       backgroundColor: Theme.of(context).bottomAppBarColor,
-      margin: margin ??
-          EdgeInsets.only(
-              top: 8,
-              right: 8,
-              left: 8,
-              bottom: MediaQuery.of(context).size.height * 0.01),
+      margin: margin ?? EdgeInsets.only(top: 8, right: 8, left: 8, bottom: MediaQuery.of(context).size.height * 0.01),
       borderRadius: BorderRadius.all(
         Radius.circular(8.0),
       ),
@@ -61,10 +56,10 @@ void showCopiedFlushbar(context) {
     ),
     backgroundColor: Theme.of(context).bottomAppBarColor,
     margin: EdgeInsets.only(
-      top: 8,
-      right: 8,
-      left: 8,
-      bottom: 100,
+      top: 25,
+      right: 25,
+      left: 25,
+      bottom: 25,
     ),
     borderRadius: BorderRadius.all(
       Radius.circular(8.0),

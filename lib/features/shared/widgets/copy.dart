@@ -20,7 +20,7 @@ class CopyToClipboard extends StatelessWidget {
         I10n.of(context).copy_to_clipboard,
         style: TextStyle(
           color: this.textColor ?? Theme.of(context).colorScheme.onSurface,
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
       ),

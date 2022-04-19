@@ -62,9 +62,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                             ),
                           ),
                           child: Text(
-                            viewModel.isLoggedOut
-                                ? I10n.of(context).login
-                                : I10n.of(context).create_new_wallet,
+                            viewModel.isLoggedOut ? I10n.of(context).login : I10n.of(context).create_new_wallet,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
@@ -86,7 +84,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                 setState(() {
                                   isPrimaryPreloading = false;
                                 });
-                                context.router.replace(SignUpScreen());
+                                context.router.push(ShowUserMnemonicScreen());
                               }, () {
                                 setState(() {
                                   isPrimaryPreloading = false;
@@ -107,11 +105,9 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                       label: I10n.of(context).restore_backup,
                                       onPressed: () {
                                         Segment.track(
-                                          eventName:
-                                              'Existing User: Restore wallet from backup',
+                                          eventName: 'Existing User: Restore wallet from backup',
                                         );
-                                        context.router
-                                            .replace(RestoreFromBackupScreen());
+                                        context.router.push(RestoreFromBackupScreen());
                                       },
                                       textColor: Colors.grey[100]!,
                                     ),
@@ -129,15 +125,14 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                       onPressed: () async {
                                         bool result = await showDialog(
                                           context: context,
-                                          builder: (context) =>
-                                              WarnBeforeReCreation(),
+                                          builder: (context) => WarnBeforeReCreation(),
                                         );
                                         if (result) {
                                           setState(() {
                                             isTransparentPreloading = true;
                                           });
                                           viewModel.createLocalAccount(() {
-                                            context.router.push(SignUpScreen());
+                                            context.router.push(ShowUserMnemonicScreen());
                                           }, () {
                                             setState(() {
                                               isTransparentPreloading = false;
@@ -154,11 +149,9 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                   textColor: Colors.grey[100]!,
                                   onPressed: () {
                                     Segment.track(
-                                      eventName:
-                                          'Existing User: Restore wallet from backup',
+                                      eventName: 'Existing User: Restore wallet from backup',
                                     );
-                                    context.router
-                                        .push(RestoreFromBackupScreen());
+                                    context.router.push(RestoreFromBackupScreen());
                                   },
                                 ),
                         )

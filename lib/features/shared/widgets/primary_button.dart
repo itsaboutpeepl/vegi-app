@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 
 class PrimaryButton extends StatelessWidget {
   PrimaryButton({
@@ -31,10 +32,7 @@ class PrimaryButton extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: disabled
-              ? [
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.secondary
-                ]
+              ? [Theme.of(context).colorScheme.secondary, Theme.of(context).colorScheme.secondary]
               : [
                   Theme.of(context).colorScheme.primary,
                   Theme.of(context).colorScheme.primary,
@@ -47,18 +45,14 @@ class PrimaryButton extends StatelessWidget {
         child: InkWell(
           onTap: disabled ? () {} : onPressed,
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          highlightColor:
-              Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
-          splashColor:
-              Theme.of(context).scaffoldBackgroundColor.withOpacity(0.6),
+          highlightColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
+          splashColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.6),
           child: Center(
             child: !preload
                 ? AutoSizeText(
                     label,
                     style: TextStyle(
-                      color: disabled
-                          ? Color(0xFF797979)
-                          : Theme.of(context).colorScheme.secondary,
+                      color: disabled ? Color(0xFF797979) : themeShade100,
                       fontSize: this.fontSize,
                       fontWeight: FontWeight.normal,
                     ),

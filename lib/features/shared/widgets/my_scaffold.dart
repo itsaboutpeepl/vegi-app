@@ -23,9 +23,7 @@ class MyScaffold extends StatelessWidget {
         height: kToolbarHeight,
         child: AppBar(
           iconTheme: IconThemeData(
-            color: Theme.of(context)
-                .colorScheme
-                .onSurface, //change your color here
+            color: Theme.of(context).colorScheme.onSurface, //change your color here
           ),
           automaticallyImplyLeading: automaticallyImplyLeading,
           backgroundColor: themeShade300,
