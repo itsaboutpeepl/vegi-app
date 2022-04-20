@@ -368,7 +368,7 @@ ThunkAction prepareAndSendOrder(VoidCallback errorCallback, VoidCallback success
   };
 }
 
-ThunkAction sendTokenPayment(VoidCallback successCallback) {
+ThunkAction sendTokenPayment(VoidCallback successCallback, VoidCallback errorCallback) {
   return (Store store) async {
     try {
       //Set loading to true

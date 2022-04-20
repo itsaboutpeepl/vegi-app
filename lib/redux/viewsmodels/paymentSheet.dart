@@ -17,7 +17,7 @@ class PaymentSheetViewModel extends Equatable {
   final bool confirmedPayment;
   final String restaurantName;
   final Function(double GBPxAmount, double PPLAmount) updateSelectedValues;
-  final Function(VoidCallback successCallBack) sendToken;
+  final Function(VoidCallback successCallBack, VoidCallback errorCallback) sendToken;
   final Function(bool) setTransferringPayment;
   final Function(bool) setError;
   final Function(bool) setConfirmed;
@@ -43,10 +43,8 @@ class PaymentSheetViewModel extends Equatable {
   static PaymentSheetViewModel fromStore(Store<AppState> store) {
     return PaymentSheetViewModel(
       cartTotal: store.state.cartState.cartTotal,
-      pplBalance:
-          store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
-      gbpXBalance:
-          store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
+      pplBalance: store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
+      gbpXBalance: store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       paymentIntentID: store.state.cartState.paymentIntentID,
       selectedGBPxAmount: store.state.cartState.selectedGBPxAmount,
       selectedPPLAmount: store.state.cartState.selectedPPLAmount,
@@ -57,8 +55,8 @@ class PaymentSheetViewModel extends Equatable {
       updateSelectedValues: (GBPxAmount, PPLAmount) {
         store.dispatch(UpdateSelectedAmounts(GBPxAmount, PPLAmount));
       },
-      sendToken: (successCallback) {
-        store.dispatch(sendTokenPayment(successCallback));
+      sendToken: (successCallback, errorCallback) {
+        store.dispatch(sendTokenPayment(successCallback, errorCallback));
       },
       setTransferringPayment: (flag) {
         store.dispatch(SetTransferringPayment(flag));

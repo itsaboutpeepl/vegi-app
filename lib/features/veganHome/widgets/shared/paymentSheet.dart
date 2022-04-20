@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
@@ -29,11 +30,8 @@ class _PaymentSheetState extends State<PaymentSheet> {
       converter: PaymentSheetViewModel.fromStore,
       onInit: (store) {
         store.dispatch(SetTransferringPayment(false));
-        store.dispatch(
-            UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
-        _gbpXBalance = double.parse(store
-            .state.cashWalletState.tokens[GBPxToken.address]!
-            .getBalance(true));
+        store.dispatch(UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
+        _gbpXBalance = double.parse(store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(true));
       },
       builder: (_, viewmodel) {
         return Column(
@@ -41,17 +39,13 @@ class _PaymentSheetState extends State<PaymentSheet> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 20, bottom: 10),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Peepl Pay",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w800),
+                    style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w800),
                   ),
                   IconButton(
                     splashRadius: 25,
@@ -167,33 +161,27 @@ class _PaymentSheetState extends State<PaymentSheet> {
                         buttonContent: Center(
                           child: Text(
                             "Pay Now",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w900),
+                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
                           ),
                         ),
                         buttonAction: () async {
                           if (await BiometricUtils.authenticateIsAvailable()) {
-                            final BiometricAuth biometricAuth =
-                                await BiometricUtils.getAvailableBiometrics();
-                            final String biometric =
-                                BiometricUtils.getBiometricString(
+                            final BiometricAuth biometricAuth = await BiometricUtils.getAvailableBiometrics();
+                            final String biometric = BiometricUtils.getBiometricString(
                               context,
                               biometricAuth,
                             );
-                            await BiometricUtils
-                                .showDefaultPopupCheckBiometricAuth(
-                              message:
-                                  '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
+                            await BiometricUtils.showDefaultPopupCheckBiometricAuth(
+                              message: '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
                               callback: (bool result) {
                                 result
-                                    ? (_gbpXBalance <=
-                                            viewmodel.selectedGBPxAmount)
+                                    ? (_gbpXBalance <= viewmodel.selectedGBPxAmount)
                                         ? context.router.push(TopUpScreen())
                                         : viewmodel.sendToken(() {
-                                            context.router
-                                                .push(OrderConfirmedScreen());
+                                            context.router.push(OrderConfirmedScreen());
+                                          }, () {
+                                            print("error took place");
+                                            showErrorSnack(context: context, title: "Something went wrong");
                                           })
                                     : context.router.pop();
                               },
@@ -202,12 +190,12 @@ class _PaymentSheetState extends State<PaymentSheet> {
                             //TODO: add pincode screen verification.
                             (_gbpXBalance <= viewmodel.selectedGBPxAmount)
                                 ? context.router.push(TopUpScreen())
-                                : viewmodel.sendToken(
-                                    () {
-                                      context.router
-                                          .push(OrderConfirmedScreen());
-                                    },
-                                  );
+                                : viewmodel.sendToken(() {
+                                    context.router.push(OrderConfirmedScreen());
+                                  }, () {
+                                    print("error took place");
+                                    showErrorSnack(context: context, title: "Something went wrong");
+                                  });
                           }
                         },
                         baseColor: Colors.grey[800]!,
@@ -251,9 +239,7 @@ class _PPLSliderState extends State<PPLSlider> {
       distinct: true,
       onInit: (store) {
         _amountToBePaid = store.state.cartState.cartTotal.toDouble();
-        _pplBalance = double.parse(store
-            .state.cashWalletState.tokens[PeeplToken.address]!
-            .getBalance(true));
+        _pplBalance = double.parse(store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(true));
       },
       builder: (_, viewmodel) {
         return Padding(
@@ -274,8 +260,7 @@ class _PPLSliderState extends State<PPLSlider> {
                             ),
                             thumbColor: Colors.white,
                             overlayColor: Colors.grey.withOpacity(0.2),
-                            overlayShape:
-                                RoundSliderOverlayShape(overlayRadius: 0.0),
+                            overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
                           ),
                           child: Slider(
                             min: 0.0,
@@ -288,8 +273,7 @@ class _PPLSliderState extends State<PPLSlider> {
                             divisions: 100,
                             onChangeEnd: (value) {
                               viewmodel.updateSelectedValues(
-                                (_amountToBePaid / 100) -
-                                    (_pplSliderValue / 1000),
+                                (_amountToBePaid / 100) - (_pplSliderValue / 1000),
                                 (_pplSliderValue / 10),
                               );
                             },
@@ -332,13 +316,8 @@ class _PPLSliderState extends State<PPLSlider> {
                   ),
                   Text.rich(
                     TextSpan(
-                      text:
-                          "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)},",
-                      children: [
-                        TextSpan(
-                            text:
-                                " PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}")
-                      ],
+                      text: "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)},",
+                      children: [TextSpan(text: " PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}")],
                     ),
                     style: TextStyle(
                       color: Colors.grey[300],
