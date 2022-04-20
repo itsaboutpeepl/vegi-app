@@ -122,10 +122,10 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
       FullfilmentMethods fullfilmentMethods;
 
       if ([null, ""].contains(newDate)) {
-        fullfilmentMethods = await vegiEatsService.getFulfilmentSlots(
+        fullfilmentMethods = await peeplEatsService.getFulfilmentSlots(
             vendorID: store.state.cartState.restaurantID, dateRequired: formatter.format(DateTime.now()));
       } else {
-        fullfilmentMethods = await vegiEatsService.getFulfilmentSlots(
+        fullfilmentMethods = await peeplEatsService.getFulfilmentSlots(
             vendorID: store.state.cartState.restaurantID, dateRequired: formatter.format(newDate!));
       }
       store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots, fullfilmentMethods.collectionSlots));
@@ -168,7 +168,7 @@ ThunkAction updateCartDiscount(String newDiscountCode, VoidCallback errorCallbac
         store.dispatch(UpdateCartDiscount(0, ""));
         store.dispatch(computeCartTotals());
       } else {
-        int discountPercent = await vegiEatsService.checkDiscountCode(newDiscountCode).onError(
+        int discountPercent = await peeplEatsService.checkDiscountCode(newDiscountCode).onError(
           (error, stackTrace) {
             errorCallback();
             return 0;
@@ -330,7 +330,7 @@ ThunkAction prepareAndSendOrder(VoidCallback errorCallback, VoidCallback success
       print("Order Object Created: ${json.encode(orderObject).toString()}");
 
       //Call create order API with prepared orderobject
-      Map result = await vegiEatsService.createOrder(orderObject).timeout(Duration(seconds: 5), onTimeout: () {
+      Map result = await peeplEatsService.createOrder(orderObject).timeout(Duration(seconds: 5), onTimeout: () {
         return {}; //return empty map on timeout to trigger errorCallback
       });
 
@@ -423,7 +423,7 @@ ThunkAction sendTokenPayment(VoidCallback successCallback, VoidCallback errorCal
           const Duration(seconds: 4),
           (timer) async {
             final Future<Map<dynamic, dynamic>> checkOrderResponse =
-                vegiEatsService.checkOrderStatus(store.state.cartState.orderID);
+                peeplEatsService.checkOrderStatus(store.state.cartState.orderID);
 
             checkOrderResponse.then(
               (completedValue) {

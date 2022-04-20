@@ -12,18 +12,18 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:logger/logger.dart' as _i11;
 import 'package:package_info/package_info.dart' as _i13;
-import 'package:phone_number/phone_number.dart' as _i15;
+import 'package:phone_number/phone_number.dart' as _i16;
 import 'package:wallet_core/wallet_core.dart' as _i3;
 
 import '../../services/apis/explorer.dart' as _i5;
 import '../../services/apis/fuseswap.dart' as _i9;
 import '../../services/apis/market.dart' as _i12;
-import '../../services/apis/peeplPay.dart' as _i14;
-import '../../services/apis/vegiEats.dart' as _i17;
+import '../../services/apis/peeplEats.dart' as _i14;
+import '../../services/apis/peeplPay.dart' as _i15;
 import '../../utils/log/log_it.dart' as _i18;
 import '../../utils/onboard/Istrategy.dart' as _i10;
 import '../network/services.dart' as _i19;
-import '../router/routes.dart' as _i16;
+import '../router/routes.dart' as _i17;
 import 'dio.dart' as _i20;
 import 'firebase.dart' as _i21;
 import 'logger_di.dart' as _i23;
@@ -63,12 +63,12 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i12.Market>(() => _i12.Market(get<_i4.Dio>()));
   await gh.factoryAsync<_i13.PackageInfo>(() => packageInfoDi.packageInfo,
       preResolve: true);
-  gh.lazySingleton<_i14.PeeplPaySerivce>(
-      () => _i14.PeeplPaySerivce(get<_i4.Dio>()));
-  gh.lazySingleton<_i15.PhoneNumberUtil>(() => phone.phoneNumberUtil);
-  gh.singleton<_i16.RootRouter>(servicesModule.rootRouter);
-  gh.lazySingleton<_i17.VegiEatsService>(
-      () => _i17.VegiEatsService(get<_i4.Dio>()));
+  gh.lazySingleton<_i14.PeeplEatsService>(
+      () => _i14.PeeplEatsService(get<_i4.Dio>()));
+  gh.lazySingleton<_i15.PeeplPaySerivce>(
+      () => _i15.PeeplPaySerivce(get<_i4.Dio>()));
+  gh.lazySingleton<_i16.PhoneNumberUtil>(() => phone.phoneNumberUtil);
+  gh.singleton<_i17.RootRouter>(servicesModule.rootRouter);
   gh.lazySingleton<_i3.WalletApi>(() => servicesModule.walletApi);
   gh.lazySingleton<_i18.LogIt>(() => _i18.LogIt(get<_i11.Logger>()));
   return get;

@@ -11,10 +11,10 @@ import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 @lazySingleton
-class VegiEatsService {
+class PeeplEatsService {
   final Dio dio;
 
-  VegiEatsService(this.dio) {
+  PeeplEatsService(this.dio) {
     dio.options.baseUrl = dotenv.env['VEGI_EATS_BACKEND']!;
     dio.options.headers = Map.from({"Content-Type": 'application/json'});
   }

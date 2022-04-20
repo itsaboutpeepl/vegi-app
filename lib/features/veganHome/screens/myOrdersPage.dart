@@ -22,7 +22,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   bool _isEmpty = false;
 
   void fetchOrdersList(String walletAddress) async {
-    listOfOrders = (await vegiEatsService.getPastOrders(walletAddress)).reversed.toList();
+    listOfOrders = (await peeplEatsService.getPastOrders(walletAddress)).reversed.toList();
 
     setState(() {
       listOfOrders;

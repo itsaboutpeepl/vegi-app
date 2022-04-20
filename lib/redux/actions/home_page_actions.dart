@@ -30,8 +30,7 @@ ThunkAction fetchRestaurantCategories() {
         restaurantCategory1,
       ];
 
-      store.dispatch(UpdateRestaurantCategories(
-          listOfRestaurantCategories: listOfRestaurantCategories));
+      store.dispatch(UpdateRestaurantCategories(listOfRestaurantCategories: listOfRestaurantCategories));
     } catch (e, s) {
       log.error('ERROR - fetchRestaurantCategories $e');
       await Sentry.captureException(
@@ -47,11 +46,9 @@ ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
   return (Store store) async {
     try {
       store.dispatch(SetIsLoadingHomePage(true));
-      List<RestaurantItem> restaurants =
-          await vegiEatsService.featuredRestaurants(outCode);
+      List<RestaurantItem> restaurants = await peeplEatsService.featuredRestaurants(outCode);
 
-      store.dispatch(
-          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants));
+      store.dispatch(UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants));
       store.dispatch(fetchMenuItemsForRestaurant());
       store.dispatch(SetIsLoadingHomePage(false));
     } catch (e, s) {
@@ -68,20 +65,18 @@ ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
 ThunkAction fetchMenuItemsForRestaurant() {
   return (Store store) async {
     try {
-      List<RestaurantItem> currentList =
-          store.state.homePageState.featuredRestaurants;
+      List<RestaurantItem> currentList = store.state.homePageState.featuredRestaurants;
 
       await Future.forEach(
         currentList,
         (RestaurantItem element) async {
           element.listOfMenuItems.addAll(
-            await vegiEatsService.getRestaurantMenuItems(element.restaurantID),
+            await peeplEatsService.getRestaurantMenuItems(element.restaurantID),
           );
         },
       );
 
-      store.dispatch(
-          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList));
+      store.dispatch(UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList));
     } catch (e, s) {
       log.error('ERROR - fetchMenuItemsForRestaurant $e');
       await Sentry.captureException(

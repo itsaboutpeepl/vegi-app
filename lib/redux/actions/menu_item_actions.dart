@@ -36,7 +36,7 @@ class UpdateMenuItemWithProductOptions {
 ThunkAction fetchProductOptions(String itemID) {
   return (Store store) async {
     try {
-      List<ProductOptionsCategory> listOfProductOptionCategories = await vegiEatsService.getProductOptions(itemID);
+      List<ProductOptionsCategory> listOfProductOptionCategories = await peeplEatsService.getProductOptions(itemID);
 
       MenuItem currentItem = store.state.menuItemState.menuItem;
 
