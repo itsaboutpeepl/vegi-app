@@ -312,6 +312,10 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
       });
 
       if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.delivery) {
+        if (store.state.cartState.selectedDeliveryAddress == null) {
+          errorCallback("Please select an address");
+          return;
+        }
         DeliveryAddresses selectedAddress = store.state.cartState.selectedDeliveryAddress!;
 
         orderObject.addAll(

@@ -23,7 +23,11 @@ class _AddressListState extends State<AddressList> {
     return StoreConnector<AppState, DeliveryAddressesVM>(
       distinct: true,
       onInit: (store) {
-        store.dispatch(UpdateSelectedDeliveryAddress(null));
+        if (store.state.userState.listOfDeliveryAddresses.isEmpty) {
+          store.dispatch(UpdateSelectedDeliveryAddress(null));
+        } else {
+          store.dispatch(UpdateSelectedDeliveryAddress(store.state.userState.listOfDeliveryAddresses[0]));
+        }
         store.dispatch(SetFulfilmentMethod(FulfilmentMethod.delivery));
       },
       builder: (context, viewmodel) {
