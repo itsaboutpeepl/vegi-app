@@ -42,7 +42,6 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                   colors: colorToWhiteGradient,
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [0.0, 0.3, 0.5, 0.7, 1.0],
                 ),
               ),
               child: Padding(
@@ -57,9 +56,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         Row(
                           children: [
                             Text(
-                              _isDelivery
-                                  ? "Delivering To "
-                                  : "Collecting From ",
+                              _isDelivery ? "Delivering To " : "Collecting From ",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -68,8 +65,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 1.5),
                               child: DropdownButton<String>(
-                                menuMaxHeight:
-                                    MediaQuery.of(context).size.height * 0.3,
+                                menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
                                 alignment: Alignment.centerLeft,
                                 isDense: true,
                                 style: TextStyle(
@@ -109,9 +105,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                             });
                           },
                           child: Text(
-                            _isDelivery
-                                ? "Switch to Collection"
-                                : "Switch to Delivery",
+                            _isDelivery ? "Switch to Collection" : "Switch to Delivery",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -135,11 +129,9 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                             width: 40,
                             height: 40,
                             imageUrl: viewmodel.avatarUrl,
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
+                            placeholder: (context, url) => CircularProgressIndicator(),
                             errorWidget: (context, url, error) => CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/anom.png'),
+                              backgroundImage: AssetImage('assets/images/anom.png'),
                               radius: 30,
                             ),
                             imageBuilder: (context, imageProvider) => Image(

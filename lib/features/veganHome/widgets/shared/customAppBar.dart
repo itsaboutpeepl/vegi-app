@@ -25,7 +25,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
             colors: colorToWhiteGradient,
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0.0, 0.3, 0.5, 0.7, 1.0],
             tileMode: TileMode.clamp),
       ),
       child: AppBar(

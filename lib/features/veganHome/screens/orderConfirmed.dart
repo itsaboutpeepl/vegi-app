@@ -57,7 +57,6 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                     colors: colorToWhiteGradient,
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: [0.0, 0.3, 0.5, 0.7, 0.9],
                     tileMode: TileMode.clamp),
               ),
               child: Column(

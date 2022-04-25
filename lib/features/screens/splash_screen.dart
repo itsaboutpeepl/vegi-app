@@ -48,8 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
         store.dispatch(loadContacts());
         await AppTrackingTransparency.requestTrackingAuthorization();
       }
-      if (BiometricAuth.faceID == userState.authType ||
-          BiometricAuth.touchID == userState.authType) {
+      if (BiometricAuth.faceID == userState.authType || BiometricAuth.touchID == userState.authType) {
         // Using FaceID for login authentication
         // await _showLocalAuthPopup(
         //   BiometricUtils.getBiometricString(
@@ -77,8 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _showLocalAuthPopup(String biometric) async {
     await BiometricUtils.showDefaultPopupCheckBiometricAuth(
-      message:
-          '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
+      message: '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
       stickyAuth: true,
       callback: (bool result) {
         if (result) {
@@ -107,8 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
           )..show(context).then(
               (result) async {
                 if (result == true) {
-                  BiometricAuth _biometricType =
-                      await BiometricUtils.getAvailableBiometrics();
+                  BiometricAuth _biometricType = await BiometricUtils.getAvailableBiometrics();
                   await _showLocalAuthPopup(
                     BiometricUtils.getBiometricString(
                       context,
@@ -137,7 +134,6 @@ class _SplashScreenState extends State<SplashScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
                 colors: screenGradient,
               ),
             ),

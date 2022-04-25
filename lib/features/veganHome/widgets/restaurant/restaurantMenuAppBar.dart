@@ -4,8 +4,7 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
 
-class RestaurantMenuAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
+class RestaurantMenuAppBar extends StatefulWidget implements PreferredSizeWidget {
   RestaurantMenuAppBar({Key? key})
       : preferredSize = Size.fromHeight(80),
         super(key: key);
@@ -30,7 +29,6 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                 colors: colorToWhiteGradient,
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0.0, 0.3, 0.5, 0.7, 1.0],
                 tileMode: TileMode.clamp),
           ),
           child: AppBar(

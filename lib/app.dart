@@ -132,7 +132,6 @@ class _MyAppState extends State<MyApp> {
                   gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
                     colors: screenGradient,
                   ),
                 ),
