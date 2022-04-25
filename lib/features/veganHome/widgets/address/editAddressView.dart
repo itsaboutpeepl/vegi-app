@@ -30,6 +30,7 @@ class _AddressViewState extends State<AddressView> {
   final _sessionToken = Uuid().v4();
   late PlaceApiProvider _placeApiProvider;
   late GlobalKey<FormBuilderState> _addressFormKey;
+  TextEditingController _typeAheadController = TextEditingController();
 
   @override
   void initState() {
@@ -59,7 +60,8 @@ class _AddressViewState extends State<AddressView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FormBuilderTypeAhead<Suggestion>(
+                        FormBuilderTypeAhead(
+                          controller: _typeAheadController,
                           initialValue:
                               _isExistingAddress ? Suggestion("", widget.existingAddress!.addressLine1) : null,
                           name: 'addressLine1',
@@ -74,20 +76,29 @@ class _AddressViewState extends State<AddressView> {
                             fillColor: Colors.transparent,
                             labelText: 'Address Line 1',
                           ),
-                          onSuggestionSelected: (suggestion) {
-                            _placeApiProvider.getPlaceDetailFromId(suggestion.placeId).then((Place place) {
+                          onSaved: (dynamic suggestion) {
+                            if (suggestion == null) {
                               _addressFormKey.currentState!.setInternalFieldValue(
-                                  "addressLine1Internal", "${place.streetNumber} ${place.street}",
+                                  "addressLine1Internal", "${_typeAheadController.text}",
                                   isSetState: false);
-                              _addressFormKey.currentState!.fields["townCity"]!.didChange(place.city);
-                              _addressFormKey.currentState!.fields["postalCode"]!.didChange(place.zipCode);
-                            });
+                            }
                           },
-                          itemBuilder: (context, Suggestion suggestion) {
+                          onSuggestionSelected: (dynamic suggestion) {
+                            if (suggestion is Suggestion)
+                              _placeApiProvider.getPlaceDetailFromId(suggestion.placeId).then((Place place) {
+                                _addressFormKey.currentState!.setInternalFieldValue(
+                                    "addressLine1Internal", "${place.streetNumber} ${place.street}",
+                                    isSetState: false);
+                                _addressFormKey.currentState!.fields["townCity"]!.didChange(place.city);
+                                _addressFormKey.currentState!.fields["postalCode"]!.didChange(place.zipCode);
+                              });
+                          },
+                          itemBuilder: (context, dynamic suggestion) {
                             return ListTile(title: Text(suggestion.description));
                           },
-                          selectionToTextTransformer: (suggestion) {
-                            return suggestion.description;
+                          selectionToTextTransformer: (dynamic suggestion) {
+                            if (suggestion is Suggestion) return suggestion.description;
+                            return "";
                           },
                           loadingBuilder: (_) => CircularProgressIndicator(
                             color: themeShade600,
@@ -99,7 +110,8 @@ class _AddressViewState extends State<AddressView> {
                               return [];
                             }
                           },
-                          valueTransformer: (suggestion) => suggestion == null ? "" : suggestion.description,
+                          valueTransformer: (dynamic suggestion) =>
+                              suggestion == null && suggestion is Suggestion? ? "" : suggestion.description,
                         ),
                         FormBuilderTextField(
                           initialValue: _isExistingAddress ? widget.existingAddress!.addressLine2 : null,
