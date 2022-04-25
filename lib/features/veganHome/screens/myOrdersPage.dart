@@ -250,7 +250,7 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                widget.product.containsKey('options')
+                widget.product['options'].isNotEmpty
                     ? GestureDetector(
                         onTap: () => setState(() {
                           _showOptions = !_showOptions;
@@ -276,7 +276,7 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                         TextSpan(
                           text: option['name'],
                           children: [
-                            TextSpan(text: " - "),
+                            TextSpan(text: ": "),
                             TextSpan(text: option['chosenOption']),
                             TextSpan(text: " - "),
                             TextSpan(text: cFPrice(option['priceModifier']))
