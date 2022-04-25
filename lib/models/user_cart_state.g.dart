@@ -23,10 +23,13 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       collectionSlots: (json['collectionSlots'] as List<dynamic>)
           .map((e) => Map<String, String>.from(e as Map))
           .toList(),
-      selectedSlotIndex: json['selectedSlotIndex'] as int,
+      selectedDeliveryAddress: json['selectedDeliveryAddress'] == null
+          ? null
+          : DeliveryAddresses.fromJson(json['selectedDeliveryAddress']),
+      selectedTimeSlot:
+          Map<String, String>.from(json['selectedTimeSlot'] as Map),
       selectedTipAmount: json['selectedTipAmount'] as int,
       discountCode: json['discountCode'] as String,
-      selectedDeliveryAddressIndex: json['selectedDeliveryAddressIndex'] as int,
       paymentIntentID: json['paymentIntentID'] as String,
       orderID: json['orderID'] as String,
       selectedGBPxAmount: (json['selectedGBPxAmount'] as num).toDouble(),
@@ -40,6 +43,8 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       restaurantWalletAddress: json['restaurantWalletAddress'] as String,
       deliveryCharge: json['deliveryCharge'] as int,
       collectionCharge: json['collectionCharge'] as int,
+      fulfilmentMethod:
+          $enumDecode(_$FulfilmentMethodEnumMap, json['fulfilmentMethod']),
     );
 
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
@@ -53,10 +58,10 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'cartDeliveryCharge': instance.cartDeliveryCharge,
       'deliverySlots': instance.deliverySlots,
       'collectionSlots': instance.collectionSlots,
-      'selectedSlotIndex': instance.selectedSlotIndex,
+      'selectedDeliveryAddress': instance.selectedDeliveryAddress?.toJson(),
+      'selectedTimeSlot': instance.selectedTimeSlot,
       'selectedTipAmount': instance.selectedTipAmount,
       'discountCode': instance.discountCode,
-      'selectedDeliveryAddressIndex': instance.selectedDeliveryAddressIndex,
       'paymentIntentID': instance.paymentIntentID,
       'orderID': instance.orderID,
       'selectedGBPxAmount': instance.selectedGBPxAmount,
@@ -70,4 +75,10 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'restaurantWalletAddress': instance.restaurantWalletAddress,
       'deliveryCharge': instance.deliveryCharge,
       'collectionCharge': instance.collectionCharge,
+      'fulfilmentMethod': _$FulfilmentMethodEnumMap[instance.fulfilmentMethod],
     };
+
+const _$FulfilmentMethodEnumMap = {
+  FulfilmentMethod.collection: 'collection',
+  FulfilmentMethod.delivery: 'delivery',
+};

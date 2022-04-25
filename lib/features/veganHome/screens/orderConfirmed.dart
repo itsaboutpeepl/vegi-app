@@ -181,10 +181,10 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: "${viewmodel.GBPxAmountPaid} GBPx\n",
+                                            text: "${viewmodel.GBPxAmountPaid.toStringAsFixed(2)} GBPx\n",
                                           ),
                                           TextSpan(
-                                            text: "${viewmodel.PPLAmountPaid} ",
+                                            text: "${viewmodel.PPLAmountPaid.toStringAsFixed(2)} ",
                                           ),
                                           WidgetSpan(
                                             child: Image.asset(
@@ -240,7 +240,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                               ),
                             ),
                             buttonAction: () {
-                              context.router.push(VeganHomeScreenAlt());
+                              context.router.replaceAll([VeganHomeScreenAlt()]);
                               viewmodel.clearCart();
                             },
                             baseColor: Colors.grey[900]!,

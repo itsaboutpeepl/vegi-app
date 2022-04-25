@@ -1,40 +1,42 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class CheckoutViewModel extends Equatable {
   final List<Map<String, String>> deliverySlots;
   final List<Map<String, String>> collectionSlots;
-  final int selectedDeliveryAddressIndex;
+  final DeliveryAddresses? selectedDeliveryAddress;
   final int selectedUserTip;
-  final int selectedSlotIndex;
+  final Map<String, String> selectedTimeSlot;
   final String discountCode;
   final int discountPercent;
   final int cartTotal;
-  final int newAddressCardIndex;
+  final FulfilmentMethod fulfilmentMethod;
   final Function(String discountCode, VoidCallback) updateDiscount;
-  final Function(int index) updateSlotIndex;
+  final Function(Map<String, String> selectedTimeSlot) updateSelectedTimeSlot;
   final Function(int tipAmount) updateTipAmount;
-  final Function(VoidCallback, VoidCallback) createOrder;
+  final Function(void Function(String errroMessage), VoidCallback) createOrder;
   final Function(DateTime newDate) updateSlotTimes;
 
   CheckoutViewModel({
     required this.deliverySlots,
     required this.collectionSlots,
     required this.selectedUserTip,
-    required this.selectedDeliveryAddressIndex,
+    required this.selectedDeliveryAddress,
     required this.discountCode,
     required this.discountPercent,
     required this.updateDiscount,
     required this.cartTotal,
-    required this.selectedSlotIndex,
-    required this.updateSlotIndex,
+    required this.selectedTimeSlot,
+    required this.updateSelectedTimeSlot,
     required this.updateTipAmount,
     required this.createOrder,
     required this.updateSlotTimes,
-    required this.newAddressCardIndex,
+    required this.fulfilmentMethod,
   });
 
   static CheckoutViewModel fromStore(Store<AppState> store) {
@@ -42,18 +44,18 @@ class CheckoutViewModel extends Equatable {
       deliverySlots: store.state.cartState.deliverySlots,
       collectionSlots: store.state.cartState.collectionSlots,
       selectedUserTip: store.state.cartState.selectedTipAmount,
-      selectedDeliveryAddressIndex: store.state.cartState.selectedDeliveryAddressIndex,
+      selectedDeliveryAddress: store.state.cartState.selectedDeliveryAddress,
       discountCode: store.state.cartState.discountCode,
       discountPercent: store.state.cartState.cartDiscountPercent,
       cartTotal: store.state.cartState.cartTotal,
-      selectedSlotIndex: store.state.cartState.selectedSlotIndex,
-      newAddressCardIndex: store.state.userState.listOfDeliveryAddresses.length + 1,
+      selectedTimeSlot: store.state.cartState.selectedTimeSlot,
+      fulfilmentMethod: store.state.cartState.fulfilmentMethod,
       updateDiscount: (discountCode, errorCallback) {
         store.dispatch(updateCartDiscount(discountCode, errorCallback));
       },
-      updateSlotIndex: (int index) {
-        store.dispatch(UpdateSlotIndex(index));
-        store.state.cartState.selectedDeliveryAddressIndex == 0
+      updateSelectedTimeSlot: (Map<String, String> selectedTimeSlot) {
+        store.dispatch(UpdateSelectedTimeSlot(selectedTimeSlot));
+        store.state.cartState.selectedDeliveryAddress == null
             ? store.dispatch(SetDeliveryCharge(store.state.cartState.collectionCharge))
             : store.dispatch(SetDeliveryCharge(store.state.cartState.deliveryCharge));
         store.dispatch(computeCartTotals());
@@ -71,11 +73,12 @@ class CheckoutViewModel extends Equatable {
   }
 
   @override
-  List<Object> get props => [
-        selectedSlotIndex,
+  List<Object?> get props => [
+        selectedTimeSlot,
         selectedUserTip,
         discountCode,
         cartTotal,
-        selectedDeliveryAddressIndex,
+        selectedDeliveryAddress,
+        fulfilmentMethod,
       ];
 }

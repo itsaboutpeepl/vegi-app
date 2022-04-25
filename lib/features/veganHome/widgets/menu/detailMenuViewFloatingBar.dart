@@ -61,7 +61,7 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                           Navigator.pop(context),
                           Future.delayed(
                             Duration(seconds: 1),
-                            (() => viewmodel.setMenuItem(null)),
+                            (() => viewmodel.resetMenuItem()),
                           )
                         },
                         child: Text("Add to Tote"),

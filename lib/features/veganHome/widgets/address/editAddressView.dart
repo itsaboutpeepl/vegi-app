@@ -44,7 +44,7 @@ class _AddressViewState extends State<AddressView> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, DeliveryAddressesVM>(
       converter: DeliveryAddressesVM.fromStore,
-      builder: (context, vm) {
+      builder: (context, viewmodel) {
         return Padding(
           padding: EdgeInsets.only(top: 20),
           child: Column(
@@ -186,13 +186,31 @@ class _AddressViewState extends State<AddressView> {
                           onPressed: () {
                             if (_addressFormKey.currentState!.saveAndValidate()) {
                               _tryFetchMapLocation().then((LatLng? value) {
-                                vm.addDeliveryAddress(saveDeliveryAddress(position: value));
+                                viewmodel.addDeliveryAddress(saveDeliveryAddress(position: value));
                                 Navigator.pop(context);
                               });
                             }
                           },
                           child: const Text('Save Address'),
                         ),
+                        _isExistingAddress
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  onPrimary: Colors.grey[800],
+                                  primary: Colors.red,
+                                  textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+                                  fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
+                                ),
+                                onPressed: () {
+                                  viewmodel.deleteDeliveryAddress(widget.existingAddress!);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  'Delete Address',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            : SizedBox.shrink(),
                       ],
                     ),
                   ),

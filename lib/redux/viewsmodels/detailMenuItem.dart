@@ -15,6 +15,7 @@ class DetailMenuItem extends Equatable {
   final Map<int, ProductOptions> selectedOptions;
   final Function(OrderItem itemToAdd) addOrderItem;
   final Function(MenuItem? menuItem) setMenuItem;
+  final Function() resetMenuItem;
   final Function(bool isAdd) updateQuantity;
 
   DetailMenuItem({
@@ -26,6 +27,7 @@ class DetailMenuItem extends Equatable {
     required this.setMenuItem,
     required this.updateQuantity,
     required this.selectedOptions,
+    required this.resetMenuItem,
   });
 
   static DetailMenuItem fromStore(Store<AppState> store) {
@@ -34,13 +36,15 @@ class DetailMenuItem extends Equatable {
         totalPrice: store.state.menuItemState.totalPrice,
         itemReward: store.state.menuItemState.itemReward,
         quantity: store.state.menuItemState.quantity,
-        selectedOptions:
-            store.state.menuItemState.selectedProductOptionsForCategory,
+        selectedOptions: store.state.menuItemState.selectedProductOptionsForCategory,
         addOrderItem: (itemToAdd) {
           store.dispatch(updateCartItems(itemToAdd));
         },
         setMenuItem: (menuItem) {
           store.dispatch(setUpMenuItemStructures(menuItem));
+        },
+        resetMenuItem: () {
+          store.dispatch(ResetMenuItem());
         },
         updateQuantity: (isAdd) {
           store.dispatch(updateComputeQuantity(isAdd));

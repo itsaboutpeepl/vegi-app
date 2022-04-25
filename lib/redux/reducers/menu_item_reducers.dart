@@ -9,8 +9,7 @@ final MenuItemReducers = combineReducers<MenuItemState>(
     TypedReducer<MenuItemState, SetMenuItem>(_setMenuItem),
     TypedReducer<MenuItemState, UpdateTotalPrice>(_calculateTotalPrice),
     TypedReducer<MenuItemState, UpdateQuantity>(_updateQuantity),
-    TypedReducer<MenuItemState, UpdateMenuItemWithProductOptions>(
-        _updateProductOptions),
+    TypedReducer<MenuItemState, UpdateMenuItemWithProductOptions>(_updateProductOptions),
   ],
 );
 
@@ -23,6 +22,7 @@ MenuItemState _resetMenuItem(
     totalPrice: 0,
     itemReward: 0,
     quantity: 0,
+    selectedProductOptionsForCategory: {},
   );
 }
 

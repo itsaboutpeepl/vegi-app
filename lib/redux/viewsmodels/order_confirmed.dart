@@ -35,20 +35,13 @@ class OrderConfirmedViewModel extends Equatable {
   });
 
   static OrderConfirmedViewModel fromStore(Store<AppState> store) {
-    bool tempIsDelivery =
-        store.state.cartState.selectedDeliveryAddressIndex == 0 ? false : true;
+    bool tempIsDelivery = store.state.cartState.selectedDeliveryAddress == null ? false : true;
 
     return OrderConfirmedViewModel(
-      selectedSlot: tempIsDelivery
-          ? store.state.cartState
-              .deliverySlots[store.state.cartState.selectedSlotIndex]
-          : store.state.cartState
-              .collectionSlots[store.state.cartState.selectedSlotIndex],
+      selectedSlot: store.state.cartState.selectedTimeSlot,
       isDelivery: tempIsDelivery,
-      orderAddress: tempIsDelivery
-          ? store.state.userState.listOfDeliveryAddresses[
-              store.state.cartState.selectedDeliveryAddressIndex - 1]
-          : store.state.cartState.restaurantAddress,
+      orderAddress:
+          tempIsDelivery ? store.state.cartState.selectedDeliveryAddress! : store.state.cartState.restaurantAddress,
       restaurantName: store.state.cartState.restaurantName,
       cartItems: store.state.cartState.cartItems,
       cartTotal: store.state.cartState.cartTotal,

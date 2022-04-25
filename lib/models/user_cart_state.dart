@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
@@ -21,10 +22,10 @@ class UserCartState with _$UserCartState {
     required int cartDeliveryCharge,
     required List<Map<String, String>> deliverySlots,
     required List<Map<String, String>> collectionSlots,
-    required int selectedSlotIndex,
+    required DeliveryAddresses? selectedDeliveryAddress,
+    required Map<String, String> selectedTimeSlot,
     required int selectedTipAmount,
     required String discountCode,
-    required int selectedDeliveryAddressIndex,
     required String paymentIntentID,
     required String orderID,
     required double selectedGBPxAmount,
@@ -38,6 +39,7 @@ class UserCartState with _$UserCartState {
     required String restaurantWalletAddress,
     required int deliveryCharge,
     required int collectionCharge,
+    required FulfilmentMethod fulfilmentMethod,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(
@@ -50,10 +52,8 @@ class UserCartState with _$UserCartState {
         cartDeliveryCharge: 0,
         deliverySlots: [],
         collectionSlots: [],
-        selectedSlotIndex: -1,
         selectedTipAmount: 0,
         discountCode: "",
-        selectedDeliveryAddressIndex: 1,
         paymentIntentID: "",
         orderID: "",
         selectedGBPxAmount: 0.0,
@@ -67,13 +67,15 @@ class UserCartState with _$UserCartState {
         restaurantWalletAddress: "",
         deliveryCharge: 0,
         collectionCharge: 0,
+        selectedDeliveryAddress: null,
+        selectedTimeSlot: {},
+        fulfilmentMethod: FulfilmentMethod.collection,
       );
 
   factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);
 }
 
-class UserCartStateConverter
-    implements JsonConverter<UserCartState, Map<String, dynamic>?> {
+class UserCartStateConverter implements JsonConverter<UserCartState, Map<String, dynamic>?> {
   const UserCartStateConverter();
 
   @override

@@ -116,6 +116,8 @@ class PeeplEatsService {
           },
         );
 
+        if (category["values"].isEmpty) return;
+
         listOfProductOptions.add(
           ProductOptionsCategory(
             categoryID: category['id'],
@@ -146,7 +148,7 @@ class PeeplEatsService {
   }
 
   Future<Map<dynamic, dynamic>> createOrder(Map<String, dynamic> orderObject) async {
-    Response response = await dio.post('/api/v1/orders/create-order?', data: orderObject);
+    Response response = await dio.post('/api/v1/orders/create-order', data: orderObject);
 
     Map<dynamic, dynamic> result = response.data;
 

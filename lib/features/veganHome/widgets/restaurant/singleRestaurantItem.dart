@@ -135,13 +135,14 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
             ],
           ),
           onTap: () {
-            viewmodel.updateRestaurantDetails(
-              widget.restaurantItem.restaurantID,
-              widget.restaurantItem.name,
-              widget.restaurantItem.address,
-              widget.restaurantItem.walletAddress,
-              () => showErrorSnack(context: context, title: "Existing Items in cart were removed"),
-            );
+            if (viewmodel.restaurantID != widget.restaurantItem.restaurantID)
+              viewmodel.updateRestaurantDetails(
+                widget.restaurantItem.restaurantID,
+                widget.restaurantItem.name,
+                widget.restaurantItem.address,
+                widget.restaurantItem.walletAddress,
+                () => showErrorSnack(context: context, title: "Existing Items in cart were removed"),
+              );
             context.router.push(RestaurantMenuScreen(menuList: widget.restaurantItem.listOfMenuItems));
           },
         );

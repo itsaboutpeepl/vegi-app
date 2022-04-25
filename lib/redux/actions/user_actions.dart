@@ -657,7 +657,23 @@ ThunkAction addNewDeliveryAddress(DeliveryAddresses newAddress) {
     index == -1 ? listOfAddresses.add(newAddress) : listOfAddresses.insert(index, newAddress);
 
     store.dispatch(AddDeliveryAddress(listOfAddresses));
-    store.dispatch(UpdateDeliveryAddressIndex(index == -1 ? listOfAddresses.length - 1 : index));
+    store.dispatch(UpdateSelectedDeliveryAddress(newAddress));
+  };
+}
+
+ThunkAction deleteExistingDeliveryAddress(DeliveryAddresses addressToBeDeleted) {
+  return (Store store) {
+    List<DeliveryAddresses> listOfAddresses = List.from(store.state.userState.listOfDeliveryAddresses);
+
+    int indexOfAddress = listOfAddresses.indexOf(addressToBeDeleted);
+    listOfAddresses.removeAt(indexOfAddress);
+
+    store.dispatch(AddDeliveryAddress(listOfAddresses));
+    listOfAddresses.isEmpty
+        ? store.dispatch(UpdateSelectedDeliveryAddress(null))
+        : listOfAddresses.length - 1 == indexOfAddress
+            ? store.dispatch(UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress]))
+            : store.dispatch(UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress - 1]));
   };
 }
 

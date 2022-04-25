@@ -19,3 +19,9 @@ enum OnboardStrategy {
   sms,
   none,
 }
+
+enum FulfilmentMethod {
+  collection,
+  delivery,
+  none,
+}

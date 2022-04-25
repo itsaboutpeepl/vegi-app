@@ -9,10 +9,9 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
   TypedReducer<UserCartState, ClearCart>(_clearCart),
   TypedReducer<UserCartState, UpdateSlots>(_updateSlots),
-  TypedReducer<UserCartState, UpdateSlotIndex>(_updateSlotIndex),
+  TypedReducer<UserCartState, UpdateSelectedTimeSlot>(_updateSelectedTimeSlot),
   TypedReducer<UserCartState, UpdateTipAmount>(_updateTipAmount),
-  TypedReducer<UserCartState, UpdateDeliveryAddressIndex>(
-      _updateDeliveryAddressIndex),
+  TypedReducer<UserCartState, UpdateSelectedDeliveryAddress>(_updateSelectedDeliveryAddress),
   TypedReducer<UserCartState, CreateOrder>(_createOrder),
   TypedReducer<UserCartState, SetTransferringPayment>(_toggleTransfer),
   TypedReducer<UserCartState, SetError>(_toggleError),
@@ -21,6 +20,7 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, SetRestaurantDetails>(_setRestaurantDetails),
   TypedReducer<UserCartState, SetDeliveryCharge>(_setDeliveryCharge),
   TypedReducer<UserCartState, SetFulfilmentFees>(_setFulfilmentFees),
+  TypedReducer<UserCartState, SetFulfilmentMethod>(_setFulfilmentMethod),
 ]);
 
 UserCartState _updateCartItems(
@@ -52,10 +52,10 @@ UserCartState _clearCart(
     cartTotal: 0,
     cartDiscountPercent: 0,
     cartDiscountComputed: 0,
-    selectedSlotIndex: 0,
+    selectedTimeSlot: {},
     selectedTipAmount: 0,
     discountCode: "",
-    selectedDeliveryAddressIndex: 1,
+    selectedDeliveryAddress: null,
     paymentIntentID: "",
     orderID: "",
     selectedGBPxAmount: 0.0,
@@ -73,25 +73,21 @@ UserCartState _updateCartDiscount(
   UserCartState state,
   UpdateCartDiscount action,
 ) {
-  return state.copyWith(
-      cartDiscountPercent: action.cartDiscountPercent,
-      discountCode: action.discountCode);
+  return state.copyWith(cartDiscountPercent: action.cartDiscountPercent, discountCode: action.discountCode);
 }
 
 UserCartState _updateSlots(
   UserCartState state,
   UpdateSlots action,
 ) {
-  return state.copyWith(
-      deliverySlots: action.deliverySlots,
-      collectionSlots: action.collectionSlots);
+  return state.copyWith(deliverySlots: action.deliverySlots, collectionSlots: action.collectionSlots);
 }
 
-UserCartState _updateSlotIndex(
+UserCartState _updateSelectedTimeSlot(
   UserCartState state,
-  UpdateSlotIndex action,
+  UpdateSelectedTimeSlot action,
 ) {
-  return state.copyWith(selectedSlotIndex: action.index);
+  return state.copyWith(selectedTimeSlot: action.selectedTimeSlot);
 }
 
 UserCartState _updateTipAmount(
@@ -101,19 +97,18 @@ UserCartState _updateTipAmount(
   return state.copyWith(selectedTipAmount: action.tipAmount);
 }
 
-UserCartState _updateDeliveryAddressIndex(
+UserCartState _updateSelectedDeliveryAddress(
   UserCartState state,
-  UpdateDeliveryAddressIndex action,
+  UpdateSelectedDeliveryAddress action,
 ) {
-  return state.copyWith(selectedDeliveryAddressIndex: action.indexOfAddress);
+  return state.copyWith(selectedDeliveryAddress: action.selectedAddress);
 }
 
 UserCartState _createOrder(
   UserCartState state,
   CreateOrder action,
 ) {
-  return state.copyWith(
-      orderID: action.orderID, paymentIntentID: action.paymentIntentID);
+  return state.copyWith(orderID: action.orderID, paymentIntentID: action.paymentIntentID);
 }
 
 UserCartState _toggleTransfer(
@@ -141,9 +136,7 @@ UserCartState _updateSelectedAmounts(
   UserCartState state,
   UpdateSelectedAmounts action,
 ) {
-  return state.copyWith(
-      selectedGBPxAmount: action.GBPxAmount,
-      selectedPPLAmount: action.PPLAmount);
+  return state.copyWith(selectedGBPxAmount: action.GBPxAmount, selectedPPLAmount: action.PPLAmount);
 }
 
 UserCartState _setRestaurantDetails(
@@ -175,4 +168,11 @@ UserCartState _setFulfilmentFees(
     deliveryCharge: action.deliveryCharge,
     collectionCharge: action.collectionCharge,
   );
+}
+
+UserCartState _setFulfilmentMethod(
+  UserCartState state,
+  SetFulfilmentMethod action,
+) {
+  return state.copyWith(fulfilmentMethod: action.fulfilmentMethod);
 }

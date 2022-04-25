@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -88,13 +90,14 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                     ? Center(
                         child: CircularProgressIndicator(color: themeShade300),
                       )
-                    : viewmodel.collectionSlots.isEmpty &&
-                            viewmodel.selectedDeliveryAddressIndex ==
-                                0 //if collectionSlots are empty, and chosen method is collection (first list object)
+                    : viewmodel.fulfilmentMethod == FulfilmentMethod.collection &&
+                            viewmodel
+                                .collectionSlots.isEmpty //if collectionSlots are empty, and chosen method is collection
                         ? Center(
                             child: Text("No Slots Avaliable Currently!"),
                           )
-                        : viewmodel.selectedDeliveryAddressIndex == viewmodel.newAddressCardIndex
+                        : viewmodel.fulfilmentMethod == FulfilmentMethod.none &&
+                                viewmodel.selectedDeliveryAddress == null
                             ? Center(
                                 child: Text("Please create an address to get slots"),
                               )
@@ -102,36 +105,58 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                                 ? Center(
                                     child: Text("No Slots Avaliable Currently!"),
                                   )
-                                : ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: viewmodel.selectedDeliveryAddressIndex == 0
-                                        ? viewmodel.collectionSlots.length
-                                        : viewmodel.deliverySlots.length,
-                                    itemBuilder: (context, index) => Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: ChoiceChip(
-                                        selectedColor: themeShade100,
-                                        avatar: Icon(
-                                          Icons.timer,
-                                          size: 18,
-                                        ),
-                                        label: Text(
-                                          mapToString(
-                                            viewmodel.selectedDeliveryAddressIndex == 0
-                                                ? viewmodel.collectionSlots[index]
-                                                : viewmodel.deliverySlots[index],
+                                : viewmodel.fulfilmentMethod == FulfilmentMethod.collection
+                                    ? ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: viewmodel.collectionSlots.length,
+                                        itemBuilder: (context, index) => Padding(
+                                          padding: const EdgeInsets.only(right: 10),
+                                          child: ChoiceChip(
+                                            selectedColor: themeShade100,
+                                            avatar: Icon(
+                                              Icons.timer,
+                                              size: 18,
+                                            ),
+                                            label: Text(
+                                              mapToString(
+                                                viewmodel.collectionSlots[index],
+                                              ),
+                                              style: TextStyle(color: Colors.grey[800]),
+                                            ),
+                                            selected: viewmodel.selectedTimeSlot == index,
+                                            onSelected: (bool selected) {
+                                              setState(() {});
+                                            },
                                           ),
-                                          style: TextStyle(color: Colors.grey[800]),
                                         ),
-                                        selected: viewmodel.selectedSlotIndex == index,
-                                        onSelected: (bool selected) {
-                                          setState(() {
-                                            viewmodel.updateSlotIndex(index);
-                                          });
-                                        },
+                                      )
+                                    : ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: viewmodel.deliverySlots.length,
+                                        itemBuilder: (context, index) => Padding(
+                                          padding: const EdgeInsets.only(right: 10),
+                                          child: ChoiceChip(
+                                            selectedColor: themeShade100,
+                                            avatar: Icon(
+                                              Icons.timer,
+                                              size: 18,
+                                            ),
+                                            label: Text(
+                                              mapToString(
+                                                viewmodel.deliverySlots[index],
+                                              ),
+                                              style: TextStyle(color: Colors.grey[800]),
+                                            ),
+                                            selected:
+                                                mapEquals(viewmodel.selectedTimeSlot, viewmodel.deliverySlots[index]),
+                                            onSelected: (bool selected) {
+                                              selected
+                                                  ? viewmodel.updateSelectedTimeSlot(viewmodel.deliverySlots[index])
+                                                  : null;
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
               )
             ],
           ),

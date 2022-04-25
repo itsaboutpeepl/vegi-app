@@ -57,10 +57,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         baseColor: themeShade400,
                         highlightColor: themeShade300,
                         buttonAction: () {
-                          viewmodel.createOrder(() {
+                          viewmodel.createOrder((errorMessage) {
                             //errorCallBack
                             print("error took place");
-                            showErrorSnack(context: context, title: "Something went wrong");
+                            showErrorSnack(context: context, title: errorMessage);
                           }, () {
                             //successCallBack
                             showModalBottomSheet(

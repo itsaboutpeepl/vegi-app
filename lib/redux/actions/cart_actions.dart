@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
@@ -46,24 +47,19 @@ class UpdateSlots {
   UpdateSlots(this.deliverySlots, this.collectionSlots);
 }
 
-class UpdateDeliveryAddressIndex {
-  final int indexOfAddress;
-  UpdateDeliveryAddressIndex(this.indexOfAddress);
+class UpdateSelectedDeliveryAddress {
+  final DeliveryAddresses? selectedAddress;
+  UpdateSelectedDeliveryAddress(this.selectedAddress);
 }
 
-class UpdateSlotIndex {
-  final int index;
-  UpdateSlotIndex(this.index);
+class UpdateSelectedTimeSlot {
+  final Map<String, String> selectedTimeSlot;
+  UpdateSelectedTimeSlot(this.selectedTimeSlot);
 }
 
 class UpdateTipAmount {
   final int tipAmount;
   UpdateTipAmount(this.tipAmount);
-}
-
-class UpdateDeliveryAddress {
-  final int index;
-  UpdateDeliveryAddress(this.index);
 }
 
 class CreateOrder {
@@ -113,6 +109,11 @@ class SetFulfilmentFees {
   final int collectionCharge;
 
   SetFulfilmentFees(this.deliveryCharge, this.collectionCharge);
+}
+
+class SetFulfilmentMethod {
+  final FulfilmentMethod fulfilmentMethod;
+  SetFulfilmentMethod(this.fulfilmentMethod);
 }
 
 ThunkAction getFullfillmentMethods({DateTime? newDate}) {
@@ -278,17 +279,20 @@ ThunkAction computeCartTotals() {
   };
 }
 
-ThunkAction prepareAndSendOrder(VoidCallback errorCallback, VoidCallback successCallback) {
+ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, VoidCallback successCallback) {
   return (Store store) async {
     try {
-      //Prepare fields for order object
-      DeliveryAddresses selectedAddress =
-          store.state.userState.listOfDeliveryAddresses[store.state.cartState.selectedDeliveryAddressIndex - 1];
+      if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.none) {
+        errorCallback("Please select or create an address");
+        return;
+      } else if (store.state.cartState.selectedTimeSlot.isEmpty) {
+        errorCallback("Please select a time slot");
+        return;
+      }
 
-      bool isDelivery = store.state.cartState.selectedDeliveryAddressIndex == 0 ? false : true;
+      Map<String, dynamic> orderObject = {};
 
-      //Format Object for API
-      Map<String, dynamic> orderObject = {
+      orderObject.addAll({
         "items": store.state.cartState.cartItems
             .map(
               (e) => {
@@ -299,38 +303,47 @@ ThunkAction prepareAndSendOrder(VoidCallback errorCallback, VoidCallback success
               },
             )
             .toList(),
-        "address": {
-          "name": store.state.userState.displayName,
-          "phoneNumber": selectedAddress.phoneNumber ?? store.state.userState.phoneNumber ?? "",
-          "email": store.state.userState.email == "" ? "email@notprovided.com" : store.state.userState.email,
-          "lineOne": selectedAddress.addressLine1,
-          "lineTwo": selectedAddress.addressLine2 + ", " + selectedAddress.townCity,
-          "postCode": selectedAddress.postalCode,
-          "deliveryInstructions": "",
-        },
         "total": store.state.cartState.cartTotal,
         "tipAmount": store.state.cartState.selectedTipAmount,
         "marketingOptIn": false,
         "discountCode": store.state.cartState.discountCode,
-        "vendor": 1,
-        "fulfilmentMethod": isDelivery ? 1 : 0,
-        "fulfilmentSlotFrom": isDelivery
-            ? formatDateForOrderObject(
-                store.state.cartState.deliverySlots[store.state.cartState.selectedSlotIndex].entries.first.value)
-            : formatDateForOrderObject(
-                store.state.cartState.collectionSlots[store.state.cartState.selectedSlotIndex].entries.first.value),
-        "fulfilmentSlotTo": isDelivery
-            ? formatDateForOrderObject(
-                store.state.cartState.deliverySlots[store.state.cartState.selectedSlotIndex].entries.last.value)
-            : formatDateForOrderObject(
-                store.state.cartState.collectionSlots[store.state.cartState.selectedSlotIndex].entries.last.value),
+        "vendor": store.state.cartState.restaurantID,
         "walletAddress": store.state.userState.walletAddress,
-      };
+      });
+
+      if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.delivery) {
+        DeliveryAddresses selectedAddress = store.state.cartState.selectedDeliveryAddress!;
+
+        orderObject.addAll(
+          {
+            "address": {
+              "name": store.state.userState.displayName,
+              "phoneNumber": selectedAddress.phoneNumber ?? store.state.userState.phoneNumber ?? "",
+              "email": store.state.userState.email == "" ? "email@notprovided.com" : store.state.userState.email,
+              "lineOne": selectedAddress.addressLine1,
+              "lineTwo": selectedAddress.addressLine2 + ", " + selectedAddress.townCity,
+              "postCode": selectedAddress.postalCode,
+              "deliveryInstructions": "",
+            },
+            "fulfilmentMethod": 1,
+            "fulfilmentSlotFrom": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.first.value),
+            "fulfilmentSlotTo": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.last.value),
+          },
+        );
+      } else if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.collection) {
+        orderObject.addAll(
+          {
+            "fulfilmentMethod": 2,
+            "fulfilmentSlotFrom": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.first.value),
+            "fulfilmentSlotTo": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.last.value),
+          },
+        );
+      }
 
       print("Order Object Created: ${json.encode(orderObject).toString()}");
 
       //Call create order API with prepared orderobject
-      Map result = await peeplEatsService.createOrder(orderObject).timeout(Duration(seconds: 5), onTimeout: () {
+      Map result = await peeplEatsService.createOrder(orderObject).timeout(Duration(seconds: 10), onTimeout: () {
         return {}; //return empty map on timeout to trigger errorCallback
       });
 
@@ -351,13 +364,13 @@ ThunkAction prepareAndSendOrder(VoidCallback errorCallback, VoidCallback success
           successCallback();
         } else {
           //check if it is better to just update the total value with the api returned or return an error
-          errorCallback();
+          errorCallback("Order totals aren't matching");
         }
       } else {
-        errorCallback();
+        errorCallback("Our servers seem to be down");
       }
     } catch (e, s) {
-      errorCallback();
+      errorCallback("Something went wrong");
       log.error('ERROR - prepareAndSendOrder $e');
       await Sentry.captureException(
         e,
