@@ -225,7 +225,11 @@ class _AddressViewState extends State<AddressView> {
 
   Future<LatLng?> _tryFetchMapLocation() async {
     print("Hello from auto fill map location");
-    Suggestion address = _addressFormKey.currentState!.fields["addressLine1"]!.value;
+
+    Suggestion? address = _addressFormKey.currentState!.fields["addressLine1"]!.value;
+    if (address == null) {
+      return null;
+    }
 
     List<Location> possibleLocations =
         await locationFromAddress(address.description).onError((error, stackTrace) => []);
