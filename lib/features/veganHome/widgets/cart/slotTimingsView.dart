@@ -123,9 +123,12 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                                               ),
                                               style: TextStyle(color: Colors.grey[800]),
                                             ),
-                                            selected: viewmodel.selectedTimeSlot == index,
+                                            selected:
+                                                mapEquals(viewmodel.selectedTimeSlot, viewmodel.collectionSlots[index]),
                                             onSelected: (bool selected) {
-                                              setState(() {});
+                                              selected
+                                                  ? viewmodel.updateSelectedTimeSlot(viewmodel.collectionSlots[index])
+                                                  : null;
                                             },
                                           ),
                                         ),
