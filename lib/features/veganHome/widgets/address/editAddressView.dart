@@ -99,7 +99,7 @@ class _AddressViewState extends State<AddressView> {
                               return [];
                             }
                           },
-                          valueTransformer: (suggestion) => suggestion!.description,
+                          valueTransformer: (suggestion) => suggestion == null ? "" : suggestion.description,
                         ),
                         FormBuilderTextField(
                           initialValue: _isExistingAddress ? widget.existingAddress!.addressLine2 : null,
