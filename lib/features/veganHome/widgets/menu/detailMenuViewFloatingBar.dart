@@ -79,13 +79,13 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                   ),
                 ),
               ),
-              Positioned(
-                top: -45,
-                left: (MediaQuery.of(context).size.width * 0.5) - 45,
-                child: FlippyCircle(
-                  rewardAmount: viewmodel.itemReward.toStringAsFixed(0),
-                ),
-              )
+              // Positioned(
+              //   top: -45,
+              //   left: (MediaQuery.of(context).size.width * 0.5) - 45,
+              //   child: FlippyCircle(
+              //     rewardAmount: viewmodel.itemReward.toStringAsFixed(0),
+              //   ),
+              // )
             ],
           ),
         );
