@@ -173,14 +173,15 @@ class _PaymentSheetState extends State<PaymentSheet> {
                               message: '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
                               callback: (bool result) {
                                 result
-                                    ? (double.parse(viewmodel.gbpXBalance) <= viewmodel.selectedGBPxAmount)
+                                    ? (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <=
+                                            viewmodel.selectedGBPxAmount)
                                         ? handleStripe(
                                             walletAddress: viewmodel.walletAddress,
-                                            amountText:
-                                                (double.parse(viewmodel.gbpXBalance) - viewmodel.selectedGBPxAmount)
-                                                    .abs()
-                                                    .ceil()
-                                                    .toStringAsFixed(2),
+                                            amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
+                                                    viewmodel.selectedGBPxAmount)
+                                                .abs()
+                                                .ceil()
+                                                .toStringAsFixed(2),
                                             context: context,
                                             shouldPushToHome: false,
                                           )
@@ -198,10 +199,11 @@ class _PaymentSheetState extends State<PaymentSheet> {
                             );
                           } else {
                             //TODO: add pincode screen verification.
-                            (double.parse(viewmodel.gbpXBalance) <= viewmodel.selectedGBPxAmount)
+                            (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <= viewmodel.selectedGBPxAmount)
                                 ? handleStripe(
                                     walletAddress: viewmodel.walletAddress,
-                                    amountText: (double.parse(viewmodel.gbpXBalance) - viewmodel.selectedGBPxAmount)
+                                    amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
+                                            viewmodel.selectedGBPxAmount)
                                         .abs()
                                         .ceil()
                                         .toStringAsFixed(2),

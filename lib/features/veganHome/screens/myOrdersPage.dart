@@ -104,7 +104,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                           ),
                         ),
                         TextSpan(
-                          text: widget.order['rewardsIssued'].toString() + " ",
+                          text: widget.order['rewardsIssued'].toStringAsFixed(2) + " ",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                           ),

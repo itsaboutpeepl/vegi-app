@@ -48,21 +48,28 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                       DetailMenuViewQuantityButton(),
                       Spacer(),
                       ElevatedButton(
-                        onPressed: () => {
-                          viewmodel.addOrderItem(
-                            OrderItem(
-                              internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
-                              menuItem: viewmodel.menuItem,
-                              totalItemPrice: viewmodel.totalPrice,
-                              itemQuantity: viewmodel.quantity,
-                              selectedProductOptions: viewmodel.selectedOptions,
-                            ),
-                          ),
-                          Navigator.pop(context),
+                        onPressed: () {
+                          List<OrderItem> orderList = [];
+
+                          for (var i = 0; i < viewmodel.quantity; i++) {
+                            orderList.add(
+                              OrderItem(
+                                internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
+                                menuItem: viewmodel.menuItem,
+                                totalItemPrice: viewmodel.totalPrice,
+                                itemQuantity:
+                                    1, //this quantity always needs to be 1 to work with the api. the actual quantity of the object is calculated using the viewmodel quantity field. Then the object is just duplicated and added to the cart items.
+                                selectedProductOptions: viewmodel.selectedOptions,
+                              ),
+                            );
+                          }
+
+                          viewmodel.addOrderItems(orderList);
+                          Navigator.pop(context);
                           Future.delayed(
                             Duration(seconds: 1),
                             (() => viewmodel.resetMenuItem()),
-                          )
+                          );
                         },
                         child: Text("Add to Tote"),
                         style: ElevatedButton.styleFrom(

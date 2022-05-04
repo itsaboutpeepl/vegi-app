@@ -66,7 +66,7 @@ ThunkAction updateComputeQuantity(bool isAdd) {
               : oldQuantity--;
 
       store.dispatch(UpdateQuantity(oldQuantity));
-      store.dispatch(calculateItemTotalPrice());
+      //store.dispatch(calculateItemTotalPrice());
     } catch (e, s) {
       log.error('ERROR - updateQuantity $e');
       await Sentry.captureException(

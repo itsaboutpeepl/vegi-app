@@ -193,12 +193,12 @@ ThunkAction updateCartDiscount(String newDiscountCode, VoidCallback errorCallbac
   };
 }
 
-ThunkAction updateCartItems(OrderItem itemToAdd) {
+ThunkAction updateCartItems(List<OrderItem> itemsToAdd) {
   return (Store store) async {
     try {
       List<OrderItem> cartItems = store.state.cartState.cartItems;
 
-      cartItems.add(itemToAdd);
+      cartItems.addAll(itemsToAdd);
 
       store.dispatch(UpdateCartItems(cartItems: cartItems));
 

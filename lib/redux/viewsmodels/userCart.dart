@@ -46,12 +46,10 @@ class UserCartViewModel extends Equatable {
       cartDiscountComputed: store.state.cartState.cartDiscountComputed,
       cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       avatarUrl: store.state.userState.avatarUrl,
-      pplBalance:
-          store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
-      gbpXBalance:
-          store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
+      pplBalance: store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
+      gbpXBalance: store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       addOrderItem: (itemToAdd) {
-        store.dispatch(updateCartItems(itemToAdd));
+        //store.dispatch(updateCartItems(itemToAdd));
       },
       updateOrderItem: (itemToAdd) {
         store.dispatch(updateCartItemQuantity(itemToAdd));

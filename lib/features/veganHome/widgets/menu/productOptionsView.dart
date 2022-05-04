@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
+import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 
 class ProductOptionsView extends StatefulWidget {
@@ -55,6 +56,8 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
       onInit: (store) {
         store.state.menuItemState.selectedProductOptionsForCategory[widget.productOptionsCategory.categoryID] =
             widget.productOptionsCategory.listOfOptions[0];
+
+        store.dispatch(calculateItemTotalPrice());
       },
       builder: (_, viewmodel) {
         return Column(

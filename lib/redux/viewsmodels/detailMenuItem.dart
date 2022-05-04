@@ -13,7 +13,7 @@ class DetailMenuItem extends Equatable {
   final int itemReward;
   final int quantity;
   final Map<int, ProductOptions> selectedOptions;
-  final Function(OrderItem itemToAdd) addOrderItem;
+  final Function(List<OrderItem> itemsToAdd) addOrderItems;
   final Function(MenuItem? menuItem) setMenuItem;
   final Function() resetMenuItem;
   final Function(bool isAdd) updateQuantity;
@@ -23,7 +23,7 @@ class DetailMenuItem extends Equatable {
     required this.totalPrice,
     required this.itemReward,
     required this.quantity,
-    required this.addOrderItem,
+    required this.addOrderItems,
     required this.setMenuItem,
     required this.updateQuantity,
     required this.selectedOptions,
@@ -37,8 +37,8 @@ class DetailMenuItem extends Equatable {
         itemReward: store.state.menuItemState.itemReward,
         quantity: store.state.menuItemState.quantity,
         selectedOptions: store.state.menuItemState.selectedProductOptionsForCategory,
-        addOrderItem: (itemToAdd) {
-          store.dispatch(updateCartItems(itemToAdd));
+        addOrderItems: (itemsToAdd) {
+          store.dispatch(updateCartItems(itemsToAdd));
         },
         setMenuItem: (menuItem) {
           store.dispatch(setUpMenuItemStructures(menuItem));
