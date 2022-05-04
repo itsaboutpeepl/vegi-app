@@ -23,7 +23,6 @@ class StripeService {
 
   factory StripeService() => _instance;
 
-  String _paymentApiUrl = '$topUpService/stripe/createPaymentIntent';
   String _apiKey = dotenv.env['STRIPE_API_KEY']!;
 
   void init() {
@@ -75,15 +74,10 @@ class StripeService {
     required String walletAddress,
   }) async {
     try {
-      final int amountNew =
-          (double.parse(amount) * 100).toInt(); // Pounds to pence
+      final int amountNew = (double.parse(amount) * 100).toInt(); // Pounds to pence
       final Response response = await getIt<Dio>().post(
-        _paymentApiUrl,
-        data: {
-          'amount': amountNew,
-          'currency': currency,
-          'walletAddress': walletAddress
-        },
+        dotenv.env["https://stripetest.itsaboutpeepl.com/api"]!,
+        data: {'amount': amountNew, 'currency': currency, 'walletAddress': walletAddress},
         options: Options(
           headers: {"Content-Type": 'application/json'},
         ),

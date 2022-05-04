@@ -60,17 +60,12 @@ final Token fuseDollarToken = Token(
 
 final String peeplUrl = dotenv.env['PEEPL_URL']!;
 
-final String topUpService = dotenv.env['TOP_UP_SERVICE_URL']!;
+String toShortName(networkType) => networkType == 'mainnet' ? 'main' : networkType;
 
-String toShortName(networkType) =>
-    networkType == 'mainnet' ? 'main' : networkType;
-
-String getBridgeMediator(
-    {String networkType = 'mainnet', String bridgeType = 'foreign'}) {
+String getBridgeMediator({String networkType = 'mainnet', String bridgeType = 'foreign'}) {
   return bridgeType == 'foreign'
       ? bridgeAddresses['${toShortName(networkType)}']['MultiBridgeMediator}']
-      : bridgeAddresses['fuse']
-          ['MultiBridgeMediator${toShortName(networkType).capitalize()}'];
+      : bridgeAddresses['fuse']['MultiBridgeMediator${toShortName(networkType).capitalize()}'];
 }
 
 Map<String, dynamic> bridgeAddresses = Map.from({
@@ -79,7 +74,5 @@ Map<String, dynamic> bridgeAddresses = Map.from({
     "MultiBridgeMediatorMain": "0xc2220646E1E76D5fF3a441eDd9E8EFF0e4A8EF03",
   },
   "main": {"MultiBridgeMediator": "0xf301d525da003e874DF574BCdd309a6BF0535bb6"},
-  "ropsten": {
-    "MultiBridgeMediator": "0x68b762A7a68F6D87Fcf2E2EaF7eF48D00cAa2419"
-  }
+  "ropsten": {"MultiBridgeMediator": "0x68b762A7a68F6D87Fcf2E2EaF7eF48D00cAa2419"}
 });

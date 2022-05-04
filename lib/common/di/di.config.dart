@@ -20,16 +20,17 @@ import '../../services/apis/fuseswap.dart' as _i9;
 import '../../services/apis/market.dart' as _i12;
 import '../../services/apis/peeplEats.dart' as _i14;
 import '../../services/apis/peeplPay.dart' as _i15;
-import '../../utils/log/log_it.dart' as _i18;
+import '../../services/apis/stripePay.dart' as _i18;
+import '../../utils/log/log_it.dart' as _i19;
 import '../../utils/onboard/Istrategy.dart' as _i10;
-import '../network/services.dart' as _i19;
+import '../network/services.dart' as _i20;
 import '../router/routes.dart' as _i17;
-import 'dio.dart' as _i20;
-import 'firebase.dart' as _i21;
-import 'logger_di.dart' as _i23;
-import 'onboard.dart' as _i22;
-import 'package_info.dart' as _i24;
-import 'phone.dart' as _i25; // ignore_for_file: unnecessary_lambdas
+import 'dio.dart' as _i21;
+import 'firebase.dart' as _i22;
+import 'logger_di.dart' as _i24;
+import 'onboard.dart' as _i23;
+import 'package_info.dart' as _i25;
+import 'phone.dart' as _i26; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -69,21 +70,23 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i15.PeeplPaySerivce(get<_i4.Dio>()));
   gh.lazySingleton<_i16.PhoneNumberUtil>(() => phone.phoneNumberUtil);
   gh.singleton<_i17.RootRouter>(servicesModule.rootRouter);
+  gh.lazySingleton<_i18.StripePayService>(
+      () => _i18.StripePayService(get<_i4.Dio>()));
   gh.lazySingleton<_i3.WalletApi>(() => servicesModule.walletApi);
-  gh.lazySingleton<_i18.LogIt>(() => _i18.LogIt(get<_i11.Logger>()));
+  gh.lazySingleton<_i19.LogIt>(() => _i19.LogIt(get<_i11.Logger>()));
   return get;
 }
 
-class _$ServicesModule extends _i19.ServicesModule {}
+class _$ServicesModule extends _i20.ServicesModule {}
 
-class _$DioDi extends _i20.DioDi {}
+class _$DioDi extends _i21.DioDi {}
 
-class _$FirebaseInjectableModule extends _i21.FirebaseInjectableModule {}
+class _$FirebaseInjectableModule extends _i22.FirebaseInjectableModule {}
 
-class _$OnBoardStrategy extends _i22.OnBoardStrategy {}
+class _$OnBoardStrategy extends _i23.OnBoardStrategy {}
 
-class _$LoggerDi extends _i23.LoggerDi {}
+class _$LoggerDi extends _i24.LoggerDi {}
 
-class _$PackageInfoDi extends _i24.PackageInfoDi {}
+class _$PackageInfoDi extends _i25.PackageInfoDi {}
 
-class _$Phone extends _i25.Phone {}
+class _$Phone extends _i26.Phone {}

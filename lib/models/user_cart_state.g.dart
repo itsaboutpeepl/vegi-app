@@ -81,4 +81,5 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
 const _$FulfilmentMethodEnumMap = {
   FulfilmentMethod.collection: 'collection',
   FulfilmentMethod.delivery: 'delivery',
+  FulfilmentMethod.none: 'none',
 };

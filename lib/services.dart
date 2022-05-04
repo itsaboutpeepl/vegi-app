@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/services/apis/explorer.dart';
 import 'package:vegan_liverpool/services/apis/fuseswap.dart';
 import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/peeplEats.dart';
+import 'package:vegan_liverpool/services/apis/stripePay.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:wallet_core/wallet_core.dart';
@@ -30,6 +31,8 @@ final WalletApi walletApi = getIt<WalletApi>();
 final FuseSwapService fuseSwapService = getIt<FuseSwapService>();
 
 final PeeplEatsService peeplEatsService = getIt<PeeplEatsService>();
+
+final StripePayService stripePayService = getIt<StripePayService>();
 
 final PeeplPaySerivce peeplPayService = getIt<PeeplPaySerivce>();
 

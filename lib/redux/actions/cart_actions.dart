@@ -297,6 +297,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
             .map(
               (e) => {
                 "id": int.parse(e.menuItem.menuItemID),
+                "quantity": e.itemQuantity,
                 "options": e.selectedProductOptions.map(
                   (key, value) => MapEntry<String, int>(key.toString(), value.optionID),
                 ),

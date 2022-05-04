@@ -12,6 +12,7 @@ import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/paymentSheet.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/stripeHandler.dart';
 
 class PaymentSheet extends StatefulWidget {
   const PaymentSheet({Key? key}) : super(key: key);
@@ -21,8 +22,6 @@ class PaymentSheet extends StatefulWidget {
 }
 
 class _PaymentSheetState extends State<PaymentSheet> {
-  double _gbpXBalance = 0.0;
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PaymentSheetViewModel>(
@@ -31,7 +30,6 @@ class _PaymentSheetState extends State<PaymentSheet> {
       onInit: (store) {
         store.dispatch(SetTransferringPayment(false));
         store.dispatch(UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
-        _gbpXBalance = double.parse(store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(true));
       },
       builder: (_, viewmodel) {
         return Column(
@@ -175,27 +173,50 @@ class _PaymentSheetState extends State<PaymentSheet> {
                               message: '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
                               callback: (bool result) {
                                 result
-                                    ? (_gbpXBalance <= viewmodel.selectedGBPxAmount)
-                                        ? context.router.push(TopUpScreen())
-                                        : viewmodel.sendToken(() {
-                                            context.router.push(OrderConfirmedScreen());
-                                          }, () {
-                                            print("error took place");
-                                            showErrorSnack(context: context, title: "Something went wrong");
-                                          })
+                                    ? (double.parse(viewmodel.gbpXBalance) <= viewmodel.selectedGBPxAmount)
+                                        ? handleStripe(
+                                            walletAddress: viewmodel.walletAddress,
+                                            amountText:
+                                                (double.parse(viewmodel.gbpXBalance) - viewmodel.selectedGBPxAmount)
+                                                    .abs()
+                                                    .ceil()
+                                                    .toStringAsFixed(2),
+                                            context: context,
+                                            shouldPushToHome: false,
+                                          )
+                                        : viewmodel.sendToken(
+                                            () {
+                                              context.router.push(OrderConfirmedScreen());
+                                            },
+                                            () {
+                                              print("error took place");
+                                              showErrorSnack(context: context, title: "Something went wrong");
+                                            },
+                                          )
                                     : context.router.pop();
                               },
                             );
                           } else {
                             //TODO: add pincode screen verification.
-                            (_gbpXBalance <= viewmodel.selectedGBPxAmount)
-                                ? context.router.push(TopUpScreen())
-                                : viewmodel.sendToken(() {
-                                    context.router.push(OrderConfirmedScreen());
-                                  }, () {
-                                    print("error took place");
-                                    showErrorSnack(context: context, title: "Something went wrong");
-                                  });
+                            (double.parse(viewmodel.gbpXBalance) <= viewmodel.selectedGBPxAmount)
+                                ? handleStripe(
+                                    walletAddress: viewmodel.walletAddress,
+                                    amountText: (double.parse(viewmodel.gbpXBalance) - viewmodel.selectedGBPxAmount)
+                                        .abs()
+                                        .ceil()
+                                        .toStringAsFixed(2),
+                                    context: context,
+                                    shouldPushToHome: false,
+                                  )
+                                : viewmodel.sendToken(
+                                    () {
+                                      context.router.push(OrderConfirmedScreen());
+                                    },
+                                    () {
+                                      print("error took place");
+                                      showErrorSnack(context: context, title: "Something went wrong");
+                                    },
+                                  );
                           }
                         },
                         baseColor: Colors.grey[800]!,

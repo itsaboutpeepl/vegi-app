@@ -16,6 +16,7 @@ class PaymentSheetViewModel extends Equatable {
   final bool errorCompletingPayment;
   final bool confirmedPayment;
   final String restaurantName;
+  final String walletAddress;
   final Function(double GBPxAmount, double PPLAmount) updateSelectedValues;
   final Function(VoidCallback successCallBack, VoidCallback errorCallback) sendToken;
   final Function(bool) setTransferringPayment;
@@ -38,6 +39,7 @@ class PaymentSheetViewModel extends Equatable {
     required this.setTransferringPayment,
     required this.setError,
     required this.setConfirmed,
+    required this.walletAddress,
   });
 
   static PaymentSheetViewModel fromStore(Store<AppState> store) {
@@ -52,6 +54,7 @@ class PaymentSheetViewModel extends Equatable {
       errorCompletingPayment: store.state.cartState.errorCompletingPayment,
       confirmedPayment: store.state.cartState.confirmedPayment,
       restaurantName: store.state.cartState.restaurantName,
+      walletAddress: store.state.userState.walletAddress,
       updateSelectedValues: (GBPxAmount, PPLAmount) {
         store.dispatch(UpdateSelectedAmounts(GBPxAmount, PPLAmount));
       },

@@ -32,8 +32,7 @@ class _NavDrawerState extends State<NavDrawer> {
                         width: 50,
                         height: 50,
                         imageUrl: viewModel.avatarUrl,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
+                        placeholder: (context, url) => CircularProgressIndicator(),
                         errorWidget: (context, url, error) => CircleAvatar(
                           backgroundImage: AssetImage('assets/images/anom.png'),
                           radius: 30,
@@ -129,11 +128,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 title: Text('Settings'),
                 onTap: () => context.router.push(ProfileScreen()),
               ),
-              ListTile(
-                leading: Icon(Icons.quiz),
-                title: Text('FAQs'),
-                onTap: () => context.router.push(ProfileScreen()),
-              ),
+              ListTile(leading: Icon(Icons.quiz), title: Text('FAQs'), onTap: () => context.router.pop()),
               ListTile(
                 leading: Icon(Icons.help_sharp),
                 title: Text('About Us'),

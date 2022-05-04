@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/topup/screens/topup.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/topup.dart';
 
 class TopUpSuccess extends StatefulWidget {
   final String amountText;
@@ -13,8 +14,7 @@ class TopUpSuccess extends StatefulWidget {
   _TopUpSuccessState createState() => _TopUpSuccessState();
 }
 
-class _TopUpSuccessState extends State<TopUpSuccess>
-    with SingleTickerProviderStateMixin {
+class _TopUpSuccessState extends State<TopUpSuccess> with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
   bool isPreloading = false;
@@ -29,10 +29,8 @@ class _TopUpSuccessState extends State<TopUpSuccess>
   void initState() {
     super.initState();
 
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
-    scaleAnimation =
-        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
       setState(() {});
@@ -86,9 +84,7 @@ class _TopUpSuccessState extends State<TopUpSuccess>
                     fontSize: 20,
                   ),
                 ),
-                widget.showOrderNow
-                    ? SizedBox(height: 20.0)
-                    : SizedBox.shrink(),
+                widget.showOrderNow ? SizedBox(height: 20.0) : SizedBox.shrink(),
                 widget.showOrderNow
                     ? Center(
                         child: StoreConnector<AppState, TopUpViewModel>(

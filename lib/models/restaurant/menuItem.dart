@@ -24,5 +24,5 @@ class MenuItem with _$MenuItem {
 
   factory MenuItem.fromJson(dynamic json) => _$MenuItemFromJson(json);
 
-  String get formattedPrice => "£" + (this.price * 0.01).toString();
+  String get formattedPrice => "£" + (this.price * 0.01).toStringAsFixed(2);
 }
