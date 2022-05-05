@@ -89,6 +89,8 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
                       _selectedIndex = index;
                       viewmodel.selectedOptions[widget.productOptionsCategory.categoryID] =
                           widget.productOptionsCategory.listOfOptions[index];
+
+                      viewmodel.reCalcTotals();
                     });
                   },
                 ),

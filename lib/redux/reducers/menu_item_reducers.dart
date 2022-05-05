@@ -34,6 +34,7 @@ MenuItemState _setMenuItem(
     menuItem: action.menuItem,
     totalPrice: action.menuItem.price,
     itemReward: (action.menuItem.price * 5 ~/ 100),
+    selectedProductOptionsForCategory: {},
     quantity: 1,
   );
 }

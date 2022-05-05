@@ -83,25 +83,13 @@ final MenuItem bagel1 = new MenuItem(
   isFeatured: true,
   menuItemID: "menuID1",
   restaurantID: "DEMO",
-  name: "Blueberry Bagel",
+  name: "Something went wrong",
   imageURL: "https://picsum.photos/500",
   category: "Bakery",
   price: 390,
-  description: "Freshiy Baked Bagel made with a mix of wild and cultured blueberries baked inside",
-  extras: {
-    "Cream Cheese": 100,
-    "Extra Blueberries": 185,
-    "Extra Baked": 235,
-    "Extra Love": 500,
-    "Addon - Maple Syrup": 230,
-    "Addon - Strawberry Syrup": 230,
-    "Addon - Apple Syrup": 230,
-    "Addon - Mango Syrup": 230,
-    "Addon - Banana Syrup": 230,
-    "Addon - Blueberry Syrup": 230,
-    "Addon - Orange Syrup": 230
-  },
-  listOfProductOptions: demoPOCList,
+  description: "An error occurred",
+  extras: {},
+  listOfProductOptions: [],
 );
 
 final MenuItem bagel2 = new MenuItem(

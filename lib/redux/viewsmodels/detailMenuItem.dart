@@ -17,6 +17,7 @@ class DetailMenuItem extends Equatable {
   final Function(MenuItem? menuItem) setMenuItem;
   final Function() resetMenuItem;
   final Function(bool isAdd) updateQuantity;
+  final Function() reCalcTotals;
 
   DetailMenuItem({
     required this.menuItem,
@@ -28,27 +29,32 @@ class DetailMenuItem extends Equatable {
     required this.updateQuantity,
     required this.selectedOptions,
     required this.resetMenuItem,
+    required this.reCalcTotals,
   });
 
   static DetailMenuItem fromStore(Store<AppState> store) {
     return DetailMenuItem(
-        menuItem: store.state.menuItemState.menuItem,
-        totalPrice: store.state.menuItemState.totalPrice,
-        itemReward: store.state.menuItemState.itemReward,
-        quantity: store.state.menuItemState.quantity,
-        selectedOptions: store.state.menuItemState.selectedProductOptionsForCategory,
-        addOrderItems: (itemsToAdd) {
-          store.dispatch(updateCartItems(itemsToAdd));
-        },
-        setMenuItem: (menuItem) {
-          store.dispatch(setUpMenuItemStructures(menuItem));
-        },
-        resetMenuItem: () {
-          store.dispatch(ResetMenuItem());
-        },
-        updateQuantity: (isAdd) {
-          store.dispatch(updateComputeQuantity(isAdd));
-        });
+      menuItem: store.state.menuItemState.menuItem,
+      totalPrice: store.state.menuItemState.totalPrice,
+      itemReward: store.state.menuItemState.itemReward,
+      quantity: store.state.menuItemState.quantity,
+      selectedOptions: store.state.menuItemState.selectedProductOptionsForCategory,
+      addOrderItems: (itemsToAdd) {
+        store.dispatch(updateCartItems(itemsToAdd));
+      },
+      setMenuItem: (menuItem) {
+        store.dispatch(setUpMenuItemStructures(menuItem));
+      },
+      resetMenuItem: () {
+        store.dispatch(ResetMenuItem());
+      },
+      updateQuantity: (isAdd) {
+        store.dispatch(updateComputeQuantity(isAdd));
+      },
+      reCalcTotals: () {
+        store.dispatch(calculateItemTotalPrice());
+      },
+    );
   }
 
   @override
