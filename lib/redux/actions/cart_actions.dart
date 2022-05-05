@@ -338,6 +338,15 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
       } else if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.collection) {
         orderObject.addAll(
           {
+            "address": {
+              "name": "Collection Order",
+              "email": "order@collection.com",
+              "phoneNumber": "12345678910",
+              "lineOne": "10 Collection Street",
+              "lineTwo": "",
+              "postCode": "L7 0HG",
+              "deliveryInstructions": ""
+            },
             "fulfilmentMethod": 2,
             "fulfilmentSlotFrom": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.first.value),
             "fulfilmentSlotTo": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.last.value),
