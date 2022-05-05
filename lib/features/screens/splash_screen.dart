@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
         store.dispatch(getWalletAddressesCall());
         store.dispatch(identifyCall());
         store.dispatch(loadContacts());
-        await AppTrackingTransparency.requestTrackingAuthorization();
+        // await AppTrackingTransparency.requestTrackingAuthorization();
       }
       if (BiometricAuth.faceID == userState.authType || BiometricAuth.touchID == userState.authType) {
         // Using FaceID for login authentication

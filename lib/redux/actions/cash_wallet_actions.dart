@@ -261,13 +261,11 @@ ThunkAction segmentIdentifyCall(Map<String, dynamic>? traits) {
 
 ThunkAction startFetchTokensBalances() {
   return (Store store) async {
-    final bool isFetchingBalances =
-        store.state.cashWalletState.isFetchingBalances ?? false;
+    final bool isFetchingBalances = store.state.cashWalletState.isFetchingBalances ?? false;
     final String walletAddress = store.state.userState.walletAddress;
     if (!isFetchingBalances) {
       // log.info('Start Fetching token balances');
-      Timer.periodic(Duration(seconds: Variables.INTERVAL_SECONDS),
-          (Timer timer) async {
+      Timer.periodic(Duration(seconds: Variables.INTERVAL_SECONDS), (Timer timer) async {
         String currentWalletAddress = store.state.userState.walletAddress;
         if (currentWalletAddress != walletAddress) {
           log.error('Timer stopped - startFetchTokensBalances');
@@ -290,8 +288,7 @@ ThunkAction startFetchTokensBalances() {
 
 ThunkAction startFetchingCall() {
   return (Store store) async {
-    bool isTransfersFetchingStarted =
-        store.state.cashWalletState.isTransfersFetchingStarted ?? false;
+    bool isTransfersFetchingStarted = store.state.cashWalletState.isTransfersFetchingStarted ?? false;
     final String walletAddress = store.state.userState.walletAddress;
     if (!isTransfersFetchingStarted) {
       store.dispatch(SetIsTransfersFetching(isFetching: true));
@@ -309,8 +306,7 @@ ThunkAction startFetchingCall() {
           CashWalletState cashWalletState = store.state.cashWalletState;
           final WalletActions? walletActions = cashWalletState.walletActions;
           if (walletActions != null && walletActions.list.isNotEmpty) {
-            Map<String, dynamic> res =
-                await walletApi.getActionsByWalletAddress(
+            Map<String, dynamic> res = await walletApi.getActionsByWalletAddress(
               walletAddress,
               updatedAt: walletActions.list.last.timestamp + 1,
             );
@@ -572,8 +568,7 @@ ThunkAction sendTokenCall(
           sendFailureCallback,
         ));
       } else {
-        log.info(
-            'Sending ${token.name} $tokensAmount from $walletAddress to $receiverAddress');
+        log.info('Sending ${token.name} $tokensAmount from $walletAddress to $receiverAddress');
         dynamic response = await walletApi.tokenTransfer(
           getIt<Web3>(instanceName: 'fuseWeb3'),
           walletAddress,
@@ -609,8 +604,7 @@ ThunkAction joinCommunityCall(
   return (Store store) async {
     try {
       String walletAddress = store.state.userState.walletAddress;
-      dynamic communityData =
-          await graph.getCommunityByAddress(community.address);
+      dynamic communityData = await graph.getCommunityByAddress(community.address);
       bool isMember = await graph.isCommunityMember(
         walletAddress,
         communityData['entitiesList']['address'],
@@ -645,9 +639,7 @@ ThunkAction fetchCommunityMetadataCall(
   return (Store store) async {
     try {
       CommunityMetadata communityMetadata = CommunityMetadata();
-      String hash = communityURI.startsWith('ipfs://')
-          ? communityURI.split('://').last
-          : communityURI.split('/').last;
+      String hash = communityURI.startsWith('ipfs://') ? communityURI.split('://').last : communityURI.split('/').last;
       dynamic metadata = await api.fetchMetadata(
         hash,
         isRopsten: false,
@@ -672,8 +664,7 @@ ThunkAction fetchCommunityMetadataCall(
         stackTrace: s,
       );
       await Sentry.captureException(
-        Exception(
-            'ERROR while trying to fetch community metadata: ${e.toString()}'),
+        Exception('ERROR while trying to fetch community metadata: ${e.toString()}'),
         stackTrace: s,
         hint: 'ERROR while trying to fetch community metadata',
       );
@@ -685,8 +676,7 @@ Future<Token> fetchToken(
   Community community,
 ) async {
   if (community.homeTokenAddress.isNotEmpty) {
-    dynamic tokenDetails =
-        await getIt<Web3>(instanceName: 'fuseWeb3').getTokenDetails(
+    dynamic tokenDetails = await getIt<Web3>(instanceName: 'fuseWeb3').getTokenDetails(
       community.homeTokenAddress,
     );
     final int decimals = tokenDetails['decimals'].toInt();
@@ -778,8 +768,7 @@ ThunkAction switchToExistingCommunityCall(String communityAddress) {
   return (Store store) async {
     try {
       log.info('Swithcing to existing community $communityAddress');
-      String walletAddress =
-          checksumEthereumAddress(store.state.userState.walletAddress);
+      String walletAddress = checksumEthereumAddress(store.state.userState.walletAddress);
       Map<String, dynamic> communityData = await api.getCommunityData(
         checksumEthereumAddress(communityAddress),
         walletAddress: walletAddress,
@@ -833,8 +822,7 @@ ThunkAction refetchCommunityData() {
   return (Store store) async {
     String communityAddress = store.state.cashWalletState.communityAddress;
     String walletAddress = store.state.userState.walletAddress;
-    Community? current =
-        store.state.cashWalletState.communities[communityAddress.toLowerCase()];
+    Community? current = store.state.cashWalletState.communities[communityAddress.toLowerCase()];
     if (current != null && current.name.isNotEmpty) {
       Map<String, dynamic> communityData = await api.getCommunityData(
         checksumEthereumAddress(communityAddress),
@@ -872,8 +860,7 @@ ThunkAction switchCommunityCall(
     try {
       bool isLoading = store.state.cashWalletState.isCommunityLoading ?? false;
       if (isLoading) return;
-      Community? current = store
-          .state.cashWalletState.communities[communityAddress.toLowerCase()];
+      Community? current = store.state.cashWalletState.communities[communityAddress.toLowerCase()];
       if (current?.name != '' && current?.isMember == true) {
         store.dispatch(SwitchCommunityRequested(communityAddress));
         store.dispatch(switchToExistingCommunityCall(communityAddress));
@@ -905,8 +892,7 @@ ThunkAction getBusinessListCall({
     try {
       communityAddress ??= defaultCommunityAddress;
       store.dispatch(StartFetchingBusinessList());
-      dynamic communityEntities =
-          await graph.getCommunityBusinesses(communityAddress!);
+      dynamic communityEntities = await graph.getCommunityBusinesses(communityAddress!);
       if (communityEntities != null) {
         List<dynamic> entities = List.from(communityEntities);
         Future<List<Business>> businesses = Future.wait(
@@ -953,8 +939,7 @@ ThunkAction getBusinessListCall({
       );
       store.dispatch(FetchingBusinessListFailed());
       await Sentry.captureException(
-        Exception(
-            'ERROR while trying to fetch community businesses: ${e.toString()}'),
+        Exception('ERROR while trying to fetch community businesses: ${e.toString()}'),
         stackTrace: s,
         hint: 'ERROR while trying to fetch community businesses',
       );
@@ -969,10 +954,8 @@ ThunkAction getWalletActionsCall({
   return (Store store) async {
     try {
       final String walletAddress = store.state.userState.walletAddress;
-      final WalletActions walletActions =
-          store.state.cashWalletState.walletActions;
-      final Map<String, dynamic> response =
-          await walletApi.getPaginatedActionsByWalletAddress(
+      final WalletActions walletActions = store.state.cashWalletState.walletActions;
+      final Map<String, dynamic> response = await walletApi.getPaginatedActionsByWalletAddress(
         walletAddress,
         pageIndex ?? walletActions.currentPage,
       );
@@ -983,9 +966,7 @@ ThunkAction getWalletActionsCall({
       if (actions.isNotEmpty) {
         store.dispatch(GetActionsSuccess(
           walletActions: actions,
-          nextPage: hasNextPage && nextPage > walletActions.currentPage
-              ? nextPage
-              : walletActions.currentPage,
+          nextPage: hasNextPage && nextPage > walletActions.currentPage ? nextPage : walletActions.currentPage,
         ));
         onSuccess?.call();
       }
@@ -1115,15 +1096,13 @@ ThunkAction getTokenWalletActionsCall(Token token) {
   return (Store store) async {
     try {
       final String walletAddress = store.state.userState.walletAddress;
-      final Map<String, dynamic> response =
-          await walletApi.getActionsByWalletAddress(
+      final Map<String, dynamic> response = await walletApi.getActionsByWalletAddress(
         walletAddress,
         updatedAt: token.walletActions!.updatedAt.toInt(),
         tokenAddress: token.address,
       );
       final Iterable<dynamic> docs = response['docs'] ?? [];
-      final List<WalletAction> actions =
-          WalletActionFactory.actionsFromJson(docs);
+      final List<WalletAction> actions = WalletActionFactory.actionsFromJson(docs);
       if (actions.isNotEmpty) {
         store.dispatch(GetTokenWalletActionsSuccess(
           walletActions: actions,
@@ -1185,8 +1164,7 @@ ThunkAction swapHandler(
         '0x',
         '',
       );
-      Map<String, dynamic> response =
-          await walletApi.approveTokenAndCallContract(
+      Map<String, dynamic> response = await walletApi.approveTokenAndCallContract(
         getIt<Web3>(instanceName: 'fuseWeb3'),
         swapRequestBody.recipient,
         swapRequestBody.currencyIn,
@@ -1210,8 +1188,7 @@ ThunkAction swapHandler(
       String swapJobId = response['job']['_id'];
       log.info('Job $swapJobId for swap');
     } catch (error, stackTrace) {
-      log.error(
-          'Error in Get swapHandler ${error.toString()} ${stackTrace.toString()}');
+      log.error('Error in Get swapHandler ${error.toString()} ${stackTrace.toString()}');
       sendFailureCallback();
     }
   };
@@ -1220,12 +1197,9 @@ ThunkAction swapHandler(
 ThunkAction getFuseBalance() {
   return (Store store) async {
     try {
-      BigInt fuseBalance =
-          store.state.cashWalletState.tokens[fuseToken.address]?.amount ??
-              BigInt.zero;
+      BigInt fuseBalance = store.state.cashWalletState.tokens[fuseToken.address]?.amount ?? BigInt.zero;
       String walletAddress = store.state.userState.walletAddress;
-      EtherAmount balance =
-          await getIt<Web3>(instanceName: 'fuseWeb3').getBalance(
+      EtherAmount balance = await getIt<Web3>(instanceName: 'fuseWeb3').getBalance(
         address: walletAddress,
       );
       if (balance.getInWei.compareTo(fuseBalance) != 0) {

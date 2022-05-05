@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -21,10 +22,11 @@ class UserNameScreen extends StatelessWidget {
       title: I10n.of(context).sign_up,
       body: StoreConnector<AppState, Function(String)>(
         distinct: true,
-        converter: (store) => (String displayName) {
+        converter: (store) => (String displayName) async {
           isAuthenticated = true;
           store.dispatch(SetDisplayName(displayName));
           store.dispatch(createAccountWalletCall());
+          await AppTrackingTransparency.requestTrackingAuthorization();
         },
         builder: (_, setDisplayName) {
           return Container(
@@ -110,8 +112,7 @@ class UserNameScreen extends StatelessWidget {
                         label: I10n.of(context).next_button,
                         onPressed: () {
                           if (displayNameController.text.isNotEmpty) {
-                            setDisplayName(
-                                displayNameController.text.capitalize());
+                            setDisplayName(displayNameController.text.capitalize());
                             context.router.push(ChooseSecurityOption());
                           }
                         },
