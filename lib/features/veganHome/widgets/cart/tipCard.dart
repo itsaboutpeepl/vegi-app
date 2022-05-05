@@ -5,8 +5,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
 class TipCard extends StatefulWidget {
-  const TipCard({Key? key, required this.emoji, required this.tipAmount})
-      : super(key: key);
+  const TipCard({Key? key, required this.emoji, required this.tipAmount}) : super(key: key);
 
   final String emoji;
   final int tipAmount;
@@ -23,9 +22,7 @@ class _TipCardState extends State<TipCard> {
       distinct: true,
       builder: (_, viewmodel) {
         return Card(
-          color: viewmodel.selectedUserTip == widget.tipAmount
-              ? flexColorSchemeLight.primary
-              : Colors.white,
+          color: viewmodel.selectedUserTip == widget.tipAmount ? flexColorSchemeLight.primary : Colors.white,
           margin: const EdgeInsets.only(top: 5),
           child: InkWell(
             onTap: () {
@@ -39,9 +36,13 @@ class _TipCardState extends State<TipCard> {
                 children: [
                   Text.rich(
                     TextSpan(
-                      text: widget.emoji,
-                      style: TextStyle(fontSize: 18),
                       children: [
+                        WidgetSpan(
+                          child: Image.asset(
+                            widget.emoji,
+                            width: 18,
+                          ),
+                        ),
                         TextSpan(
                           text: " £${widget.tipAmount}",
                           style: TextStyle(

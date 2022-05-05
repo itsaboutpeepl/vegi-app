@@ -37,23 +37,23 @@ class _TipCardViewState extends State<TipCardView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TipCard(
-                  emoji: "😒",
+                  emoji: "assets/images/leaf-1.png",
                   tipAmount: 1,
                 ),
                 TipCard(
-                  emoji: "🤨",
+                  emoji: "assets/images/leaf-2.png",
                   tipAmount: 2,
                 ),
                 TipCard(
-                  emoji: "😐",
+                  emoji: "assets/images/leaf-3.png",
                   tipAmount: 3,
                 ),
                 TipCard(
-                  emoji: "😏",
+                  emoji: "assets/images/leaf-4.png",
                   tipAmount: 4,
                 ),
                 TipCard(
-                  emoji: "🥵",
+                  emoji: "assets/images/leaf-5.png",
                   tipAmount: 5,
                 )
               ],
