@@ -41,11 +41,14 @@ class _SingleCartItemState extends State<SingleCartItem> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.orderItem.menuItem.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Text(
+                            widget.orderItem.menuItem.name,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                         ),
                         Text(

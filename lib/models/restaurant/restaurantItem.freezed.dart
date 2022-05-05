@@ -34,7 +34,8 @@ class _$RestaurantItemTearOff {
       required int rating,
       required DeliveryAddresses address,
       required List<MenuItem> listOfMenuItems,
-      required String walletAddress}) {
+      required String walletAddress,
+      required String status}) {
     return _RestaurantItem(
       restaurantID: restaurantID,
       name: name,
@@ -48,6 +49,7 @@ class _$RestaurantItemTearOff {
       address: address,
       listOfMenuItems: listOfMenuItems,
       walletAddress: walletAddress,
+      status: status,
     );
   }
 
@@ -74,6 +76,7 @@ mixin _$RestaurantItem {
   DeliveryAddresses get address => throw _privateConstructorUsedError;
   List<MenuItem> get listOfMenuItems => throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -98,7 +101,8 @@ abstract class $RestaurantItemCopyWith<$Res> {
       int rating,
       DeliveryAddresses address,
       List<MenuItem> listOfMenuItems,
-      String walletAddress});
+      String walletAddress,
+      String status});
 
   $DeliveryAddressesCopyWith<$Res> get address;
 }
@@ -126,6 +130,7 @@ class _$RestaurantItemCopyWithImpl<$Res>
     Object? address = freezed,
     Object? listOfMenuItems = freezed,
     Object? walletAddress = freezed,
+    Object? status = freezed,
   }) {
     return _then(_value.copyWith(
       restaurantID: restaurantID == freezed
@@ -176,6 +181,10 @@ class _$RestaurantItemCopyWithImpl<$Res>
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 
@@ -206,7 +215,8 @@ abstract class _$RestaurantItemCopyWith<$Res>
       int rating,
       DeliveryAddresses address,
       List<MenuItem> listOfMenuItems,
-      String walletAddress});
+      String walletAddress,
+      String status});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get address;
@@ -237,6 +247,7 @@ class __$RestaurantItemCopyWithImpl<$Res>
     Object? address = freezed,
     Object? listOfMenuItems = freezed,
     Object? walletAddress = freezed,
+    Object? status = freezed,
   }) {
     return _then(_RestaurantItem(
       restaurantID: restaurantID == freezed
@@ -287,6 +298,10 @@ class __$RestaurantItemCopyWithImpl<$Res>
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -307,7 +322,8 @@ class _$_RestaurantItem extends _RestaurantItem {
       required this.rating,
       required this.address,
       required this.listOfMenuItems,
-      required this.walletAddress})
+      required this.walletAddress,
+      required this.status})
       : super._();
 
   factory _$_RestaurantItem.fromJson(Map<String, dynamic> json) =>
@@ -337,10 +353,12 @@ class _$_RestaurantItem extends _RestaurantItem {
   final List<MenuItem> listOfMenuItems;
   @override
   final String walletAddress;
+  @override
+  final String status;
 
   @override
   String toString() {
-    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, walletAddress: $walletAddress)';
+    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, walletAddress: $walletAddress, status: $status)';
   }
 
   @override
@@ -365,7 +383,8 @@ class _$_RestaurantItem extends _RestaurantItem {
             const DeepCollectionEquality()
                 .equals(other.listOfMenuItems, listOfMenuItems) &&
             const DeepCollectionEquality()
-                .equals(other.walletAddress, walletAddress));
+                .equals(other.walletAddress, walletAddress) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
@@ -382,7 +401,8 @@ class _$_RestaurantItem extends _RestaurantItem {
       const DeepCollectionEquality().hash(rating),
       const DeepCollectionEquality().hash(address),
       const DeepCollectionEquality().hash(listOfMenuItems),
-      const DeepCollectionEquality().hash(walletAddress));
+      const DeepCollectionEquality().hash(walletAddress),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -408,7 +428,8 @@ abstract class _RestaurantItem extends RestaurantItem {
       required int rating,
       required DeliveryAddresses address,
       required List<MenuItem> listOfMenuItems,
-      required String walletAddress}) = _$_RestaurantItem;
+      required String walletAddress,
+      required String status}) = _$_RestaurantItem;
   _RestaurantItem._() : super._();
 
   factory _RestaurantItem.fromJson(Map<String, dynamic> json) =
@@ -438,6 +459,8 @@ abstract class _RestaurantItem extends RestaurantItem {
   List<MenuItem> get listOfMenuItems;
   @override
   String get walletAddress;
+  @override
+  String get status;
   @override
   @JsonKey(ignore: true)
   _$RestaurantItemCopyWith<_RestaurantItem> get copyWith =>

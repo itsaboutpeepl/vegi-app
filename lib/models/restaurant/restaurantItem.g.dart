@@ -25,6 +25,7 @@ _$_RestaurantItem _$$_RestaurantItemFromJson(Map<String, dynamic> json) =>
           .map((e) => MenuItem.fromJson(e))
           .toList(),
       walletAddress: json['walletAddress'] as String,
+      status: json['status'] as String,
     );
 
 Map<String, dynamic> _$$_RestaurantItemToJson(_$_RestaurantItem instance) =>
@@ -42,4 +43,5 @@ Map<String, dynamic> _$$_RestaurantItemToJson(_$_RestaurantItem instance) =>
       'listOfMenuItems':
           instance.listOfMenuItems.map((e) => e.toJson()).toList(),
       'walletAddress': instance.walletAddress,
+      'status': instance.status,
     };

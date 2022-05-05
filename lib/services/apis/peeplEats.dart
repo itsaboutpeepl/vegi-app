@@ -37,30 +37,57 @@ class PeeplEatsService {
 
     List<dynamic> results = response.data['vendors'] as List;
 
-    List<RestaurantItem> restaurants = [];
+    List<RestaurantItem> restaurantsActive = [];
+    List<RestaurantItem> restaurantsInactive = [];
 
     results.forEach(
       (element) {
-        restaurants.add(
-          RestaurantItem(
-            restaurantID: element["id"].toString(),
-            name: element['name'] ?? "",
-            description: element["description"] ?? "",
-            phoneNumber: element['phoneNumber'] ?? "",
-            deliveryRestrictionDetails: [], // TODO: Remove this entirely
-            imageURL: element["imageUrl"],
-            category: "Category",
-            costLevel: element['costLevel'] ?? 2,
-            rating: element['rating'] ?? 2,
-            address: demoAddress,
-            walletAddress: element['walletAddress'],
-            listOfMenuItems: [],
-          ),
-        );
+        if (element['status'] == "active") {
+          restaurantsActive.add(
+            RestaurantItem(
+              restaurantID: element["id"].toString(),
+              name: element['name'] ?? "",
+              description: element["description"] ?? "",
+              phoneNumber: element['phoneNumber'] ?? "",
+              status: element['status'] ?? "draft",
+              deliveryRestrictionDetails: [], // TODO: Remove this entirely
+              imageURL: element["imageUrl"],
+              category: "Category",
+              costLevel: element['costLevel'] ?? 2,
+              rating: element['rating'] ?? 2,
+              address: demoAddress,
+              walletAddress: element['walletAddress'],
+              listOfMenuItems: [],
+            ),
+          );
+        } else {
+          restaurantsInactive.add(
+            RestaurantItem(
+              restaurantID: element["id"].toString(),
+              name: element['name'] ?? "",
+              description: element["description"] ?? "",
+              phoneNumber: element['phoneNumber'] ?? "",
+              status: element['status'] ?? "draft",
+              deliveryRestrictionDetails: [], // TODO: Remove this entirely
+              imageURL: element["imageUrl"],
+              category: "Category",
+              costLevel: element['costLevel'] ?? 2,
+              rating: element['rating'] ?? 2,
+              address: demoAddress,
+              walletAddress: element['walletAddress'],
+              listOfMenuItems: [],
+            ),
+          );
+        }
       },
     );
 
-    return restaurants;
+    restaurantsActive.removeWhere((element) => element.status == "draft");
+    restaurantsInactive.removeWhere((element) => element.status == "draft");
+
+    restaurantsActive.addAll(restaurantsInactive);
+
+    return restaurantsActive;
   }
 
   Future<List<MenuItem>> getRestaurantMenuItems(String restaurantID) async {

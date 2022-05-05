@@ -23,8 +23,8 @@ class RestaurantItem with _$RestaurantItem {
     required DeliveryAddresses address,
     required List<MenuItem> listOfMenuItems,
     required String walletAddress,
+    required String status,
   }) = _RestaurantItem;
 
-  factory RestaurantItem.fromJson(dynamic json) =>
-      _$RestaurantItemFromJson(json);
+  factory RestaurantItem.fromJson(dynamic json) => _$RestaurantItemFromJson(json);
 }
