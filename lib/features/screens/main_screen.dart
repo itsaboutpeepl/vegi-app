@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,8 @@ class _MainScreenState extends State<MainScreen> {
     });
 
     startFirebaseNotifs();
+    requestAppTracking();
+
     super.initState();
   }
 
@@ -70,6 +73,10 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  void requestAppTracking() async {
+    await AppTrackingTransparency.requestTrackingAuthorization();
   }
 
   void startFirebaseNotifs() {
