@@ -16,6 +16,7 @@ class HomePageState with _$HomePageState {
     required List<RestaurantItem> featuredRestaurants,
     required UserCart currentUserCart,
     required bool isLoadingHomePage,
+    required List<String> postalCodes,
   }) = _HomePageState;
 
   factory HomePageState.initial() => HomePageState(
@@ -23,13 +24,13 @@ class HomePageState with _$HomePageState {
         featuredRestaurants: [],
         currentUserCart: UserCart.initial(),
         isLoadingHomePage: false,
+        postalCodes: [],
       );
 
   factory HomePageState.fromJson(dynamic json) => _$HomePageStateFromJson(json);
 }
 
-class HomePageStateConverter
-    implements JsonConverter<HomePageState, Map<String, dynamic>?> {
+class HomePageStateConverter implements JsonConverter<HomePageState, Map<String, dynamic>?> {
   const HomePageStateConverter();
 
   @override

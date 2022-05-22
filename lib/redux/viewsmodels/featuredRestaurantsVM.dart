@@ -9,12 +9,14 @@ class FeaturedRestaurantsVM extends Equatable {
   final bool isLoadingHomePage;
   final Function(String outCode) changeOutCode;
   final String avatarUrl;
+  final List<String> postalCodes;
 
   FeaturedRestaurantsVM({
     required this.featuredRestaurants,
     required this.isLoadingHomePage,
     required this.avatarUrl,
     required this.changeOutCode,
+    required this.postalCodes,
   });
 
   static FeaturedRestaurantsVM fromStore(Store<AppState> store) {
@@ -25,6 +27,7 @@ class FeaturedRestaurantsVM extends Equatable {
       changeOutCode: (outCode) {
         store.dispatch(fetchFeaturedRestaurants(outCode: outCode));
       },
+      postalCodes: store.state.homePageState.postalCodes,
     );
   }
 
@@ -32,5 +35,6 @@ class FeaturedRestaurantsVM extends Equatable {
   List<Object> get props => [
         featuredRestaurants,
         isLoadingHomePage,
+        postalCodes,
       ];
 }

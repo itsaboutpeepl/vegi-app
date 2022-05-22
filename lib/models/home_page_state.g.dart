@@ -16,6 +16,9 @@ _$_HomePageState _$$_HomePageStateFromJson(Map<String, dynamic> json) =>
           .toList(),
       currentUserCart: UserCart.fromJson(json['currentUserCart']),
       isLoadingHomePage: json['isLoadingHomePage'] as bool,
+      postalCodes: (json['postalCodes'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$$_HomePageStateToJson(_$_HomePageState instance) =>
@@ -26,4 +29,5 @@ Map<String, dynamic> _$$_HomePageStateToJson(_$_HomePageState instance) =>
           instance.featuredRestaurants.map((e) => e.toJson()).toList(),
       'currentUserCart': instance.currentUserCart.toJson(),
       'isLoadingHomePage': instance.isLoadingHomePage,
+      'postalCodes': instance.postalCodes,
     };

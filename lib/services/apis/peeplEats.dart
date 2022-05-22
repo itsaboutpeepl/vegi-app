@@ -99,20 +99,21 @@ class PeeplEatsService {
 
     results.forEach(
       (element) {
-        menuItems.add(
-          MenuItem(
-            isFeatured: Random().nextBool(),
-            menuItemID: element["id"].toString(),
-            restaurantID: restaurantID,
-            name: element['name'],
-            imageURL: element["imageUrl"] ?? "",
-            category: "Category",
-            price: element['basePrice'],
-            description: element['description'],
-            extras: {},
-            listOfProductOptions: [],
-          ),
-        );
+        if (element["isAvailable"])
+          menuItems.add(
+            MenuItem(
+              isFeatured: Random().nextBool(),
+              menuItemID: element["id"].toString(),
+              restaurantID: restaurantID,
+              name: element['name'],
+              imageURL: element["imageUrl"] ?? "",
+              category: "Category",
+              price: element['basePrice'],
+              description: element['description'],
+              extras: {},
+              listOfProductOptions: [],
+            ),
+          );
       },
     );
 
@@ -193,5 +194,17 @@ class PeeplEatsService {
   Future<List<Map<String, dynamic>>> getPastOrders(String walletAddress) async {
     Response response = await dio.get('/api/v1/orders?walletId=$walletAddress');
     return sanitizeOrdersList(response.data);
+  }
+
+  Future<List<String>> getPostalCodes() async {
+    Response response = await dio.get('api/v1/postal-districts/get-all-postal-districts');
+
+    List<String> outCodes = [];
+
+    response.data.forEach((element) {
+      outCodes.add(element["outcode"].toUpperCase());
+    });
+
+    return outCodes;
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/constants/variables.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
 
@@ -19,6 +18,11 @@ class VeganSliverAppBar extends StatefulWidget {
 class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
   String _dropdownValue = "L1";
   bool _isDelivery = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,46 +60,48 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         Row(
                           children: [
                             Text(
-                              _isDelivery ? "Delivering To " : "Collecting From ",
+                              _isDelivery ? "Delivering To " : "Collection",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 1.5),
-                              child: DropdownButton<String>(
-                                menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
-                                alignment: Alignment.centerLeft,
-                                isDense: true,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black,
-                                  fontFamily: "Europa",
-                                ),
-                                value: _dropdownValue,
-                                borderRadius: BorderRadius.circular(10),
-                                underline: SizedBox.shrink(),
-                                items: Variables.listOfOutCodes
-                                    .map(
-                                      (value) => DropdownMenuItem<String>(
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                        value: value,
+                            _isDelivery
+                                ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 1.5),
+                                    child: DropdownButton<String>(
+                                      menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
+                                      alignment: Alignment.centerLeft,
+                                      isDense: true,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black,
+                                        fontFamily: "Europa",
                                       ),
-                                    )
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _dropdownValue = value!;
-                                    viewmodel.changeOutCode(value);
-                                  });
-                                },
-                              ),
-                            ),
+                                      value: _dropdownValue,
+                                      borderRadius: BorderRadius.circular(10),
+                                      underline: SizedBox.shrink(),
+                                      items: viewmodel.postalCodes
+                                          .map(
+                                            (value) => DropdownMenuItem<String>(
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                              value: value,
+                                            ),
+                                          )
+                                          .toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _dropdownValue = value!;
+                                          viewmodel.changeOutCode(value);
+                                        });
+                                      },
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
                           ],
                         ),
                         GestureDetector(

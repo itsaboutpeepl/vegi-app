@@ -22,6 +22,11 @@ class SetIsLoadingHomePage {
   SetIsLoadingHomePage(this.isLoading);
 }
 
+class UpdatePostalCodes {
+  final List<String> postalCodes;
+  UpdatePostalCodes(this.postalCodes);
+}
+
 ThunkAction fetchRestaurantCategories() {
   return (Store store) async {
     try {
@@ -88,11 +93,29 @@ ThunkAction fetchMenuItemsForRestaurant() {
   };
 }
 
+ThunkAction fetchPostalCodes() {
+  return (Store store) async {
+    try {
+      List<String> postalCodes = await peeplEatsService.getPostalCodes();
+
+      store.dispatch(UpdatePostalCodes(postalCodes));
+    } catch (e, s) {
+      log.error('ERROR - fetchPostalCodes $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchPostalCodes $e',
+      );
+    }
+  };
+}
+
 ThunkAction fetchHomePageData() {
   return (Store store) async {
     try {
       store.dispatch(fetchRestaurantCategories());
       store.dispatch(fetchFeaturedRestaurants());
+      store.dispatch(fetchPostalCodes());
     } catch (e, s) {
       log.error('ERROR - fetchHomePageData $e');
       await Sentry.captureException(
