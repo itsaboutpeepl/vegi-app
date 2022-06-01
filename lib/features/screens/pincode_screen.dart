@@ -150,7 +150,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                         (result) async {
                                           if (result == true) {
                                             pincodeController.clear();
-                                            WidgetsBinding.instance!.focusManager.primaryFocus?.previousFocus();
+                                            WidgetsBinding.instance.focusManager.primaryFocus?.previousFocus();
                                           }
                                         },
                                       );

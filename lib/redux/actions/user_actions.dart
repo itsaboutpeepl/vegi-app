@@ -897,7 +897,6 @@ ThunkAction verifyHandler(
             eventName: 'Sign up: VerificationCode_NextBtn_Press',
           );
           store.dispatch(LoginVerifySuccess(jwtToken));
-          api.setJwtToken(jwtToken);
           walletApi.setJwtToken(jwtToken);
           onSuccess();
           rootRouter.push(UserNameScreen());

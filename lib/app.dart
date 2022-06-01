@@ -46,7 +46,6 @@ class _MyAppState extends State<MyApp> {
     if (![null, ''].contains(jwtToken)) {
       isAuthenticated = true;
       log.info('JWT: $jwtToken');
-      api.setJwtToken(jwtToken);
       walletApi.setJwtToken(jwtToken);
       store.dispatch(setUpFuseWeb3());
     }

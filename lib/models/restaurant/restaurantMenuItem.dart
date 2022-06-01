@@ -1,15 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 
-part 'menuItem.freezed.dart';
-part 'menuItem.g.dart';
+part 'restaurantMenuItem.freezed.dart';
+part 'restaurantMenuItem.g.dart';
 
 @freezed
-class MenuItem with _$MenuItem {
-  const MenuItem._();
+class RestaurantMenuItem with _$RestaurantMenuItem {
+  const RestaurantMenuItem._();
 
   @JsonSerializable()
-  factory MenuItem({
+  factory RestaurantMenuItem({
     required String menuItemID,
     required String restaurantID,
     required String name,
@@ -20,9 +20,9 @@ class MenuItem with _$MenuItem {
     required Map<String, int> extras,
     required List<ProductOptionsCategory> listOfProductOptions,
     required bool isFeatured,
-  }) = _MenuItem;
+  }) = _RestaurantMenuItem;
 
-  factory MenuItem.fromJson(dynamic json) => _$MenuItemFromJson(json);
+  factory RestaurantMenuItem.fromJson(dynamic json) => _$RestaurantMenuItemFromJson(json);
 
   String get formattedPrice => "£" + (this.price * 0.01).toStringAsFixed(2);
 }

@@ -1,6 +1,6 @@
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -12,7 +12,7 @@ class ResetMenuItem {
 }
 
 class SetMenuItem {
-  final MenuItem menuItem;
+  final RestaurantMenuItem menuItem;
   final List<bool> selectedExtras;
   SetMenuItem({required this.menuItem, required this.selectedExtras});
 }
@@ -29,7 +29,7 @@ class UpdateQuantity {
 }
 
 class UpdateMenuItemWithProductOptions {
-  final MenuItem menuItem;
+  final RestaurantMenuItem menuItem;
   UpdateMenuItemWithProductOptions(this.menuItem);
 }
 
@@ -38,9 +38,9 @@ ThunkAction fetchProductOptions(String itemID) {
     try {
       List<ProductOptionsCategory> listOfProductOptionCategories = await peeplEatsService.getProductOptions(itemID);
 
-      MenuItem currentItem = store.state.menuItemState.menuItem;
+      RestaurantMenuItem currentItem = store.state.menuItemState.menuItem;
 
-      MenuItem newItem = currentItem.copyWith(listOfProductOptions: listOfProductOptionCategories);
+      RestaurantMenuItem newItem = currentItem.copyWith(listOfProductOptions: listOfProductOptionCategories);
 
       store.dispatch(UpdateMenuItemWithProductOptions(newItem));
     } catch (e, s) {
@@ -107,7 +107,7 @@ ThunkAction calculateItemTotalPrice() {
   };
 }
 
-ThunkAction setUpMenuItemStructures(MenuItem? menuItem) {
+ThunkAction setUpMenuItemStructures(RestaurantMenuItem? menuItem) {
   return (Store store) async {
     try {
       menuItem == null

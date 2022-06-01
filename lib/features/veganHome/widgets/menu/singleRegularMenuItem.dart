@@ -4,13 +4,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuItemView.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 
 class SingleRegularMenuItem extends StatefulWidget {
   const SingleRegularMenuItem({Key? key, required this.menuItem}) : super(key: key);
 
-  final MenuItem menuItem;
+  final RestaurantMenuItem menuItem;
 
   @override
   _SingleRegularMenuItemState createState() => _SingleRegularMenuItemState();

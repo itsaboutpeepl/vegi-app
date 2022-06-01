@@ -53,7 +53,7 @@ import '../../features/veganHome/screens/toteScreen.dart' as _i16;
 import '../../features/veganHome/screens/veganHome.dart' as _i14;
 import '../../models/actions/wallet_action.dart' as _i41;
 import '../../models/community/business.dart' as _i44;
-import '../../models/restaurant/menuItem.dart' as _i40;
+import '../../models/restaurant/restaurantMenuItem.dart' as _i40;
 import '../../models/tokens/token.dart' as _i45;
 import 'route_guards.dart' as _i39;
 
@@ -693,7 +693,8 @@ class VeganHomeScreenAlt extends _i13.PageRouteInfo<void> {
 /// [_i15.RestaurantMenuScreen]
 class RestaurantMenuScreen
     extends _i13.PageRouteInfo<RestaurantMenuScreenArgs> {
-  RestaurantMenuScreen({_i38.Key? key, required List<_i40.MenuItem> menuList})
+  RestaurantMenuScreen(
+      {_i38.Key? key, required List<_i40.RestaurantMenuItem> menuList})
       : super(RestaurantMenuScreen.name,
             path: 'restaurant-menu-screen',
             args: RestaurantMenuScreenArgs(key: key, menuList: menuList));
@@ -706,7 +707,7 @@ class RestaurantMenuScreenArgs {
 
   final _i38.Key? key;
 
-  final List<_i40.MenuItem> menuList;
+  final List<_i40.RestaurantMenuItem> menuList;
 
   @override
   String toString() {

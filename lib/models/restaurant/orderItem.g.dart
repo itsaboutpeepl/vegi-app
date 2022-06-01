@@ -8,7 +8,7 @@ part of 'orderItem.dart';
 
 _$_OrderItem _$$_OrderItemFromJson(Map<String, dynamic> json) => _$_OrderItem(
       internalID: json['internalID'] as int,
-      menuItem: MenuItem.fromJson(json['menuItem']),
+      menuItem: RestaurantMenuItem.fromJson(json['menuItem']),
       totalItemPrice: json['totalItemPrice'] as int,
       itemQuantity: json['itemQuantity'] as int,
       selectedProductOptions:

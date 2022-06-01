@@ -1,12 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'menuItem.dart';
+part of 'restaurantMenuItem.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_MenuItem _$$_MenuItemFromJson(Map<String, dynamic> json) => _$_MenuItem(
+_$_RestaurantMenuItem _$$_RestaurantMenuItemFromJson(
+        Map<String, dynamic> json) =>
+    _$_RestaurantMenuItem(
       menuItemID: json['menuItemID'] as String,
       restaurantID: json['restaurantID'] as String,
       name: json['name'] as String,
@@ -21,7 +23,8 @@ _$_MenuItem _$$_MenuItemFromJson(Map<String, dynamic> json) => _$_MenuItem(
       isFeatured: json['isFeatured'] as bool,
     );
 
-Map<String, dynamic> _$$_MenuItemToJson(_$_MenuItem instance) =>
+Map<String, dynamic> _$$_RestaurantMenuItemToJson(
+        _$_RestaurantMenuItem instance) =>
     <String, dynamic>{
       'menuItemID': instance.menuItemID,
       'restaurantID': instance.restaurantID,

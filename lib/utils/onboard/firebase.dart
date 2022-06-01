@@ -46,7 +46,6 @@ class FirebaseStrategy implements IOnBoardStrategy {
         log.info('jwtToken $jwtToken');
         onSuccess();
         store.dispatch(LoginVerifySuccess(jwtToken));
-        api.setJwtToken(jwtToken);
         walletApi.setJwtToken(jwtToken);
         rootRouter.push(UserNameScreen());
       } catch (e) {
@@ -55,8 +54,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
     }
 
     void verificationFailed(FirebaseAuthException authException) async {
-      log.info(
-          'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+      log.info('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
       onError(authException.message);
     }
 

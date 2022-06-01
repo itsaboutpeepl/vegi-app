@@ -8,7 +8,7 @@ part of 'menu_item_state.dart';
 
 _$_MenuItemState _$$_MenuItemStateFromJson(Map<String, dynamic> json) =>
     _$_MenuItemState(
-      menuItem: MenuItem.fromJson(json['menuItem']),
+      menuItem: RestaurantMenuItem.fromJson(json['menuItem']),
       totalPrice: json['totalPrice'] as int,
       itemReward: json['itemReward'] as int,
       selectedProductOptionsForCategory:

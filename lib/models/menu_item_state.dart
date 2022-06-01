@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
@@ -12,7 +12,7 @@ class MenuItemState with _$MenuItemState {
 
   @JsonSerializable()
   factory MenuItemState({
-    required MenuItem menuItem,
+    required RestaurantMenuItem menuItem,
     required int totalPrice,
     required int itemReward,
     required Map<int, ProductOptions> selectedProductOptionsForCategory,
@@ -30,8 +30,7 @@ class MenuItemState with _$MenuItemState {
   factory MenuItemState.fromJson(dynamic json) => _$MenuItemStateFromJson(json);
 }
 
-class MenuItemStateConverter
-    implements JsonConverter<MenuItemState, Map<String, dynamic>?> {
+class MenuItemStateConverter implements JsonConverter<MenuItemState, Map<String, dynamic>?> {
   const MenuItemStateConverter();
 
   @override

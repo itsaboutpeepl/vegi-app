@@ -24,7 +24,7 @@ final Explorer ethereumExplorerApi = getIt<Explorer>(
   param2: dotenv.env['ETHERSCAN_API_KEY'],
 );
 
-final API api = getIt<API>();
+final StudioApi api = getIt<StudioApi>();
 
 final WalletApi walletApi = getIt<WalletApi>();
 

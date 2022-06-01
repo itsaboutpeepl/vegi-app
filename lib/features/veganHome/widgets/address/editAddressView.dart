@@ -148,7 +148,7 @@ class _AddressViewState extends State<AddressView> {
                                     labelText: 'Town/City',
                                   ),
                                   keyboardType: TextInputType.text,
-                                  validator: FormBuilderValidators.required(context)),
+                                  validator: FormBuilderValidators.required()),
                             ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.4,
@@ -166,7 +166,7 @@ class _AddressViewState extends State<AddressView> {
                                     labelText: 'Postal Code',
                                   ),
                                   keyboardType: TextInputType.text,
-                                  validator: FormBuilderValidators.required(context)),
+                                  validator: FormBuilderValidators.required()),
                             ),
                           ],
                         ),
@@ -185,7 +185,7 @@ class _AddressViewState extends State<AddressView> {
                           ),
                           keyboardType: TextInputType.phone,
                           validator: FormBuilderValidators.compose(
-                            [FormBuilderValidators.numeric(context), FormBuilderValidators.required(context)],
+                            [FormBuilderValidators.numeric(), FormBuilderValidators.required()],
                           ),
                         ),
                         ElevatedButton(

@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 
 class DetailMenuItem extends Equatable {
-  final MenuItem menuItem;
+  final RestaurantMenuItem menuItem;
   final int totalPrice;
   final int itemReward;
   final int quantity;
   final Map<int, ProductOptions> selectedOptions;
   final Function(List<OrderItem> itemsToAdd) addOrderItems;
-  final Function(MenuItem? menuItem) setMenuItem;
+  final Function(RestaurantMenuItem? menuItem) setMenuItem;
   final Function() resetMenuItem;
   final Function(bool isAdd) updateQuantity;
   final Function() reCalcTotals;

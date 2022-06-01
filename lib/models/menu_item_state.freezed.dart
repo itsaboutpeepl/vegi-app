@@ -23,7 +23,7 @@ class _$MenuItemStateTearOff {
   const _$MenuItemStateTearOff();
 
   _MenuItemState call(
-      {required MenuItem menuItem,
+      {required RestaurantMenuItem menuItem,
       required int totalPrice,
       required int itemReward,
       required Map<int, ProductOptions> selectedProductOptionsForCategory,
@@ -47,7 +47,7 @@ const $MenuItemState = _$MenuItemStateTearOff();
 
 /// @nodoc
 mixin _$MenuItemState {
-  MenuItem get menuItem => throw _privateConstructorUsedError;
+  RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
   int get totalPrice => throw _privateConstructorUsedError;
   int get itemReward => throw _privateConstructorUsedError;
   Map<int, ProductOptions> get selectedProductOptionsForCategory =>
@@ -66,13 +66,13 @@ abstract class $MenuItemStateCopyWith<$Res> {
           MenuItemState value, $Res Function(MenuItemState) then) =
       _$MenuItemStateCopyWithImpl<$Res>;
   $Res call(
-      {MenuItem menuItem,
+      {RestaurantMenuItem menuItem,
       int totalPrice,
       int itemReward,
       Map<int, ProductOptions> selectedProductOptionsForCategory,
       int quantity});
 
-  $MenuItemCopyWith<$Res> get menuItem;
+  $RestaurantMenuItemCopyWith<$Res> get menuItem;
 }
 
 /// @nodoc
@@ -96,7 +96,7 @@ class _$MenuItemStateCopyWithImpl<$Res>
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
-              as MenuItem,
+              as RestaurantMenuItem,
       totalPrice: totalPrice == freezed
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
@@ -118,8 +118,8 @@ class _$MenuItemStateCopyWithImpl<$Res>
   }
 
   @override
-  $MenuItemCopyWith<$Res> get menuItem {
-    return $MenuItemCopyWith<$Res>(_value.menuItem, (value) {
+  $RestaurantMenuItemCopyWith<$Res> get menuItem {
+    return $RestaurantMenuItemCopyWith<$Res>(_value.menuItem, (value) {
       return _then(_value.copyWith(menuItem: value));
     });
   }
@@ -133,14 +133,14 @@ abstract class _$MenuItemStateCopyWith<$Res>
       __$MenuItemStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {MenuItem menuItem,
+      {RestaurantMenuItem menuItem,
       int totalPrice,
       int itemReward,
       Map<int, ProductOptions> selectedProductOptionsForCategory,
       int quantity});
 
   @override
-  $MenuItemCopyWith<$Res> get menuItem;
+  $RestaurantMenuItemCopyWith<$Res> get menuItem;
 }
 
 /// @nodoc
@@ -166,7 +166,7 @@ class __$MenuItemStateCopyWithImpl<$Res>
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
-              as MenuItem,
+              as RestaurantMenuItem,
       totalPrice: totalPrice == freezed
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
@@ -204,7 +204,7 @@ class _$_MenuItemState extends _MenuItemState {
       _$$_MenuItemStateFromJson(json);
 
   @override
-  final MenuItem menuItem;
+  final RestaurantMenuItem menuItem;
   @override
   final int totalPrice;
   @override
@@ -257,7 +257,7 @@ class _$_MenuItemState extends _MenuItemState {
 
 abstract class _MenuItemState extends MenuItemState {
   factory _MenuItemState(
-      {required MenuItem menuItem,
+      {required RestaurantMenuItem menuItem,
       required int totalPrice,
       required int itemReward,
       required Map<int, ProductOptions> selectedProductOptionsForCategory,
@@ -268,7 +268,7 @@ abstract class _MenuItemState extends MenuItemState {
       _$_MenuItemState.fromJson;
 
   @override
-  MenuItem get menuItem;
+  RestaurantMenuItem get menuItem;
   @override
   int get totalPrice;
   @override

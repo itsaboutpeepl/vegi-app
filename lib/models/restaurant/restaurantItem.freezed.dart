@@ -33,7 +33,7 @@ class _$RestaurantItemTearOff {
       required int costLevel,
       required int rating,
       required DeliveryAddresses address,
-      required List<MenuItem> listOfMenuItems,
+      required List<RestaurantMenuItem> listOfMenuItems,
       required String walletAddress,
       required String status}) {
     return _RestaurantItem(
@@ -74,7 +74,8 @@ mixin _$RestaurantItem {
   int get costLevel => throw _privateConstructorUsedError;
   int get rating => throw _privateConstructorUsedError;
   DeliveryAddresses get address => throw _privateConstructorUsedError;
-  List<MenuItem> get listOfMenuItems => throw _privateConstructorUsedError;
+  List<RestaurantMenuItem> get listOfMenuItems =>
+      throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
 
@@ -100,7 +101,7 @@ abstract class $RestaurantItemCopyWith<$Res> {
       int costLevel,
       int rating,
       DeliveryAddresses address,
-      List<MenuItem> listOfMenuItems,
+      List<RestaurantMenuItem> listOfMenuItems,
       String walletAddress,
       String status});
 
@@ -176,7 +177,7 @@ class _$RestaurantItemCopyWithImpl<$Res>
       listOfMenuItems: listOfMenuItems == freezed
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
-              as List<MenuItem>,
+              as List<RestaurantMenuItem>,
       walletAddress: walletAddress == freezed
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
@@ -214,7 +215,7 @@ abstract class _$RestaurantItemCopyWith<$Res>
       int costLevel,
       int rating,
       DeliveryAddresses address,
-      List<MenuItem> listOfMenuItems,
+      List<RestaurantMenuItem> listOfMenuItems,
       String walletAddress,
       String status});
 
@@ -293,7 +294,7 @@ class __$RestaurantItemCopyWithImpl<$Res>
       listOfMenuItems: listOfMenuItems == freezed
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
-              as List<MenuItem>,
+              as List<RestaurantMenuItem>,
       walletAddress: walletAddress == freezed
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
@@ -350,7 +351,7 @@ class _$_RestaurantItem extends _RestaurantItem {
   @override
   final DeliveryAddresses address;
   @override
-  final List<MenuItem> listOfMenuItems;
+  final List<RestaurantMenuItem> listOfMenuItems;
   @override
   final String walletAddress;
   @override
@@ -427,7 +428,7 @@ abstract class _RestaurantItem extends RestaurantItem {
       required int costLevel,
       required int rating,
       required DeliveryAddresses address,
-      required List<MenuItem> listOfMenuItems,
+      required List<RestaurantMenuItem> listOfMenuItems,
       required String walletAddress,
       required String status}) = _$_RestaurantItem;
   _RestaurantItem._() : super._();
@@ -456,7 +457,7 @@ abstract class _RestaurantItem extends RestaurantItem {
   @override
   DeliveryAddresses get address;
   @override
-  List<MenuItem> get listOfMenuItems;
+  List<RestaurantMenuItem> get listOfMenuItems;
   @override
   String get walletAddress;
   @override

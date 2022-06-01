@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 
 part 'orderItem.freezed.dart';
@@ -12,7 +12,7 @@ class OrderItem with _$OrderItem {
   @JsonSerializable()
   factory OrderItem({
     required int internalID,
-    required MenuItem menuItem,
+    required RestaurantMenuItem menuItem,
     required int totalItemPrice,
     required int itemQuantity,
     required Map<int, ProductOptions> selectedProductOptions,

@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
@@ -90,18 +90,18 @@ class PeeplEatsService {
     return restaurantsActive;
   }
 
-  Future<List<MenuItem>> getRestaurantMenuItems(String restaurantID) async {
+  Future<List<RestaurantMenuItem>> getRestaurantMenuItems(String restaurantID) async {
     Response response = await dio.get('api/v1/vendors/$restaurantID?');
 
     List<dynamic> results = response.data['vendor']['products'] as List;
 
-    List<MenuItem> menuItems = [];
+    List<RestaurantMenuItem> menuItems = [];
 
     results.forEach(
       (element) {
         if (element["isAvailable"])
           menuItems.add(
-            MenuItem(
+            RestaurantMenuItem(
               isFeatured: Random().nextBool(),
               menuItemID: element["id"].toString(),
               restaurantID: restaurantID,

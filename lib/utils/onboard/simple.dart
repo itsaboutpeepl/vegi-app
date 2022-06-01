@@ -25,7 +25,6 @@ class SimpleStrategy implements IOnBoardStrategy {
     );
     log.info('jwtToken $jwtToken');
     store.dispatch(LoginVerifySuccess(jwtToken));
-    api.setJwtToken(jwtToken);
     walletApi.setJwtToken(jwtToken);
     Segment.track(
       eventName: 'Sign up: VerificationCode_NextBtn_Press',

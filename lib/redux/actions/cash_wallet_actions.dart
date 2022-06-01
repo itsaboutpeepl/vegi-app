@@ -642,7 +642,6 @@ ThunkAction fetchCommunityMetadataCall(
       String hash = communityURI.startsWith('ipfs://') ? communityURI.split('://').last : communityURI.split('/').last;
       dynamic metadata = await api.fetchMetadata(
         hash,
-        isRopsten: false,
       );
       communityMetadata = communityMetadata.copyWith(
         image: metadata['image'],

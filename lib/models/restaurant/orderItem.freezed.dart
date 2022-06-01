@@ -24,7 +24,7 @@ class _$OrderItemTearOff {
 
   _OrderItem call(
       {required int internalID,
-      required MenuItem menuItem,
+      required RestaurantMenuItem menuItem,
       required int totalItemPrice,
       required int itemQuantity,
       required Map<int, ProductOptions> selectedProductOptions}) {
@@ -48,7 +48,7 @@ const $OrderItem = _$OrderItemTearOff();
 /// @nodoc
 mixin _$OrderItem {
   int get internalID => throw _privateConstructorUsedError;
-  MenuItem get menuItem => throw _privateConstructorUsedError;
+  RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
   int get totalItemPrice => throw _privateConstructorUsedError;
   int get itemQuantity => throw _privateConstructorUsedError;
   Map<int, ProductOptions> get selectedProductOptions =>
@@ -66,12 +66,12 @@ abstract class $OrderItemCopyWith<$Res> {
       _$OrderItemCopyWithImpl<$Res>;
   $Res call(
       {int internalID,
-      MenuItem menuItem,
+      RestaurantMenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
       Map<int, ProductOptions> selectedProductOptions});
 
-  $MenuItemCopyWith<$Res> get menuItem;
+  $RestaurantMenuItemCopyWith<$Res> get menuItem;
 }
 
 /// @nodoc
@@ -98,7 +98,7 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
-              as MenuItem,
+              as RestaurantMenuItem,
       totalItemPrice: totalItemPrice == freezed
           ? _value.totalItemPrice
           : totalItemPrice // ignore: cast_nullable_to_non_nullable
@@ -115,8 +115,8 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
   }
 
   @override
-  $MenuItemCopyWith<$Res> get menuItem {
-    return $MenuItemCopyWith<$Res>(_value.menuItem, (value) {
+  $RestaurantMenuItemCopyWith<$Res> get menuItem {
+    return $RestaurantMenuItemCopyWith<$Res>(_value.menuItem, (value) {
       return _then(_value.copyWith(menuItem: value));
     });
   }
@@ -130,13 +130,13 @@ abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
   @override
   $Res call(
       {int internalID,
-      MenuItem menuItem,
+      RestaurantMenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
       Map<int, ProductOptions> selectedProductOptions});
 
   @override
-  $MenuItemCopyWith<$Res> get menuItem;
+  $RestaurantMenuItemCopyWith<$Res> get menuItem;
 }
 
 /// @nodoc
@@ -164,7 +164,7 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
-              as MenuItem,
+              as RestaurantMenuItem,
       totalItemPrice: totalItemPrice == freezed
           ? _value.totalItemPrice
           : totalItemPrice // ignore: cast_nullable_to_non_nullable
@@ -199,7 +199,7 @@ class _$_OrderItem extends _OrderItem {
   @override
   final int internalID;
   @override
-  final MenuItem menuItem;
+  final RestaurantMenuItem menuItem;
   @override
   final int totalItemPrice;
   @override
@@ -251,7 +251,7 @@ class _$_OrderItem extends _OrderItem {
 abstract class _OrderItem extends OrderItem {
   factory _OrderItem(
       {required int internalID,
-      required MenuItem menuItem,
+      required RestaurantMenuItem menuItem,
       required int totalItemPrice,
       required int itemQuantity,
       required Map<int, ProductOptions> selectedProductOptions}) = _$_OrderItem;
@@ -263,7 +263,7 @@ abstract class _OrderItem extends OrderItem {
   @override
   int get internalID;
   @override
-  MenuItem get menuItem;
+  RestaurantMenuItem get menuItem;
   @override
   int get totalItemPrice;
   @override

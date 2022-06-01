@@ -1,5 +1,5 @@
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -79,7 +79,7 @@ RestaurantCategory restaurantCategory2 = new RestaurantCategory(
   listOfRestaurants: [restaurantItem2, restaurantItem3, restaurantItem1],
 );
 
-final MenuItem bagel1 = new MenuItem(
+final RestaurantMenuItem bagel1 = new RestaurantMenuItem(
   isFeatured: true,
   menuItemID: "menuID1",
   restaurantID: "DEMO",
@@ -92,7 +92,7 @@ final MenuItem bagel1 = new MenuItem(
   listOfProductOptions: [],
 );
 
-final MenuItem bagel2 = new MenuItem(
+final RestaurantMenuItem bagel2 = new RestaurantMenuItem(
   isFeatured: true,
   menuItemID: "menuID2",
   restaurantID: "DEMO",
@@ -118,7 +118,7 @@ final MenuItem bagel2 = new MenuItem(
   listOfProductOptions: demoPOCList,
 );
 
-final MenuItem bagel3 = new MenuItem(
+final RestaurantMenuItem bagel3 = new RestaurantMenuItem(
   isFeatured: true,
   menuItemID: "menuID3",
   restaurantID: "DEMO",

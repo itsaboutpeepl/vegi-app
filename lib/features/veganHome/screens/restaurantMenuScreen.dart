@@ -6,7 +6,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurantMenuAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleRegularMenuItem.dart';
-import 'package:vegan_liverpool/models/restaurant/menuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart' as ts;
 
 class RestaurantMenuScreen extends StatefulWidget {
@@ -15,12 +15,12 @@ class RestaurantMenuScreen extends StatefulWidget {
   @override
   State<RestaurantMenuScreen> createState() => _RestaurantMenuScreenState();
 
-  final List<MenuItem> menuList;
+  final List<RestaurantMenuItem> menuList;
 }
 
 class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
-  List<MenuItem> _featuredList = [];
-  List<MenuItem> _regularList = [];
+  List<RestaurantMenuItem> _featuredList = [];
+  List<RestaurantMenuItem> _regularList = [];
 
   @override
   void initState() {
