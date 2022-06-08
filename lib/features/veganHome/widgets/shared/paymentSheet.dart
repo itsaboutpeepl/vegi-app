@@ -29,7 +29,8 @@ class _PaymentSheetState extends State<PaymentSheet> {
       converter: PaymentSheetViewModel.fromStore,
       onInit: (store) {
         store.dispatch(SetTransferringPayment(false));
-        store.dispatch(UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
+        store.dispatch(
+            UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
       },
       builder: (_, viewmodel) {
         return Column(
@@ -37,13 +38,17 @@ class _PaymentSheetState extends State<PaymentSheet> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 20, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Peepl Pay",
-                    style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w800),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800),
                   ),
                   IconButton(
                     splashRadius: 25,
@@ -159,26 +164,38 @@ class _PaymentSheetState extends State<PaymentSheet> {
                         buttonContent: Center(
                           child: Text(
                             "Pay Now",
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900),
                           ),
                         ),
                         buttonAction: () async {
                           if (await BiometricUtils.authenticateIsAvailable()) {
-                            final BiometricAuth biometricAuth = await BiometricUtils.getAvailableBiometrics();
-                            final String biometric = BiometricUtils.getBiometricString(
+                            final BiometricAuth biometricAuth =
+                                await BiometricUtils.getAvailableBiometrics();
+                            final String biometric =
+                                BiometricUtils.getBiometricString(
                               context,
                               biometricAuth,
                             );
-                            await BiometricUtils.showDefaultPopupCheckBiometricAuth(
-                              message: '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
+                            await BiometricUtils
+                                .showDefaultPopupCheckBiometricAuth(
+                              message:
+                                  '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
                               callback: (bool result) {
                                 result
-                                    ? (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <=
+                                    ? (double.parse(viewmodel.gbpXBalance
+                                                .replaceAll(",", "")) <=
                                             viewmodel.selectedGBPxAmount)
                                         ? handleStripe(
-                                            walletAddress: viewmodel.walletAddress,
-                                            amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
-                                                    viewmodel.selectedGBPxAmount)
+                                            walletAddress:
+                                                viewmodel.walletAddress,
+                                            amountText: (double.parse(viewmodel
+                                                        .gbpXBalance
+                                                        .replaceAll(",", "")) -
+                                                    viewmodel
+                                                        .selectedGBPxAmount)
                                                 .abs()
                                                 .ceil()
                                                 .toStringAsFixed(2),
@@ -187,11 +204,15 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                           )
                                         : viewmodel.sendToken(
                                             () {
-                                              context.router.push(OrderConfirmedScreen());
+                                              context.router
+                                                  .push(OrderConfirmedScreen());
                                             },
                                             () {
                                               print("error took place");
-                                              showErrorSnack(context: context, title: "Something went wrong");
+                                              showErrorSnack(
+                                                  context: context,
+                                                  title:
+                                                      "Something went wrong");
                                             },
                                           )
                                     : context.router.pop();
@@ -199,10 +220,14 @@ class _PaymentSheetState extends State<PaymentSheet> {
                             );
                           } else {
                             //TODO: add pincode screen verification.
-                            (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <= viewmodel.selectedGBPxAmount)
+                            (double.parse(viewmodel.gbpXBalance
+                                        .replaceAll(",", "")) <=
+                                    viewmodel.selectedGBPxAmount)
                                 ? handleStripe(
                                     walletAddress: viewmodel.walletAddress,
-                                    amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
+                                    amountText: (double.parse(viewmodel
+                                                .gbpXBalance
+                                                .replaceAll(",", "")) -
                                             viewmodel.selectedGBPxAmount)
                                         .abs()
                                         .ceil()
@@ -212,11 +237,14 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                   )
                                 : viewmodel.sendToken(
                                     () {
-                                      context.router.push(OrderConfirmedScreen());
+                                      context.router
+                                          .push(OrderConfirmedScreen());
                                     },
                                     () {
                                       print("error took place");
-                                      showErrorSnack(context: context, title: "Something went wrong");
+                                      showErrorSnack(
+                                          context: context,
+                                          title: "Something went wrong");
                                     },
                                   );
                           }
@@ -262,7 +290,9 @@ class _PPLSliderState extends State<PPLSlider> {
       distinct: true,
       onInit: (store) {
         _amountToBePaid = store.state.cartState.cartTotal.toDouble();
-        _pplBalance = double.parse(store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(true));
+        _pplBalance = double.parse(store
+            .state.cashWalletState.tokens[PeeplToken.address]!
+            .getBalance(true));
       },
       builder: (_, viewmodel) {
         return Padding(
@@ -283,7 +313,8 @@ class _PPLSliderState extends State<PPLSlider> {
                             ),
                             thumbColor: Colors.white,
                             overlayColor: Colors.grey.withOpacity(0.2),
-                            overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
+                            overlayShape:
+                                RoundSliderOverlayShape(overlayRadius: 0.0),
                           ),
                           child: Slider(
                             min: 0.0,
@@ -296,7 +327,8 @@ class _PPLSliderState extends State<PPLSlider> {
                             divisions: 100,
                             onChangeEnd: (value) {
                               viewmodel.updateSelectedValues(
-                                (_amountToBePaid / 100) - (_pplSliderValue / 1000),
+                                (_amountToBePaid / 100) -
+                                    (_pplSliderValue * 0.1),
                                 (_pplSliderValue / 10),
                               );
                             },
@@ -339,8 +371,13 @@ class _PPLSliderState extends State<PPLSlider> {
                   ),
                   Text.rich(
                     TextSpan(
-                      text: "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)},",
-                      children: [TextSpan(text: " PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}")],
+                      text:
+                          "GBPx ${((_amountToBePaid / 100) - (_pplSliderValue / 1000)).toStringAsFixed(2)},",
+                      children: [
+                        TextSpan(
+                            text:
+                                " PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}")
+                      ],
                     ),
                     style: TextStyle(
                       color: Colors.grey[300],
