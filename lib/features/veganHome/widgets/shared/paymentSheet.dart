@@ -328,8 +328,8 @@ class _PPLSliderState extends State<PPLSlider> {
                             onChangeEnd: (value) {
                               viewmodel.updateSelectedValues(
                                 (_amountToBePaid / 100) -
-                                    (_pplSliderValue * 0.1),
-                                (_pplSliderValue / 10),
+                                    (_pplSliderValue / 1000),
+                                (_pplSliderValue / 100),
                               );
                             },
                             onChanged: (value) {
@@ -376,7 +376,7 @@ class _PPLSliderState extends State<PPLSlider> {
                       children: [
                         TextSpan(
                             text:
-                                " PPL ${(_pplSliderValue / 10).toStringAsFixed(2)}")
+                                " PPL ${(_pplSliderValue / 100).toStringAsFixed(2)}")
                       ],
                     ),
                     style: TextStyle(
