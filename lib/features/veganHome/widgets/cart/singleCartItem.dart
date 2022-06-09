@@ -45,9 +45,11 @@ class _SingleCartItemState extends State<SingleCartItem> {
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: Text(
                             widget.orderItem.menuItem.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -78,7 +80,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                             text: e.value.name,
                             children: [TextSpan(text: " - "), TextSpan(text: cFPrice(e.value.price))],
                           ),
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
                         ),
                       )
                       .toList(),

@@ -104,7 +104,10 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                         height: 5,
                       ),
                       Text(
-                        "Your order #${viewmodel.orderID} has been confirmed and will be delivered by Agile Liverpool within the next hour.",
+                        "Your order #${viewmodel.orderID} has been paid. Once the order has been confirmed by the restaurant, " +
+                            (viewmodel.isDelivery
+                                ? "it will be delivered by Agile Liverpool!"
+                                : "it can be collected from the restaurant!"),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
@@ -147,7 +150,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                           ),
                                           TextSpan(
                                             text: viewmodel.orderAddress.townCity,
-                                          )
+                                          ),
+                                          TextSpan(text: "\nSlot: " + mapToString(viewmodel.selectedSlot))
                                         ],
                                       ),
                                     ),
@@ -170,7 +174,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                   children: [
                                     Text.rich(
                                       TextSpan(
-                                        text: "Order Details \n\n",
+                                        text: "Order Details \n\n\n",
                                         children: [
                                           TextSpan(
                                             text: "${cFPrice(viewmodel.cartTotal)}\n",
@@ -210,7 +214,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       )
                     ] +
