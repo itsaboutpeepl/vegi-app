@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
 class TipCard extends StatefulWidget {
-  const TipCard({Key? key, required this.emoji, required this.tipAmount}) : super(key: key);
+  const TipCard({Key? key, required this.emoji, required this.tipAmount})
+      : super(key: key);
 
   final String emoji;
   final int tipAmount;
@@ -22,13 +25,21 @@ class _TipCardState extends State<TipCard> {
       distinct: true,
       builder: (_, viewmodel) {
         return Card(
-          color: viewmodel.selectedUserTip == widget.tipAmount ? flexColorSchemeLight.primary : Colors.white,
+          color: viewmodel.fulfilmentMethod == FulfilmentMethod.collection
+              ? viewmodel.updateTipAmount(0)
+              : viewmodel.selectedUserTip == widget.tipAmount
+                  ? flexColorSchemeLight.primary
+                  : Colors.white,
           margin: const EdgeInsets.only(top: 5),
           child: InkWell(
             onTap: () {
-              viewmodel.selectedUserTip == widget.tipAmount
-                  ? viewmodel.updateTipAmount(0)
-                  : viewmodel.updateTipAmount(widget.tipAmount);
+              viewmodel.fulfilmentMethod == FulfilmentMethod.collection
+                  ? showErrorSnack(
+                      context: context,
+                      title: 'No tips available during Collection')
+                  : viewmodel.selectedUserTip == widget.tipAmount
+                      ? viewmodel.updateTipAmount(0)
+                      : viewmodel.updateTipAmount(widget.tipAmount);
             },
             child: Padding(
               padding: const EdgeInsets.all(6.0),
