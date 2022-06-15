@@ -12,44 +12,11 @@ part of 'swap.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 TradeInfo _$TradeInfoFromJson(Map<String, dynamic> json) {
   return _TradeInfo.fromJson(json);
 }
-
-/// @nodoc
-class _$TradeInfoTearOff {
-  const _$TradeInfoTearOff();
-
-  _TradeInfo call(
-      {required String inputAmount,
-      required String outputAmount,
-      required List<String> route,
-      required String inputToken,
-      required String outputToken,
-      required String executionPrice,
-      required String nextMidPrice,
-      required String priceImpact}) {
-    return _TradeInfo(
-      inputAmount: inputAmount,
-      outputAmount: outputAmount,
-      route: route,
-      inputToken: inputToken,
-      outputToken: outputToken,
-      executionPrice: executionPrice,
-      nextMidPrice: nextMidPrice,
-      priceImpact: priceImpact,
-    );
-  }
-
-  TradeInfo fromJson(Map<String, Object?> json) {
-    return TradeInfo.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $TradeInfo = _$TradeInfoTearOff();
 
 /// @nodoc
 mixin _$TradeInfo {
@@ -140,10 +107,10 @@ class _$TradeInfoCopyWithImpl<$Res> implements $TradeInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$TradeInfoCopyWith<$Res> implements $TradeInfoCopyWith<$Res> {
-  factory _$TradeInfoCopyWith(
-          _TradeInfo value, $Res Function(_TradeInfo) then) =
-      __$TradeInfoCopyWithImpl<$Res>;
+abstract class _$$_TradeInfoCopyWith<$Res> implements $TradeInfoCopyWith<$Res> {
+  factory _$$_TradeInfoCopyWith(
+          _$_TradeInfo value, $Res Function(_$_TradeInfo) then) =
+      __$$_TradeInfoCopyWithImpl<$Res>;
   @override
   $Res call(
       {String inputAmount,
@@ -157,13 +124,14 @@ abstract class _$TradeInfoCopyWith<$Res> implements $TradeInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$TradeInfoCopyWithImpl<$Res> extends _$TradeInfoCopyWithImpl<$Res>
-    implements _$TradeInfoCopyWith<$Res> {
-  __$TradeInfoCopyWithImpl(_TradeInfo _value, $Res Function(_TradeInfo) _then)
-      : super(_value, (v) => _then(v as _TradeInfo));
+class __$$_TradeInfoCopyWithImpl<$Res> extends _$TradeInfoCopyWithImpl<$Res>
+    implements _$$_TradeInfoCopyWith<$Res> {
+  __$$_TradeInfoCopyWithImpl(
+      _$_TradeInfo _value, $Res Function(_$_TradeInfo) _then)
+      : super(_value, (v) => _then(v as _$_TradeInfo));
 
   @override
-  _TradeInfo get _value => super._value as _TradeInfo;
+  _$_TradeInfo get _value => super._value as _$_TradeInfo;
 
   @override
   $Res call({
@@ -176,7 +144,7 @@ class __$TradeInfoCopyWithImpl<$Res> extends _$TradeInfoCopyWithImpl<$Res>
     Object? nextMidPrice = freezed,
     Object? priceImpact = freezed,
   }) {
-    return _then(_TradeInfo(
+    return _then(_$_TradeInfo(
       inputAmount: inputAmount == freezed
           ? _value.inputAmount
           : inputAmount // ignore: cast_nullable_to_non_nullable
@@ -256,7 +224,7 @@ class _$_TradeInfo implements _TradeInfo {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _TradeInfo &&
+            other is _$_TradeInfo &&
             const DeepCollectionEquality()
                 .equals(other.inputAmount, inputAmount) &&
             const DeepCollectionEquality()
@@ -274,6 +242,7 @@ class _$_TradeInfo implements _TradeInfo {
                 .equals(other.priceImpact, priceImpact));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -288,8 +257,8 @@ class _$_TradeInfo implements _TradeInfo {
 
   @JsonKey(ignore: true)
   @override
-  _$TradeInfoCopyWith<_TradeInfo> get copyWith =>
-      __$TradeInfoCopyWithImpl<_TradeInfo>(this, _$identity);
+  _$$_TradeInfoCopyWith<_$_TradeInfo> get copyWith =>
+      __$$_TradeInfoCopyWithImpl<_$_TradeInfo>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -299,68 +268,43 @@ class _$_TradeInfo implements _TradeInfo {
 
 abstract class _TradeInfo implements TradeInfo {
   factory _TradeInfo(
-      {required String inputAmount,
-      required String outputAmount,
-      required List<String> route,
-      required String inputToken,
-      required String outputToken,
-      required String executionPrice,
-      required String nextMidPrice,
-      required String priceImpact}) = _$_TradeInfo;
+      {required final String inputAmount,
+      required final String outputAmount,
+      required final List<String> route,
+      required final String inputToken,
+      required final String outputToken,
+      required final String executionPrice,
+      required final String nextMidPrice,
+      required final String priceImpact}) = _$_TradeInfo;
 
   factory _TradeInfo.fromJson(Map<String, dynamic> json) =
       _$_TradeInfo.fromJson;
 
   @override
-  String get inputAmount;
+  String get inputAmount => throw _privateConstructorUsedError;
   @override
-  String get outputAmount;
+  String get outputAmount => throw _privateConstructorUsedError;
   @override
-  List<String> get route;
+  List<String> get route => throw _privateConstructorUsedError;
   @override
-  String get inputToken;
+  String get inputToken => throw _privateConstructorUsedError;
   @override
-  String get outputToken;
+  String get outputToken => throw _privateConstructorUsedError;
   @override
-  String get executionPrice;
+  String get executionPrice => throw _privateConstructorUsedError;
   @override
-  String get nextMidPrice;
+  String get nextMidPrice => throw _privateConstructorUsedError;
   @override
-  String get priceImpact;
+  String get priceImpact => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$TradeInfoCopyWith<_TradeInfo> get copyWith =>
+  _$$_TradeInfoCopyWith<_$_TradeInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 SwapCallParameters _$SwapCallParametersFromJson(Map<String, dynamic> json) {
   return _SwapCallParameters.fromJson(json);
 }
-
-/// @nodoc
-class _$SwapCallParametersTearOff {
-  const _$SwapCallParametersTearOff();
-
-  _SwapCallParameters call(
-      {required String methodName,
-      required List<dynamic> args,
-      required String value,
-      required Map<String, dynamic> rawTxn}) {
-    return _SwapCallParameters(
-      methodName: methodName,
-      args: args,
-      value: value,
-      rawTxn: rawTxn,
-    );
-  }
-
-  SwapCallParameters fromJson(Map<String, Object?> json) {
-    return SwapCallParameters.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $SwapCallParameters = _$SwapCallParametersTearOff();
 
 /// @nodoc
 mixin _$SwapCallParameters {
@@ -425,11 +369,11 @@ class _$SwapCallParametersCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$SwapCallParametersCopyWith<$Res>
+abstract class _$$_SwapCallParametersCopyWith<$Res>
     implements $SwapCallParametersCopyWith<$Res> {
-  factory _$SwapCallParametersCopyWith(
-          _SwapCallParameters value, $Res Function(_SwapCallParameters) then) =
-      __$SwapCallParametersCopyWithImpl<$Res>;
+  factory _$$_SwapCallParametersCopyWith(_$_SwapCallParameters value,
+          $Res Function(_$_SwapCallParameters) then) =
+      __$$_SwapCallParametersCopyWithImpl<$Res>;
   @override
   $Res call(
       {String methodName,
@@ -439,15 +383,15 @@ abstract class _$SwapCallParametersCopyWith<$Res>
 }
 
 /// @nodoc
-class __$SwapCallParametersCopyWithImpl<$Res>
+class __$$_SwapCallParametersCopyWithImpl<$Res>
     extends _$SwapCallParametersCopyWithImpl<$Res>
-    implements _$SwapCallParametersCopyWith<$Res> {
-  __$SwapCallParametersCopyWithImpl(
-      _SwapCallParameters _value, $Res Function(_SwapCallParameters) _then)
-      : super(_value, (v) => _then(v as _SwapCallParameters));
+    implements _$$_SwapCallParametersCopyWith<$Res> {
+  __$$_SwapCallParametersCopyWithImpl(
+      _$_SwapCallParameters _value, $Res Function(_$_SwapCallParameters) _then)
+      : super(_value, (v) => _then(v as _$_SwapCallParameters));
 
   @override
-  _SwapCallParameters get _value => super._value as _SwapCallParameters;
+  _$_SwapCallParameters get _value => super._value as _$_SwapCallParameters;
 
   @override
   $Res call({
@@ -456,7 +400,7 @@ class __$SwapCallParametersCopyWithImpl<$Res>
     Object? value = freezed,
     Object? rawTxn = freezed,
   }) {
-    return _then(_SwapCallParameters(
+    return _then(_$_SwapCallParameters(
       methodName: methodName == freezed
           ? _value.methodName
           : methodName // ignore: cast_nullable_to_non_nullable
@@ -508,7 +452,7 @@ class _$_SwapCallParameters implements _SwapCallParameters {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _SwapCallParameters &&
+            other is _$_SwapCallParameters &&
             const DeepCollectionEquality()
                 .equals(other.methodName, methodName) &&
             const DeepCollectionEquality().equals(other.args, args) &&
@@ -516,6 +460,7 @@ class _$_SwapCallParameters implements _SwapCallParameters {
             const DeepCollectionEquality().equals(other.rawTxn, rawTxn));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -526,8 +471,9 @@ class _$_SwapCallParameters implements _SwapCallParameters {
 
   @JsonKey(ignore: true)
   @override
-  _$SwapCallParametersCopyWith<_SwapCallParameters> get copyWith =>
-      __$SwapCallParametersCopyWithImpl<_SwapCallParameters>(this, _$identity);
+  _$$_SwapCallParametersCopyWith<_$_SwapCallParameters> get copyWith =>
+      __$$_SwapCallParametersCopyWithImpl<_$_SwapCallParameters>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -537,56 +483,31 @@ class _$_SwapCallParameters implements _SwapCallParameters {
 
 abstract class _SwapCallParameters implements SwapCallParameters {
   factory _SwapCallParameters(
-      {required String methodName,
-      required List<dynamic> args,
-      required String value,
-      required Map<String, dynamic> rawTxn}) = _$_SwapCallParameters;
+      {required final String methodName,
+      required final List<dynamic> args,
+      required final String value,
+      required final Map<String, dynamic> rawTxn}) = _$_SwapCallParameters;
 
   factory _SwapCallParameters.fromJson(Map<String, dynamic> json) =
       _$_SwapCallParameters.fromJson;
 
   @override
-  String get methodName;
+  String get methodName => throw _privateConstructorUsedError;
   @override
-  List<dynamic> get args;
+  List<dynamic> get args => throw _privateConstructorUsedError;
   @override
-  String get value;
+  String get value => throw _privateConstructorUsedError;
   @override
-  Map<String, dynamic> get rawTxn;
+  Map<String, dynamic> get rawTxn => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$SwapCallParametersCopyWith<_SwapCallParameters> get copyWith =>
+  _$$_SwapCallParametersCopyWith<_$_SwapCallParameters> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 SwapRequestBody _$SwapRequestBodyFromJson(Map<String, dynamic> json) {
   return _SwapRequestBody.fromJson(json);
 }
-
-/// @nodoc
-class _$SwapRequestBodyTearOff {
-  const _$SwapRequestBodyTearOff();
-
-  _SwapRequestBody call(
-      {String currencyIn = '',
-      String currencyOut = '',
-      String amountIn = '',
-      String recipient = ''}) {
-    return _SwapRequestBody(
-      currencyIn: currencyIn,
-      currencyOut: currencyOut,
-      amountIn: amountIn,
-      recipient: recipient,
-    );
-  }
-
-  SwapRequestBody fromJson(Map<String, Object?> json) {
-    return SwapRequestBody.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $SwapRequestBody = _$SwapRequestBodyTearOff();
 
 /// @nodoc
 mixin _$SwapRequestBody {
@@ -651,11 +572,11 @@ class _$SwapRequestBodyCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$SwapRequestBodyCopyWith<$Res>
+abstract class _$$_SwapRequestBodyCopyWith<$Res>
     implements $SwapRequestBodyCopyWith<$Res> {
-  factory _$SwapRequestBodyCopyWith(
-          _SwapRequestBody value, $Res Function(_SwapRequestBody) then) =
-      __$SwapRequestBodyCopyWithImpl<$Res>;
+  factory _$$_SwapRequestBodyCopyWith(
+          _$_SwapRequestBody value, $Res Function(_$_SwapRequestBody) then) =
+      __$$_SwapRequestBodyCopyWithImpl<$Res>;
   @override
   $Res call(
       {String currencyIn,
@@ -665,15 +586,15 @@ abstract class _$SwapRequestBodyCopyWith<$Res>
 }
 
 /// @nodoc
-class __$SwapRequestBodyCopyWithImpl<$Res>
+class __$$_SwapRequestBodyCopyWithImpl<$Res>
     extends _$SwapRequestBodyCopyWithImpl<$Res>
-    implements _$SwapRequestBodyCopyWith<$Res> {
-  __$SwapRequestBodyCopyWithImpl(
-      _SwapRequestBody _value, $Res Function(_SwapRequestBody) _then)
-      : super(_value, (v) => _then(v as _SwapRequestBody));
+    implements _$$_SwapRequestBodyCopyWith<$Res> {
+  __$$_SwapRequestBodyCopyWithImpl(
+      _$_SwapRequestBody _value, $Res Function(_$_SwapRequestBody) _then)
+      : super(_value, (v) => _then(v as _$_SwapRequestBody));
 
   @override
-  _SwapRequestBody get _value => super._value as _SwapRequestBody;
+  _$_SwapRequestBody get _value => super._value as _$_SwapRequestBody;
 
   @override
   $Res call({
@@ -682,7 +603,7 @@ class __$SwapRequestBodyCopyWithImpl<$Res>
     Object? amountIn = freezed,
     Object? recipient = freezed,
   }) {
-    return _then(_SwapRequestBody(
+    return _then(_$_SwapRequestBody(
       currencyIn: currencyIn == freezed
           ? _value.currencyIn
           : currencyIn // ignore: cast_nullable_to_non_nullable
@@ -716,17 +637,17 @@ class _$_SwapRequestBody implements _SwapRequestBody {
   factory _$_SwapRequestBody.fromJson(Map<String, dynamic> json) =>
       _$$_SwapRequestBodyFromJson(json);
 
-  @JsonKey()
   @override
+  @JsonKey()
   final String currencyIn;
-  @JsonKey()
   @override
+  @JsonKey()
   final String currencyOut;
-  @JsonKey()
   @override
+  @JsonKey()
   final String amountIn;
-  @JsonKey()
   @override
+  @JsonKey()
   final String recipient;
 
   @override
@@ -738,7 +659,7 @@ class _$_SwapRequestBody implements _SwapRequestBody {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _SwapRequestBody &&
+            other is _$_SwapRequestBody &&
             const DeepCollectionEquality()
                 .equals(other.currencyIn, currencyIn) &&
             const DeepCollectionEquality()
@@ -747,6 +668,7 @@ class _$_SwapRequestBody implements _SwapRequestBody {
             const DeepCollectionEquality().equals(other.recipient, recipient));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -757,8 +679,8 @@ class _$_SwapRequestBody implements _SwapRequestBody {
 
   @JsonKey(ignore: true)
   @override
-  _$SwapRequestBodyCopyWith<_SwapRequestBody> get copyWith =>
-      __$SwapRequestBodyCopyWithImpl<_SwapRequestBody>(this, _$identity);
+  _$$_SwapRequestBodyCopyWith<_$_SwapRequestBody> get copyWith =>
+      __$$_SwapRequestBodyCopyWithImpl<_$_SwapRequestBody>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -768,24 +690,24 @@ class _$_SwapRequestBody implements _SwapRequestBody {
 
 abstract class _SwapRequestBody implements SwapRequestBody {
   factory _SwapRequestBody(
-      {String currencyIn,
-      String currencyOut,
-      String amountIn,
-      String recipient}) = _$_SwapRequestBody;
+      {final String currencyIn,
+      final String currencyOut,
+      final String amountIn,
+      final String recipient}) = _$_SwapRequestBody;
 
   factory _SwapRequestBody.fromJson(Map<String, dynamic> json) =
       _$_SwapRequestBody.fromJson;
 
   @override
-  String get currencyIn;
+  String get currencyIn => throw _privateConstructorUsedError;
   @override
-  String get currencyOut;
+  String get currencyOut => throw _privateConstructorUsedError;
   @override
-  String get amountIn;
+  String get amountIn => throw _privateConstructorUsedError;
   @override
-  String get recipient;
+  String get recipient => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$SwapRequestBodyCopyWith<_SwapRequestBody> get copyWith =>
+  _$$_SwapRequestBodyCopyWith<_$_SwapRequestBody> get copyWith =>
       throw _privateConstructorUsedError;
 }

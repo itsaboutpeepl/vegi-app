@@ -6,7 +6,7 @@ part 'community_metadata.freezed.dart';
 part 'community_metadata.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class CommunityMetadata with _$CommunityMetadata {
   @JsonSerializable()
   factory CommunityMetadata({
@@ -35,19 +35,15 @@ class CommunityMetadata with _$CommunityMetadata {
     }
   }
 
-  factory CommunityMetadata.fromJson(Map<String, dynamic> json) =>
-      _$CommunityMetadataFromJson(json);
+  factory CommunityMetadata.fromJson(Map<String, dynamic> json) => _$CommunityMetadataFromJson(json);
 }
 
-class CommunityMetadataConverter
-    implements JsonConverter<CommunityMetadata?, Map<String, dynamic>?> {
+class CommunityMetadataConverter implements JsonConverter<CommunityMetadata?, Map<String, dynamic>?> {
   const CommunityMetadataConverter();
 
   @override
-  CommunityMetadata? fromJson(Map<String, dynamic>? json) =>
-      json != null ? CommunityMetadata.fromJson(json) : null;
+  CommunityMetadata? fromJson(Map<String, dynamic>? json) => json != null ? CommunityMetadata.fromJson(json) : null;
 
   @override
-  Map<String, dynamic>? toJson(CommunityMetadata? instance) =>
-      instance?.toJson();
+  Map<String, dynamic>? toJson(CommunityMetadata? instance) => instance?.toJson();
 }

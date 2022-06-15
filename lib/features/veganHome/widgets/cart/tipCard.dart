@@ -7,8 +7,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
 class TipCard extends StatefulWidget {
-  const TipCard({Key? key, required this.emoji, required this.tipAmount})
-      : super(key: key);
+  const TipCard({Key? key, required this.emoji, required this.tipAmount}) : super(key: key);
 
   final String emoji;
   final int tipAmount;
@@ -33,13 +32,9 @@ class _TipCardState extends State<TipCard> {
           margin: const EdgeInsets.only(top: 5),
           child: InkWell(
             onTap: () {
-              viewmodel.fulfilmentMethod == FulfilmentMethod.collection
-                  ? showErrorSnack(
-                      context: context,
-                      title: 'No tips available during Collection')
-                  : viewmodel.selectedUserTip == widget.tipAmount
-                      ? viewmodel.updateTipAmount(0)
-                      : viewmodel.updateTipAmount(widget.tipAmount);
+              viewmodel.selectedUserTip == widget.tipAmount
+                  ? viewmodel.updateTipAmount(0)
+                  : viewmodel.updateTipAmount(widget.tipAmount);
             },
             child: Padding(
               padding: const EdgeInsets.all(6.0),

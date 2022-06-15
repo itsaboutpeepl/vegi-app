@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 
 class SingleCartItem extends StatefulWidget {
   const SingleCartItem({Key? key, required this.orderItem}) : super(key: key);
 
-  final OrderItem orderItem;
+  final CartItem orderItem;
 
   @override
   _SingleCartItemState createState() => _SingleCartItemState();

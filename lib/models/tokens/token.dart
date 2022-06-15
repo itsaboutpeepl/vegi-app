@@ -12,15 +12,14 @@ import 'package:wallet_core/wallet_core.dart' show EtherAmount, Web3;
 part 'token.freezed.dart';
 part 'token.g.dart';
 
-@freezed
+@Freezed()
 class Token with _$Token implements Comparable<Token> {
   const Token._();
 
   @override
   int compareTo(Token? other) {
     if (other == null) return 1;
-    return num.parse(getFiatBalance(true))
-        .compareTo(num.parse(other.getFiatBalance(true)));
+    return num.parse(getFiatBalance(true)).compareTo(num.parse(other.getFiatBalance(true)));
   }
 
   @JsonSerializable()
@@ -62,8 +61,7 @@ class Token with _$Token implements Comparable<Token> {
     return '0';
   }
 
-  bool get hasPriceInfo =>
-      ![null, '', '0', 0, 'NaN'].contains(priceInfo?.quote);
+  bool get hasPriceInfo => ![null, '', '0', 0, 'NaN'].contains(priceInfo?.quote);
 
   String get quote => priceInfo?.quoteHuman ?? '0';
 
@@ -72,12 +70,10 @@ class Token with _$Token implements Comparable<Token> {
     required Function(BigInt) onDone,
     required Function onError,
   }) async {
-    if ([null, ''].contains(accountAddress) || [null, ''].contains(address))
-      return;
+    if ([null, ''].contains(accountAddress) || [null, ''].contains(address)) return;
     if (isNative) {
       try {
-        EtherAmount balance =
-            await getIt<Web3>(instanceName: 'fuseWeb3').getBalance(
+        EtherAmount balance = await getIt<Web3>(instanceName: 'fuseWeb3').getBalance(
           address: accountAddress,
         );
         if (amount.compareTo(balance.getInWei) != 0) {
@@ -88,8 +84,7 @@ class Token with _$Token implements Comparable<Token> {
       }
     } else {
       try {
-        final BigInt balance =
-            await getIt<Web3>(instanceName: 'fuseWeb3').getTokenBalance(
+        final BigInt balance = await getIt<Web3>(instanceName: 'fuseWeb3').getTokenBalance(
           address,
           address: accountAddress,
         );

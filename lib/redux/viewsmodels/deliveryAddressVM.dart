@@ -7,6 +7,7 @@ import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 class DeliveryAddressesVM extends Equatable {
+  final bool isDelivery;
   final List<DeliveryAddresses> listOfDeliveryAddresses;
   final DeliveryAddresses? selectedDeliveryAddress;
   final Function(DeliveryAddresses? selectedAddress) updateSelectedDeliveryAddress;
@@ -15,6 +16,7 @@ class DeliveryAddressesVM extends Equatable {
   final Function(FulfilmentMethod fulfilmentMethod) updateFulfilmentMethod;
 
   DeliveryAddressesVM({
+    required this.isDelivery,
     required this.listOfDeliveryAddresses,
     required this.selectedDeliveryAddress,
     required this.addDeliveryAddress,
@@ -25,6 +27,7 @@ class DeliveryAddressesVM extends Equatable {
 
   static DeliveryAddressesVM fromStore(Store<AppState> store) {
     return DeliveryAddressesVM(
+      isDelivery: store.state.cartState.isDelivery,
       listOfDeliveryAddresses: store.state.userState.listOfDeliveryAddresses,
       selectedDeliveryAddress: store.state.cartState.selectedDeliveryAddress,
       addDeliveryAddress: (newAddress) {
@@ -44,6 +47,7 @@ class DeliveryAddressesVM extends Equatable {
 
   @override
   List<Object?> get props => [
+        isDelivery,
         listOfDeliveryAddresses,
         selectedDeliveryAddress,
       ];

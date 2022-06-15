@@ -102,7 +102,7 @@ class PeeplEatsService {
         if (element["isAvailable"])
           menuItems.add(
             RestaurantMenuItem(
-              isFeatured: Random().nextBool(),
+              isFeatured: element['isFeatured'] ?? Random().nextBool(),
               menuItemID: element["id"].toString(),
               restaurantID: restaurantID,
               name: element['name'],
@@ -112,10 +112,13 @@ class PeeplEatsService {
               description: element['description'],
               extras: {},
               listOfProductOptions: [],
+              priority: element['priority'] ?? 0,
             ),
           );
       },
     );
+
+    menuItems.sort((a, b) => a.priority.compareTo(b.priority));
 
     return menuItems;
   }

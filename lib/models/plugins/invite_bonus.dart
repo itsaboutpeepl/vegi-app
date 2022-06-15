@@ -6,7 +6,7 @@ part 'invite_bonus.freezed.dart';
 part 'invite_bonus.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class InviteBonusPlugin with _$InviteBonusPlugin {
   @With<Plugin>()
   @JsonSerializable()
@@ -17,12 +17,10 @@ class InviteBonusPlugin with _$InviteBonusPlugin {
     @Default(false) bool isActive,
   }) = _InviteBonusPlugin;
 
-  factory InviteBonusPlugin.fromJson(dynamic json) =>
-      _$InviteBonusPluginFromJson(json);
+  factory InviteBonusPlugin.fromJson(dynamic json) => _$InviteBonusPluginFromJson(json);
 }
 
-class InviteBonusPluginConverter
-    implements JsonConverter<InviteBonusPlugin?, Map<String, dynamic>?> {
+class InviteBonusPluginConverter implements JsonConverter<InviteBonusPlugin?, Map<String, dynamic>?> {
   const InviteBonusPluginConverter();
 
   @override
@@ -32,15 +30,12 @@ class InviteBonusPluginConverter
     } else {
       return InviteBonusPlugin(
         name: json['name'],
-        amount: json.containsKey('inviteInfo')
-            ? json['inviteInfo']['amount']
-            : json['amount'],
+        amount: json.containsKey('inviteInfo') ? json['inviteInfo']['amount'] : json['amount'],
         isActive: json["isActive"] ?? false,
       );
     }
   }
 
   @override
-  Map<String, dynamic>? toJson(InviteBonusPlugin? instance) =>
-      instance?.toJson();
+  Map<String, dynamic>? toJson(InviteBonusPlugin? instance) => instance?.toJson();
 }

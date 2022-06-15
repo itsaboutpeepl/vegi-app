@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'orderItem.dart';
+part of 'cartItem.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,41 +12,14 @@ part of 'orderItem.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
-  return _OrderItem.fromJson(json);
+CartItem _$CartItemFromJson(Map<String, dynamic> json) {
+  return _CartItem.fromJson(json);
 }
 
 /// @nodoc
-class _$OrderItemTearOff {
-  const _$OrderItemTearOff();
-
-  _OrderItem call(
-      {required int internalID,
-      required RestaurantMenuItem menuItem,
-      required int totalItemPrice,
-      required int itemQuantity,
-      required Map<int, ProductOptions> selectedProductOptions}) {
-    return _OrderItem(
-      internalID: internalID,
-      menuItem: menuItem,
-      totalItemPrice: totalItemPrice,
-      itemQuantity: itemQuantity,
-      selectedProductOptions: selectedProductOptions,
-    );
-  }
-
-  OrderItem fromJson(Map<String, Object?> json) {
-    return OrderItem.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $OrderItem = _$OrderItemTearOff();
-
-/// @nodoc
-mixin _$OrderItem {
+mixin _$CartItem {
   int get internalID => throw _privateConstructorUsedError;
   RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
   int get totalItemPrice => throw _privateConstructorUsedError;
@@ -56,14 +29,14 @@ mixin _$OrderItem {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $OrderItemCopyWith<OrderItem> get copyWith =>
+  $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $OrderItemCopyWith<$Res> {
-  factory $OrderItemCopyWith(OrderItem value, $Res Function(OrderItem) then) =
-      _$OrderItemCopyWithImpl<$Res>;
+abstract class $CartItemCopyWith<$Res> {
+  factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
+      _$CartItemCopyWithImpl<$Res>;
   $Res call(
       {int internalID,
       RestaurantMenuItem menuItem,
@@ -75,12 +48,12 @@ abstract class $OrderItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
-  _$OrderItemCopyWithImpl(this._value, this._then);
+class _$CartItemCopyWithImpl<$Res> implements $CartItemCopyWith<$Res> {
+  _$CartItemCopyWithImpl(this._value, this._then);
 
-  final OrderItem _value;
+  final CartItem _value;
   // ignore: unused_field
-  final $Res Function(OrderItem) _then;
+  final $Res Function(CartItem) _then;
 
   @override
   $Res call({
@@ -123,10 +96,10 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
-  factory _$OrderItemCopyWith(
-          _OrderItem value, $Res Function(_OrderItem) then) =
-      __$OrderItemCopyWithImpl<$Res>;
+abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
+  factory _$$_CartItemCopyWith(
+          _$_CartItem value, $Res Function(_$_CartItem) then) =
+      __$$_CartItemCopyWithImpl<$Res>;
   @override
   $Res call(
       {int internalID,
@@ -140,13 +113,14 @@ abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
-    implements _$OrderItemCopyWith<$Res> {
-  __$OrderItemCopyWithImpl(_OrderItem _value, $Res Function(_OrderItem) _then)
-      : super(_value, (v) => _then(v as _OrderItem));
+class __$$_CartItemCopyWithImpl<$Res> extends _$CartItemCopyWithImpl<$Res>
+    implements _$$_CartItemCopyWith<$Res> {
+  __$$_CartItemCopyWithImpl(
+      _$_CartItem _value, $Res Function(_$_CartItem) _then)
+      : super(_value, (v) => _then(v as _$_CartItem));
 
   @override
-  _OrderItem get _value => super._value as _OrderItem;
+  _$_CartItem get _value => super._value as _$_CartItem;
 
   @override
   $Res call({
@@ -156,7 +130,7 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
     Object? itemQuantity = freezed,
     Object? selectedProductOptions = freezed,
   }) {
-    return _then(_OrderItem(
+    return _then(_$_CartItem(
       internalID: internalID == freezed
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
@@ -184,8 +158,8 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable()
-class _$_OrderItem extends _OrderItem {
-  _$_OrderItem(
+class _$_CartItem extends _CartItem {
+  _$_CartItem(
       {required this.internalID,
       required this.menuItem,
       required this.totalItemPrice,
@@ -193,8 +167,8 @@ class _$_OrderItem extends _OrderItem {
       required this.selectedProductOptions})
       : super._();
 
-  factory _$_OrderItem.fromJson(Map<String, dynamic> json) =>
-      _$$_OrderItemFromJson(json);
+  factory _$_CartItem.fromJson(Map<String, dynamic> json) =>
+      _$$_CartItemFromJson(json);
 
   @override
   final int internalID;
@@ -209,14 +183,14 @@ class _$_OrderItem extends _OrderItem {
 
   @override
   String toString() {
-    return 'OrderItem(internalID: $internalID, menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, selectedProductOptions: $selectedProductOptions)';
+    return 'CartItem(internalID: $internalID, menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, selectedProductOptions: $selectedProductOptions)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _OrderItem &&
+            other is _$_CartItem &&
             const DeepCollectionEquality()
                 .equals(other.internalID, internalID) &&
             const DeepCollectionEquality().equals(other.menuItem, menuItem) &&
@@ -228,6 +202,7 @@ class _$_OrderItem extends _OrderItem {
                 .equals(other.selectedProductOptions, selectedProductOptions));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -239,39 +214,40 @@ class _$_OrderItem extends _OrderItem {
 
   @JsonKey(ignore: true)
   @override
-  _$OrderItemCopyWith<_OrderItem> get copyWith =>
-      __$OrderItemCopyWithImpl<_OrderItem>(this, _$identity);
+  _$$_CartItemCopyWith<_$_CartItem> get copyWith =>
+      __$$_CartItemCopyWithImpl<_$_CartItem>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_OrderItemToJson(this);
+    return _$$_CartItemToJson(this);
   }
 }
 
-abstract class _OrderItem extends OrderItem {
-  factory _OrderItem(
-      {required int internalID,
-      required RestaurantMenuItem menuItem,
-      required int totalItemPrice,
-      required int itemQuantity,
-      required Map<int, ProductOptions> selectedProductOptions}) = _$_OrderItem;
-  _OrderItem._() : super._();
+abstract class _CartItem extends CartItem {
+  factory _CartItem(
+          {required final int internalID,
+          required final RestaurantMenuItem menuItem,
+          required final int totalItemPrice,
+          required final int itemQuantity,
+          required final Map<int, ProductOptions> selectedProductOptions}) =
+      _$_CartItem;
+  _CartItem._() : super._();
 
-  factory _OrderItem.fromJson(Map<String, dynamic> json) =
-      _$_OrderItem.fromJson;
+  factory _CartItem.fromJson(Map<String, dynamic> json) = _$_CartItem.fromJson;
 
   @override
-  int get internalID;
+  int get internalID => throw _privateConstructorUsedError;
   @override
-  RestaurantMenuItem get menuItem;
+  RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
   @override
-  int get totalItemPrice;
+  int get totalItemPrice => throw _privateConstructorUsedError;
   @override
-  int get itemQuantity;
+  int get itemQuantity => throw _privateConstructorUsedError;
   @override
-  Map<int, ProductOptions> get selectedProductOptions;
+  Map<int, ProductOptions> get selectedProductOptions =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$OrderItemCopyWith<_OrderItem> get copyWith =>
+  _$$_CartItemCopyWith<_$_CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }

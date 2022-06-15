@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/singleRest
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
+import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
 
 class FeaturedRestaurantList extends StatefulWidget {
@@ -22,6 +23,8 @@ class _FeaturedRestaurantListState extends State<FeaturedRestaurantList> {
       distinct: true,
       onInit: (store) {
         store.dispatch(startFetchTokensBalances());
+        store.dispatch(startScheduleCheckCall());
+        store.dispatch(startRemoveOngoingOrderCheck());
       },
       builder: (_, viewmodel) {
         return viewmodel.isLoadingHomePage
@@ -39,8 +42,7 @@ class _FeaturedRestaurantListState extends State<FeaturedRestaurantList> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(
-                        left: 20, right: 20, top: 20, bottom: 50),
+                    padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 50),
                     itemCount: viewmodel.featuredRestaurants.length,
                     itemBuilder: (context, index) => SingleRestaurantItem(
                       restaurantItem: viewmodel.featuredRestaurants[index],

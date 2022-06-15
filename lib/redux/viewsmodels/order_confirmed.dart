@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class OrderConfirmedViewModel extends Equatable {
@@ -10,7 +10,7 @@ class OrderConfirmedViewModel extends Equatable {
   final bool isDelivery;
   final DeliveryAddresses orderAddress;
   final String restaurantName;
-  final List<OrderItem> cartItems;
+  final List<CartItem> cartItems;
   final int cartTotal;
   final String orderID;
   final Function() clearCart;
@@ -35,13 +35,12 @@ class OrderConfirmedViewModel extends Equatable {
   });
 
   static OrderConfirmedViewModel fromStore(Store<AppState> store) {
-    bool tempIsDelivery = store.state.cartState.selectedDeliveryAddress == null ? false : true;
-
     return OrderConfirmedViewModel(
       selectedSlot: store.state.cartState.selectedTimeSlot,
-      isDelivery: tempIsDelivery,
-      orderAddress:
-          tempIsDelivery ? store.state.cartState.selectedDeliveryAddress! : store.state.cartState.restaurantAddress,
+      isDelivery: store.state.cartState.isDelivery,
+      orderAddress: store.state.cartState.isDelivery
+          ? store.state.cartState.selectedDeliveryAddress!
+          : store.state.cartState.restaurantAddress!,
       restaurantName: store.state.cartState.restaurantName,
       cartItems: store.state.cartState.cartItems,
       cartTotal: store.state.cartState.cartTotal,

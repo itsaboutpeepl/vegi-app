@@ -12,36 +12,11 @@ part of 'fullfilmentMethods.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 FullfilmentMethods _$FullfilmentMethodsFromJson(Map<String, dynamic> json) {
   return _FullfilmentMethods.fromJson(json);
 }
-
-/// @nodoc
-class _$FullfilmentMethodsTearOff {
-  const _$FullfilmentMethodsTearOff();
-
-  _FullfilmentMethods call(
-      {required Map<String, dynamic>? collectionMethod,
-      required Map<String, dynamic>? deliveryMethod,
-      required List<Map<String, String>> collectionSlots,
-      required List<Map<String, String>> deliverySlots}) {
-    return _FullfilmentMethods(
-      collectionMethod: collectionMethod,
-      deliveryMethod: deliveryMethod,
-      collectionSlots: collectionSlots,
-      deliverySlots: deliverySlots,
-    );
-  }
-
-  FullfilmentMethods fromJson(Map<String, Object?> json) {
-    return FullfilmentMethods.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $FullfilmentMethods = _$FullfilmentMethodsTearOff();
 
 /// @nodoc
 mixin _$FullfilmentMethods {
@@ -110,11 +85,11 @@ class _$FullfilmentMethodsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$FullfilmentMethodsCopyWith<$Res>
+abstract class _$$_FullfilmentMethodsCopyWith<$Res>
     implements $FullfilmentMethodsCopyWith<$Res> {
-  factory _$FullfilmentMethodsCopyWith(
-          _FullfilmentMethods value, $Res Function(_FullfilmentMethods) then) =
-      __$FullfilmentMethodsCopyWithImpl<$Res>;
+  factory _$$_FullfilmentMethodsCopyWith(_$_FullfilmentMethods value,
+          $Res Function(_$_FullfilmentMethods) then) =
+      __$$_FullfilmentMethodsCopyWithImpl<$Res>;
   @override
   $Res call(
       {Map<String, dynamic>? collectionMethod,
@@ -124,15 +99,15 @@ abstract class _$FullfilmentMethodsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$FullfilmentMethodsCopyWithImpl<$Res>
+class __$$_FullfilmentMethodsCopyWithImpl<$Res>
     extends _$FullfilmentMethodsCopyWithImpl<$Res>
-    implements _$FullfilmentMethodsCopyWith<$Res> {
-  __$FullfilmentMethodsCopyWithImpl(
-      _FullfilmentMethods _value, $Res Function(_FullfilmentMethods) _then)
-      : super(_value, (v) => _then(v as _FullfilmentMethods));
+    implements _$$_FullfilmentMethodsCopyWith<$Res> {
+  __$$_FullfilmentMethodsCopyWithImpl(
+      _$_FullfilmentMethods _value, $Res Function(_$_FullfilmentMethods) _then)
+      : super(_value, (v) => _then(v as _$_FullfilmentMethods));
 
   @override
-  _FullfilmentMethods get _value => super._value as _FullfilmentMethods;
+  _$_FullfilmentMethods get _value => super._value as _$_FullfilmentMethods;
 
   @override
   $Res call({
@@ -141,7 +116,7 @@ class __$FullfilmentMethodsCopyWithImpl<$Res>
     Object? collectionSlots = freezed,
     Object? deliverySlots = freezed,
   }) {
-    return _then(_FullfilmentMethods(
+    return _then(_$_FullfilmentMethods(
       collectionMethod: collectionMethod == freezed
           ? _value.collectionMethod
           : collectionMethod // ignore: cast_nullable_to_non_nullable
@@ -194,7 +169,7 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FullfilmentMethods &&
+            other is _$_FullfilmentMethods &&
             const DeepCollectionEquality()
                 .equals(other.collectionMethod, collectionMethod) &&
             const DeepCollectionEquality()
@@ -205,6 +180,7 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
                 .equals(other.deliverySlots, deliverySlots));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -215,8 +191,9 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
 
   @JsonKey(ignore: true)
   @override
-  _$FullfilmentMethodsCopyWith<_FullfilmentMethods> get copyWith =>
-      __$FullfilmentMethodsCopyWithImpl<_FullfilmentMethods>(this, _$identity);
+  _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>
+      __$$_FullfilmentMethodsCopyWithImpl<_$_FullfilmentMethods>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -226,10 +203,10 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
 
 abstract class _FullfilmentMethods extends FullfilmentMethods {
   factory _FullfilmentMethods(
-          {required Map<String, dynamic>? collectionMethod,
-          required Map<String, dynamic>? deliveryMethod,
-          required List<Map<String, String>> collectionSlots,
-          required List<Map<String, String>> deliverySlots}) =
+          {required final Map<String, dynamic>? collectionMethod,
+          required final Map<String, dynamic>? deliveryMethod,
+          required final List<Map<String, String>> collectionSlots,
+          required final List<Map<String, String>> deliverySlots}) =
       _$_FullfilmentMethods;
   _FullfilmentMethods._() : super._();
 
@@ -237,15 +214,19 @@ abstract class _FullfilmentMethods extends FullfilmentMethods {
       _$_FullfilmentMethods.fromJson;
 
   @override
-  Map<String, dynamic>? get collectionMethod;
+  Map<String, dynamic>? get collectionMethod =>
+      throw _privateConstructorUsedError;
   @override
-  Map<String, dynamic>? get deliveryMethod;
+  Map<String, dynamic>? get deliveryMethod =>
+      throw _privateConstructorUsedError;
   @override
-  List<Map<String, String>> get collectionSlots;
+  List<Map<String, String>> get collectionSlots =>
+      throw _privateConstructorUsedError;
   @override
-  List<Map<String, String>> get deliverySlots;
+  List<Map<String, String>> get deliverySlots =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$FullfilmentMethodsCopyWith<_FullfilmentMethods> get copyWith =>
+  _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>
       throw _privateConstructorUsedError;
 }

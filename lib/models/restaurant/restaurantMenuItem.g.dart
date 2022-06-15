@@ -21,6 +21,7 @@ _$_RestaurantMenuItem _$$_RestaurantMenuItemFromJson(
           .map((e) => ProductOptionsCategory.fromJson(e))
           .toList(),
       isFeatured: json['isFeatured'] as bool,
+      priority: json['priority'] as int,
     );
 
 Map<String, dynamic> _$$_RestaurantMenuItemToJson(
@@ -37,4 +38,5 @@ Map<String, dynamic> _$$_RestaurantMenuItemToJson(
       'listOfProductOptions':
           instance.listOfProductOptions.map((e) => e.toJson()).toList(),
       'isFeatured': instance.isFeatured,
+      'priority': instance.priority,
     };

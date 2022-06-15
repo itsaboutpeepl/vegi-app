@@ -5,7 +5,7 @@ part 'business_metadata.freezed.dart';
 part 'business_metadata.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class BusinessMetadata with _$BusinessMetadata {
   @JsonSerializable()
   factory BusinessMetadata({
@@ -19,6 +19,5 @@ class BusinessMetadata with _$BusinessMetadata {
     @Default([]) List<double> latLng,
   }) = _BusinessMetadata;
 
-  factory BusinessMetadata.fromJson(Map<String, dynamic> json) =>
-      _$BusinessMetadataFromJson(json);
+  factory BusinessMetadata.fromJson(Map<String, dynamic> json) => _$BusinessMetadataFromJson(json);
 }

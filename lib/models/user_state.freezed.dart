@@ -12,109 +12,11 @@ part of 'user_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 UserState _$UserStateFromJson(Map<String, dynamic> json) {
   return _UserState.fromJson(json);
 }
-
-/// @nodoc
-class _$UserStateTearOff {
-  const _$UserStateTearOff();
-
-  _UserState call(
-      {DateTime? installedAt,
-      bool? isContactsSynced = null,
-      bool isLoggedOut = false,
-      bool backup = false,
-      bool? depositBannerShowed = false,
-      bool? homeBackupDialogShowed = false,
-      String walletAddress = '',
-      List<String> networks = const [],
-      List<String> mnemonic = const [],
-      String privateKey = '',
-      String pincode = '',
-      String accountAddress = '',
-      String countryCode = '',
-      String phoneNumber = '',
-      bool receiveBackupDialogShowed = false,
-      bool warnSendDialogShowed = false,
-      String isoCode = '',
-      String jwtToken = '',
-      String displayName = 'Anom',
-      String avatarUrl = '',
-      String email = '',
-      String? verificationId = null,
-      String identifier = '',
-      List<String> syncedContacts = const [],
-      Map<String, String> reverseContacts = const {},
-      @JsonKey(ignore: true)
-          dynamic signupErrorMessage = null,
-      @JsonKey(ignore: true)
-          dynamic verifyErrorMessage = null,
-      @JsonKey(fromJson: currencyJson)
-          String currency = 'usd',
-      @JsonKey(ignore: true)
-          bool isLoginRequest = false,
-      @JsonKey(ignore: true)
-          bool isVerifyRequest = false,
-      @JsonKey(fromJson: authTypeFromJson, toJson: EnumToString.convertToString)
-          BiometricAuth authType = BiometricAuth.none,
-      @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
-          Locale? locale = null,
-      @JsonKey(ignore: true)
-          List<Contact> contacts = const [],
-      @JsonKey(ignore: true)
-          PhoneAuthCredential? credentials = null,
-      WalletModules? walletModules,
-      List<DeliveryAddresses> listOfDeliveryAddresses = const []}) {
-    return _UserState(
-      installedAt: installedAt,
-      isContactsSynced: isContactsSynced,
-      isLoggedOut: isLoggedOut,
-      backup: backup,
-      depositBannerShowed: depositBannerShowed,
-      homeBackupDialogShowed: homeBackupDialogShowed,
-      walletAddress: walletAddress,
-      networks: networks,
-      mnemonic: mnemonic,
-      privateKey: privateKey,
-      pincode: pincode,
-      accountAddress: accountAddress,
-      countryCode: countryCode,
-      phoneNumber: phoneNumber,
-      receiveBackupDialogShowed: receiveBackupDialogShowed,
-      warnSendDialogShowed: warnSendDialogShowed,
-      isoCode: isoCode,
-      jwtToken: jwtToken,
-      displayName: displayName,
-      avatarUrl: avatarUrl,
-      email: email,
-      verificationId: verificationId,
-      identifier: identifier,
-      syncedContacts: syncedContacts,
-      reverseContacts: reverseContacts,
-      signupErrorMessage: signupErrorMessage,
-      verifyErrorMessage: verifyErrorMessage,
-      currency: currency,
-      isLoginRequest: isLoginRequest,
-      isVerifyRequest: isVerifyRequest,
-      authType: authType,
-      locale: locale,
-      contacts: contacts,
-      credentials: credentials,
-      walletModules: walletModules,
-      listOfDeliveryAddresses: listOfDeliveryAddresses,
-    );
-  }
-
-  UserState fromJson(Map<String, Object?> json) {
-    return UserState.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $UserState = _$UserStateTearOff();
 
 /// @nodoc
 mixin _$UserState {
@@ -433,10 +335,10 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
-  factory _$UserStateCopyWith(
-          _UserState value, $Res Function(_UserState) then) =
-      __$UserStateCopyWithImpl<$Res>;
+abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
+  factory _$$_UserStateCopyWith(
+          _$_UserState value, $Res Function(_$_UserState) then) =
+      __$$_UserStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {DateTime? installedAt,
@@ -490,13 +392,14 @@ abstract class _$UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
-    implements _$UserStateCopyWith<$Res> {
-  __$UserStateCopyWithImpl(_UserState _value, $Res Function(_UserState) _then)
-      : super(_value, (v) => _then(v as _UserState));
+class __$$_UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
+    implements _$$_UserStateCopyWith<$Res> {
+  __$$_UserStateCopyWithImpl(
+      _$_UserState _value, $Res Function(_$_UserState) _then)
+      : super(_value, (v) => _then(v as _$_UserState));
 
   @override
-  _UserState get _value => super._value as _UserState;
+  _$_UserState get _value => super._value as _$_UserState;
 
   @override
   $Res call({
@@ -537,7 +440,7 @@ class __$UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
     Object? walletModules = freezed,
     Object? listOfDeliveryAddresses = freezed,
   }) {
-    return _then(_UserState(
+    return _then(_$_UserState(
       installedAt: installedAt == freezed
           ? _value.installedAt
           : installedAt // ignore: cast_nullable_to_non_nullable
@@ -743,77 +646,77 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   final DateTime? installedAt;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool? isContactsSynced;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isLoggedOut;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool backup;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool? depositBannerShowed;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool? homeBackupDialogShowed;
-  @JsonKey()
   @override
+  @JsonKey()
   final String walletAddress;
-  @JsonKey()
   @override
+  @JsonKey()
   final List<String> networks;
-  @JsonKey()
   @override
+  @JsonKey()
   final List<String> mnemonic;
-  @JsonKey()
   @override
+  @JsonKey()
   final String privateKey;
-  @JsonKey()
   @override
+  @JsonKey()
   final String pincode;
-  @JsonKey()
   @override
+  @JsonKey()
   final String accountAddress;
-  @JsonKey()
   @override
+  @JsonKey()
   final String countryCode;
-  @JsonKey()
   @override
+  @JsonKey()
   final String phoneNumber;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool receiveBackupDialogShowed;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool warnSendDialogShowed;
-  @JsonKey()
   @override
+  @JsonKey()
   final String isoCode;
-  @JsonKey()
   @override
+  @JsonKey()
   final String jwtToken;
-  @JsonKey()
   @override
+  @JsonKey()
   final String displayName;
-  @JsonKey()
   @override
+  @JsonKey()
   final String avatarUrl;
-  @JsonKey()
   @override
+  @JsonKey()
   final String email;
-  @JsonKey()
   @override
+  @JsonKey()
   final String? verificationId;
-  @JsonKey()
   @override
+  @JsonKey()
   final String identifier;
-  @JsonKey()
   @override
+  @JsonKey()
   final List<String> syncedContacts;
-  @JsonKey()
   @override
+  @JsonKey()
   final Map<String, String> reverseContacts;
   @override
   @JsonKey(ignore: true)
@@ -844,8 +747,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final PhoneAuthCredential? credentials;
   @override
   final WalletModules? walletModules;
-  @JsonKey()
   @override
+  @JsonKey()
   final List<DeliveryAddresses> listOfDeliveryAddresses;
 
   @override
@@ -903,7 +806,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _UserState &&
+            other is _$_UserState &&
             const DeepCollectionEquality()
                 .equals(other.installedAt, installedAt) &&
             const DeepCollectionEquality()
@@ -966,6 +869,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.listOfDeliveryAddresses, listOfDeliveryAddresses));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -1009,8 +913,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @JsonKey(ignore: true)
   @override
-  _$UserStateCopyWith<_UserState> get copyWith =>
-      __$UserStateCopyWithImpl<_UserState>(this, _$identity);
+  _$$_UserStateCopyWith<_$_UserState> get copyWith =>
+      __$$_UserStateCopyWithImpl<_$_UserState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -1020,139 +924,140 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
 abstract class _UserState extends UserState {
   factory _UserState(
-      {DateTime? installedAt,
-      bool? isContactsSynced,
-      bool isLoggedOut,
-      bool backup,
-      bool? depositBannerShowed,
-      bool? homeBackupDialogShowed,
-      String walletAddress,
-      List<String> networks,
-      List<String> mnemonic,
-      String privateKey,
-      String pincode,
-      String accountAddress,
-      String countryCode,
-      String phoneNumber,
-      bool receiveBackupDialogShowed,
-      bool warnSendDialogShowed,
-      String isoCode,
-      String jwtToken,
-      String displayName,
-      String avatarUrl,
-      String email,
-      String? verificationId,
-      String identifier,
-      List<String> syncedContacts,
-      Map<String, String> reverseContacts,
+      {final DateTime? installedAt,
+      final bool? isContactsSynced,
+      final bool isLoggedOut,
+      final bool backup,
+      final bool? depositBannerShowed,
+      final bool? homeBackupDialogShowed,
+      final String walletAddress,
+      final List<String> networks,
+      final List<String> mnemonic,
+      final String privateKey,
+      final String pincode,
+      final String accountAddress,
+      final String countryCode,
+      final String phoneNumber,
+      final bool receiveBackupDialogShowed,
+      final bool warnSendDialogShowed,
+      final String isoCode,
+      final String jwtToken,
+      final String displayName,
+      final String avatarUrl,
+      final String email,
+      final String? verificationId,
+      final String identifier,
+      final List<String> syncedContacts,
+      final Map<String, String> reverseContacts,
       @JsonKey(ignore: true)
-          dynamic signupErrorMessage,
+          final dynamic signupErrorMessage,
       @JsonKey(ignore: true)
-          dynamic verifyErrorMessage,
+          final dynamic verifyErrorMessage,
       @JsonKey(fromJson: currencyJson)
-          String currency,
+          final String currency,
       @JsonKey(ignore: true)
-          bool isLoginRequest,
+          final bool isLoginRequest,
       @JsonKey(ignore: true)
-          bool isVerifyRequest,
+          final bool isVerifyRequest,
       @JsonKey(fromJson: authTypeFromJson, toJson: EnumToString.convertToString)
-          BiometricAuth authType,
+          final BiometricAuth authType,
       @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
-          Locale? locale,
+          final Locale? locale,
       @JsonKey(ignore: true)
-          List<Contact> contacts,
+          final List<Contact> contacts,
       @JsonKey(ignore: true)
-          PhoneAuthCredential? credentials,
-      WalletModules? walletModules,
-      List<DeliveryAddresses> listOfDeliveryAddresses}) = _$_UserState;
+          final PhoneAuthCredential? credentials,
+      final WalletModules? walletModules,
+      final List<DeliveryAddresses> listOfDeliveryAddresses}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
       _$_UserState.fromJson;
 
   @override
-  DateTime? get installedAt;
+  DateTime? get installedAt => throw _privateConstructorUsedError;
   @override
-  bool? get isContactsSynced;
+  bool? get isContactsSynced => throw _privateConstructorUsedError;
   @override
-  bool get isLoggedOut;
+  bool get isLoggedOut => throw _privateConstructorUsedError;
   @override
-  bool get backup;
+  bool get backup => throw _privateConstructorUsedError;
   @override
-  bool? get depositBannerShowed;
+  bool? get depositBannerShowed => throw _privateConstructorUsedError;
   @override
-  bool? get homeBackupDialogShowed;
+  bool? get homeBackupDialogShowed => throw _privateConstructorUsedError;
   @override
-  String get walletAddress;
+  String get walletAddress => throw _privateConstructorUsedError;
   @override
-  List<String> get networks;
+  List<String> get networks => throw _privateConstructorUsedError;
   @override
-  List<String> get mnemonic;
+  List<String> get mnemonic => throw _privateConstructorUsedError;
   @override
-  String get privateKey;
+  String get privateKey => throw _privateConstructorUsedError;
   @override
-  String get pincode;
+  String get pincode => throw _privateConstructorUsedError;
   @override
-  String get accountAddress;
+  String get accountAddress => throw _privateConstructorUsedError;
   @override
-  String get countryCode;
+  String get countryCode => throw _privateConstructorUsedError;
   @override
-  String get phoneNumber;
+  String get phoneNumber => throw _privateConstructorUsedError;
   @override
-  bool get receiveBackupDialogShowed;
+  bool get receiveBackupDialogShowed => throw _privateConstructorUsedError;
   @override
-  bool get warnSendDialogShowed;
+  bool get warnSendDialogShowed => throw _privateConstructorUsedError;
   @override
-  String get isoCode;
+  String get isoCode => throw _privateConstructorUsedError;
   @override
-  String get jwtToken;
+  String get jwtToken => throw _privateConstructorUsedError;
   @override
-  String get displayName;
+  String get displayName => throw _privateConstructorUsedError;
   @override
-  String get avatarUrl;
+  String get avatarUrl => throw _privateConstructorUsedError;
   @override
-  String get email;
+  String get email => throw _privateConstructorUsedError;
   @override
-  String? get verificationId;
+  String? get verificationId => throw _privateConstructorUsedError;
   @override
-  String get identifier;
+  String get identifier => throw _privateConstructorUsedError;
   @override
-  List<String> get syncedContacts;
+  List<String> get syncedContacts => throw _privateConstructorUsedError;
   @override
-  Map<String, String> get reverseContacts;
-  @override
-  @JsonKey(ignore: true)
-  dynamic get signupErrorMessage;
+  Map<String, String> get reverseContacts => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  dynamic get verifyErrorMessage;
+  dynamic get signupErrorMessage => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  dynamic get verifyErrorMessage => throw _privateConstructorUsedError;
   @override
   @JsonKey(fromJson: currencyJson)
-  String get currency;
+  String get currency => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  bool get isLoginRequest;
+  bool get isLoginRequest => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  bool get isVerifyRequest;
+  bool get isVerifyRequest => throw _privateConstructorUsedError;
   @override
   @JsonKey(fromJson: authTypeFromJson, toJson: EnumToString.convertToString)
-  BiometricAuth get authType;
+  BiometricAuth get authType => throw _privateConstructorUsedError;
   @override
   @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
-  Locale? get locale;
+  Locale? get locale => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  List<Contact> get contacts;
+  List<Contact> get contacts => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  PhoneAuthCredential? get credentials;
+  PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
   @override
-  WalletModules? get walletModules;
+  WalletModules? get walletModules => throw _privateConstructorUsedError;
   @override
-  List<DeliveryAddresses> get listOfDeliveryAddresses;
+  List<DeliveryAddresses> get listOfDeliveryAddresses =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$UserStateCopyWith<_UserState> get copyWith =>
+  _$$_UserStateCopyWith<_$_UserState> get copyWith =>
       throw _privateConstructorUsedError;
 }

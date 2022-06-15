@@ -2,18 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 
-class SingleOrderItem extends StatefulWidget {
-  const SingleOrderItem({Key? key, required this.orderItem}) : super(key: key);
+class SingleCartItem extends StatefulWidget {
+  const SingleCartItem({Key? key, required this.orderItem}) : super(key: key);
 
-  final OrderItem orderItem;
+  final CartItem orderItem;
 
   @override
-  _SingleOrderItemState createState() => _SingleOrderItemState();
+  _SingleCartItemState createState() => _SingleCartItemState();
 }
 
-class _SingleOrderItemState extends State<SingleOrderItem> {
+class _SingleCartItemState extends State<SingleCartItem> {
   bool _showOptions = false;
 
   @override
@@ -43,8 +43,7 @@ class _SingleOrderItemState extends State<SingleOrderItem> {
               children: [
                     Text(
                       widget.orderItem.menuItem.name,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
                     ),
                     SizedBox(
                       height: 5,
@@ -58,8 +57,7 @@ class _SingleOrderItemState extends State<SingleOrderItem> {
                             fontSize: 18,
                           ),
                         ),
-                        widget.orderItem.selectedProductOptions.entries
-                                .isNotEmpty
+                        widget.orderItem.selectedProductOptions.entries.isNotEmpty
                             ? GestureDetector(
                                 onTap: () => setState(() {
                                   _showOptions = !_showOptions;
@@ -84,10 +82,7 @@ class _SingleOrderItemState extends State<SingleOrderItem> {
                             ? Text.rich(
                                 TextSpan(
                                   text: e.value.name,
-                                  children: [
-                                    TextSpan(text: " - "),
-                                    TextSpan(text: cFPrice(e.value.price))
-                                  ],
+                                  children: [TextSpan(text: " - "), TextSpan(text: cFPrice(e.value.price))],
                                 ),
                                 style: TextStyle(color: Colors.grey[700]),
                               )

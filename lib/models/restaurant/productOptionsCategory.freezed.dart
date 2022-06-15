@@ -12,35 +12,12 @@ part of 'productOptionsCategory.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 ProductOptionsCategory _$ProductOptionsCategoryFromJson(
     Map<String, dynamic> json) {
   return _ProductOptionsCategory.fromJson(json);
 }
-
-/// @nodoc
-class _$ProductOptionsCategoryTearOff {
-  const _$ProductOptionsCategoryTearOff();
-
-  _ProductOptionsCategory call(
-      {required int categoryID,
-      required String name,
-      required List<ProductOptions> listOfOptions}) {
-    return _ProductOptionsCategory(
-      categoryID: categoryID,
-      name: name,
-      listOfOptions: listOfOptions,
-    );
-  }
-
-  ProductOptionsCategory fromJson(Map<String, Object?> json) {
-    return ProductOptionsCategory.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ProductOptionsCategory = _$ProductOptionsCategoryTearOff();
 
 /// @nodoc
 mixin _$ProductOptionsCategory {
@@ -95,25 +72,26 @@ class _$ProductOptionsCategoryCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ProductOptionsCategoryCopyWith<$Res>
+abstract class _$$_ProductOptionsCategoryCopyWith<$Res>
     implements $ProductOptionsCategoryCopyWith<$Res> {
-  factory _$ProductOptionsCategoryCopyWith(_ProductOptionsCategory value,
-          $Res Function(_ProductOptionsCategory) then) =
-      __$ProductOptionsCategoryCopyWithImpl<$Res>;
+  factory _$$_ProductOptionsCategoryCopyWith(_$_ProductOptionsCategory value,
+          $Res Function(_$_ProductOptionsCategory) then) =
+      __$$_ProductOptionsCategoryCopyWithImpl<$Res>;
   @override
   $Res call({int categoryID, String name, List<ProductOptions> listOfOptions});
 }
 
 /// @nodoc
-class __$ProductOptionsCategoryCopyWithImpl<$Res>
+class __$$_ProductOptionsCategoryCopyWithImpl<$Res>
     extends _$ProductOptionsCategoryCopyWithImpl<$Res>
-    implements _$ProductOptionsCategoryCopyWith<$Res> {
-  __$ProductOptionsCategoryCopyWithImpl(_ProductOptionsCategory _value,
-      $Res Function(_ProductOptionsCategory) _then)
-      : super(_value, (v) => _then(v as _ProductOptionsCategory));
+    implements _$$_ProductOptionsCategoryCopyWith<$Res> {
+  __$$_ProductOptionsCategoryCopyWithImpl(_$_ProductOptionsCategory _value,
+      $Res Function(_$_ProductOptionsCategory) _then)
+      : super(_value, (v) => _then(v as _$_ProductOptionsCategory));
 
   @override
-  _ProductOptionsCategory get _value => super._value as _ProductOptionsCategory;
+  _$_ProductOptionsCategory get _value =>
+      super._value as _$_ProductOptionsCategory;
 
   @override
   $Res call({
@@ -121,7 +99,7 @@ class __$ProductOptionsCategoryCopyWithImpl<$Res>
     Object? name = freezed,
     Object? listOfOptions = freezed,
   }) {
-    return _then(_ProductOptionsCategory(
+    return _then(_$_ProductOptionsCategory(
       categoryID: categoryID == freezed
           ? _value.categoryID
           : categoryID // ignore: cast_nullable_to_non_nullable
@@ -167,7 +145,7 @@ class _$_ProductOptionsCategory extends _ProductOptionsCategory {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ProductOptionsCategory &&
+            other is _$_ProductOptionsCategory &&
             const DeepCollectionEquality()
                 .equals(other.categoryID, categoryID) &&
             const DeepCollectionEquality().equals(other.name, name) &&
@@ -175,6 +153,7 @@ class _$_ProductOptionsCategory extends _ProductOptionsCategory {
                 .equals(other.listOfOptions, listOfOptions));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -184,8 +163,8 @@ class _$_ProductOptionsCategory extends _ProductOptionsCategory {
 
   @JsonKey(ignore: true)
   @override
-  _$ProductOptionsCategoryCopyWith<_ProductOptionsCategory> get copyWith =>
-      __$ProductOptionsCategoryCopyWithImpl<_ProductOptionsCategory>(
+  _$$_ProductOptionsCategoryCopyWith<_$_ProductOptionsCategory> get copyWith =>
+      __$$_ProductOptionsCategoryCopyWithImpl<_$_ProductOptionsCategory>(
           this, _$identity);
 
   @override
@@ -196,22 +175,23 @@ class _$_ProductOptionsCategory extends _ProductOptionsCategory {
 
 abstract class _ProductOptionsCategory extends ProductOptionsCategory {
   factory _ProductOptionsCategory(
-      {required int categoryID,
-      required String name,
-      required List<ProductOptions> listOfOptions}) = _$_ProductOptionsCategory;
+          {required final int categoryID,
+          required final String name,
+          required final List<ProductOptions> listOfOptions}) =
+      _$_ProductOptionsCategory;
   _ProductOptionsCategory._() : super._();
 
   factory _ProductOptionsCategory.fromJson(Map<String, dynamic> json) =
       _$_ProductOptionsCategory.fromJson;
 
   @override
-  int get categoryID;
+  int get categoryID => throw _privateConstructorUsedError;
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  List<ProductOptions> get listOfOptions;
+  List<ProductOptions> get listOfOptions => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ProductOptionsCategoryCopyWith<_ProductOptionsCategory> get copyWith =>
+  _$$_ProductOptionsCategoryCopyWith<_$_ProductOptionsCategory> get copyWith =>
       throw _privateConstructorUsedError;
 }

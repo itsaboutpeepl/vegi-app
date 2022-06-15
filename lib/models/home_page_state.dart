@@ -1,28 +1,22 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
-import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 
 part 'home_page_state.freezed.dart';
 part 'home_page_state.g.dart';
 
-@freezed
+@Freezed()
 class HomePageState with _$HomePageState {
   const HomePageState._();
 
   @JsonSerializable()
   factory HomePageState({
-    required List<RestaurantCategory> restaurantCategories,
-    required List<RestaurantItem> featuredRestaurants,
-    required UserCart currentUserCart,
-    required bool isLoadingHomePage,
-    required List<String> postalCodes,
+    @JsonKey(ignore: true) @Default([]) List<RestaurantItem> featuredRestaurants,
+    @JsonKey(ignore: true) @Default(false) bool isLoadingHomePage,
+    @JsonKey(ignore: true) @Default([]) List<String> postalCodes,
   }) = _HomePageState;
 
   factory HomePageState.initial() => HomePageState(
-        restaurantCategories: [],
         featuredRestaurants: [],
-        currentUserCart: UserCart.initial(),
         isLoadingHomePage: false,
         postalCodes: [],
       );
@@ -34,7 +28,8 @@ class HomePageStateConverter implements JsonConverter<HomePageState, Map<String,
   const HomePageStateConverter();
 
   @override
-  HomePageState fromJson(Map<String, dynamic>? json) => HomePageState.initial();
+  HomePageState fromJson(Map<String, dynamic>? json) =>
+      json != null ? HomePageState.fromJson(json) : HomePageState.initial();
 
   @override
   Map<String, dynamic> toJson(HomePageState instance) => instance.toJson();

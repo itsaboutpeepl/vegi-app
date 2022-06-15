@@ -1,10 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
-    as ts;
+import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart' as ts;
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/navDrawer.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/featuredRestaurantList.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/preparingOrderAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/veganSliverAppBar.dart';
 
 class VeganHomeScreen extends StatefulWidget {
@@ -41,14 +41,11 @@ class _VeganHomeScreenState extends State<VeganHomeScreen> {
         ),
         closedColor: themeShade400,
         closedBuilder: (BuildContext context, VoidCallback openContainer) {
-          return SizedBox(
-            height: 56,
-            width: 56,
-            child: Center(
-              child: Icon(
-                Icons.shopping_basket,
-                color: Colors.grey[800],
-              ),
+          return Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Icon(
+              Icons.shopping_basket,
+              color: Colors.grey[800],
             ),
           );
         },
@@ -57,6 +54,7 @@ class _VeganHomeScreenState extends State<VeganHomeScreen> {
         controller: _scrollController,
         headerSliverBuilder: (_, flag) => [
           VeganSliverAppBar(),
+          PreparingOrderAppBar(),
         ],
         body: FeaturedRestaurantList(),
       ),
@@ -78,3 +76,31 @@ class _VeganHomeScreenState extends State<VeganHomeScreen> {
 //     ),
 //   );
 // }
+
+
+// Padding(
+//                 padding: const EdgeInsets.all(20.0),
+//                 child: Card(
+//                   child: SizedBox(
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(12.0),
+//                       child: Text(
+//                         "Purple Carrot is preparing your order",
+//                         style: TextStyle(
+//                           fontSize: 18,
+//                           fontWeight: FontWeight.w700,
+//                         ),
+//                       ),
+//                     ),
+//                     height: 50,
+//                   ),
+//                   color: themeShade200,
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(10),
+//                     side: BorderSide(
+//                       color: themeShade900,
+//                       width: 2,
+//                     ),
+//                   ),
+//                 ),
+//               ),

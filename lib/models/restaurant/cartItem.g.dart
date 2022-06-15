@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'orderItem.dart';
+part of 'cartItem.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_OrderItem _$$_OrderItemFromJson(Map<String, dynamic> json) => _$_OrderItem(
+_$_CartItem _$$_CartItemFromJson(Map<String, dynamic> json) => _$_CartItem(
       internalID: json['internalID'] as int,
       menuItem: RestaurantMenuItem.fromJson(json['menuItem']),
       totalItemPrice: json['totalItemPrice'] as int,
@@ -17,7 +17,7 @@ _$_OrderItem _$$_OrderItemFromJson(Map<String, dynamic> json) => _$_OrderItem(
       ),
     );
 
-Map<String, dynamic> _$$_OrderItemToJson(_$_OrderItem instance) =>
+Map<String, dynamic> _$$_CartItemToJson(_$_CartItem instance) =>
     <String, dynamic>{
       'internalID': instance.internalID,
       'menuItem': instance.menuItem.toJson(),

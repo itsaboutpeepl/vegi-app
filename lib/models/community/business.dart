@@ -6,7 +6,7 @@ part 'business.freezed.dart';
 part 'business.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class Business with _$Business {
   @JsonSerializable()
   factory Business({
@@ -16,6 +16,5 @@ class Business with _$Business {
     @Default('') String name,
   }) = _Business;
 
-  factory Business.fromJson(Map<String, dynamic> json) =>
-      _$BusinessFromJson(json);
+  factory Business.fromJson(Map<String, dynamic> json) => _$BusinessFromJson(json);
 }

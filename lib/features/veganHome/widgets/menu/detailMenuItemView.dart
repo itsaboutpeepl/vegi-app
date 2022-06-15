@@ -20,7 +20,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
     return StoreConnector<AppState, DetailMenuItem>(
       converter: DetailMenuItem.fromStore,
       onInit: (store) {
-        store.dispatch(fetchProductOptions(store.state.menuItemState.menuItem.menuItemID));
+        store.dispatch(fetchProductOptions(store.state.menuItemState.menuItem!.menuItemID));
       },
       builder: (_, viewmodel) {
         return Stack(
@@ -35,7 +35,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                         width: double.infinity,
                         height: 350.0,
                         child: CachedNetworkImage(
-                          imageUrl: viewmodel.menuItem.imageURL,
+                          imageUrl: viewmodel.menuItem!.imageURL,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -65,7 +65,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          viewmodel.menuItem.name,
+                          viewmodel.menuItem!.name,
                           style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w900),
                         ),
                         SizedBox(
@@ -79,7 +79,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                           height: 10,
                         ),
                         Text(
-                          parseHtmlString(viewmodel.menuItem.description),
+                          parseHtmlString(viewmodel.menuItem!.description),
                           style: TextStyle(fontSize: 18.0),
                         ),
                         SizedBox(

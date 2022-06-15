@@ -25,6 +25,12 @@ String mapToString(Map<String, String> map) {
   return "${startTime.hour.toString()}:00 - ${endTime.hour.toString()}:00";
 }
 
+String mapToStringDate(Map<String, String> map) {
+  DateTime startTime = DateTime.parse(map.entries.first.value);
+  DateFormat formatter = DateFormat(DateFormat.ABBR_MONTH_WEEKDAY_DAY);
+  return formatter.format(startTime);
+}
+
 String formatDateForOrderObject(String date) {
   return date.replaceFirst("T", " ").replaceFirst(".000Z", "");
 }
@@ -85,6 +91,20 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
   return listOfOrders;
 }
 
-void testFunctionForMirrorRepo() {
-  print("testing");
+bool isScheduledDelivery(Map<String, String> selectedSlot) {
+  DateTime startTime = DateTime.parse(selectedSlot.entries.first.value);
+  if (startTime.difference(DateTime.now()).inHours > 5) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool shouldEndOngoing(Map<String, String> selectedSlot) {
+  DateTime endTime = DateTime.parse(selectedSlot.entries.last.value);
+  if (endTime.isBefore(DateTime.now())) {
+    return true;
+  } else {
+    return false;
+  }
 }

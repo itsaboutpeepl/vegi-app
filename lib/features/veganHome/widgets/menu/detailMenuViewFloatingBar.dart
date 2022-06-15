@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuViewQuantityButton.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/shared/flippyCircle.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 
 class DetailMenuViewFloatingBar extends StatefulWidget {
@@ -49,13 +48,13 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                       Spacer(),
                       ElevatedButton(
                         onPressed: () {
-                          List<OrderItem> orderList = [];
+                          List<CartItem> orderList = [];
 
                           for (var i = 0; i < viewmodel.quantity; i++) {
                             orderList.add(
-                              OrderItem(
+                              CartItem(
                                 internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
-                                menuItem: viewmodel.menuItem,
+                                menuItem: viewmodel.menuItem!,
                                 totalItemPrice: viewmodel.totalPrice,
                                 itemQuantity:
                                     1, //this quantity always needs to be 1 to work with the api. the actual quantity of the object is calculated using the viewmodel quantity field. Then the object is just duplicated and added to the cart items.

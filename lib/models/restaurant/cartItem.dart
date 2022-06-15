@@ -2,21 +2,21 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 
-part 'orderItem.freezed.dart';
-part 'orderItem.g.dart';
+part 'cartItem.freezed.dart';
+part 'cartItem.g.dart';
 
-@freezed
-class OrderItem with _$OrderItem {
-  const OrderItem._();
+@Freezed()
+class CartItem with _$CartItem {
+  const CartItem._();
 
   @JsonSerializable()
-  factory OrderItem({
+  factory CartItem({
     required int internalID,
     required RestaurantMenuItem menuItem,
     required int totalItemPrice,
     required int itemQuantity,
     required Map<int, ProductOptions> selectedProductOptions,
-  }) = _OrderItem;
+  }) = _CartItem;
 
-  factory OrderItem.fromJson(dynamic json) => _$OrderItemFromJson(json);
+  factory CartItem.fromJson(dynamic json) => _$CartItemFromJson(json);
 }

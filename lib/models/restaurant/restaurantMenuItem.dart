@@ -4,7 +4,7 @@ import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 part 'restaurantMenuItem.freezed.dart';
 part 'restaurantMenuItem.g.dart';
 
-@freezed
+@Freezed()
 class RestaurantMenuItem with _$RestaurantMenuItem {
   const RestaurantMenuItem._();
 
@@ -20,6 +20,7 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
     required Map<String, int> extras,
     required List<ProductOptionsCategory> listOfProductOptions,
     required bool isFeatured,
+    required int priority,
   }) = _RestaurantMenuItem;
 
   factory RestaurantMenuItem.fromJson(dynamic json) => _$RestaurantMenuItemFromJson(json);

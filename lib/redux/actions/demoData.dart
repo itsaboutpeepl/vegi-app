@@ -1,6 +1,6 @@
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
@@ -79,70 +79,71 @@ RestaurantCategory restaurantCategory2 = new RestaurantCategory(
   listOfRestaurants: [restaurantItem2, restaurantItem3, restaurantItem1],
 );
 
-final RestaurantMenuItem bagel1 = new RestaurantMenuItem(
-  isFeatured: true,
-  menuItemID: "menuID1",
-  restaurantID: "DEMO",
-  name: "Something went wrong",
-  imageURL: "https://picsum.photos/500",
-  category: "Bakery",
-  price: 390,
-  description: "An error occurred",
-  extras: {},
-  listOfProductOptions: [],
-);
+final RestaurantMenuItem bagel1 = RestaurantMenuItem(
+    isFeatured: true,
+    menuItemID: "menuID1",
+    restaurantID: "DEMO",
+    name: "Something went wrong",
+    imageURL: "https://picsum.photos/500",
+    category: "Bakery",
+    price: 390,
+    description: "An error occurred",
+    extras: const {},
+    listOfProductOptions: const [],
+    priority: 1);
 
 final RestaurantMenuItem bagel2 = new RestaurantMenuItem(
-  isFeatured: true,
-  menuItemID: "menuID2",
-  restaurantID: "DEMO",
-  name: "Poppy Seed Bagel",
-  imageURL:
-      "https://marvel-b1-cdn.bc0a.com/f00000000219322/images.squarespace-cdn.com/content/v1/5eac4cadbad0a7612d8c693a/1617720715176-6EYY7BWKPD1W62SZ79L2/poppyseed+%281%29.jpg?format=1500w",
-  category: "Bakery",
-  price: 390,
-  description: "Freshiy Baked Bagel made with a mix of wild and cultured poppy seeds",
-  extras: {
-    "Cream Cheese": 100,
-    "Extra Blueberries": 185,
-    "Extra Baked": 235,
-    "Extra Love": 500,
-    "Addon - Maple Syrup": 230,
-    "Addon - Strawberry Syrup": 230,
-    "Addon - Apple Syrup": 230,
-    "Addon - Mango Syrup": 230,
-    "Addon - Banana Syrup": 230,
-    "Addon - Blueberry Syrup": 230,
-    "Addon - Orange Syrup": 230
-  },
-  listOfProductOptions: demoPOCList,
-);
+    isFeatured: true,
+    menuItemID: "menuID2",
+    restaurantID: "DEMO",
+    name: "Poppy Seed Bagel",
+    imageURL:
+        "https://marvel-b1-cdn.bc0a.com/f00000000219322/images.squarespace-cdn.com/content/v1/5eac4cadbad0a7612d8c693a/1617720715176-6EYY7BWKPD1W62SZ79L2/poppyseed+%281%29.jpg?format=1500w",
+    category: "Bakery",
+    price: 390,
+    description: "Freshiy Baked Bagel made with a mix of wild and cultured poppy seeds",
+    extras: {
+      "Cream Cheese": 100,
+      "Extra Blueberries": 185,
+      "Extra Baked": 235,
+      "Extra Love": 500,
+      "Addon - Maple Syrup": 230,
+      "Addon - Strawberry Syrup": 230,
+      "Addon - Apple Syrup": 230,
+      "Addon - Mango Syrup": 230,
+      "Addon - Banana Syrup": 230,
+      "Addon - Blueberry Syrup": 230,
+      "Addon - Orange Syrup": 230
+    },
+    listOfProductOptions: demoPOCList,
+    priority: 2);
 
 final RestaurantMenuItem bagel3 = new RestaurantMenuItem(
-  isFeatured: true,
-  menuItemID: "menuID3",
-  restaurantID: "DEMO",
-  name: "Everything Bagel",
-  imageURL: "https://healthyfitnessmeals.com/wp-content/uploads/2019/05/Keto_Parmesan_Everything_Bagel_Square_0001.jpg",
-  category: "Bakery",
-  price: 390,
-  description:
-      "Freshiy Baked Bagel made with a mix of poppy seeds, flax seeds, chia seeds, sesame seeds, onion flakes, garlic flakes, sunflower seeds, caraway seeds, pretzel salt, and black pepper.",
-  extras: {
-    "Cream Cheese": 100,
-    "Extra Blueberries": 185,
-    "Extra Baked": 235,
-    "Extra Love": 500,
-    "Addon - Maple Syrup": 230,
-    "Addon - Strawberry Syrup": 230,
-    "Addon - Apple Syrup": 230,
-    "Addon - Mango Syrup": 230,
-    "Addon - Banana Syrup": 230,
-    "Addon - Blueberry Syrup": 230,
-    "Addon - Orange Syrup": 230
-  },
-  listOfProductOptions: demoPOCList,
-);
+    isFeatured: true,
+    menuItemID: "menuID3",
+    restaurantID: "DEMO",
+    name: "Everything Bagel",
+    imageURL:
+        "https://healthyfitnessmeals.com/wp-content/uploads/2019/05/Keto_Parmesan_Everything_Bagel_Square_0001.jpg",
+    category: "Bakery",
+    price: 390,
+    description:
+        "Freshiy Baked Bagel made with a mix of poppy seeds, flax seeds, chia seeds, sesame seeds, onion flakes, garlic flakes, sunflower seeds, caraway seeds, pretzel salt, and black pepper.",
+    extras: {
+      "Cream Cheese": 100,
+      "Extra Blueberries": 185,
+      "Extra Baked": 235,
+      "Extra Love": 500,
+      "Addon - Maple Syrup": 230,
+      "Addon - Strawberry Syrup": 230,
+      "Addon - Apple Syrup": 230,
+      "Addon - Mango Syrup": 230,
+      "Addon - Banana Syrup": 230,
+      "Addon - Blueberry Syrup": 230,
+      "Addon - Orange Syrup": 230
+    },
+    listOfProductOptions: demoPOCList,
+    priority: 3);
 
 final Map<String, int> demoOptions = {
   "Cream Cheese": 100,
@@ -199,11 +200,11 @@ final ProductOptionsCategory demoPOC2 = ProductOptionsCategory(
 
 final List<ProductOptionsCategory> demoPOCList = [demoPOC1, demoPOC2];
 
-OrderItem demoOrderItem1 = new OrderItem(
-    internalID: 4324, menuItem: bagel3, totalItemPrice: 3242, itemQuantity: 3, selectedProductOptions: {});
+CartItem demoOrderItem1 =
+    new CartItem(internalID: 4324, menuItem: bagel3, totalItemPrice: 3242, itemQuantity: 3, selectedProductOptions: {});
 
-OrderItem demoOrderItem2 = new OrderItem(
-    internalID: 3414, menuItem: bagel1, totalItemPrice: 8922, itemQuantity: 5, selectedProductOptions: {});
+CartItem demoOrderItem2 =
+    new CartItem(internalID: 3414, menuItem: bagel1, totalItemPrice: 8922, itemQuantity: 5, selectedProductOptions: {});
 
 final UserCart userCart = new UserCart(
   cartItems: [

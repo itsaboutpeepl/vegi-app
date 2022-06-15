@@ -26,7 +26,7 @@ class _ProductOptionsViewState extends State<ProductOptionsView> {
       converter: DetailMenuItem.fromStore,
       builder: (_, viewmodel) {
         return Column(
-          children: viewmodel.menuItem.listOfProductOptions
+          children: viewmodel.menuItem!.listOfProductOptions
               .map((e) => ProductOptionsCategoryView(
                     productOptionsCategory: e,
                   ))

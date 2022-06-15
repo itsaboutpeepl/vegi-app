@@ -8,7 +8,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -17,7 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:wallet_core/wallet_core.dart';
 
 class UpdateCartItems {
-  final List<OrderItem> cartItems;
+  final List<CartItem> cartItems;
   UpdateCartItems({required this.cartItems});
 }
 
@@ -116,6 +116,11 @@ class SetFulfilmentMethod {
   SetFulfilmentMethod(this.fulfilmentMethod);
 }
 
+class SetIsDelivery {
+  final bool isDelivery;
+  SetIsDelivery(this.isDelivery);
+}
+
 ThunkAction getFullfillmentMethods({DateTime? newDate}) {
   return (Store store) async {
     try {
@@ -193,10 +198,10 @@ ThunkAction updateCartDiscount(String newDiscountCode, VoidCallback errorCallbac
   };
 }
 
-ThunkAction updateCartItems(List<OrderItem> itemsToAdd) {
+ThunkAction updateCartItems(List<CartItem> itemsToAdd) {
   return (Store store) async {
     try {
-      List<OrderItem> cartItems = store.state.cartState.cartItems;
+      List<CartItem> cartItems = List.from(store.state.cartState.cartItems);
 
       cartItems.addAll(itemsToAdd);
 
@@ -214,10 +219,10 @@ ThunkAction updateCartItems(List<OrderItem> itemsToAdd) {
   };
 }
 
-ThunkAction updateCartItemQuantity(OrderItem itemToAdd) {
+ThunkAction updateCartItemQuantity(CartItem itemToAdd) {
   return (Store store) async {
     try {
-      List<OrderItem> cartItems = store.state.cartState.cartItems;
+      List<CartItem> cartItems = store.state.cartState.cartItems;
       if (itemToAdd.itemQuantity == 0) {
         cartItems.removeWhere((element) => element.internalID == itemToAdd.internalID);
       } else {
@@ -245,7 +250,7 @@ ThunkAction updateCartItemQuantity(OrderItem itemToAdd) {
 ThunkAction computeCartTotals() {
   return (Store store) async {
     try {
-      List<OrderItem> cartItems = store.state.cartState.cartItems;
+      List<CartItem> cartItems = store.state.cartState.cartItems;
 
       int cartSubTotal = 0;
       int cartTax = 0;
@@ -305,7 +310,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
             )
             .toList(),
         "total": store.state.cartState.cartTotal,
-        "tipAmount": store.state.cartState.selectedTipAmount,
+        "tipAmount": store.state.cartState.selectedTipAmount * 100,
         "marketingOptIn": false,
         "discountCode": store.state.cartState.discountCode,
         "vendor": store.state.cartState.restaurantID,

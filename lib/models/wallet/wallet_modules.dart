@@ -4,7 +4,7 @@ part 'wallet_modules.freezed.dart';
 part 'wallet_modules.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class WalletModules with _$WalletModules {
   @JsonSerializable()
   factory WalletModules({
@@ -14,12 +14,10 @@ class WalletModules with _$WalletModules {
     @JsonKey(name: 'ApprovedTransfer') required String approvedTransfer,
     @JsonKey(name: 'TokenExchanger') required String tokenExchanger,
     @JsonKey(name: 'CommunityManager') required String communityManager,
-    @JsonKey(name: 'WalletOwnershipManager')
-        required String walletOwnershipManager,
+    @JsonKey(name: 'WalletOwnershipManager') required String walletOwnershipManager,
     @JsonKey(name: 'DAIPointsManager') required String daiPointsManager,
     @JsonKey(name: 'TransferManager') required String transferManager,
   }) = _WalletModules;
 
-  factory WalletModules.fromJson(Map<String, dynamic> json) =>
-      _$WalletModulesFromJson(json);
+  factory WalletModules.fromJson(Map<String, dynamic> json) => _$WalletModulesFromJson(json);
 }

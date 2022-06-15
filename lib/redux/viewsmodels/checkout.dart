@@ -16,6 +16,7 @@ class CheckoutViewModel extends Equatable {
   final int discountPercent;
   final int cartTotal;
   final FulfilmentMethod fulfilmentMethod;
+  bool isDelivery;
   final Function(String discountCode, VoidCallback) updateDiscount;
   final Function(Map<String, String> selectedTimeSlot) updateSelectedTimeSlot;
   final Function(int tipAmount) updateTipAmount;
@@ -37,6 +38,7 @@ class CheckoutViewModel extends Equatable {
     required this.createOrder,
     required this.updateSlotTimes,
     required this.fulfilmentMethod,
+    required this.isDelivery,
   });
 
   static CheckoutViewModel fromStore(Store<AppState> store) {
@@ -50,6 +52,7 @@ class CheckoutViewModel extends Equatable {
       cartTotal: store.state.cartState.cartTotal,
       selectedTimeSlot: store.state.cartState.selectedTimeSlot,
       fulfilmentMethod: store.state.cartState.fulfilmentMethod,
+      isDelivery: store.state.cartState.isDelivery,
       updateDiscount: (discountCode, errorCallback) {
         store.dispatch(updateCartDiscount(discountCode, errorCallback));
       },

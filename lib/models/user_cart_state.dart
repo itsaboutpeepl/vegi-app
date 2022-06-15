@@ -1,45 +1,46 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
 part 'user_cart_state.freezed.dart';
 part 'user_cart_state.g.dart';
 
-@freezed
+@Freezed()
 class UserCartState with _$UserCartState {
   const UserCartState._();
 
   @JsonSerializable()
   factory UserCartState({
-    required List<OrderItem> cartItems,
-    required int cartSubTotal,
-    required int cartTax,
-    required int cartTotal,
-    required int cartDiscountPercent,
-    required int cartDiscountComputed,
-    required int cartDeliveryCharge,
-    required List<Map<String, String>> deliverySlots,
-    required List<Map<String, String>> collectionSlots,
-    required DeliveryAddresses? selectedDeliveryAddress,
-    required Map<String, String> selectedTimeSlot,
-    required int selectedTipAmount,
-    required String discountCode,
-    required String paymentIntentID,
-    required String orderID,
-    required double selectedGBPxAmount,
-    required double selectedPPLAmount,
-    required bool transferringTokens,
-    required bool errorCompletingPayment,
-    required bool confirmedPayment,
-    required String restaurantName,
-    required String restaurantID,
-    required DeliveryAddresses restaurantAddress,
-    required String restaurantWalletAddress,
-    required int deliveryCharge,
-    required int collectionCharge,
-    required FulfilmentMethod fulfilmentMethod,
+    @JsonKey(ignore: true) @Default([]) List<CartItem> cartItems,
+    @JsonKey(ignore: true) @Default(0) int cartSubTotal,
+    @JsonKey(ignore: true) @Default(0) int cartTax,
+    @JsonKey(ignore: true) @Default(0) int cartTotal,
+    @JsonKey(ignore: true) @Default(0) int cartDiscountPercent,
+    @JsonKey(ignore: true) @Default(0) int cartDiscountComputed,
+    @JsonKey(ignore: true) @Default(0) int cartDeliveryCharge,
+    @JsonKey(ignore: true) @Default([]) List<Map<String, String>> deliverySlots,
+    @JsonKey(ignore: true) @Default([]) List<Map<String, String>> collectionSlots,
+    @JsonKey(ignore: true) @Default(null) DeliveryAddresses? selectedDeliveryAddress,
+    @JsonKey(ignore: true) @Default({}) Map<String, String> selectedTimeSlot,
+    @JsonKey(ignore: true) @Default(0) int selectedTipAmount,
+    @JsonKey(ignore: true) @Default("") String discountCode,
+    @JsonKey(ignore: true) @Default("") String paymentIntentID,
+    @JsonKey(ignore: true) @Default("") String orderID,
+    @JsonKey(ignore: true) @Default(0.0) double selectedGBPxAmount,
+    @JsonKey(ignore: true) @Default(0.0) double selectedPPLAmount,
+    @JsonKey(ignore: true) @Default(false) bool transferringTokens,
+    @JsonKey(ignore: true) @Default(false) bool errorCompletingPayment,
+    @JsonKey(ignore: true) @Default(false) bool confirmedPayment,
+    @JsonKey(ignore: true) @Default("") String restaurantName,
+    @JsonKey(ignore: true) @Default("") String restaurantID,
+    @JsonKey(ignore: true) @Default(null) DeliveryAddresses? restaurantAddress,
+    @JsonKey(ignore: true) @Default("") String restaurantWalletAddress,
+    @JsonKey(ignore: true) @Default(0) int deliveryCharge,
+    @JsonKey(ignore: true) @Default(0) int collectionCharge,
+    @JsonKey(ignore: true) @Default(FulfilmentMethod.delivery) FulfilmentMethod fulfilmentMethod,
+    @JsonKey(ignore: true) @Default(true) bool isDelivery,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(
@@ -69,7 +70,8 @@ class UserCartState with _$UserCartState {
         collectionCharge: 0,
         selectedDeliveryAddress: null,
         selectedTimeSlot: {},
-        fulfilmentMethod: FulfilmentMethod.collection,
+        fulfilmentMethod: FulfilmentMethod.delivery,
+        isDelivery: true,
       );
 
   factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);
@@ -79,7 +81,8 @@ class UserCartStateConverter implements JsonConverter<UserCartState, Map<String,
   const UserCartStateConverter();
 
   @override
-  UserCartState fromJson(Map<String, dynamic>? json) => UserCartState.initial();
+  UserCartState fromJson(Map<String, dynamic>? json) =>
+      json != null ? UserCartState.fromJson(json) : UserCartState.initial();
 
   @override
   Map<String, dynamic> toJson(UserCartState instance) => instance.toJson();

@@ -5,7 +5,7 @@ part 'stats.freezed.dart';
 part 'stats.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class Stats with _$Stats {
   @JsonSerializable()
   factory Stats({

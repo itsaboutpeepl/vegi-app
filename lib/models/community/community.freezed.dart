@@ -12,60 +12,11 @@ part of 'community.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Community _$CommunityFromJson(Map<String, dynamic> json) {
   return _Community.fromJson(json);
 }
-
-/// @nodoc
-class _$CommunityTearOff {
-  const _$CommunityTearOff();
-
-  _Community call(
-      {String name = '',
-      String address = '',
-      bool isMultiBridge = false,
-      bool isClosed = false,
-      bool isMember = false,
-      @JsonKey(includeIfNull: false) String homeTokenAddress = '',
-      @JsonKey(includeIfNull: false) CommunityMetadata? metadata,
-      @JsonKey(includeIfNull: false) String? webUrl,
-      @JsonKey(includeIfNull: false) String? bridgeType,
-      @JsonKey(includeIfNull: false) String? bridgeDirection,
-      @JsonKey(includeIfNull: false) String? homeBridgeAddress,
-      @JsonKey(includeIfNull: false) String? foreignBridgeAddress,
-      @JsonKey(includeIfNull: false) String? foreignTokenAddress,
-      @JsonKey(includeIfNull: false) @PluginsConverter() Plugins? plugins,
-      @JsonKey(includeIfNull: false) List<Business>? businesses,
-      @JsonKey(includeIfNull: false) String? description}) {
-    return _Community(
-      name: name,
-      address: address,
-      isMultiBridge: isMultiBridge,
-      isClosed: isClosed,
-      isMember: isMember,
-      homeTokenAddress: homeTokenAddress,
-      metadata: metadata,
-      webUrl: webUrl,
-      bridgeType: bridgeType,
-      bridgeDirection: bridgeDirection,
-      homeBridgeAddress: homeBridgeAddress,
-      foreignBridgeAddress: foreignBridgeAddress,
-      foreignTokenAddress: foreignTokenAddress,
-      plugins: plugins,
-      businesses: businesses,
-      description: description,
-    );
-  }
-
-  Community fromJson(Map<String, Object?> json) {
-    return Community.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Community = _$CommunityTearOff();
 
 /// @nodoc
 mixin _$Community {
@@ -249,10 +200,10 @@ class _$CommunityCopyWithImpl<$Res> implements $CommunityCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
-  factory _$CommunityCopyWith(
-          _Community value, $Res Function(_Community) then) =
-      __$CommunityCopyWithImpl<$Res>;
+abstract class _$$_CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
+  factory _$$_CommunityCopyWith(
+          _$_Community value, $Res Function(_$_Community) then) =
+      __$$_CommunityCopyWithImpl<$Res>;
   @override
   $Res call(
       {String name,
@@ -279,13 +230,14 @@ abstract class _$CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$CommunityCopyWithImpl<$Res> extends _$CommunityCopyWithImpl<$Res>
-    implements _$CommunityCopyWith<$Res> {
-  __$CommunityCopyWithImpl(_Community _value, $Res Function(_Community) _then)
-      : super(_value, (v) => _then(v as _Community));
+class __$$_CommunityCopyWithImpl<$Res> extends _$CommunityCopyWithImpl<$Res>
+    implements _$$_CommunityCopyWith<$Res> {
+  __$$_CommunityCopyWithImpl(
+      _$_Community _value, $Res Function(_$_Community) _then)
+      : super(_value, (v) => _then(v as _$_Community));
 
   @override
-  _Community get _value => super._value as _Community;
+  _$_Community get _value => super._value as _$_Community;
 
   @override
   $Res call({
@@ -306,7 +258,7 @@ class __$CommunityCopyWithImpl<$Res> extends _$CommunityCopyWithImpl<$Res>
     Object? businesses = freezed,
     Object? description = freezed,
   }) {
-    return _then(_Community(
+    return _then(_$_Community(
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -400,20 +352,20 @@ class _$_Community with DiagnosticableTreeMixin implements _Community {
   factory _$_Community.fromJson(Map<String, dynamic> json) =>
       _$$_CommunityFromJson(json);
 
-  @JsonKey()
   @override
+  @JsonKey()
   final String name;
-  @JsonKey()
   @override
+  @JsonKey()
   final String address;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isMultiBridge;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isClosed;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isMember;
   @override
   @JsonKey(includeIfNull: false)
@@ -482,7 +434,7 @@ class _$_Community with DiagnosticableTreeMixin implements _Community {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Community &&
+            other is _$_Community &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.address, address) &&
             const DeepCollectionEquality()
@@ -510,6 +462,7 @@ class _$_Community with DiagnosticableTreeMixin implements _Community {
                 .equals(other.description, description));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -532,8 +485,8 @@ class _$_Community with DiagnosticableTreeMixin implements _Community {
 
   @JsonKey(ignore: true)
   @override
-  _$CommunityCopyWith<_Community> get copyWith =>
-      __$CommunityCopyWithImpl<_Community>(this, _$identity);
+  _$$_CommunityCopyWith<_$_Community> get copyWith =>
+      __$$_CommunityCopyWithImpl<_$_Community>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -543,72 +496,72 @@ class _$_Community with DiagnosticableTreeMixin implements _Community {
 
 abstract class _Community implements Community {
   factory _Community(
-      {String name,
-      String address,
-      bool isMultiBridge,
-      bool isClosed,
-      bool isMember,
-      @JsonKey(includeIfNull: false) String homeTokenAddress,
-      @JsonKey(includeIfNull: false) CommunityMetadata? metadata,
-      @JsonKey(includeIfNull: false) String? webUrl,
-      @JsonKey(includeIfNull: false) String? bridgeType,
-      @JsonKey(includeIfNull: false) String? bridgeDirection,
-      @JsonKey(includeIfNull: false) String? homeBridgeAddress,
-      @JsonKey(includeIfNull: false) String? foreignBridgeAddress,
-      @JsonKey(includeIfNull: false) String? foreignTokenAddress,
-      @JsonKey(includeIfNull: false) @PluginsConverter() Plugins? plugins,
-      @JsonKey(includeIfNull: false) List<Business>? businesses,
-      @JsonKey(includeIfNull: false) String? description}) = _$_Community;
+      {final String name,
+      final String address,
+      final bool isMultiBridge,
+      final bool isClosed,
+      final bool isMember,
+      @JsonKey(includeIfNull: false) final String homeTokenAddress,
+      @JsonKey(includeIfNull: false) final CommunityMetadata? metadata,
+      @JsonKey(includeIfNull: false) final String? webUrl,
+      @JsonKey(includeIfNull: false) final String? bridgeType,
+      @JsonKey(includeIfNull: false) final String? bridgeDirection,
+      @JsonKey(includeIfNull: false) final String? homeBridgeAddress,
+      @JsonKey(includeIfNull: false) final String? foreignBridgeAddress,
+      @JsonKey(includeIfNull: false) final String? foreignTokenAddress,
+      @JsonKey(includeIfNull: false) @PluginsConverter() final Plugins? plugins,
+      @JsonKey(includeIfNull: false) final List<Business>? businesses,
+      @JsonKey(includeIfNull: false) final String? description}) = _$_Community;
 
   factory _Community.fromJson(Map<String, dynamic> json) =
       _$_Community.fromJson;
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  String get address;
+  String get address => throw _privateConstructorUsedError;
   @override
-  bool get isMultiBridge;
+  bool get isMultiBridge => throw _privateConstructorUsedError;
   @override
-  bool get isClosed;
+  bool get isClosed => throw _privateConstructorUsedError;
   @override
-  bool get isMember;
-  @override
-  @JsonKey(includeIfNull: false)
-  String get homeTokenAddress;
+  bool get isMember => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  CommunityMetadata? get metadata;
+  String get homeTokenAddress => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  String? get webUrl;
+  CommunityMetadata? get metadata => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  String? get bridgeType;
+  String? get webUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  String? get bridgeDirection;
+  String? get bridgeType => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  String? get homeBridgeAddress;
+  String? get bridgeDirection => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  String? get foreignBridgeAddress;
+  String? get homeBridgeAddress => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  String? get foreignTokenAddress;
+  String? get foreignBridgeAddress => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(includeIfNull: false)
+  String? get foreignTokenAddress => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
   @PluginsConverter()
-  Plugins? get plugins;
+  Plugins? get plugins => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  List<Business>? get businesses;
+  List<Business>? get businesses => throw _privateConstructorUsedError;
   @override
   @JsonKey(includeIfNull: false)
-  String? get description;
+  String? get description => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$CommunityCopyWith<_Community> get copyWith =>
+  _$$_CommunityCopyWith<_$_Community> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -4,7 +4,7 @@ part 'swap.freezed.dart';
 part 'swap.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class TradeInfo with _$TradeInfo {
   @JsonSerializable()
   factory TradeInfo({
@@ -18,12 +18,11 @@ class TradeInfo with _$TradeInfo {
     required String priceImpact,
   }) = _TradeInfo;
 
-  factory TradeInfo.fromJson(Map<String, dynamic> json) =>
-      _$TradeInfoFromJson(json);
+  factory TradeInfo.fromJson(Map<String, dynamic> json) => _$TradeInfoFromJson(json);
 }
 
 @immutable
-@freezed
+@Freezed()
 class SwapCallParameters with _$SwapCallParameters {
   @JsonSerializable()
   factory SwapCallParameters({
@@ -33,12 +32,11 @@ class SwapCallParameters with _$SwapCallParameters {
     required Map<String, dynamic> rawTxn,
   }) = _SwapCallParameters;
 
-  factory SwapCallParameters.fromJson(Map<String, dynamic> json) =>
-      _$SwapCallParametersFromJson(json);
+  factory SwapCallParameters.fromJson(Map<String, dynamic> json) => _$SwapCallParametersFromJson(json);
 }
 
 @immutable
-@freezed
+@Freezed()
 class SwapRequestBody with _$SwapRequestBody {
   @JsonSerializable()
   factory SwapRequestBody({
@@ -48,6 +46,5 @@ class SwapRequestBody with _$SwapRequestBody {
     @Default('') String recipient,
   }) = _SwapRequestBody;
 
-  factory SwapRequestBody.fromJson(Map<String, dynamic> json) =>
-      _$SwapRequestBodyFromJson(json);
+  factory SwapRequestBody.fromJson(Map<String, dynamic> json) => _$SwapRequestBodyFromJson(json);
 }

@@ -12,38 +12,11 @@ part of 'productOptions.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 ProductOptions _$ProductOptionsFromJson(Map<String, dynamic> json) {
   return _ProductOptions.fromJson(json);
 }
-
-/// @nodoc
-class _$ProductOptionsTearOff {
-  const _$ProductOptionsTearOff();
-
-  _ProductOptions call(
-      {required int optionID,
-      required String name,
-      required String description,
-      required int price,
-      required bool isAvaliable}) {
-    return _ProductOptions(
-      optionID: optionID,
-      name: name,
-      description: description,
-      price: price,
-      isAvaliable: isAvaliable,
-    );
-  }
-
-  ProductOptions fromJson(Map<String, Object?> json) {
-    return ProductOptions.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ProductOptions = _$ProductOptionsTearOff();
 
 /// @nodoc
 mixin _$ProductOptions {
@@ -115,11 +88,11 @@ class _$ProductOptionsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ProductOptionsCopyWith<$Res>
+abstract class _$$_ProductOptionsCopyWith<$Res>
     implements $ProductOptionsCopyWith<$Res> {
-  factory _$ProductOptionsCopyWith(
-          _ProductOptions value, $Res Function(_ProductOptions) then) =
-      __$ProductOptionsCopyWithImpl<$Res>;
+  factory _$$_ProductOptionsCopyWith(
+          _$_ProductOptions value, $Res Function(_$_ProductOptions) then) =
+      __$$_ProductOptionsCopyWithImpl<$Res>;
   @override
   $Res call(
       {int optionID,
@@ -130,15 +103,15 @@ abstract class _$ProductOptionsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ProductOptionsCopyWithImpl<$Res>
+class __$$_ProductOptionsCopyWithImpl<$Res>
     extends _$ProductOptionsCopyWithImpl<$Res>
-    implements _$ProductOptionsCopyWith<$Res> {
-  __$ProductOptionsCopyWithImpl(
-      _ProductOptions _value, $Res Function(_ProductOptions) _then)
-      : super(_value, (v) => _then(v as _ProductOptions));
+    implements _$$_ProductOptionsCopyWith<$Res> {
+  __$$_ProductOptionsCopyWithImpl(
+      _$_ProductOptions _value, $Res Function(_$_ProductOptions) _then)
+      : super(_value, (v) => _then(v as _$_ProductOptions));
 
   @override
-  _ProductOptions get _value => super._value as _ProductOptions;
+  _$_ProductOptions get _value => super._value as _$_ProductOptions;
 
   @override
   $Res call({
@@ -148,7 +121,7 @@ class __$ProductOptionsCopyWithImpl<$Res>
     Object? price = freezed,
     Object? isAvaliable = freezed,
   }) {
-    return _then(_ProductOptions(
+    return _then(_$_ProductOptions(
       optionID: optionID == freezed
           ? _value.optionID
           : optionID // ignore: cast_nullable_to_non_nullable
@@ -208,7 +181,7 @@ class _$_ProductOptions extends _ProductOptions {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ProductOptions &&
+            other is _$_ProductOptions &&
             const DeepCollectionEquality().equals(other.optionID, optionID) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
@@ -218,6 +191,7 @@ class _$_ProductOptions extends _ProductOptions {
                 .equals(other.isAvaliable, isAvaliable));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -229,8 +203,8 @@ class _$_ProductOptions extends _ProductOptions {
 
   @JsonKey(ignore: true)
   @override
-  _$ProductOptionsCopyWith<_ProductOptions> get copyWith =>
-      __$ProductOptionsCopyWithImpl<_ProductOptions>(this, _$identity);
+  _$$_ProductOptionsCopyWith<_$_ProductOptions> get copyWith =>
+      __$$_ProductOptionsCopyWithImpl<_$_ProductOptions>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -240,28 +214,28 @@ class _$_ProductOptions extends _ProductOptions {
 
 abstract class _ProductOptions extends ProductOptions {
   factory _ProductOptions(
-      {required int optionID,
-      required String name,
-      required String description,
-      required int price,
-      required bool isAvaliable}) = _$_ProductOptions;
+      {required final int optionID,
+      required final String name,
+      required final String description,
+      required final int price,
+      required final bool isAvaliable}) = _$_ProductOptions;
   _ProductOptions._() : super._();
 
   factory _ProductOptions.fromJson(Map<String, dynamic> json) =
       _$_ProductOptions.fromJson;
 
   @override
-  int get optionID;
+  int get optionID => throw _privateConstructorUsedError;
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  String get description;
+  String get description => throw _privateConstructorUsedError;
   @override
-  int get price;
+  int get price => throw _privateConstructorUsedError;
   @override
-  bool get isAvaliable;
+  bool get isAvaliable => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ProductOptionsCopyWith<_ProductOptions> get copyWith =>
+  _$$_ProductOptionsCopyWith<_$_ProductOptions> get copyWith =>
       throw _privateConstructorUsedError;
 }

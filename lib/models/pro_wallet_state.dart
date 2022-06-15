@@ -5,26 +5,20 @@ import 'package:vegan_liverpool/models/tokens/token.dart';
 part 'pro_wallet_state.freezed.dart';
 part 'pro_wallet_state.g.dart';
 
-BigInt balanceFromJson(String? etherBalance) =>
-    etherBalance == null ? BigInt.zero : BigInt.parse(etherBalance);
+BigInt balanceFromJson(String? etherBalance) => etherBalance == null ? BigInt.zero : BigInt.parse(etherBalance);
 
 Map<String, Token> erc20TokensFromJson(Map<String, dynamic>? json) =>
-    json == null
-        ? Map<String, Token>()
-        : json.map(
-            (k, e) => MapEntry(k, Token.fromJson(e as Map<String, dynamic>)));
+    json == null ? Map<String, Token>() : json.map((k, e) => MapEntry(k, Token.fromJson(e as Map<String, dynamic>)));
 
 @immutable
-@freezed
+@Freezed()
 class ProWalletState with _$ProWalletState {
   const ProWalletState._();
 
   @JsonSerializable()
   factory ProWalletState({
     @Default(null) @JsonKey(fromJson: balanceFromJson) BigInt? etherBalance,
-    @JsonKey(fromJson: erc20TokensFromJson)
-    @Default({})
-        Map<String, Token>? erc20Tokens,
+    @JsonKey(fromJson: erc20TokensFromJson) @Default({}) Map<String, Token>? erc20Tokens,
     @JsonKey(ignore: true) @Default(false) bool isFetchTransferEvents,
     @JsonKey(ignore: true) @Default(false) bool isListenToTransferEvents,
     @JsonKey(ignore: true) @Default(false) bool isProcessingTokensJobs,
@@ -41,12 +35,10 @@ class ProWalletState with _$ProWalletState {
     );
   }
 
-  factory ProWalletState.fromJson(dynamic json) =>
-      _$ProWalletStateFromJson(json);
+  factory ProWalletState.fromJson(dynamic json) => _$ProWalletStateFromJson(json);
 }
 
-class ProWalletStateConverter
-    implements JsonConverter<ProWalletState, Map<String, dynamic>?> {
+class ProWalletStateConverter implements JsonConverter<ProWalletState, Map<String, dynamic>?> {
   const ProWalletStateConverter();
 
   @override

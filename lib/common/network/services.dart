@@ -2,7 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:wallet_core/wallet_core.dart' show API, Graph, StudioApi, WalletApi;
+import 'package:wallet_core/wallet_core.dart' show Graph, StudioApi, WalletApi;
 
 @module
 abstract class ServicesModule {

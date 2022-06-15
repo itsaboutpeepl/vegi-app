@@ -17,12 +17,6 @@ class VeganSliverAppBar extends StatefulWidget {
 
 class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
   String _dropdownValue = "L1";
-  bool _isDelivery = true;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +54,13 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         Row(
                           children: [
                             Text(
-                              _isDelivery ? "Delivering To " : "Collection",
+                              viewmodel.isDelivery ? "Delivering To " : "Collection",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            _isDelivery
+                            viewmodel.isDelivery
                                 ? Padding(
                                     padding: const EdgeInsets.only(bottom: 1.5),
                                     child: DropdownButton<String>(
@@ -106,12 +100,10 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _isDelivery = !_isDelivery;
-                            });
+                            viewmodel.setIsDelivery(!viewmodel.isDelivery);
                           },
                           child: Text(
-                            _isDelivery ? "Switch to Collection" : "Switch to Delivery",
+                            viewmodel.isDelivery ? "Switch to Collection" : "Switch to Delivery",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -129,22 +121,39 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         onTap: () {
                           Scaffold.of(context).openDrawer();
                         },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: CachedNetworkImage(
-                            width: 40,
-                            height: 40,
-                            imageUrl: viewmodel.avatarUrl,
-                            placeholder: (context, url) => CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => CircleAvatar(
-                              backgroundImage: AssetImage('assets/images/anom.png'),
-                              radius: 30,
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: CachedNetworkImage(
+                                width: 40,
+                                height: 40,
+                                imageUrl: viewmodel.avatarUrl,
+                                placeholder: (context, url) => CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => CircleAvatar(
+                                  backgroundImage: AssetImage('assets/images/anom.png'),
+                                  radius: 30,
+                                ),
+                                imageBuilder: (context, imageProvider) => Image(
+                                  image: imageProvider,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                             ),
-                            imageBuilder: (context, imageProvider) => Image(
-                              image: imageProvider,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
+                            viewmodel.listOfScheduledOrders.length > 0
+                                ? Positioned(
+                                    right: 0,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: themeAccent500,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      width: 10,
+                                      height: 10,
+                                    ),
+                                  )
+                                : SizedBox.shrink()
+                          ],
                         ),
                       ),
                     ),

@@ -11,7 +11,7 @@ import 'package:vegan_liverpool/utils/format.dart';
 part 'wallet_action.freezed.dart';
 part 'wallet_action.g.dart';
 
-@freezed
+@Freezed()
 class WalletAction with _$WalletAction implements Comparable<WalletAction> {
   const WalletAction._();
 
@@ -66,11 +66,9 @@ class WalletAction with _$WalletAction implements Comparable<WalletAction> {
         priceInfo,
       ),
       swap: (value) {
-        final bool hasPriceInfo =
-            ![null, '', '0', 0, 'NaN'].contains(priceInfo?.quote);
+        final bool hasPriceInfo = ![null, '', '0', 0, 'NaN'].contains(priceInfo?.quote);
         if (hasPriceInfo) {
-          Decimal temp = Decimal.parse(value.tradeInfo!.outputAmount) *
-              Decimal.parse(priceInfo!.quote);
+          Decimal temp = Decimal.parse(value.tradeInfo!.outputAmount) * Decimal.parse(priceInfo!.quote);
           if (Formatter.isSmallThan(Decimal.parse(temp.toString()))) {
             return '\$' + display6(temp.toDouble());
           } else {
@@ -251,9 +249,8 @@ class WalletAction with _$WalletAction implements Comparable<WalletAction> {
         }
       },
       swap: (value) {
-        final String text = value.tradeInfo!.inputToken +
-            I10n.of(context).for_text +
-            ' ${value.tradeInfo!.outputToken}';
+        final String text =
+            value.tradeInfo!.inputToken + I10n.of(context).for_text + ' ${value.tradeInfo!.outputToken}';
         return text;
       },
     );

@@ -6,17 +6,17 @@ import 'package:vegan_liverpool/redux/actions/demoData.dart';
 part 'menu_item_state.freezed.dart';
 part 'menu_item_state.g.dart';
 
-@freezed
+@Freezed()
 class MenuItemState with _$MenuItemState {
   const MenuItemState._();
 
   @JsonSerializable()
   factory MenuItemState({
-    required RestaurantMenuItem menuItem,
-    required int totalPrice,
-    required int itemReward,
-    required Map<int, ProductOptions> selectedProductOptionsForCategory,
-    required int quantity,
+    @JsonKey(ignore: true) @Default(null) RestaurantMenuItem? menuItem,
+    @JsonKey(ignore: true) @Default(0) int totalPrice,
+    @JsonKey(ignore: true) @Default(0) int itemReward,
+    @JsonKey(ignore: true) @Default({}) Map<int, ProductOptions> selectedProductOptionsForCategory,
+    @JsonKey(ignore: true) @Default(0) int quantity,
   }) = _MenuItemState;
 
   factory MenuItemState.initial() => MenuItemState(
@@ -34,7 +34,8 @@ class MenuItemStateConverter implements JsonConverter<MenuItemState, Map<String,
   const MenuItemStateConverter();
 
   @override
-  MenuItemState fromJson(Map<String, dynamic>? json) => MenuItemState.initial();
+  MenuItemState fromJson(Map<String, dynamic>? json) =>
+      json != null ? MenuItemState.fromJson(json) : MenuItemState.initial();
 
   @override
   Map<String, dynamic> toJson(MenuItemState instance) => instance.toJson();

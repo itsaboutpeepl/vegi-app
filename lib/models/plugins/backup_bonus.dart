@@ -6,7 +6,7 @@ part 'backup_bonus.freezed.dart';
 part 'backup_bonus.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class BackupBonusPlugin with _$BackupBonusPlugin {
   @With<Plugin>()
   @JsonSerializable()
@@ -17,12 +17,10 @@ class BackupBonusPlugin with _$BackupBonusPlugin {
     @Default(false) bool isActive,
   }) = _BackupBonusPlugin;
 
-  factory BackupBonusPlugin.fromJson(dynamic json) =>
-      _$BackupBonusPluginFromJson(json);
+  factory BackupBonusPlugin.fromJson(dynamic json) => _$BackupBonusPluginFromJson(json);
 }
 
-class BackupBonusPluginConverter
-    implements JsonConverter<BackupBonusPlugin?, Map<String, dynamic>?> {
+class BackupBonusPluginConverter implements JsonConverter<BackupBonusPlugin?, Map<String, dynamic>?> {
   const BackupBonusPluginConverter();
 
   @override
@@ -32,15 +30,12 @@ class BackupBonusPluginConverter
     } else {
       return BackupBonusPlugin(
         name: json['name'],
-        amount: json.containsKey('backupInfo')
-            ? json['backupInfo']['amount']
-            : json['amount'],
+        amount: json.containsKey('backupInfo') ? json['backupInfo']['amount'] : json['amount'],
         isActive: json["isActive"] ?? false,
       );
     }
   }
 
   @override
-  Map<String, dynamic>? toJson(BackupBonusPlugin? instance) =>
-      instance?.toJson();
+  Map<String, dynamic>? toJson(BackupBonusPlugin? instance) => instance?.toJson();
 }

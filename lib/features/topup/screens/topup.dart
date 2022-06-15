@@ -1,19 +1,13 @@
-import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/numeric_keyboard.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
-import 'package:vegan_liverpool/features/topup/dialogs/card_failed.dart';
-import 'package:vegan_liverpool/features/topup/dialogs/minting_dialog.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/topup.dart';
-import 'package:vegan_liverpool/services.dart';
-import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/stripeHandler.dart';
 
 //TODO: add save card functionality

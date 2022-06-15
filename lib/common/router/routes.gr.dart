@@ -11,26 +11,26 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i13;
-import 'package:contacts_service/contacts_service.dart' as _i42;
-import 'package:flutter/material.dart' as _i38;
+import 'package:contacts_service/contacts_service.dart' as _i45;
+import 'package:flutter/material.dart' as _i40;
 
-import '../../features/account/screens/account_screen.dart' as _i31;
-import '../../features/account/screens/done_backup_screen.dart' as _i34;
+import '../../features/account/screens/account_screen.dart' as _i33;
+import '../../features/account/screens/done_backup_screen.dart' as _i36;
 import '../../features/account/screens/profile.dart' as _i19;
-import '../../features/account/screens/protect_your_wallet.dart' as _i36;
-import '../../features/account/screens/settings.dart' as _i35;
-import '../../features/account/screens/show_mnemonic.dart' as _i32;
-import '../../features/account/screens/social_screen.dart' as _i37;
-import '../../features/account/screens/verify_mnemonic.dart' as _i33;
-import '../../features/buy/screens/business.dart' as _i30;
-import '../../features/buy/screens/buy.dart' as _i29;
-import '../../features/contacts/screens/contacts_list.dart' as _i25;
-import '../../features/contacts/screens/send_amount.dart' as _i26;
-import '../../features/contacts/screens/send_review.dart' as _i27;
-import '../../features/contacts/screens/send_success.dart' as _i28;
-import '../../features/contacts/send_amount_arguments.dart' as _i43;
-import '../../features/home/screens/action_details.dart' as _i23;
-import '../../features/home/screens/home.dart' as _i22;
+import '../../features/account/screens/protect_your_wallet.dart' as _i38;
+import '../../features/account/screens/settings.dart' as _i37;
+import '../../features/account/screens/show_mnemonic.dart' as _i34;
+import '../../features/account/screens/social_screen.dart' as _i39;
+import '../../features/account/screens/verify_mnemonic.dart' as _i35;
+import '../../features/buy/screens/business.dart' as _i32;
+import '../../features/buy/screens/buy.dart' as _i31;
+import '../../features/contacts/screens/contacts_list.dart' as _i27;
+import '../../features/contacts/screens/send_amount.dart' as _i28;
+import '../../features/contacts/screens/send_review.dart' as _i29;
+import '../../features/contacts/screens/send_success.dart' as _i30;
+import '../../features/contacts/send_amount_arguments.dart' as _i46;
+import '../../features/home/screens/action_details.dart' as _i25;
+import '../../features/home/screens/home.dart' as _i24;
 import '../../features/onboard/screens/restore_wallet_screen.dart' as _i6;
 import '../../features/onboard/screens/security_screen.dart' as _i2;
 import '../../features/onboard/screens/show_user_mnemonic.dart' as _i4;
@@ -44,26 +44,29 @@ import '../../features/screens/pincode_screen.dart' as _i3;
 import '../../features/screens/splash_screen.dart' as _i1;
 import '../../features/screens/webview_screen.dart' as _i11;
 import '../../features/topup/screens/topup.dart' as _i20;
-import '../../features/topup/screens/topup_explained.dart' as _i24;
+import '../../features/topup/screens/topup_explained.dart' as _i26;
+import '../../features/veganHome/screens/allOrdersPage.dart' as _i21;
 import '../../features/veganHome/screens/checkoutScreen.dart' as _i17;
-import '../../features/veganHome/screens/myOrdersPage.dart' as _i21;
 import '../../features/veganHome/screens/orderConfirmed.dart' as _i18;
+import '../../features/veganHome/screens/preparingOrderScreen.dart' as _i23;
 import '../../features/veganHome/screens/restaurantMenuScreen.dart' as _i15;
+import '../../features/veganHome/screens/scheduledOrdersPage.dart' as _i22;
 import '../../features/veganHome/screens/toteScreen.dart' as _i16;
 import '../../features/veganHome/screens/veganHome.dart' as _i14;
-import '../../models/actions/wallet_action.dart' as _i41;
-import '../../models/community/business.dart' as _i44;
-import '../../models/restaurant/restaurantMenuItem.dart' as _i40;
-import '../../models/tokens/token.dart' as _i45;
-import 'route_guards.dart' as _i39;
+import '../../models/actions/wallet_action.dart' as _i44;
+import '../../models/community/business.dart' as _i47;
+import '../../models/restaurant/orderDetails.dart' as _i43;
+import '../../models/restaurant/restaurantMenuItem.dart' as _i42;
+import '../../models/tokens/token.dart' as _i48;
+import 'route_guards.dart' as _i41;
 
 class RootRouter extends _i13.RootStackRouter {
   RootRouter(
-      {_i38.GlobalKey<_i38.NavigatorState>? navigatorKey,
+      {_i40.GlobalKey<_i40.NavigatorState>? navigatorKey,
       required this.authGuard})
       : super(navigatorKey);
 
-  final _i39.AuthGuard authGuard;
+  final _i41.AuthGuard authGuard;
 
   @override
   final Map<String, _i13.PageFactory> pagesMap = {
@@ -199,19 +202,33 @@ class RootRouter extends _i13.RootStackRouter {
       return _i13.MaterialPageX<dynamic>(
           routeData: routeData, child: _i20.TopupScreen());
     },
-    MyOrdersPage.name: (routeData) {
+    AllOrdersPage.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i21.MyOrdersPage());
+          routeData: routeData, child: const _i21.AllOrdersPage());
+    },
+    ScheduledOrdersPage.name: (routeData) {
+      return _i13.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i22.ScheduledOrdersPage());
+    },
+    PreparingOrderPage.name: (routeData) {
+      final args = routeData.argsAs<PreparingOrderPageArgs>();
+      return _i13.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i23.PreparingOrderPage(
+              key: args.key, orderDetails: args.orderDetails),
+          transitionsBuilder: _i13.TransitionsBuilders.slideBottom,
+          opaque: true,
+          barrierDismissible: false);
     },
     HomeScreen.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i22.HomeScreen());
+          routeData: routeData, child: const _i24.HomeScreen());
     },
     ActionDetailsScreen.name: (routeData) {
       final args = routeData.argsAs<ActionDetailsScreenArgs>();
       return _i13.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i23.ActionDetailsScreen(
+          child: _i25.ActionDetailsScreen(
               action: args.action,
               image: args.image,
               displayName: args.displayName,
@@ -227,71 +244,71 @@ class RootRouter extends _i13.RootStackRouter {
       final args = routeData.argsAs<TopupExplainedArgs>(
           orElse: () => const TopupExplainedArgs());
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i24.TopupExplained(key: args.key));
+          routeData: routeData, child: _i26.TopupExplained(key: args.key));
     },
     ContactsList.name: (routeData) {
       final args = routeData.argsAs<ContactsListArgs>(
           orElse: () => const ContactsListArgs());
       return _i13.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i25.ContactsList(pageArgs: args.pageArgs));
+          child: _i27.ContactsList(pageArgs: args.pageArgs));
     },
     SendAmountScreen.name: (routeData) {
       final args = routeData.argsAs<SendAmountScreenArgs>();
       return _i13.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i26.SendAmountScreen(pageArgs: args.pageArgs));
+          child: _i28.SendAmountScreen(pageArgs: args.pageArgs));
     },
     SendReviewScreen.name: (routeData) {
       final args = routeData.argsAs<SendReviewScreenArgs>();
       return _i13.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i27.SendReviewScreen(pageArgs: args.pageArgs));
+          child: _i29.SendReviewScreen(pageArgs: args.pageArgs));
     },
     SendSuccessScreen.name: (routeData) {
       final args = routeData.argsAs<SendSuccessScreenArgs>();
       return _i13.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i28.SendSuccessScreen(pageArgs: args.pageArgs));
+          child: _i30.SendSuccessScreen(pageArgs: args.pageArgs));
     },
     BuyScreen.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i29.BuyScreen());
+          routeData: routeData, child: _i31.BuyScreen());
     },
     BusinessScreen.name: (routeData) {
       final args = routeData.argsAs<BusinessScreenArgs>();
       return _i13.MaterialPageX<dynamic>(
           routeData: routeData,
           child:
-              _i30.BusinessScreen(business: args.business, token: args.token));
+              _i32.BusinessScreen(business: args.business, token: args.token));
     },
     AccountScreen.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i31.AccountScreen());
+          routeData: routeData, child: _i33.AccountScreen());
     },
     ShowMnemonic.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i32.ShowMnemonic());
+          routeData: routeData, child: _i34.ShowMnemonic());
     },
     VerifyMnemonic.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i33.VerifyMnemonic());
+          routeData: routeData, child: _i35.VerifyMnemonic());
     },
     DoneBackup.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i34.DoneBackup());
+          routeData: routeData, child: _i36.DoneBackup());
     },
     SettingsScreen.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i35.SettingsScreen());
+          routeData: routeData, child: _i37.SettingsScreen());
     },
     ProtectYourWallet.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i36.ProtectYourWallet());
+          routeData: routeData, child: _i38.ProtectYourWallet());
     },
     SocialScreen.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i37.SocialScreen());
+          routeData: routeData, child: _i39.SocialScreen());
     }
   };
 
@@ -347,8 +364,16 @@ class RootRouter extends _i13.RootStackRouter {
                     path: 'topup-screen',
                     parent: VeganHomeAltTab.name,
                     guards: [authGuard]),
-                _i13.RouteConfig(MyOrdersPage.name,
-                    path: 'my-orders-page',
+                _i13.RouteConfig(AllOrdersPage.name,
+                    path: 'all-orders-page',
+                    parent: VeganHomeAltTab.name,
+                    guards: [authGuard]),
+                _i13.RouteConfig(ScheduledOrdersPage.name,
+                    path: 'scheduled-orders-page',
+                    parent: VeganHomeAltTab.name,
+                    guards: [authGuard]),
+                _i13.RouteConfig(PreparingOrderPage.name,
+                    path: 'preparing-order-page',
                     parent: VeganHomeAltTab.name,
                     guards: [authGuard])
               ]),
@@ -459,7 +484,7 @@ class RootRouter extends _i13.RootStackRouter {
 /// generated route for
 /// [_i1.SplashScreen]
 class SplashScreen extends _i13.PageRouteInfo<SplashScreenArgs> {
-  SplashScreen({_i38.Key? key, void Function(bool)? onLoginResult})
+  SplashScreen({_i40.Key? key, void Function(bool)? onLoginResult})
       : super(SplashScreen.name,
             path: '/',
             args: SplashScreenArgs(key: key, onLoginResult: onLoginResult));
@@ -470,7 +495,7 @@ class SplashScreen extends _i13.PageRouteInfo<SplashScreenArgs> {
 class SplashScreenArgs {
   const SplashScreenArgs({this.key, this.onLoginResult});
 
-  final _i38.Key? key;
+  final _i40.Key? key;
 
   final void Function(bool)? onLoginResult;
 
@@ -606,7 +631,7 @@ class WebviewArgs {
 /// generated route for
 /// [_i12.MainScreen]
 class MainScreen extends _i13.PageRouteInfo<MainScreenArgs> {
-  MainScreen({_i38.Key? key, List<_i13.PageRouteInfo>? children})
+  MainScreen({_i40.Key? key, List<_i13.PageRouteInfo>? children})
       : super(MainScreen.name,
             path: '/main-screen',
             args: MainScreenArgs(key: key),
@@ -618,7 +643,7 @@ class MainScreen extends _i13.PageRouteInfo<MainScreenArgs> {
 class MainScreenArgs {
   const MainScreenArgs({this.key});
 
-  final _i38.Key? key;
+  final _i40.Key? key;
 
   @override
   String toString() {
@@ -694,7 +719,7 @@ class VeganHomeScreenAlt extends _i13.PageRouteInfo<void> {
 class RestaurantMenuScreen
     extends _i13.PageRouteInfo<RestaurantMenuScreenArgs> {
   RestaurantMenuScreen(
-      {_i38.Key? key, required List<_i40.RestaurantMenuItem> menuList})
+      {_i40.Key? key, required List<_i42.RestaurantMenuItem> menuList})
       : super(RestaurantMenuScreen.name,
             path: 'restaurant-menu-screen',
             args: RestaurantMenuScreenArgs(key: key, menuList: menuList));
@@ -705,9 +730,9 @@ class RestaurantMenuScreen
 class RestaurantMenuScreenArgs {
   const RestaurantMenuScreenArgs({this.key, required this.menuList});
 
-  final _i38.Key? key;
+  final _i40.Key? key;
 
-  final List<_i40.RestaurantMenuItem> menuList;
+  final List<_i42.RestaurantMenuItem> menuList;
 
   @override
   String toString() {
@@ -743,7 +768,7 @@ class OrderConfirmedScreen extends _i13.PageRouteInfo<void> {
 /// generated route for
 /// [_i19.ProfileScreen]
 class ProfileScreen extends _i13.PageRouteInfo<ProfileScreenArgs> {
-  ProfileScreen({_i38.Key? key})
+  ProfileScreen({_i40.Key? key})
       : super(ProfileScreen.name,
             path: 'profile-screen', args: ProfileScreenArgs(key: key));
 
@@ -753,7 +778,7 @@ class ProfileScreen extends _i13.PageRouteInfo<ProfileScreenArgs> {
 class ProfileScreenArgs {
   const ProfileScreenArgs({this.key});
 
-  final _i38.Key? key;
+  final _i40.Key? key;
 
   @override
   String toString() {
@@ -770,15 +795,48 @@ class TopUpScreen extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.MyOrdersPage]
-class MyOrdersPage extends _i13.PageRouteInfo<void> {
-  const MyOrdersPage() : super(MyOrdersPage.name, path: 'my-orders-page');
+/// [_i21.AllOrdersPage]
+class AllOrdersPage extends _i13.PageRouteInfo<void> {
+  const AllOrdersPage() : super(AllOrdersPage.name, path: 'all-orders-page');
 
-  static const String name = 'MyOrdersPage';
+  static const String name = 'AllOrdersPage';
 }
 
 /// generated route for
-/// [_i22.HomeScreen]
+/// [_i22.ScheduledOrdersPage]
+class ScheduledOrdersPage extends _i13.PageRouteInfo<void> {
+  const ScheduledOrdersPage()
+      : super(ScheduledOrdersPage.name, path: 'scheduled-orders-page');
+
+  static const String name = 'ScheduledOrdersPage';
+}
+
+/// generated route for
+/// [_i23.PreparingOrderPage]
+class PreparingOrderPage extends _i13.PageRouteInfo<PreparingOrderPageArgs> {
+  PreparingOrderPage({_i40.Key? key, required _i43.OrderDetails orderDetails})
+      : super(PreparingOrderPage.name,
+            path: 'preparing-order-page',
+            args: PreparingOrderPageArgs(key: key, orderDetails: orderDetails));
+
+  static const String name = 'PreparingOrderPage';
+}
+
+class PreparingOrderPageArgs {
+  const PreparingOrderPageArgs({this.key, required this.orderDetails});
+
+  final _i40.Key? key;
+
+  final _i43.OrderDetails orderDetails;
+
+  @override
+  String toString() {
+    return 'PreparingOrderPageArgs{key: $key, orderDetails: $orderDetails}';
+  }
+}
+
+/// generated route for
+/// [_i24.HomeScreen]
 class HomeScreen extends _i13.PageRouteInfo<void> {
   const HomeScreen() : super(HomeScreen.name, path: '');
 
@@ -786,15 +844,15 @@ class HomeScreen extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i23.ActionDetailsScreen]
+/// [_i25.ActionDetailsScreen]
 class ActionDetailsScreen extends _i13.PageRouteInfo<ActionDetailsScreenArgs> {
   ActionDetailsScreen(
-      {required _i41.WalletAction action,
-      _i38.ImageProvider<Object>? image,
+      {required _i44.WalletAction action,
+      _i40.ImageProvider<Object>? image,
       required String displayName,
       String? accountAddress,
       required String symbol,
-      _i42.Contact? contact})
+      _i45.Contact? contact})
       : super(ActionDetailsScreen.name,
             path: 'action-details-screen',
             args: ActionDetailsScreenArgs(
@@ -817,9 +875,9 @@ class ActionDetailsScreenArgs {
       required this.symbol,
       this.contact});
 
-  final _i41.WalletAction action;
+  final _i44.WalletAction action;
 
-  final _i38.ImageProvider<Object>? image;
+  final _i40.ImageProvider<Object>? image;
 
   final String displayName;
 
@@ -827,7 +885,7 @@ class ActionDetailsScreenArgs {
 
   final String symbol;
 
-  final _i42.Contact? contact;
+  final _i45.Contact? contact;
 
   @override
   String toString() {
@@ -844,9 +902,9 @@ class TopupScreen extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i24.TopupExplained]
+/// [_i26.TopupExplained]
 class TopupExplained extends _i13.PageRouteInfo<TopupExplainedArgs> {
-  TopupExplained({_i38.Key? key})
+  TopupExplained({_i40.Key? key})
       : super(TopupExplained.name,
             path: 'topup-explained', args: TopupExplainedArgs(key: key));
 
@@ -856,7 +914,7 @@ class TopupExplained extends _i13.PageRouteInfo<TopupExplainedArgs> {
 class TopupExplainedArgs {
   const TopupExplainedArgs({this.key});
 
-  final _i38.Key? key;
+  final _i40.Key? key;
 
   @override
   String toString() {
@@ -865,9 +923,9 @@ class TopupExplainedArgs {
 }
 
 /// generated route for
-/// [_i25.ContactsList]
+/// [_i27.ContactsList]
 class ContactsList extends _i13.PageRouteInfo<ContactsListArgs> {
-  ContactsList({_i43.SendFlowArguments? pageArgs})
+  ContactsList({_i46.SendFlowArguments? pageArgs})
       : super(ContactsList.name,
             path: '', args: ContactsListArgs(pageArgs: pageArgs));
 
@@ -877,7 +935,7 @@ class ContactsList extends _i13.PageRouteInfo<ContactsListArgs> {
 class ContactsListArgs {
   const ContactsListArgs({this.pageArgs});
 
-  final _i43.SendFlowArguments? pageArgs;
+  final _i46.SendFlowArguments? pageArgs;
 
   @override
   String toString() {
@@ -886,9 +944,9 @@ class ContactsListArgs {
 }
 
 /// generated route for
-/// [_i26.SendAmountScreen]
+/// [_i28.SendAmountScreen]
 class SendAmountScreen extends _i13.PageRouteInfo<SendAmountScreenArgs> {
-  SendAmountScreen({required _i43.SendFlowArguments pageArgs})
+  SendAmountScreen({required _i46.SendFlowArguments pageArgs})
       : super(SendAmountScreen.name,
             path: 'send-amount',
             args: SendAmountScreenArgs(pageArgs: pageArgs));
@@ -899,7 +957,7 @@ class SendAmountScreen extends _i13.PageRouteInfo<SendAmountScreenArgs> {
 class SendAmountScreenArgs {
   const SendAmountScreenArgs({required this.pageArgs});
 
-  final _i43.SendFlowArguments pageArgs;
+  final _i46.SendFlowArguments pageArgs;
 
   @override
   String toString() {
@@ -908,9 +966,9 @@ class SendAmountScreenArgs {
 }
 
 /// generated route for
-/// [_i27.SendReviewScreen]
+/// [_i29.SendReviewScreen]
 class SendReviewScreen extends _i13.PageRouteInfo<SendReviewScreenArgs> {
-  SendReviewScreen({required _i43.SendFlowArguments pageArgs})
+  SendReviewScreen({required _i46.SendFlowArguments pageArgs})
       : super(SendReviewScreen.name,
             path: 'send-review',
             args: SendReviewScreenArgs(pageArgs: pageArgs));
@@ -921,7 +979,7 @@ class SendReviewScreen extends _i13.PageRouteInfo<SendReviewScreenArgs> {
 class SendReviewScreenArgs {
   const SendReviewScreenArgs({required this.pageArgs});
 
-  final _i43.SendFlowArguments pageArgs;
+  final _i46.SendFlowArguments pageArgs;
 
   @override
   String toString() {
@@ -930,9 +988,9 @@ class SendReviewScreenArgs {
 }
 
 /// generated route for
-/// [_i28.SendSuccessScreen]
+/// [_i30.SendSuccessScreen]
 class SendSuccessScreen extends _i13.PageRouteInfo<SendSuccessScreenArgs> {
-  SendSuccessScreen({required _i43.SendFlowArguments pageArgs})
+  SendSuccessScreen({required _i46.SendFlowArguments pageArgs})
       : super(SendSuccessScreen.name,
             path: 'send-success',
             args: SendSuccessScreenArgs(pageArgs: pageArgs));
@@ -943,7 +1001,7 @@ class SendSuccessScreen extends _i13.PageRouteInfo<SendSuccessScreenArgs> {
 class SendSuccessScreenArgs {
   const SendSuccessScreenArgs({required this.pageArgs});
 
-  final _i43.SendFlowArguments pageArgs;
+  final _i46.SendFlowArguments pageArgs;
 
   @override
   String toString() {
@@ -952,7 +1010,7 @@ class SendSuccessScreenArgs {
 }
 
 /// generated route for
-/// [_i29.BuyScreen]
+/// [_i31.BuyScreen]
 class BuyScreen extends _i13.PageRouteInfo<void> {
   const BuyScreen() : super(BuyScreen.name, path: '');
 
@@ -960,9 +1018,9 @@ class BuyScreen extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i30.BusinessScreen]
+/// [_i32.BusinessScreen]
 class BusinessScreen extends _i13.PageRouteInfo<BusinessScreenArgs> {
-  BusinessScreen({required _i44.Business business, required _i45.Token token})
+  BusinessScreen({required _i47.Business business, required _i48.Token token})
       : super(BusinessScreen.name,
             path: 'business-screen',
             args: BusinessScreenArgs(business: business, token: token));
@@ -973,9 +1031,9 @@ class BusinessScreen extends _i13.PageRouteInfo<BusinessScreenArgs> {
 class BusinessScreenArgs {
   const BusinessScreenArgs({required this.business, required this.token});
 
-  final _i44.Business business;
+  final _i47.Business business;
 
-  final _i45.Token token;
+  final _i48.Token token;
 
   @override
   String toString() {
@@ -984,7 +1042,7 @@ class BusinessScreenArgs {
 }
 
 /// generated route for
-/// [_i31.AccountScreen]
+/// [_i33.AccountScreen]
 class AccountScreen extends _i13.PageRouteInfo<void> {
   const AccountScreen() : super(AccountScreen.name, path: '');
 
@@ -992,7 +1050,7 @@ class AccountScreen extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i32.ShowMnemonic]
+/// [_i34.ShowMnemonic]
 class ShowMnemonic extends _i13.PageRouteInfo<void> {
   const ShowMnemonic() : super(ShowMnemonic.name, path: 'show-mnemonic');
 
@@ -1000,7 +1058,7 @@ class ShowMnemonic extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i33.VerifyMnemonic]
+/// [_i35.VerifyMnemonic]
 class VerifyMnemonic extends _i13.PageRouteInfo<void> {
   const VerifyMnemonic() : super(VerifyMnemonic.name, path: 'verify-mnemonic');
 
@@ -1008,7 +1066,7 @@ class VerifyMnemonic extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i34.DoneBackup]
+/// [_i36.DoneBackup]
 class DoneBackup extends _i13.PageRouteInfo<void> {
   const DoneBackup() : super(DoneBackup.name, path: 'done-backup');
 
@@ -1016,7 +1074,7 @@ class DoneBackup extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i35.SettingsScreen]
+/// [_i37.SettingsScreen]
 class SettingsScreen extends _i13.PageRouteInfo<void> {
   const SettingsScreen() : super(SettingsScreen.name, path: 'settings-screen');
 
@@ -1024,7 +1082,7 @@ class SettingsScreen extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i36.ProtectYourWallet]
+/// [_i38.ProtectYourWallet]
 class ProtectYourWallet extends _i13.PageRouteInfo<void> {
   const ProtectYourWallet()
       : super(ProtectYourWallet.name, path: 'protect-your-wallet');
@@ -1033,7 +1091,7 @@ class ProtectYourWallet extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i37.SocialScreen]
+/// [_i39.SocialScreen]
 class SocialScreen extends _i13.PageRouteInfo<void> {
   const SocialScreen() : super(SocialScreen.name, path: 'social-screen');
 

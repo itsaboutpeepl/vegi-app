@@ -15,7 +15,7 @@ class PickUpCardViewModel extends Equatable {
   static PickUpCardViewModel fromStore(Store<AppState> store) {
     return PickUpCardViewModel(
       restaurantName: store.state.cartState.restaurantName,
-      deliveryAddress: store.state.cartState.restaurantAddress,
+      deliveryAddress: store.state.cartState.restaurantAddress!,
     );
   }
 

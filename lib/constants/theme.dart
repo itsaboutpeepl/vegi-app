@@ -5,9 +5,7 @@ final FlexColorScheme flexColorSchemeLight = FlexColorScheme.light(
   fontFamily: 'Europa',
   colors: FlexSchemeColor.from(
     secondary: Colors.grey[800],
-    secondaryVariant: Colors.grey[700]!,
     primary: themeShade600, //makes 'Feed' text white
-    primaryVariant: themeShade400,
     appBarColor: themeShade200,
   ),
 );
@@ -73,10 +71,4 @@ const List<Color> themeColors = [
   themeShade1200,
 ];
 
-final List<Color> colorToWhiteGradient = [
-  themeShade400,
-  themeShade300,
-  themeShade300,
-  themeShade200,
-  Colors.white
-];
+final List<Color> colorToWhiteGradient = [themeShade400, themeShade300, themeShade300, themeShade200, Colors.white];

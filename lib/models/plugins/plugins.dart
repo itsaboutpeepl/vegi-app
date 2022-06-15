@@ -12,39 +12,19 @@ part 'plugins.freezed.dart';
 part 'plugins.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class Plugins with _$Plugins {
   const Plugins._();
 
   @JsonSerializable()
   factory Plugins({
-    @Default(null)
-    @JsonKey(includeIfNull: false)
-    @RampInstantPluginConverter()
-        RampInstantPlugin? rampInstant,
-    @Default(null)
-    @JsonKey(includeIfNull: false)
-    @MoonpayPluginConverter()
-        MoonpayPlugin? moonpay,
-    @Default(null)
-    @JsonKey(includeIfNull: false)
-    @TransakPluginConverter()
-        TransakPlugin? transak,
-    @Default(null)
-    @JsonKey(includeIfNull: false)
-        WalletBannerPlugin? walletBanner,
-    @Default(null)
-    @JsonKey(includeIfNull: false)
-    @JoinBonusPluginConverter()
-        JoinBonusPlugin? joinBonus,
-    @Default(null)
-    @JsonKey(includeIfNull: false)
-    @BackupBonusPluginConverter()
-        BackupBonusPlugin? backupBonus,
-    @Default(null)
-    @JsonKey(includeIfNull: false)
-    @InviteBonusPluginConverter()
-        InviteBonusPlugin? inviteBonus,
+    @Default(null) @JsonKey(includeIfNull: false) @RampInstantPluginConverter() RampInstantPlugin? rampInstant,
+    @Default(null) @JsonKey(includeIfNull: false) @MoonpayPluginConverter() MoonpayPlugin? moonpay,
+    @Default(null) @JsonKey(includeIfNull: false) @TransakPluginConverter() TransakPlugin? transak,
+    @Default(null) @JsonKey(includeIfNull: false) WalletBannerPlugin? walletBanner,
+    @Default(null) @JsonKey(includeIfNull: false) @JoinBonusPluginConverter() JoinBonusPlugin? joinBonus,
+    @Default(null) @JsonKey(includeIfNull: false) @BackupBonusPluginConverter() BackupBonusPlugin? backupBonus,
+    @Default(null) @JsonKey(includeIfNull: false) @InviteBonusPluginConverter() InviteBonusPlugin? inviteBonus,
   }) = _Plugins;
 
   factory Plugins.fromJson(dynamic json) => _$PluginsFromJson(json);
@@ -64,8 +44,7 @@ class Plugins with _$Plugins {
   }
 }
 
-class PluginsConverter
-    implements JsonConverter<Plugins?, Map<String, dynamic>?> {
+class PluginsConverter implements JsonConverter<Plugins?, Map<String, dynamic>?> {
   const PluginsConverter();
 
   @override
@@ -88,12 +67,10 @@ class PluginsConverter
       dynamic services = getServicesMap(json);
       return Plugins(
         moonpay: MoonpayPluginConverter().fromJson(services["moonpay"]),
-        rampInstant:
-            RampInstantPluginConverter().fromJson(services["rampInstant"]),
+        rampInstant: RampInstantPluginConverter().fromJson(services["rampInstant"]),
         transak: TransakPluginConverter().fromJson(services["transak"]),
         joinBonus: JoinBonusPluginConverter().fromJson(json['joinBonus']),
-        walletBanner:
-            WalletBannerPluginConverter().fromJson(json['walletBanner']),
+        walletBanner: WalletBannerPluginConverter().fromJson(json['walletBanner']),
         backupBonus: BackupBonusPluginConverter().fromJson(json['backupBonus']),
         inviteBonus: InviteBonusPluginConverter().fromJson(json['inviteBonus']),
       );

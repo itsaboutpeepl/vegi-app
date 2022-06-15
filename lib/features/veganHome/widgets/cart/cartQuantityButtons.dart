@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
 
 class CartQuantityButtons extends StatefulWidget {
   const CartQuantityButtons({Key? key, required this.orderItem}) : super(key: key);
 
-  final OrderItem orderItem;
+  final CartItem orderItem;
 
   @override
   _CartQuantityButtonsState createState() => _CartQuantityButtonsState();
@@ -44,11 +44,11 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () {
-                    OrderItem newOrderItem = widget.orderItem.copyWith(
+                    CartItem newOrderItem = widget.orderItem.copyWith(
                       itemQuantity: widget.orderItem.itemQuantity - 1,
                       totalItemPrice: widget.orderItem.totalItemPrice - widget.orderItem.menuItem.price,
                     );
-                    viewmodel.updateOrderItem(newOrderItem);
+                    viewmodel.updateCartItem(newOrderItem);
                   },
                   icon: Icon(Icons.remove, size: 15),
                 ),
@@ -99,11 +99,11 @@ class _CartQuantityButtonsState extends State<CartQuantityButtons> {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () {
-                    OrderItem newOrderItem = widget.orderItem.copyWith(
+                    CartItem newOrderItem = widget.orderItem.copyWith(
                       itemQuantity: widget.orderItem.itemQuantity + 1,
                       totalItemPrice: widget.orderItem.totalItemPrice + widget.orderItem.menuItem.price,
                     );
-                    viewmodel.updateOrderItem(newOrderItem);
+                    viewmodel.updateCartItem(newOrderItem);
                   },
                   icon: Icon(
                     Icons.add,

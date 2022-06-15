@@ -12,44 +12,11 @@ part of 'deliveryAddresses.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 DeliveryAddresses _$DeliveryAddressesFromJson(Map<String, dynamic> json) {
   return _DeliveryAddresses.fromJson(json);
 }
-
-/// @nodoc
-class _$DeliveryAddressesTearOff {
-  const _$DeliveryAddressesTearOff();
-
-  _DeliveryAddresses call(
-      {required int internalID,
-      required String addressLine1,
-      required String addressLine2,
-      required String townCity,
-      required String postalCode,
-      required double latitude,
-      required double longitude,
-      String? phoneNumber}) {
-    return _DeliveryAddresses(
-      internalID: internalID,
-      addressLine1: addressLine1,
-      addressLine2: addressLine2,
-      townCity: townCity,
-      postalCode: postalCode,
-      latitude: latitude,
-      longitude: longitude,
-      phoneNumber: phoneNumber,
-    );
-  }
-
-  DeliveryAddresses fromJson(Map<String, Object?> json) {
-    return DeliveryAddresses.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $DeliveryAddresses = _$DeliveryAddressesTearOff();
 
 /// @nodoc
 mixin _$DeliveryAddresses {
@@ -142,11 +109,11 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$DeliveryAddressesCopyWith<$Res>
+abstract class _$$_DeliveryAddressesCopyWith<$Res>
     implements $DeliveryAddressesCopyWith<$Res> {
-  factory _$DeliveryAddressesCopyWith(
-          _DeliveryAddresses value, $Res Function(_DeliveryAddresses) then) =
-      __$DeliveryAddressesCopyWithImpl<$Res>;
+  factory _$$_DeliveryAddressesCopyWith(_$_DeliveryAddresses value,
+          $Res Function(_$_DeliveryAddresses) then) =
+      __$$_DeliveryAddressesCopyWithImpl<$Res>;
   @override
   $Res call(
       {int internalID,
@@ -160,15 +127,15 @@ abstract class _$DeliveryAddressesCopyWith<$Res>
 }
 
 /// @nodoc
-class __$DeliveryAddressesCopyWithImpl<$Res>
+class __$$_DeliveryAddressesCopyWithImpl<$Res>
     extends _$DeliveryAddressesCopyWithImpl<$Res>
-    implements _$DeliveryAddressesCopyWith<$Res> {
-  __$DeliveryAddressesCopyWithImpl(
-      _DeliveryAddresses _value, $Res Function(_DeliveryAddresses) _then)
-      : super(_value, (v) => _then(v as _DeliveryAddresses));
+    implements _$$_DeliveryAddressesCopyWith<$Res> {
+  __$$_DeliveryAddressesCopyWithImpl(
+      _$_DeliveryAddresses _value, $Res Function(_$_DeliveryAddresses) _then)
+      : super(_value, (v) => _then(v as _$_DeliveryAddresses));
 
   @override
-  _DeliveryAddresses get _value => super._value as _DeliveryAddresses;
+  _$_DeliveryAddresses get _value => super._value as _$_DeliveryAddresses;
 
   @override
   $Res call({
@@ -181,7 +148,7 @@ class __$DeliveryAddressesCopyWithImpl<$Res>
     Object? longitude = freezed,
     Object? phoneNumber = freezed,
   }) {
-    return _then(_DeliveryAddresses(
+    return _then(_$_DeliveryAddresses(
       internalID: internalID == freezed
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
@@ -262,7 +229,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DeliveryAddresses &&
+            other is _$_DeliveryAddresses &&
             const DeepCollectionEquality()
                 .equals(other.internalID, internalID) &&
             const DeepCollectionEquality()
@@ -278,6 +245,7 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
                 .equals(other.phoneNumber, phoneNumber));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -292,8 +260,9 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
 
   @JsonKey(ignore: true)
   @override
-  _$DeliveryAddressesCopyWith<_DeliveryAddresses> get copyWith =>
-      __$DeliveryAddressesCopyWithImpl<_DeliveryAddresses>(this, _$identity);
+  _$$_DeliveryAddressesCopyWith<_$_DeliveryAddresses> get copyWith =>
+      __$$_DeliveryAddressesCopyWithImpl<_$_DeliveryAddresses>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -303,37 +272,37 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
 
 abstract class _DeliveryAddresses extends DeliveryAddresses {
   factory _DeliveryAddresses(
-      {required int internalID,
-      required String addressLine1,
-      required String addressLine2,
-      required String townCity,
-      required String postalCode,
-      required double latitude,
-      required double longitude,
-      String? phoneNumber}) = _$_DeliveryAddresses;
+      {required final int internalID,
+      required final String addressLine1,
+      required final String addressLine2,
+      required final String townCity,
+      required final String postalCode,
+      required final double latitude,
+      required final double longitude,
+      final String? phoneNumber}) = _$_DeliveryAddresses;
   _DeliveryAddresses._() : super._();
 
   factory _DeliveryAddresses.fromJson(Map<String, dynamic> json) =
       _$_DeliveryAddresses.fromJson;
 
   @override
-  int get internalID;
+  int get internalID => throw _privateConstructorUsedError;
   @override
-  String get addressLine1;
+  String get addressLine1 => throw _privateConstructorUsedError;
   @override
-  String get addressLine2;
+  String get addressLine2 => throw _privateConstructorUsedError;
   @override
-  String get townCity;
+  String get townCity => throw _privateConstructorUsedError;
   @override
-  String get postalCode;
+  String get postalCode => throw _privateConstructorUsedError;
   @override
-  double get latitude;
+  double get latitude => throw _privateConstructorUsedError;
   @override
-  double get longitude;
+  double get longitude => throw _privateConstructorUsedError;
   @override
-  String? get phoneNumber;
+  String? get phoneNumber => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DeliveryAddressesCopyWith<_DeliveryAddresses> get copyWith =>
+  _$$_DeliveryAddressesCopyWith<_$_DeliveryAddresses> get copyWith =>
       throw _privateConstructorUsedError;
 }

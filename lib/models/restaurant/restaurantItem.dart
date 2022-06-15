@@ -5,7 +5,7 @@ import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 part 'restaurantItem.freezed.dart';
 part 'restaurantItem.g.dart';
 
-@freezed
+@Freezed()
 class RestaurantItem with _$RestaurantItem {
   const RestaurantItem._();
 

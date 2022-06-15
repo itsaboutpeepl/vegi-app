@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'fullfilmentMethods.freezed.dart';
 part 'fullfilmentMethods.g.dart';
 
-@freezed
+@Freezed()
 class FullfilmentMethods with _$FullfilmentMethods {
   const FullfilmentMethods._();
 
@@ -15,6 +15,5 @@ class FullfilmentMethods with _$FullfilmentMethods {
     required List<Map<String, String>> deliverySlots,
   }) = _FullfilmentMethods;
 
-  factory FullfilmentMethods.fromJson(dynamic json) =>
-      _$FullfilmentMethodsFromJson(json);
+  factory FullfilmentMethods.fromJson(dynamic json) => _$FullfilmentMethodsFromJson(json);
 }

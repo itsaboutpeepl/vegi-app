@@ -8,7 +8,7 @@ part 'community.freezed.dart';
 part 'community.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class Community with _$Community {
   @JsonSerializable()
   factory Community({
@@ -30,6 +30,5 @@ class Community with _$Community {
     @JsonKey(includeIfNull: false) String? description,
   }) = _Community;
 
-  factory Community.fromJson(Map<String, dynamic> json) =>
-      _$CommunityFromJson(json);
+  factory Community.fromJson(Map<String, dynamic> json) => _$CommunityFromJson(json);
 }

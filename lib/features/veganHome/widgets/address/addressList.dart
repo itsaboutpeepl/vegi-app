@@ -33,30 +33,39 @@ class _AddressListState extends State<AddressList> {
       builder: (context, viewmodel) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.25,
-          child: PageView.builder(
-            scrollDirection: Axis.horizontal,
-            physics: PageScrollPhysics(),
-            controller: _pageController,
-            itemBuilder: (context, index) {
-              return index == 0
-                  ? PickUpCard() //Index zero of the page builder
-                  : index == viewmodel.listOfDeliveryAddresses.length + 1
-                      ? NewAddressCard() //Last index of the page builder, length of list + 1 (which is the pickup card)
-                      : AddressCard(address: viewmodel.listOfDeliveryAddresses[index - 1]);
-            },
-            itemCount: viewmodel.listOfDeliveryAddresses.length + 2,
-            onPageChanged: (index) {
-              if (index == 0) {
-                viewmodel.updateFulfilmentMethod(FulfilmentMethod.collection);
-              } else if (index == viewmodel.listOfDeliveryAddresses.length + 1) {
-                viewmodel.updateSelectedDeliveryAddress(null);
-                viewmodel.updateFulfilmentMethod(FulfilmentMethod.none);
-              } else {
-                viewmodel.updateFulfilmentMethod(FulfilmentMethod.delivery);
-                viewmodel.updateSelectedDeliveryAddress(viewmodel.listOfDeliveryAddresses[index - 1]);
-              }
-            },
-          ),
+          child: viewmodel.isDelivery
+              ? PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  controller: _pageController,
+                  itemBuilder: (context, index) {
+                    return index == viewmodel.listOfDeliveryAddresses.length
+                        ? NewAddressCard()
+                        : AddressCard(address: viewmodel.listOfDeliveryAddresses[index]);
+                  },
+                  itemCount: viewmodel.listOfDeliveryAddresses.length + 1,
+                  onPageChanged: (index) {
+                    if (index == viewmodel.listOfDeliveryAddresses.length + 1) {
+                      viewmodel.updateSelectedDeliveryAddress(null);
+                      viewmodel.updateFulfilmentMethod(FulfilmentMethod.none);
+                    } else {
+                      viewmodel.updateFulfilmentMethod(FulfilmentMethod.delivery);
+                      viewmodel.updateSelectedDeliveryAddress(viewmodel.listOfDeliveryAddresses[index]);
+                    }
+                  },
+                )
+              : PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  controller: _pageController,
+                  itemBuilder: (context, index) {
+                    return PickUpCard();
+                  },
+                  itemCount: 1,
+                  onPageChanged: (index) {
+                    viewmodel.updateFulfilmentMethod(FulfilmentMethod.collection);
+                  },
+                ),
         );
       },
       converter: DeliveryAddressesVM.fromStore,

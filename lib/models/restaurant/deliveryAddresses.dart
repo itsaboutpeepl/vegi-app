@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'deliveryAddresses.freezed.dart';
 part 'deliveryAddresses.g.dart';
 
-@freezed
+@Freezed()
 class DeliveryAddresses with _$DeliveryAddresses {
   const DeliveryAddresses._();
 

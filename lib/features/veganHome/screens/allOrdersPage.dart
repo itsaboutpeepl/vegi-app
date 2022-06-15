@@ -9,14 +9,14 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/services.dart';
 
-class MyOrdersPage extends StatefulWidget {
-  const MyOrdersPage({Key? key}) : super(key: key);
+class AllOrdersPage extends StatefulWidget {
+  const AllOrdersPage({Key? key}) : super(key: key);
 
   @override
-  _MyOrdersPageState createState() => _MyOrdersPageState();
+  _AllOrdersPageState createState() => _AllOrdersPageState();
 }
 
-class _MyOrdersPageState extends State<MyOrdersPage> {
+class _AllOrdersPageState extends State<AllOrdersPage> {
   late List<Map<String, dynamic>> listOfOrders;
   bool _isLoading = true;
   bool _isEmpty = false;
@@ -149,6 +149,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 height: 20,
               ),
               ListView.separated(
+                padding: EdgeInsets.only(bottom: 10),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (_, index) => SingleProductOrderItem(product: widget.order['products'][index]),
@@ -156,9 +157,6 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                 ),
                 itemCount: widget.order['products'].length,
-              ),
-              SizedBox(
-                height: 10,
               ),
               TransparentButton(
                 label: "Show Delivery Address",

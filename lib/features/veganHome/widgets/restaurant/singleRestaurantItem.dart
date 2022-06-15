@@ -33,10 +33,10 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Material(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                   elevation: 20,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(20),
                     child: CachedNetworkImage(
                       imageUrl: widget.restaurantItem.imageURL,
                       errorWidget: (context, error, stackTrace) {

@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/myOrdersPage.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/allOrdersPage.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/preparingOrderScreen.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/scheduledOrdersPage.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
@@ -54,9 +56,20 @@ const veganHomeTab = AutoRoute(
       guards: [AuthGuard],
     ),
     AutoRoute(
-      page: MyOrdersPage,
-      name: 'MyOrdersPage',
+      page: AllOrdersPage,
+      name: 'AllOrdersPage',
       guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: ScheduledOrdersPage,
+      name: 'ScheduledOrdersPage',
+      guards: [AuthGuard],
+    ),
+    CustomRoute(
+      page: PreparingOrderPage,
+      name: 'PreparingOrderPage',
+      guards: [AuthGuard],
+      transitionsBuilder: TransitionsBuilders.slideBottom,
     )
   ],
 );

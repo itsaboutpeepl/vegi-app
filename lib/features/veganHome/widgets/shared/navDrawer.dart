@@ -110,6 +110,13 @@ class _NavDrawerState extends State<NavDrawer> {
                 ),
               ),
               ListTile(
+                leading: Icon(Icons.timer_outlined),
+                title: Text('Scheduled Order'),
+                onTap: () {
+                  context.router.push(ScheduledOrdersPage());
+                },
+              ),
+              ListTile(
                 leading: Icon(Icons.money),
                 title: Text('Top Up Wallet'),
                 onTap: () {
@@ -120,7 +127,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 leading: Icon(FontAwesomeIcons.clockRotateLeft),
                 title: Text('My Orders'),
                 onTap: () {
-                  context.router.push(MyOrdersPage());
+                  context.router.push(AllOrdersPage());
                 },
               ),
               ListTile(

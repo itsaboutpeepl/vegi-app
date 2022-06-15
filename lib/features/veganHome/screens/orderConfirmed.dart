@@ -9,6 +9,8 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleOrderItem.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
+import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/order_confirmed.dart';
 
 class OrderConfirmedScreen extends StatefulWidget {
@@ -47,6 +49,31 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, OrderConfirmedViewModel>(
       converter: OrderConfirmedViewModel.fromStore,
+      onInit: (store) {
+        final OrderDetails orderDetails = OrderDetails(
+          selectedSlot: store.state.cartState.selectedTimeSlot,
+          isDelivery: store.state.cartState.isDelivery,
+          orderAddress: store.state.cartState.selectedDeliveryAddress!,
+          restaurantName: store.state.cartState.restaurantName,
+          cartItems: store.state.cartState.cartItems,
+          cartTotal: store.state.cartState.cartTotal,
+          orderID: store.state.cartState.orderID,
+          userName: store.state.userState.displayName,
+          phoneNumber: store.state.cartState.selectedDeliveryAddress!.phoneNumber ?? "",
+          GBPxAmountPaid: store.state.cartState.selectedGBPxAmount,
+          PPLAmountPaid: store.state.cartState.selectedPPLAmount,
+        );
+
+        if (isScheduledDelivery(orderDetails.selectedSlot)) {
+          List<OrderDetails> listOfScheduledOrders =
+              List<OrderDetails>.from(store.state.pastOrderState.listOfScheduledOrders);
+
+          listOfScheduledOrders.add(orderDetails);
+          store.dispatch(UpdateScheduledOrders(listOfScheduledOrders));
+        } else {
+          store.dispatch(SetOngoingOrder(orderDetails));
+        }
+      },
       builder: (_, viewmodel) {
         return Scaffold(
           body: SingleChildScrollView(
@@ -220,7 +247,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                     ] +
                     viewmodel.cartItems
                         .map<Widget>(
-                          (element) => SingleOrderItem(
+                          (element) => SingleCartItem(
                             orderItem: element,
                           ),
                         )
@@ -244,7 +271,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                             ),
                             buttonAction: () {
                               context.router.replaceAll([VeganHomeScreenAlt()]);
-                              viewmodel.clearCart();
+                              Future.delayed(Duration(seconds: 2), () => viewmodel.clearCart());
                             },
                             baseColor: Colors.grey[900]!,
                             highlightColor: Colors.grey[800]!),

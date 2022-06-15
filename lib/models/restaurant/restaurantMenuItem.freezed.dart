@@ -12,48 +12,11 @@ part of 'restaurantMenuItem.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 RestaurantMenuItem _$RestaurantMenuItemFromJson(Map<String, dynamic> json) {
   return _RestaurantMenuItem.fromJson(json);
 }
-
-/// @nodoc
-class _$RestaurantMenuItemTearOff {
-  const _$RestaurantMenuItemTearOff();
-
-  _RestaurantMenuItem call(
-      {required String menuItemID,
-      required String restaurantID,
-      required String name,
-      required String imageURL,
-      required String category,
-      required int price,
-      required String description,
-      required Map<String, int> extras,
-      required List<ProductOptionsCategory> listOfProductOptions,
-      required bool isFeatured}) {
-    return _RestaurantMenuItem(
-      menuItemID: menuItemID,
-      restaurantID: restaurantID,
-      name: name,
-      imageURL: imageURL,
-      category: category,
-      price: price,
-      description: description,
-      extras: extras,
-      listOfProductOptions: listOfProductOptions,
-      isFeatured: isFeatured,
-    );
-  }
-
-  RestaurantMenuItem fromJson(Map<String, Object?> json) {
-    return RestaurantMenuItem.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $RestaurantMenuItem = _$RestaurantMenuItemTearOff();
 
 /// @nodoc
 mixin _$RestaurantMenuItem {
@@ -68,6 +31,7 @@ mixin _$RestaurantMenuItem {
   List<ProductOptionsCategory> get listOfProductOptions =>
       throw _privateConstructorUsedError;
   bool get isFeatured => throw _privateConstructorUsedError;
+  int get priority => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -90,7 +54,8 @@ abstract class $RestaurantMenuItemCopyWith<$Res> {
       String description,
       Map<String, int> extras,
       List<ProductOptionsCategory> listOfProductOptions,
-      bool isFeatured});
+      bool isFeatured,
+      int priority});
 }
 
 /// @nodoc
@@ -114,6 +79,7 @@ class _$RestaurantMenuItemCopyWithImpl<$Res>
     Object? extras = freezed,
     Object? listOfProductOptions = freezed,
     Object? isFeatured = freezed,
+    Object? priority = freezed,
   }) {
     return _then(_value.copyWith(
       menuItemID: menuItemID == freezed
@@ -156,16 +122,20 @@ class _$RestaurantMenuItemCopyWithImpl<$Res>
           ? _value.isFeatured
           : isFeatured // ignore: cast_nullable_to_non_nullable
               as bool,
+      priority: priority == freezed
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$RestaurantMenuItemCopyWith<$Res>
+abstract class _$$_RestaurantMenuItemCopyWith<$Res>
     implements $RestaurantMenuItemCopyWith<$Res> {
-  factory _$RestaurantMenuItemCopyWith(
-          _RestaurantMenuItem value, $Res Function(_RestaurantMenuItem) then) =
-      __$RestaurantMenuItemCopyWithImpl<$Res>;
+  factory _$$_RestaurantMenuItemCopyWith(_$_RestaurantMenuItem value,
+          $Res Function(_$_RestaurantMenuItem) then) =
+      __$$_RestaurantMenuItemCopyWithImpl<$Res>;
   @override
   $Res call(
       {String menuItemID,
@@ -177,19 +147,20 @@ abstract class _$RestaurantMenuItemCopyWith<$Res>
       String description,
       Map<String, int> extras,
       List<ProductOptionsCategory> listOfProductOptions,
-      bool isFeatured});
+      bool isFeatured,
+      int priority});
 }
 
 /// @nodoc
-class __$RestaurantMenuItemCopyWithImpl<$Res>
+class __$$_RestaurantMenuItemCopyWithImpl<$Res>
     extends _$RestaurantMenuItemCopyWithImpl<$Res>
-    implements _$RestaurantMenuItemCopyWith<$Res> {
-  __$RestaurantMenuItemCopyWithImpl(
-      _RestaurantMenuItem _value, $Res Function(_RestaurantMenuItem) _then)
-      : super(_value, (v) => _then(v as _RestaurantMenuItem));
+    implements _$$_RestaurantMenuItemCopyWith<$Res> {
+  __$$_RestaurantMenuItemCopyWithImpl(
+      _$_RestaurantMenuItem _value, $Res Function(_$_RestaurantMenuItem) _then)
+      : super(_value, (v) => _then(v as _$_RestaurantMenuItem));
 
   @override
-  _RestaurantMenuItem get _value => super._value as _RestaurantMenuItem;
+  _$_RestaurantMenuItem get _value => super._value as _$_RestaurantMenuItem;
 
   @override
   $Res call({
@@ -203,8 +174,9 @@ class __$RestaurantMenuItemCopyWithImpl<$Res>
     Object? extras = freezed,
     Object? listOfProductOptions = freezed,
     Object? isFeatured = freezed,
+    Object? priority = freezed,
   }) {
-    return _then(_RestaurantMenuItem(
+    return _then(_$_RestaurantMenuItem(
       menuItemID: menuItemID == freezed
           ? _value.menuItemID
           : menuItemID // ignore: cast_nullable_to_non_nullable
@@ -245,6 +217,10 @@ class __$RestaurantMenuItemCopyWithImpl<$Res>
           ? _value.isFeatured
           : isFeatured // ignore: cast_nullable_to_non_nullable
               as bool,
+      priority: priority == freezed
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -263,7 +239,8 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
       required this.description,
       required this.extras,
       required this.listOfProductOptions,
-      required this.isFeatured})
+      required this.isFeatured,
+      required this.priority})
       : super._();
 
   factory _$_RestaurantMenuItem.fromJson(Map<String, dynamic> json) =>
@@ -289,17 +266,19 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
   final List<ProductOptionsCategory> listOfProductOptions;
   @override
   final bool isFeatured;
+  @override
+  final int priority;
 
   @override
   String toString() {
-    return 'RestaurantMenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURL: $imageURL, category: $category, price: $price, description: $description, extras: $extras, listOfProductOptions: $listOfProductOptions, isFeatured: $isFeatured)';
+    return 'RestaurantMenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURL: $imageURL, category: $category, price: $price, description: $description, extras: $extras, listOfProductOptions: $listOfProductOptions, isFeatured: $isFeatured, priority: $priority)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _RestaurantMenuItem &&
+            other is _$_RestaurantMenuItem &&
             const DeepCollectionEquality()
                 .equals(other.menuItemID, menuItemID) &&
             const DeepCollectionEquality()
@@ -314,9 +293,11 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
             const DeepCollectionEquality()
                 .equals(other.listOfProductOptions, listOfProductOptions) &&
             const DeepCollectionEquality()
-                .equals(other.isFeatured, isFeatured));
+                .equals(other.isFeatured, isFeatured) &&
+            const DeepCollectionEquality().equals(other.priority, priority));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -329,12 +310,14 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(extras),
       const DeepCollectionEquality().hash(listOfProductOptions),
-      const DeepCollectionEquality().hash(isFeatured));
+      const DeepCollectionEquality().hash(isFeatured),
+      const DeepCollectionEquality().hash(priority));
 
   @JsonKey(ignore: true)
   @override
-  _$RestaurantMenuItemCopyWith<_RestaurantMenuItem> get copyWith =>
-      __$RestaurantMenuItemCopyWithImpl<_RestaurantMenuItem>(this, _$identity);
+  _$$_RestaurantMenuItemCopyWith<_$_RestaurantMenuItem> get copyWith =>
+      __$$_RestaurantMenuItemCopyWithImpl<_$_RestaurantMenuItem>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -344,43 +327,47 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
 
 abstract class _RestaurantMenuItem extends RestaurantMenuItem {
   factory _RestaurantMenuItem(
-      {required String menuItemID,
-      required String restaurantID,
-      required String name,
-      required String imageURL,
-      required String category,
-      required int price,
-      required String description,
-      required Map<String, int> extras,
-      required List<ProductOptionsCategory> listOfProductOptions,
-      required bool isFeatured}) = _$_RestaurantMenuItem;
+      {required final String menuItemID,
+      required final String restaurantID,
+      required final String name,
+      required final String imageURL,
+      required final String category,
+      required final int price,
+      required final String description,
+      required final Map<String, int> extras,
+      required final List<ProductOptionsCategory> listOfProductOptions,
+      required final bool isFeatured,
+      required final int priority}) = _$_RestaurantMenuItem;
   _RestaurantMenuItem._() : super._();
 
   factory _RestaurantMenuItem.fromJson(Map<String, dynamic> json) =
       _$_RestaurantMenuItem.fromJson;
 
   @override
-  String get menuItemID;
+  String get menuItemID => throw _privateConstructorUsedError;
   @override
-  String get restaurantID;
+  String get restaurantID => throw _privateConstructorUsedError;
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  String get imageURL;
+  String get imageURL => throw _privateConstructorUsedError;
   @override
-  String get category;
+  String get category => throw _privateConstructorUsedError;
   @override
-  int get price;
+  int get price => throw _privateConstructorUsedError;
   @override
-  String get description;
+  String get description => throw _privateConstructorUsedError;
   @override
-  Map<String, int> get extras;
+  Map<String, int> get extras => throw _privateConstructorUsedError;
   @override
-  List<ProductOptionsCategory> get listOfProductOptions;
+  List<ProductOptionsCategory> get listOfProductOptions =>
+      throw _privateConstructorUsedError;
   @override
-  bool get isFeatured;
+  bool get isFeatured => throw _privateConstructorUsedError;
+  @override
+  int get priority => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$RestaurantMenuItemCopyWith<_RestaurantMenuItem> get copyWith =>
+  _$$_RestaurantMenuItemCopyWith<_$_RestaurantMenuItem> get copyWith =>
       throw _privateConstructorUsedError;
 }

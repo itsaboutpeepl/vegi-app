@@ -2,18 +2,18 @@ import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
-import 'package:vegan_liverpool/models/restaurant/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 
 class DetailMenuItem extends Equatable {
-  final RestaurantMenuItem menuItem;
+  final RestaurantMenuItem? menuItem;
   final int totalPrice;
   final int itemReward;
   final int quantity;
   final Map<int, ProductOptions> selectedOptions;
-  final Function(List<OrderItem> itemsToAdd) addOrderItems;
+  final Function(List<CartItem> itemsToAdd) addOrderItems;
   final Function(RestaurantMenuItem? menuItem) setMenuItem;
   final Function() resetMenuItem;
   final Function(bool isAdd) updateQuantity;
@@ -58,5 +58,5 @@ class DetailMenuItem extends Equatable {
   }
 
   @override
-  List<Object> get props => [menuItem, totalPrice, itemReward, quantity];
+  List<Object> get props => [menuItem!, totalPrice, itemReward, quantity];
 }

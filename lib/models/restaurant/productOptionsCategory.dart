@@ -4,7 +4,7 @@ import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 part 'productOptionsCategory.freezed.dart';
 part 'productOptionsCategory.g.dart';
 
-@freezed
+@Freezed()
 class ProductOptionsCategory with _$ProductOptionsCategory {
   const ProductOptionsCategory._();
 
@@ -14,6 +14,5 @@ class ProductOptionsCategory with _$ProductOptionsCategory {
       required String name,
       required List<ProductOptions> listOfOptions}) = _ProductOptionsCategory;
 
-  factory ProductOptionsCategory.fromJson(dynamic json) =>
-      _$ProductOptionsCategoryFromJson(json);
+  factory ProductOptionsCategory.fromJson(dynamic json) => _$ProductOptionsCategoryFromJson(json);
 }

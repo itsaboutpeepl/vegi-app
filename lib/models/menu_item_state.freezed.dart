@@ -12,46 +12,24 @@ part of 'menu_item_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 MenuItemState _$MenuItemStateFromJson(Map<String, dynamic> json) {
   return _MenuItemState.fromJson(json);
 }
 
 /// @nodoc
-class _$MenuItemStateTearOff {
-  const _$MenuItemStateTearOff();
-
-  _MenuItemState call(
-      {required RestaurantMenuItem menuItem,
-      required int totalPrice,
-      required int itemReward,
-      required Map<int, ProductOptions> selectedProductOptionsForCategory,
-      required int quantity}) {
-    return _MenuItemState(
-      menuItem: menuItem,
-      totalPrice: totalPrice,
-      itemReward: itemReward,
-      selectedProductOptionsForCategory: selectedProductOptionsForCategory,
-      quantity: quantity,
-    );
-  }
-
-  MenuItemState fromJson(Map<String, Object?> json) {
-    return MenuItemState.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $MenuItemState = _$MenuItemStateTearOff();
-
-/// @nodoc
 mixin _$MenuItemState {
-  RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  RestaurantMenuItem? get menuItem => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   int get totalPrice => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   int get itemReward => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   Map<int, ProductOptions> get selectedProductOptionsForCategory =>
       throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   int get quantity => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -66,13 +44,18 @@ abstract class $MenuItemStateCopyWith<$Res> {
           MenuItemState value, $Res Function(MenuItemState) then) =
       _$MenuItemStateCopyWithImpl<$Res>;
   $Res call(
-      {RestaurantMenuItem menuItem,
-      int totalPrice,
-      int itemReward,
-      Map<int, ProductOptions> selectedProductOptionsForCategory,
-      int quantity});
+      {@JsonKey(ignore: true)
+          RestaurantMenuItem? menuItem,
+      @JsonKey(ignore: true)
+          int totalPrice,
+      @JsonKey(ignore: true)
+          int itemReward,
+      @JsonKey(ignore: true)
+          Map<int, ProductOptions> selectedProductOptionsForCategory,
+      @JsonKey(ignore: true)
+          int quantity});
 
-  $RestaurantMenuItemCopyWith<$Res> get menuItem;
+  $RestaurantMenuItemCopyWith<$Res>? get menuItem;
 }
 
 /// @nodoc
@@ -96,7 +79,7 @@ class _$MenuItemStateCopyWithImpl<$Res>
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
-              as RestaurantMenuItem,
+              as RestaurantMenuItem?,
       totalPrice: totalPrice == freezed
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
@@ -118,41 +101,50 @@ class _$MenuItemStateCopyWithImpl<$Res>
   }
 
   @override
-  $RestaurantMenuItemCopyWith<$Res> get menuItem {
-    return $RestaurantMenuItemCopyWith<$Res>(_value.menuItem, (value) {
+  $RestaurantMenuItemCopyWith<$Res>? get menuItem {
+    if (_value.menuItem == null) {
+      return null;
+    }
+
+    return $RestaurantMenuItemCopyWith<$Res>(_value.menuItem!, (value) {
       return _then(_value.copyWith(menuItem: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$MenuItemStateCopyWith<$Res>
+abstract class _$$_MenuItemStateCopyWith<$Res>
     implements $MenuItemStateCopyWith<$Res> {
-  factory _$MenuItemStateCopyWith(
-          _MenuItemState value, $Res Function(_MenuItemState) then) =
-      __$MenuItemStateCopyWithImpl<$Res>;
+  factory _$$_MenuItemStateCopyWith(
+          _$_MenuItemState value, $Res Function(_$_MenuItemState) then) =
+      __$$_MenuItemStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {RestaurantMenuItem menuItem,
-      int totalPrice,
-      int itemReward,
-      Map<int, ProductOptions> selectedProductOptionsForCategory,
-      int quantity});
+      {@JsonKey(ignore: true)
+          RestaurantMenuItem? menuItem,
+      @JsonKey(ignore: true)
+          int totalPrice,
+      @JsonKey(ignore: true)
+          int itemReward,
+      @JsonKey(ignore: true)
+          Map<int, ProductOptions> selectedProductOptionsForCategory,
+      @JsonKey(ignore: true)
+          int quantity});
 
   @override
-  $RestaurantMenuItemCopyWith<$Res> get menuItem;
+  $RestaurantMenuItemCopyWith<$Res>? get menuItem;
 }
 
 /// @nodoc
-class __$MenuItemStateCopyWithImpl<$Res>
+class __$$_MenuItemStateCopyWithImpl<$Res>
     extends _$MenuItemStateCopyWithImpl<$Res>
-    implements _$MenuItemStateCopyWith<$Res> {
-  __$MenuItemStateCopyWithImpl(
-      _MenuItemState _value, $Res Function(_MenuItemState) _then)
-      : super(_value, (v) => _then(v as _MenuItemState));
+    implements _$$_MenuItemStateCopyWith<$Res> {
+  __$$_MenuItemStateCopyWithImpl(
+      _$_MenuItemState _value, $Res Function(_$_MenuItemState) _then)
+      : super(_value, (v) => _then(v as _$_MenuItemState));
 
   @override
-  _MenuItemState get _value => super._value as _MenuItemState;
+  _$_MenuItemState get _value => super._value as _$_MenuItemState;
 
   @override
   $Res call({
@@ -162,11 +154,11 @@ class __$MenuItemStateCopyWithImpl<$Res>
     Object? selectedProductOptionsForCategory = freezed,
     Object? quantity = freezed,
   }) {
-    return _then(_MenuItemState(
+    return _then(_$_MenuItemState(
       menuItem: menuItem == freezed
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
-              as RestaurantMenuItem,
+              as RestaurantMenuItem?,
       totalPrice: totalPrice == freezed
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
@@ -193,25 +185,30 @@ class __$MenuItemStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MenuItemState extends _MenuItemState {
   _$_MenuItemState(
-      {required this.menuItem,
-      required this.totalPrice,
-      required this.itemReward,
-      required this.selectedProductOptionsForCategory,
-      required this.quantity})
+      {@JsonKey(ignore: true) this.menuItem = null,
+      @JsonKey(ignore: true) this.totalPrice = 0,
+      @JsonKey(ignore: true) this.itemReward = 0,
+      @JsonKey(ignore: true) this.selectedProductOptionsForCategory = const {},
+      @JsonKey(ignore: true) this.quantity = 0})
       : super._();
 
   factory _$_MenuItemState.fromJson(Map<String, dynamic> json) =>
       _$$_MenuItemStateFromJson(json);
 
   @override
-  final RestaurantMenuItem menuItem;
+  @JsonKey(ignore: true)
+  final RestaurantMenuItem? menuItem;
   @override
+  @JsonKey(ignore: true)
   final int totalPrice;
   @override
+  @JsonKey(ignore: true)
   final int itemReward;
   @override
+  @JsonKey(ignore: true)
   final Map<int, ProductOptions> selectedProductOptionsForCategory;
   @override
+  @JsonKey(ignore: true)
   final int quantity;
 
   @override
@@ -223,7 +220,7 @@ class _$_MenuItemState extends _MenuItemState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _MenuItemState &&
+            other is _$_MenuItemState &&
             const DeepCollectionEquality().equals(other.menuItem, menuItem) &&
             const DeepCollectionEquality()
                 .equals(other.totalPrice, totalPrice) &&
@@ -235,6 +232,7 @@ class _$_MenuItemState extends _MenuItemState {
             const DeepCollectionEquality().equals(other.quantity, quantity));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -246,8 +244,8 @@ class _$_MenuItemState extends _MenuItemState {
 
   @JsonKey(ignore: true)
   @override
-  _$MenuItemStateCopyWith<_MenuItemState> get copyWith =>
-      __$MenuItemStateCopyWithImpl<_MenuItemState>(this, _$identity);
+  _$$_MenuItemStateCopyWith<_$_MenuItemState> get copyWith =>
+      __$$_MenuItemStateCopyWithImpl<_$_MenuItemState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -257,28 +255,39 @@ class _$_MenuItemState extends _MenuItemState {
 
 abstract class _MenuItemState extends MenuItemState {
   factory _MenuItemState(
-      {required RestaurantMenuItem menuItem,
-      required int totalPrice,
-      required int itemReward,
-      required Map<int, ProductOptions> selectedProductOptionsForCategory,
-      required int quantity}) = _$_MenuItemState;
+      {@JsonKey(ignore: true)
+          final RestaurantMenuItem? menuItem,
+      @JsonKey(ignore: true)
+          final int totalPrice,
+      @JsonKey(ignore: true)
+          final int itemReward,
+      @JsonKey(ignore: true)
+          final Map<int, ProductOptions> selectedProductOptionsForCategory,
+      @JsonKey(ignore: true)
+          final int quantity}) = _$_MenuItemState;
   _MenuItemState._() : super._();
 
   factory _MenuItemState.fromJson(Map<String, dynamic> json) =
       _$_MenuItemState.fromJson;
 
   @override
-  RestaurantMenuItem get menuItem;
-  @override
-  int get totalPrice;
-  @override
-  int get itemReward;
-  @override
-  Map<int, ProductOptions> get selectedProductOptionsForCategory;
-  @override
-  int get quantity;
+  @JsonKey(ignore: true)
+  RestaurantMenuItem? get menuItem => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$MenuItemStateCopyWith<_MenuItemState> get copyWith =>
+  int get totalPrice => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  int get itemReward => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  Map<int, ProductOptions> get selectedProductOptionsForCategory =>
+      throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  int get quantity => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_MenuItemStateCopyWith<_$_MenuItemState> get copyWith =>
       throw _privateConstructorUsedError;
 }

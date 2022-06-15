@@ -4,7 +4,7 @@ import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 part 'restaurantCategory.freezed.dart';
 part 'restaurantCategory.g.dart';
 
-@freezed
+@Freezed()
 class RestaurantCategory with _$RestaurantCategory {
   const RestaurantCategory._();
 
@@ -15,6 +15,5 @@ class RestaurantCategory with _$RestaurantCategory {
     required List<RestaurantItem> listOfRestaurants,
   }) = _RestaurantCategory;
 
-  factory RestaurantCategory.fromJson(dynamic json) =>
-      _$RestaurantCategoryFromJson(json);
+  factory RestaurantCategory.fromJson(dynamic json) => _$RestaurantCategoryFromJson(json);
 }

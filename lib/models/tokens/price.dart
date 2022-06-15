@@ -7,7 +7,7 @@ part 'price.freezed.dart';
 part 'price.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class Price with _$Price {
   const Price._();
 

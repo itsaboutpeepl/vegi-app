@@ -6,7 +6,7 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 part 'actions.freezed.dart';
 part 'actions.g.dart';
 
-@freezed
+@Freezed()
 class WalletActions with _$WalletActions {
   const WalletActions._();
 
@@ -24,20 +24,14 @@ class WalletActions with _$WalletActions {
     );
   }
 
-  factory WalletActions.fromJson(Map<String, dynamic> json) =>
-      _$WalletActionsFromJson(json);
+  factory WalletActions.fromJson(Map<String, dynamic> json) => _$WalletActionsFromJson(json);
 }
 
 class WalletActionFactory {
   static WalletAction create(Map<String, dynamic> json) {
-    json =
-        json.containsKey('data') ? Map.from({...json, ...json['data']}) : json;
-    json['timestamp'] =
-        DateTime.parse(json['updatedAt']).millisecondsSinceEpoch;
-    json['value'] =
-        json.containsKey('value') && [null, '', 'NaN'].contains(json['value'])
-            ? '0'
-            : json['value'];
+    json = json.containsKey('data') ? Map.from({...json, ...json['data']}) : json;
+    json['timestamp'] = DateTime.parse(json['updatedAt']).millisecondsSinceEpoch;
+    json['value'] = json.containsKey('value') && [null, '', 'NaN'].contains(json['value']) ? '0' : json['value'];
     json['status'] = json['status']?.toUpperCase();
     if (json['name'] == 'createWallet') {
       return CreateWallet.fromJson(json);

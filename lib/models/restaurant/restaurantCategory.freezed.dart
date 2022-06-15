@@ -12,34 +12,11 @@ part of 'restaurantCategory.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 RestaurantCategory _$RestaurantCategoryFromJson(Map<String, dynamic> json) {
   return _RestaurantCategory.fromJson(json);
 }
-
-/// @nodoc
-class _$RestaurantCategoryTearOff {
-  const _$RestaurantCategoryTearOff();
-
-  _RestaurantCategory call(
-      {required String categoryName,
-      required String imageURL,
-      required List<RestaurantItem> listOfRestaurants}) {
-    return _RestaurantCategory(
-      categoryName: categoryName,
-      imageURL: imageURL,
-      listOfRestaurants: listOfRestaurants,
-    );
-  }
-
-  RestaurantCategory fromJson(Map<String, Object?> json) {
-    return RestaurantCategory.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $RestaurantCategory = _$RestaurantCategoryTearOff();
 
 /// @nodoc
 mixin _$RestaurantCategory {
@@ -98,11 +75,11 @@ class _$RestaurantCategoryCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$RestaurantCategoryCopyWith<$Res>
+abstract class _$$_RestaurantCategoryCopyWith<$Res>
     implements $RestaurantCategoryCopyWith<$Res> {
-  factory _$RestaurantCategoryCopyWith(
-          _RestaurantCategory value, $Res Function(_RestaurantCategory) then) =
-      __$RestaurantCategoryCopyWithImpl<$Res>;
+  factory _$$_RestaurantCategoryCopyWith(_$_RestaurantCategory value,
+          $Res Function(_$_RestaurantCategory) then) =
+      __$$_RestaurantCategoryCopyWithImpl<$Res>;
   @override
   $Res call(
       {String categoryName,
@@ -111,15 +88,15 @@ abstract class _$RestaurantCategoryCopyWith<$Res>
 }
 
 /// @nodoc
-class __$RestaurantCategoryCopyWithImpl<$Res>
+class __$$_RestaurantCategoryCopyWithImpl<$Res>
     extends _$RestaurantCategoryCopyWithImpl<$Res>
-    implements _$RestaurantCategoryCopyWith<$Res> {
-  __$RestaurantCategoryCopyWithImpl(
-      _RestaurantCategory _value, $Res Function(_RestaurantCategory) _then)
-      : super(_value, (v) => _then(v as _RestaurantCategory));
+    implements _$$_RestaurantCategoryCopyWith<$Res> {
+  __$$_RestaurantCategoryCopyWithImpl(
+      _$_RestaurantCategory _value, $Res Function(_$_RestaurantCategory) _then)
+      : super(_value, (v) => _then(v as _$_RestaurantCategory));
 
   @override
-  _RestaurantCategory get _value => super._value as _RestaurantCategory;
+  _$_RestaurantCategory get _value => super._value as _$_RestaurantCategory;
 
   @override
   $Res call({
@@ -127,7 +104,7 @@ class __$RestaurantCategoryCopyWithImpl<$Res>
     Object? imageURL = freezed,
     Object? listOfRestaurants = freezed,
   }) {
-    return _then(_RestaurantCategory(
+    return _then(_$_RestaurantCategory(
       categoryName: categoryName == freezed
           ? _value.categoryName
           : categoryName // ignore: cast_nullable_to_non_nullable
@@ -173,7 +150,7 @@ class _$_RestaurantCategory extends _RestaurantCategory {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _RestaurantCategory &&
+            other is _$_RestaurantCategory &&
             const DeepCollectionEquality()
                 .equals(other.categoryName, categoryName) &&
             const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
@@ -181,6 +158,7 @@ class _$_RestaurantCategory extends _RestaurantCategory {
                 .equals(other.listOfRestaurants, listOfRestaurants));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -190,8 +168,9 @@ class _$_RestaurantCategory extends _RestaurantCategory {
 
   @JsonKey(ignore: true)
   @override
-  _$RestaurantCategoryCopyWith<_RestaurantCategory> get copyWith =>
-      __$RestaurantCategoryCopyWithImpl<_RestaurantCategory>(this, _$identity);
+  _$$_RestaurantCategoryCopyWith<_$_RestaurantCategory> get copyWith =>
+      __$$_RestaurantCategoryCopyWithImpl<_$_RestaurantCategory>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -201,22 +180,24 @@ class _$_RestaurantCategory extends _RestaurantCategory {
 
 abstract class _RestaurantCategory extends RestaurantCategory {
   factory _RestaurantCategory(
-      {required String categoryName,
-      required String imageURL,
-      required List<RestaurantItem> listOfRestaurants}) = _$_RestaurantCategory;
+          {required final String categoryName,
+          required final String imageURL,
+          required final List<RestaurantItem> listOfRestaurants}) =
+      _$_RestaurantCategory;
   _RestaurantCategory._() : super._();
 
   factory _RestaurantCategory.fromJson(Map<String, dynamic> json) =
       _$_RestaurantCategory.fromJson;
 
   @override
-  String get categoryName;
+  String get categoryName => throw _privateConstructorUsedError;
   @override
-  String get imageURL;
+  String get imageURL => throw _privateConstructorUsedError;
   @override
-  List<RestaurantItem> get listOfRestaurants;
+  List<RestaurantItem> get listOfRestaurants =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$RestaurantCategoryCopyWith<_RestaurantCategory> get copyWith =>
+  _$$_RestaurantCategoryCopyWith<_$_RestaurantCategory> get copyWith =>
       throw _privateConstructorUsedError;
 }

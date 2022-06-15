@@ -1,5 +1,5 @@
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +9,7 @@ class HelpScreen extends StatefulWidget {
   _HelpScreenState createState() => _HelpScreenState();
 }
 
-class _HelpScreenState extends State<HelpScreen>
-    with SingleTickerProviderStateMixin {
+class _HelpScreenState extends State<HelpScreen> with SingleTickerProviderStateMixin {
   TextStyle helpTitleText = TextStyle(
     color: Colors.black,
     fontSize: 20,
@@ -55,8 +54,7 @@ class _HelpScreenState extends State<HelpScreen>
               RichText(
                   text: TextSpan(children: [
                 TextSpan(
-                    text:
-                        'There are answers to some common questions below. For anything else, email us at ',
+                    text: 'There are answers to some common questions below. For anything else, email us at ',
                     style: helpText),
                 TextSpan(
                     text: "help@itsaboutpeepl.com",
@@ -64,8 +62,8 @@ class _HelpScreenState extends State<HelpScreen>
                     recognizer: TapGestureRecognizer()
                       ..onTap = () async {
                         var url = "mailto:help@itsaboutpeepl.com";
-                        if (await canLaunch(url)) {
-                          await launch(url);
+                        if (await canLaunchUrlString(url)) {
+                          await launchUrlString(url);
                         } else {
                           throw 'Could not launch $url';
                         }
@@ -82,31 +80,26 @@ class _HelpScreenState extends State<HelpScreen>
                   'We are using Stripe, one of the most trusted payment processors in the world. To top up, just tap “Home”, then the menu icon, then “Top up” to add money to your wallet, straight from your credit or debit card.',
                   style: helpText),
               sectionMarginTop,
-              Text(
-                  'My card is not accepted or topping up is not working for me.',
-                  style: helpTitleText),
+              Text('My card is not accepted or topping up is not working for me.', style: helpTitleText),
               paragraphMarginTop,
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(
-                        text: "If this is the case, please contact us at ",
-                        style: helpText),
+                    TextSpan(text: "If this is the case, please contact us at ", style: helpText),
                     TextSpan(
                         text: "help@itsaboutpeepl.com",
                         style: hyperlinkText,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             var url = "mailto:help@itsaboutpeepl.com";
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrlString(url)) {
+                              await launchUrlString(url);
                             } else {
                               throw 'Could not launch $url';
                             }
                           }),
                     TextSpan(
-                        text:
-                            " and we’ll help you top up your wallet with a transfer via your bank’s app or website.",
+                        text: " and we’ll help you top up your wallet with a transfer via your bank’s app or website.",
                         style: helpText)
                   ],
                 ),
@@ -117,8 +110,7 @@ class _HelpScreenState extends State<HelpScreen>
                 style: helpTitleText,
               ),
               paragraphMarginTop,
-              Text(
-                  'Your past orders are shown by heading to ‘orders’ at the top of the ‘Orders’ tab on the app.',
+              Text('Your past orders are shown by heading to ‘orders’ at the top of the ‘Orders’ tab on the app.',
                   style: helpText),
               sectionMarginTop,
               Text("My order hasn't turned up", style: helpTitleText),
@@ -136,16 +128,13 @@ class _HelpScreenState extends State<HelpScreen>
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           var url = "mailto:help@itsaboutpeepl.com";
-                          if (await canLaunch(url)) {
-                            await launch(url);
+                          if (await canLaunchUrlString(url)) {
+                            await launchUrlString(url);
                           } else {
                             throw 'Could not launch $url';
                           }
                         }),
-                  TextSpan(
-                      text:
-                          " and we’ll do our best to put you in touch with the venue.",
-                      style: helpText)
+                  TextSpan(text: " and we’ll do our best to put you in touch with the venue.", style: helpText)
                 ],
               )),
               sectionMarginTop,
@@ -182,8 +171,8 @@ class _HelpScreenState extends State<HelpScreen>
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           var url = "http://itsaboutpeepl.com";
-                          if (await canLaunch(url)) {
-                            await launch(url);
+                          if (await canLaunchUrlString(url)) {
+                            await launchUrlString(url);
                           } else {
                             throw 'Could not launch $url';
                           }
@@ -191,8 +180,7 @@ class _HelpScreenState extends State<HelpScreen>
                 ],
               )),
               sectionMarginTop,
-              Text("What information do you store about me?",
-                  style: helpTitleText),
+              Text("What information do you store about me?", style: helpTitleText),
               paragraphMarginTop,
               Text(
                   "When you provide your email address, phone number, and delivery address as part of your order, we store those details so that we can send them to the relevant restaurant and our delivery partners for delivery of your order. We also store your Peepl wallet ID, so that can match up your order with your payment.",
@@ -210,14 +198,13 @@ class _HelpScreenState extends State<HelpScreen>
                           "Your personal information may be shared with trusted third parties, such as Stripe (in order to process your card payment when topping up your wallet), Twilio (in order to send SMS delivery notifications), and Mailchimp (in order to send email confirmations). ",
                       style: helpText),
                   TextSpan(
-                      text:
-                          "You can read more about how we protect your personal information here.",
+                      text: "You can read more about how we protect your personal information here.",
                       style: hyperlinkText,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           var url = "https://itsaboutpeepl.com/privacy";
-                          if (await canLaunch(url)) {
-                            await launch(url);
+                          if (await canLaunchUrlString(url)) {
+                            await launchUrlString(url);
                           } else {
                             throw 'Could not launch $url';
                           }
@@ -238,8 +225,8 @@ class _HelpScreenState extends State<HelpScreen>
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           var url = "mailto:help@itsaboutpeepl.com";
-                          if (await canLaunch(url)) {
-                            await launch(url);
+                          if (await canLaunchUrlString(url)) {
+                            await launchUrlString(url);
                           } else {
                             throw 'Could not launch $url';
                           }
@@ -247,8 +234,7 @@ class _HelpScreenState extends State<HelpScreen>
                 ],
               )),
               sectionMarginTop,
-              Text("Can I list my own business on Peepl?",
-                  style: helpTitleText),
+              Text("Can I list my own business on Peepl?", style: helpTitleText),
               paragraphMarginTop,
               RichText(
                   text: TextSpan(children: [
@@ -262,16 +248,15 @@ class _HelpScreenState extends State<HelpScreen>
                     recognizer: TapGestureRecognizer()
                       ..onTap = () async {
                         var url = "mailto:help@itsaboutpeepl.com";
-                        if (await canLaunch(url)) {
-                          await launch(url);
+                        if (await canLaunchUrlString(url)) {
+                          await launchUrlString(url);
                         } else {
                           throw 'Could not launch $url';
                         }
                       }),
               ])),
               sectionMarginTop,
-              Text("Something doesn't seem right, how can I send you feedback?",
-                  style: helpTitleText),
+              Text("Something doesn't seem right, how can I send you feedback?", style: helpTitleText),
               paragraphMarginTop,
               RichText(
                 text: TextSpan(
@@ -283,8 +268,8 @@ class _HelpScreenState extends State<HelpScreen>
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             var url = "mailto:help@itsaboutpeepl.com";
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrlString(url)) {
+                              await launchUrlString(url);
                             } else {
                               throw 'Could not launch $url';
                             }

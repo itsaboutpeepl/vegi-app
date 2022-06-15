@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'productOptions.freezed.dart';
 part 'productOptions.g.dart';
 
-@freezed
+@Freezed()
 class ProductOptions with _$ProductOptions {
   const ProductOptions._();
 
@@ -16,6 +16,5 @@ class ProductOptions with _$ProductOptions {
     required bool isAvaliable,
   }) = _ProductOptions;
 
-  factory ProductOptions.fromJson(dynamic json) =>
-      _$ProductOptionsFromJson(json);
+  factory ProductOptions.fromJson(dynamic json) => _$ProductOptionsFromJson(json);
 }

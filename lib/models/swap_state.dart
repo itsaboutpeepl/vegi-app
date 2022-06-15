@@ -6,7 +6,7 @@ part 'swap_state.freezed.dart';
 part 'swap_state.g.dart';
 
 @immutable
-@freezed
+@Freezed()
 class SwapState with _$SwapState {
   const SwapState._();
 
@@ -26,13 +26,11 @@ class SwapState with _$SwapState {
   factory SwapState.fromJson(dynamic json) => _$SwapStateFromJson(json);
 }
 
-class SwapStateConverter
-    implements JsonConverter<SwapState, Map<String, dynamic>?> {
+class SwapStateConverter implements JsonConverter<SwapState, Map<String, dynamic>?> {
   const SwapStateConverter();
 
   @override
-  SwapState fromJson(Map<String, dynamic>? json) =>
-      json != null ? SwapState.fromJson(json) : SwapState.initial();
+  SwapState fromJson(Map<String, dynamic>? json) => json != null ? SwapState.fromJson(json) : SwapState.initial();
 
   @override
   Map<String, dynamic> toJson(SwapState instance) => instance.toJson();

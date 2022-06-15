@@ -27,25 +27,25 @@ class UpdatePostalCodes {
   UpdatePostalCodes(this.postalCodes);
 }
 
-ThunkAction fetchRestaurantCategories() {
-  return (Store store) async {
-    try {
-      List<RestaurantCategory> listOfRestaurantCategories = [
-        restaurantCategory2,
-        restaurantCategory1,
-      ];
+// ThunkAction fetchRestaurantCategories() {
+//   return (Store store) async {
+//     try {
+//       List<RestaurantCategory> listOfRestaurantCategories = [
+//         restaurantCategory2,
+//         restaurantCategory1,
+//       ];
 
-      store.dispatch(UpdateRestaurantCategories(listOfRestaurantCategories: listOfRestaurantCategories));
-    } catch (e, s) {
-      log.error('ERROR - fetchRestaurantCategories $e');
-      await Sentry.captureException(
-        e,
-        stackTrace: s,
-        hint: 'ERROR - fetchRestaurantCategories $e',
-      );
-    }
-  };
-}
+//       store.dispatch(UpdateRestaurantCategories(listOfRestaurantCategories: listOfRestaurantCategories));
+//     } catch (e, s) {
+//       log.error('ERROR - fetchRestaurantCategories $e');
+//       await Sentry.captureException(
+//         e,
+//         stackTrace: s,
+//         hint: 'ERROR - fetchRestaurantCategories $e',
+//       );
+//     }
+//   };
+// }
 
 ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
   return (Store store) async {
@@ -113,7 +113,7 @@ ThunkAction fetchPostalCodes() {
 ThunkAction fetchHomePageData() {
   return (Store store) async {
     try {
-      store.dispatch(fetchRestaurantCategories());
+      //store.dispatch(fetchRestaurantCategories());
       store.dispatch(fetchFeaturedRestaurants());
       store.dispatch(fetchPostalCodes());
     } catch (e, s) {
