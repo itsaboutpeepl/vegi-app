@@ -71,7 +71,7 @@ class _TopupScreenState extends State<TopupScreen> with SingleTickerProviderStat
             Container(
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: Text(
-                I10n.of(context).how_much + ' Topups are limited to £250',
+                'Topups are limited to £250',
                 style: TextStyle(
                   color: Color(
                     0xFF898989,

@@ -133,7 +133,7 @@ class _MintingDialogState extends State<MintingDialog> with SingleTickerProvider
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 500),
                   child: Text(
-                    _isMinting ? "Minting your tokens!" : "Token minting complete!",
+                    _isMinting ? "Adding balance to your wallet, won’t be long" : "Token minting complete!",
                     key: ValueKey(_isMinting),
                     textAlign: TextAlign.center,
                     style: TextStyle(

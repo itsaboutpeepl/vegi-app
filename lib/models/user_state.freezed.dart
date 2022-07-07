@@ -66,6 +66,9 @@ mixin _$UserState {
   WalletModules? get walletModules => throw _privateConstructorUsedError;
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
       throw _privateConstructorUsedError;
+  bool get hasSavedSeedPhrase => throw _privateConstructorUsedError;
+  String get initialLoginDateTime => throw _privateConstructorUsedError;
+  bool get showSeedPhraseBanner => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -122,7 +125,10 @@ abstract class $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true)
           PhoneAuthCredential? credentials,
       WalletModules? walletModules,
-      List<DeliveryAddresses> listOfDeliveryAddresses});
+      List<DeliveryAddresses> listOfDeliveryAddresses,
+      bool hasSavedSeedPhrase,
+      String initialLoginDateTime,
+      bool showSeedPhraseBanner});
 
   $WalletModulesCopyWith<$Res>? get walletModules;
 }
@@ -173,6 +179,9 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
     Object? credentials = freezed,
     Object? walletModules = freezed,
     Object? listOfDeliveryAddresses = freezed,
+    Object? hasSavedSeedPhrase = freezed,
+    Object? initialLoginDateTime = freezed,
+    Object? showSeedPhraseBanner = freezed,
   }) {
     return _then(_value.copyWith(
       installedAt: installedAt == freezed
@@ -319,6 +328,18 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
               as List<DeliveryAddresses>,
+      hasSavedSeedPhrase: hasSavedSeedPhrase == freezed
+          ? _value.hasSavedSeedPhrase
+          : hasSavedSeedPhrase // ignore: cast_nullable_to_non_nullable
+              as bool,
+      initialLoginDateTime: initialLoginDateTime == freezed
+          ? _value.initialLoginDateTime
+          : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      showSeedPhraseBanner: showSeedPhraseBanner == freezed
+          ? _value.showSeedPhraseBanner
+          : showSeedPhraseBanner // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -385,7 +406,10 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true)
           PhoneAuthCredential? credentials,
       WalletModules? walletModules,
-      List<DeliveryAddresses> listOfDeliveryAddresses});
+      List<DeliveryAddresses> listOfDeliveryAddresses,
+      bool hasSavedSeedPhrase,
+      String initialLoginDateTime,
+      bool showSeedPhraseBanner});
 
   @override
   $WalletModulesCopyWith<$Res>? get walletModules;
@@ -439,6 +463,9 @@ class __$$_UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
     Object? credentials = freezed,
     Object? walletModules = freezed,
     Object? listOfDeliveryAddresses = freezed,
+    Object? hasSavedSeedPhrase = freezed,
+    Object? initialLoginDateTime = freezed,
+    Object? showSeedPhraseBanner = freezed,
   }) {
     return _then(_$_UserState(
       installedAt: installedAt == freezed
@@ -585,6 +612,18 @@ class __$$_UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
               as List<DeliveryAddresses>,
+      hasSavedSeedPhrase: hasSavedSeedPhrase == freezed
+          ? _value.hasSavedSeedPhrase
+          : hasSavedSeedPhrase // ignore: cast_nullable_to_non_nullable
+              as bool,
+      initialLoginDateTime: initialLoginDateTime == freezed
+          ? _value.initialLoginDateTime
+          : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      showSeedPhraseBanner: showSeedPhraseBanner == freezed
+          ? _value.showSeedPhraseBanner
+          : showSeedPhraseBanner // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -638,7 +677,10 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       @JsonKey(ignore: true)
           this.credentials = null,
       this.walletModules,
-      this.listOfDeliveryAddresses = const []})
+      this.listOfDeliveryAddresses = const [],
+      this.hasSavedSeedPhrase = false,
+      this.initialLoginDateTime = "",
+      this.showSeedPhraseBanner = false})
       : super._();
 
   factory _$_UserState.fromJson(Map<String, dynamic> json) =>
@@ -750,10 +792,19 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final List<DeliveryAddresses> listOfDeliveryAddresses;
+  @override
+  @JsonKey()
+  final bool hasSavedSeedPhrase;
+  @override
+  @JsonKey()
+  final String initialLoginDateTime;
+  @override
+  @JsonKey()
+  final bool showSeedPhraseBanner;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials, walletModules: $walletModules, listOfDeliveryAddresses: $listOfDeliveryAddresses)';
+    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials, walletModules: $walletModules, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner)';
   }
 
   @override
@@ -799,7 +850,10 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('credentials', credentials))
       ..add(DiagnosticsProperty('walletModules', walletModules))
       ..add(DiagnosticsProperty(
-          'listOfDeliveryAddresses', listOfDeliveryAddresses));
+          'listOfDeliveryAddresses', listOfDeliveryAddresses))
+      ..add(DiagnosticsProperty('hasSavedSeedPhrase', hasSavedSeedPhrase))
+      ..add(DiagnosticsProperty('initialLoginDateTime', initialLoginDateTime))
+      ..add(DiagnosticsProperty('showSeedPhraseBanner', showSeedPhraseBanner));
   }
 
   @override
@@ -866,7 +920,13 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             const DeepCollectionEquality()
                 .equals(other.walletModules, walletModules) &&
             const DeepCollectionEquality().equals(
-                other.listOfDeliveryAddresses, listOfDeliveryAddresses));
+                other.listOfDeliveryAddresses, listOfDeliveryAddresses) &&
+            const DeepCollectionEquality()
+                .equals(other.hasSavedSeedPhrase, hasSavedSeedPhrase) &&
+            const DeepCollectionEquality()
+                .equals(other.initialLoginDateTime, initialLoginDateTime) &&
+            const DeepCollectionEquality()
+                .equals(other.showSeedPhraseBanner, showSeedPhraseBanner));
   }
 
   @JsonKey(ignore: true)
@@ -908,7 +968,10 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         const DeepCollectionEquality().hash(contacts),
         const DeepCollectionEquality().hash(credentials),
         const DeepCollectionEquality().hash(walletModules),
-        const DeepCollectionEquality().hash(listOfDeliveryAddresses)
+        const DeepCollectionEquality().hash(listOfDeliveryAddresses),
+        const DeepCollectionEquality().hash(hasSavedSeedPhrase),
+        const DeepCollectionEquality().hash(initialLoginDateTime),
+        const DeepCollectionEquality().hash(showSeedPhraseBanner)
       ]);
 
   @JsonKey(ignore: true)
@@ -968,7 +1031,10 @@ abstract class _UserState extends UserState {
       @JsonKey(ignore: true)
           final PhoneAuthCredential? credentials,
       final WalletModules? walletModules,
-      final List<DeliveryAddresses> listOfDeliveryAddresses}) = _$_UserState;
+      final List<DeliveryAddresses> listOfDeliveryAddresses,
+      final bool hasSavedSeedPhrase,
+      final String initialLoginDateTime,
+      final bool showSeedPhraseBanner}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
@@ -1056,6 +1122,12 @@ abstract class _UserState extends UserState {
   @override
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
       throw _privateConstructorUsedError;
+  @override
+  bool get hasSavedSeedPhrase => throw _privateConstructorUsedError;
+  @override
+  String get initialLoginDateTime => throw _privateConstructorUsedError;
+  @override
+  bool get showSeedPhraseBanner => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

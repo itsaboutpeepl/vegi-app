@@ -541,7 +541,7 @@ class _$_UserCartState extends _UserCartState {
       @JsonKey(ignore: true) this.deliveryCharge = 0,
       @JsonKey(ignore: true) this.collectionCharge = 0,
       @JsonKey(ignore: true) this.fulfilmentMethod = FulfilmentMethod.delivery,
-      @JsonKey(ignore: true) this.isDelivery = true})
+      @JsonKey(ignore: true) this.isDelivery = false})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>

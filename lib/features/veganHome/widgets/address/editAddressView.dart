@@ -46,188 +46,197 @@ class _AddressViewState extends State<AddressView> {
       converter: DeliveryAddressesVM.fromStore,
       builder: (context, viewmodel) {
         return Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: FormBuilder(
-                  key: _addressFormKey,
-                  autovalidateMode: AutovalidateMode.disabled,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FormBuilderTypeAhead(
-                          controller: _typeAheadController,
-                          initialValue:
-                              _isExistingAddress ? Suggestion("", widget.existingAddress!.addressLine1) : null,
-                          name: 'addressLine1',
-                          hideOnEmpty: true,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
+          padding: const EdgeInsets.all(20),
+          child: FormBuilder(
+            key: _addressFormKey,
+            autovalidateMode: AutovalidateMode.disabled,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FormBuilderTextField(
+                    initialValue: _isExistingAddress ? widget.existingAddress!.label : null,
+                    name: 'label',
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                      ),
+                      fillColor: Colors.transparent,
+                      labelText: 'Address Label',
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  FormBuilderTypeAhead(
+                    controller: _typeAheadController,
+                    initialValue: _isExistingAddress ? Suggestion("", widget.existingAddress!.addressLine1) : null,
+                    name: 'addressLine1',
+                    hideOnEmpty: true,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                      ),
+                      fillColor: Colors.transparent,
+                      labelText: 'Address Line 1',
+                    ),
+                    onSaved: (dynamic suggestion) {
+                      if (suggestion == null) {
+                        _addressFormKey.currentState!.setInternalFieldValue(
+                            "addressLine1Internal", "${_typeAheadController.text}",
+                            isSetState: false);
+                      }
+                    },
+                    onSuggestionSelected: (dynamic suggestion) {
+                      if (suggestion is Suggestion)
+                        _placeApiProvider.getPlaceDetailFromId(suggestion.placeId).then((Place place) {
+                          _addressFormKey.currentState!.setInternalFieldValue(
+                              "addressLine1Internal", "${place.streetNumber} ${place.street}",
+                              isSetState: false);
+                          _addressFormKey.currentState!.fields["townCity"]!.didChange(place.city);
+                          _addressFormKey.currentState!.fields["postalCode"]!.didChange(place.zipCode);
+                        });
+                    },
+                    itemBuilder: (context, dynamic suggestion) {
+                      return ListTile(title: Text(suggestion.description));
+                    },
+                    selectionToTextTransformer: (dynamic suggestion) {
+                      if (suggestion is Suggestion) return suggestion.description;
+                      return "";
+                    },
+                    loadingBuilder: (_) => CircularProgressIndicator(
+                      color: themeShade600,
+                    ),
+                    suggestionsCallback: (query) {
+                      if (query.isNotEmpty) {
+                        return _placeApiProvider.fetchSuggestions(query);
+                      } else {
+                        return [];
+                      }
+                    },
+                    valueTransformer: (dynamic suggestion) =>
+                        suggestion == null && suggestion is Suggestion? ? "" : suggestion.description,
+                  ),
+                  FormBuilderTextField(
+                    initialValue: _isExistingAddress ? widget.existingAddress!.addressLine2 : null,
+                    name: 'addressLine2',
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                      ),
+                      fillColor: Colors.transparent,
+                      labelText: 'Address Line 2',
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: FormBuilderTextField(
+                            initialValue: _isExistingAddress ? widget.existingAddress!.townCity : null,
+                            name: 'townCity',
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: themeShade300, width: 3.0),
+                              ),
+                              fillColor: Colors.transparent,
+                              labelText: 'Town/City',
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: themeShade300, width: 3.0),
+                            keyboardType: TextInputType.text,
+                            validator: FormBuilderValidators.required()),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: FormBuilderTextField(
+                            initialValue: _isExistingAddress ? widget.existingAddress!.postalCode : null,
+                            name: 'postalCode',
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: themeShade300, width: 3.0),
+                              ),
+                              fillColor: Colors.transparent,
+                              labelText: 'Postal Code',
                             ),
-                            fillColor: Colors.transparent,
-                            labelText: 'Address Line 1',
-                          ),
-                          onSaved: (dynamic suggestion) {
-                            if (suggestion == null) {
-                              _addressFormKey.currentState!.setInternalFieldValue(
-                                  "addressLine1Internal", "${_typeAheadController.text}",
-                                  isSetState: false);
-                            }
-                          },
-                          onSuggestionSelected: (dynamic suggestion) {
-                            if (suggestion is Suggestion)
-                              _placeApiProvider.getPlaceDetailFromId(suggestion.placeId).then((Place place) {
-                                _addressFormKey.currentState!.setInternalFieldValue(
-                                    "addressLine1Internal", "${place.streetNumber} ${place.street}",
-                                    isSetState: false);
-                                _addressFormKey.currentState!.fields["townCity"]!.didChange(place.city);
-                                _addressFormKey.currentState!.fields["postalCode"]!.didChange(place.zipCode);
-                              });
-                          },
-                          itemBuilder: (context, dynamic suggestion) {
-                            return ListTile(title: Text(suggestion.description));
-                          },
-                          selectionToTextTransformer: (dynamic suggestion) {
-                            if (suggestion is Suggestion) return suggestion.description;
-                            return "";
-                          },
-                          loadingBuilder: (_) => CircularProgressIndicator(
-                            color: themeShade600,
-                          ),
-                          suggestionsCallback: (query) {
-                            if (query.isNotEmpty) {
-                              return _placeApiProvider.fetchSuggestions(query);
-                            } else {
-                              return [];
-                            }
-                          },
-                          valueTransformer: (dynamic suggestion) =>
-                              suggestion == null && suggestion is Suggestion? ? "" : suggestion.description,
-                        ),
-                        FormBuilderTextField(
-                          initialValue: _isExistingAddress ? widget.existingAddress!.addressLine2 : null,
-                          name: 'addressLine2',
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: themeShade300, width: 3.0),
-                            ),
-                            fillColor: Colors.transparent,
-                            labelText: 'Address Line 2',
-                          ),
-                          keyboardType: TextInputType.text,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: FormBuilderTextField(
-                                  initialValue: _isExistingAddress ? widget.existingAddress!.townCity : null,
-                                  name: 'townCity',
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: themeShade300, width: 3.0),
-                                    ),
-                                    fillColor: Colors.transparent,
-                                    labelText: 'Town/City',
-                                  ),
-                                  keyboardType: TextInputType.text,
-                                  validator: FormBuilderValidators.required()),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: FormBuilderTextField(
-                                  initialValue: _isExistingAddress ? widget.existingAddress!.postalCode : null,
-                                  name: 'postalCode',
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: themeShade300, width: 3.0),
-                                    ),
-                                    fillColor: Colors.transparent,
-                                    labelText: 'Postal Code',
-                                  ),
-                                  keyboardType: TextInputType.text,
-                                  validator: FormBuilderValidators.required()),
-                            ),
-                          ],
-                        ),
-                        FormBuilderTextField(
-                          initialValue: _isExistingAddress ? widget.existingAddress!.phoneNumber : null,
-                          name: 'phoneNumber',
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: themeShade300, width: 3.0),
-                            ),
-                            fillColor: Colors.transparent,
-                            labelText: 'Phone Number',
-                          ),
-                          keyboardType: TextInputType.phone,
-                          validator: FormBuilderValidators.compose(
-                            [FormBuilderValidators.numeric(), FormBuilderValidators.required()],
-                          ),
-                        ),
-                        ElevatedButton(
+                            keyboardType: TextInputType.text,
+                            validator: FormBuilderValidators.required()),
+                      ),
+                    ],
+                  ),
+                  FormBuilderTextField(
+                    initialValue: _isExistingAddress ? widget.existingAddress!.phoneNumber : null,
+                    name: 'phoneNumber',
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                      ),
+                      fillColor: Colors.transparent,
+                      labelText: 'Phone Number',
+                    ),
+                    keyboardType: TextInputType.phone,
+                    validator: FormBuilderValidators.compose(
+                      [FormBuilderValidators.numeric(), FormBuilderValidators.required()],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      onPrimary: Colors.grey[800],
+                      primary: themeShade300,
+                      textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+                      fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
+                    ),
+                    onPressed: () {
+                      if (_addressFormKey.currentState!.saveAndValidate()) {
+                        _tryFetchMapLocation().then((LatLng? value) {
+                          viewmodel.addDeliveryAddress(saveDeliveryAddress(position: value));
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                    child: const Text('Save Address'),
+                  ),
+                  _isExistingAddress
+                      ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             onPrimary: Colors.grey[800],
-                            primary: themeShade300,
+                            primary: Colors.red,
                             textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
                             fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
                           ),
                           onPressed: () {
-                            if (_addressFormKey.currentState!.saveAndValidate()) {
-                              _tryFetchMapLocation().then((LatLng? value) {
-                                viewmodel.addDeliveryAddress(saveDeliveryAddress(position: value));
-                                Navigator.pop(context);
-                              });
-                            }
+                            viewmodel.deleteDeliveryAddress(widget.existingAddress!);
+                            Navigator.pop(context);
                           },
-                          child: const Text('Save Address'),
-                        ),
-                        _isExistingAddress
-                            ? ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  onPrimary: Colors.grey[800],
-                                  primary: Colors.red,
-                                  textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-                                  fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
-                                ),
-                                onPressed: () {
-                                  viewmodel.deleteDeliveryAddress(widget.existingAddress!);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  'Delete Address',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            : SizedBox.shrink(),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
+                          child: const Text(
+                            'Delete Address',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                ],
+              ),
+            ),
           ),
         );
       },
@@ -258,6 +267,7 @@ class _AddressViewState extends State<AddressView> {
       internalID: _isExistingAddress
           ? widget.existingAddress!.internalID
           : Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
+      label: formValue['label'],
       addressLine1: formValue['addressLine1Internal'] ?? formValue['addressLine1'],
       addressLine2: formValue['addressLine2'] ?? "",
       townCity: formValue['townCity'],

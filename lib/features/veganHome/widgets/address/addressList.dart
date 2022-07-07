@@ -16,7 +16,7 @@ class AddressList extends StatefulWidget {
 }
 
 class _AddressListState extends State<AddressList> {
-  late PageController _pageController = PageController(viewportFraction: 0.9, initialPage: 1);
+  late PageController _pageController = PageController(viewportFraction: 0.9, initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,9 @@ class _AddressListState extends State<AddressList> {
         } else {
           store.dispatch(UpdateSelectedDeliveryAddress(store.state.userState.listOfDeliveryAddresses[0]));
         }
-        store.dispatch(SetFulfilmentMethod(FulfilmentMethod.delivery));
+        store.state.cartState.isDelivery
+            ? store.dispatch(SetFulfilmentMethod(FulfilmentMethod.delivery))
+            : store.dispatch(SetFulfilmentMethod(FulfilmentMethod.collection));
       },
       builder: (context, viewmodel) {
         return SizedBox(
@@ -45,7 +47,7 @@ class _AddressListState extends State<AddressList> {
                   },
                   itemCount: viewmodel.listOfDeliveryAddresses.length + 1,
                   onPageChanged: (index) {
-                    if (index == viewmodel.listOfDeliveryAddresses.length + 1) {
+                    if (index == viewmodel.listOfDeliveryAddresses.length) {
                       viewmodel.updateSelectedDeliveryAddress(null);
                       viewmodel.updateFulfilmentMethod(FulfilmentMethod.none);
                     } else {

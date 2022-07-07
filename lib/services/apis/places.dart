@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:http/http.dart';
+import 'dart:io';
 
 class Place {
   String streetNumber;
@@ -40,7 +41,7 @@ class PlaceApiProvider {
   PlaceApiProvider(this.sessionToken);
 
   final sessionToken;
-  final apiKey = dotenv.env['MAP_API_KEY'] ?? "";
+  final apiKey = Platform.isIOS ? dotenv.env['MAP_API_KEY_IOS'] ?? "" : dotenv.env['MAP_API_KEY_ANDROID'] ?? "";
   final headers = GoogleApiHeaders().getHeaders();
 
   Future<List<Suggestion>> fetchSuggestions(String input) async {

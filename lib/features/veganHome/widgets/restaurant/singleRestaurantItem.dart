@@ -97,41 +97,54 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                     SizedBox(
                       width: 10,
                     ),
-                    widget.restaurantItem.rating != 0
+                    widget.restaurantItem.isVegan
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey[400]!),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
                               height: 25,
+                              width: 25,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                                child: Center(
-                                  child: Row(
-                                    children: List.generate(
-                                      5,
-                                      (index) {
-                                        return index < widget.restaurantItem.rating
-                                            ? Icon(
-                                                Icons.star,
-                                                size: 18,
-                                                color: Colors.grey[600],
-                                              )
-                                            : Icon(
-                                                Icons.star_outline,
-                                                size: 18,
-                                                color: Colors.grey[600],
-                                              );
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                padding: const EdgeInsets.all(2),
+                                child: Image.asset("assets/images/vegan-only-icon.png"),
                               ),
                             ),
                           )
                         : SizedBox.shrink(),
+                    // widget.restaurantItem.rating != 0
+                    //     ? ClipRRect(
+                    //         borderRadius: BorderRadius.circular(4),
+                    //         child: Container(
+                    //           decoration: BoxDecoration(
+                    //             border: Border.all(color: Colors.grey[400]!),
+                    //             borderRadius: BorderRadius.circular(4),
+                    //           ),
+                    //           height: 25,
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    //             child: Center(
+                    //               child: Row(
+                    //                 children: List.generate(
+                    //                   5,
+                    //                   (index) {
+                    //                     return index < widget.restaurantItem.rating
+                    //                         ? Icon(
+                    //                             Icons.star,
+                    //                             size: 18,
+                    //                             color: Colors.grey[600],
+                    //                           )
+                    //                         : Icon(
+                    //                             Icons.star_outline,
+                    //                             size: 18,
+                    //                             color: Colors.grey[600],
+                    //                           );
+                    //                   },
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       )
+                    //     : SizedBox.shrink(),
                   ],
                 )
               ],

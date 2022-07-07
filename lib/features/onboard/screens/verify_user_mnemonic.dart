@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/account/screens/verify_mnemonic.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
@@ -86,10 +85,11 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: PrimaryButton(
-                  label: "Next",
+                  label: "Verify",
                   onPressed: () {
+                    viewModel.finishSaveSeedPhrase();
                     if (_formKey.currentState!.validate()) {
-                      context.router.push(SignUpScreen());
+                      context.router.popUntilRoot();
                     }
                   },
                 ),

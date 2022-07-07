@@ -66,6 +66,9 @@ class UserState with _$UserState {
     @Default(null) @JsonKey(ignore: true) PhoneAuthCredential? credentials,
     WalletModules? walletModules,
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
+    @Default(false) bool hasSavedSeedPhrase,
+    @Default("") String initialLoginDateTime,
+    @Default(false) bool showSeedPhraseBanner,
   }) = _UserState;
 
   factory UserState.initial() => UserState(

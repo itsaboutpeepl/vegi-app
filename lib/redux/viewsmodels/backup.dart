@@ -7,18 +7,25 @@ import 'package:redux/redux.dart';
 class BackupViewModel extends Equatable {
   final UserState user;
   final Function() backupWallet;
+  final Function() finishSaveSeedPhrase;
 
   BackupViewModel({
     required this.user,
     required this.backupWallet,
+    required this.finishSaveSeedPhrase,
   });
 
   static BackupViewModel fromStore(Store<AppState> store) {
     return BackupViewModel(
-        user: store.state.userState,
-        backupWallet: () {
-          store.dispatch(backupWalletCall());
-        });
+      user: store.state.userState,
+      backupWallet: () {
+        store.dispatch(backupWalletCall());
+      },
+      finishSaveSeedPhrase: () {
+        store.dispatch(SetShowSeedPhraseBanner(false));
+        store.dispatch(SetHasSavedSeedPhrase(true));
+      },
+    );
   }
 
   @override

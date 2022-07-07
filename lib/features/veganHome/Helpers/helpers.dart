@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:platform/platform.dart';
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -15,7 +16,11 @@ String parseHtmlString(String htmlString) {
 }
 
 String mapPreviewImage({required double latitude, required double longitude}) {
-  return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=800x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=${dotenv.env['MAP_API_KEY']!}&style=feature:|element:|visibility:simplified';
+  final _apiKey = Platform.operatingSystemValues == Platform.iOS
+      ? dotenv.env['MAP_API_KEY_IOS'] ?? ""
+      : dotenv.env['MAP_API_KEY_ANDROID'] ?? "";
+
+  return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=800x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=$_apiKey&style=feature:|element:|visibility:simplified';
 }
 
 String mapToString(Map<String, String> map) {
@@ -61,6 +66,10 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
     sanitizedOrderObject["paymentStatus"] =
         singleOrder['paymentStatus'][0].toUpperCase() + singleOrder['paymentStatus'].substring(1);
     sanitizedOrderObject['rewardsIssued'] = singleOrder['rewardsIssued'];
+    sanitizedOrderObject["restaurantName"] = singleOrder['vendor']['name'];
+    sanitizedOrderObject["restaurantPhoneNumber"] = singleOrder['vendor']['phoneNumber'];
+    sanitizedOrderObject['restaurantAccepted'] = singleOrder['restaurantAccepted'];
+    sanitizedOrderObject["isCollection"] = singleOrder['fulfilmentMethod'] == 2 ? true : false;
 
     List<Map<String, dynamic>> listOfProductsOrdered = [];
     //Products in Order
@@ -108,3 +117,19 @@ bool shouldEndOngoing(Map<String, String> selectedSlot) {
     return false;
   }
 }
+
+double getPPLValueFromPence(num penceAmount) {
+  return penceAmount / 10;
+}
+
+double getPPLRewardsFromPence(num penceAmount) {
+  return getPPLValueFromPence((penceAmount * 5) / 100);
+}
+
+// Conversion
+// 1000GBP => 100,000 => 10,000 PPL Tokens
+// 1GBP => 100 pence => 10 PPL tokens
+
+// Reward Conversion Rate (5% reward)
+// 1GBP => 100 pence => 5 pence => 0.5 PPL
+// 1000GBP => 100,000 pence => 5000 pence => 500 PPL Tokens 

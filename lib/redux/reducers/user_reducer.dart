@@ -21,14 +21,16 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, JustInstalled>(_justInstalled),
   TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess),
   TypedReducer<UserState, SetSecurityType>(_setSecurityType),
-  TypedReducer<UserState, ReceiveBackupDialogShowed>(
-      _receiveBackupDialogShowed),
+  TypedReducer<UserState, ReceiveBackupDialogShowed>(_receiveBackupDialogShowed),
   TypedReducer<UserState, DepositBannerShowed>(_depositBannerShowed),
   TypedReducer<UserState, HomeBackupDialogShowed>(_homeBackupDialogShowed),
   TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed),
   TypedReducer<UserState, UpdateCurrency>(_updateCurrency),
   TypedReducer<UserState, UpdateLocale>(_updateLocale),
   TypedReducer<UserState, AddDeliveryAddress>(_addDeliveryAddress),
+  TypedReducer<UserState, SetInitialLoginDateTime>(_setInitialLoginDateTime),
+  TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner),
+  TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
 ]);
 
 UserState _updateLocale(UserState state, UpdateLocale action) {
@@ -39,8 +41,7 @@ UserState _updateCurrency(UserState state, UpdateCurrency action) {
   return state.copyWith(currency: action.currency);
 }
 
-UserState _receiveBackupDialogShowed(
-    UserState state, ReceiveBackupDialogShowed action) {
+UserState _receiveBackupDialogShowed(UserState state, ReceiveBackupDialogShowed action) {
   return state.copyWith(receiveBackupDialogShowed: true);
 }
 
@@ -48,8 +49,7 @@ UserState _depositBannerShowed(UserState state, DepositBannerShowed action) {
   return state.copyWith(depositBannerShowed: true);
 }
 
-UserState _homeBackupDialogShowed(
-    UserState state, HomeBackupDialogShowed action) {
+UserState _homeBackupDialogShowed(UserState state, HomeBackupDialogShowed action) {
   return state.copyWith(homeBackupDialogShowed: true);
 }
 
@@ -176,4 +176,16 @@ UserState _deviceIdSuccess(UserState state, DeviceIdSuccess action) {
 
 UserState _addDeliveryAddress(UserState state, AddDeliveryAddress action) {
   return state.copyWith(listOfDeliveryAddresses: action.listOfAddresses);
+}
+
+UserState _setInitialLoginDateTime(UserState state, SetInitialLoginDateTime action) {
+  return state.copyWith(initialLoginDateTime: action.initialLoginDateTime);
+}
+
+UserState _setShowSeedPhraseBanner(UserState state, SetShowSeedPhraseBanner action) {
+  return state.copyWith(showSeedPhraseBanner: action.showSeedPhraseBanner);
+}
+
+UserState _setHasSavedSeedPhrase(UserState state, SetHasSavedSeedPhrase action) {
+  return state.copyWith(hasSavedSeedPhrase: action.hasSavedSeedPhrase);
 }

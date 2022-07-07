@@ -8,20 +8,20 @@ import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 
 RestaurantItem restaurantItem1 = new RestaurantItem(
-  restaurantID: "restaurantID1",
-  name: "Da Cimino",
-  imageURL: "https://cdn.pixabay.com/photo/2018/03/21/06/54/food-3245765_1280.jpg",
-  category: "Bakery",
-  costLevel: 4,
-  phoneNumber: "231321",
-  description: "adsdasddasd",
-  status: "active",
-  deliveryRestrictionDetails: [],
-  rating: 3,
-  address: demoAddress,
-  listOfMenuItems: [bagel1, bagel3, bagel2],
-  walletAddress: "",
-);
+    restaurantID: "restaurantID1",
+    name: "Da Cimino",
+    imageURL: "https://cdn.pixabay.com/photo/2018/03/21/06/54/food-3245765_1280.jpg",
+    category: "Bakery",
+    costLevel: 4,
+    phoneNumber: "231321",
+    description: "adsdasddasd",
+    status: "active",
+    deliveryRestrictionDetails: [],
+    rating: 3,
+    address: demoAddress,
+    listOfMenuItems: [bagel1, bagel3, bagel2],
+    walletAddress: "",
+    isVegan: false);
 
 RestaurantItem restaurantItem2 = new RestaurantItem(
   restaurantID: "restaurantID2",
@@ -37,6 +37,7 @@ RestaurantItem restaurantItem2 = new RestaurantItem(
   address: demoAddress,
   listOfMenuItems: [bagel1, bagel2, bagel3],
   walletAddress: "",
+  isVegan: true,
 );
 
 RestaurantItem restaurantItem3 = new RestaurantItem(
@@ -54,6 +55,7 @@ RestaurantItem restaurantItem3 = new RestaurantItem(
   address: demoAddress,
   listOfMenuItems: [bagel3, bagel2, bagel1],
   walletAddress: "",
+  isVegan: false,
 );
 
 DeliveryAddresses demoAddress = new DeliveryAddresses(

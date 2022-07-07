@@ -48,24 +48,18 @@ class _TopUpFailedState extends State<TopUpFailed> with SingleTickerProviderStat
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'Aww Snap 😑',
+                'Topup Cancelled',
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
               SizedBox(height: 20.0),
               Text(
-                'Transaction Failed.',
+                "If you didn't mean to cancel your top up, please try again or contact your financial provider if unsuccessful",
                 style: TextStyle(
                   fontSize: 20,
                 ),
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                'Please check with your financial provider, or use a different card.',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),

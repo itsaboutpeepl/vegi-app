@@ -1,7 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
+import 'package:vegan_liverpool/features/onboard/screens/show_user_mnemonic.dart';
+import 'package:vegan_liverpool/features/onboard/screens/verify_user_mnemonic.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/aboutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/allOrdersPage.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/faqScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/preparingOrderScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/scheduledOrdersPage.dart';
@@ -65,11 +69,31 @@ const veganHomeTab = AutoRoute(
       name: 'ScheduledOrdersPage',
       guards: [AuthGuard],
     ),
+    AutoRoute(
+      page: FAQScreen,
+      name: 'FAQScreen',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: AboutScreen,
+      name: 'aboutScreen',
+      guards: [AuthGuard],
+    ),
     CustomRoute(
       page: PreparingOrderPage,
       name: 'PreparingOrderPage',
       guards: [AuthGuard],
       transitionsBuilder: TransitionsBuilders.slideBottom,
-    )
+    ),
+    AutoRoute(
+      page: ShowUserMnemonicScreen,
+      name: 'showUserMnemonic',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: VerifyUserMnemonic,
+      name: 'verifyUserMnemonic',
+      guards: [AuthGuard],
+    ),
   ],
 );

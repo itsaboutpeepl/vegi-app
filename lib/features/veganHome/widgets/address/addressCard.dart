@@ -49,7 +49,8 @@ class _AddressCardState extends State<AddressCard> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('${widget.address.addressLine1}, \n${widget.address.postalCode}'),
+                          child: Text(
+                              '${widget.address.label ?? widget.address.addressLine1}, \n${widget.address.postalCode}'),
                         ),
                         Spacer(),
                         CircleAvatar(

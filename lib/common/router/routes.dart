@@ -4,8 +4,6 @@ import 'package:vegan_liverpool/features/account/router/router.dart';
 import 'package:vegan_liverpool/features/buy/router/router.dart';
 import 'package:vegan_liverpool/features/contacts/router/router.dart';
 import 'package:vegan_liverpool/features/home/router/router.dart';
-import 'package:vegan_liverpool/features/onboard/screens/show_user_mnemonic.dart';
-import 'package:vegan_liverpool/features/onboard/screens/verify_user_mnemonic.dart';
 import 'package:vegan_liverpool/features/screens/main_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/restore_wallet_screen.dart';
@@ -27,8 +25,6 @@ export 'routes.gr.dart';
     AutoRoute(page: SplashScreen, initial: true),
     AutoRoute(page: ChooseSecurityOption),
     AutoRoute(page: PinCodeScreen),
-    AutoRoute(page: ShowUserMnemonicScreen),
-    AutoRoute(page: VerifyUserMnemonic),
     AutoRoute(page: RestoreFromBackupScreen),
     AutoRoute(page: OnBoardScreen),
     AutoRoute(page: SignUpScreen),

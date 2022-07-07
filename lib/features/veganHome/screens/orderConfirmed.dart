@@ -53,13 +53,17 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
         final OrderDetails orderDetails = OrderDetails(
           selectedSlot: store.state.cartState.selectedTimeSlot,
           isDelivery: store.state.cartState.isDelivery,
-          orderAddress: store.state.cartState.selectedDeliveryAddress!,
+          orderAddress: store.state.cartState.isDelivery
+              ? store.state.cartState.selectedDeliveryAddress!
+              : store.state.cartState.restaurantAddress!,
           restaurantName: store.state.cartState.restaurantName,
           cartItems: store.state.cartState.cartItems,
           cartTotal: store.state.cartState.cartTotal,
           orderID: store.state.cartState.orderID,
           userName: store.state.userState.displayName,
-          phoneNumber: store.state.cartState.selectedDeliveryAddress!.phoneNumber ?? "",
+          phoneNumber: store.state.cartState.isDelivery
+              ? store.state.cartState.selectedDeliveryAddress!.phoneNumber ?? ""
+              : store.state.cartState.restaurantAddress!.phoneNumber ?? "",
           GBPxAmountPaid: store.state.cartState.selectedGBPxAmount,
           PPLAmountPaid: store.state.cartState.selectedPPLAmount,
         );
@@ -94,7 +98,12 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          Image.asset("assets/images/order-confirmed.png"),
+                          viewmodel.isDelivery
+                              ? Image.asset("assets/images/order-confirmed.png")
+                              : Image.asset(
+                                  "assets/images/order-confirmed-collection.png",
+                                  width: MediaQuery.of(context).size.width * 0.6,
+                                ),
                           ConfettiWidget(
                             confettiController: _confettiController,
                             blastDirectionality: BlastDirectionality.explosive,
@@ -131,10 +140,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                         height: 5,
                       ),
                       Text(
-                        "Your order #${viewmodel.orderID} has been paid. Once the order has been confirmed by the restaurant, " +
-                            (viewmodel.isDelivery
-                                ? "it will be delivered by Agile Liverpool!"
-                                : "it can be collected from the restaurant!"),
+                        "Your order #${viewmodel.orderID} has been received and will be confirmed shortly. We'll send you a text with an update once they respond! \n Thank you for ordering with vegi 💚",
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
@@ -211,7 +217,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: "${viewmodel.GBPxAmountPaid.toStringAsFixed(2)} GBPx\n",
+                                            text: "${(viewmodel.GBPxAmountPaid / 100).toStringAsFixed(2)} GBPx\n",
                                           ),
                                           TextSpan(
                                             text: "${viewmodel.PPLAmountPaid.toStringAsFixed(2)} ",
@@ -223,7 +229,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: "\n${(viewmodel.GBPxAmountPaid * 5).toStringAsFixed(2)} ",
+                                            text:
+                                                "\n${getPPLRewardsFromPence(viewmodel.GBPxAmountPaid).toStringAsFixed(2)} ",
                                           ),
                                           WidgetSpan(
                                             child: Image.asset(

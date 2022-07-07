@@ -26,9 +26,7 @@ class _ToteScreenState extends State<ToteScreen> {
       converter: UserCartViewModel.fromStore,
       distinct: true,
       onInit: (store) {
-        store.state.cartState.restaurantID != ""
-            ? store.dispatch(getFullfillmentMethods())
-            : null;
+        store.state.cartState.restaurantID != "" ? store.dispatch(getFullfillmentMethods()) : null;
       },
       builder: (_, viewmodel) {
         return Scaffold(
@@ -80,13 +78,11 @@ class _ToteScreenState extends State<ToteScreen> {
                             cFPrice(viewmodel.cartTotal),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                             child: ShimmerButton(
                               baseColor: themeShade400,
                               highlightColor: themeShade300,
-                              buttonAction: () =>
-                                  context.router.push(CheckoutScreen()),
+                              buttonAction: () => context.router.push(CheckoutScreen()),
                               buttonContent: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -117,9 +113,8 @@ class _ToteScreenState extends State<ToteScreen> {
                 )
               : EmptyStatePage(
                   emoji: "😐",
-                  title: "Pretty empty here, isn't it?",
-                  subtitle:
-                      "Try adding an item from one of our amazing restauarants to fill this page up!",
+                  title: "No items in your bag… yet!",
+                  subtitle: "Try adding an item from one of our amazing restauarants to fill this page up!",
                 ),
         );
       },

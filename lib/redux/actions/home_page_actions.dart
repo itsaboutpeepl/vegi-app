@@ -1,6 +1,7 @@
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -116,6 +117,7 @@ ThunkAction fetchHomePageData() {
       //store.dispatch(fetchRestaurantCategories());
       store.dispatch(fetchFeaturedRestaurants());
       store.dispatch(fetchPostalCodes());
+      store.dispatch(checkForSavedSeedPhrase());
     } catch (e, s) {
       log.error('ERROR - fetchHomePageData $e');
       await Sentry.captureException(

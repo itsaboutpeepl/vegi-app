@@ -35,6 +35,7 @@ mixin _$RestaurantItem {
       throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  bool get isVegan => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,7 +61,8 @@ abstract class $RestaurantItemCopyWith<$Res> {
       DeliveryAddresses address,
       List<RestaurantMenuItem> listOfMenuItems,
       String walletAddress,
-      String status});
+      String status,
+      bool isVegan});
 
   $DeliveryAddressesCopyWith<$Res> get address;
 }
@@ -89,6 +91,7 @@ class _$RestaurantItemCopyWithImpl<$Res>
     Object? listOfMenuItems = freezed,
     Object? walletAddress = freezed,
     Object? status = freezed,
+    Object? isVegan = freezed,
   }) {
     return _then(_value.copyWith(
       restaurantID: restaurantID == freezed
@@ -143,6 +146,10 @@ class _$RestaurantItemCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
+      isVegan: isVegan == freezed
+          ? _value.isVegan
+          : isVegan // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -174,7 +181,8 @@ abstract class _$$_RestaurantItemCopyWith<$Res>
       DeliveryAddresses address,
       List<RestaurantMenuItem> listOfMenuItems,
       String walletAddress,
-      String status});
+      String status,
+      bool isVegan});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get address;
@@ -206,6 +214,7 @@ class __$$_RestaurantItemCopyWithImpl<$Res>
     Object? listOfMenuItems = freezed,
     Object? walletAddress = freezed,
     Object? status = freezed,
+    Object? isVegan = freezed,
   }) {
     return _then(_$_RestaurantItem(
       restaurantID: restaurantID == freezed
@@ -260,6 +269,10 @@ class __$$_RestaurantItemCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
+      isVegan: isVegan == freezed
+          ? _value.isVegan
+          : isVegan // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -281,7 +294,8 @@ class _$_RestaurantItem extends _RestaurantItem {
       required this.address,
       required this.listOfMenuItems,
       required this.walletAddress,
-      required this.status})
+      required this.status,
+      required this.isVegan})
       : super._();
 
   factory _$_RestaurantItem.fromJson(Map<String, dynamic> json) =>
@@ -313,10 +327,12 @@ class _$_RestaurantItem extends _RestaurantItem {
   final String walletAddress;
   @override
   final String status;
+  @override
+  final bool isVegan;
 
   @override
   String toString() {
-    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, walletAddress: $walletAddress, status: $status)';
+    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, walletAddress: $walletAddress, status: $status, isVegan: $isVegan)';
   }
 
   @override
@@ -342,7 +358,8 @@ class _$_RestaurantItem extends _RestaurantItem {
                 .equals(other.listOfMenuItems, listOfMenuItems) &&
             const DeepCollectionEquality()
                 .equals(other.walletAddress, walletAddress) &&
-            const DeepCollectionEquality().equals(other.status, status));
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.isVegan, isVegan));
   }
 
   @JsonKey(ignore: true)
@@ -361,7 +378,8 @@ class _$_RestaurantItem extends _RestaurantItem {
       const DeepCollectionEquality().hash(address),
       const DeepCollectionEquality().hash(listOfMenuItems),
       const DeepCollectionEquality().hash(walletAddress),
-      const DeepCollectionEquality().hash(status));
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(isVegan));
 
   @JsonKey(ignore: true)
   @override
@@ -388,7 +406,8 @@ abstract class _RestaurantItem extends RestaurantItem {
       required final DeliveryAddresses address,
       required final List<RestaurantMenuItem> listOfMenuItems,
       required final String walletAddress,
-      required final String status}) = _$_RestaurantItem;
+      required final String status,
+      required final bool isVegan}) = _$_RestaurantItem;
   _RestaurantItem._() : super._();
 
   factory _RestaurantItem.fromJson(Map<String, dynamic> json) =
@@ -422,6 +441,8 @@ abstract class _RestaurantItem extends RestaurantItem {
   String get walletAddress => throw _privateConstructorUsedError;
   @override
   String get status => throw _privateConstructorUsedError;
+  @override
+  bool get isVegan => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RestaurantItemCopyWith<_$_RestaurantItem> get copyWith =>

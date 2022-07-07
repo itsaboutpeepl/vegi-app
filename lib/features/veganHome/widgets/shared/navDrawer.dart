@@ -5,8 +5,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
+import 'package:vegan_liverpool/utils/url.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
@@ -132,34 +134,35 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
               ListTile(
                 leading: Icon(Icons.settings),
-                title: Text('Settings'),
+                title: Text('Account'),
                 onTap: () => context.router.push(ProfileScreen()),
               ),
-              ListTile(leading: Icon(Icons.quiz), title: Text('FAQs'), onTap: () => context.router.pop()),
+              ListTile(leading: Icon(Icons.quiz), title: Text('FAQs'), onTap: () => context.router.push(FAQScreen())),
               ListTile(
                 leading: Icon(Icons.help_sharp),
                 title: Text('About Us'),
-                onTap: () => context.router.push(ProfileScreen()),
+                onTap: () => context.router.push(AboutScreen()),
               ),
               ListTile(
                 leading: Icon(Icons.exit_to_app),
                 title: Text('Logout'),
-                onTap: () {
-                  viewModel.logout();
-                  context.router.replace(OnBoardScreen());
-                },
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => LogoutDialog(),
+                  barrierDismissible: true,
+                ),
               ),
               Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => launchUrl("https://www.instagram.com/vegi_liverpool/"),
                         icon: Icon(
                           FontAwesomeIcons.instagram,
                           color: Colors.grey[400],
@@ -167,7 +170,15 @@ class _NavDrawerState extends State<NavDrawer> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => launchUrl("https://vm.tiktok.com/ZMNF3ekHX/"),
+                        icon: Icon(
+                          FontAwesomeIcons.tiktok,
+                          color: Colors.grey[400],
+                          size: 28,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => launchUrl("https://vegiapp.co.uk"),
                         icon: Icon(
                           Icons.launch,
                           color: Colors.grey[400],

@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart' as ts;
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/backupWalletAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/navDrawer.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/preparingOrderAppBar.dart';
@@ -55,6 +56,7 @@ class _VeganHomeScreenState extends State<VeganHomeScreen> {
         headerSliverBuilder: (_, flag) => [
           VeganSliverAppBar(),
           PreparingOrderAppBar(),
+          BackupWalletAppBar(),
         ],
         body: FeaturedRestaurantList(),
       ),

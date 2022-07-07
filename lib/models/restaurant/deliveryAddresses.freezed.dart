@@ -28,6 +28,7 @@ mixin _$DeliveryAddresses {
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get label => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +49,8 @@ abstract class $DeliveryAddressesCopyWith<$Res> {
       String postalCode,
       double latitude,
       double longitude,
-      String? phoneNumber});
+      String? phoneNumber,
+      String? label});
 }
 
 /// @nodoc
@@ -70,6 +72,7 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
     Object? latitude = freezed,
     Object? longitude = freezed,
     Object? phoneNumber = freezed,
+    Object? label = freezed,
   }) {
     return _then(_value.copyWith(
       internalID: internalID == freezed
@@ -104,6 +107,10 @@ class _$DeliveryAddressesCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      label: label == freezed
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -123,7 +130,8 @@ abstract class _$$_DeliveryAddressesCopyWith<$Res>
       String postalCode,
       double latitude,
       double longitude,
-      String? phoneNumber});
+      String? phoneNumber,
+      String? label});
 }
 
 /// @nodoc
@@ -147,6 +155,7 @@ class __$$_DeliveryAddressesCopyWithImpl<$Res>
     Object? latitude = freezed,
     Object? longitude = freezed,
     Object? phoneNumber = freezed,
+    Object? label = freezed,
   }) {
     return _then(_$_DeliveryAddresses(
       internalID: internalID == freezed
@@ -181,6 +190,10 @@ class __$$_DeliveryAddressesCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      label: label == freezed
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -197,7 +210,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
       required this.postalCode,
       required this.latitude,
       required this.longitude,
-      this.phoneNumber})
+      this.phoneNumber,
+      this.label})
       : super._();
 
   factory _$_DeliveryAddresses.fromJson(Map<String, dynamic> json) =>
@@ -219,10 +233,12 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
   final double longitude;
   @override
   final String? phoneNumber;
+  @override
+  final String? label;
 
   @override
   String toString() {
-    return 'DeliveryAddresses(internalID: $internalID, addressLine1: $addressLine1, addressLine2: $addressLine2, townCity: $townCity, postalCode: $postalCode, latitude: $latitude, longitude: $longitude, phoneNumber: $phoneNumber)';
+    return 'DeliveryAddresses(internalID: $internalID, addressLine1: $addressLine1, addressLine2: $addressLine2, townCity: $townCity, postalCode: $postalCode, latitude: $latitude, longitude: $longitude, phoneNumber: $phoneNumber, label: $label)';
   }
 
   @override
@@ -242,7 +258,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
             const DeepCollectionEquality().equals(other.latitude, latitude) &&
             const DeepCollectionEquality().equals(other.longitude, longitude) &&
             const DeepCollectionEquality()
-                .equals(other.phoneNumber, phoneNumber));
+                .equals(other.phoneNumber, phoneNumber) &&
+            const DeepCollectionEquality().equals(other.label, label));
   }
 
   @JsonKey(ignore: true)
@@ -256,7 +273,8 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
       const DeepCollectionEquality().hash(postalCode),
       const DeepCollectionEquality().hash(latitude),
       const DeepCollectionEquality().hash(longitude),
-      const DeepCollectionEquality().hash(phoneNumber));
+      const DeepCollectionEquality().hash(phoneNumber),
+      const DeepCollectionEquality().hash(label));
 
   @JsonKey(ignore: true)
   @override
@@ -279,7 +297,8 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
       required final String postalCode,
       required final double latitude,
       required final double longitude,
-      final String? phoneNumber}) = _$_DeliveryAddresses;
+      final String? phoneNumber,
+      final String? label}) = _$_DeliveryAddresses;
   _DeliveryAddresses._() : super._();
 
   factory _DeliveryAddresses.fromJson(Map<String, dynamic> json) =
@@ -301,6 +320,8 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
   double get longitude => throw _privateConstructorUsedError;
   @override
   String? get phoneNumber => throw _privateConstructorUsedError;
+  @override
+  String? get label => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_DeliveryAddressesCopyWith<_$_DeliveryAddresses> get copyWith =>

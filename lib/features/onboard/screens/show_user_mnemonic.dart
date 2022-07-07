@@ -36,7 +36,7 @@ class _ShowUserMnemonicScreenState extends State<ShowUserMnemonicScreen> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "Please save your wallet's seed phrase before proceeding",
+                        "Please save your wallet's seed phrase!",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,

@@ -48,12 +48,6 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                       },
                       icon: Icon(Icons.arrow_back),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.favorite_outline,
-                      ),
-                    )
                   ],
                 ),
                 Padding(

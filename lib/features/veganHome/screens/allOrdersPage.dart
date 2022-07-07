@@ -46,8 +46,9 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
               : _isEmpty
                   ? EmptyStatePage(
                       emoji: "😐",
-                      title: "Pretty empty here, isn't it?",
-                      subtitle: "Try ordering from one of our amazing restauarants to fill this page up!",
+                      title: "You have no upcoming orders… yet!",
+                      subtitle:
+                          "If this is incorrect, please contact our Support team for assistance. Details are in our FAQ section.",
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.symmetric(vertical: 30),
@@ -95,7 +96,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 children: [
                   Text.rich(
                     TextSpan(
-                      text: "Delifonesca \n",
+                      text: widget.order['restaurantName'] + "\n",
                       children: [
                         TextSpan(
                           text: widget.order['total'] + "\n",
@@ -158,13 +159,15 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 ),
                 itemCount: widget.order['products'].length,
               ),
-              TransparentButton(
-                label: "Show Delivery Address",
-                onPressed: () => setState(() {
-                  _showDelivery = !_showDelivery;
-                }),
-                fontSize: 15,
-              ),
+              widget.order['isCollection']
+                  ? SizedBox.shrink()
+                  : TransparentButton(
+                      label: "Show Delivery Address",
+                      onPressed: () => setState(() {
+                        _showDelivery = !_showDelivery;
+                      }),
+                      fontSize: 15,
+                    ),
               _showDelivery
                   ? Card(
                       shape: RoundedRectangleBorder(
