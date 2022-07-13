@@ -45,15 +45,16 @@ class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
                           fontSize: 16,
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
-                        widget.menuItem.formattedPrice,
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                          fontWeight: FontWeight.w900,
-                          fontSize: 13,
-                        ),
-                      ),
+                      widget.menuItem.price != 0
+                          ? Text(
+                              widget.menuItem.formattedPrice,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontWeight: FontWeight.w900,
+                                fontSize: 13,
+                              ),
+                            )
+                          : SizedBox.shrink(),
                       Text(
                         widget.menuItem.description,
                         maxLines: 3,

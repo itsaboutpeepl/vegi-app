@@ -25,6 +25,8 @@ class RestaurantItem with _$RestaurantItem {
     required String walletAddress,
     required String status,
     required bool isVegan,
+    required int minimumOrderAmount,
+    required int platformFee,
   }) = _RestaurantItem;
 
   factory RestaurantItem.fromJson(dynamic json) => _$RestaurantItemFromJson(json);

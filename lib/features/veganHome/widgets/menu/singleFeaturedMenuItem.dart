@@ -70,14 +70,16 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
                         ),
                       ),
                       Spacer(),
-                      Text(
-                        widget.menuItem.formattedPrice,
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                          fontWeight: FontWeight.w900,
-                          fontSize: 18,
-                        ),
-                      ),
+                      widget.menuItem.price != 0
+                          ? Text(
+                              widget.menuItem.formattedPrice,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18,
+                              ),
+                            )
+                          : SizedBox.shrink(),
                     ],
                   ),
                 ),

@@ -9,7 +9,7 @@ class RestaurantItemViewModel extends Equatable {
   final String restaurantID;
   final String restaurantName;
   final DeliveryAddresses? restaurantAddress;
-  final Function(String, String, DeliveryAddresses, String, VoidCallback) updateRestaurantDetails;
+  final Function(String, String, DeliveryAddresses, String, int, int, VoidCallback) updateRestaurantDetails;
 
   RestaurantItemViewModel({
     required this.updateRestaurantDetails,
@@ -23,8 +23,19 @@ class RestaurantItemViewModel extends Equatable {
       restaurantID: store.state.cartState.restaurantID,
       restaurantName: store.state.cartState.restaurantName,
       restaurantAddress: store.state.cartState.restaurantAddress,
-      updateRestaurantDetails: (restaurantID, restaurantName, restaurantAddress, walletAddress, sendSnackBar) => store
-          .dispatch(setRestaurantDetails(restaurantID, restaurantName, restaurantAddress, walletAddress, sendSnackBar)),
+      updateRestaurantDetails:
+          (restaurantID, restaurantName, restaurantAddress, walletAddress, minimumOrder, platformFee, sendSnackBar) =>
+              store.dispatch(
+        setRestaurantDetails(
+          restaurantID: restaurantID,
+          restaurantName: restaurantName,
+          restaurantAddress: restaurantAddress,
+          walletAddress: walletAddress,
+          minimumOrder: minimumOrder,
+          platformFee: platformFee,
+          sendSnackBar: sendSnackBar,
+        ),
+      ),
     );
   }
 

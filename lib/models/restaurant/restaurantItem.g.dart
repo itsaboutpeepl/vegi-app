@@ -27,6 +27,8 @@ _$_RestaurantItem _$$_RestaurantItemFromJson(Map<String, dynamic> json) =>
       walletAddress: json['walletAddress'] as String,
       status: json['status'] as String,
       isVegan: json['isVegan'] as bool,
+      minimumOrderAmount: json['minimumOrderAmount'] as int,
+      platformFee: json['platformFee'] as int,
     );
 
 Map<String, dynamic> _$$_RestaurantItemToJson(_$_RestaurantItem instance) =>
@@ -46,4 +48,6 @@ Map<String, dynamic> _$$_RestaurantItemToJson(_$_RestaurantItem instance) =>
       'walletAddress': instance.walletAddress,
       'status': instance.status,
       'isVegan': instance.isVegan,
+      'minimumOrderAmount': instance.minimumOrderAmount,
+      'platformFee': instance.platformFee,
     };

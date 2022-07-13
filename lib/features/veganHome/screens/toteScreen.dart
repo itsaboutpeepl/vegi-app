@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/SingleCartItem.dart';
@@ -66,6 +67,10 @@ class _ToteScreenState extends State<ToteScreen> {
                             "Delivery Charge",
                             cFPrice(viewmodel.cartDeliveryCharge),
                           ),
+                          totalsPriceItemTile(
+                            "Service Charge",
+                            cFPrice(viewmodel.cartDeliveryCharge),
+                          ),
                           Divider(
                             height: 20,
                             thickness: 1,
@@ -82,7 +87,16 @@ class _ToteScreenState extends State<ToteScreen> {
                             child: ShimmerButton(
                               baseColor: themeShade400,
                               highlightColor: themeShade300,
-                              buttonAction: () => context.router.push(CheckoutScreen()),
+                              buttonAction: () {
+                                if (viewmodel.minimumOrderAmount > viewmodel.cartTotal) {
+                                  showErrorSnack(
+                                      context: context,
+                                      title: "This restaurant has a minimum order!",
+                                      message: "Try adding more items to your tote!");
+                                  return;
+                                }
+                                context.router.push(CheckoutScreen());
+                              },
                               buttonContent: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

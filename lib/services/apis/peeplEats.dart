@@ -44,21 +44,22 @@ class PeeplEatsService {
         if (element['status'] == "active") {
           restaurantsActive.add(
             RestaurantItem(
-              restaurantID: element["id"].toString(),
-              name: element['name'] ?? "",
-              description: element["description"] ?? "",
-              phoneNumber: element['phoneNumber'] ?? "",
-              status: element['status'] ?? "draft",
-              deliveryRestrictionDetails: [], // TODO: Remove this entirely
-              imageURL: element["imageUrl"],
-              category: "Category",
-              costLevel: element['costLevel'] ?? 2,
-              rating: element['rating'] ?? 2,
-              address: demoAddress,
-              walletAddress: element['walletAddress'],
-              listOfMenuItems: [],
-              isVegan: element['isVegan'] ?? false,
-            ),
+                restaurantID: element["id"].toString(),
+                name: element['name'] ?? "",
+                description: element["description"] ?? "",
+                phoneNumber: element['phoneNumber'] ?? "",
+                status: element['status'] ?? "draft",
+                deliveryRestrictionDetails: [], // TODO: Remove this entirely
+                imageURL: element["imageUrl"],
+                category: "Category",
+                costLevel: element['costLevel'] ?? 2,
+                rating: element['rating'] ?? 2,
+                address: demoAddress,
+                walletAddress: element['walletAddress'],
+                listOfMenuItems: [],
+                isVegan: element['isVegan'] ?? false,
+                minimumOrderAmount: element['minimumOrderAmount'],
+                platformFee: element['platformFee']),
           );
         }
       },

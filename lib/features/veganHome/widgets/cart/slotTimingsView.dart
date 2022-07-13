@@ -5,7 +5,6 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
 class SlotTimingsView extends StatefulWidget {
@@ -17,15 +16,13 @@ class SlotTimingsView extends StatefulWidget {
 
 class _SlotTimingsViewState extends State<SlotTimingsView> {
   bool _isLoading = false;
+  DateTime? _selectedDate = DateTime.now().next(DateTime.monday);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CheckoutViewModel>(
       converter: CheckoutViewModel.fromStore,
       distinct: true,
-      onDispose: (store) {
-        store.dispatch(UpdateSlots([], []));
-      },
       builder: (_, viewmodel) {
         return Card(
           color: Color(0xFFFAFAFA),
@@ -42,12 +39,12 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                     ),
                     Spacer(),
-                    IconButton(
+                    TextButton(
                       onPressed: () => showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(Duration(days: 7)),
+                        initialDate: DateTime.now().next(DateTime.monday),
+                        firstDate: DateTime.now().next(DateTime.monday),
+                        lastDate: DateTime.now().next(DateTime.monday).add(const Duration(days: 14)),
                         builder: (_, child) {
                           return Theme(
                             data: ThemeData.light().copyWith(
@@ -66,6 +63,7 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                           //set loading = true;
                           setState(() {
                             _isLoading = true;
+                            _selectedDate = value;
                           });
                           //make new call to api;
                           viewmodel.updateSlotTimes(value);
@@ -78,10 +76,7 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                           //show slots;
                         }
                       }),
-                      icon: Icon(
-                        Icons.calendar_today,
-                        size: 20,
-                      ),
+                      child: Text(formatDateForCalendar(_selectedDate!)),
                     )
                   ],
                 ),

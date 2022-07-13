@@ -149,6 +149,8 @@ UserCartState _setRestaurantDetails(
     restaurantName: action.restaurantName,
     restaurantAddress: action.restaurantAddress,
     restaurantWalletAddress: action.walletAddress,
+    restaurantMinimumOrder: action.minimumOrder,
+    restaurantPlatformFee: action.platformFee,
   );
 }
 

@@ -8,6 +8,11 @@ String cFPrice(int price) {
   return "£" + (price / 100).toStringAsFixed(2);
 }
 
+String cFPriceNoDec(int price) {
+  //isPence ? price = price ~/ 100 : price;
+  return "£" + (price / 100).toStringAsFixed(0);
+}
+
 String parseHtmlString(String htmlString) {
   final document = parse(htmlString);
   final String parsedString = parse(document.body!.text).documentElement!.text;
@@ -42,6 +47,12 @@ String formatDateForOrderObject(String date) {
 
 String formatDate(DateTime dateToFormat) {
   DateFormat formatter = DateFormat("HH:mm - EEE, dd MMM");
+
+  return formatter.format(dateToFormat);
+}
+
+String formatDateForCalendar(DateTime dateToFormat) {
+  DateFormat formatter = DateFormat("EEE, dd MMM");
 
   return formatter.format(dateToFormat);
 }
@@ -132,4 +143,14 @@ double getPPLRewardsFromPence(num penceAmount) {
 
 // Reward Conversion Rate (5% reward)
 // 1GBP => 100 pence => 5 pence => 0.5 PPL
-// 1000GBP => 100,000 pence => 5000 pence => 500 PPL Tokens 
+// 1000GBP => 100,000 pence => 5000 pence => 500 PPL Tokens
+
+extension DateTimeExtension on DateTime {
+  DateTime next(int day) {
+    return this.add(
+      Duration(
+        days: (day - this.weekday) % DateTime.daysPerWeek,
+      ),
+    );
+  }
+}

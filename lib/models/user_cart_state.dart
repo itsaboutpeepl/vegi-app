@@ -41,6 +41,8 @@ class UserCartState with _$UserCartState {
     @JsonKey(ignore: true) @Default(0) int collectionCharge,
     @JsonKey(ignore: true) @Default(FulfilmentMethod.delivery) FulfilmentMethod fulfilmentMethod,
     @JsonKey(ignore: true) @Default(false) bool isDelivery,
+    @JsonKey(ignore: true) @Default(0) int restaurantMinimumOrder,
+    @JsonKey(ignore: true) @Default(0) int restaurantPlatformFee,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(

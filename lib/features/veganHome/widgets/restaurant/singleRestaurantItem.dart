@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
@@ -97,54 +98,40 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                     SizedBox(
                       width: 10,
                     ),
-                    widget.restaurantItem.isVegan
+                    widget.restaurantItem.minimumOrderAmount == 0
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey[400]!),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                               height: 25,
-                              width: 25,
                               child: Padding(
-                                padding: const EdgeInsets.all(2),
-                                child: Image.asset("assets/images/vegan-only-icon.png"),
+                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                child: Text(
+                                  cFPriceNoDec(widget.restaurantItem.minimumOrderAmount),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
                               ),
                             ),
                           )
                         : SizedBox.shrink(),
-                    // widget.restaurantItem.rating != 0
-                    //     ? ClipRRect(
-                    //         borderRadius: BorderRadius.circular(4),
-                    //         child: Container(
-                    //           decoration: BoxDecoration(
-                    //             border: Border.all(color: Colors.grey[400]!),
-                    //             borderRadius: BorderRadius.circular(4),
-                    //           ),
-                    //           height: 25,
-                    //           child: Padding(
-                    //             padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    //             child: Center(
-                    //               child: Row(
-                    //                 children: List.generate(
-                    //                   5,
-                    //                   (index) {
-                    //                     return index < widget.restaurantItem.rating
-                    //                         ? Icon(
-                    //                             Icons.star,
-                    //                             size: 18,
-                    //                             color: Colors.grey[600],
-                    //                           )
-                    //                         : Icon(
-                    //                             Icons.star_outline,
-                    //                             size: 18,
-                    //                             color: Colors.grey[600],
-                    //                           );
-                    //                   },
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       )
-                    //     : SizedBox.shrink(),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    widget.restaurantItem.isVegan
+                        ? Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: Image.asset(
+                              "assets/images/vegan-only-icon.png",
+                              width: 25,
+                            ),
+                          )
+                        : SizedBox.shrink(),
                   ],
                 )
               ],
@@ -156,6 +143,8 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                   widget.restaurantItem.name,
                   widget.restaurantItem.address,
                   widget.restaurantItem.walletAddress,
+                  widget.restaurantItem.minimumOrderAmount,
+                  widget.restaurantItem.platformFee,
                   () => showErrorSnack(context: context, title: "Existing Items in cart were removed"),
                 );
               context.router.push(RestaurantMenuScreen(menuList: widget.restaurantItem.listOfMenuItems));

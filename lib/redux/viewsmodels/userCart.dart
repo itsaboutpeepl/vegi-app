@@ -13,6 +13,8 @@ class UserCartViewModel extends Equatable {
   final int cartDiscountPercent;
   final int cartDiscountComputed;
   final int cartDeliveryCharge;
+  final int cartServiceCharge;
+  final int minimumOrderAmount;
   final String avatarUrl;
   final String pplBalance;
   final String gbpXBalance;
@@ -34,6 +36,8 @@ class UserCartViewModel extends Equatable {
     required this.addCartItem,
     required this.updateCartItem,
     required this.clearCart,
+    required this.cartServiceCharge,
+    required this.minimumOrderAmount,
   });
 
   static UserCartViewModel fromStore(Store<AppState> store) {
@@ -43,6 +47,8 @@ class UserCartViewModel extends Equatable {
       cartTax: store.state.cartState.cartTax,
       cartTotal: store.state.cartState.cartTotal,
       cartDeliveryCharge: store.state.cartState.cartDeliveryCharge,
+      cartServiceCharge: store.state.cartState.restaurantPlatformFee,
+      minimumOrderAmount: store.state.cartState.restaurantMinimumOrder,
       cartDiscountComputed: store.state.cartState.cartDiscountComputed,
       cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       avatarUrl: store.state.userState.avatarUrl,

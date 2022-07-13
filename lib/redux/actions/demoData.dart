@@ -21,42 +21,46 @@ RestaurantItem restaurantItem1 = new RestaurantItem(
     address: demoAddress,
     listOfMenuItems: [bagel1, bagel3, bagel2],
     walletAddress: "",
-    isVegan: false);
+    isVegan: false,
+    minimumOrderAmount: 0,
+    platformFee: 0);
 
 RestaurantItem restaurantItem2 = new RestaurantItem(
-  restaurantID: "restaurantID2",
-  name: "Veggies 'n More",
-  imageURL: "https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/content9442.jpg",
-  category: "Cafe",
-  costLevel: 4,
-  phoneNumber: "231321",
-  status: "active",
-  description: "adsdasddasd",
-  deliveryRestrictionDetails: [],
-  rating: 3,
-  address: demoAddress,
-  listOfMenuItems: [bagel1, bagel2, bagel3],
-  walletAddress: "",
-  isVegan: true,
-);
+    restaurantID: "restaurantID2",
+    name: "Veggies 'n More",
+    imageURL: "https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/content9442.jpg",
+    category: "Cafe",
+    costLevel: 4,
+    phoneNumber: "231321",
+    status: "active",
+    description: "adsdasddasd",
+    deliveryRestrictionDetails: [],
+    rating: 3,
+    address: demoAddress,
+    listOfMenuItems: [bagel1, bagel2, bagel3],
+    walletAddress: "",
+    isVegan: true,
+    minimumOrderAmount: 0,
+    platformFee: 0);
 
 RestaurantItem restaurantItem3 = new RestaurantItem(
-  restaurantID: "restaurantID3",
-  name: "Pita'd to Death",
-  imageURL:
-      "https://cdn-prod.medicalnewstoday.com/content/images/articles/322/322303/selection-of-chinese-food-that-may-cause-chinese-restaurant-syndrome.jpg",
-  category: "Levantine",
-  costLevel: 4,
-  status: "active",
-  phoneNumber: "231321",
-  description: "adsdasddasd",
-  deliveryRestrictionDetails: [],
-  rating: 3,
-  address: demoAddress,
-  listOfMenuItems: [bagel3, bagel2, bagel1],
-  walletAddress: "",
-  isVegan: false,
-);
+    restaurantID: "restaurantID3",
+    name: "Pita'd to Death",
+    imageURL:
+        "https://cdn-prod.medicalnewstoday.com/content/images/articles/322/322303/selection-of-chinese-food-that-may-cause-chinese-restaurant-syndrome.jpg",
+    category: "Levantine",
+    costLevel: 4,
+    status: "active",
+    phoneNumber: "231321",
+    description: "adsdasddasd",
+    deliveryRestrictionDetails: [],
+    rating: 3,
+    address: demoAddress,
+    listOfMenuItems: [bagel3, bagel2, bagel1],
+    walletAddress: "",
+    isVegan: false,
+    minimumOrderAmount: 0,
+    platformFee: 0);
 
 DeliveryAddresses demoAddress = new DeliveryAddresses(
   internalID: 80085,
