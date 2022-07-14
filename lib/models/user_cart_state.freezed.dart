@@ -85,6 +85,8 @@ mixin _$UserCartState {
   int get restaurantMinimumOrder => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   int get restaurantPlatformFee => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  String get deliveryInstructions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -127,7 +129,8 @@ abstract class $UserCartStateCopyWith<$Res> {
       @JsonKey(ignore: true) FulfilmentMethod fulfilmentMethod,
       @JsonKey(ignore: true) bool isDelivery,
       @JsonKey(ignore: true) int restaurantMinimumOrder,
-      @JsonKey(ignore: true) int restaurantPlatformFee});
+      @JsonKey(ignore: true) int restaurantPlatformFee,
+      @JsonKey(ignore: true) String deliveryInstructions});
 
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress;
@@ -174,6 +177,7 @@ class _$UserCartStateCopyWithImpl<$Res>
     Object? isDelivery = freezed,
     Object? restaurantMinimumOrder = freezed,
     Object? restaurantPlatformFee = freezed,
+    Object? deliveryInstructions = freezed,
   }) {
     return _then(_value.copyWith(
       cartItems: cartItems == freezed
@@ -296,6 +300,10 @@ class _$UserCartStateCopyWithImpl<$Res>
           ? _value.restaurantPlatformFee
           : restaurantPlatformFee // ignore: cast_nullable_to_non_nullable
               as int,
+      deliveryInstructions: deliveryInstructions == freezed
+          ? _value.deliveryInstructions
+          : deliveryInstructions // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 
@@ -360,7 +368,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       @JsonKey(ignore: true) FulfilmentMethod fulfilmentMethod,
       @JsonKey(ignore: true) bool isDelivery,
       @JsonKey(ignore: true) int restaurantMinimumOrder,
-      @JsonKey(ignore: true) int restaurantPlatformFee});
+      @JsonKey(ignore: true) int restaurantPlatformFee,
+      @JsonKey(ignore: true) String deliveryInstructions});
 
   @override
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
@@ -411,6 +420,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? isDelivery = freezed,
     Object? restaurantMinimumOrder = freezed,
     Object? restaurantPlatformFee = freezed,
+    Object? deliveryInstructions = freezed,
   }) {
     return _then(_$_UserCartState(
       cartItems: cartItems == freezed
@@ -533,6 +543,10 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.restaurantPlatformFee
           : restaurantPlatformFee // ignore: cast_nullable_to_non_nullable
               as int,
+      deliveryInstructions: deliveryInstructions == freezed
+          ? _value.deliveryInstructions
+          : deliveryInstructions // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -571,7 +585,8 @@ class _$_UserCartState extends _UserCartState {
       @JsonKey(ignore: true) this.fulfilmentMethod = FulfilmentMethod.delivery,
       @JsonKey(ignore: true) this.isDelivery = false,
       @JsonKey(ignore: true) this.restaurantMinimumOrder = 0,
-      @JsonKey(ignore: true) this.restaurantPlatformFee = 0})
+      @JsonKey(ignore: true) this.restaurantPlatformFee = 0,
+      @JsonKey(ignore: true) this.deliveryInstructions = ""})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>
@@ -667,10 +682,13 @@ class _$_UserCartState extends _UserCartState {
   @override
   @JsonKey(ignore: true)
   final int restaurantPlatformFee;
+  @override
+  @JsonKey(ignore: true)
+  final String deliveryInstructions;
 
   @override
   String toString() {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, cartDeliveryCharge: $cartDeliveryCharge, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, deliveryCharge: $deliveryCharge, collectionCharge: $collectionCharge, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, cartDeliveryCharge: $cartDeliveryCharge, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, deliveryCharge: $deliveryCharge, collectionCharge: $collectionCharge, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions)';
   }
 
   @override
@@ -733,7 +751,9 @@ class _$_UserCartState extends _UserCartState {
             const DeepCollectionEquality()
                 .equals(other.restaurantMinimumOrder, restaurantMinimumOrder) &&
             const DeepCollectionEquality()
-                .equals(other.restaurantPlatformFee, restaurantPlatformFee));
+                .equals(other.restaurantPlatformFee, restaurantPlatformFee) &&
+            const DeepCollectionEquality()
+                .equals(other.deliveryInstructions, deliveryInstructions));
   }
 
   @JsonKey(ignore: true)
@@ -769,7 +789,8 @@ class _$_UserCartState extends _UserCartState {
         const DeepCollectionEquality().hash(fulfilmentMethod),
         const DeepCollectionEquality().hash(isDelivery),
         const DeepCollectionEquality().hash(restaurantMinimumOrder),
-        const DeepCollectionEquality().hash(restaurantPlatformFee)
+        const DeepCollectionEquality().hash(restaurantPlatformFee),
+        const DeepCollectionEquality().hash(deliveryInstructions)
       ]);
 
   @JsonKey(ignore: true)
@@ -844,7 +865,9 @@ abstract class _UserCartState extends UserCartState {
       @JsonKey(ignore: true)
           final int restaurantMinimumOrder,
       @JsonKey(ignore: true)
-          final int restaurantPlatformFee}) = _$_UserCartState;
+          final int restaurantPlatformFee,
+      @JsonKey(ignore: true)
+          final String deliveryInstructions}) = _$_UserCartState;
   _UserCartState._() : super._();
 
   factory _UserCartState.fromJson(Map<String, dynamic> json) =
@@ -945,6 +968,9 @@ abstract class _UserCartState extends UserCartState {
   @override
   @JsonKey(ignore: true)
   int get restaurantPlatformFee => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  String get deliveryInstructions => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>

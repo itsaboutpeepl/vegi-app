@@ -69,6 +69,7 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey[400]!),
                           borderRadius: BorderRadius.circular(4),
@@ -95,13 +96,11 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    widget.restaurantItem.minimumOrderAmount == 0
+                    widget.restaurantItem.minimumOrderAmount != 0
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey[400]!),
                                 borderRadius: BorderRadius.circular(4),
@@ -120,9 +119,6 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                             ),
                           )
                         : SizedBox.shrink(),
-                    SizedBox(
-                      width: 10,
-                    ),
                     widget.restaurantItem.isVegan
                         ? Padding(
                             padding: const EdgeInsets.all(2),

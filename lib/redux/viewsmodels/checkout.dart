@@ -16,12 +16,14 @@ class CheckoutViewModel extends Equatable {
   final int discountPercent;
   final int cartTotal;
   final FulfilmentMethod fulfilmentMethod;
-  bool isDelivery;
+  final bool isDelivery;
+  final String deliveryInstructions;
   final Function(String discountCode, VoidCallback) updateDiscount;
   final Function(Map<String, String> selectedTimeSlot) updateSelectedTimeSlot;
   final Function(int tipAmount) updateTipAmount;
   final Function(void Function(String errroMessage), VoidCallback) createOrder;
   final Function(DateTime newDate) updateSlotTimes;
+  final Function(String deliveryInstructions) setDeliveryInstructions;
 
   CheckoutViewModel({
     required this.deliverySlots,
@@ -39,6 +41,8 @@ class CheckoutViewModel extends Equatable {
     required this.updateSlotTimes,
     required this.fulfilmentMethod,
     required this.isDelivery,
+    required this.deliveryInstructions,
+    required this.setDeliveryInstructions,
   });
 
   static CheckoutViewModel fromStore(Store<AppState> store) {
@@ -53,6 +57,7 @@ class CheckoutViewModel extends Equatable {
       selectedTimeSlot: store.state.cartState.selectedTimeSlot,
       fulfilmentMethod: store.state.cartState.fulfilmentMethod,
       isDelivery: store.state.cartState.isDelivery,
+      deliveryInstructions: store.state.cartState.deliveryInstructions,
       updateDiscount: (discountCode, errorCallback) {
         store.dispatch(updateCartDiscount(discountCode, errorCallback));
       },
@@ -72,6 +77,9 @@ class CheckoutViewModel extends Equatable {
       updateSlotTimes: (newDate) {
         store.dispatch(getFullfillmentMethods(newDate: newDate));
       },
+      setDeliveryInstructions: (deliveryInstructions) {
+        store.dispatch(SetDeliveryInstructions(deliveryInstructions));
+      },
     );
   }
 
@@ -83,5 +91,6 @@ class CheckoutViewModel extends Equatable {
         cartTotal,
         selectedDeliveryAddress,
         fulfilmentMethod,
+        deliveryInstructions,
       ];
 }

@@ -130,6 +130,11 @@ class SetIsDelivery {
   SetIsDelivery(this.isDelivery);
 }
 
+class SetDeliveryInstructions {
+  final String deliveryInstructions;
+  SetDeliveryInstructions(this.deliveryInstructions);
+}
+
 ThunkAction getFullfillmentMethods({DateTime? newDate}) {
   return (Store store) async {
     try {
@@ -363,7 +368,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
               "lineOne": "10 Collection Street",
               "lineTwo": "",
               "postCode": "L7 0HG",
-              "deliveryInstructions": ""
+              "deliveryInstructions": store.state.cartState.deliveryInstructions,
             },
             "fulfilmentMethod": 2,
             "fulfilmentSlotFrom": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.first.value),

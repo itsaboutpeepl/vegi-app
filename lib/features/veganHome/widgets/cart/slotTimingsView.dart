@@ -16,7 +16,7 @@ class SlotTimingsView extends StatefulWidget {
 
 class _SlotTimingsViewState extends State<SlotTimingsView> {
   bool _isLoading = false;
-  DateTime? _selectedDate = DateTime.now().next(DateTime.monday);
+  DateTime? _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +42,9 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                     TextButton(
                       onPressed: () => showDatePicker(
                         context: context,
-                        initialDate: DateTime.now().next(DateTime.monday),
-                        firstDate: DateTime.now().next(DateTime.monday),
-                        lastDate: DateTime.now().next(DateTime.monday).add(const Duration(days: 14)),
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 14)),
                         builder: (_, child) {
                           return Theme(
                             data: ThemeData.light().copyWith(
@@ -117,9 +117,11 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                                               size: 18,
                                             ),
                                             label: Text(
-                                              mapToString(
-                                                viewmodel.collectionSlots[index],
-                                              ),
+                                              index == 0
+                                                  ? "ASAP"
+                                                  : mapToString(
+                                                      viewmodel.collectionSlots[index],
+                                                    ),
                                               style: TextStyle(color: Colors.grey[800]),
                                             ),
                                             selected:
@@ -144,9 +146,11 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                                               size: 18,
                                             ),
                                             label: Text(
-                                              mapToString(
-                                                viewmodel.deliverySlots[index],
-                                              ),
+                                              index == 0
+                                                  ? "ASAP"
+                                                  : mapToString(
+                                                      viewmodel.deliverySlots[index],
+                                                    ),
                                               style: TextStyle(color: Colors.grey[800]),
                                             ),
                                             selected:

@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/cart/deliveryInstructionsCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/discountCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/slotTimingsView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/tipCardView.dart';
@@ -43,6 +44,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   SlotTimingsView(),
                   viewmodel.isDelivery ? TipCardView() : SizedBox.shrink(),
                   DiscountCard(),
+                  DeliveryInstructionsCard(),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 25.0),
                     child: ShimmerButton(
