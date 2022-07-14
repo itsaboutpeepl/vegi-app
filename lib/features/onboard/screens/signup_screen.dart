@@ -12,6 +12,7 @@ import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:carrier_info/carrier_info.dart';
+import 'package:vegan_liverpool/utils/url.dart';
 
 typedef SignUp = void Function(
   CountryCode,
@@ -288,6 +289,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 );
                               }
                             },
+                          ),
+                        ),
+                        SizedBox(height: 20.0),
+                        GestureDetector(
+                          onTap: () => launchUrl("https://vegiapp.co.uk/privacy"),
+                          child: Text(
+                            "By signing up, you agree to the vegi TC which can be found here",
+                            style: TextStyle(
+                              color: Colors.grey[500],
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],
