@@ -66,41 +66,11 @@ class _SingleRestaurantItemState extends State<SingleRestaurantItem> {
                 ),
                 Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey[400]!),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        height: 25,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                          child: Center(
-                            child: Row(
-                              children: List.generate(
-                                3,
-                                (index) {
-                                  return index < widget.restaurantItem.costLevel
-                                      ? Icon(
-                                          Icons.attach_money,
-                                          size: 18,
-                                          color: Colors.grey[600],
-                                        )
-                                      : SizedBox.shrink();
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                     widget.restaurantItem.minimumOrderAmount != 0
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              margin: const EdgeInsets.only(right: 5),
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey[400]!),
                                 borderRadius: BorderRadius.circular(4),
