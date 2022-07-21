@@ -32,200 +32,203 @@ class _PaymentSheetState extends State<PaymentSheet> {
         store.dispatch(UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
       },
       builder: (_, viewmodel) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Peepl Pay",
-                    style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w800),
-                  ),
-                  IconButton(
-                    splashRadius: 25,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey[800],
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
+        return FractionallySizedBox(
+          heightFactor: 0.55,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Peepl Pay",
+                      style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w800),
                     ),
-                  )
-                ],
-              ),
-            ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-              child: Text(
-                "Current Wallet Balance",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[800],
-              ),
-              height: 85,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        viewmodel.gbpXBalance,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800,
+                    IconButton(
+                      splashRadius: 25,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey[800],
                         ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        "GBPx",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                  VerticalDivider(
-                    width: 20,
-                    thickness: 2,
-                    color: Colors.grey[600],
-                    indent: 15,
-                    endIndent: 15,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        viewmodel.pplBalance,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Image.asset(
-                        "assets/images/avatar-ppl-red.png",
-                        width: 25,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Spacer(),
-            PPLSlider(),
-            Spacer(),
-            viewmodel.transferringTokens
-                ? CircularProgressIndicator(
-                    color: Colors.white,
-                  )
-                : SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: ShimmerButton(
-                        buttonContent: Center(
-                          child: Text(
-                            "Pay Now",
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
+                        child: Center(
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 20,
                           ),
                         ),
-                        buttonAction: () async {
-                          if (await BiometricUtils.authenticateIsAvailable()) {
-                            final BiometricAuth biometricAuth = await BiometricUtils.getAvailableBiometrics();
-                            final String biometric = BiometricUtils.getBiometricString(
-                              context,
-                              biometricAuth,
-                            );
-                            await BiometricUtils.showDefaultPopupCheckBiometricAuth(
-                              message: '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
-                              callback: (bool result) {
-                                result
-                                    ? (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <=
-                                            viewmodel.selectedGBPxAmount)
-                                        ? handleStripe(
-                                            walletAddress: viewmodel.walletAddress,
-                                            amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
-                                                    viewmodel.selectedGBPxAmount)
-                                                .abs()
-                                                .ceil()
-                                                .toStringAsFixed(2),
-                                            context: context,
-                                            shouldPushToHome: false,
-                                          )
-                                        : viewmodel.sendToken(
-                                            () {
-                                              context.router.push(OrderConfirmedScreen());
-                                            },
-                                            () {
-                                              print("error took place");
-                                              showErrorSnack(context: context, title: "Something went wrong");
-                                            },
-                                          )
-                                    : context.router.pop();
-                              },
-                            );
-                          } else {
-                            //TODO: add pincode screen verification.
-                            (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <= viewmodel.selectedGBPxAmount)
-                                ? handleStripe(
-                                    walletAddress: viewmodel.walletAddress,
-                                    amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
-                                            viewmodel.selectedGBPxAmount)
-                                        .abs()
-                                        .ceil()
-                                        .toStringAsFixed(2),
-                                    context: context,
-                                    shouldPushToHome: false,
-                                  )
-                                : viewmodel.sendToken(
-                                    () {
-                                      context.router.push(OrderConfirmedScreen());
-                                    },
-                                    () {
-                                      print("error took place");
-                                      showErrorSnack(context: context, title: "Something went wrong");
-                                    },
-                                  );
-                          }
-                        },
-                        baseColor: Colors.grey[800]!,
-                        highlightColor: Colors.grey[850]!),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                child: Text(
+                  "Current Wallet Balance",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
                   ),
-            Spacer()
-          ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[800],
+                ),
+                height: 85,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          viewmodel.gbpXBalance,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "GBPx",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                    VerticalDivider(
+                      width: 20,
+                      thickness: 2,
+                      color: Colors.grey[600],
+                      indent: 15,
+                      endIndent: 15,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          viewmodel.pplBalance,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Image.asset(
+                          "assets/images/avatar-ppl-red.png",
+                          width: 25,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              PPLSlider(),
+              Spacer(),
+              viewmodel.transferringTokens
+                  ? CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: ShimmerButton(
+                          buttonContent: Center(
+                            child: Text(
+                              "Pay Now",
+                              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                          buttonAction: () async {
+                            if (await BiometricUtils.authenticateIsAvailable()) {
+                              final BiometricAuth biometricAuth = await BiometricUtils.getAvailableBiometrics();
+                              final String biometric = BiometricUtils.getBiometricString(
+                                context,
+                                biometricAuth,
+                              );
+                              await BiometricUtils.showDefaultPopupCheckBiometricAuth(
+                                message: '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
+                                callback: (bool result) {
+                                  result
+                                      ? (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <=
+                                              viewmodel.selectedGBPxAmount)
+                                          ? handleStripe(
+                                              walletAddress: viewmodel.walletAddress,
+                                              amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
+                                                      viewmodel.selectedGBPxAmount)
+                                                  .abs()
+                                                  .ceil()
+                                                  .toStringAsFixed(2),
+                                              context: context,
+                                              shouldPushToHome: false,
+                                            )
+                                          : viewmodel.sendToken(
+                                              () {
+                                                context.router.push(OrderConfirmedScreen());
+                                              },
+                                              () {
+                                                print("error took place");
+                                                showErrorSnack(context: context, title: "Something went wrong");
+                                              },
+                                            )
+                                      : context.router.pop();
+                                },
+                              );
+                            } else {
+                              //TODO: add pincode screen verification.
+                              (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) <= viewmodel.selectedGBPxAmount)
+                                  ? handleStripe(
+                                      walletAddress: viewmodel.walletAddress,
+                                      amountText: (double.parse(viewmodel.gbpXBalance.replaceAll(",", "")) -
+                                              viewmodel.selectedGBPxAmount)
+                                          .abs()
+                                          .ceil()
+                                          .toStringAsFixed(2),
+                                      context: context,
+                                      shouldPushToHome: false,
+                                    )
+                                  : viewmodel.sendToken(
+                                      () {
+                                        context.router.push(OrderConfirmedScreen());
+                                      },
+                                      () {
+                                        print("error took place");
+                                        showErrorSnack(context: context, title: "Something went wrong");
+                                      },
+                                    );
+                            }
+                          },
+                          baseColor: Colors.grey[800]!,
+                          highlightColor: Colors.grey[850]!),
+                    ),
+              Spacer()
+            ],
+          ),
         );
       },
     );

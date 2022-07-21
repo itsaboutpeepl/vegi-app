@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart' as ts;

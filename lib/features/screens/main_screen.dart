@@ -47,9 +47,14 @@ class _MainScreenState extends State<MainScreen> {
     });
 
     startFirebaseNotifs();
-    requestAppTracking();
+
+    Future.delayed(Duration(seconds: 5), () => requestAppTracking());
 
     super.initState();
+  }
+
+  void requestAppTracking() async {
+    await AppTrackingTransparency.requestTrackingAuthorization();
   }
 
   @override
@@ -73,10 +78,6 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
-  }
-
-  void requestAppTracking() async {
-    await AppTrackingTransparency.requestTrackingAuthorization();
   }
 
   void startFirebaseNotifs() {

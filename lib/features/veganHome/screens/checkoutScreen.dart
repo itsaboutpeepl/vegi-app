@@ -58,6 +58,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         }, () {
                           //successCallBack
                           showModalBottomSheet(
+                            isScrollControlled: true,
                             backgroundColor: Colors.grey[900],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(

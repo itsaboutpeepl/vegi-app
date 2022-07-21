@@ -18,6 +18,7 @@ class UserCartViewModel extends Equatable {
   final String avatarUrl;
   final String pplBalance;
   final String gbpXBalance;
+  final bool isDelivery;
   final Function(CartItem itemToAdd) addCartItem;
   final Function(CartItem itemToUpdate) updateCartItem;
   final Function() clearCart;
@@ -38,6 +39,7 @@ class UserCartViewModel extends Equatable {
     required this.clearCart,
     required this.cartServiceCharge,
     required this.minimumOrderAmount,
+    required this.isDelivery,
   });
 
   static UserCartViewModel fromStore(Store<AppState> store) {
@@ -52,6 +54,7 @@ class UserCartViewModel extends Equatable {
       cartDiscountComputed: store.state.cartState.cartDiscountComputed,
       cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       avatarUrl: store.state.userState.avatarUrl,
+      isDelivery: store.state.cartState.isDelivery,
       pplBalance: store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
       gbpXBalance: store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       addCartItem: (itemToAdd) {
@@ -74,5 +77,6 @@ class UserCartViewModel extends Equatable {
         cartTotal,
         cartDiscountPercent,
         cartDiscountComputed,
+        isDelivery,
       ];
 }

@@ -39,6 +39,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
           token,
           accountAddress,
           identifier,
+          appName: "vegiliverpool",
         );
         Segment.track(
           eventName: 'Sign up: VerificationCode_NextBtn_Press',
@@ -102,6 +103,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
       token,
       accountAddress,
       identifier,
+      appName: "vegiliverpool",
     );
     onSuccess(jwtToken);
   }

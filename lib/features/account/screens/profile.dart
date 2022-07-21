@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/profile.dart';
@@ -238,6 +239,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       Divider(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      PrimaryButton(onPressed: () {}, label: "Delete Account")
                     ],
                   )
                 ],

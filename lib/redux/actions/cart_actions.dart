@@ -351,7 +351,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
               "lineOne": selectedAddress.addressLine1,
               "lineTwo": selectedAddress.addressLine2 + ", " + selectedAddress.townCity,
               "postCode": selectedAddress.postalCode,
-              "deliveryInstructions": "",
+              "deliveryInstructions": store.state.cartState.deliveryInstructions,
             },
             "fulfilmentMethod": 1,
             "fulfilmentSlotFrom": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.first.value),

@@ -32,7 +32,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
           pinned: false,
           snap: false,
           centerTitle: false,
-          expandedHeight: MediaQuery.of(context).size.height * 0.09,
+          expandedHeight: MediaQuery.of(context).size.height * 0.1,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
               decoration: BoxDecoration(
