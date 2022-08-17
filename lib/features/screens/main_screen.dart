@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:vegan_liverpool/constants/firebaseConfig.dart';
+import 'package:vegan_liverpool/constants/firebase_options.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/bottom_bar.dart';
 import 'package:auto_route/auto_route.dart';
@@ -89,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
-    await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     handleFCM(remoteMessage);
   }
