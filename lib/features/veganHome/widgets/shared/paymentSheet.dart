@@ -303,7 +303,7 @@ class _PPLSliderState extends State<PPLSlider> {
                                   _amountToBePaid - value * 10; //converting the PPL slider value into pence again
                               _pplSliderValue = value;
                               setState(() {});
-                              viewmodel.updateSelectedValues(_GBPXSliderValue, _pplSliderValue);
+                              viewmodel.updateSelectedValues(_GBPXSliderValue / 100, _pplSliderValue);
                             },
                             onChanged: (value) {
                               setState(
