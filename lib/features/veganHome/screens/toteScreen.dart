@@ -71,7 +71,7 @@ class _ToteScreenState extends State<ToteScreen> {
                               : SizedBox.shrink(),
                           totalsPriceItemTile(
                             "Service Charge",
-                            cFPrice(viewmodel.cartDeliveryCharge),
+                            cFPrice(viewmodel.cartServiceCharge),
                           ),
                           Divider(
                             height: 20,

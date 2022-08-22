@@ -78,5 +78,7 @@ class UserCartViewModel extends Equatable {
         cartDiscountPercent,
         cartDiscountComputed,
         isDelivery,
+        cartDeliveryCharge,
+        cartServiceCharge,
       ];
 }
