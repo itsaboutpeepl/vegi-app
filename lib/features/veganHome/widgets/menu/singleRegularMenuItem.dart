@@ -54,7 +54,14 @@ class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
                                 fontSize: 13,
                               ),
                             )
-                          : SizedBox.shrink(),
+                          : Text(
+                              "Price on selection",
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontWeight: FontWeight.w900,
+                                fontSize: 13,
+                              ),
+                            ),
                       Text(
                         widget.menuItem.description,
                         maxLines: 3,
@@ -68,6 +75,7 @@ class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: CachedNetworkImage(
+                    memCacheHeight: (MediaQuery.of(context).size.height * 0.2).toInt(),
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.width * 0.2,
                     fit: BoxFit.cover,

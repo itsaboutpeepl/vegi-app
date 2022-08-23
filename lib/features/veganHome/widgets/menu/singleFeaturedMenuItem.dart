@@ -38,6 +38,7 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
                   borderRadius: BorderRadius.circular(20),
                   child: widget.menuItem.imageURL != ""
                       ? CachedNetworkImage(
+                          memCacheWidth: (MediaQuery.of(context).size.width).toInt(),
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: MediaQuery.of(context).size.height * 0.2,

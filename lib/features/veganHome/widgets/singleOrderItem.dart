@@ -29,6 +29,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
               height: MediaQuery.of(context).size.width * 0.2,
               width: MediaQuery.of(context).size.width * 0.2,
               child: CachedNetworkImage(
+                memCacheHeight: (MediaQuery.of(context).size.width * 0.2).toInt(),
                 imageUrl: widget.orderItem.menuItem.imageURL,
                 fit: BoxFit.cover,
               ),
