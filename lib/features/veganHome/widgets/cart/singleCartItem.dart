@@ -55,7 +55,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                           ),
                         ),
                         Text(
-                          widget.orderItem.menuItem.formattedPrice,
+                          widget.orderItem.formattedPrice,
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
