@@ -25,9 +25,9 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
       builder: (_, viewmodel) {
         return Stack(
           children: [
-            Scaffold(
-              body: ListView(
-                physics: ClampingScrollPhysics(),
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Stack(
                     children: [
