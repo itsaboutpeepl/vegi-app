@@ -58,7 +58,7 @@ class UserCartViewModel extends Equatable {
       pplBalance: store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
       gbpXBalance: store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       addCartItem: (itemToAdd) {
-        //store.dispatch(updateCartItems(itemToAdd));
+        store.dispatch(updateCartItems([itemToAdd]));
       },
       updateCartItem: (itemToAdd) {
         store.dispatch(updateCartItemQuantity(itemToAdd));
