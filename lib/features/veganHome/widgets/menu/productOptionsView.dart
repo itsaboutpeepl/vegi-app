@@ -100,6 +100,7 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
                   widget.productOptionsCategory.listOfOptions[index].name,
                   style: TextStyle(color: Colors.grey[800]),
                 ),
+                subtitle: Text(widget.productOptionsCategory.listOfOptions[index].description),
                 trailing: Text(
                   cFPrice(widget.productOptionsCategory.listOfOptions[index].price),
                   style: TextStyle(color: Colors.grey[800]),
