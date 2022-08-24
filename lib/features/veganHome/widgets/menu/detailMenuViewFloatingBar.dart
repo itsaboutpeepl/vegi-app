@@ -16,6 +16,8 @@ class DetailMenuViewFloatingBar extends StatefulWidget {
 }
 
 class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
+  Random _random = Random(DateTime.now().millisecondsSinceEpoch);
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, DetailMenuItem>(
@@ -53,7 +55,7 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                           for (var i = 0; i < viewmodel.quantity; i++) {
                             orderList.add(
                               CartItem(
-                                internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
+                                internalID: _random.nextInt(100000),
                                 menuItem: viewmodel.menuItem!,
                                 totalItemPrice: viewmodel.totalPrice,
                                 itemQuantity:
