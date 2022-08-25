@@ -36,7 +36,7 @@ class _DeliveryInstructionsCardState extends State<DeliveryInstructionsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Delivery Instructions",
+                  "Order Notes",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
                 ),
                 SizedBox(
@@ -69,6 +69,22 @@ class _DeliveryInstructionsCardState extends State<DeliveryInstructionsCard> {
                           ),
                           fillColor: Colors.transparent,
                           isDense: true,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextButton(
+                        onPressed: () => viewmodel.setDeliveryInstructions(_textController.text),
+                        child: Text("Apply"),
+                        style: TextButton.styleFrom(
+                          primary: Colors.grey[800],
+                          textStyle: TextStyle(
+                            fontFamily: "Europa",
+                            fontWeight: FontWeight.w700,
+                          ),
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
                         ),
                       ),
                     ),
