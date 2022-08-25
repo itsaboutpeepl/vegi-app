@@ -80,6 +80,7 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
     sanitizedOrderObject["restaurantName"] = singleOrder['vendor']['name'];
     sanitizedOrderObject["restaurantPhoneNumber"] = singleOrder['vendor']['phoneNumber'];
     sanitizedOrderObject['restaurantAccepted'] = singleOrder['restaurantAccepted'];
+    sanitizedOrderObject['restaurantAcceptanceStatus'] = singleOrder['restaurantAcceptanceStatus'];
     sanitizedOrderObject["isCollection"] = singleOrder['fulfilmentMethod'] == 2 ? true : false;
 
     List<Map<String, dynamic>> listOfProductsOrdered = [];
@@ -152,5 +153,11 @@ extension DateTimeExtension on DateTime {
         days: (day - this.weekday) % DateTime.daysPerWeek,
       ),
     );
+  }
+}
+
+extension CapitalizeString on String {
+  String capitalize() {
+    return this[0].toUpperCase() + this.substring(1);
   }
 }

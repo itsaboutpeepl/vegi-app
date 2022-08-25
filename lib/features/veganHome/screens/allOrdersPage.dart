@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 
 class AllOrdersPage extends StatefulWidget {
   const AllOrdersPage({Key? key}) : super(key: key);
@@ -134,7 +135,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                       text: widget.order['orderedDateTime'] + "\n",
                       children: [
                         TextSpan(
-                          text: "Status: ${widget.order['paymentStatus']}",
+                          text: "Status: ${widget.order['restaurantAcceptanceStatus'].toString().capitalize()}",
                         ),
                       ],
                     ),
