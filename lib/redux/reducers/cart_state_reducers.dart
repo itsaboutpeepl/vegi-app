@@ -23,6 +23,7 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, SetFulfilmentMethod>(_setFulfilmentMethod),
   TypedReducer<UserCartState, SetIsDelivery>(_setIsDelivery),
   TypedReducer<UserCartState, SetDeliveryInstructions>(_setDeliveryInstructions),
+  TypedReducer<UserCartState, SetFulfilmentMethodIds>(_setFulfilmentMethodIds)
 ]);
 
 UserCartState _updateCartItems(
@@ -187,4 +188,8 @@ UserCartState _setIsDelivery(UserCartState state, SetIsDelivery action) {
 
 UserCartState _setDeliveryInstructions(UserCartState state, SetDeliveryInstructions action) {
   return state.copyWith(deliveryInstructions: action.deliveryInstructions);
+}
+
+UserCartState _setFulfilmentMethodIds(UserCartState state, SetFulfilmentMethodIds action) {
+  return state.copyWith(deliveryMethodId: action.deliveryMethodId, collectionMethodId: action.collectionMethodId);
 }

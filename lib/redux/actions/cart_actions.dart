@@ -120,6 +120,13 @@ class SetFulfilmentFees {
   SetFulfilmentFees(this.deliveryCharge, this.collectionCharge);
 }
 
+class SetFulfilmentMethodIds {
+  final int deliveryMethodId;
+  final int collectionMethodId;
+
+  SetFulfilmentMethodIds(this.deliveryMethodId, this.collectionMethodId);
+}
+
 class SetFulfilmentMethod {
   final FulfilmentMethod fulfilmentMethod;
   SetFulfilmentMethod(this.fulfilmentMethod);
@@ -154,6 +161,9 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
         fullfilmentMethods.deliveryMethod == null ? 0 : fullfilmentMethods.deliveryMethod!['priceModifier'] ?? 0,
         fullfilmentMethods.collectionMethod == null ? 0 : fullfilmentMethods.collectionMethod!['priceModifier'] ?? 0,
       ));
+
+      store.dispatch(
+          SetFulfilmentMethodIds(fullfilmentMethods.deliveryMethod!['id'], fullfilmentMethods.collectionMethod!['id']));
     } catch (e, s) {
       log.error('ERROR - getFullfillmentMethods $e');
       await Sentry.captureException(
@@ -353,7 +363,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
               "postCode": selectedAddress.postalCode,
               "deliveryInstructions": store.state.cartState.deliveryInstructions,
             },
-            "fulfilmentMethod": 1,
+            "fulfilmentMethod": store.state.cartState.deliveryMethodId,
             "fulfilmentSlotFrom": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.first.value),
             "fulfilmentSlotTo": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.last.value),
           },
@@ -370,7 +380,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback, V
               "postCode": "L7 0HG",
               "deliveryInstructions": store.state.cartState.deliveryInstructions,
             },
-            "fulfilmentMethod": 2,
+            "fulfilmentMethod": store.state.cartState.collectionMethodId,
             "fulfilmentSlotFrom": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.first.value),
             "fulfilmentSlotTo": formatDateForOrderObject(store.state.cartState.selectedTimeSlot.entries.last.value),
           },

@@ -44,6 +44,8 @@ class UserCartState with _$UserCartState {
     @JsonKey(ignore: true) @Default(0) int restaurantMinimumOrder,
     @JsonKey(ignore: true) @Default(0) int restaurantPlatformFee,
     @JsonKey(ignore: true) @Default("") String deliveryInstructions,
+    @JsonKey(ignore: true) @Default(0) int deliveryMethodId,
+    @JsonKey(ignore: true) @Default(0) int collectionMethodId,
   }) = _UserCartState;
 
   factory UserCartState.initial() => UserCartState(
@@ -75,6 +77,8 @@ class UserCartState with _$UserCartState {
         selectedTimeSlot: {},
         fulfilmentMethod: FulfilmentMethod.delivery,
         isDelivery: false,
+        deliveryMethodId: 0,
+        collectionMethodId: 0,
       );
 
   factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);
