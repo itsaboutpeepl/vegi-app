@@ -21,6 +21,8 @@ _$_OrderDetails _$$_OrderDetailsFromJson(Map<String, dynamic> json) =>
       phoneNumber: json['phoneNumber'] as String,
       GBPxAmountPaid: (json['GBPxAmountPaid'] as num).toDouble(),
       PPLAmountPaid: (json['PPLAmountPaid'] as num).toDouble(),
+      orderAcceptanceStatus: $enumDecode(
+          _$OrderAcceptanceStatusEnumMap, json['orderAcceptanceStatus']),
     );
 
 Map<String, dynamic> _$$_OrderDetailsToJson(_$_OrderDetails instance) =>
@@ -36,4 +38,12 @@ Map<String, dynamic> _$$_OrderDetailsToJson(_$_OrderDetails instance) =>
       'phoneNumber': instance.phoneNumber,
       'GBPxAmountPaid': instance.GBPxAmountPaid,
       'PPLAmountPaid': instance.PPLAmountPaid,
+      'orderAcceptanceStatus':
+          _$OrderAcceptanceStatusEnumMap[instance.orderAcceptanceStatus],
     };
+
+const _$OrderAcceptanceStatusEnumMap = {
+  OrderAcceptanceStatus.pending: 'pending',
+  OrderAcceptanceStatus.accepted: 'accepted',
+  OrderAcceptanceStatus.declined: 'declined',
+};

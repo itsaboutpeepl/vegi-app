@@ -12,14 +12,16 @@ _$_PastOrderState _$$_PastOrderStateFromJson(Map<String, dynamic> json) =>
               ?.map((e) => OrderDetails.fromJson(e))
               .toList() ??
           const [],
-      ongoingOrderDetails: json['ongoingOrderDetails'] == null
-          ? null
-          : OrderDetails.fromJson(json['ongoingOrderDetails']),
+      listOfOngoingOrders: (json['listOfOngoingOrders'] as List<dynamic>?)
+              ?.map((e) => OrderDetails.fromJson(e))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$_PastOrderStateToJson(_$_PastOrderState instance) =>
     <String, dynamic>{
       'listOfScheduledOrders':
           instance.listOfScheduledOrders.map((e) => e.toJson()).toList(),
-      'ongoingOrderDetails': instance.ongoingOrderDetails?.toJson(),
+      'listOfOngoingOrders':
+          instance.listOfOngoingOrders.map((e) => e.toJson()).toList(),
     };

@@ -22,7 +22,8 @@ PastOrderState _$PastOrderStateFromJson(Map<String, dynamic> json) {
 mixin _$PastOrderState {
   List<OrderDetails> get listOfScheduledOrders =>
       throw _privateConstructorUsedError;
-  OrderDetails? get ongoingOrderDetails => throw _privateConstructorUsedError;
+  List<OrderDetails> get listOfOngoingOrders =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,9 +38,7 @@ abstract class $PastOrderStateCopyWith<$Res> {
       _$PastOrderStateCopyWithImpl<$Res>;
   $Res call(
       {List<OrderDetails> listOfScheduledOrders,
-      OrderDetails? ongoingOrderDetails});
-
-  $OrderDetailsCopyWith<$Res>? get ongoingOrderDetails;
+      List<OrderDetails> listOfOngoingOrders});
 }
 
 /// @nodoc
@@ -54,29 +53,18 @@ class _$PastOrderStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? listOfScheduledOrders = freezed,
-    Object? ongoingOrderDetails = freezed,
+    Object? listOfOngoingOrders = freezed,
   }) {
     return _then(_value.copyWith(
       listOfScheduledOrders: listOfScheduledOrders == freezed
           ? _value.listOfScheduledOrders
           : listOfScheduledOrders // ignore: cast_nullable_to_non_nullable
               as List<OrderDetails>,
-      ongoingOrderDetails: ongoingOrderDetails == freezed
-          ? _value.ongoingOrderDetails
-          : ongoingOrderDetails // ignore: cast_nullable_to_non_nullable
-              as OrderDetails?,
+      listOfOngoingOrders: listOfOngoingOrders == freezed
+          ? _value.listOfOngoingOrders
+          : listOfOngoingOrders // ignore: cast_nullable_to_non_nullable
+              as List<OrderDetails>,
     ));
-  }
-
-  @override
-  $OrderDetailsCopyWith<$Res>? get ongoingOrderDetails {
-    if (_value.ongoingOrderDetails == null) {
-      return null;
-    }
-
-    return $OrderDetailsCopyWith<$Res>(_value.ongoingOrderDetails!, (value) {
-      return _then(_value.copyWith(ongoingOrderDetails: value));
-    });
   }
 }
 
@@ -89,10 +77,7 @@ abstract class _$$_PastOrderStateCopyWith<$Res>
   @override
   $Res call(
       {List<OrderDetails> listOfScheduledOrders,
-      OrderDetails? ongoingOrderDetails});
-
-  @override
-  $OrderDetailsCopyWith<$Res>? get ongoingOrderDetails;
+      List<OrderDetails> listOfOngoingOrders});
 }
 
 /// @nodoc
@@ -109,17 +94,17 @@ class __$$_PastOrderStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? listOfScheduledOrders = freezed,
-    Object? ongoingOrderDetails = freezed,
+    Object? listOfOngoingOrders = freezed,
   }) {
     return _then(_$_PastOrderState(
       listOfScheduledOrders: listOfScheduledOrders == freezed
           ? _value.listOfScheduledOrders
           : listOfScheduledOrders // ignore: cast_nullable_to_non_nullable
               as List<OrderDetails>,
-      ongoingOrderDetails: ongoingOrderDetails == freezed
-          ? _value.ongoingOrderDetails
-          : ongoingOrderDetails // ignore: cast_nullable_to_non_nullable
-              as OrderDetails?,
+      listOfOngoingOrders: listOfOngoingOrders == freezed
+          ? _value.listOfOngoingOrders
+          : listOfOngoingOrders // ignore: cast_nullable_to_non_nullable
+              as List<OrderDetails>,
     ));
   }
 }
@@ -129,7 +114,8 @@ class __$$_PastOrderStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PastOrderState extends _PastOrderState {
   _$_PastOrderState(
-      {this.listOfScheduledOrders = const [], this.ongoingOrderDetails = null})
+      {this.listOfScheduledOrders = const [],
+      this.listOfOngoingOrders = const []})
       : super._();
 
   factory _$_PastOrderState.fromJson(Map<String, dynamic> json) =>
@@ -140,11 +126,11 @@ class _$_PastOrderState extends _PastOrderState {
   final List<OrderDetails> listOfScheduledOrders;
   @override
   @JsonKey()
-  final OrderDetails? ongoingOrderDetails;
+  final List<OrderDetails> listOfOngoingOrders;
 
   @override
   String toString() {
-    return 'PastOrderState(listOfScheduledOrders: $listOfScheduledOrders, ongoingOrderDetails: $ongoingOrderDetails)';
+    return 'PastOrderState(listOfScheduledOrders: $listOfScheduledOrders, listOfOngoingOrders: $listOfOngoingOrders)';
   }
 
   @override
@@ -155,7 +141,7 @@ class _$_PastOrderState extends _PastOrderState {
             const DeepCollectionEquality()
                 .equals(other.listOfScheduledOrders, listOfScheduledOrders) &&
             const DeepCollectionEquality()
-                .equals(other.ongoingOrderDetails, ongoingOrderDetails));
+                .equals(other.listOfOngoingOrders, listOfOngoingOrders));
   }
 
   @JsonKey(ignore: true)
@@ -163,7 +149,7 @@ class _$_PastOrderState extends _PastOrderState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(listOfScheduledOrders),
-      const DeepCollectionEquality().hash(ongoingOrderDetails));
+      const DeepCollectionEquality().hash(listOfOngoingOrders));
 
   @JsonKey(ignore: true)
   @override
@@ -179,7 +165,7 @@ class _$_PastOrderState extends _PastOrderState {
 abstract class _PastOrderState extends PastOrderState {
   factory _PastOrderState(
       {final List<OrderDetails> listOfScheduledOrders,
-      final OrderDetails? ongoingOrderDetails}) = _$_PastOrderState;
+      final List<OrderDetails> listOfOngoingOrders}) = _$_PastOrderState;
   _PastOrderState._() : super._();
 
   factory _PastOrderState.fromJson(Map<String, dynamic> json) =
@@ -189,7 +175,8 @@ abstract class _PastOrderState extends PastOrderState {
   List<OrderDetails> get listOfScheduledOrders =>
       throw _privateConstructorUsedError;
   @override
-  OrderDetails? get ongoingOrderDetails => throw _privateConstructorUsedError;
+  List<OrderDetails> get listOfOngoingOrders =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_PastOrderStateCopyWith<_$_PastOrderState> get copyWith =>

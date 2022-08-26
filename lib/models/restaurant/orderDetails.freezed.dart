@@ -31,6 +31,8 @@ mixin _$OrderDetails {
   String get phoneNumber => throw _privateConstructorUsedError;
   double get GBPxAmountPaid => throw _privateConstructorUsedError;
   double get PPLAmountPaid => throw _privateConstructorUsedError;
+  OrderAcceptanceStatus get orderAcceptanceStatus =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -54,7 +56,8 @@ abstract class $OrderDetailsCopyWith<$Res> {
       String userName,
       String phoneNumber,
       double GBPxAmountPaid,
-      double PPLAmountPaid});
+      double PPLAmountPaid,
+      OrderAcceptanceStatus orderAcceptanceStatus});
 
   $DeliveryAddressesCopyWith<$Res> get orderAddress;
 }
@@ -80,6 +83,7 @@ class _$OrderDetailsCopyWithImpl<$Res> implements $OrderDetailsCopyWith<$Res> {
     Object? phoneNumber = freezed,
     Object? GBPxAmountPaid = freezed,
     Object? PPLAmountPaid = freezed,
+    Object? orderAcceptanceStatus = freezed,
   }) {
     return _then(_value.copyWith(
       selectedSlot: selectedSlot == freezed
@@ -126,6 +130,10 @@ class _$OrderDetailsCopyWithImpl<$Res> implements $OrderDetailsCopyWith<$Res> {
           ? _value.PPLAmountPaid
           : PPLAmountPaid // ignore: cast_nullable_to_non_nullable
               as double,
+      orderAcceptanceStatus: orderAcceptanceStatus == freezed
+          ? _value.orderAcceptanceStatus
+          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as OrderAcceptanceStatus,
     ));
   }
 
@@ -155,7 +163,8 @@ abstract class _$$_OrderDetailsCopyWith<$Res>
       String userName,
       String phoneNumber,
       double GBPxAmountPaid,
-      double PPLAmountPaid});
+      double PPLAmountPaid,
+      OrderAcceptanceStatus orderAcceptanceStatus});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get orderAddress;
@@ -185,6 +194,7 @@ class __$$_OrderDetailsCopyWithImpl<$Res>
     Object? phoneNumber = freezed,
     Object? GBPxAmountPaid = freezed,
     Object? PPLAmountPaid = freezed,
+    Object? orderAcceptanceStatus = freezed,
   }) {
     return _then(_$_OrderDetails(
       selectedSlot: selectedSlot == freezed
@@ -231,6 +241,10 @@ class __$$_OrderDetailsCopyWithImpl<$Res>
           ? _value.PPLAmountPaid
           : PPLAmountPaid // ignore: cast_nullable_to_non_nullable
               as double,
+      orderAcceptanceStatus: orderAcceptanceStatus == freezed
+          ? _value.orderAcceptanceStatus
+          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as OrderAcceptanceStatus,
     ));
   }
 }
@@ -250,7 +264,8 @@ class _$_OrderDetails extends _OrderDetails {
       required this.userName,
       required this.phoneNumber,
       required this.GBPxAmountPaid,
-      required this.PPLAmountPaid})
+      required this.PPLAmountPaid,
+      required this.orderAcceptanceStatus})
       : super._();
 
   factory _$_OrderDetails.fromJson(Map<String, dynamic> json) =>
@@ -278,10 +293,12 @@ class _$_OrderDetails extends _OrderDetails {
   final double GBPxAmountPaid;
   @override
   final double PPLAmountPaid;
+  @override
+  final OrderAcceptanceStatus orderAcceptanceStatus;
 
   @override
   String toString() {
-    return 'OrderDetails(selectedSlot: $selectedSlot, isDelivery: $isDelivery, orderAddress: $orderAddress, restaurantName: $restaurantName, cartItems: $cartItems, cartTotal: $cartTotal, orderID: $orderID, userName: $userName, phoneNumber: $phoneNumber, GBPxAmountPaid: $GBPxAmountPaid, PPLAmountPaid: $PPLAmountPaid)';
+    return 'OrderDetails(selectedSlot: $selectedSlot, isDelivery: $isDelivery, orderAddress: $orderAddress, restaurantName: $restaurantName, cartItems: $cartItems, cartTotal: $cartTotal, orderID: $orderID, userName: $userName, phoneNumber: $phoneNumber, GBPxAmountPaid: $GBPxAmountPaid, PPLAmountPaid: $PPLAmountPaid, orderAcceptanceStatus: $orderAcceptanceStatus)';
   }
 
   @override
@@ -306,7 +323,9 @@ class _$_OrderDetails extends _OrderDetails {
             const DeepCollectionEquality()
                 .equals(other.GBPxAmountPaid, GBPxAmountPaid) &&
             const DeepCollectionEquality()
-                .equals(other.PPLAmountPaid, PPLAmountPaid));
+                .equals(other.PPLAmountPaid, PPLAmountPaid) &&
+            const DeepCollectionEquality()
+                .equals(other.orderAcceptanceStatus, orderAcceptanceStatus));
   }
 
   @JsonKey(ignore: true)
@@ -323,7 +342,8 @@ class _$_OrderDetails extends _OrderDetails {
       const DeepCollectionEquality().hash(userName),
       const DeepCollectionEquality().hash(phoneNumber),
       const DeepCollectionEquality().hash(GBPxAmountPaid),
-      const DeepCollectionEquality().hash(PPLAmountPaid));
+      const DeepCollectionEquality().hash(PPLAmountPaid),
+      const DeepCollectionEquality().hash(orderAcceptanceStatus));
 
   @JsonKey(ignore: true)
   @override
@@ -338,17 +358,19 @@ class _$_OrderDetails extends _OrderDetails {
 
 abstract class _OrderDetails extends OrderDetails {
   factory _OrderDetails(
-      {required final Map<String, String> selectedSlot,
-      required final bool isDelivery,
-      required final DeliveryAddresses orderAddress,
-      required final String restaurantName,
-      required final List<CartItem> cartItems,
-      required final int cartTotal,
-      required final String orderID,
-      required final String userName,
-      required final String phoneNumber,
-      required final double GBPxAmountPaid,
-      required final double PPLAmountPaid}) = _$_OrderDetails;
+          {required final Map<String, String> selectedSlot,
+          required final bool isDelivery,
+          required final DeliveryAddresses orderAddress,
+          required final String restaurantName,
+          required final List<CartItem> cartItems,
+          required final int cartTotal,
+          required final String orderID,
+          required final String userName,
+          required final String phoneNumber,
+          required final double GBPxAmountPaid,
+          required final double PPLAmountPaid,
+          required final OrderAcceptanceStatus orderAcceptanceStatus}) =
+      _$_OrderDetails;
   _OrderDetails._() : super._();
 
   factory _OrderDetails.fromJson(Map<String, dynamic> json) =
@@ -376,6 +398,9 @@ abstract class _OrderDetails extends OrderDetails {
   double get GBPxAmountPaid => throw _privateConstructorUsedError;
   @override
   double get PPLAmountPaid => throw _privateConstructorUsedError;
+  @override
+  OrderAcceptanceStatus get orderAcceptanceStatus =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_OrderDetailsCopyWith<_$_OrderDetails> get copyWith =>

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 
@@ -22,6 +23,7 @@ class OrderDetails with _$OrderDetails {
     required String phoneNumber,
     required double GBPxAmountPaid,
     required double PPLAmountPaid,
+    required OrderAcceptanceStatus orderAcceptanceStatus,
   }) = _OrderDetails;
 
   factory OrderDetails.fromJson(dynamic json) => _$OrderDetailsFromJson(json);

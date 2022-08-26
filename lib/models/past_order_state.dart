@@ -11,12 +11,12 @@ class PastOrderState with _$PastOrderState {
   @JsonSerializable()
   factory PastOrderState({
     @Default([]) List<OrderDetails> listOfScheduledOrders,
-    @Default(null) OrderDetails? ongoingOrderDetails,
+    @Default([]) List<OrderDetails> listOfOngoingOrders,
   }) = _PastOrderState;
 
   factory PastOrderState.initial() => PastOrderState(
         listOfScheduledOrders: [],
-        ongoingOrderDetails: null,
+        listOfOngoingOrders: [],
       );
 
   factory PastOrderState.fromJson(dynamic json) => _$PastOrderStateFromJson(json);
