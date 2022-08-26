@@ -94,8 +94,8 @@ List<Map<String, dynamic>> faqs = [
   {
     "question": "How can I list my business on vegi?",
     "answer":
-        "For more information and to book a chat about selling on vegi, check out https://vegiapp.co.uk/what-is-vegi from here you can request more information or schedule a call or visit from a member of the team.",
-    "action": () => launchUrl("https://vegiapp.co.uk/what-is-vegi")
+        "For more information and to book a chat about selling on vegi, check out https://vegiapp.co.uk where you can request more information or schedule a call or visit from a member of the team.",
+    "action": () => launchUrl("https://vegiapp.co.uk")
   },
   {
     "question": "Jobs at vegi",
