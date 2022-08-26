@@ -3,6 +3,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/drawStar.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
@@ -66,6 +67,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
               : store.state.cartState.restaurantAddress!.phoneNumber ?? "",
           GBPxAmountPaid: store.state.cartState.selectedGBPxAmount,
           PPLAmountPaid: store.state.cartState.selectedPPLAmount,
+          orderAcceptanceStatus: OrderAcceptanceStatus.pending,
         );
 
         if (isScheduledDelivery(orderDetails.selectedSlot)) {
@@ -75,7 +77,11 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
           listOfScheduledOrders.add(orderDetails);
           store.dispatch(UpdateScheduledOrders(listOfScheduledOrders));
         } else {
-          store.dispatch(SetOngoingOrder(orderDetails));
+          List<OrderDetails> listOfOngoingOrders =
+              List<OrderDetails>.from(store.state.pastOrderState.listOfOngoingOrders);
+
+          listOfOngoingOrders.add(orderDetails);
+          store.dispatch(UpdateOngoingOrderList(listOfOngoingOrders));
         }
       },
       builder: (_, viewmodel) {
