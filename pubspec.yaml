@@ -1,5 +1,5 @@
 name: vegan_liverpool
-version: 1.0.0+21
+version: 1.1.0+23
 publish_to: none
 description: Food, Grocery delivery platform for Vegan products and food, with a built in wallet running on the Fuse network
 environment:
