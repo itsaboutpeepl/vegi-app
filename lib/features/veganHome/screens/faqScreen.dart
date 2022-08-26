@@ -107,4 +107,10 @@ List<Map<String, dynamic>> faqs = [
     "answer":
         "For deliveries within the Liverpool city region, we work with Agile courier service provided by the Peloton cooperative. Couriers are on employment contracts and are paid a living wage."
   },
+  {
+    "question": "What is Peepl?",
+    "answer":
+        "Peepl offers payments and rewards to its locally focused partner apps. Find out more about Peepl, PPL tokens and GBPX here",
+    "action": () => launchUrl("https://itsaboutpeepl.com/peepl-faqs/")
+  },
 ];
