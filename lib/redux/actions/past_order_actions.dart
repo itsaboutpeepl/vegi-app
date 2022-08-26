@@ -43,37 +43,47 @@ ThunkAction startScheduleCheckCall() {
   };
 }
 
-ThunkAction startRemoveOngoingOrderCheck() {
+ThunkAction startOngoingOrderCheck() {
   return (Store store) async {
-    if (store.state.pastOrderState.listOfOngoingOrders.isEmpty) return;
-    Timer.periodic(Duration(minutes: 2), (timer) {
-      List<OrderDetails> newList = [];
-      store.state.pastOrderState.listOfOngoingOrders.forEach(
-        //for each order in listOfOngoingOrders
-        (OrderDetails element) {
-          if (!shouldEndOngoing(element.selectedSlot)) {
-            //check if the order end time slot has passed the current time.
-            peeplEatsService.checkOrderStatus(element.orderID).then(
-              (orderStatus) {
-                //if it has not passed the current time, then check the status of the order
-                if (orderStatus["restaurantAcceptanceStatus"] != element.orderAcceptanceStatus.name) {
-                  newList.add(
-                    //create a new element with status changed, add it to the list, and update the list state.
-                    element.copyWith(
-                      orderAcceptanceStatus: OrderAcceptanceStatusHelpers.enumValueFromString(
-                        orderStatus['restaurantOrderStatus'],
-                      ),
-                    ),
-                  );
-                } //if it has passed the timeslot, then its not added to the list and removed by default.
-              },
-            );
-          }
-        },
-      );
-
-      store.dispatch(UpdateOngoingOrderList(newList)); //update the list
-      newList.clear(); //clear the list cause its a periodic func
+    if (store.state.pastOrderState.listOfOngoingOrders.isEmpty) return; //if empty return
+    ongoingOrderCheck(store);
+    Timer.periodic(const Duration(minutes: 2), (timer) {
+      if (store.state.pastOrderState.listOfOngoingOrders
+          .isEmpty) //if its changed during when the timer is running, then cancel timer
+        timer.cancel();
+      else {
+        ongoingOrderCheck(store);
+      }
     });
   };
+}
+
+void ongoingOrderCheck(Store store) {
+  List<OrderDetails> newList = [];
+  store.state.pastOrderState.listOfOngoingOrders.forEach(
+    //for each order in listOfOngoingOrders
+    (OrderDetails element) {
+      if (!shouldEndOngoing(element.selectedSlot)) {
+        //check if the order end time slot has passed the current time.
+        peeplEatsService.checkOrderStatus(element.orderID).then(
+          (orderStatus) {
+            //if it has not passed the current time, then check the status of the order
+            if (orderStatus["restaurantAcceptanceStatus"] != element.orderAcceptanceStatus.name) {
+              newList.add(
+                //create a new element with status changed, add it to the list, and update the list state.
+                element.copyWith(
+                  orderAcceptanceStatus: OrderAcceptanceStatusHelpers.enumValueFromString(
+                    orderStatus['restaurantAcceptanceStatus'],
+                  ),
+                ),
+              );
+            } //if it has passed the timeslot, then its not added to the list and removed by default.
+          },
+        );
+      }
+    },
+  );
+
+  store.dispatch(UpdateOngoingOrderList(newList)); //update the list
+  newList.clear(); //clear the list cause its a periodic func
 }

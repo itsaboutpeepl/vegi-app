@@ -24,7 +24,7 @@ class _FeaturedRestaurantListState extends State<FeaturedRestaurantList> {
       onInit: (store) {
         store.dispatch(startFetchTokensBalances());
         store.dispatch(startScheduleCheckCall());
-        store.dispatch(startRemoveOngoingOrderCheck());
+        store.dispatch(startOngoingOrderCheck());
       },
       builder: (_, viewmodel) {
         return viewmodel.isLoadingHomePage
