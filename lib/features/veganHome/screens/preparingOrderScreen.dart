@@ -6,6 +6,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleOrderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 
 class PreparingOrderPage extends StatelessWidget {
   const PreparingOrderPage({Key? key, required this.orderDetails}) : super(key: key);
@@ -33,14 +34,17 @@ class PreparingOrderPage extends StatelessWidget {
                   Stack(
                     alignment: Alignment.center,
                     children: [
-                      Image.asset("assets/images/order-confirmed.png"),
+                      Image.asset(
+                        "assets/images/${orderDetails.orderAcceptanceStatus.imageTitle}",
+                        width: MediaQuery.of(context).size.width * 0.7,
+                      ),
                     ],
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Text(
-                    "Thank you for choosing vegi!",
+                    "Order Status: ${orderDetails.orderAcceptanceStatus.name.capitalize()}",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w900,
@@ -51,14 +55,11 @@ class PreparingOrderPage extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    "Your order #${orderDetails.orderID} has been paid. Once the order has been confirmed by the restaurant, " +
-                        (orderDetails.isDelivery
-                            ? "it will be delivered by Agile Liverpool!"
-                            : "it can be collected from the restaurant!"),
+                    orderDetails.orderAcceptanceStatus.descriptionText(orderDetails.orderID),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Row(
                     children: [
