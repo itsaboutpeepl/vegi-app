@@ -33,7 +33,9 @@ class _AddressViewState extends State<AddressView> {
 
   @override
   void initState() {
-    widget.existingAddress == null ? _isExistingAddress = false : _isExistingAddress = true;
+    widget.existingAddress == null
+        ? _isExistingAddress = false
+        : _isExistingAddress = true;
     _placeApiProvider = PlaceApiProvider(_sessionToken);
 
     _addressFormKey = GlobalKey<FormBuilderState>();
@@ -55,14 +57,17 @@ class _AddressViewState extends State<AddressView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FormBuilderTextField(
-                    initialValue: _isExistingAddress ? widget.existingAddress!.label : null,
+                    initialValue: _isExistingAddress
+                        ? widget.existingAddress!.label
+                        : null,
                     name: 'label',
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                        borderSide:
+                            BorderSide(color: themeShade300, width: 3.0),
                       ),
                       fillColor: Colors.transparent,
                       labelText: 'Address Label',
@@ -71,7 +76,9 @@ class _AddressViewState extends State<AddressView> {
                   ),
                   FormBuilderTypeAhead(
                     controller: _typeAheadController,
-                    initialValue: _isExistingAddress ? Suggestion("", widget.existingAddress!.addressLine1) : null,
+                    initialValue: _isExistingAddress
+                        ? Suggestion("", widget.existingAddress!.addressLine1)
+                        : null,
                     name: 'addressLine1',
                     hideOnEmpty: true,
                     decoration: InputDecoration(
@@ -79,7 +86,8 @@ class _AddressViewState extends State<AddressView> {
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                        borderSide:
+                            BorderSide(color: themeShade300, width: 3.0),
                       ),
                       fillColor: Colors.transparent,
                       labelText: 'Address Line 1',
@@ -87,25 +95,32 @@ class _AddressViewState extends State<AddressView> {
                     onSaved: (dynamic suggestion) {
                       if (suggestion == null) {
                         _addressFormKey.currentState!.setInternalFieldValue(
-                            "addressLine1Internal", "${_typeAheadController.text}",
+                            "addressLine1Internal",
+                            "${_typeAheadController.text}",
                             isSetState: false);
                       }
                     },
                     onSuggestionSelected: (dynamic suggestion) {
                       if (suggestion is Suggestion)
-                        _placeApiProvider.getPlaceDetailFromId(suggestion.placeId).then((Place place) {
+                        _placeApiProvider
+                            .getPlaceDetailFromId(suggestion.placeId)
+                            .then((Place place) {
                           _addressFormKey.currentState!.setInternalFieldValue(
-                              "addressLine1Internal", "${place.streetNumber} ${place.street}",
+                              "addressLine1Internal",
+                              "${place.streetNumber} ${place.street}",
                               isSetState: false);
-                          _addressFormKey.currentState!.fields["townCity"]!.didChange(place.city);
-                          _addressFormKey.currentState!.fields["postalCode"]!.didChange(place.zipCode);
+                          _addressFormKey.currentState!.fields["townCity"]!
+                              .didChange(place.city);
+                          _addressFormKey.currentState!.fields["postalCode"]!
+                              .didChange(place.zipCode);
                         });
                     },
                     itemBuilder: (context, dynamic suggestion) {
                       return ListTile(title: Text(suggestion.description));
                     },
                     selectionToTextTransformer: (dynamic suggestion) {
-                      if (suggestion is Suggestion) return suggestion.description;
+                      if (suggestion is Suggestion)
+                        return suggestion.description;
                       return "";
                     },
                     loadingBuilder: (_) => CircularProgressIndicator(
@@ -119,17 +134,22 @@ class _AddressViewState extends State<AddressView> {
                       }
                     },
                     valueTransformer: (dynamic suggestion) =>
-                        suggestion == null && suggestion is Suggestion? ? "" : suggestion.description,
+                        suggestion == null && suggestion is Suggestion?
+                            ? ""
+                            : suggestion.description,
                   ),
                   FormBuilderTextField(
-                    initialValue: _isExistingAddress ? widget.existingAddress!.addressLine2 : null,
+                    initialValue: _isExistingAddress
+                        ? widget.existingAddress!.addressLine2
+                        : null,
                     name: 'addressLine2',
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                        borderSide:
+                            BorderSide(color: themeShade300, width: 3.0),
                       ),
                       fillColor: Colors.transparent,
                       labelText: 'Address Line 2',
@@ -143,14 +163,17 @@ class _AddressViewState extends State<AddressView> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: FormBuilderTextField(
-                            initialValue: _isExistingAddress ? widget.existingAddress!.townCity : null,
+                            initialValue: _isExistingAddress
+                                ? widget.existingAddress!.townCity
+                                : null,
                             name: 'townCity',
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey),
                               ),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: themeShade300, width: 3.0),
+                                borderSide: BorderSide(
+                                    color: themeShade300, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
                               labelText: 'Town/City',
@@ -161,14 +184,17 @@ class _AddressViewState extends State<AddressView> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: FormBuilderTextField(
-                            initialValue: _isExistingAddress ? widget.existingAddress!.postalCode : null,
+                            initialValue: _isExistingAddress
+                                ? widget.existingAddress!.postalCode
+                                : null,
                             name: 'postalCode',
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey),
                               ),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: themeShade300, width: 3.0),
+                                borderSide: BorderSide(
+                                    color: themeShade300, width: 3.0),
                               ),
                               fillColor: Colors.transparent,
                               labelText: 'Postal Code',
@@ -179,21 +205,27 @@ class _AddressViewState extends State<AddressView> {
                     ],
                   ),
                   FormBuilderTextField(
-                    initialValue: _isExistingAddress ? widget.existingAddress!.phoneNumber : null,
+                    initialValue: _isExistingAddress
+                        ? widget.existingAddress!.phoneNumber
+                        : null,
                     name: 'phoneNumber',
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: themeShade300, width: 3.0),
+                        borderSide:
+                            BorderSide(color: themeShade300, width: 3.0),
                       ),
                       fillColor: Colors.transparent,
                       labelText: 'Phone Number',
                     ),
                     keyboardType: TextInputType.phone,
                     validator: FormBuilderValidators.compose(
-                      [FormBuilderValidators.numeric(), FormBuilderValidators.required()],
+                      [
+                        FormBuilderValidators.numeric(),
+                        FormBuilderValidators.required()
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -203,29 +235,38 @@ class _AddressViewState extends State<AddressView> {
                     style: ElevatedButton.styleFrom(
                       onPrimary: Colors.grey[800],
                       primary: themeShade300,
-                      textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-                      fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
+                      textStyle:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+                      fixedSize:
+                          Size(MediaQuery.of(context).size.width * 0.9, 50),
                     ),
                     onPressed: () {
                       if (_addressFormKey.currentState!.saveAndValidate()) {
                         _tryFetchMapLocation().then((LatLng? value) {
-                          viewmodel.addDeliveryAddress(saveDeliveryAddress(position: value));
+                          viewmodel.addDeliveryAddress(
+                              saveDeliveryAddress(position: value));
                           Navigator.pop(context);
                         });
                       }
                     },
                     child: const Text('Save Address'),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   _isExistingAddress
                       ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             onPrimary: Colors.grey[800],
                             primary: Colors.red,
-                            textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-                            fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
+                            textStyle: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w800),
+                            fixedSize: Size(
+                                MediaQuery.of(context).size.width * 0.9, 50),
                           ),
                           onPressed: () {
-                            viewmodel.deleteDeliveryAddress(widget.existingAddress!);
+                            viewmodel
+                                .deleteDeliveryAddress(widget.existingAddress!);
                             Navigator.pop(context);
                           },
                           child: const Text(
@@ -246,16 +287,19 @@ class _AddressViewState extends State<AddressView> {
   Future<LatLng?> _tryFetchMapLocation() async {
     print("Hello from auto fill map location");
 
-    Suggestion? address = _addressFormKey.currentState!.fields["addressLine1"]!.value;
+    Suggestion? address =
+        _addressFormKey.currentState!.fields["addressLine1"]!.value;
     if (address == null) {
       return null;
     }
 
     List<Location> possibleLocations =
-        await locationFromAddress(address.description).onError((error, stackTrace) => []);
+        await locationFromAddress(address.description)
+            .onError((error, stackTrace) => []);
 
     if (possibleLocations.isNotEmpty) {
-      return LatLng(possibleLocations[0].latitude, possibleLocations[0].longitude);
+      return LatLng(
+          possibleLocations[0].latitude, possibleLocations[0].longitude);
     }
     return null;
   }
@@ -268,13 +312,16 @@ class _AddressViewState extends State<AddressView> {
           ? widget.existingAddress!.internalID
           : Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
       label: formValue['label'],
-      addressLine1: formValue['addressLine1Internal'] ?? formValue['addressLine1'],
+      addressLine1:
+          formValue['addressLine1Internal'] ?? formValue['addressLine1'],
       addressLine2: formValue['addressLine2'] ?? "",
       townCity: formValue['townCity'],
       postalCode: formValue['postalCode'],
       phoneNumber: formValue['phoneNumber'],
-      latitude: position != null ? position.latitude : formValue['latitude'] ?? 0.0,
-      longitude: position != null ? position.longitude : formValue['longitude'] ?? 0.0,
+      latitude:
+          position != null ? position.latitude : formValue['latitude'] ?? 0.0,
+      longitude:
+          position != null ? position.longitude : formValue['longitude'] ?? 0.0,
     );
   }
 }
