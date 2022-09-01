@@ -54,7 +54,9 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         Row(
                           children: [
                             Text(
-                              viewmodel.isDelivery ? "Delivering To " : "Collection",
+                              viewmodel.isDelivery
+                                  ? "Delivering To "
+                                  : "Collection",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -64,7 +66,9 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                 ? Padding(
                                     padding: const EdgeInsets.only(bottom: 1.5),
                                     child: DropdownButton<String>(
-                                      menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
+                                      menuMaxHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.3,
                                       alignment: Alignment.centerLeft,
                                       isDense: true,
                                       style: TextStyle(
@@ -103,7 +107,9 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                             viewmodel.setIsDelivery(!viewmodel.isDelivery);
                           },
                           child: Text(
-                            viewmodel.isDelivery ? "Switch to Collection" : "Switch to Delivery",
+                            viewmodel.isDelivery
+                                ? "Switch to Collection"
+                                : "Switch to Delivery",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -129,9 +135,12 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                 width: 40,
                                 height: 40,
                                 imageUrl: viewmodel.avatarUrl,
-                                placeholder: (context, url) => CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => CircleAvatar(
-                                  backgroundImage: AssetImage('assets/images/anom.png'),
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/images/anom.png'),
                                   radius: 30,
                                 ),
                                 imageBuilder: (context, imageProvider) => Image(

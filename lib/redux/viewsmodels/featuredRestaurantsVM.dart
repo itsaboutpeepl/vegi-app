@@ -29,18 +29,20 @@ class FeaturedRestaurantsVM extends Equatable {
 
   static FeaturedRestaurantsVM fromStore(Store<AppState> store) {
     return FeaturedRestaurantsVM(
-        featuredRestaurants: store.state.homePageState.featuredRestaurants,
-        isLoadingHomePage: store.state.homePageState.isLoadingHomePage,
-        avatarUrl: store.state.userState.avatarUrl,
-        isDelivery: store.state.cartState.isDelivery,
-        postalCodes: store.state.homePageState.postalCodes,
-        listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
-        changeOutCode: (outCode) {
-          store.dispatch(fetchFeaturedRestaurants(outCode: outCode));
-        },
-        setIsDelivery: (isDelivery) {
-          store.dispatch(SetIsDelivery(isDelivery));
-        });
+      featuredRestaurants: store.state.homePageState.featuredRestaurants,
+      isLoadingHomePage: store.state.homePageState.isLoadingHomePage,
+      avatarUrl: store.state.userState.avatarUrl,
+      isDelivery: store.state.cartState.isDelivery,
+      postalCodes: store.state.homePageState.postalCodes,
+      listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
+      changeOutCode: (outCode) {
+        store.dispatch(fetchFeaturedRestaurants(outCode: outCode));
+      },
+      setIsDelivery: (isDelivery) {
+        store.dispatch(SetIsDelivery(isDelivery));
+        store.dispatch(computeCartTotals());
+      },
+    );
   }
 
   @override

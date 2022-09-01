@@ -48,15 +48,19 @@ class UserCartViewModel extends Equatable {
       cartSubTotal: store.state.cartState.cartSubTotal,
       cartTax: store.state.cartState.cartTax,
       cartTotal: store.state.cartState.cartTotal,
-      cartDeliveryCharge: store.state.cartState.cartDeliveryCharge,
+      cartDeliveryCharge: store.state.cartState.isDelivery
+          ? store.state.cartState.deliveryCharge
+          : store.state.cartState.collectionCharge,
       cartServiceCharge: store.state.cartState.restaurantPlatformFee,
       minimumOrderAmount: store.state.cartState.restaurantMinimumOrder,
       cartDiscountComputed: store.state.cartState.cartDiscountComputed,
       cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       avatarUrl: store.state.userState.avatarUrl,
       isDelivery: store.state.cartState.isDelivery,
-      pplBalance: store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
-      gbpXBalance: store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
+      pplBalance:
+          store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
+      gbpXBalance:
+          store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
       addCartItem: (itemToAdd) {
         store.dispatch(updateCartItems([itemToAdd]));
       },
