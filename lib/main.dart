@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -84,7 +85,11 @@ void main() async {
 
     //Pass the store to the Main App which injects it into the entire tree.
     runApp(MyApp(store));
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    if (Platform.isIOS) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    }
   }, (exception, stackTrace) async {
     if (kReleaseMode) {
       await Sentry.captureException(exception, stackTrace: stackTrace);
