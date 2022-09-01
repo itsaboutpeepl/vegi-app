@@ -44,6 +44,18 @@ class _DiscountCardState extends State<DiscountCard> {
                     children: [
                       Expanded(
                         child: TextField(
+                          onEditingComplete: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            if (viewmodel.discountCode == "") {
+                              viewmodel.updateDiscount(_textController.text,
+                                  () {
+                                _textController.text = "Not Found";
+                              });
+                            } else {
+                              viewmodel.updateDiscount("REMOVE", () {});
+                              _textController.clear();
+                            }
+                          },
                           controller: _textController,
                           maxLength: 20,
                           textInputAction: TextInputAction.done,
@@ -72,6 +84,7 @@ class _DiscountCardState extends State<DiscountCard> {
                         padding: const EdgeInsets.only(left: 20),
                         child: TextButton(
                           onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             if (viewmodel.discountCode == "") {
                               viewmodel.updateDiscount(_textController.text,
                                   () {
