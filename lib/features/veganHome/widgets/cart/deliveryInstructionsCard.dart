@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -8,11 +11,15 @@ class DeliveryInstructionsCard extends StatefulWidget {
   const DeliveryInstructionsCard({Key? key}) : super(key: key);
 
   @override
-  State<DeliveryInstructionsCard> createState() => _DeliveryInstructionsCardState();
+  State<DeliveryInstructionsCard> createState() =>
+      _DeliveryInstructionsCardState();
 }
 
 class _DeliveryInstructionsCardState extends State<DeliveryInstructionsCard> {
   TextEditingController _textController = TextEditingController();
+
+  bool _isSavedOnce = false;
+  Timer? _timer;
 
   @override
   void dispose() {
@@ -35,9 +42,25 @@ class _DeliveryInstructionsCardState extends State<DeliveryInstructionsCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Order Notes",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Order Notes",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    ),
+                    _isSavedOnce
+                        ? TextButton(
+                            onPressed: () => setState(() {}),
+                            child: Text(
+                              "Change",
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w800),
+                            ),
+                          )
+                        : SizedBox.shrink()
+                  ],
                 ),
                 SizedBox(
                   height: 5,
@@ -45,9 +68,27 @@ class _DeliveryInstructionsCardState extends State<DeliveryInstructionsCard> {
                 Row(
                   children: [
                     Expanded(
-                      child: TextField(
+                      child: FormBuilderTextField(
+                        name: "deliveryInstructions",
+                        onChanged: (text) {
+                          _timer?.cancel();
+                          if (text!.isNotEmpty) {
+                            _timer = Timer(Duration(milliseconds: 500), () {
+                              viewmodel.setDeliveryInstructions(
+                                  _textController.text);
+                              setState(() {
+                                _isSavedOnce = true;
+                              });
+                            });
+                          }
+                        },
                         onEditingComplete: () {
-                          viewmodel.setDeliveryInstructions(_textController.text);
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          viewmodel
+                              .setDeliveryInstructions(_textController.text);
+                          setState(() {
+                            _isSavedOnce = true;
+                          });
                         },
                         controller: _textController,
                         maxLines: 1,
@@ -69,22 +110,6 @@ class _DeliveryInstructionsCardState extends State<DeliveryInstructionsCard> {
                           ),
                           fillColor: Colors.transparent,
                           isDense: true,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextButton(
-                        onPressed: () => viewmodel.setDeliveryInstructions(_textController.text),
-                        child: Text("Apply"),
-                        style: TextButton.styleFrom(
-                          primary: Colors.grey[800],
-                          textStyle: TextStyle(
-                            fontFamily: "Europa",
-                            fontWeight: FontWeight.w700,
-                          ),
-                          padding: EdgeInsets.zero,
-                          visualDensity: VisualDensity.compact,
                         ),
                       ),
                     ),
