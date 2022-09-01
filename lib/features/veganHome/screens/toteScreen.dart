@@ -29,7 +29,9 @@ class _ToteScreenState extends State<ToteScreen> {
       converter: UserCartViewModel.fromStore,
       distinct: true,
       onInit: (store) {
-        store.state.cartState.restaurantID != "" ? store.dispatch(getFullfillmentMethods()) : null;
+        store.state.cartState.restaurantID != ""
+            ? store.dispatch(getFullfillmentMethods())
+            : null;
       },
       builder: (_, viewmodel) {
         return Scaffold(
@@ -51,13 +53,17 @@ class _ToteScreenState extends State<ToteScreen> {
                                 key: UniqueKey(),
                                 direction: DismissDirection.horizontal,
                                 confirmDismiss: (direction) async {
-                                  if (direction == DismissDirection.endToStart) {
-                                    final updatedElement = element.copyWith(itemQuantity: 0);
+                                  if (direction ==
+                                      DismissDirection.endToStart) {
+                                    final updatedElement =
+                                        element.copyWith(itemQuantity: 0);
                                     viewmodel.updateCartItem(updatedElement);
                                     return true;
                                   } else {
                                     final updatedElement = element.copyWith(
-                                        internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000));
+                                        internalID: Random(DateTime.now()
+                                                .millisecondsSinceEpoch)
+                                            .nextInt(10000));
                                     viewmodel.addCartItem(updatedElement);
                                     return false;
                                   }
@@ -65,8 +71,10 @@ class _ToteScreenState extends State<ToteScreen> {
                                 child: SingleCartItem(orderItem: element),
                                 background: Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20), color: Colors.green.shade400),
-                                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.green.shade400),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 15),
                                   alignment: Alignment.centerLeft,
                                   child: const Padding(
                                     padding: const EdgeInsets.only(left: 20),
@@ -78,8 +86,10 @@ class _ToteScreenState extends State<ToteScreen> {
                                 ),
                                 secondaryBackground: Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20), color: Colors.red.shade400),
-                                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.red.shade400),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 15),
                                   alignment: Alignment.centerRight,
                                   child: const Padding(
                                     padding: const EdgeInsets.only(right: 20),
@@ -107,12 +117,10 @@ class _ToteScreenState extends State<ToteScreen> {
                             "Subtotal",
                             cFPrice(viewmodel.cartSubTotal),
                           ),
-                          viewmodel.isDelivery
-                              ? totalsPriceItemTile(
-                                  "Delivery Charge",
-                                  cFPrice(viewmodel.cartDeliveryCharge),
-                                )
-                              : SizedBox.shrink(),
+                          totalsPriceItemTile(
+                            "Delivery Charge",
+                            cFPrice(viewmodel.cartDeliveryCharge),
+                          ),
                           totalsPriceItemTile(
                             "Service Charge",
                             cFPrice(viewmodel.cartServiceCharge),
@@ -129,16 +137,20 @@ class _ToteScreenState extends State<ToteScreen> {
                             cFPrice(viewmodel.cartTotal),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
                             child: ShimmerButton(
                               baseColor: themeShade400,
                               highlightColor: themeShade300,
                               buttonAction: () {
-                                if (viewmodel.minimumOrderAmount > viewmodel.cartTotal) {
+                                if (viewmodel.minimumOrderAmount >
+                                    viewmodel.cartTotal) {
                                   showErrorSnack(
                                       context: context,
-                                      title: "This restaurant has a minimum order!",
-                                      message: "Try adding more items to your tote!");
+                                      title:
+                                          "This restaurant has a minimum order!",
+                                      message:
+                                          "Try adding more items to your tote!");
                                   return;
                                 }
                                 context.router.push(CheckoutScreen());
@@ -174,7 +186,8 @@ class _ToteScreenState extends State<ToteScreen> {
               : EmptyStatePage(
                   emoji: "😐",
                   title: "No items in your bag… yet!",
-                  subtitle: "Try adding an item from one of our amazing restauarants to fill this page up!",
+                  subtitle:
+                      "Try adding an item from one of our amazing restauarants to fill this page up!",
                 ),
         );
       },
