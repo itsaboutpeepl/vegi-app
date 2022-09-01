@@ -19,8 +19,10 @@ class UpdateScheduledOrders {
 
 ThunkAction startScheduleCheckCall() {
   return (Store store) async {
-    List<OrderDetails> listOfScheduledOrders = store.state.pastOrderState.listOfScheduledOrders;
-    List<OrderDetails> listOfOngoingOrders = store.state.pastOrderState.listOfOngoingOrders;
+    List<OrderDetails> listOfScheduledOrders =
+        store.state.pastOrderState.listOfScheduledOrders;
+    List<OrderDetails> listOfOngoingOrders =
+        store.state.pastOrderState.listOfOngoingOrders;
 
     listOfScheduledOrders.forEach((element) {
       if (!isScheduledDelivery(element.selectedSlot)) {
@@ -33,8 +35,8 @@ ThunkAction startScheduleCheckCall() {
     if (listOfOngoingOrders.isNotEmpty) {
       listOfOngoingOrders.forEach(
         (ongoingOrderElement) {
-          listOfScheduledOrders
-              .removeWhere((scheduledOrderElement) => scheduledOrderElement.orderID == ongoingOrderElement);
+          listOfScheduledOrders.removeWhere((scheduledOrderElement) =>
+              scheduledOrderElement.orderID == ongoingOrderElement);
         },
       );
     }
@@ -45,9 +47,10 @@ ThunkAction startScheduleCheckCall() {
 
 ThunkAction startOngoingOrderCheck() {
   return (Store store) async {
-    if (store.state.pastOrderState.listOfOngoingOrders.isEmpty) return; //if empty return
+    if (store.state.pastOrderState.listOfOngoingOrders.isEmpty)
+      return; //if empty return
     ongoingOrderCheck(store);
-    Timer.periodic(const Duration(minutes: 2), (timer) {
+    Timer.periodic(const Duration(seconds: 30), (timer) {
       if (store.state.pastOrderState.listOfOngoingOrders
           .isEmpty) //if its changed during when the timer is running, then cancel timer
         timer.cancel();
@@ -68,11 +71,13 @@ void ongoingOrderCheck(Store store) {
         peeplEatsService.checkOrderStatus(element.orderID).then(
           (orderStatus) {
             //if it has not passed the current time, then check the status of the order
-            if (orderStatus["restaurantAcceptanceStatus"] != element.orderAcceptanceStatus.name) {
+            if (orderStatus["restaurantAcceptanceStatus"] !=
+                element.orderAcceptanceStatus.name) {
               newList.add(
                 //create a new element with status changed, add it to the list, and update the list state.
                 element.copyWith(
-                  orderAcceptanceStatus: OrderAcceptanceStatusHelpers.enumValueFromString(
+                  orderAcceptanceStatus:
+                      OrderAcceptanceStatusHelpers.enumValueFromString(
                     orderStatus['restaurantAcceptanceStatus'],
                   ),
                 ),
