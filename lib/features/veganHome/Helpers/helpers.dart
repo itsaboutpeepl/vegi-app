@@ -66,29 +66,40 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
 
     sanitizedOrderObject["orderID"] = singleOrder['id'];
     sanitizedOrderObject["total"] = cFPrice(singleOrder['total']);
-    sanitizedOrderObject["orderedDateTime"] =
-        formatDate(DateTime.fromMillisecondsSinceEpoch(singleOrder['orderedDateTime']).toLocal());
+    sanitizedOrderObject["orderedDateTime"] = formatDate(
+        DateTime.fromMillisecondsSinceEpoch(singleOrder['orderedDateTime'])
+            .toLocal());
     sanitizedOrderObject["deliveryName"] = singleOrder['deliveryName'];
     sanitizedOrderObject["deliveryEmail"] = singleOrder['deliveryEmail'];
-    sanitizedOrderObject["deliveryPhoneNumber"] = singleOrder['deliveryPhoneNumber'];
-    sanitizedOrderObject["deliveryAddressLineOne"] = singleOrder['deliveryAddressLineOne'];
-    sanitizedOrderObject["deliveryAddressLineTwo"] = singleOrder['deliveryAddressLineTwo'];
-    sanitizedOrderObject["deliveryAddressPostCode"] = singleOrder['deliveryAddressPostCode'];
+    sanitizedOrderObject["deliveryPhoneNumber"] =
+        singleOrder['deliveryPhoneNumber'];
+    sanitizedOrderObject["deliveryAddressLineOne"] =
+        singleOrder['deliveryAddressLineOne'];
+    sanitizedOrderObject["deliveryAddressLineTwo"] =
+        singleOrder['deliveryAddressLineTwo'];
+    sanitizedOrderObject["deliveryAddressPostCode"] =
+        singleOrder['deliveryAddressPostCode'];
     sanitizedOrderObject["paymentStatus"] =
-        singleOrder['paymentStatus'][0].toUpperCase() + singleOrder['paymentStatus'].substring(1);
+        singleOrder['paymentStatus'][0].toUpperCase() +
+            singleOrder['paymentStatus'].substring(1);
     sanitizedOrderObject['rewardsIssued'] = singleOrder['rewardsIssued'];
     sanitizedOrderObject["restaurantName"] = singleOrder['vendor']['name'];
-    sanitizedOrderObject["restaurantPhoneNumber"] = singleOrder['vendor']['phoneNumber'];
-    sanitizedOrderObject['restaurantAccepted'] = singleOrder['restaurantAccepted'];
-    sanitizedOrderObject['restaurantAcceptanceStatus'] = singleOrder['restaurantAcceptanceStatus'];
-    sanitizedOrderObject["isCollection"] = singleOrder['fulfilmentMethod'] == 2 ? true : false;
+    sanitizedOrderObject["restaurantPhoneNumber"] =
+        singleOrder['vendor']['phoneNumber'];
+    sanitizedOrderObject['restaurantAccepted'] =
+        singleOrder['restaurantAccepted'];
+    sanitizedOrderObject['restaurantAcceptanceStatus'] =
+        singleOrder['restaurantAcceptanceStatus'];
+    sanitizedOrderObject["isCollection"] =
+        singleOrder['fulfilmentMethod'] == 2 ? true : false;
 
     List<Map<String, dynamic>> listOfProductsOrdered = [];
     //Products in Order
     singleOrder['items'].forEach((productItem) {
       Map<String, dynamic> singleProductItem = {};
       singleProductItem['name'] = productItem['product']['name'];
-      singleProductItem['basePrice'] = cFPrice(productItem['product']['basePrice']);
+      singleProductItem['basePrice'] =
+          cFPrice(productItem['product']['basePrice']);
 
       //Options in Product
       if (productItem.containsKey("optionValues")) {
@@ -145,6 +156,27 @@ double getPPLRewardsFromPence(num penceAmount) {
 // Reward Conversion Rate (5% reward)
 // 1GBP => 100 pence => 5 pence => 0.5 PPL
 // 1000GBP => 100,000 pence => 5000 pence => 500 PPL Tokens
+
+String getErrorMessageForOrder(String errorCode) {
+  switch (errorCode) {
+    case "invalidVendor":
+      return "This vendor is currently not delivering!";
+    case "invalidFulfilmentMethod":
+      return "This vendor is not currently accepting delivery/collection orders";
+    case "invalidProduct":
+      return "This product is not currently avaliable!";
+    case "invalidProductOption":
+      return "This option is not currently avaliable!";
+    case "invalidPostalDistrict":
+      return "The vendor does not delivery to this location, sorry!";
+    case "invalidSlot":
+      return "This slot is full. Please choose another slot!";
+    case "invalidDiscountCode":
+      return "The discount code entered is invalid, sorry!";
+    default:
+      return "Something went wrong!";
+  }
+}
 
 extension DateTimeExtension on DateTime {
   DateTime next(int day) {
