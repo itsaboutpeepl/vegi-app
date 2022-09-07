@@ -20,7 +20,8 @@ class PeeplEatsService {
   }
 
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
-    Response response = await dio.get('api/v1/vendors?outcode=$outCode').timeout(
+    Response response =
+        await dio.get('api/v1/vendors?outcode=$outCode').timeout(
       Duration(seconds: 5),
       onTimeout: () {
         return Response(
@@ -70,7 +71,8 @@ class PeeplEatsService {
     return restaurantsActive;
   }
 
-  Future<List<RestaurantMenuItem>> getRestaurantMenuItems(String restaurantID) async {
+  Future<List<RestaurantMenuItem>> getRestaurantMenuItems(
+      String restaurantID) async {
     Response response = await dio.get('api/v1/vendors/$restaurantID?');
 
     List<dynamic> results = response.data['vendor']['products'] as List;
@@ -104,7 +106,8 @@ class PeeplEatsService {
   }
 
   Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {
-    Response response = await dio.get('api/v1/products/get-product-options/$itemID?');
+    Response response =
+        await dio.get('api/v1/products/get-product-options/$itemID?');
 
     List<dynamic> results = response.data as List;
 
@@ -143,23 +146,28 @@ class PeeplEatsService {
   }
 
   Future<int> checkDiscountCode(String discountCode) async {
-    Response response = await dio.get('api/v1/discounts/check-discount-code/$discountCode?');
+    Response response =
+        await dio.get('api/v1/discounts/check-discount-code/$discountCode?');
 
     Map<dynamic, dynamic> results = response.data['discount'] as Map;
 
     return results['percentage'];
   }
 
-  Future<FullfilmentMethods> getFulfilmentSlots({required String vendorID, required String dateRequired}) async {
-    Response response = await dio.get('api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
+  Future<FullfilmentMethods> getFulfilmentSlots(
+      {required String vendorID, required String dateRequired}) async {
+    Response response = await dio.get(
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
 
     FullfilmentMethods methods = FullfilmentMethods.fromJson(response.data);
 
     return methods;
   }
 
-  Future<Map<dynamic, dynamic>> createOrder(Map<String, dynamic> orderObject) async {
-    Response response = await dio.post('/api/v1/orders/create-order', data: orderObject);
+  Future<Map<dynamic, dynamic>> createOrder(
+      Map<String, dynamic> orderObject) async {
+    Response response =
+        await dio.post('/api/v1/orders/create-order', data: orderObject);
 
     Map<dynamic, dynamic> result = response.data;
 
@@ -167,7 +175,8 @@ class PeeplEatsService {
   }
 
   Future<Map<dynamic, dynamic>> checkOrderStatus(String orderID) async {
-    Response response = await dio.get('/api/v1/orders/get-order-status?orderId=$orderID');
+    Response response =
+        await dio.get('/api/v1/orders/get-order-status?orderId=$orderID');
 
     Map<dynamic, dynamic> result = response.data;
 
@@ -180,7 +189,8 @@ class PeeplEatsService {
   }
 
   Future<List<String>> getPostalCodes() async {
-    Response response = await dio.get('api/v1/postal-districts/get-all-postal-districts');
+    Response response =
+        await dio.get('api/v1/postal-districts/get-all-postal-districts');
 
     List<String> outCodes = [];
 
