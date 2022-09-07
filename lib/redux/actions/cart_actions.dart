@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -340,6 +341,10 @@ ThunkAction computeCartTotals() {
 ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
     VoidCallback successCallback) {
   return (Store store) async {
+    int temp = ((store.state.cartState.cartSubTotal *
+            store.state.cartState.cartDiscountPercent) ~/
+        100);
+
     try {
       if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.none) {
         errorCallback("Please select or create an address");
@@ -348,7 +353,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
         errorCallback("Please select a time slot");
         return;
       } else if (store.state.cartState.restaurantMinimumOrder >
-          store.state.cartState.cartTotal) {
+          store.state.cartState.cartSubTotal - temp) {
         errorCallback("Your order does not satisfy the minimum order amount");
         return;
       }
@@ -414,10 +419,12 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
         orderObject.addAll(
           {
             "address": {
-              "name": "Collection Order",
-              "email": "order@collection.com",
-              "phoneNumber": "12345678910",
-              "lineOne": "10 Collection Street",
+              "name": store.state.userState.displayName,
+              "email": store.state.userState.email == ""
+                  ? "email@notprovided.com"
+                  : store.state.userState.email,
+              "phoneNumber": store.state.userState.phoneNumber,
+              "lineOne": "Collection Order",
               "lineTwo": "",
               "postCode": "L7 0HG",
               "deliveryInstructions":
@@ -466,6 +473,12 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
         }
       } else {
         errorCallback("Our servers seem to be down");
+      }
+    } on DioError catch (e) {
+      if (e.response != null) {
+        print(e.response!.data);
+        errorCallback(
+            getErrorMessageForOrder(e.response!.data['cause']['code']));
       }
     } catch (e, s) {
       errorCallback("Something went wrong");
