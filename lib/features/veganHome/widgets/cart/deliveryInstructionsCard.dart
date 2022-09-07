@@ -46,7 +46,8 @@ class _DeliveryInstructionsCardState extends State<DeliveryInstructionsCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Order Notes",
+                      (viewmodel.isDelivery ? 'Delivery' : 'Collection') +
+                          ' Notes',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
                     ),
