@@ -144,7 +144,7 @@ class _ToteScreenState extends State<ToteScreen> {
                               highlightColor: themeShade300,
                               buttonAction: () {
                                 if (viewmodel.minimumOrderAmount >
-                                    viewmodel.cartTotal) {
+                                    viewmodel.cartSubTotal) {
                                   showErrorSnack(
                                       context: context,
                                       title:
