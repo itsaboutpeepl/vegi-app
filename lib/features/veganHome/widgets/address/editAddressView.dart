@@ -56,24 +56,6 @@ class _AddressViewState extends State<AddressView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FormBuilderTextField(
-                    initialValue: _isExistingAddress
-                        ? widget.existingAddress!.label
-                        : null,
-                    name: 'label',
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: themeShade300, width: 3.0),
-                      ),
-                      fillColor: Colors.transparent,
-                      labelText: 'Address Label',
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
                   FormBuilderTypeAhead(
                     controller: _typeAheadController,
                     initialValue: _isExistingAddress
