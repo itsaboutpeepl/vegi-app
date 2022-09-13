@@ -8,7 +8,6 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
-import 'package:vegan_liverpool/utils/stripe.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -41,7 +40,7 @@ void main() async {
   await dotenv.load(fileName: 'environment/.env');
 
 // initialize stripe for payment
-  new StripeService()..init();
+  //new StripeService()..init();
 
   await configureDependencies();
 

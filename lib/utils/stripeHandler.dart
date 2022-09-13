@@ -12,18 +12,14 @@ Future<void> handleStripe({
   required bool shouldPushToHome,
 }) async {
   try {
-    final paymentIntentClientSecret = await stripePayService.createStripePaymentIntent(
-        amount: amountText, currency: 'gbp', walletAddress: walletAddress);
+    final paymentIntentClientSecret =
+        await stripePayService.createStripePaymentIntent(
+            amount: amountText, currency: 'gbp', walletAddress: walletAddress);
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
-        applePay: false,
-        googlePay: false,
         style: ThemeMode.dark,
-        testEnv: true,
-        merchantCountryCode: 'GB',
         merchantDisplayName: 'Peepl',
         paymentIntentClientSecret: paymentIntentClientSecret,
-        currencyCode: "gbp",
       ),
     );
     await Stripe.instance.presentPaymentSheet();

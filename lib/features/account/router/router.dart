@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/empty_router_widgets.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/screens/account_screen.dart';
 import 'package:vegan_liverpool/features/account/screens/done_backup_screen.dart';

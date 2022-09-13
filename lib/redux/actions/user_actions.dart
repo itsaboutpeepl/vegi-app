@@ -228,7 +228,8 @@ ThunkAction loginHandler(
             properties: Map.from({"error": e.toString()}),
           );
           onError(e.toString());
-          await Sentry.captureMessage('Error in login with phone number: ${e.toString()}');
+          await Sentry.captureMessage(
+              'Error in login with phone number: ${e.toString()}');
         },
       );
     } catch (e, s) {
@@ -393,9 +394,12 @@ ThunkAction createLocalAccountCall(
           accountAddress.toString(),
         ),
       );
-      store.dispatch(SetDefaultCommunity(defaultCommunityAddress.toLowerCase()));
-      log.info("initialLoginDateTime: ${DateTime.now().millisecondsSinceEpoch.toString()}");
-      store.dispatch(SetInitialLoginDateTime(DateTime.now().millisecondsSinceEpoch.toString()));
+      store
+          .dispatch(SetDefaultCommunity(defaultCommunityAddress.toLowerCase()));
+      log.info(
+          "initialLoginDateTime: ${DateTime.now().millisecondsSinceEpoch.toString()}");
+      store.dispatch(SetInitialLoginDateTime(
+          DateTime.now().millisecondsSinceEpoch.toString()));
       Segment.track(
         eventName: 'New User: Create Wallet',
       );
@@ -448,12 +452,16 @@ ThunkAction syncContactsCall() {
                 return phoneNumber.e164;
               } catch (e) {
                 String formatted = formatPhoneNumber(value, countryCode);
-                bool isValid = await phoneNumberUtil.validate(formatted, isoCode).catchError(
+                bool isValid = await phoneNumberUtil
+                    .validate(formatted, regionCode: isoCode)
+                    .catchError(
                       (erro) => false,
                     );
                 if (isValid) {
-                  String phoneNum = await phoneNumberUtil.format(formatted, isoCode);
-                  PhoneNumber phoneNumber = await phoneNumberUtil.parse(phoneNum);
+                  String phoneNum =
+                      await phoneNumberUtil.format(formatted, isoCode);
+                  PhoneNumber phoneNumber =
+                      await phoneNumberUtil.parse(phoneNum);
                   return phoneNumber.e164;
                 }
                 return '';
@@ -462,7 +470,8 @@ ThunkAction syncContactsCall() {
           ),
         );
         List<String> result = await phones;
-        result = result.toSet().toList()..removeWhere((element) => element == '');
+        result = result.toSet().toList()
+          ..removeWhere((element) => element == '');
         for (String phone in result) {
           if (!syncedContacts.contains(phone)) {
             newPhones.add(phone);
@@ -471,7 +480,8 @@ ThunkAction syncContactsCall() {
       }
       if (newPhones.length == 0) {
         dynamic response = await walletApi.syncContacts(newPhones);
-        store.dispatch(SyncContactsProgress(newPhones, List<Map<String, dynamic>>.from(response['newContacts'])));
+        store.dispatch(SyncContactsProgress(newPhones,
+            List<Map<String, dynamic>>.from(response['newContacts'])));
         await walletApi.ackSync(response['nonce']);
       } else {
         int limit = 100;
@@ -566,7 +576,8 @@ ThunkAction saveUserProfile(walletAddress) {
   return (Store store) async {
     String displayName = store.state.userState.displayName;
     try {
-      Map<String, dynamic> userProfile = await walletApi.getUserProfile(walletAddress);
+      Map<String, dynamic> userProfile =
+          await walletApi.getUserProfile(walletAddress);
       if (userProfile.isNotEmpty) {
         if (userProfile.containsKey('avatarHash')) {
           store.dispatch(SetUserAvatar(userProfile['imageUri']));
@@ -614,7 +625,8 @@ ThunkAction setupWalletCall(Map<String, dynamic> walletData) {
       final List<String> networks = List<String>.from(walletData['networks']);
       final String walletAddress = walletData['walletAddress'];
       final String privateKey = store.state.userState.privateKey;
-      final bool backup = walletData.containsKey('backup') ? walletData['backup'] : false;
+      final bool backup =
+          walletData.containsKey('backup') ? walletData['backup'] : false;
       final WalletModules walletModules = WalletModules.fromJson(
         walletData['walletModules'],
       );
@@ -731,9 +743,12 @@ ThunkAction setUpFuseWeb3() {
             url: UrlConstants.FUSE_RPC_URL,
             networkId: Variables.FUSE_CHAIN_ID,
             defaultCommunityAddress: defaultCommunityAddress,
-            communityManagerAddress: store.state.userState.walletModules.communityManager,
-            transferManagerAddress: store.state.userState.walletModules.transferManager,
-            daiPointsManagerAddress: store.state.userState.walletModules.daiPointsManager,
+            communityManagerAddress:
+                store.state.userState.walletModules.communityManager,
+            transferManagerAddress:
+                store.state.userState.walletModules.transferManager,
+            daiPointsManagerAddress:
+                store.state.userState.walletModules.daiPointsManager,
           ),
           instanceName: 'fuseWeb3',
         );
@@ -756,24 +771,30 @@ ThunkAction setUpFuseWeb3() {
 
 ThunkAction addNewDeliveryAddress(DeliveryAddresses newAddress) {
   return (Store store) {
-    List<DeliveryAddresses> listOfAddresses = List.from(store.state.userState.listOfDeliveryAddresses);
+    List<DeliveryAddresses> listOfAddresses =
+        List.from(store.state.userState.listOfDeliveryAddresses);
 
-    int index = listOfAddresses.indexWhere((element) => element.internalID == newAddress.internalID);
+    int index = listOfAddresses
+        .indexWhere((element) => element.internalID == newAddress.internalID);
 
     listOfAddresses.removeWhere((element) {
       return element.internalID == newAddress.internalID;
     });
 
-    index == -1 ? listOfAddresses.add(newAddress) : listOfAddresses.insert(index, newAddress);
+    index == -1
+        ? listOfAddresses.add(newAddress)
+        : listOfAddresses.insert(index, newAddress);
 
     store.dispatch(AddDeliveryAddress(listOfAddresses));
     store.dispatch(UpdateSelectedDeliveryAddress(newAddress));
   };
 }
 
-ThunkAction deleteExistingDeliveryAddress(DeliveryAddresses addressToBeDeleted) {
+ThunkAction deleteExistingDeliveryAddress(
+    DeliveryAddresses addressToBeDeleted) {
   return (Store store) {
-    List<DeliveryAddresses> listOfAddresses = List.from(store.state.userState.listOfDeliveryAddresses);
+    List<DeliveryAddresses> listOfAddresses =
+        List.from(store.state.userState.listOfDeliveryAddresses);
 
     int indexOfAddress = listOfAddresses.indexOf(addressToBeDeleted);
     listOfAddresses.removeAt(indexOfAddress);
@@ -782,8 +803,10 @@ ThunkAction deleteExistingDeliveryAddress(DeliveryAddresses addressToBeDeleted) 
     listOfAddresses.isEmpty
         ? store.dispatch(UpdateSelectedDeliveryAddress(null))
         : listOfAddresses.length - 1 == indexOfAddress
-            ? store.dispatch(UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress]))
-            : store.dispatch(UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress - 1]));
+            ? store.dispatch(
+                UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress]))
+            : store.dispatch(UpdateSelectedDeliveryAddress(
+                listOfAddresses[indexOfAddress - 1]));
   };
 }
 

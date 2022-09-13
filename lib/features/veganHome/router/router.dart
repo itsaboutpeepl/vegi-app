@@ -14,6 +14,7 @@ import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.
 import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
 import 'package:vegan_liverpool/features/account/screens/profile.dart';
 import 'package:vegan_liverpool/features/topup/screens/topup.dart';
+import 'package:auto_route/empty_router_widgets.dart';
 
 const veganHomeTab = AutoRoute(
   path: 'veganHomeAlt',

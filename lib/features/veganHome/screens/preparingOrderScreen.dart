@@ -9,7 +9,8 @@ import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 
 class PreparingOrderPage extends StatelessWidget {
-  const PreparingOrderPage({Key? key, required this.orderDetails}) : super(key: key);
+  const PreparingOrderPage({Key? key, required this.orderDetails})
+      : super(key: key);
 
   final OrderDetails orderDetails;
 
@@ -55,7 +56,8 @@ class PreparingOrderPage extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    orderDetails.orderAcceptanceStatus.descriptionText(orderDetails.orderID),
+                    orderDetails.orderAcceptanceStatus
+                        .descriptionText(orderDetails.orderID),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
@@ -65,7 +67,8 @@ class PreparingOrderPage extends StatelessWidget {
                     children: [
                       Card(
                         elevation: 3,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
                         margin: EdgeInsets.zero,
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.42,
@@ -76,7 +79,9 @@ class PreparingOrderPage extends StatelessWidget {
                               children: [
                                 Text.rich(
                                   TextSpan(
-                                    text: orderDetails.isDelivery ? "Delivering To \n\n" : "Collecting From \n\n",
+                                    text: orderDetails.isDelivery
+                                        ? "Delivering To \n\n"
+                                        : "Collecting From \n\n",
                                     children: [
                                       TextSpan(
                                         text: orderDetails.isDelivery
@@ -88,18 +93,28 @@ class PreparingOrderPage extends StatelessWidget {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: orderDetails.orderAddress.addressLine1 + ", ",
+                                        text: orderDetails
+                                                .orderAddress.addressLine1 +
+                                            ", ",
                                       ),
                                       TextSpan(
-                                        text: orderDetails.orderAddress.addressLine2 + "\n",
+                                        text: orderDetails
+                                                .orderAddress.addressLine2 +
+                                            "\n",
                                       ),
                                       TextSpan(
-                                        text: orderDetails.orderAddress.postalCode + ", ",
+                                        text: orderDetails
+                                                .orderAddress.postalCode +
+                                            ", ",
                                       ),
                                       TextSpan(
-                                        text: orderDetails.orderAddress.townCity,
+                                        text:
+                                            orderDetails.orderAddress.townCity,
                                       ),
-                                      TextSpan(text: "\nSlot: " + mapToString(orderDetails.selectedSlot))
+                                      TextSpan(
+                                          text: "\nSlot: " +
+                                              mapToString(
+                                                  orderDetails.selectedSlot))
                                     ],
                                   ),
                                 ),
@@ -111,7 +126,8 @@ class PreparingOrderPage extends StatelessWidget {
                       Spacer(),
                       Card(
                         elevation: 3,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
                         margin: EdgeInsets.zero,
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.42,
@@ -125,17 +141,20 @@ class PreparingOrderPage extends StatelessWidget {
                                     text: "Order Details \n\n\n",
                                     children: [
                                       TextSpan(
-                                        text: "${cFPrice(orderDetails.cartTotal)}\n",
+                                        text:
+                                            "${cFPrice(orderDetails.cartTotal)}\n",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w900,
                                           fontSize: 18,
                                         ),
                                       ),
                                       TextSpan(
-                                        text: "${orderDetails.GBPxAmountPaid.toStringAsFixed(2)} GBPx\n",
+                                        text:
+                                            "${orderDetails.GBPxAmountPaid.toStringAsFixed(2)} GBPx\n",
                                       ),
                                       TextSpan(
-                                        text: "${orderDetails.PPLAmountPaid.toStringAsFixed(2)} ",
+                                        text:
+                                            "${orderDetails.PPLAmountPaid.toStringAsFixed(2)} ",
                                       ),
                                       WidgetSpan(
                                         child: Image.asset(
@@ -144,7 +163,11 @@ class PreparingOrderPage extends StatelessWidget {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: "\n${(orderDetails.GBPxAmountPaid * 5).toStringAsFixed(2)} ",
+                                        text: " used",
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            "\n${(orderDetails.GBPxAmountPaid * 0.05).toStringAsFixed(2)} ",
                                       ),
                                       WidgetSpan(
                                         child: Image.asset(

@@ -33,7 +33,8 @@ Future<Map> fetchWalletByPhone(
     };
   } catch (e) {
     String formatted = formatPhoneNumber(phone, countryCode);
-    bool isValid = await phoneNumberUtil.validate(formatted, isoCode);
+    bool isValid =
+        await phoneNumberUtil.validate(formatted, regionCode: isoCode);
     if (isValid) {
       PhoneNumber phoneNumber = await phoneNumberUtil.parse(
         formatted,
