@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/services/apis/peeplEats.dart';
 import 'package:vegan_liverpool/services/apis/stripePay.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 import 'package:phone_number/phone_number.dart';
+import 'package:vegan_liverpool/utils/stripe.dart';
 import 'package:wallet_core/wallet_core.dart';
 
 final RootRouter rootRouter = getIt<RootRouter>();
@@ -45,3 +46,5 @@ final FirebaseMessaging firebaseMessaging = getIt<FirebaseMessaging>();
 final PhoneNumberUtil phoneNumberUtil = getIt<PhoneNumberUtil>();
 
 final IOnBoardStrategy onBoardStrategy = getIt<IOnBoardStrategy>();
+
+final StripeService stripeService = getIt<StripeService>();

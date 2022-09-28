@@ -1,5 +1,5 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
-import 'package:vegan_liverpool/utils/stripeHandler.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
@@ -188,17 +188,13 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                     '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
                                 callback: (bool result) {
                                   result
-                                      ? (double.parse(viewmodel.gbpXBalance
-                                                  .replaceAll(",", "")) <=
+                                      ? (parseBalance(viewmodel.gbpXBalance) <=
                                               viewmodel.selectedGBPxAmount)
-                                          ? handleStripe(
+                                          ? stripeService.handleStripe(
                                               walletAddress:
                                                   viewmodel.walletAddress,
-                                              amountText: ((double.parse(viewmodel
-                                                                  .gbpXBalance
-                                                                  .replaceAll(
-                                                                      ",",
-                                                                      "")) -
+                                              amountText: ((parseBalance(viewmodel
+                                                                  .gbpXBalance) -
                                                               viewmodel
                                                                   .selectedGBPxAmount)
                                                           .abs() +
@@ -228,7 +224,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
                               (double.parse(viewmodel.gbpXBalance
                                           .replaceAll(",", "")) <=
                                       viewmodel.selectedGBPxAmount)
-                                  ? handleStripe(
+                                  ? stripeService.handleStripe(
                                       walletAddress: viewmodel.walletAddress,
                                       amountText: ((double.parse(viewmodel
                                                           .gbpXBalance

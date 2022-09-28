@@ -8,7 +8,7 @@ import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/topup.dart';
-import 'package:vegan_liverpool/utils/stripeHandler.dart';
+import 'package:vegan_liverpool/services.dart';
 
 //TODO: add save card functionality
 class TopupScreen extends StatefulWidget {
@@ -16,7 +16,8 @@ class TopupScreen extends StatefulWidget {
   _TopupScreenState createState() => _TopupScreenState();
 }
 
-class _TopupScreenState extends State<TopupScreen> with SingleTickerProviderStateMixin {
+class _TopupScreenState extends State<TopupScreen>
+    with SingleTickerProviderStateMixin {
   String _amountText = "25";
   bool _isPreloading = false;
 
@@ -181,7 +182,7 @@ class _TopupScreenState extends State<TopupScreen> with SingleTickerProviderStat
                   opacity: 1,
                   // labelFontWeight: FontWeight.normal,
                   label: I10n.of(context).next_button,
-                  onPressed: () => handleStripe(
+                  onPressed: () => stripeService.handleStripe(
                     walletAddress: viewModel.walletAddress,
                     amountText: _amountText,
                     context: context,
@@ -204,41 +205,3 @@ class _TopupScreenState extends State<TopupScreen> with SingleTickerProviderStat
 //if the user does not have a balance during checkout, then just popup the stripe sheet and get the payment done.
 //after the payment is done, make a call to update the balances and show dialog saying that it was a success or error.
 //after that, show the peepl pay sheet and then its the normal order flow. 
-
-
-
-/*   void _handleStripe(String walletAddress) async {
-    final StripeCustomResponse response = await StripeService().payWithNewCard(
-      amount: amountText,
-      walletAddress: walletAddress,
-      currency: 'GBP',
-    );
-    // Timer timer = Timer(Duration(seconds: 25), () {
-    //   Navigator.of(context, rootNavigator: true).pop();
-    //   showDialog(
-    //     context: context,
-    //     builder: (context) => TimedOut(),
-    //     barrierDismissible: true,
-    //   );
-    // });
-    if (response.ok) {
-      Segment.track(eventName: 'TopUp Success, Token Minting..');
-      showDialog(
-        context: context,
-        builder: (context) {
-          return MintingDialog(amountText, true);
-        },
-        barrierDismissible: false,
-      ).then((value) {
-        // timer.cancel();
-      });
-    } else {
-      if (!response.msg!.contains('Cancelled by user')) {
-        Segment.track(eventName: 'Cancelled top up');
-        showDialog(
-          context: context,
-          builder: (context) => TopUpFailed(),
-        );
-      }
-    }
-  } */

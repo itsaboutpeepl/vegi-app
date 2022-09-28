@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
@@ -55,7 +56,15 @@ class PeeplEatsService {
                 category: "Category",
                 costLevel: element['costLevel'] ?? 2,
                 rating: element['rating'] ?? 2,
-                address: demoAddress,
+                address: DeliveryAddresses(
+                    internalID: Random(DateTime.now().millisecondsSinceEpoch)
+                        .nextInt(10000),
+                    addressLine1: element["pickupAddressLineOne"] ?? "",
+                    addressLine2: element["pickupAddressLineTwo"] ?? "",
+                    townCity: element["pickupAddressCity"] ?? "",
+                    postalCode: element["pickupAddressPostCode"] ?? "",
+                    latitude: 0.0,
+                    longitude: 0.0),
                 walletAddress: element['walletAddress'],
                 listOfMenuItems: [],
                 isVegan: element['isVegan'] ?? false,

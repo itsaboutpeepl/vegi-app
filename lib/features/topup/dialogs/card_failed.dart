@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TopUpFailed extends StatefulWidget {
+  final bool isFailed;
+
+  TopUpFailed({this.isFailed = false});
+
   @override
   _TopUpFailedState createState() => _TopUpFailedState();
 }
 
-class _TopUpFailedState extends State<TopUpFailed> with SingleTickerProviderStateMixin {
+class _TopUpFailedState extends State<TopUpFailed>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
   bool isPreloading = false;
@@ -20,8 +25,10 @@ class _TopUpFailedState extends State<TopUpFailed> with SingleTickerProviderStat
   void initState() {
     super.initState();
 
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
-    scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    scaleAnimation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
       setState(() {});
@@ -48,14 +55,14 @@ class _TopUpFailedState extends State<TopUpFailed> with SingleTickerProviderStat
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'Topup Cancelled',
+                widget.isFailed ? 'Topup Failed' : 'Topup Cancelled',
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
               SizedBox(height: 20.0),
               Text(
-                "If you didn't mean to cancel your top up, please try again or contact your financial provider if unsuccessful",
+                "Sorry, it seems top up is not currently working, please try again later.",
                 style: TextStyle(
                   fontSize: 20,
                 ),

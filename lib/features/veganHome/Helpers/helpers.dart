@@ -20,6 +20,10 @@ String parseHtmlString(String htmlString) {
   return parsedString;
 }
 
+double parseBalance(String balance) {
+  return double.parse(balance.replaceAll("<", "").replaceAll(",", ""));
+}
+
 String mapPreviewImage({required double latitude, required double longitude}) {
   final _apiKey = Platform.operatingSystemValues == Platform.iOS
       ? dotenv.env['MAP_API_KEY_IOS'] ?? ""

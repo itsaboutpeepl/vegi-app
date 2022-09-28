@@ -512,8 +512,7 @@ ThunkAction sendTokenPayment(
       //If Selected GBPx amount is not 0, transfer GBPx
       Map<String, dynamic> GBPxResponse =
           store.state.cartState.selectedGBPxAmount != 0.0
-              ? double.parse(GBPxToken.getBalance().replaceAll(",", "")) >
-                      store.state.cartState.selectedGBPxAmount
+              ? GBPxToken.amount > store.state.cartState.selectedGBPxAmount
                   ? await walletApi.tokenTransfer(
                       getIt<Web3>(instanceName: 'fuseWeb3'),
                       store.state.userState.walletAddress,
@@ -530,8 +529,7 @@ ThunkAction sendTokenPayment(
       //If Selected PPL Amount is not 0, transfer PPL
       Map<String, dynamic> PPLResponse =
           store.state.cartState.selectedPPLAmount != 0.0
-              ? double.parse(PPLToken.getBalance().replaceAll(",", "")) >
-                      store.state.cartState.selectedPPLAmount
+              ? PPLToken.amount > store.state.cartState.selectedPPLAmount
                   ? await walletApi.tokenTransfer(
                       getIt<Web3>(instanceName: 'fuseWeb3'),
                       store.state.userState.walletAddress,

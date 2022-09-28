@@ -16,6 +16,7 @@ import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux_logging/redux_logging.dart';
+import 'package:vegan_liverpool/utils/stripe.dart';
 
 Future<AppState> loadState(persistor) async {
   try {
@@ -40,7 +41,7 @@ void main() async {
   await dotenv.load(fileName: 'environment/.env');
 
 // initialize stripe for payment
-  //new StripeService()..init();
+  new StripeService()..init();
 
   await configureDependencies();
 

@@ -212,27 +212,27 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - Stripe (22.7.1):
-    - Stripe/Stripe3DS2 (= 22.7.1)
-    - StripeApplePay (= 22.7.1)
-    - StripeCore (= 22.7.1)
-    - StripeUICore (= 22.7.1)
-  - Stripe/Stripe3DS2 (22.7.1):
-    - StripeApplePay (= 22.7.1)
-    - StripeCore (= 22.7.1)
-    - StripeUICore (= 22.7.1)
+  - Stripe (22.8.2):
+    - Stripe/Stripe3DS2 (= 22.8.2)
+    - StripeApplePay (= 22.8.2)
+    - StripeCore (= 22.8.2)
+    - StripeUICore (= 22.8.2)
+  - Stripe/Stripe3DS2 (22.8.2):
+    - StripeApplePay (= 22.8.2)
+    - StripeCore (= 22.8.2)
+    - StripeUICore (= 22.8.2)
   - stripe_ios (0.0.1):
     - Flutter
-    - Stripe (~> 22.7.0)
-    - StripeFinancialConnections (~> 22.7.0)
-  - StripeApplePay (22.7.1):
-    - StripeCore (= 22.7.1)
-  - StripeCore (22.7.1)
-  - StripeFinancialConnections (22.7.1):
-    - StripeCore (= 22.7.1)
-    - StripeUICore (= 22.7.1)
-  - StripeUICore (22.7.1):
-    - StripeCore (= 22.7.1)
+    - Stripe (~> 22.8.1)
+    - StripeFinancialConnections (~> 22.8.1)
+  - StripeApplePay (22.8.2):
+    - StripeCore (= 22.8.2)
+  - StripeCore (22.8.2)
+  - StripeFinancialConnections (22.8.2):
+    - StripeCore (= 22.8.2)
+    - StripeUICore (= 22.8.2)
+  - StripeUICore (22.8.2):
+    - StripeCore (= 22.8.2)
   - url_launcher_ios (0.0.1):
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
@@ -425,12 +425,12 @@ SPEC CHECKSUMS:
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  Stripe: fb29a476e4866fec4ef22fb76207363dd32795aa
-  stripe_ios: a0caca0ef103a32909183c62a652a91a0773b443
-  StripeApplePay: 09955cdf3f49b367af2feadd9c5b3bddb35446c0
-  StripeCore: 39ea580c26ccc324fb9671288a2ae21114e54dca
-  StripeFinancialConnections: 0e1d638388572d52ce829416fbc7b0af2bde3865
-  StripeUICore: eed17e95a4517fc02482e250a6422c2a81a14ce8
+  Stripe: 9b02a044432c68a3b63694e4d09c6b30c2c8dfef
+  stripe_ios: 8ad17b19d7d2189d7c19fd15d9ecffeca696390f
+  StripeApplePay: 1b2dca823c710b7f09667e1b7d9290008dd54bec
+  StripeCore: c03842e8c9feed545ac5976efe2cc1429d5ba553
+  StripeFinancialConnections: 2aef6c41e26aeb6b93ee48e7d7933ad73b01f35d
+  StripeUICore: 3efbad959661e9f3e9ee1855c84a21747c10f285
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
