@@ -70,9 +70,8 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
 
     sanitizedOrderObject["orderID"] = singleOrder['id'];
     sanitizedOrderObject["total"] = cFPrice(singleOrder['total']);
-    sanitizedOrderObject["orderedDateTime"] = formatDate(
-        DateTime.fromMillisecondsSinceEpoch(singleOrder['orderedDateTime'])
-            .toLocal());
+    sanitizedOrderObject["orderedDateTime"] =
+        formatDate(DateTime.fromMillisecondsSinceEpoch(singleOrder['orderedDateTime']).toLocal());
     sanitizedOrderObject["deliveryName"] = singleOrder['deliveryName'];
     sanitizedOrderObject["deliveryEmail"] = singleOrder['deliveryEmail'];
     sanitizedOrderObject["deliveryPhoneNumber"] =
@@ -197,3 +196,6 @@ extension CapitalizeString on String {
     return this[0].toUpperCase() + this.substring(1);
   }
 }
+
+String sanitizeDateTime(DateTime dateTime) =>
+    "${dateTime.year}-${dateTime.month}-${dateTime.day}";
