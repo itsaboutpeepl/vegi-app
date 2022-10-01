@@ -115,6 +115,7 @@ flutter:
   assets:
     - environment/.env
     - environment/.env_qa
+    - environment/.env_dev
     - assets/
     - assets/images/
     - assets/fonts/

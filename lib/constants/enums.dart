@@ -15,6 +15,7 @@ enum BiometricAuth {
 }
 
 enum OnboardStrategy {
+  vegi,
   firebase,
   sms,
   none,

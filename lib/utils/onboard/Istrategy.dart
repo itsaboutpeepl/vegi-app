@@ -5,6 +5,8 @@ import 'package:vegan_liverpool/utils/onboard/firebase.dart';
 import 'package:vegan_liverpool/utils/onboard/simple.dart';
 import 'package:vegan_liverpool/utils/onboard/sms.dart';
 
+import 'vegiOnboardStrategy.dart';
+
 abstract class IOnBoardStrategy {
   final OnboardStrategy strategy;
 
@@ -25,6 +27,8 @@ class OnBoardStrategyFactory {
       return FirebaseStrategy();
     } else if (strategy == 'sms') {
       return SmsStrategy();
+    } else if (strategy == 'vegi') {
+      return VegiOnboardStrategy();
     } else {
       return SimpleStrategy();
     }
