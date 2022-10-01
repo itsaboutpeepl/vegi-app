@@ -1,6 +1,6 @@
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/home_page_state.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
-import 'package:redux/redux.dart';
 
 final HomePageReducers = combineReducers<HomePageState>(
   [
@@ -14,7 +14,9 @@ HomePageState _getFeaturedRestaurants(
   HomePageState state,
   UpdateFeaturedRestaurants action,
 ) {
-  return state.copyWith(featuredRestaurants: action.listOfFeaturedRestaurants);
+  return state.copyWith(
+      featuredRestaurants: action.listOfFeaturedRestaurants,
+      selectedPostalCode: action.forPostalCode);
 }
 
 HomePageState _setIsLoadingHomePage(HomePageState state, SetIsLoadingHomePage action) {

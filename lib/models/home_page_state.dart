@@ -13,12 +13,16 @@ class HomePageState with _$HomePageState {
     @JsonKey(ignore: true) @Default([]) List<RestaurantItem> featuredRestaurants,
     @JsonKey(ignore: true) @Default(false) bool isLoadingHomePage,
     @JsonKey(ignore: true) @Default([]) List<String> postalCodes,
+    @JsonKey(ignore: true)
+    @Default('')
+        String selectedPostalCode, //Empty string represents all postcodes
   }) = _HomePageState;
 
   factory HomePageState.initial() => HomePageState(
         featuredRestaurants: [],
         isLoadingHomePage: false,
         postalCodes: [],
+      selectedPostalCode: ''
       );
 
   factory HomePageState.fromJson(dynamic json) => _$HomePageStateFromJson(json);
