@@ -36,14 +36,18 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
+  // const env = 'prod';
+  // const env = 'qa';
+  const env = 'dev';
+
   //choose a dev environment and load that file from .env folder
-  // final envFile = env == 'prod' ? '.env' : '.env_qa';
-  await dotenv.load(fileName: 'environment/.env');
+  final envFile = env == 'prod' ? '.env' : '.env_${env}';
+  await dotenv.load(fileName: 'environment/${envFile}');
 
 // initialize stripe for payment
   new StripeService()..init();
 
-  await configureDependencies();
+  await configureDependencies(environment: Env.dev);
 
 //gets the entire app state from the user device storage.
   final Persistor<AppState> persistor = Persistor<AppState>(
@@ -55,7 +59,6 @@ void main() async {
 //initial state is taken from the device storage
   AppState initialState = await loadState(persistor);
 
-//TODO: Ask what is this for?
   final List<Middleware<AppState>> wms = [
     thunkMiddleware,
     persistor.createMiddleware(),
