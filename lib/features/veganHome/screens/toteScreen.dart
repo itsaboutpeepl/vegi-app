@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/cart/SingleCartItem.d
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/userCart.dart';
@@ -34,9 +35,12 @@ class _ToteScreenState extends State<ToteScreen> {
             : null;
       },
       builder: (_, viewmodel) {
+	final String collectDeliver = viewmodel.isDelivery
+            ? I10n.of(context).delivery
+            : I10n.of(context).collection;
         return Scaffold(
           appBar: CustomAppBar(
-            pageTitle: "Cart",
+            pageTitle: "Cart for $collectDeliver",
             otherAction: IconButton(
               onPressed: () => viewmodel.clearCart(),
               icon: ImageIcon(
@@ -117,10 +121,12 @@ class _ToteScreenState extends State<ToteScreen> {
                             "Subtotal",
                             cFPrice(viewmodel.cartSubTotal),
                           ),
-                          totalsPriceItemTile(
-                            "Delivery Charge",
-                            cFPrice(viewmodel.cartDeliveryCharge),
-                          ),
+	                    viewmodel.isDelivery
+	                        ? totalsPriceItemTile(
+	                            "Delivery Charge",
+	                            cFPrice(viewmodel.cartDeliveryCharge),
+	                          )
+	                        : SizedBox.shrink(),
                           totalsPriceItemTile(
                             "Service Charge",
                             cFPrice(viewmodel.cartServiceCharge),

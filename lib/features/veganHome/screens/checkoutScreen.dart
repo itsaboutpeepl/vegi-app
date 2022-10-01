@@ -3,14 +3,15 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/address/addressList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/deliveryInstructionsCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/discountCard.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/slotTimingsView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/tipCardView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/address/addressList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/paymentSheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
@@ -29,9 +30,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       distinct: true,
       onInit: (store) {},
       builder: (_, viewmodel) {
+	final String collectDeliver = viewmodel.isDelivery
+            ? I10n.of(context).delivery
+            : I10n.of(context).collection;
         return Scaffold(
           appBar: CustomAppBar(
-            pageTitle: "Checkout",
+            pageTitle: "Checkout ($collectDeliver)",
           ),
           body: SingleChildScrollView(
             child: Padding(
