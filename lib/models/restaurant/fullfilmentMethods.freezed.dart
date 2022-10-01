@@ -28,6 +28,14 @@ mixin _$FullfilmentMethods {
       throw _privateConstructorUsedError;
   List<Map<String, String>> get deliverySlots =>
       throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+  EligibleOrderDates get eligibleCollectionDates =>
+      throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+  EligibleOrderDates get eligibleDeliveryDates =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +52,14 @@ abstract class $FullfilmentMethodsCopyWith<$Res> {
       {Map<String, dynamic>? collectionMethod,
       Map<String, dynamic>? deliveryMethod,
       List<Map<String, String>> collectionSlots,
-      List<Map<String, String>> deliverySlots});
+      List<Map<String, String>> deliverySlots,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          EligibleOrderDates eligibleCollectionDates,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          EligibleOrderDates eligibleDeliveryDates});
+
+  $EligibleOrderDatesCopyWith<$Res> get eligibleCollectionDates;
+  $EligibleOrderDatesCopyWith<$Res> get eligibleDeliveryDates;
 }
 
 /// @nodoc
@@ -62,6 +77,8 @@ class _$FullfilmentMethodsCopyWithImpl<$Res>
     Object? deliveryMethod = freezed,
     Object? collectionSlots = freezed,
     Object? deliverySlots = freezed,
+    Object? eligibleCollectionDates = freezed,
+    Object? eligibleDeliveryDates = freezed,
   }) {
     return _then(_value.copyWith(
       collectionMethod: collectionMethod == freezed
@@ -80,34 +97,67 @@ class _$FullfilmentMethodsCopyWithImpl<$Res>
           ? _value.deliverySlots
           : deliverySlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
+      eligibleCollectionDates: eligibleCollectionDates == freezed
+          ? _value.eligibleCollectionDates
+          : eligibleCollectionDates // ignore: cast_nullable_to_non_nullable
+              as EligibleOrderDates,
+      eligibleDeliveryDates: eligibleDeliveryDates == freezed
+          ? _value.eligibleDeliveryDates
+          : eligibleDeliveryDates // ignore: cast_nullable_to_non_nullable
+              as EligibleOrderDates,
     ));
+  }
+
+  @override
+  $EligibleOrderDatesCopyWith<$Res> get eligibleCollectionDates {
+    return $EligibleOrderDatesCopyWith<$Res>(_value.eligibleCollectionDates,
+        (value) {
+      return _then(_value.copyWith(eligibleCollectionDates: value));
+    });
+  }
+
+  @override
+  $EligibleOrderDatesCopyWith<$Res> get eligibleDeliveryDates {
+    return $EligibleOrderDatesCopyWith<$Res>(_value.eligibleDeliveryDates,
+        (value) {
+      return _then(_value.copyWith(eligibleDeliveryDates: value));
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$_FullfilmentMethodsCopyWith<$Res>
+abstract class _$FullfilmentMethodsCopyWith<$Res>
     implements $FullfilmentMethodsCopyWith<$Res> {
-  factory _$$_FullfilmentMethodsCopyWith(_$_FullfilmentMethods value,
-          $Res Function(_$_FullfilmentMethods) then) =
-      __$$_FullfilmentMethodsCopyWithImpl<$Res>;
+  factory _$FullfilmentMethodsCopyWith(
+          _FullfilmentMethods value, $Res Function(_FullfilmentMethods) then) =
+      __$FullfilmentMethodsCopyWithImpl<$Res>;
   @override
   $Res call(
       {Map<String, dynamic>? collectionMethod,
       Map<String, dynamic>? deliveryMethod,
       List<Map<String, String>> collectionSlots,
-      List<Map<String, String>> deliverySlots});
+      List<Map<String, String>> deliverySlots,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          EligibleOrderDates eligibleCollectionDates,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          EligibleOrderDates eligibleDeliveryDates});
+
+  @override
+  $EligibleOrderDatesCopyWith<$Res> get eligibleCollectionDates;
+  @override
+  $EligibleOrderDatesCopyWith<$Res> get eligibleDeliveryDates;
 }
 
 /// @nodoc
-class __$$_FullfilmentMethodsCopyWithImpl<$Res>
+class __$FullfilmentMethodsCopyWithImpl<$Res>
     extends _$FullfilmentMethodsCopyWithImpl<$Res>
-    implements _$$_FullfilmentMethodsCopyWith<$Res> {
-  __$$_FullfilmentMethodsCopyWithImpl(
-      _$_FullfilmentMethods _value, $Res Function(_$_FullfilmentMethods) _then)
-      : super(_value, (v) => _then(v as _$_FullfilmentMethods));
+    implements _$FullfilmentMethodsCopyWith<$Res> {
+  __$FullfilmentMethodsCopyWithImpl(
+      _FullfilmentMethods _value, $Res Function(_FullfilmentMethods) _then)
+      : super(_value, (v) => _then(v as _FullfilmentMethods));
 
   @override
-  _$_FullfilmentMethods get _value => super._value as _$_FullfilmentMethods;
+  _FullfilmentMethods get _value => super._value as _FullfilmentMethods;
 
   @override
   $Res call({
@@ -115,8 +165,10 @@ class __$$_FullfilmentMethodsCopyWithImpl<$Res>
     Object? deliveryMethod = freezed,
     Object? collectionSlots = freezed,
     Object? deliverySlots = freezed,
+    Object? eligibleCollectionDates = freezed,
+    Object? eligibleDeliveryDates = freezed,
   }) {
-    return _then(_$_FullfilmentMethods(
+    return _then(_FullfilmentMethods(
       collectionMethod: collectionMethod == freezed
           ? _value.collectionMethod
           : collectionMethod // ignore: cast_nullable_to_non_nullable
@@ -133,6 +185,14 @@ class __$$_FullfilmentMethodsCopyWithImpl<$Res>
           ? _value.deliverySlots
           : deliverySlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
+      eligibleCollectionDates: eligibleCollectionDates == freezed
+          ? _value.eligibleCollectionDates
+          : eligibleCollectionDates // ignore: cast_nullable_to_non_nullable
+              as EligibleOrderDates,
+      eligibleDeliveryDates: eligibleDeliveryDates == freezed
+          ? _value.eligibleDeliveryDates
+          : eligibleDeliveryDates // ignore: cast_nullable_to_non_nullable
+              as EligibleOrderDates,
     ));
   }
 }
@@ -145,7 +205,11 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
       {required this.collectionMethod,
       required this.deliveryMethod,
       required this.collectionSlots,
-      required this.deliverySlots})
+      required this.deliverySlots,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          required this.eligibleCollectionDates,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          required this.eligibleDeliveryDates})
       : super._();
 
   factory _$_FullfilmentMethods.fromJson(Map<String, dynamic> json) =>
@@ -159,17 +223,25 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
   final List<Map<String, String>> collectionSlots;
   @override
   final List<Map<String, String>> deliverySlots;
+  @override
+  @JsonKey(
+      fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+  final EligibleOrderDates eligibleCollectionDates;
+  @override
+  @JsonKey(
+      fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+  final EligibleOrderDates eligibleDeliveryDates;
 
   @override
   String toString() {
-    return 'FullfilmentMethods(collectionMethod: $collectionMethod, deliveryMethod: $deliveryMethod, collectionSlots: $collectionSlots, deliverySlots: $deliverySlots)';
+    return 'FullfilmentMethods(collectionMethod: $collectionMethod, deliveryMethod: $deliveryMethod, collectionSlots: $collectionSlots, deliverySlots: $deliverySlots, eligibleCollectionDates: $eligibleCollectionDates, eligibleDeliveryDates: $eligibleDeliveryDates)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FullfilmentMethods &&
+            other is _FullfilmentMethods &&
             const DeepCollectionEquality()
                 .equals(other.collectionMethod, collectionMethod) &&
             const DeepCollectionEquality()
@@ -177,7 +249,11 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
             const DeepCollectionEquality()
                 .equals(other.collectionSlots, collectionSlots) &&
             const DeepCollectionEquality()
-                .equals(other.deliverySlots, deliverySlots));
+                .equals(other.deliverySlots, deliverySlots) &&
+            const DeepCollectionEquality().equals(
+                other.eligibleCollectionDates, eligibleCollectionDates) &&
+            const DeepCollectionEquality()
+                .equals(other.eligibleDeliveryDates, eligibleDeliveryDates));
   }
 
   @JsonKey(ignore: true)
@@ -187,13 +263,14 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
       const DeepCollectionEquality().hash(collectionMethod),
       const DeepCollectionEquality().hash(deliveryMethod),
       const DeepCollectionEquality().hash(collectionSlots),
-      const DeepCollectionEquality().hash(deliverySlots));
+      const DeepCollectionEquality().hash(deliverySlots),
+      const DeepCollectionEquality().hash(eligibleCollectionDates),
+      const DeepCollectionEquality().hash(eligibleDeliveryDates));
 
   @JsonKey(ignore: true)
   @override
-  _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>
-      __$$_FullfilmentMethodsCopyWithImpl<_$_FullfilmentMethods>(
-          this, _$identity);
+  _$FullfilmentMethodsCopyWith<_FullfilmentMethods> get copyWith =>
+      __$FullfilmentMethodsCopyWithImpl<_FullfilmentMethods>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -203,11 +280,14 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
 
 abstract class _FullfilmentMethods extends FullfilmentMethods {
   factory _FullfilmentMethods(
-          {required final Map<String, dynamic>? collectionMethod,
-          required final Map<String, dynamic>? deliveryMethod,
-          required final List<Map<String, String>> collectionSlots,
-          required final List<Map<String, String>> deliverySlots}) =
-      _$_FullfilmentMethods;
+      {required final Map<String, dynamic>? collectionMethod,
+      required final Map<String, dynamic>? deliveryMethod,
+      required final List<Map<String, String>> collectionSlots,
+      required final List<Map<String, String>> deliverySlots,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          required final EligibleOrderDates eligibleCollectionDates,
+      @JsonKey(fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+          required final EligibleOrderDates eligibleDeliveryDates}) = _$_FullfilmentMethods;
   _FullfilmentMethods._() : super._();
 
   factory _FullfilmentMethods.fromJson(Map<String, dynamic> json) =
@@ -226,7 +306,17 @@ abstract class _FullfilmentMethods extends FullfilmentMethods {
   List<Map<String, String>> get deliverySlots =>
       throw _privateConstructorUsedError;
   @override
+  @JsonKey(
+      fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+  EligibleOrderDates get eligibleCollectionDates =>
+      throw _privateConstructorUsedError;
+  @override
+  @JsonKey(
+      fromJson: eligibleOrderDatesFromJson, toJson: eligibleOrderDatesToJson)
+  EligibleOrderDates get eligibleDeliveryDates =>
+      throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
-  _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>
+  _$FullfilmentMethodsCopyWith<_FullfilmentMethods> get copyWith =>
       throw _privateConstructorUsedError;
 }

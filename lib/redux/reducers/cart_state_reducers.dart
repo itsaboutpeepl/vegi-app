@@ -1,5 +1,5 @@
-import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
 
@@ -9,6 +9,7 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
   TypedReducer<UserCartState, ClearCart>(_clearCart),
   TypedReducer<UserCartState, UpdateSlots>(_updateSlots),
+  TypedReducer<UserCartState, UpdateEligibleOrderDates>(_updateOrderDates),
   TypedReducer<UserCartState, UpdateSelectedTimeSlot>(_updateSelectedTimeSlot),
   TypedReducer<UserCartState, UpdateTipAmount>(_updateTipAmount),
   TypedReducer<UserCartState, UpdateSelectedDeliveryAddress>(_updateSelectedDeliveryAddress),
@@ -77,6 +78,16 @@ UserCartState _updateCartDiscount(
   UpdateCartDiscount action,
 ) {
   return state.copyWith(cartDiscountPercent: action.cartDiscountPercent, discountCode: action.discountCode);
+}
+
+UserCartState _updateOrderDates(
+  UserCartState state,
+  UpdateEligibleOrderDates action,
+) {
+  return state.copyWith(
+    eligibleCollectionDates: action.eligibleCollectionDates,
+    eligibleDeliveryDates: action.eligibleDeliveryDates,
+  );
 }
 
 UserCartState _updateSlots(

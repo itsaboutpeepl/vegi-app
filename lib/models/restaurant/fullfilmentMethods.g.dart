@@ -17,6 +17,10 @@ _$_FullfilmentMethods _$$_FullfilmentMethodsFromJson(
       deliverySlots: (json['deliverySlots'] as List<dynamic>)
           .map((e) => Map<String, String>.from(e as Map))
           .toList(),
+      eligibleCollectionDates: eligibleOrderDatesFromJson(
+          json['eligibleCollectionDates'] as Map<String, Set<dynamic>>),
+      eligibleDeliveryDates: eligibleOrderDatesFromJson(
+          json['eligibleDeliveryDates'] as Map<String, Set<dynamic>>),
     );
 
 Map<String, dynamic> _$$_FullfilmentMethodsToJson(
@@ -26,4 +30,8 @@ Map<String, dynamic> _$$_FullfilmentMethodsToJson(
       'deliveryMethod': instance.deliveryMethod,
       'collectionSlots': instance.collectionSlots,
       'deliverySlots': instance.deliverySlots,
+      'eligibleCollectionDates':
+          eligibleOrderDatesToJson(instance.eligibleCollectionDates),
+      'eligibleDeliveryDates':
+          eligibleOrderDatesToJson(instance.eligibleDeliveryDates),
     };

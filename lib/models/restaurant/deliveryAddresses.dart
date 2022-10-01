@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'deliveryAddresses.freezed.dart';
@@ -20,5 +22,18 @@ class DeliveryAddresses with _$DeliveryAddresses {
     String? label,
   }) = _DeliveryAddresses;
 
-  factory DeliveryAddresses.fromJson(dynamic json) => _$DeliveryAddressesFromJson(json);
+  factory DeliveryAddresses.fromJson(dynamic json) =>
+      _$DeliveryAddressesFromJson(json);
+
+  factory DeliveryAddresses.fromVendorJson(Map<String, dynamic> json) {
+    return DeliveryAddresses(
+        internalID:
+            Random((DateTime.now().millisecondsSinceEpoch)).nextInt(10000),
+        addressLine1: json['pickupAddressLineOne']!,
+        addressLine2: json['pickupAddressLineTwo']!,
+        townCity: json['pickupAddressCity']!,
+        postalCode: json['pickupAddressPostCode']!,
+        latitude: json['pickupAddressLatitude']!,
+        longitude: json['pickupAddressLongitude']!);
+  }
 }

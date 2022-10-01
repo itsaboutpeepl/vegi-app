@@ -2,19 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
+import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
-import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleOrderDates.dart';
+import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
-import 'package:redux/redux.dart';
-import 'package:intl/intl.dart';
 import 'package:wallet_core/wallet_core.dart';
 
 class UpdateCartItems {
@@ -47,6 +50,14 @@ class UpdateSlots {
   final List<Map<String, String>> collectionSlots;
 
   UpdateSlots(this.deliverySlots, this.collectionSlots);
+}
+
+class UpdateEligibleOrderDates {
+  final EligibleOrderDates eligibleCollectionDates;
+  final EligibleOrderDates eligibleDeliveryDates;
+
+  UpdateEligibleOrderDates(
+      this.eligibleCollectionDates, this.eligibleDeliveryDates);
 }
 
 class UpdateSelectedDeliveryAddress {
@@ -162,6 +173,10 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
       store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
           fullfilmentMethods.collectionSlots));
 
+      store.dispatch(UpdateEligibleOrderDates(
+          fullfilmentMethods.eligibleCollectionDates,
+          fullfilmentMethods.eligibleDeliveryDates));
+
       store.dispatch(SetFulfilmentFees(
         fullfilmentMethods.deliveryMethod == null
             ? 0
@@ -182,6 +197,26 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
         e,
         stackTrace: s,
         hint: 'ERROR - getFullfillmentMethods $e',
+      );
+    }
+  };
+}
+
+ThunkAction getEligibleOrderDatesOnly() {
+  return (Store store) async {
+    try {
+      EligibleDeliveryCollectionDates eligibleDates = await peeplEatsService
+          .getEligibleOrderDates(vendorID: store.state.cartState.restaurantID);
+
+      store.dispatch(UpdateEligibleOrderDates(
+          eligibleDates.eligibleCollectionDates,
+          eligibleDates.eligibleDeliveryDates));
+    } catch (e, s) {
+      log.error('ERROR - getEligibleOrderDatesOnly $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - getEligibleOrderDatesOnly $e',
       );
     }
   };
@@ -403,6 +438,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
               "lineTwo": selectedAddress.addressLine2 +
                   ", " +
                   selectedAddress.townCity,
+              "city": selectedAddress.townCity,
               "postCode": selectedAddress.postalCode,
               "deliveryInstructions":
                   store.state.cartState.deliveryInstructions,
@@ -426,6 +462,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
               "phoneNumber": store.state.userState.phoneNumber,
               "lineOne": "Collection Order",
               "lineTwo": "",
+              "city": "",
               "postCode": "L7 0HG",
               "deliveryInstructions":
                   store.state.cartState.deliveryInstructions,
@@ -462,9 +499,9 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
               result['orderID'].toString(), result['paymentIntentID']));
 
           //subscribe to firebase topic of orderID
-
-          firebaseMessaging
-              .subscribeToTopic('order-' + result['orderID'].toString());
+          final String fbOrderId = 'order-' + result['orderID'].toString();
+          // if(FirebaseInjectableModule.assertTopicNameIsValid(fbOrderId))
+          firebaseMessaging.subscribeToTopic(fbOrderId);
 
           successCallback();
         } else {
@@ -481,7 +518,8 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
             getErrorMessageForOrder(e.response!.data['cause']['code']));
       }
     } catch (e, s) {
-      errorCallback("Something went wrong");
+    	errorCallback(
+          "${I10n.current.something_went_wrong} when preparing and sending the order");
       log.error('ERROR - prepareAndSendOrder $e');
       await Sentry.captureException(
         e,
@@ -492,12 +530,16 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
   };
 }
 
-ThunkAction sendTokenPayment(
-    VoidCallback successCallback, VoidCallback errorCallback) {
+ThunkAction sendTokenPayment(VoidCallback successCallback,
+    void Function(String errorText) errorCallback) {
   return (Store store) async {
+    // Formulate Error Message
+    String errMsg = '';
     try {
       //Set loading to true
       store.dispatch(SetTransferringPayment(true));
+
+      errMsg = 'fetching GBPx balance';
 
       //Get tokens for GBPx and PPL
       Token GBPxToken = store.state.cashWalletState.tokens.values.firstWhere(
@@ -505,10 +547,13 @@ ThunkAction sendTokenPayment(
             token.symbol.toLowerCase() == "GBPx".toString().toLowerCase(),
       );
 
+      errMsg = 'fetching PPL balance';
+
       Token PPLToken = store.state.cashWalletState.tokens.values.firstWhere(
         (token) => token.symbol.toLowerCase() == "PPL".toString().toLowerCase(),
       );
 
+      errMsg = 'transferring GBPx balance to recipient';
       //If Selected GBPx amount is not 0, transfer GBPx
       Map<String, dynamic> GBPxResponse =
           store.state.cartState.selectedGBPxAmount != 0.0
@@ -526,6 +571,7 @@ ThunkAction sendTokenPayment(
 
       print(GBPxResponse);
 
+      errMsg = 'transferring PPL balance to recipient';
       //If Selected PPL Amount is not 0, transfer PPL
       Map<String, dynamic> PPLResponse =
           store.state.cartState.selectedPPLAmount != 0.0
@@ -546,7 +592,9 @@ ThunkAction sendTokenPayment(
       //Make periodic API calls to check the order status
       //If status is paid, then set loading = false, and confirmed = true
 
+      errMsg = '';
       if (GBPxResponse.isNotEmpty || PPLResponse.isNotEmpty) {
+        errMsg = 'waiting for order status response after transferring payment';
         Timer.periodic(
           const Duration(seconds: 4),
           (timer) async {
@@ -569,6 +617,7 @@ ThunkAction sendTokenPayment(
       }
     } catch (e, s) {
       store.dispatch(SetError(true));
+      errorCallback(errMsg);
       log.error('ERROR - sendTokenPayment $e');
       await Sentry.captureException(
         e,

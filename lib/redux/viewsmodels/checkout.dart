@@ -1,13 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleOrderDates.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class CheckoutViewModel extends Equatable {
   final List<Map<String, String>> deliverySlots;
+  final EligibleOrderDates eligibleCollectionDates;
+  final EligibleOrderDates eligibleDeliveryDates;
   final List<Map<String, String>> collectionSlots;
   final DeliveryAddresses? selectedDeliveryAddress;
   final int selectedUserTip;
@@ -27,6 +30,8 @@ class CheckoutViewModel extends Equatable {
 
   CheckoutViewModel({
     required this.deliverySlots,
+    required this.eligibleCollectionDates,
+    required this.eligibleDeliveryDates,
     required this.collectionSlots,
     required this.selectedUserTip,
     required this.selectedDeliveryAddress,
@@ -48,6 +53,8 @@ class CheckoutViewModel extends Equatable {
   static CheckoutViewModel fromStore(Store<AppState> store) {
     return CheckoutViewModel(
       deliverySlots: store.state.cartState.deliverySlots,
+      eligibleCollectionDates: store.state.cartState.eligibleCollectionDates,
+      eligibleDeliveryDates: store.state.cartState.eligibleDeliveryDates,
       collectionSlots: store.state.cartState.collectionSlots,
       selectedUserTip: store.state.cartState.selectedTipAmount,
       selectedDeliveryAddress: store.state.cartState.selectedDeliveryAddress,

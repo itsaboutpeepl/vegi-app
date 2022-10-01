@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:intl/intl.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleOrderDates.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
 class SlotTimingsView extends StatefulWidget {
@@ -48,6 +50,21 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                         initialDate: DateTime.now(),
                         firstDate: DateTime.now(),
                         lastDate: DateTime.now().add(const Duration(days: 14)),
+                        selectableDayPredicate: (DateTime val) {
+                          String sanitized = sanitizeDateTime(val);
+                          String dayOfWeek = DateFormat(DateFormat.WEEKDAY,
+                                  Localizations.localeOf(context).languageCode)
+                              .format(val);
+
+                          EligibleOrderDates orderDates = viewmodel.isDelivery
+                              ? viewmodel.eligibleDeliveryDates
+                              : viewmodel.eligibleCollectionDates;
+
+                          return orderDates.availableDaysOfWeek
+                                  .contains(dayOfWeek) ||
+                              orderDates.availableSpecialDatesSanitized
+                                  .contains(sanitized);
+                        },
                         builder: (_, child) {
                           return Theme(
                             data: ThemeData.light().copyWith(
