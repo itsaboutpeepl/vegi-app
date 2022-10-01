@@ -12,6 +12,13 @@ abstract class FirebaseInjectableModule {
   @lazySingleton
   FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
 
+  static bool assertTopicNameIsValid(String topic) {
+    bool isValidTopic = RegExp(r'^[a-zA-Z0-9-_.~%]{1,900}$').hasMatch(topic);
+    assert(isValidTopic);
+    return isValidTopic;
+  }
+
   @preResolve
-  Future<FirebaseApp> get firebaseApp => Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Future<FirebaseApp> get firebaseApp =>
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
