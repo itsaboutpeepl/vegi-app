@@ -8,6 +8,8 @@ cd ..
 
 flutter clean
 
+flutter pub get
+
 cd ./ios
 
 pod update

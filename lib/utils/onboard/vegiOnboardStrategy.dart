@@ -35,18 +35,23 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
       final String accountAddress = store.state.userState.accountAddress;
       final String identifier = store.state.userState.identifier;
       String token = await user!.getIdToken();
+      Segment.track(
+        eventName: 'Sign up: VerificationCode_NextBtn_Press_walletApi',
+      );
+      String jwtToken = '';
       try {
-        String jwtToken = await walletApi.loginWithFirebase(
+        jwtToken = await walletApi.loginWithFirebase(
           token,
           accountAddress,
           identifier,
           appName: "vegiliverpool",
         );
-        Segment.track(
-          eventName: 'Sign up: VerificationCode_NextBtn_Press_walletApi',
-        );
         log.info('jwtToken $jwtToken');
-
+      } catch (e) {
+        onError(
+            'The FUSE walletApi.loginWithFirebase call failed. Contact FUSE to connect vegiliverpool app to FUSE firebase api.');
+      }
+      try {
         VegiUser.User? vegiUser = await peeplEatsService.signIn(
             phoneNumber: phoneNumber, firebaseSessionToken: token);
 
@@ -65,8 +70,14 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
     }
 
     void verificationFailed(FirebaseAuthException authException) async {
-      log.info(
-          'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+      if (authException.code == 'web-internal-error' &&
+          authException.message?.contains('API_KEY_IOS_APP_BLOCKED') == true) {
+        log.info(
+            'Phone number verification failed probably because Firebase does NOT allow Phone number verification from EMULATOR devices. use the Dummy phone number for vegiLiverpool from an emulator for testing. Code: ${authException.code}. Message: ${authException.message}');
+      } else {
+        log.info(
+            'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+      }
       onError(authException.message);
     }
 
@@ -80,6 +91,7 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
       rootRouter.push(VerifyPhoneNumber(verificationId: verificationId));
       onSuccess();
     }
+
     // https://firebase.google.com/docs/auth/flutter/phone-auth
     //NOTE: FirebaseAuth not available on emulators. https://firebase.google.com/docs/auth/flutter/phone-auth#testing
     await firebaseAuth.verifyPhoneNumber(
@@ -111,12 +123,19 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
     final String accountAddress = store.state.userState.accountAddress;
     final String identifier = store.state.userState.identifier;
     String token = await userCredential.user!.getIdToken();
-    final String jwtToken = await walletApi.loginWithFirebase(
-      token,
-      accountAddress,
-      identifier,
-      appName: "vegiliverpool",
-    );
+    String jwtToken = '';
+    try {
+      jwtToken = await walletApi.loginWithFirebase(
+        token,
+        accountAddress,
+        identifier,
+        appName: "vegiliverpool",
+      );
+    } catch (err) {
+      log.info(
+          'The FUSE walletApi.loginWithFirebase call failed. Contact FUSE to connect vegiliverpool app to FUSE firebase api.');
+    }
     onSuccess(jwtToken);
+    ;
   }
 }
