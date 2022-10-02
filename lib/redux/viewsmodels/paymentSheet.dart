@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
@@ -18,7 +18,8 @@ class PaymentSheetViewModel extends Equatable {
   final String restaurantName;
   final String walletAddress;
   final Function(double GBPxAmount, double PPLAmount) updateSelectedValues;
-  final Function(VoidCallback successCallBack, VoidCallback errorCallback) sendToken;
+  final Function(VoidCallback successCallBack,
+      void Function(String errorText) errorCallback) sendToken;
   final Function(bool) setTransferringPayment;
   final Function(bool) setError;
   final Function(bool) setConfirmed;

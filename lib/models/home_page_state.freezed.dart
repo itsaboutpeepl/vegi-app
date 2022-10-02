@@ -27,6 +27,8 @@ mixin _$HomePageState {
   bool get isLoadingHomePage => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   List<String> get postalCodes => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  String get selectedPostalCode => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +44,8 @@ abstract class $HomePageStateCopyWith<$Res> {
   $Res call(
       {@JsonKey(ignore: true) List<RestaurantItem> featuredRestaurants,
       @JsonKey(ignore: true) bool isLoadingHomePage,
-      @JsonKey(ignore: true) List<String> postalCodes});
+      @JsonKey(ignore: true) List<String> postalCodes,
+      @JsonKey(ignore: true) String selectedPostalCode});
 }
 
 /// @nodoc
@@ -59,6 +62,7 @@ class _$HomePageStateCopyWithImpl<$Res>
     Object? featuredRestaurants = freezed,
     Object? isLoadingHomePage = freezed,
     Object? postalCodes = freezed,
+    Object? selectedPostalCode = freezed,
   }) {
     return _then(_value.copyWith(
       featuredRestaurants: featuredRestaurants == freezed
@@ -73,41 +77,47 @@ class _$HomePageStateCopyWithImpl<$Res>
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      selectedPostalCode: selectedPostalCode == freezed
+          ? _value.selectedPostalCode
+          : selectedPostalCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$$_HomePageStateCopyWith<$Res>
+abstract class _$HomePageStateCopyWith<$Res>
     implements $HomePageStateCopyWith<$Res> {
-  factory _$$_HomePageStateCopyWith(
-          _$_HomePageState value, $Res Function(_$_HomePageState) then) =
-      __$$_HomePageStateCopyWithImpl<$Res>;
+  factory _$HomePageStateCopyWith(
+          _HomePageState value, $Res Function(_HomePageState) then) =
+      __$HomePageStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {@JsonKey(ignore: true) List<RestaurantItem> featuredRestaurants,
       @JsonKey(ignore: true) bool isLoadingHomePage,
-      @JsonKey(ignore: true) List<String> postalCodes});
+      @JsonKey(ignore: true) List<String> postalCodes,
+      @JsonKey(ignore: true) String selectedPostalCode});
 }
 
 /// @nodoc
-class __$$_HomePageStateCopyWithImpl<$Res>
+class __$HomePageStateCopyWithImpl<$Res>
     extends _$HomePageStateCopyWithImpl<$Res>
-    implements _$$_HomePageStateCopyWith<$Res> {
-  __$$_HomePageStateCopyWithImpl(
-      _$_HomePageState _value, $Res Function(_$_HomePageState) _then)
-      : super(_value, (v) => _then(v as _$_HomePageState));
+    implements _$HomePageStateCopyWith<$Res> {
+  __$HomePageStateCopyWithImpl(
+      _HomePageState _value, $Res Function(_HomePageState) _then)
+      : super(_value, (v) => _then(v as _HomePageState));
 
   @override
-  _$_HomePageState get _value => super._value as _$_HomePageState;
+  _HomePageState get _value => super._value as _HomePageState;
 
   @override
   $Res call({
     Object? featuredRestaurants = freezed,
     Object? isLoadingHomePage = freezed,
     Object? postalCodes = freezed,
+    Object? selectedPostalCode = freezed,
   }) {
-    return _then(_$_HomePageState(
+    return _then(_HomePageState(
       featuredRestaurants: featuredRestaurants == freezed
           ? _value.featuredRestaurants
           : featuredRestaurants // ignore: cast_nullable_to_non_nullable
@@ -120,6 +130,10 @@ class __$$_HomePageStateCopyWithImpl<$Res>
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      selectedPostalCode: selectedPostalCode == freezed
+          ? _value.selectedPostalCode
+          : selectedPostalCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -131,7 +145,8 @@ class _$_HomePageState extends _HomePageState {
   _$_HomePageState(
       {@JsonKey(ignore: true) this.featuredRestaurants = const [],
       @JsonKey(ignore: true) this.isLoadingHomePage = false,
-      @JsonKey(ignore: true) this.postalCodes = const []})
+      @JsonKey(ignore: true) this.postalCodes = const [],
+      @JsonKey(ignore: true) this.selectedPostalCode = ''})
       : super._();
 
   factory _$_HomePageState.fromJson(Map<String, dynamic> json) =>
@@ -146,23 +161,28 @@ class _$_HomePageState extends _HomePageState {
   @override
   @JsonKey(ignore: true)
   final List<String> postalCodes;
+  @override
+  @JsonKey(ignore: true)
+  final String selectedPostalCode;
 
   @override
   String toString() {
-    return 'HomePageState(featuredRestaurants: $featuredRestaurants, isLoadingHomePage: $isLoadingHomePage, postalCodes: $postalCodes)';
+    return 'HomePageState(featuredRestaurants: $featuredRestaurants, isLoadingHomePage: $isLoadingHomePage, postalCodes: $postalCodes, selectedPostalCode: $selectedPostalCode)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HomePageState &&
+            other is _HomePageState &&
             const DeepCollectionEquality()
                 .equals(other.featuredRestaurants, featuredRestaurants) &&
             const DeepCollectionEquality()
                 .equals(other.isLoadingHomePage, isLoadingHomePage) &&
             const DeepCollectionEquality()
-                .equals(other.postalCodes, postalCodes));
+                .equals(other.postalCodes, postalCodes) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedPostalCode, selectedPostalCode));
   }
 
   @JsonKey(ignore: true)
@@ -171,12 +191,13 @@ class _$_HomePageState extends _HomePageState {
       runtimeType,
       const DeepCollectionEquality().hash(featuredRestaurants),
       const DeepCollectionEquality().hash(isLoadingHomePage),
-      const DeepCollectionEquality().hash(postalCodes));
+      const DeepCollectionEquality().hash(postalCodes),
+      const DeepCollectionEquality().hash(selectedPostalCode));
 
   @JsonKey(ignore: true)
   @override
-  _$$_HomePageStateCopyWith<_$_HomePageState> get copyWith =>
-      __$$_HomePageStateCopyWithImpl<_$_HomePageState>(this, _$identity);
+  _$HomePageStateCopyWith<_HomePageState> get copyWith =>
+      __$HomePageStateCopyWithImpl<_HomePageState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -191,7 +212,9 @@ abstract class _HomePageState extends HomePageState {
       @JsonKey(ignore: true)
           final bool isLoadingHomePage,
       @JsonKey(ignore: true)
-          final List<String> postalCodes}) = _$_HomePageState;
+          final List<String> postalCodes,
+      @JsonKey(ignore: true)
+          final String selectedPostalCode}) = _$_HomePageState;
   _HomePageState._() : super._();
 
   factory _HomePageState.fromJson(Map<String, dynamic> json) =
@@ -209,6 +232,9 @@ abstract class _HomePageState extends HomePageState {
   List<String> get postalCodes => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_HomePageStateCopyWith<_$_HomePageState> get copyWith =>
+  String get selectedPostalCode => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$HomePageStateCopyWith<_HomePageState> get copyWith =>
       throw _privateConstructorUsedError;
 }

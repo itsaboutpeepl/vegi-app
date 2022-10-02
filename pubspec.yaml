@@ -99,6 +99,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   html: ^0.15.0
+  ansicolor: ^2.0.1
 dev_dependencies:
   auto_route_generator: ^5.0.2
   build_runner: ^2.1.8

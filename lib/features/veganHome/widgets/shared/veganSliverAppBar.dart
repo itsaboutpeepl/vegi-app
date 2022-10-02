@@ -60,11 +60,10 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                             ),
                           },
                           child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
                             child: Container(
                               padding: EdgeInsets.all(5.0),
-                              color: greyShade50,
+                              color: Colors.transparent,
                               child: Row(
                                 children: [
                                   Text(
@@ -115,21 +114,22 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                               borderRadius: BorderRadius.circular(50),
                               child: viewmodel.avatarUrl.isNotEmpty
                                   ? CachedNetworkImage(
-                                width: 40,
-                                height: 40,
-                                imageUrl: viewmodel.avatarUrl,
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/images/anom.png'),
-                                  radius: 30,
-                                ),
-                                imageBuilder: (context, imageProvider) => Image(
-                                  image: imageProvider,
-                                  fit: BoxFit.fill,
-                                ),
+                                      width: 40,
+                                      height: 40,
+                                      imageUrl: viewmodel.avatarUrl,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            'assets/images/anom.png'),
+                                        radius: 30,
+                                      ),
+                                      imageBuilder: (context, imageProvider) =>
+                                          Image(
+                                        image: imageProvider,
+                                        fit: BoxFit.fill,
+                                      ),
                                     )
                                   : CircleAvatar(
                                       backgroundImage:

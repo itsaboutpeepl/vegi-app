@@ -208,12 +208,15 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                                 context.router.push(
                                                     OrderConfirmedScreen());
                                               },
-                                              () {
-                                                print("error took place");
+                                              (errorMessage) {
+                                                print(
+                                                    "errored sending ${I10n.of(context).token}s");
                                                 showErrorSnack(
                                                     context: context,
-                                                    title:
-                                                        "Something went wrong");
+                                                    title: I10n.of(context)
+                                                        .something_went_wrong,
+                                                    message:
+                                                        "errored sending ${I10n.of(context).token}s. ${errorMessage}");
                                               },
                                             )
                                       : context.router.pop();
@@ -243,11 +246,15 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                         context.router
                                             .push(OrderConfirmedScreen());
                                       },
-                                      () {
-                                        print("error took place");
+                                      (errorMessage) {
+                                        print(
+                                            "errored sending ${I10n.of(context).token}s");
                                         showErrorSnack(
                                             context: context,
-                                            title: "Something went wrong");
+                                            title: I10n.of(context)
+                                                .something_went_wrong,
+                                            message:
+                                                "errored sending ${I10n.of(context).token}s. ${errorMessage}");
                                       },
                                     );
                             }
@@ -332,20 +339,17 @@ class _PPLSliderState extends State<PPLSlider> {
                             value: _pplSliderValue,
                             divisions: 100,
                             onChangeEnd: (value) {
-                              _GBPXSliderValue = _amountToBePaid -
-                                  value *
-                                      10; //converting the PPL slider value into pence again
+                              _GBPXSliderValue =
+                                  _amountToBePaid - value * 10; //converting the PPL slider value into pence again
                               _pplSliderValue = value;
                               setState(() {});
-                              viewmodel.updateSelectedValues(
-                                  _GBPXSliderValue / 100, _pplSliderValue);
+                              viewmodel.updateSelectedValues(_GBPXSliderValue / 100, _pplSliderValue);
                             },
                             onChanged: (value) {
                               setState(
                                 () {
-                                  _GBPXSliderValue = _amountToBePaid -
-                                      value *
-                                          10; //converting the PPL slider value into pence again
+                                  _GBPXSliderValue =
+                                      _amountToBePaid - value * 10; //converting the PPL slider value into pence again
                                   _pplSliderValue = value;
                                 },
                               );
@@ -382,12 +386,8 @@ class _PPLSliderState extends State<PPLSlider> {
                   ),
                   Text.rich(
                     TextSpan(
-                      text:
-                          "GBPx ${(_GBPXSliderValue / 100).toStringAsFixed(2)},",
-                      children: [
-                        TextSpan(
-                            text: " PPL ${_pplSliderValue.toStringAsFixed(2)}")
-                      ],
+                      text: "GBPx ${(_GBPXSliderValue / 100).toStringAsFixed(2)},",
+                      children: [TextSpan(text: " PPL ${_pplSliderValue.toStringAsFixed(2)}")],
                     ),
                     style: TextStyle(
                       color: Colors.grey[300],
