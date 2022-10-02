@@ -90,6 +90,7 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
                     viewModel.finishSaveSeedPhrase();
                     if (_formKey.currentState!.validate()) {
                       context.router.popUntilRoot();
+		      viewModel.logout(context);
                     }
                   },
                 ),

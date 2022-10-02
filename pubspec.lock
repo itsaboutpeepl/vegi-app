@@ -1710,6 +1710,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  sticky_and_expandable_list:
+    dependency: "direct main"
+    description:
+      name: sticky_and_expandable_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
   stream_channel:
     dependency: transitive
     description:

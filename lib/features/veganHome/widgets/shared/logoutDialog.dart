@@ -44,9 +44,12 @@ class _LogoutDialogState extends State<LogoutDialog> with SingleTickerProviderSt
           if (store.state.userState.hasSavedSeedPhrase) {
             store.dispatch(logoutCall());
             context.router.replace(OnBoardScreen());
+          } else {
+            //Todo: Once Build Runner Fixed -> Move the below pop and router push into an else statement as dont need to push Show Mnemonic If user now in OnBoardScreen?
+            context.router.pop();
+            context.router.push(
+                ShowUserMnemonic());
           }
-          context.router.pop();
-          context.router.push(ShowUserMnemonic());
         };
       },
       builder: (_, viewmodel) {

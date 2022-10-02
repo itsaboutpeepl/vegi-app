@@ -100,6 +100,7 @@ dependencies:
     sdk: flutter
   html: ^0.15.0
   ansicolor: ^2.0.1
+  sticky_and_expandable_list: ^1.1.2
 dev_dependencies:
   auto_route_generator: ^5.0.2
   build_runner: ^2.1.8
