@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 
 class TimedOut extends StatefulWidget {
   @override
@@ -58,7 +59,7 @@ class _TimedOutState extends State<TimedOut>
                 ),
                 SizedBox(height: 20.0),
                 Text(
-                  'Minting GBPx taking a bit longer than expected',
+                  'Minting ${I10n.of(context).gBPx} taking a bit longer than expected',
                   style: TextStyle(
                     fontSize: 20,
                   ),

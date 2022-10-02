@@ -9,6 +9,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/drawStar.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleOrderItem.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
@@ -26,7 +27,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
 
   @override
   void initState() {
-    _confettiController = ConfettiController(duration: const Duration(seconds: 10));
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 10));
 
     playConfetti();
 
@@ -71,14 +73,14 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
         );
 
         if (isScheduledDelivery(orderDetails.selectedSlot)) {
-          List<OrderDetails> listOfScheduledOrders =
-              List<OrderDetails>.from(store.state.pastOrderState.listOfScheduledOrders);
+          List<OrderDetails> listOfScheduledOrders = List<OrderDetails>.from(
+              store.state.pastOrderState.listOfScheduledOrders);
 
           listOfScheduledOrders.add(orderDetails);
           store.dispatch(UpdateScheduledOrders(listOfScheduledOrders));
         } else {
-          List<OrderDetails> listOfOngoingOrders =
-              List<OrderDetails>.from(store.state.pastOrderState.listOfOngoingOrders);
+          List<OrderDetails> listOfOngoingOrders = List<OrderDetails>.from(
+              store.state.pastOrderState.listOfOngoingOrders);
 
           listOfOngoingOrders.add(orderDetails);
           store.dispatch(UpdateOngoingOrderList(listOfOngoingOrders));
@@ -88,7 +90,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
         return Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
+              padding:
+                  const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: colorToWhiteGradient,
@@ -108,7 +111,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                               ? Image.asset("assets/images/order-confirmed.png")
                               : Image.asset(
                                   "assets/images/order-confirmed-collection.png",
-                                  width: MediaQuery.of(context).size.width * 0.6,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.6,
                                 ),
                           ConfettiWidget(
                             confettiController: _confettiController,
@@ -156,7 +160,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                         children: [
                           Card(
                             elevation: 3,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
                             margin: EdgeInsets.zero,
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.42,
@@ -167,7 +172,9 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                   children: [
                                     Text.rich(
                                       TextSpan(
-                                        text: viewmodel.isDelivery ? "Delivering To \n\n" : "Collecting From \n\n",
+                                        text: viewmodel.isDelivery
+                                            ? "Delivering To \n\n"
+                                            : "Collecting From \n\n",
                                         children: [
                                           TextSpan(
                                             text: viewmodel.isDelivery
@@ -179,18 +186,28 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.addressLine1 + ", ",
+                                            text: viewmodel
+                                                    .orderAddress.addressLine1 +
+                                                ", ",
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.addressLine2 + "\n",
+                                            text: viewmodel
+                                                    .orderAddress.addressLine2 +
+                                                "\n",
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.postalCode + ", ",
+                                            text: viewmodel
+                                                    .orderAddress.postalCode +
+                                                ", ",
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.townCity,
+                                            text:
+                                                viewmodel.orderAddress.townCity,
                                           ),
-                                          TextSpan(text: "\nSlot: " + mapToString(viewmodel.selectedSlot))
+                                          TextSpan(
+                                              text: "\nSlot: " +
+                                                  mapToString(
+                                                      viewmodel.selectedSlot))
                                         ],
                                       ),
                                     ),
@@ -202,7 +219,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                           Spacer(),
                           Card(
                             elevation: 3,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
                             margin: EdgeInsets.zero,
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.42,
@@ -216,17 +234,20 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                                         text: "Order Details \n\n\n",
                                         children: [
                                           TextSpan(
-                                            text: "${cFPrice(viewmodel.cartTotal)}\n",
+                                            text:
+                                                "${cFPrice(viewmodel.cartTotal)}\n",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w900,
                                               fontSize: 18,
                                             ),
                                           ),
                                           TextSpan(
-                                            text: "${(viewmodel.GBPxAmountPaid / 100).toStringAsFixed(2)} GBPx\n",
+                                            text:
+                                                "${(viewmodel.GBPxAmountPaid / 100).toStringAsFixed(2)} ${I10n.of(context).gBPx}\n",
                                           ),
                                           TextSpan(
-                                            text: "${viewmodel.PPLAmountPaid.toStringAsFixed(2)} ",
+                                            text:
+                                                "${viewmodel.PPLAmountPaid.toStringAsFixed(2)} ",
                                           ),
                                           WidgetSpan(
                                             child: Image.asset(
@@ -284,7 +305,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                             ),
                             buttonAction: () {
                               context.router.replaceAll([VeganHomeScreenAlt()]);
-                              Future.delayed(Duration(seconds: 2), () => viewmodel.clearCart());
+                              Future.delayed(Duration(seconds: 2),
+                                  () => viewmodel.clearCart());
                             },
                             baseColor: Colors.grey[900]!,
                             highlightColor: Colors.grey[800]!),

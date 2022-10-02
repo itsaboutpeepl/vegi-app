@@ -1,12 +1,13 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/singleOrderItem.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
-import 'package:vegan_liverpool/constants/enums.dart';
 
 class PreparingOrderPage extends StatelessWidget {
   const PreparingOrderPage({Key? key, required this.orderDetails})
@@ -150,7 +151,7 @@ class PreparingOrderPage extends StatelessWidget {
                                       ),
                                       TextSpan(
                                         text:
-                                            "${orderDetails.GBPxAmountPaid.toStringAsFixed(2)} GBPx\n",
+                                            "${orderDetails.GBPxAmountPaid.toStringAsFixed(2)} ${I10n.of(context).gBPx}\n",
                                       ),
                                       TextSpan(
                                         text:

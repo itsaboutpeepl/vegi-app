@@ -1,5 +1,4 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
-import 'package:vegan_liverpool/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
@@ -11,6 +10,7 @@ import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/paymentSheet.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
@@ -111,7 +111,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
                           height: 2,
                         ),
                         Text(
-                          "GBPx",
+                          I10n.of(context).gBPx,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -339,17 +339,20 @@ class _PPLSliderState extends State<PPLSlider> {
                             value: _pplSliderValue,
                             divisions: 100,
                             onChangeEnd: (value) {
-                              _GBPXSliderValue =
-                                  _amountToBePaid - value * 10; //converting the PPL slider value into pence again
+                              _GBPXSliderValue = _amountToBePaid -
+                                  value *
+                                      10; //converting the PPL slider value into pence again
                               _pplSliderValue = value;
                               setState(() {});
-                              viewmodel.updateSelectedValues(_GBPXSliderValue / 100, _pplSliderValue);
+                              viewmodel.updateSelectedValues(
+                                  _GBPXSliderValue / 100, _pplSliderValue);
                             },
                             onChanged: (value) {
                               setState(
                                 () {
-                                  _GBPXSliderValue =
-                                      _amountToBePaid - value * 10; //converting the PPL slider value into pence again
+                                  _GBPXSliderValue = _amountToBePaid -
+                                      value *
+                                          10; //converting the PPL slider value into pence again
                                   _pplSliderValue = value;
                                 },
                               );
@@ -386,8 +389,13 @@ class _PPLSliderState extends State<PPLSlider> {
                   ),
                   Text.rich(
                     TextSpan(
-                      text: "GBPx ${(_GBPXSliderValue / 100).toStringAsFixed(2)},",
-                      children: [TextSpan(text: " PPL ${_pplSliderValue.toStringAsFixed(2)}")],
+                      text:
+                          "${I10n.of(context).gBPx} ${(_GBPXSliderValue / 100).toStringAsFixed(2)},",
+                      children: [
+                        TextSpan(
+                            text:
+                                " ${I10n.of(context).pPL} ${_pplSliderValue.toStringAsFixed(2)}")
+                      ],
                     ),
                     style: TextStyle(
                       color: Colors.grey[300],

@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutDialog.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
 import 'package:vegan_liverpool/utils/url.dart';
@@ -34,7 +35,8 @@ class _NavDrawerState extends State<NavDrawer> {
                         width: 50,
                         height: 50,
                         imageUrl: viewModel.avatarUrl,
-                        placeholder: (context, url) => CircularProgressIndicator(),
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
                         errorWidget: (context, url, error) => CircleAvatar(
                           backgroundImage: AssetImage('assets/images/anom.png'),
                           radius: 30,
@@ -67,7 +69,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                 text: viewModel.gbpxBalance,
                                 children: [
                                   TextSpan(
-                                    text: " GBPx",
+                                    text: " ${I10n.of(context).gBPx}",
                                     style: TextStyle(
                                       color: Colors.grey[700],
                                       fontSize: 14,
@@ -137,7 +139,10 @@ class _NavDrawerState extends State<NavDrawer> {
                 title: Text('Account'),
                 onTap: () => context.router.push(ProfileScreen()),
               ),
-              ListTile(leading: Icon(Icons.quiz), title: Text('FAQs'), onTap: () => context.router.push(FAQScreen())),
+              ListTile(
+                  leading: Icon(Icons.quiz),
+                  title: Text('FAQs'),
+                  onTap: () => context.router.push(FAQScreen())),
               ListTile(
                 leading: Icon(Icons.help_sharp),
                 title: Text('About Us'),
@@ -162,7 +167,8 @@ class _NavDrawerState extends State<NavDrawer> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: () => launchUrl("https://www.instagram.com/vegi_liverpool/"),
+                        onPressed: () => launchUrl(
+                            "https://www.instagram.com/vegi_liverpool/"),
                         icon: Icon(
                           FontAwesomeIcons.instagram,
                           color: Colors.grey[400],
@@ -170,7 +176,8 @@ class _NavDrawerState extends State<NavDrawer> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => launchUrl("https://vm.tiktok.com/ZMNF3ekHX/"),
+                        onPressed: () =>
+                            launchUrl("https://vm.tiktok.com/ZMNF3ekHX/"),
                         icon: Icon(
                           FontAwesomeIcons.tiktok,
                           color: Colors.grey[400],

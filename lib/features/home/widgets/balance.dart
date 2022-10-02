@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/balance.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/balance.dart';
 
 class Balance extends StatelessWidget {
   const Balance({Key? key}) : super(key: key);
@@ -52,7 +52,7 @@ class Balance extends StatelessWidget {
                         text: viewModel.gbpxbalance,
                       ),
                       TextSpan(
-                        text: ' GBPX',
+                        text: ' ${I10n.of(context).gBPx}',
                         style: TextStyle(
                           fontWeight: FontWeight.w100,
                           fontSize: 14,
@@ -77,7 +77,7 @@ class Balance extends StatelessWidget {
                         text: viewModel.pplBalance,
                       ),
                       TextSpan(
-                        text: ' PPL',
+                        text: ' ${I10n.of(context).pPL}',
                         style: TextStyle(
                           fontWeight: FontWeight.w100,
                           fontSize: 14,

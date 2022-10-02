@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -1266,6 +1267,27 @@ class I10n {
       'Gallery',
       name: 'gallery',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `GBPx`
+  String get gBPx {
+    return Intl.message(
+      '£',
+      name: 'GBPx',
+      desc:
+          'The stable coin on peepl network pegged to the pound using a 1 to 1 Fuse account.',
+      args: [],
+    );
+  }
+
+  /// `PPL`
+  String get pPL {
+    return Intl.message(
+      'PPL',
+      name: 'PPL',
+      desc: 'The peepl network rewards token.',
       args: [],
     );
   }
@@ -2905,6 +2927,26 @@ class I10n {
     return Intl.message(
       'Token',
       name: 'token',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery`
+  String get delivery {
+    return Intl.message(
+      'Delivery',
+      name: 'delivery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collection`
+  String get collection {
+    return Intl.message(
+      'Collection',
+      name: 'collection',
       desc: '',
       args: [],
     );
