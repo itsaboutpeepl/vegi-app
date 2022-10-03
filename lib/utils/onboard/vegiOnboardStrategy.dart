@@ -2,13 +2,56 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/admin/user.dart' as VegiUser;
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/auth/firebase_auth_layer.dart';
+import 'package:vegan_liverpool/utils/auth/wallet_api_auth_layer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
+
+Future<String?> vegiAuthChain(
+    {required String phoneNumber,
+    required PhoneAuthCredential credentials,
+    required String accountAddress,
+    required String firebaseIdentifier,
+    required Function() refreshCredentials,
+    required void Function(String errorMsg) onError}) async {
+  String? token =
+      await firebaseSignInWithPhoneCreds(credentials, refreshCredentials);
+  if (token == null) {
+    return null;
+  }
+
+  String? jwtToken;
+  if (!fUSEWalletApiLayer.isLoggedIn) {
+    jwtToken = await fUSEWalletApiLayer.loginWithFirebase(
+        firebaseToken: token,
+        walletAddress: accountAddress,
+        identifier: firebaseIdentifier,
+        firebaseAppName: 'vegiliverpool',
+        onError: onError);
+  } else {
+    jwtToken = fUSEWalletApiLayer.getJwtToken();
+  }
+
+  VegiUser.User? vegiUser;
+  try {
+    vegiUser = await peeplEatsService.signIn(
+        phoneNumber: phoneNumber, firebaseSessionToken: token);
+  } catch (e) {
+    onError('Vegi Backend Signin Failed: $e');
+  }
+
+  log.info('user.id ${vegiUser?.id}');
+
+  return jwtToken;
+}
 
 class VegiOnboardStrategy implements IOnBoardStrategy {
   @override
@@ -17,8 +60,8 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
 
   @override
   Future login(
-    store,
-    phoneNumber,
+    Store<AppState> store,
+    String phoneNumber,
     VoidCallback onSuccess,
     Function(dynamic error) onError,
   ) async {
@@ -26,45 +69,40 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
       PhoneAuthCredential credentials,
     ) async {
       store.dispatch(SetCredentials(credentials));
-      UserCredential userCredential = await firebaseAuth.signInWithCredential(
-        credentials,
-      );
-      final User? user = userCredential.user;
-      final User currentUser = firebaseAuth.currentUser!;
-      assert(user?.uid == currentUser.uid);
       final String accountAddress = store.state.userState.accountAddress;
       final String identifier = store.state.userState.identifier;
-      String token = await user!.getIdToken();
+
       Segment.track(
         eventName: 'Sign up: VerificationCode_NextBtn_Press_walletApi',
       );
-      String jwtToken = '';
-      try {
-        jwtToken = await walletApi.loginWithFirebase(
-          token,
-          accountAddress,
-          identifier,
-          appName: "vegiliverpool",
-        );
-        log.info('jwtToken $jwtToken');
-      } catch (e) {
-        onError(
-            'The FUSE walletApi.loginWithFirebase call failed. Contact FUSE to connect vegiliverpool app to FUSE firebase api.');
-      }
-      try {
-        VegiUser.User? vegiUser = await peeplEatsService.signIn(
-            phoneNumber: phoneNumber, firebaseSessionToken: token);
 
-        Segment.track(
-          eventName: 'Sign up: VerificationCode_NextBtn_Press_vegiService',
-        );
-        log.info('user.id ${vegiUser?.id}');
+      final jwtToken = await vegiAuthChain(
+          phoneNumber: phoneNumber,
+          credentials: credentials,
+          accountAddress: accountAddress,
+          firebaseIdentifier: identifier,
+          refreshCredentials: () => store.dispatch(SetCredentials(null)),
+          onError: onError);
 
-        onSuccess();
-        store.dispatch(LoginVerifySuccess(jwtToken));
-        walletApi.setJwtToken(jwtToken);
-        rootRouter.push(UserNameScreen());
-      } catch (e) {
+      Segment.track(
+        eventName: 'Sign up: VerificationCode_NextBtn_Press_vegiService',
+      );
+
+      onSuccess();
+
+      try {
+        if (jwtToken != null) {
+          store.dispatch(LoginVerifySuccess(jwtToken));
+          walletApi.setJwtToken(jwtToken);
+          setJwtTokenApp(store);
+          store.dispatch(fetchHomePageData());
+          if (store.state.userState.displayName.isNotEmpty) {
+            rootRouter.push(MainScreen());
+          } else {
+            rootRouter.push(UserNameScreen());
+          }
+        }
+      } on Exception catch (e) {
         onError(e.toString());
       }
     }
@@ -109,33 +147,35 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
     verificationCode,
     onSuccess,
   ) async {
-    PhoneAuthCredential? credential = store.state.userState.credentials;
-    final String verificationId = store.state.userState.verificationId;
-    credential ??= PhoneAuthProvider.credential(
-      verificationId: verificationId,
-      smsCode: verificationCode,
-    );
-    UserCredential userCredential = await firebaseAuth.signInWithCredential(
-      credential,
-    );
-    final User? currentUser = firebaseAuth.currentUser;
-    assert(userCredential.user?.uid == currentUser?.uid);
+    final String? verificationId = store.state.userState.verificationId;
     final String accountAddress = store.state.userState.accountAddress;
     final String identifier = store.state.userState.identifier;
-    String token = await userCredential.user!.getIdToken();
-    String jwtToken = '';
-    try {
-      jwtToken = await walletApi.loginWithFirebase(
-        token,
-        accountAddress,
-        identifier,
-        appName: "vegiliverpool",
-      );
-    } catch (err) {
-      log.info(
-          'The FUSE walletApi.loginWithFirebase call failed. Contact FUSE to connect vegiliverpool app to FUSE firebase api.');
+
+    PhoneAuthCredential? credential = store.state.userState.credentials;
+    credential ??= PhoneAuthProvider.credential(
+      verificationId: verificationId ?? '',
+      smsCode: verificationCode,
+    );
+
+    String? token = await firebaseSignInWithPhoneCreds(
+        credential, () => store.dispatch(SetCredentials(null)));
+    if (token == null) {
+      return null;
     }
-    onSuccess(jwtToken);
-    ;
+    String? jwtToken;
+    if (fUSEWalletApiLayer.isLoggedIn) {
+      jwtToken = fUSEWalletApiLayer.getJwtToken();
+    } else {
+      jwtToken = await fUSEWalletApiLayer.loginWithFirebase(
+          firebaseToken: token,
+          walletAddress: accountAddress,
+          identifier: identifier,
+          firebaseAppName: 'vegiliverpool',
+          onError: ((errMessage) => log.error(errMessage)));
+    }
+    if (jwtToken != null) {
+      return onSuccess(jwtToken);
+    }
+    onSuccess(store.state.userState.jwtToken);
   }
 }

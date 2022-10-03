@@ -1,16 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:another_flushbar/flushbar.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_segment/flutter_segment.dart';
-import 'package:vegan_liverpool/constants/enums.dart';
-import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/common/router/auth_flow.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/models/user_state.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
 
 class SplashScreen extends StatefulWidget {
   final void Function(bool isLoggedIn)? onLoginResult;
@@ -27,48 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
   late Flushbar flush;
 
   onInit(Store<AppState> store) async {
-    String privateKey = store.state.userState.privateKey;
-    String jwtToken = store.state.userState.jwtToken;
-    bool isLoggedOut = store.state.userState.isLoggedOut;
-    if (privateKey.isEmpty || jwtToken.isEmpty || isLoggedOut) {
-      await Segment.setContext({});
-      context.router.replaceAll([OnBoardScreen()]);
-      widget.onLoginResult?.call(false);
-    } else {
-      UserState userState = store.state.userState;
-      if (userState.authType != BiometricAuth.none) {
-        Segment.track(
-          eventName: 'Session Start: Authentication request for existed user',
-        );
-        store.dispatch(getWalletAddressesCall());
-        store.dispatch(identifyCall());
-        store.dispatch(loadContacts());
-        // await AppTrackingTransparency.requestTrackingAuthorization();
-      }
-      if (BiometricAuth.faceID == userState.authType || BiometricAuth.touchID == userState.authType) {
-        // Using FaceID for login authentication
-        // await _showLocalAuthPopup(
-        //   BiometricUtils.getBiometricString(
-        //     context,
-        //     userState.authType,
-        //   ),
-        // );
-        Segment.track(
-          eventName: 'Session Start: Authentication success',
-        );
-        context.router.replaceAll([MainScreen()]);
-        widget.onLoginResult?.call(true);
-      } else if (userState.authType == BiometricAuth.pincode) {
-        Segment.track(
-          eventName: 'Session Start: Authentication success',
-        );
-        context.router.replaceAll([MainScreen()]);
-        widget.onLoginResult?.call(true);
-      } else {
-        context.router.replaceAll([MainScreen()]);
-        widget.onLoginResult?.call(true);
-      }
-    }
+    await initApp(
+        store: store, context: context, onLoginResult: widget.onLoginResult);
   }
 
   // Future<void> _showLocalAuthPopup(String biometric) async {

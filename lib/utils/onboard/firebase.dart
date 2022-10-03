@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -16,8 +18,8 @@ class FirebaseStrategy implements IOnBoardStrategy {
 
   @override
   Future login(
-    store,
-    phoneNumber,
+    Store<AppState> store,
+    String phoneNumber,
     VoidCallback onSuccess,
     Function(dynamic error) onError,
   ) async {
@@ -55,7 +57,8 @@ class FirebaseStrategy implements IOnBoardStrategy {
     }
 
     void verificationFailed(FirebaseAuthException authException) async {
-      log.info('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+      log.info(
+          'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
       onError(authException.message);
     }
 
@@ -81,14 +84,14 @@ class FirebaseStrategy implements IOnBoardStrategy {
 
   @override
   Future verify(
-    store,
-    verificationCode,
-    onSuccess,
+    Store<AppState> store,
+    String verificationCode,
+    Function(String e) onSuccess,
   ) async {
     PhoneAuthCredential? credential = store.state.userState.credentials;
-    final String verificationId = store.state.userState.verificationId;
+    final String? verificationId = store.state.userState.verificationId;
     credential ??= PhoneAuthProvider.credential(
-      verificationId: verificationId,
+      verificationId: verificationId ?? '',
       smsCode: verificationCode,
     );
     UserCredential userCredential = await firebaseAuth.signInWithCredential(

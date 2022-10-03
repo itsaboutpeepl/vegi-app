@@ -1,16 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
 import 'package:vegan_liverpool/services/apis/explorer.dart';
 import 'package:vegan_liverpool/services/apis/fuseswap.dart';
-import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/peeplEats.dart';
+import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/stripePay.dart';
+import 'package:vegan_liverpool/utils/auth/wallet_api_auth_layer.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
-import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
 import 'package:wallet_core/wallet_core.dart';
 
@@ -28,6 +29,9 @@ final Explorer ethereumExplorerApi = getIt<Explorer>(
 final StudioApi api = getIt<StudioApi>();
 
 final WalletApi walletApi = getIt<WalletApi>();
+
+// final FUSEWalletApiLayer fUSEWalletApiLayer = getIt<FUSEWalletApiLayer>();
+final FUSEWalletApiLayer fUSEWalletApiLayer = FUSEWalletApiLayer();
 
 final FuseSwapService fuseSwapService = getIt<FuseSwapService>();
 

@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/utils/onboard/firebase.dart';
 import 'package:vegan_liverpool/utils/onboard/simple.dart';
 import 'package:vegan_liverpool/utils/onboard/sms.dart';
@@ -11,12 +13,13 @@ abstract class IOnBoardStrategy {
   final OnboardStrategy strategy;
 
   Future<dynamic> login(
-    store,
-    phoneNumber,
+    Store<AppState> store,
+    String phoneNumber,
     VoidCallback onSuccess,
     Function(dynamic error) onError,
   );
-  Future<dynamic> verify(store, verificationCode, onSuccess);
+  Future<dynamic> verify(Store<AppState> store, String verificationCode,
+      Function(String) onSuccess);
 
   IOnBoardStrategy(this.strategy);
 }

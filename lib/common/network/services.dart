@@ -2,7 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:vegan_liverpool/utils/stripe.dart';
+import 'package:vegan_liverpool/utils/auth/wallet_api_auth_layer.dart';
 import 'package:wallet_core/wallet_core.dart' show Graph, StudioApi, WalletApi;
 
 @module
@@ -19,6 +19,9 @@ abstract class ServicesModule {
 
   @lazySingleton
   WalletApi get walletApi => WalletApi();
+
+  @lazySingleton
+  FUSEWalletApiLayer get fUSEWalletApiLayer => FUSEWalletApiLayer();
 
   @singleton
   RootRouter get rootRouter => RootRouter(authGuard: AuthGuard());

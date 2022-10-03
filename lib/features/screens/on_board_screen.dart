@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/customButton1.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/customButton2.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/onboard/widegts/firstOnboardingPage.dart';
-import 'package:vegan_liverpool/features/onboard/widegts/on_boarding_page.dart';
-import 'package:vegan_liverpool/features/onboard/widegts/sign_up_buttons.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:simple_animations/simple_animations.dart';
+import 'package:vegan_liverpool/features/onboard/widgets/firstOnboardingPage.dart';
+import 'package:vegan_liverpool/features/onboard/widgets/on_boarding_page.dart';
+import 'package:vegan_liverpool/features/onboard/widgets/sign_up_buttons.dart';
 
 class OnBoardScreen extends StatefulWidget {
   @override

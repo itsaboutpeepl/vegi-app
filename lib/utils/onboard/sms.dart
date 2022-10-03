@@ -1,5 +1,7 @@
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 
@@ -10,8 +12,8 @@ class SmsStrategy implements IOnBoardStrategy {
 
   @override
   Future login(
-    store,
-    phoneNumber,
+    Store<AppState> store,
+    String phoneNumber,
     Function onSuccess,
     Function(dynamic error) onError,
   ) async {
@@ -21,7 +23,8 @@ class SmsStrategy implements IOnBoardStrategy {
   }
 
   @override
-  Future verify(store, verificationCode, onSuccess) async {
+  Future verify(Store<AppState> store, String verificationCode,
+      Function(String) onSuccess) async {
     final String phoneNumber = store.state.userState.phoneNumber;
     final String accountAddress = store.state.userState.accountAddress;
     final String jwtToken = await walletApi.verifySMS(

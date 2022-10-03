@@ -1,6 +1,8 @@
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -13,8 +15,8 @@ class SimpleStrategy implements IOnBoardStrategy {
 
   @override
   Future login(
-    store,
-    phoneNumber,
+    Store<AppState> store,
+    String phoneNumber,
     Function onSuccess,
     Function(dynamic error) onError,
   ) async {
@@ -34,7 +36,8 @@ class SimpleStrategy implements IOnBoardStrategy {
   }
 
   @override
-  Future verify(store, verificationCode, onSuccess) async {
+  Future verify(Store<AppState> store, String verificationCode,
+      Function(String) onSuccess) async {
     // No need
   }
 }
