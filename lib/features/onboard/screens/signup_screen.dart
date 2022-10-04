@@ -286,8 +286,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       isPreloading = false;
                                     });
                                     showErrorSnack(
-                                      message: I10n.of(context).invalid_number,
-                                      title:
+                                      title: I10n.of(context).invalid_number,
+                                      message:
                                           I10n.of(context).something_went_wrong,
                                       context: context,
                                       margin: EdgeInsets.only(
@@ -304,8 +304,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   isPreloading = false;
                                 });
                                 showErrorSnack(
-                                  message: I10n.of(context).invalid_number,
-                                  title: I10n.of(context).something_went_wrong,
+                                  title: I10n.of(context).invalid_number,
+                                  message:
+                                      I10n.of(context).something_went_wrong,
                                   context: context,
                                   margin: EdgeInsets.only(
                                     top: 8,
