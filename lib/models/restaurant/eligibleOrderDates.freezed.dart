@@ -66,33 +66,33 @@ class _$EligibleOrderDatesCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$EligibleOrderDatesCopyWith<$Res>
+abstract class _$$_EligibleOrderDatesCopyWith<$Res>
     implements $EligibleOrderDatesCopyWith<$Res> {
-  factory _$EligibleOrderDatesCopyWith(
-          _EligibleOrderDates value, $Res Function(_EligibleOrderDates) then) =
-      __$EligibleOrderDatesCopyWithImpl<$Res>;
+  factory _$$_EligibleOrderDatesCopyWith(_$_EligibleOrderDates value,
+          $Res Function(_$_EligibleOrderDates) then) =
+      __$$_EligibleOrderDatesCopyWithImpl<$Res>;
   @override
   $Res call(
       {Set<String> availableDaysOfWeek, Set<DateTime> availableSpecialDates});
 }
 
 /// @nodoc
-class __$EligibleOrderDatesCopyWithImpl<$Res>
+class __$$_EligibleOrderDatesCopyWithImpl<$Res>
     extends _$EligibleOrderDatesCopyWithImpl<$Res>
-    implements _$EligibleOrderDatesCopyWith<$Res> {
-  __$EligibleOrderDatesCopyWithImpl(
-      _EligibleOrderDates _value, $Res Function(_EligibleOrderDates) _then)
-      : super(_value, (v) => _then(v as _EligibleOrderDates));
+    implements _$$_EligibleOrderDatesCopyWith<$Res> {
+  __$$_EligibleOrderDatesCopyWithImpl(
+      _$_EligibleOrderDates _value, $Res Function(_$_EligibleOrderDates) _then)
+      : super(_value, (v) => _then(v as _$_EligibleOrderDates));
 
   @override
-  _EligibleOrderDates get _value => super._value as _EligibleOrderDates;
+  _$_EligibleOrderDates get _value => super._value as _$_EligibleOrderDates;
 
   @override
   $Res call({
     Object? availableDaysOfWeek = freezed,
     Object? availableSpecialDates = freezed,
   }) {
-    return _then(_EligibleOrderDates(
+    return _then(_$_EligibleOrderDates(
       availableDaysOfWeek: availableDaysOfWeek == freezed
           ? _value.availableDaysOfWeek
           : availableDaysOfWeek // ignore: cast_nullable_to_non_nullable
@@ -133,7 +133,7 @@ class _$_EligibleOrderDates extends _EligibleOrderDates {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _EligibleOrderDates &&
+            other is _$_EligibleOrderDates &&
             const DeepCollectionEquality()
                 .equals(other.availableDaysOfWeek, availableDaysOfWeek) &&
             const DeepCollectionEquality()
@@ -149,8 +149,9 @@ class _$_EligibleOrderDates extends _EligibleOrderDates {
 
   @JsonKey(ignore: true)
   @override
-  _$EligibleOrderDatesCopyWith<_EligibleOrderDates> get copyWith =>
-      __$EligibleOrderDatesCopyWithImpl<_EligibleOrderDates>(this, _$identity);
+  _$$_EligibleOrderDatesCopyWith<_$_EligibleOrderDates> get copyWith =>
+      __$$_EligibleOrderDatesCopyWithImpl<_$_EligibleOrderDates>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -173,6 +174,6 @@ abstract class _EligibleOrderDates extends EligibleOrderDates {
   Set<DateTime> get availableSpecialDates => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$EligibleOrderDatesCopyWith<_EligibleOrderDates> get copyWith =>
+  _$$_EligibleOrderDatesCopyWith<_$_EligibleOrderDates> get copyWith =>
       throw _privateConstructorUsedError;
 }

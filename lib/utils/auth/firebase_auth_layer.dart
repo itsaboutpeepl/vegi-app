@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:redux/redux.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
@@ -45,7 +45,7 @@ Future<String?> firebaseSignInWithPhoneCreds(
   return null;
 }
 
-Future<void> verifyPhoneNumber({
+Future<void> firebaseCheckPhoneNumberBeforeSignIn({
   required String phoneNumber,
   required Store<AppState> store,
   required Function(String, int?) Function({
@@ -53,18 +53,6 @@ Future<void> verifyPhoneNumber({
     required Function() onSuccess,
   })
       codeSent,
-  required void Function({
-    required PhoneAuthCredential credentials,
-    required String phoneNumber,
-    required Store<AppState> store,
-    required Function() onSuccess,
-    required Function(String? errMsg) onError,
-  })
-      verificationCompleted,
-  required void Function(
-          {required FirebaseAuthException authException,
-          required Function(String? errMsg) onError})
-      verificationFailed,
   required Function() onSuccess,
   required Function(String? errMsg) onError,
 }) async {
@@ -76,12 +64,13 @@ Future<void> verifyPhoneNumber({
     codeSent: (verificationId, forceResendingToken) => codeSent(
         onSuccess: onSuccess,
         store: store)(verificationId, forceResendingToken),
-    verificationCompleted: ((phoneAuthCredential) => verificationCompleted(
-        credentials: phoneAuthCredential,
-        phoneNumber: phoneNumber,
-        store: store,
-        onSuccess: onSuccess,
-        onError: onError)),
+    verificationCompleted: ((phoneAuthCredential) =>
+        firebaseVerificationCompleted(
+            credentials: phoneAuthCredential,
+            phoneNumber: phoneNumber,
+            store: store,
+            onSuccess: onSuccess,
+            onError: onError)),
     verificationFailed: (FirebaseAuthException authException) =>
         firebaseVerificationFailed(
             authException: authException, onError: onError),
@@ -96,20 +85,19 @@ void firebaseVerificationCompleted({
   required Function(String? errMsg) onError,
 }) async {
   store.dispatch(SetCredentials(credentials));
-  final String accountAddress = store.state.userState.accountAddress;
-  final String identifier = store.state.userState.identifier;
 
   Segment.track(
     eventName: 'Sign up: VerificationCode_NextBtn_Press_walletApi',
   );
 
-  final jwtToken = await vegiAuthChain(
-      phoneNumber: phoneNumber,
-      credentials: credentials,
-      accountAddress: accountAddress,
-      firebaseIdentifier: identifier,
-      refreshCredentials: () => store.dispatch(SetCredentials(null)),
-      onError: onError);
+  final jwtToken = store.state.userState.jwtToken.isNotEmpty
+      ? store.state.userState.jwtToken
+      : await vegiAuthChain(
+          phoneNumber: phoneNumber,
+          credentials: credentials,
+          store: store,
+          refreshCredentials: () => store.dispatch(SetCredentials(null)),
+          onError: onError);
 
   Segment.track(
     eventName: 'Sign up: VerificationCode_NextBtn_Press_vegiService',
@@ -122,7 +110,7 @@ void firebaseVerificationCompleted({
       store.dispatch(LoginVerifySuccess(jwtToken));
       walletApi.setJwtToken(jwtToken);
       setJwtTokenApp(store);
-      store.dispatch(fetchHomePageData());
+
       if (store.state.userState.displayName.isNotEmpty) {
         rootRouter.push(MainScreen());
       } else {
@@ -162,4 +150,11 @@ void firebaseVerificationFailed(
         'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
   }
   onError(authException.message);
+}
+
+FirebaseAuth fireAuthInstance() {
+  if (kDebugMode) {
+    FirebaseAuth.instance.useAuthEmulator("localhost", 9099);
+  }
+  return FirebaseAuth.instance;
 }

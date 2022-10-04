@@ -90,12 +90,12 @@ class _$EligibleDeliveryCollectionDatesCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$EligibleDeliveryCollectionDatesCopyWith<$Res>
+abstract class _$$_EligibleDeliveryCollectionDatesCopyWith<$Res>
     implements $EligibleDeliveryCollectionDatesCopyWith<$Res> {
-  factory _$EligibleDeliveryCollectionDatesCopyWith(
-          _EligibleDeliveryCollectionDates value,
-          $Res Function(_EligibleDeliveryCollectionDates) then) =
-      __$EligibleDeliveryCollectionDatesCopyWithImpl<$Res>;
+  factory _$$_EligibleDeliveryCollectionDatesCopyWith(
+          _$_EligibleDeliveryCollectionDates value,
+          $Res Function(_$_EligibleDeliveryCollectionDates) then) =
+      __$$_EligibleDeliveryCollectionDatesCopyWithImpl<$Res>;
   @override
   $Res call(
       {EligibleOrderDates eligibleCollectionDates,
@@ -108,24 +108,24 @@ abstract class _$EligibleDeliveryCollectionDatesCopyWith<$Res>
 }
 
 /// @nodoc
-class __$EligibleDeliveryCollectionDatesCopyWithImpl<$Res>
+class __$$_EligibleDeliveryCollectionDatesCopyWithImpl<$Res>
     extends _$EligibleDeliveryCollectionDatesCopyWithImpl<$Res>
-    implements _$EligibleDeliveryCollectionDatesCopyWith<$Res> {
-  __$EligibleDeliveryCollectionDatesCopyWithImpl(
-      _EligibleDeliveryCollectionDates _value,
-      $Res Function(_EligibleDeliveryCollectionDates) _then)
-      : super(_value, (v) => _then(v as _EligibleDeliveryCollectionDates));
+    implements _$$_EligibleDeliveryCollectionDatesCopyWith<$Res> {
+  __$$_EligibleDeliveryCollectionDatesCopyWithImpl(
+      _$_EligibleDeliveryCollectionDates _value,
+      $Res Function(_$_EligibleDeliveryCollectionDates) _then)
+      : super(_value, (v) => _then(v as _$_EligibleDeliveryCollectionDates));
 
   @override
-  _EligibleDeliveryCollectionDates get _value =>
-      super._value as _EligibleDeliveryCollectionDates;
+  _$_EligibleDeliveryCollectionDates get _value =>
+      super._value as _$_EligibleDeliveryCollectionDates;
 
   @override
   $Res call({
     Object? eligibleCollectionDates = freezed,
     Object? eligibleDeliveryDates = freezed,
   }) {
-    return _then(_EligibleDeliveryCollectionDates(
+    return _then(_$_EligibleDeliveryCollectionDates(
       eligibleCollectionDates: eligibleCollectionDates == freezed
           ? _value.eligibleCollectionDates
           : eligibleCollectionDates // ignore: cast_nullable_to_non_nullable
@@ -166,7 +166,7 @@ class _$_EligibleDeliveryCollectionDates
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _EligibleDeliveryCollectionDates &&
+            other is _$_EligibleDeliveryCollectionDates &&
             const DeepCollectionEquality().equals(
                 other.eligibleCollectionDates, eligibleCollectionDates) &&
             const DeepCollectionEquality()
@@ -182,9 +182,10 @@ class _$_EligibleDeliveryCollectionDates
 
   @JsonKey(ignore: true)
   @override
-  _$EligibleDeliveryCollectionDatesCopyWith<_EligibleDeliveryCollectionDates>
-      get copyWith => __$EligibleDeliveryCollectionDatesCopyWithImpl<
-          _EligibleDeliveryCollectionDates>(this, _$identity);
+  _$$_EligibleDeliveryCollectionDatesCopyWith<
+          _$_EligibleDeliveryCollectionDates>
+      get copyWith => __$$_EligibleDeliveryCollectionDatesCopyWithImpl<
+          _$_EligibleDeliveryCollectionDates>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -211,6 +212,7 @@ abstract class _EligibleDeliveryCollectionDates
       throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$EligibleDeliveryCollectionDatesCopyWith<_EligibleDeliveryCollectionDates>
+  _$$_EligibleDeliveryCollectionDatesCopyWith<
+          _$_EligibleDeliveryCollectionDates>
       get copyWith => throw _privateConstructorUsedError;
 }

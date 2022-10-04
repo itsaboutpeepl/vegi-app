@@ -36,8 +36,7 @@ Future<void> reauthenticateServices(
   await vegiAuthChain(
     phoneNumber: initialState.userState.phoneNumber,
     credentials: credential,
-    accountAddress: initialState.userState.walletAddress,
-    firebaseIdentifier: initialState.userState.identifier,
+    store: store,
     refreshCredentials: () => store.dispatch(SetCredentials(null)),
     onError: (errorMsg) => log.error(errorMsg),
   );

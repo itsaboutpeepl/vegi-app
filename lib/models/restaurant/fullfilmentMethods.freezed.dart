@@ -126,11 +126,11 @@ class _$FullfilmentMethodsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$FullfilmentMethodsCopyWith<$Res>
+abstract class _$$_FullfilmentMethodsCopyWith<$Res>
     implements $FullfilmentMethodsCopyWith<$Res> {
-  factory _$FullfilmentMethodsCopyWith(
-          _FullfilmentMethods value, $Res Function(_FullfilmentMethods) then) =
-      __$FullfilmentMethodsCopyWithImpl<$Res>;
+  factory _$$_FullfilmentMethodsCopyWith(_$_FullfilmentMethods value,
+          $Res Function(_$_FullfilmentMethods) then) =
+      __$$_FullfilmentMethodsCopyWithImpl<$Res>;
   @override
   $Res call(
       {Map<String, dynamic>? collectionMethod,
@@ -149,15 +149,15 @@ abstract class _$FullfilmentMethodsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$FullfilmentMethodsCopyWithImpl<$Res>
+class __$$_FullfilmentMethodsCopyWithImpl<$Res>
     extends _$FullfilmentMethodsCopyWithImpl<$Res>
-    implements _$FullfilmentMethodsCopyWith<$Res> {
-  __$FullfilmentMethodsCopyWithImpl(
-      _FullfilmentMethods _value, $Res Function(_FullfilmentMethods) _then)
-      : super(_value, (v) => _then(v as _FullfilmentMethods));
+    implements _$$_FullfilmentMethodsCopyWith<$Res> {
+  __$$_FullfilmentMethodsCopyWithImpl(
+      _$_FullfilmentMethods _value, $Res Function(_$_FullfilmentMethods) _then)
+      : super(_value, (v) => _then(v as _$_FullfilmentMethods));
 
   @override
-  _FullfilmentMethods get _value => super._value as _FullfilmentMethods;
+  _$_FullfilmentMethods get _value => super._value as _$_FullfilmentMethods;
 
   @override
   $Res call({
@@ -168,7 +168,7 @@ class __$FullfilmentMethodsCopyWithImpl<$Res>
     Object? eligibleCollectionDates = freezed,
     Object? eligibleDeliveryDates = freezed,
   }) {
-    return _then(_FullfilmentMethods(
+    return _then(_$_FullfilmentMethods(
       collectionMethod: collectionMethod == freezed
           ? _value.collectionMethod
           : collectionMethod // ignore: cast_nullable_to_non_nullable
@@ -241,7 +241,7 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FullfilmentMethods &&
+            other is _$_FullfilmentMethods &&
             const DeepCollectionEquality()
                 .equals(other.collectionMethod, collectionMethod) &&
             const DeepCollectionEquality()
@@ -269,8 +269,9 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
 
   @JsonKey(ignore: true)
   @override
-  _$FullfilmentMethodsCopyWith<_FullfilmentMethods> get copyWith =>
-      __$FullfilmentMethodsCopyWithImpl<_FullfilmentMethods>(this, _$identity);
+  _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>
+      __$$_FullfilmentMethodsCopyWithImpl<_$_FullfilmentMethods>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -317,6 +318,6 @@ abstract class _FullfilmentMethods extends FullfilmentMethods {
       throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$FullfilmentMethodsCopyWith<_FullfilmentMethods> get copyWith =>
+  _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>
       throw _privateConstructorUsedError;
 }

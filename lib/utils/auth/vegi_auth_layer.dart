@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/admin/user.dart' as VegiUser;
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/auth/firebase_auth_layer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -7,8 +9,7 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 Future<String?> vegiAuthChain(
     {required String phoneNumber,
     required PhoneAuthCredential credentials,
-    required String accountAddress,
-    required String firebaseIdentifier,
+    required Store<AppState> store,
     required Function() refreshCredentials,
     required void Function(String errorMsg) onError}) async {
   String? token =
@@ -17,16 +18,19 @@ Future<String?> vegiAuthChain(
     return null;
   }
 
+  final String accountAddress = store.state.userState.accountAddress;
+  final String firebaseIdentifier = store.state.userState.identifier;
+
   String? jwtToken;
-  if (!fUSEWalletApiLayer.isLoggedIn) {
+  if (fUSEWalletApiLayer.isLoggedIn) {
+    jwtToken = fUSEWalletApiLayer.getJwtToken();
+  } else {
     jwtToken = await fUSEWalletApiLayer.loginWithFirebase(
         firebaseToken: token,
         walletAddress: accountAddress,
         identifier: firebaseIdentifier,
         firebaseAppName: 'vegiliverpool',
         onError: onError);
-  } else {
-    jwtToken = fUSEWalletApiLayer.getJwtToken();
   }
 
   VegiUser.User? vegiUser;

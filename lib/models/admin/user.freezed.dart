@@ -20,14 +20,20 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
-  String get id => throw _privateConstructorUsedError;
-  String get phone => throw _privateConstructorUsedError;
+  int get id =>
+      throw _privateConstructorUsedError; // @JsonKey(fromJson: phoneFromJson, ) required String phone,
+  int get phoneCountryCode => throw _privateConstructorUsedError;
+  int get phoneNoCountry => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   bool get isSuperAdmin => throw _privateConstructorUsedError;
   String get firebaseSessionToken => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
   num? get vendor => throw _privateConstructorUsedError;
   String get vendorRole => throw _privateConstructorUsedError;
+  num? get courier => throw _privateConstructorUsedError;
+  String get courierRole => throw _privateConstructorUsedError;
+  String get cookie => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,14 +45,19 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res>;
   $Res call(
-      {String id,
-      String phone,
+      {int id,
+      int phoneCountryCode,
+      int phoneNoCountry,
       String email,
       String name,
       bool isSuperAdmin,
       String firebaseSessionToken,
+      String role,
       num? vendor,
-      String vendorRole});
+      String vendorRole,
+      num? courier,
+      String courierRole,
+      String cookie});
 }
 
 /// @nodoc
@@ -60,23 +71,32 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? phone = freezed,
+    Object? phoneCountryCode = freezed,
+    Object? phoneNoCountry = freezed,
     Object? email = freezed,
     Object? name = freezed,
     Object? isSuperAdmin = freezed,
     Object? firebaseSessionToken = freezed,
+    Object? role = freezed,
     Object? vendor = freezed,
     Object? vendorRole = freezed,
+    Object? courier = freezed,
+    Object? courierRole = freezed,
+    Object? cookie = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: phone == freezed
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
+      phoneCountryCode: phoneCountryCode == freezed
+          ? _value.phoneCountryCode
+          : phoneCountryCode // ignore: cast_nullable_to_non_nullable
+              as int,
+      phoneNoCountry: phoneNoCountry == freezed
+          ? _value.phoneNoCountry
+          : phoneNoCountry // ignore: cast_nullable_to_non_nullable
+              as int,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -93,6 +113,10 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.firebaseSessionToken
           : firebaseSessionToken // ignore: cast_nullable_to_non_nullable
               as String,
+      role: role == freezed
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
       vendor: vendor == freezed
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -100,56 +124,82 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
       vendorRole: vendorRole == freezed
           ? _value.vendorRole
           : vendorRole // ignore: cast_nullable_to_non_nullable
+              as String,
+      courier: courier == freezed
+          ? _value.courier
+          : courier // ignore: cast_nullable_to_non_nullable
+              as num?,
+      courierRole: courierRole == freezed
+          ? _value.courierRole
+          : courierRole // ignore: cast_nullable_to_non_nullable
+              as String,
+      cookie: cookie == freezed
+          ? _value.cookie
+          : cookie // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$UserCopyWith(_User value, $Res Function(_User) then) =
-      __$UserCopyWithImpl<$Res>;
+abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
+  factory _$$_UserCopyWith(_$_User value, $Res Function(_$_User) then) =
+      __$$_UserCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
-      String phone,
+      {int id,
+      int phoneCountryCode,
+      int phoneNoCountry,
       String email,
       String name,
       bool isSuperAdmin,
       String firebaseSessionToken,
+      String role,
       num? vendor,
-      String vendorRole});
+      String vendorRole,
+      num? courier,
+      String courierRole,
+      String cookie});
 }
 
 /// @nodoc
-class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
-    implements _$UserCopyWith<$Res> {
-  __$UserCopyWithImpl(_User _value, $Res Function(_User) _then)
-      : super(_value, (v) => _then(v as _User));
+class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
+    implements _$$_UserCopyWith<$Res> {
+  __$$_UserCopyWithImpl(_$_User _value, $Res Function(_$_User) _then)
+      : super(_value, (v) => _then(v as _$_User));
 
   @override
-  _User get _value => super._value as _User;
+  _$_User get _value => super._value as _$_User;
 
   @override
   $Res call({
     Object? id = freezed,
-    Object? phone = freezed,
+    Object? phoneCountryCode = freezed,
+    Object? phoneNoCountry = freezed,
     Object? email = freezed,
     Object? name = freezed,
     Object? isSuperAdmin = freezed,
     Object? firebaseSessionToken = freezed,
+    Object? role = freezed,
     Object? vendor = freezed,
     Object? vendorRole = freezed,
+    Object? courier = freezed,
+    Object? courierRole = freezed,
+    Object? cookie = freezed,
   }) {
-    return _then(_User(
+    return _then(_$_User(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: phone == freezed
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
+      phoneCountryCode: phoneCountryCode == freezed
+          ? _value.phoneCountryCode
+          : phoneCountryCode // ignore: cast_nullable_to_non_nullable
+              as int,
+      phoneNoCountry: phoneNoCountry == freezed
+          ? _value.phoneNoCountry
+          : phoneNoCountry // ignore: cast_nullable_to_non_nullable
+              as int,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -166,6 +216,10 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.firebaseSessionToken
           : firebaseSessionToken // ignore: cast_nullable_to_non_nullable
               as String,
+      role: role == freezed
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
       vendor: vendor == freezed
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -173,6 +227,18 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
       vendorRole: vendorRole == freezed
           ? _value.vendorRole
           : vendorRole // ignore: cast_nullable_to_non_nullable
+              as String,
+      courier: courier == freezed
+          ? _value.courier
+          : courier // ignore: cast_nullable_to_non_nullable
+              as num?,
+      courierRole: courierRole == freezed
+          ? _value.courierRole
+          : courierRole // ignore: cast_nullable_to_non_nullable
+              as String,
+      cookie: cookie == freezed
+          ? _value.cookie
+          : cookie // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -184,21 +250,29 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 class _$_User extends _User {
   _$_User(
       {required this.id,
-      required this.phone,
+      required this.phoneCountryCode,
+      required this.phoneNoCountry,
       this.email = '',
       this.name = '',
       this.isSuperAdmin = false,
       this.firebaseSessionToken = '',
+      this.role = 'none',
       this.vendor = null,
-      this.vendorRole = ''})
+      this.vendorRole = 'none',
+      this.courier = null,
+      this.courierRole = 'none',
+      this.cookie = ''})
       : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
   @override
-  final String id;
+  final int id;
+// @JsonKey(fromJson: phoneFromJson, ) required String phone,
   @override
-  final String phone;
+  final int phoneCountryCode;
+  @override
+  final int phoneNoCountry;
   @override
   @JsonKey()
   final String email;
@@ -213,32 +287,52 @@ class _$_User extends _User {
   final String firebaseSessionToken;
   @override
   @JsonKey()
+  final String role;
+  @override
+  @JsonKey()
   final num? vendor;
   @override
   @JsonKey()
   final String vendorRole;
+  @override
+  @JsonKey()
+  final num? courier;
+  @override
+  @JsonKey()
+  final String courierRole;
+  @override
+  @JsonKey()
+  final String cookie;
 
   @override
   String toString() {
-    return 'User(id: $id, phone: $phone, email: $email, name: $name, isSuperAdmin: $isSuperAdmin, firebaseSessionToken: $firebaseSessionToken, vendor: $vendor, vendorRole: $vendorRole)';
+    return 'User(id: $id, phoneCountryCode: $phoneCountryCode, phoneNoCountry: $phoneNoCountry, email: $email, name: $name, isSuperAdmin: $isSuperAdmin, firebaseSessionToken: $firebaseSessionToken, role: $role, vendor: $vendor, vendorRole: $vendorRole, courier: $courier, courierRole: $courierRole, cookie: $cookie)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _User &&
+            other is _$_User &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.phone, phone) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneCountryCode, phoneCountryCode) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneNoCountry, phoneNoCountry) &&
             const DeepCollectionEquality().equals(other.email, email) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.isSuperAdmin, isSuperAdmin) &&
             const DeepCollectionEquality()
                 .equals(other.firebaseSessionToken, firebaseSessionToken) &&
+            const DeepCollectionEquality().equals(other.role, role) &&
             const DeepCollectionEquality().equals(other.vendor, vendor) &&
             const DeepCollectionEquality()
-                .equals(other.vendorRole, vendorRole));
+                .equals(other.vendorRole, vendorRole) &&
+            const DeepCollectionEquality().equals(other.courier, courier) &&
+            const DeepCollectionEquality()
+                .equals(other.courierRole, courierRole) &&
+            const DeepCollectionEquality().equals(other.cookie, cookie));
   }
 
   @JsonKey(ignore: true)
@@ -246,18 +340,23 @@ class _$_User extends _User {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(phone),
+      const DeepCollectionEquality().hash(phoneCountryCode),
+      const DeepCollectionEquality().hash(phoneNoCountry),
       const DeepCollectionEquality().hash(email),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(isSuperAdmin),
       const DeepCollectionEquality().hash(firebaseSessionToken),
+      const DeepCollectionEquality().hash(role),
       const DeepCollectionEquality().hash(vendor),
-      const DeepCollectionEquality().hash(vendorRole));
+      const DeepCollectionEquality().hash(vendorRole),
+      const DeepCollectionEquality().hash(courier),
+      const DeepCollectionEquality().hash(courierRole),
+      const DeepCollectionEquality().hash(cookie));
 
   @JsonKey(ignore: true)
   @override
-  _$UserCopyWith<_User> get copyWith =>
-      __$UserCopyWithImpl<_User>(this, _$identity);
+  _$$_UserCopyWith<_$_User> get copyWith =>
+      __$$_UserCopyWithImpl<_$_User>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -267,22 +366,29 @@ class _$_User extends _User {
 
 abstract class _User extends User {
   factory _User(
-      {required final String id,
-      required final String phone,
+      {required final int id,
+      required final int phoneCountryCode,
+      required final int phoneNoCountry,
       final String email,
       final String name,
       final bool isSuperAdmin,
       final String firebaseSessionToken,
+      final String role,
       final num? vendor,
-      final String vendorRole}) = _$_User;
+      final String vendorRole,
+      final num? courier,
+      final String courierRole,
+      final String cookie}) = _$_User;
   _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  @override // @JsonKey(fromJson: phoneFromJson, ) required String phone,
+  int get phoneCountryCode => throw _privateConstructorUsedError;
   @override
-  String get phone => throw _privateConstructorUsedError;
+  int get phoneNoCountry => throw _privateConstructorUsedError;
   @override
   String get email => throw _privateConstructorUsedError;
   @override
@@ -292,10 +398,18 @@ abstract class _User extends User {
   @override
   String get firebaseSessionToken => throw _privateConstructorUsedError;
   @override
+  String get role => throw _privateConstructorUsedError;
+  @override
   num? get vendor => throw _privateConstructorUsedError;
   @override
   String get vendorRole => throw _privateConstructorUsedError;
   @override
+  num? get courier => throw _privateConstructorUsedError;
+  @override
+  String get courierRole => throw _privateConstructorUsedError;
+  @override
+  String get cookie => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
-  _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;
+  _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
 }

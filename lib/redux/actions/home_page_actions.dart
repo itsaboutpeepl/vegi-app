@@ -3,8 +3,6 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
-import 'package:vegan_liverpool/redux/actions/demoData.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -53,7 +51,7 @@ class UpdatePostalCodes {
 ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
   return (Store store) async {
     try {
-      store.dispatch(SetIsLoadingHomePage(true));
+      store.dispatch(SetIsLoadingHomePage(true)); //BUG -> InfLoop 2
       List<RestaurantItem> restaurants =
           await peeplEatsService.featuredRestaurants(outCode);
 
@@ -124,7 +122,7 @@ ThunkAction fetchHomePageData() {
       //store.dispatch(fetchRestaurantCategories());
       store.dispatch(fetchFeaturedRestaurants());
       store.dispatch(fetchPostalCodes());
-      store.dispatch(checkForSavedSeedPhrase());
+      // store.dispatch(checkForSavedSeedPhrase());
     } catch (e, s) {
       log.error('ERROR - fetchHomePageData $e');
       await Sentry.captureException(

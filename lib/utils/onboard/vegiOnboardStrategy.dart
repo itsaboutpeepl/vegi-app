@@ -1,12 +1,13 @@
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_segment/flutter_segment.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/auth/firebase_auth_layer.dart';
+import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 
@@ -22,12 +23,10 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
     VoidCallback onSuccess,
     Function(dynamic error) onError,
   ) async {
-    return await verifyPhoneNumber(
+    return await firebaseCheckPhoneNumberBeforeSignIn(
         phoneNumber: phoneNumber,
         store: store,
         codeSent: firebaseCodeSent,
-        verificationCompleted: firebaseVerificationCompleted,
-        verificationFailed: firebaseVerificationFailed,
         onSuccess: onSuccess,
         onError: onError);
   }
@@ -36,11 +35,9 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
   Future verify(
     store,
     verificationCode,
-    onSuccess,
+    firebaseVerificationCompletedCallback,
   ) async {
     final String? verificationId = store.state.userState.verificationId;
-    final String accountAddress = store.state.userState.accountAddress;
-    final String identifier = store.state.userState.identifier;
 
     PhoneAuthCredential? credential = store.state.userState.credentials;
     if (credential == null) {
@@ -51,25 +48,21 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
       store.dispatch(SetCredentials(credential));
     }
 
-    String? token = await firebaseSignInWithPhoneCreds(
-        credential, () => store.dispatch(SetCredentials(null)));
-    if (token == null) {
-      return null;
-    }
-    String? jwtToken;
-    if (fUSEWalletApiLayer.isLoggedIn) {
-      jwtToken = fUSEWalletApiLayer.getJwtToken();
-    } else {
-      jwtToken = await fUSEWalletApiLayer.loginWithFirebase(
-          firebaseToken: token,
-          walletAddress: accountAddress,
-          identifier: identifier,
-          firebaseAppName: 'vegiliverpool',
-          onError: ((errMessage) => log.error(errMessage)));
-    }
-    if (jwtToken != null) {
-      return onSuccess(jwtToken);
-    }
-    onSuccess(store.state.userState.jwtToken);
+    final jwtToken = store.state.userState.jwtToken
+            .isNotEmpty // TODO: && store.state.userState.vegiSessionCookie.isNotEmpty
+        ? store.state.userState.jwtToken
+        : await vegiAuthChain(
+            phoneNumber: store.state.userState.phoneNumber,
+            credentials: credential,
+            store: store,
+            refreshCredentials: () => store.dispatch(SetCredentials(null)),
+            onError: ((errorMsg) => log.error(errorMsg)));
+
+    Segment.track(
+      eventName: 'Sign up: VerificationCode_NextBtn_Press_vegiService',
+    );
+
+    firebaseVerificationCompletedCallback(
+        jwtToken ?? store.state.userState.jwtToken);
   }
 }

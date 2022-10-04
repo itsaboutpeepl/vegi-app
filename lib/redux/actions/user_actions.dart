@@ -25,6 +25,7 @@ import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/models/wallet/wallet_modules.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/addresses.dart';
 import 'package:vegan_liverpool/utils/contacts.dart';
@@ -272,6 +273,7 @@ ThunkAction<AppState> verifyHandler(
           Segment.track(
             eventName: 'Sign up: VerificationCode_NextBtn_Press',
           );
+          store.dispatch(fetchHomePageData());
           store.dispatch(LoginVerifySuccess(jwtToken));
           walletApi.setJwtToken(jwtToken);
           onSuccess();

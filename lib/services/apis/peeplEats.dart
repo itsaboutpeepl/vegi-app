@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
@@ -6,17 +7,14 @@ import 'package:vegan_liverpool/models/admin/user.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
-import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
-import 'package:vegan_liverpool/redux/actions/demoData.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/services/abstract_apis/iRestaurantsService.dart';
 
 @lazySingleton
 class PeeplEatsService extends IRestaraurantDeliveryService {
-  
-
   PeeplEatsService(Dio dio) : super(dio) {
     this.dio.options.headers = Map.from({"Content-Type": 'application/json'});
   }
@@ -136,7 +134,15 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
         });
 
     if (response.statusCode != null && response.statusCode! < 400) {
-      return User.fromJson(response.data);
+      this.sessionCookie = response.headers.value('set-cookie');
+      // return User.fromJson(<String, dynamic>{
+      //   ...<String, dynamic>{
+      //     "cookie": response.headers.value('set-cookie') ?? '',
+      //   ...((response.data ?? <String, dynamic>{}) as Map<String, dynamic>),
+      //   }
+      // });
+      // return User.fromJson(response.data['data']..addAll({'cookie': response.headers.value('set-cookie')}));
+      return User.fromJson(response.data['data']);
     } else {
       return null;
     }

@@ -1,9 +1,9 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
-import 'package:flutter/material.dart';
-import 'package:contacts_service/contacts_service.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/wallet/wallet_modules.dart';
@@ -13,10 +13,12 @@ part 'user_state.g.dart';
 
 String currencyJson(String? currency) => currency == null ? 'usd' : currency;
 
-authTypeFromJson(String auth) => EnumToString.fromString(BiometricAuth.values, auth);
+authTypeFromJson(String auth) =>
+    EnumToString.fromString(BiometricAuth.values, auth);
 
-Locale localeFromJson(Map<String, dynamic>? map) =>
-    map == null ? Locale('en', 'US') : Locale(map['languageCode'], map['countryCode']);
+Locale localeFromJson(Map<String, dynamic>? map) => map == null
+    ? Locale('en', 'US')
+    : Locale(map['languageCode'], map['countryCode']);
 
 Map<String, dynamic> localeToJson(Locale? locale) => locale == null
     ? {'languageCode': 'en', 'countryCode': 'US'}
@@ -46,6 +48,7 @@ class UserState with _$UserState {
     @Default(false) bool warnSendDialogShowed,
     @Default('') String isoCode,
     @Default('') String jwtToken,
+    // @Default('') String vegiSessionCookie,
     @Default('Anom') String displayName,
     @Default('') String avatarUrl,
     @Default('') String email,
@@ -61,7 +64,9 @@ class UserState with _$UserState {
     @Default(BiometricAuth.none)
     @JsonKey(fromJson: authTypeFromJson, toJson: EnumToString.convertToString)
         BiometricAuth authType,
-    @JsonKey(fromJson: localeFromJson, toJson: localeToJson) @Default(null) Locale? locale,
+    @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
+    @Default(null)
+        Locale? locale,
     @JsonKey(ignore: true) @Default([]) List<Contact> contacts,
     @Default(null) @JsonKey(ignore: true) PhoneAuthCredential? credentials,
     WalletModules? walletModules,
@@ -89,11 +94,13 @@ class UserState with _$UserState {
   factory UserState.fromJson(dynamic json) => _$UserStateFromJson(json);
 }
 
-class UserStateConverter implements JsonConverter<UserState, Map<String, dynamic>?> {
+class UserStateConverter
+    implements JsonConverter<UserState, Map<String, dynamic>?> {
   const UserStateConverter();
 
   @override
-  UserState fromJson(Map<String, dynamic>? json) => json != null ? UserState.fromJson(json) : UserState.initial();
+  UserState fromJson(Map<String, dynamic>? json) =>
+      json != null ? UserState.fromJson(json) : UserState.initial();
 
   @override
   Map<String, dynamic> toJson(UserState instance) => instance.toJson();

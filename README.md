@@ -39,7 +39,33 @@ You can download the beta version of our app from the [Google Play](https://play
       git clone https://github.com/fuseio/fuse-wallet.git
       cd fuse-wallet
 
-### Configuring the environment
+
+## Configure Firebase Emulation to Signin
+### Installation
+
+Simply run the following from your project and toggle emulators on:
+
+```bash
+firebase init
+```
+Then to run emulation:
+### Using it
+
+[Connect your app to the Authentication Emulator | Firebase Local Emulator Suite](https://firebase.google.com/docs/emulator-suite/connect_auth#choose_a_firebase_project)
+
+1. in the CLI run `firebase use` in your working directory. Or, you can pass the `--project` flag to each emulator command
+2. To start the Authentication emulator, its REST interface, and the Emulator Suite UI, execute:
+    
+```bash
+firebase emulators:start --only auth --export-on-exit ./emulator_cache
+```
+    
+<aside>
+🚫 NOTE: The Emulator DOES NOT SUPPORT:
+• Test phone numbers with codes preconfigured in the Firebase console.
+</aside>
+
+## Configuring the environment
 
 1. Make a copy of `.env_example` named `.env` - `cd environment && cp .env_example .env`
 
@@ -50,3 +76,5 @@ You can download the beta version of our app from the [Google Play](https://play
 
 ## As an enterprenuer or a community manager
 Launch your community on the [Fuse Studio](https://studio.fuse.io/), then open the community dashboard. There you can configure it and *customize your wallet* app. When you done go to "White label wallet" and send an app invite link to yourself. Visit our [docs](https://docs.fuse.io/the-fuse-studio/overview) to learn about the Fuse Studio.
+
+

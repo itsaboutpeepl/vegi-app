@@ -425,11 +425,11 @@ class _$UserCartStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$UserCartStateCopyWith<$Res>
+abstract class _$$_UserCartStateCopyWith<$Res>
     implements $UserCartStateCopyWith<$Res> {
-  factory _$UserCartStateCopyWith(
-          _UserCartState value, $Res Function(_UserCartState) then) =
-      __$UserCartStateCopyWithImpl<$Res>;
+  factory _$$_UserCartStateCopyWith(
+          _$_UserCartState value, $Res Function(_$_UserCartState) then) =
+      __$$_UserCartStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {@JsonKey(ignore: true)
@@ -514,15 +514,15 @@ abstract class _$UserCartStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$UserCartStateCopyWithImpl<$Res>
+class __$$_UserCartStateCopyWithImpl<$Res>
     extends _$UserCartStateCopyWithImpl<$Res>
-    implements _$UserCartStateCopyWith<$Res> {
-  __$UserCartStateCopyWithImpl(
-      _UserCartState _value, $Res Function(_UserCartState) _then)
-      : super(_value, (v) => _then(v as _UserCartState));
+    implements _$$_UserCartStateCopyWith<$Res> {
+  __$$_UserCartStateCopyWithImpl(
+      _$_UserCartState _value, $Res Function(_$_UserCartState) _then)
+      : super(_value, (v) => _then(v as _$_UserCartState));
 
   @override
-  _UserCartState get _value => super._value as _UserCartState;
+  _$_UserCartState get _value => super._value as _$_UserCartState;
 
   @override
   $Res call({
@@ -562,7 +562,7 @@ class __$UserCartStateCopyWithImpl<$Res>
     Object? deliveryMethodId = freezed,
     Object? collectionMethodId = freezed,
   }) {
-    return _then(_UserCartState(
+    return _then(_$_UserCartState(
       cartItems: cartItems == freezed
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
@@ -908,7 +908,7 @@ class _$_UserCartState extends _UserCartState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _UserCartState &&
+            other is _$_UserCartState &&
             const DeepCollectionEquality().equals(other.cartItems, cartItems) &&
             const DeepCollectionEquality()
                 .equals(other.cartSubTotal, cartSubTotal) &&
@@ -1020,8 +1020,8 @@ class _$_UserCartState extends _UserCartState {
 
   @JsonKey(ignore: true)
   @override
-  _$UserCartStateCopyWith<_UserCartState> get copyWith =>
-      __$UserCartStateCopyWithImpl<_UserCartState>(this, _$identity);
+  _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>
+      __$$_UserCartStateCopyWithImpl<_$_UserCartState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -1226,6 +1226,6 @@ abstract class _UserCartState extends UserCartState {
   int get collectionMethodId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$UserCartStateCopyWith<_UserCartState> get copyWith =>
+  _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>
       throw _privateConstructorUsedError;
 }
