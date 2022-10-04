@@ -51,7 +51,7 @@ class UpdatePostalCodes {
 ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
   return (Store store) async {
     try {
-      store.dispatch(SetIsLoadingHomePage(true)); //BUG -> InfLoop 2
+      store.dispatch(SetIsLoadingHomePage(true));
       List<RestaurantItem> restaurants =
           await peeplEatsService.featuredRestaurants(outCode);
 

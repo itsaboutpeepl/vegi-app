@@ -48,8 +48,8 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
       store.dispatch(SetCredentials(credential));
     }
 
-    final jwtToken = store.state.userState.jwtToken
-            .isNotEmpty // TODO: && store.state.userState.vegiSessionCookie.isNotEmpty
+    final jwtToken = store.state.userState.jwtToken.isNotEmpty &&
+            store.state.userState.vegiSessionCookie.isNotEmpty
         ? store.state.userState.jwtToken
         : await vegiAuthChain(
             phoneNumber: store.state.userState.phoneNumber,

@@ -12,6 +12,7 @@ import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/services/abstract_apis/iRestaurantsService.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 @lazySingleton
 class PeeplEatsService extends IRestaraurantDeliveryService {
@@ -40,31 +41,40 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
 
     List<RestaurantItem> restaurantsActive = [];
 
-    results.forEach(
-      (element) {
-        if (element['status'] == "active") {
-          restaurantsActive.add(
-            RestaurantItem(
-                restaurantID: element["id"].toString(),
-                name: element['name'] ?? "",
-                description: element["description"] ?? "",
-                phoneNumber: element['phoneNumber'] ?? "",
-                status: element['status'] ?? "draft",
-                deliveryRestrictionDetails: [], // TODO: Remove this entirely
-                imageURL: element["imageUrl"],
-                category: "Category",
-                costLevel: element['costLevel'] ?? 2,
-                rating: element['rating'] ?? 2,
-                address: DeliveryAddresses.fromVendorJson(element['address']),
-                walletAddress: element['walletAddress'],
-                listOfMenuItems: [],
-                isVegan: element['isVegan'] ?? false,
-                minimumOrderAmount: element['minimumOrderAmount'],
-                platformFee: element['platformFee']),
-          );
-        }
-      },
-    );
+    try {
+      results.forEach(
+        (element) {
+          try {
+            if (element['status'] == "active") {
+              restaurantsActive.add(
+                RestaurantItem(
+                    restaurantID: element["id"].toString(),
+                    name: element['name'] ?? "",
+                    description: element["description"] ?? "",
+                    phoneNumber: element['phoneNumber'] ?? "",
+                    status: element['status'] ?? "draft",
+                    deliveryRestrictionDetails: [], // TODO: Remove this entirely
+                    imageURL: element["imageUrl"],
+                    category: "Category",
+                    costLevel: element['costLevel'] ?? 2,
+                    rating: element['rating'] ?? 2,
+                    address: DeliveryAddresses.fromVendorJson(element),
+                    walletAddress: element['walletAddress'],
+                    listOfMenuItems: [],
+                    isVegan: element['isVegan'] ?? false,
+                    minimumOrderAmount: element['minimumOrderAmount'],
+                    platformFee: element['platformFee']),
+              );
+            }
+          } on Exception catch (e) {
+            log.error('Unable to deserialize Restaurant from json: $e -> ' +
+                (element as Map<String, dynamic>).toString());
+          }
+        },
+      );
+    } on Exception catch (e) {
+      log.error('Unable to deserialize Restaurant from json: $e');
+    }
 
     restaurantsActive.removeWhere((element) => element.status == "draft");
 
@@ -135,14 +145,8 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
 
     if (response.statusCode != null && response.statusCode! < 400) {
       this.sessionCookie = response.headers.value('set-cookie');
-      // return User.fromJson(<String, dynamic>{
-      //   ...<String, dynamic>{
-      //     "cookie": response.headers.value('set-cookie') ?? '',
-      //   ...((response.data ?? <String, dynamic>{}) as Map<String, dynamic>),
-      //   }
-      // });
-      // return User.fromJson(response.data['data']..addAll({'cookie': response.headers.value('set-cookie')}));
-      return User.fromJson(response.data['data']);
+      return User.fromJson((<String, dynamic>{...response.data["data"]})
+        ..addAll({'cookie': response.headers.value('set-cookie')}));
     } else {
       return null;
     }
@@ -156,7 +160,7 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
 
   Future<bool> deregister({required User user}) async {
     final response =
-        await dioPost('/api/v1/admin/deregister-user', data: <String, String>{
+        await dioPost('/api/v1/admin/deregister-user', data: <String, dynamic>{
       'id': user.id,
     });
 
@@ -274,7 +278,7 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
 
     List<String> outCodes = [];
 
-    response.data.forEach((element) {
+    response.data['postalDistricts'].forEach((element) {
       outCodes.add(element["outcode"].toUpperCase());
     });
 

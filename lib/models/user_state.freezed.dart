@@ -37,8 +37,8 @@ mixin _$UserState {
   bool get receiveBackupDialogShowed => throw _privateConstructorUsedError;
   bool get warnSendDialogShowed => throw _privateConstructorUsedError;
   String get isoCode => throw _privateConstructorUsedError;
-  String get jwtToken =>
-      throw _privateConstructorUsedError; // @Default('') String vegiSessionCookie,
+  String get jwtToken => throw _privateConstructorUsedError;
+  String get vegiSessionCookie => throw _privateConstructorUsedError;
   String get displayName => throw _privateConstructorUsedError;
   String get avatarUrl => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
@@ -100,6 +100,7 @@ abstract class $UserStateCopyWith<$Res> {
       bool warnSendDialogShowed,
       String isoCode,
       String jwtToken,
+      String vegiSessionCookie,
       String displayName,
       String avatarUrl,
       String email,
@@ -162,6 +163,7 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
     Object? warnSendDialogShowed = freezed,
     Object? isoCode = freezed,
     Object? jwtToken = freezed,
+    Object? vegiSessionCookie = freezed,
     Object? displayName = freezed,
     Object? avatarUrl = freezed,
     Object? email = freezed,
@@ -256,6 +258,10 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
       jwtToken: jwtToken == freezed
           ? _value.jwtToken
           : jwtToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      vegiSessionCookie: vegiSessionCookie == freezed
+          ? _value.vegiSessionCookie
+          : vegiSessionCookie // ignore: cast_nullable_to_non_nullable
               as String,
       displayName: displayName == freezed
           ? _value.displayName
@@ -381,6 +387,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       bool warnSendDialogShowed,
       String isoCode,
       String jwtToken,
+      String vegiSessionCookie,
       String displayName,
       String avatarUrl,
       String email,
@@ -446,6 +453,7 @@ class __$$_UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
     Object? warnSendDialogShowed = freezed,
     Object? isoCode = freezed,
     Object? jwtToken = freezed,
+    Object? vegiSessionCookie = freezed,
     Object? displayName = freezed,
     Object? avatarUrl = freezed,
     Object? email = freezed,
@@ -540,6 +548,10 @@ class __$$_UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
       jwtToken: jwtToken == freezed
           ? _value.jwtToken
           : jwtToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      vegiSessionCookie: vegiSessionCookie == freezed
+          ? _value.vegiSessionCookie
+          : vegiSessionCookie // ignore: cast_nullable_to_non_nullable
               as String,
       displayName: displayName == freezed
           ? _value.displayName
@@ -652,6 +664,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.warnSendDialogShowed = false,
       this.isoCode = '',
       this.jwtToken = '',
+      this.vegiSessionCookie = '',
       this.displayName = 'Anom',
       this.avatarUrl = '',
       this.email = '',
@@ -740,7 +753,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final String jwtToken;
-// @Default('') String vegiSessionCookie,
+  @override
+  @JsonKey()
+  final String vegiSessionCookie;
   @override
   @JsonKey()
   final String displayName;
@@ -806,7 +821,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials, walletModules: $walletModules, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner)';
+    return 'UserState(installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, depositBannerShowed: $depositBannerShowed, homeBackupDialogShowed: $homeBackupDialogShowed, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, receiveBackupDialogShowed: $receiveBackupDialogShowed, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, vegiSessionCookie: $vegiSessionCookie, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, signupErrorMessage: $signupErrorMessage, verifyErrorMessage: $verifyErrorMessage, currency: $currency, isLoginRequest: $isLoginRequest, isVerifyRequest: $isVerifyRequest, authType: $authType, locale: $locale, contacts: $contacts, credentials: $credentials, walletModules: $walletModules, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner)';
   }
 
   @override
@@ -834,6 +849,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('warnSendDialogShowed', warnSendDialogShowed))
       ..add(DiagnosticsProperty('isoCode', isoCode))
       ..add(DiagnosticsProperty('jwtToken', jwtToken))
+      ..add(DiagnosticsProperty('vegiSessionCookie', vegiSessionCookie))
       ..add(DiagnosticsProperty('displayName', displayName))
       ..add(DiagnosticsProperty('avatarUrl', avatarUrl))
       ..add(DiagnosticsProperty('email', email))
@@ -894,6 +910,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             const DeepCollectionEquality().equals(other.isoCode, isoCode) &&
             const DeepCollectionEquality().equals(other.jwtToken, jwtToken) &&
             const DeepCollectionEquality()
+                .equals(other.vegiSessionCookie, vegiSessionCookie) &&
+            const DeepCollectionEquality()
                 .equals(other.displayName, displayName) &&
             const DeepCollectionEquality().equals(other.avatarUrl, avatarUrl) &&
             const DeepCollectionEquality().equals(other.email, email) &&
@@ -953,6 +971,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         const DeepCollectionEquality().hash(warnSendDialogShowed),
         const DeepCollectionEquality().hash(isoCode),
         const DeepCollectionEquality().hash(jwtToken),
+        const DeepCollectionEquality().hash(vegiSessionCookie),
         const DeepCollectionEquality().hash(displayName),
         const DeepCollectionEquality().hash(avatarUrl),
         const DeepCollectionEquality().hash(email),
@@ -1007,6 +1026,7 @@ abstract class _UserState extends UserState {
       final bool warnSendDialogShowed,
       final String isoCode,
       final String jwtToken,
+      final String vegiSessionCookie,
       final String displayName,
       final String avatarUrl,
       final String email,
@@ -1078,7 +1098,9 @@ abstract class _UserState extends UserState {
   String get isoCode => throw _privateConstructorUsedError;
   @override
   String get jwtToken => throw _privateConstructorUsedError;
-  @override // @Default('') String vegiSessionCookie,
+  @override
+  String get vegiSessionCookie => throw _privateConstructorUsedError;
+  @override
   String get displayName => throw _privateConstructorUsedError;
   @override
   String get avatarUrl => throw _privateConstructorUsedError;

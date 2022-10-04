@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/admin/user.dart' as VegiUser;
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/auth/firebase_auth_layer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -41,6 +42,7 @@ Future<String?> vegiAuthChain(
     onError('Vegi Backend Signin Failed: $e');
   }
 
+  store.dispatch(SetVegiSessionToken(vegiUser?.cookie ?? ''));
   log.info('user.id ${vegiUser?.id}');
 
   return jwtToken;

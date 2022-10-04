@@ -48,7 +48,7 @@ class UserState with _$UserState {
     @Default(false) bool warnSendDialogShowed,
     @Default('') String isoCode,
     @Default('') String jwtToken,
-    // @Default('') String vegiSessionCookie,
+    @Default('') String vegiSessionCookie,
     @Default('Anom') String displayName,
     @Default('') String avatarUrl,
     @Default('') String email,

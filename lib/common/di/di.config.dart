@@ -13,6 +13,7 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:logger/logger.dart' as _i12;
 import 'package:package_info/package_info.dart' as _i14;
 import 'package:phone_number/phone_number.dart' as _i17;
+import 'package:vegan_liverpool/common/di/firebase.dart';
 import 'package:wallet_core/wallet_core.dart' as _i10;
 
 import '../../services/apis/explorer.dart' as _i4;
@@ -79,7 +80,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i10.StudioApi>(() => servicesModule.api);
   gh.lazySingleton<_i10.WalletApi>(() => servicesModule.walletApi);
   gh.factory<bool>(
-      () => firebaseInjectableModule.assertTopicNameIsValid(get<String>()));
+      () => FirebaseInjectableModule.assertTopicNameIsValid(get<String>()));
   gh.lazySingleton<_i21.LogIt>(() => _i21.LogIt(get<_i12.Logger>()));
   return get;
 }

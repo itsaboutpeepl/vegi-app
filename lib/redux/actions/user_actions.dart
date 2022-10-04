@@ -151,6 +151,11 @@ class SetCredentials {
   SetCredentials(this.credentials);
 }
 
+class SetVegiSessionToken {
+  String sessionToken;
+  SetVegiSessionToken(this.sessionToken);
+}
+
 class SetVerificationId {
   String verificationId;
   SetVerificationId(this.verificationId);
