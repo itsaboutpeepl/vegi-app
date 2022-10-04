@@ -17,8 +17,8 @@ import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/auth_flow.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
+import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
-import 'package:vegan_liverpool/utils/onboard/vegiOnboardStrategy.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
 
@@ -26,7 +26,7 @@ import 'redux/actions/user_actions.dart';
 
 Future<void> reauthenticateServices(
     Store<AppState> store, AppState initialState) async {
-  PhoneAuthCredential? credential = initialState.userState.credentials;
+  final PhoneAuthCredential? credential = initialState.userState.credentials;
   if (!userIsLoggedIn(store)) {
     return;
   }
