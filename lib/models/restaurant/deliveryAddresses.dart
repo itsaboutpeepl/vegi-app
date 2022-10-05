@@ -29,11 +29,11 @@ class DeliveryAddresses with _$DeliveryAddresses {
     return DeliveryAddresses(
         internalID:
             Random((DateTime.now().millisecondsSinceEpoch)).nextInt(10000),
-        addressLine1: json['pickupAddressLineOne']!,
-        addressLine2: json['pickupAddressLineTwo']!,
-        townCity: json['pickupAddressCity']!,
-        postalCode: json['pickupAddressPostCode']!,
-        latitude: json['pickupAddressLatitude']!,
-        longitude: json['pickupAddressLongitude']!);
+        addressLine1: json['pickupAddressLineOne'] ?? '',
+        addressLine2: json['pickupAddressLineTwo'] ?? '',
+        townCity: json['pickupAddressCity'] ?? '',
+        postalCode: json['pickupAddressPostCode'] ?? '',
+        latitude: json['pickupAddressLatitude'] ?? 0.0,
+        longitude: json['pickupAddressLongitude'] ?? 0.0);
   }
 }

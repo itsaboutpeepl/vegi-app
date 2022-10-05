@@ -288,8 +288,8 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
   @override
   Future<EligibleDeliveryCollectionDates> getEligibleOrderDates(
       {required String vendorID}) async {
-    Response response = await dio
-        .get('/api/v1/vendors/get-eligible-order-dates?vendor=$vendorID');
+    Response response = await dioGet(
+        '/api/v1/vendors/get-eligible-order-dates?vendor=$vendorID');
 
     EligibleDeliveryCollectionDates orderDates =
         EligibleDeliveryCollectionDates.fromJson(response.data);
