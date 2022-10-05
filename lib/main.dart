@@ -17,7 +17,7 @@ import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/auth_flow.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
-import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
@@ -33,7 +33,7 @@ Future<void> reauthenticateServices(
   if (userNeedsFreshCreds(store) || credential == null) {
     return;
   }
-  await vegiAuthChain(
+  await onBoardStrategy.authLayer.signin(
     phoneNumber: initialState.userState.phoneNumber,
     credentials: credential,
     store: store,

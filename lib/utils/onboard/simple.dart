@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 
@@ -12,6 +13,8 @@ class SimpleStrategy implements IOnBoardStrategy {
   @override
   final OnboardStrategy strategy;
   SimpleStrategy({this.strategy = OnboardStrategy.none});
+
+  final authLayer = OnboardingAuthChain.createEmpty();
 
   @override
   Future login(

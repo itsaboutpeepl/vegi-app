@@ -16,6 +16,9 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
   final strategy;
   VegiOnboardStrategy({this.strategy = OnboardStrategy.vegi});
 
+  final authLayer =
+      OnboardingAuthChain.createWithService(useWalletApi: true, useVegi: true);
+
   @override
   Future login(
     Store<AppState> store,
@@ -24,18 +27,18 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
     Function(dynamic error) onError,
   ) async {
     return await firebaseCheckPhoneNumberBeforeSignIn(
+        authChain: authLayer,
         phoneNumber: phoneNumber,
         store: store,
-        codeSent: firebaseCodeSent,
         onSuccess: onSuccess,
         onError: onError);
   }
 
   @override
   Future verify(
-    store,
-    verificationCode,
-    firebaseVerificationCompletedCallback,
+    Store<AppState> store,
+    String verificationCode,
+    Function(String e) firebaseVerificationCompletedCallback,
   ) async {
     final String? verificationId = store.state.userState.verificationId;
 
@@ -51,7 +54,7 @@ class VegiOnboardStrategy implements IOnBoardStrategy {
     final jwtToken = store.state.userState.jwtToken.isNotEmpty &&
             store.state.userState.vegiSessionCookie.isNotEmpty
         ? store.state.userState.jwtToken
-        : await vegiAuthChain(
+        : await authLayer.signin(
             phoneNumber: store.state.userState.phoneNumber,
             credentials: credential,
             store: store,

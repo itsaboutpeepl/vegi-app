@@ -3,12 +3,15 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 
 class SmsStrategy implements IOnBoardStrategy {
   @override
   final OnboardStrategy strategy;
   SmsStrategy({this.strategy = OnboardStrategy.sms});
+
+  final authLayer = OnboardingAuthChain.createEmpty();
 
   @override
   Future login(

@@ -46,13 +46,9 @@ Future<String?> firebaseSignInWithPhoneCreds(
 }
 
 Future<void> firebaseCheckPhoneNumberBeforeSignIn({
+  required OnboardingAuthChain authChain,
   required String phoneNumber,
   required Store<AppState> store,
-  required Function(String, int?) Function({
-    required Store<AppState> store,
-    required Function() onSuccess,
-  })
-      codeSent,
   required Function() onSuccess,
   required Function(String? errMsg) onError,
 }) async {
@@ -61,11 +57,12 @@ Future<void> firebaseCheckPhoneNumberBeforeSignIn({
   return await firebaseAuth.verifyPhoneNumber(
     phoneNumber: phoneNumber,
     codeAutoRetrievalTimeout: (String verificationId) {},
-    codeSent: (verificationId, forceResendingToken) => codeSent(
+    codeSent: (verificationId, forceResendingToken) => firebaseCodeSent(
         onSuccess: onSuccess,
         store: store)(verificationId, forceResendingToken),
     verificationCompleted: ((phoneAuthCredential) =>
         firebaseVerificationCompleted(
+            authChain: authChain,
             credentials: phoneAuthCredential,
             phoneNumber: phoneNumber,
             store: store,
@@ -78,6 +75,7 @@ Future<void> firebaseCheckPhoneNumberBeforeSignIn({
 }
 
 void firebaseVerificationCompleted({
+  required OnboardingAuthChain authChain,
   required PhoneAuthCredential credentials,
   required String phoneNumber,
   required Store<AppState> store,
@@ -92,7 +90,7 @@ void firebaseVerificationCompleted({
 
   final jwtToken = store.state.userState.jwtToken.isNotEmpty
       ? store.state.userState.jwtToken
-      : await vegiAuthChain(
+      : await authChain.signin(
           phoneNumber: phoneNumber,
           credentials: credentials,
           store: store,
