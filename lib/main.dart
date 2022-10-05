@@ -33,9 +33,13 @@ Future<void> reauthenticateServices(
   if (userNeedsFreshCreds(store) || credential == null) {
     return;
   }
+  if (credential.smsCode == null) {
+    throw new Exception(
+        'SMS Verification Code on PhoneAuthCredential Object cannot be null');
+  }
   await onBoardStrategy.authLayer.signin(
     phoneNumber: initialState.userState.phoneNumber,
-    credentials: credential,
+    verificationCode: credential.smsCode!,
     store: store,
     refreshCredentials: () => store.dispatch(SetCredentials(null)),
     onError: (errorMsg) => log.error(errorMsg),

@@ -7,7 +7,7 @@ import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
-import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
+import 'package:vegan_liverpool/utils/auth/onboarding_auth_layer.dart';
 import 'package:vegan_liverpool/utils/auth/wallet_api_auth_layer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -87,12 +87,15 @@ void firebaseVerificationCompleted({
   Segment.track(
     eventName: 'Sign up: VerificationCode_NextBtn_Press_walletApi',
   );
-
+  if (credentials.smsCode == null) {
+    throw new Exception(
+        'SMS Verification Code on PhoneAuthCredential Object cannot be null');
+  }
   final jwtToken = store.state.userState.jwtToken.isNotEmpty
       ? store.state.userState.jwtToken
       : await authChain.signin(
           phoneNumber: phoneNumber,
-          credentials: credentials,
+          verificationCode: credentials.smsCode!,
           store: store,
           refreshCredentials: () => store.dispatch(SetCredentials(null)),
           onError: onError);

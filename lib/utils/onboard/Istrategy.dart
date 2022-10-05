@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/utils/auth/vegi_auth_layer.dart';
+import 'package:vegan_liverpool/utils/auth/onboarding_auth_layer.dart';
 import 'package:vegan_liverpool/utils/onboard/firebase.dart';
 import 'package:vegan_liverpool/utils/onboard/simple.dart';
 import 'package:vegan_liverpool/utils/onboard/sms.dart';
