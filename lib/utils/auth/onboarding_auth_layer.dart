@@ -88,11 +88,10 @@ class OnboardingAuthChain {
     if (fUSEWalletApiLayer.isLoggedIn) {
       jwtToken = fUSEWalletApiLayer.getJwtToken();
     } else {
-      jwtToken = await fUSEWalletApiLayer.loginWithFirebase(
+      jwtToken = await fUSEWalletApiLayer.loginWithFirebaseVegi(
           firebaseToken: token,
           walletAddress: accountAddress,
           identifier: firebaseIdentifier,
-          firebaseAppName: 'vegiliverpool',
           onError: onError);
     }
 

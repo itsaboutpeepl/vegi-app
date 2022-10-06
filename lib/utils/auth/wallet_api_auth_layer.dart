@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -21,7 +22,19 @@ class FUSEWalletApiLayer {
     return _jwtToken;
   }
 
-  Future<String?> loginWithFirebase(
+  Future<String?> loginWithFirebaseVegi(
+          {required String firebaseToken,
+          required String walletAddress,
+          required String identifier,
+          required void Function(String errMessage) onError}) async =>
+      _loginWithFirebase(
+          firebaseToken: firebaseToken,
+          walletAddress: walletAddress,
+          identifier: identifier,
+          firebaseAppName: dotenv.env['FUSE_WALLET_API_FIREBASE_APPNAME']!,
+          onError: onError);
+
+  Future<String?> _loginWithFirebase(
       {required String firebaseToken,
       required String walletAddress,
       required String identifier,
