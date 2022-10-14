@@ -1,7 +1,7 @@
+import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
-import 'package:platform/platform.dart';
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -25,7 +25,7 @@ double parseBalance(String balance) {
 }
 
 String mapPreviewImage({required double latitude, required double longitude}) {
-  final _apiKey = Platform.operatingSystemValues == Platform.iOS
+  final _apiKey = Platform.isIOS
       ? dotenv.env['MAP_API_KEY_IOS'] ?? ""
       : dotenv.env['MAP_API_KEY_ANDROID'] ?? "";
 

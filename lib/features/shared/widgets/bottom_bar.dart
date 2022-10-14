@@ -5,7 +5,6 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/motionTabBar.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/main_page.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 
 class BottomBar extends StatelessWidget {
@@ -15,33 +14,11 @@ class BottomBar extends StatelessWidget {
     this.tabsRouter,
   );
 
-  // BottomNavigationBarItem bottomBarItem(
-  //   String title,
-  //   String imgSvg,
-  // ) =>
-  //     BottomNavigationBarItem(
-  //       icon: Padding(
-  //         padding: EdgeInsets.only(top: 5, bottom: 3),
-  //         child: SvgPicture.asset(
-  //           'assets/images/$imgSvg\.svg',
-  //         ),
-  //       ),
-  //       activeIcon: Padding(
-  //         padding: EdgeInsets.only(top: 5, bottom: 3),
-  //         child: SvgPicture.asset(
-  //           'assets/images/$imgSvg\_selected.svg',
-  //           width: 26,
-  //           height: 26,
-  //         ),
-  //       ),
-  //       label: title,
-  //     );
-
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, HomeScreenViewModel>(
+    return StoreConnector<AppState, void>(
       distinct: true,
-      converter: HomeScreenViewModel.fromStore,
+      converter: (store) {},
       onInit: (store) {
         // store.dispatch(fetchSwapList());
         store.dispatch(startFetchingCall());
@@ -76,47 +53,3 @@ class BottomBar extends StatelessWidget {
     );
   }
 }
-
-
-// BottomNavigationBar(
-//         onTap: (int activeIndex) {
-//           if (activeIndex == tabsRouter.activeIndex) {
-//             context.router.popTop();
-//           } else {
-//             tabsRouter.setActiveIndex(activeIndex);
-//           }
-//         },
-//         selectedItemColor: Color(0xFF292929),
-//         selectedFontSize: 13,
-//         unselectedFontSize: 13,
-//         type: BottomNavigationBarType.fixed,
-//         currentIndex: tabsRouter.activeIndex,
-//         backgroundColor: Theme.of(context).bottomAppBarColor,
-//         showUnselectedLabels: true,
-//         //To do: Add internationalisation
-//         items: [
-//           bottomBarItem(I10n.of(context).home, 'home'),
-//           bottomBarItem("News", "news"),
-//           bottomBarItem('Wallet', 'wallet'),
-//           //bottomBarItem('Shop', 'order'),
-//           //bottomBarItem('Top Up', 'topup'),
-//           // bottomBarItem('Tips', 'tips'),
-//           BottomNavigationBarItem(
-//             icon: Padding(
-//               padding: EdgeInsets.only(top: 5, bottom: 3),
-//               child: CircleAvatar(
-//                 backgroundImage: AssetImage('assets/images/anom.png'),
-//                 radius: 13,
-//               ),
-//             ),
-//             activeIcon: Padding(
-//               padding: EdgeInsets.only(top: 5, bottom: 3),
-//               child: CircleAvatar(
-//                 backgroundImage: AssetImage('assets/images/anom.png'),
-//                 radius: 14,
-//               ),
-//             ),
-//             label: I10n.of(context).account,
-//           )
-//         ],
-//       ),

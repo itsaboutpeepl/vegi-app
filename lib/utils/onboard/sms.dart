@@ -15,7 +15,7 @@ class SmsStrategy implements IOnBoardStrategy {
     Function onSuccess,
     Function(dynamic error) onError,
   ) async {
-    await walletApi.loginWithSMS(phoneNumber);
+    await chargeApi.loginWithSMS(phoneNumber);
     rootRouter.push(VerifyPhoneNumber());
     onSuccess();
   }
@@ -24,7 +24,7 @@ class SmsStrategy implements IOnBoardStrategy {
   Future verify(store, verificationCode, onSuccess) async {
     final String phoneNumber = store.state.userState.phoneNumber;
     final String accountAddress = store.state.userState.accountAddress;
-    final String jwtToken = await walletApi.verifySMS(
+    final String jwtToken = await chargeApi.verifySMS(
       verificationCode,
       phoneNumber,
       accountAddress,

@@ -19,13 +19,13 @@ class SimpleStrategy implements IOnBoardStrategy {
     Function(dynamic error) onError,
   ) async {
     final String accountAddress = store.state.userState.accountAddress;
-    final jwtToken = await walletApi.requestToken(
+    final jwtToken = await chargeApi.requestToken(
       phoneNumber,
       accountAddress,
     );
     log.info('jwtToken $jwtToken');
     store.dispatch(LoginVerifySuccess(jwtToken));
-    walletApi.setJwtToken(jwtToken);
+    chargeApi.setJwtToken(jwtToken);
     Segment.track(
       eventName: 'Sign up: VerificationCode_NextBtn_Press',
     );

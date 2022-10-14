@@ -132,3 +132,12 @@ final Map<String, num> fees = {
   "EURS": 1,
   "TUSD": 1,
 };
+
+num getPercentChange(num valueNow, num value24HoursAgo) {
+  final adjustedPercentChange =
+      ((valueNow - value24HoursAgo) / value24HoursAgo) * 100;
+  if (adjustedPercentChange.isNaN || !adjustedPercentChange.isFinite) {
+    return 0;
+  }
+  return adjustedPercentChange;
+}

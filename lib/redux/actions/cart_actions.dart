@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -15,7 +16,6 @@ import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux/redux.dart';
 import 'package:intl/intl.dart';
-import 'package:wallet_core/wallet_core.dart';
 
 class UpdateCartItems {
   final List<CartItem> cartItems;
@@ -513,12 +513,13 @@ ThunkAction sendTokenPayment(
       Map<String, dynamic> GBPxResponse =
           store.state.cartState.selectedGBPxAmount != 0.0
               ? GBPxToken.amount > store.state.cartState.selectedGBPxAmount
-                  ? await walletApi.tokenTransfer(
-                      getIt<Web3>(instanceName: 'fuseWeb3'),
+                  ? await chargeApi.tokenTransfer(
+                      getIt<Web3>(),
                       store.state.userState.walletAddress,
                       GBPxToken.address,
                       store.state.cartState.restaurantWalletAddress,
-                      store.state.cartState.selectedGBPxAmount.toString(),
+                      tokensAmount:
+                          store.state.cartState.selectedGBPxAmount.toString(),
                       externalId: store.state.cartState.paymentIntentID,
                     )
                   : {}
@@ -530,12 +531,13 @@ ThunkAction sendTokenPayment(
       Map<String, dynamic> PPLResponse =
           store.state.cartState.selectedPPLAmount != 0.0
               ? PPLToken.amount > store.state.cartState.selectedPPLAmount
-                  ? await walletApi.tokenTransfer(
-                      getIt<Web3>(instanceName: 'fuseWeb3'),
+                  ? await chargeApi.tokenTransfer(
+                      getIt<Web3>(),
                       store.state.userState.walletAddress,
                       PPLToken.address,
                       store.state.cartState.restaurantWalletAddress,
-                      store.state.cartState.selectedPPLAmount.toString(),
+                      tokensAmount:
+                          store.state.cartState.selectedPPLAmount.toString(),
                       externalId: store.state.cartState.paymentIntentID,
                     )
                   : {}

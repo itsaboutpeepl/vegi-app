@@ -1,6 +1,5 @@
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
-import 'package:vegan_liverpool/redux/actions/demoData.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -52,9 +51,11 @@ ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
   return (Store store) async {
     try {
       store.dispatch(SetIsLoadingHomePage(true));
-      List<RestaurantItem> restaurants = await peeplEatsService.featuredRestaurants(outCode);
+      List<RestaurantItem> restaurants =
+          await peeplEatsService.featuredRestaurants(outCode);
 
-      store.dispatch(UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants));
+      store.dispatch(
+          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants));
       store.dispatch(fetchMenuItemsForRestaurant());
       store.dispatch(SetIsLoadingHomePage(false));
     } catch (e, s) {
@@ -71,7 +72,8 @@ ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
 ThunkAction fetchMenuItemsForRestaurant() {
   return (Store store) async {
     try {
-      List<RestaurantItem> currentList = store.state.homePageState.featuredRestaurants;
+      List<RestaurantItem> currentList =
+          store.state.homePageState.featuredRestaurants;
 
       await Future.forEach(
         currentList,
@@ -82,7 +84,8 @@ ThunkAction fetchMenuItemsForRestaurant() {
         },
       );
 
-      store.dispatch(UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList));
+      store.dispatch(
+          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList));
     } catch (e, s) {
       log.error('ERROR - fetchMenuItemsForRestaurant $e');
       await Sentry.captureException(

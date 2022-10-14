@@ -1,41 +1,34 @@
 import 'package:equatable/equatable.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:redux/redux.dart';
 
 class BackupViewModel extends Equatable {
-  final UserState user;
   final Function() backupWallet;
-  final Function() finishSaveSeedPhrase;
+  final List<String> userMnemonic;
 
-  BackupViewModel({
-    required this.user,
+  const BackupViewModel({
     required this.backupWallet,
-    required this.finishSaveSeedPhrase,
+    required this.userMnemonic,
   });
 
   static BackupViewModel fromStore(Store<AppState> store) {
     return BackupViewModel(
-      user: store.state.userState,
+      userMnemonic: store.state.userState.mnemonic,
       backupWallet: () {
-        store.dispatch(backupWalletCall());
-      },
-      finishSaveSeedPhrase: () {
-        store.dispatch(SetShowSeedPhraseBanner(false));
-        store.dispatch(SetHasSavedSeedPhrase(true));
+        store.dispatch(BackupSuccess());
       },
     );
   }
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [userMnemonic];
 }
 
 class LockScreenViewModel extends Equatable {
   final String pincode;
 
-  LockScreenViewModel({
+  const LockScreenViewModel({
     required this.pincode,
   });
 
@@ -46,5 +39,5 @@ class LockScreenViewModel extends Equatable {
   }
 
   @override
-  List<Object> get props => [pincode];
+  List<Object?> get props => [pincode];
 }

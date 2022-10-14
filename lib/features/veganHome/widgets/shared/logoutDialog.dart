@@ -11,7 +11,8 @@ class LogoutDialog extends StatefulWidget {
   _LogoutDialogState createState() => _LogoutDialogState();
 }
 
-class _LogoutDialogState extends State<LogoutDialog> with SingleTickerProviderStateMixin {
+class _LogoutDialogState extends State<LogoutDialog>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
 
@@ -20,8 +21,10 @@ class _LogoutDialogState extends State<LogoutDialog> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
-    scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    scaleAnimation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
       setState(() {});
@@ -42,7 +45,7 @@ class _LogoutDialogState extends State<LogoutDialog> with SingleTickerProviderSt
       converter: (store) {
         logout = () {
           if (store.state.userState.hasSavedSeedPhrase) {
-            store.dispatch(logoutCall());
+            store.dispatch(LogoutRequestSuccess());
             context.router.replace(OnBoardScreen());
           }
           context.router.pop();
@@ -53,7 +56,8 @@ class _LogoutDialogState extends State<LogoutDialog> with SingleTickerProviderSt
         return ScaleTransition(
           scale: scaleAnimation,
           child: AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             content: Container(
               padding: EdgeInsets.all(10),
               child: Column(

@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:vegan_liverpool/features/home/dialogs/receive.dart';
-import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/utils/format.dart';
@@ -114,60 +112,6 @@ class Avatar extends StatelessWidget {
                                 child: AutoSizeText(
                                   Formatter.formatEthAddress(
                                       viewModel.walletAddress, 4),
-                                  style: TextStyle(
-                                    letterSpacing: 0.3,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                  maxLines: 1,
-                                  presetFontSizes: [
-                                    16,
-                                    15,
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * .475,
-                        child: TextButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => ReceiveDialog(
-                                'fuse:${viewModel.walletAddress}',
-                              ),
-                            );
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.all(15.0),
-                            backgroundColor:
-                                Theme.of(context).colorScheme.secondary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  12.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              SvgPicture.asset(
-                                'assets/images/receiveIcon.svg',
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Flexible(
-                                child: AutoSizeText(
-                                  I10n.of(context).receive,
                                   style: TextStyle(
                                     letterSpacing: 0.3,
                                     color:

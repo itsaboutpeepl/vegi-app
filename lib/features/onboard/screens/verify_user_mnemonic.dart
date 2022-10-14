@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/features/account/screens/verify_mnemonic.dart';
+import 'package:vegan_liverpool/features/onboard/widgets/wordWidget.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 
 class VerifyUserMnemonic extends StatefulWidget {
   const VerifyUserMnemonic({Key? key}) : super(key: key);
@@ -37,14 +37,15 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
   Widget build(BuildContext context) {
     return MyScaffold(
       title: "Verify Seed Phrase",
-      body: StoreConnector<AppState, BackupViewModel>(
-        converter: BackupViewModel.fromStore,
-        builder: (_, viewModel) {
+      body: StoreConnector<AppState, AccountViewModel>(
+        converter: AccountViewModel.fromStore,
+        builder: (_, viewmodel) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Text(
                   "Please enter the correct words below",
                   textAlign: TextAlign.center,
@@ -62,17 +63,17 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
                   child: Column(
                     children: <Widget>[
                       Word(
-                        mnemonic: viewModel.user.mnemonic,
+                        mnemonic: viewmodel.mnemonic,
                         wordIndex: selectedWordsNum[0],
                       ),
                       SizedBox(height: 16.0),
                       Word(
-                        mnemonic: viewModel.user.mnemonic,
+                        mnemonic: viewmodel.mnemonic,
                         wordIndex: selectedWordsNum[1],
                       ),
                       SizedBox(height: 16.0),
                       Word(
-                        mnemonic: viewModel.user.mnemonic,
+                        mnemonic: viewmodel.mnemonic,
                         wordIndex: selectedWordsNum[2],
                       ),
                     ],
@@ -87,7 +88,7 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
                 child: PrimaryButton(
                   label: "Verify",
                   onPressed: () {
-                    viewModel.finishSaveSeedPhrase();
+                    //viewmodel.finishSaveSeedPhrase();
                     if (_formKey.currentState!.validate()) {
                       context.router.popUntilRoot();
                     }

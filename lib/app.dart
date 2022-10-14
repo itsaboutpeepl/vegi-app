@@ -12,7 +12,6 @@ import 'package:vegan_liverpool/constants/strings.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:redux/redux.dart';
@@ -46,8 +45,7 @@ class _MyAppState extends State<MyApp> {
     if (![null, ''].contains(jwtToken)) {
       isAuthenticated = true;
       log.info('JWT: $jwtToken');
-      walletApi.setJwtToken(jwtToken);
-      store.dispatch(setUpFuseWeb3());
+      chargeApi.setJwtToken(jwtToken);
     }
   }
 

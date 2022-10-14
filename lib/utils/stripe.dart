@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/features/topup/dialogs/minting_dialog.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
+//TODO: Move class
 class StripeCustomResponse {
   final bool ok;
   final String? msg;

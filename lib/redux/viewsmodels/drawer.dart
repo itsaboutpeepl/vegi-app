@@ -33,7 +33,7 @@ class DrawerViewModel extends Equatable {
 
     return DrawerViewModel(
       logout: () {
-        store.dispatch(logoutCall());
+        store.dispatch(LogoutRequestSuccess());
       },
       avatarUrl: store.state.userState.avatarUrl,
       firstName: () {

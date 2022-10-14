@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/pastOrders.dart';
 
 class ScheduledOrdersPage extends StatelessWidget {
@@ -27,12 +25,13 @@ class ScheduledOrdersPage extends StatelessWidget {
               ? EmptyStatePage(
                   emoji: "😐",
                   title: "Pretty empty here, isn't it?",
-                  subtitle: "Try scheduling an order from one of our amazing restauarants to fill this page up!",
+                  subtitle:
+                      "Try scheduling an order from one of our amazing restauarants to fill this page up!",
                 )
               : ListView.separated(
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  itemBuilder: (_, index) =>
-                      SingleScheduledOrderCard(orderDetails: viewmodel.listOfScheduledOrders[index]),
+                  itemBuilder: (_, index) => SingleScheduledOrderCard(
+                      orderDetails: viewmodel.listOfScheduledOrders[index]),
                   separatorBuilder: (_, index) => Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                       ),
@@ -44,7 +43,8 @@ class ScheduledOrdersPage extends StatelessWidget {
 }
 
 class SingleScheduledOrderCard extends StatelessWidget {
-  const SingleScheduledOrderCard({Key? key, required this.orderDetails}) : super(key: key);
+  const SingleScheduledOrderCard({Key? key, required this.orderDetails})
+      : super(key: key);
 
   final OrderDetails orderDetails;
 
@@ -79,7 +79,10 @@ class SingleScheduledOrderCard extends StatelessWidget {
                         ),
                         orderDetails.PPLAmountPaid != 0.0
                             ? TextSpan(
-                                text: orderDetails.PPLAmountPaid.toStringAsFixed(2) + " ",
+                                text:
+                                    orderDetails.PPLAmountPaid.toStringAsFixed(
+                                            2) +
+                                        " ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -93,9 +96,13 @@ class SingleScheduledOrderCard extends StatelessWidget {
                                 )
                               : SizedBox.shrink(),
                         ),
-                        orderDetails.PPLAmountPaid != 0.0 ? TextSpan(text: "\n") : WidgetSpan(child: SizedBox.shrink()),
+                        orderDetails.PPLAmountPaid != 0.0
+                            ? TextSpan(text: "\n")
+                            : WidgetSpan(child: SizedBox.shrink()),
                         TextSpan(
-                          text: (orderDetails.GBPxAmountPaid * 5).toStringAsFixed(2) + " ",
+                          text: (orderDetails.GBPxAmountPaid * 5)
+                                  .toStringAsFixed(2) +
+                              " ",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
@@ -146,7 +153,8 @@ class SingleScheduledOrderCard extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 20),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemBuilder: (_, index) => SingleProductOrderItem(cartItem: orderDetails.cartItems[index]),
+                itemBuilder: (_, index) => SingleProductOrderItem(
+                    cartItem: orderDetails.cartItems[index]),
                 separatorBuilder: (_, index) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                 ),
@@ -204,7 +212,8 @@ class SingleScheduledOrderCard extends StatelessWidget {
 }
 
 class SingleProductOrderItem extends StatefulWidget {
-  const SingleProductOrderItem({Key? key, required this.cartItem}) : super(key: key);
+  const SingleProductOrderItem({Key? key, required this.cartItem})
+      : super(key: key);
 
   final CartItem cartItem;
 
@@ -224,9 +233,10 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text.rich(
-                    TextSpan(
-                        text: widget.cartItem.menuItem.name,
-                        children: [TextSpan(text: "\n${cFPrice(widget.cartItem.totalItemPrice)}")]),
+                    TextSpan(text: widget.cartItem.menuItem.name, children: [
+                      TextSpan(
+                          text: "\n${cFPrice(widget.cartItem.totalItemPrice)}")
+                    ]),
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
@@ -259,7 +269,10 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                         ? Text.rich(
                             TextSpan(
                               text: value.name,
-                              children: [TextSpan(text: " - "), TextSpan(text: cFPrice(value.price))],
+                              children: [
+                                TextSpan(text: " - "),
+                                TextSpan(text: cFPrice(value.price))
+                              ],
                             ),
                             style: TextStyle(color: Colors.grey[700]),
                           )

@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/features/home/widgets/balance.dart';
-// import 'package:vegan_liverpool/features/shared/widgets/barcode_scanner.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/header.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-class Header extends StatefulWidget {
-  @override
-  _HeaderState createState() => _HeaderState();
-}
-
-class _HeaderState extends State<Header> {
+class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, HeaderViewModel>(
+    return StoreConnector<AppState, AccountViewModel>(
       distinct: true,
-      converter: HeaderViewModel.fromStore,
+      converter: AccountViewModel.fromStore,
       builder: (_, viewModel) {
         return Container(
           padding: EdgeInsets.all(20),
@@ -33,7 +27,7 @@ class _HeaderState extends State<Header> {
             children: <Widget>[
               Flexible(
                 child: Text(
-                  '${I10n.of(context).hi} ${viewModel.firstName()}',
+                  '${I10n.of(context).hi} ${viewModel.displayName}',
                   style: TextStyle(
                       color: Theme.of(context).canvasColor,
                       fontSize: 32,
@@ -48,13 +42,6 @@ class _HeaderState extends State<Header> {
                     Flexible(
                       child: Balance(),
                     )
-                    // BarcodeScanner(
-                    //   child: Image.asset(
-                    //     'assets/images/scan.png',
-                    //     width: 25.0,
-                    //     color: Theme.of(context).scaffoldBackgroundColor,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

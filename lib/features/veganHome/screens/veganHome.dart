@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart' as ts;
+import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
+    as ts;
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/backupWalletAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/navDrawer.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/featuredRestaurantList.dart';

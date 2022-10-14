@@ -39,7 +39,7 @@ Map<String, dynamic> _$$_OrderDetailsToJson(_$_OrderDetails instance) =>
       'GBPxAmountPaid': instance.GBPxAmountPaid,
       'PPLAmountPaid': instance.PPLAmountPaid,
       'orderAcceptanceStatus':
-          _$OrderAcceptanceStatusEnumMap[instance.orderAcceptanceStatus],
+          _$OrderAcceptanceStatusEnumMap[instance.orderAcceptanceStatus]!,
     };
 
 const _$OrderAcceptanceStatusEnumMap = {

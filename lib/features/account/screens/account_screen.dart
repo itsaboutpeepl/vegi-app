@@ -7,17 +7,13 @@ import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/account/widgets/avatar.dart';
 import 'package:vegan_liverpool/features/account/widgets/menu_tile.dart';
+import 'package:vegan_liverpool/features/screens/webview_screen.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 
-class AccountScreen extends StatefulWidget {
-  @override
-  _AccountScreenState createState() => _AccountScreenState();
-}
-
-class _AccountScreenState extends State<AccountScreen> {
+class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
@@ -48,9 +44,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             MenuTile(
                               label: I10n.of(context).settings,
                               menuIcon: 'settings_icon.svg',
-                              onTap: () {
-                                context.router.push(SettingsScreen());
-                              },
+                              onTap: () {},
                             ),
                             MenuTile(
                               label: I10n.of(context).protect_wallet,
@@ -95,28 +89,22 @@ class _AccountScreenState extends State<AccountScreen> {
                               },
                             ),
                             MenuTile(
-                              label: I10n.of(context).legal,
-                              menuIcon: 'legal_icon.svg',
-                              onTap: () {
-                                context.router.root.push(
-                                  Webview(
-                                    title: I10n.of(context).legal,
-                                    url: 'https://itsaboutpeepl.com/privacy/',
-                                  ),
-                                );
-                              },
-                            ),
+                                label: I10n.of(context).legal,
+                                menuIcon: 'legal_icon.svg',
+                                onTap: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: (_) => WebViewScreen(
+                                        url:
+                                            "https://itsaboutpeepl.com/privacy/",
+                                        title: "Legal"))),
                             MenuTile(
                               label: "About",
                               menuIcon: 'info_black.svg',
-                              onTap: () {
-                                context.router.root.push(
-                                  Webview(
-                                    title: I10n.of(context).legal,
-                                    url: 'https://itsaboutpeepl.com/privacy/',
-                                  ),
-                                );
-                              },
+                              onTap: () => showModalBottomSheet(
+                                  context: context,
+                                  builder: (_) => WebViewScreen(
+                                      url: "https://itsaboutpeepl.com/",
+                                      title: "About")),
                             ),
                           ],
                         ),

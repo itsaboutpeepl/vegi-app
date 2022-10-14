@@ -97,7 +97,6 @@ class __$$_PriceCopyWithImpl<$Res> extends _$PriceCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
 @JsonSerializable()
 class _$_Price extends _Price with DiagnosticableTreeMixin {
   _$_Price({this.currency = 'usd', this.quote = '0'}) : super._();

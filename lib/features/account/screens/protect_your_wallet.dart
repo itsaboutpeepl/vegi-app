@@ -1,6 +1,4 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/account/widgets/menu_tile.dart';
 import 'package:vegan_liverpool/features/screens/set_up_pincode.dart';
@@ -34,9 +32,7 @@ class ProtectYourWallet extends StatelessWidget {
                     top: 5,
                     bottom: 5,
                   ),
-                  onTap: () {
-                    context.router.push(ShowMnemonic());
-                  },
+                  onTap: () {},
                   title: Row(
                     children: <Widget>[
                       SvgPicture.asset(

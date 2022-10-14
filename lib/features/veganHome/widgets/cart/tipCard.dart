@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 
 class TipCard extends StatefulWidget {
-  const TipCard({Key? key, required this.emoji, required this.tipAmount}) : super(key: key);
+  const TipCard({Key? key, required this.emoji, required this.tipAmount})
+      : super(key: key);
 
   final String emoji;
   final int tipAmount;

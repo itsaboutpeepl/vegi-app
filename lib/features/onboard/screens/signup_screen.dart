@@ -1,34 +1,36 @@
+import 'package:carrier_info/carrier_info.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_code_picker/country_codes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:phone_number/phone_number.dart';
-import 'package:vegan_liverpool/generated/l10n.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
-import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
-import 'package:carrier_info/carrier_info.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
 typedef SignUp = void Function(
   CountryCode,
   PhoneNumber,
   Function onSuccess,
-  Function(dynamic error) onError,
+  void Function(dynamic error) onError,
 );
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
+
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final fullNameController = TextEditingController(text: "");
-  final phoneController = TextEditingController(text: "");
+  final fullNameController = TextEditingController(text: '');
+  final phoneController = TextEditingController(text: '');
   final _formKey = GlobalKey<FormState>();
   CountryCode countryCode = CountryCode(dialCode: '+1', code: 'US');
   bool isPreloading = false;
@@ -39,14 +41,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.initState();
   }
 
-  _updateCountryCode(_) async {
+  void _updateCountryCode(_) async {
     try {
       String? currentCountryCode = await CarrierInfo.isoCountryCode;
       if (currentCountryCode != null) {
         Map localeData = codes.firstWhere(
-          (Map code) => code['code'].toString().toLowerCase() == currentCountryCode.toLowerCase(),
+          (Map code) =>
+              code['code'].toString().toLowerCase() ==
+              currentCountryCode.toLowerCase(),
         );
-        if (mounted && localeData.containsKey('dial_code') && localeData.containsKey('code')) {
+        if (mounted &&
+            localeData.containsKey('dial_code') &&
+            localeData.containsKey('code')) {
           setState(() {
             countryCode = CountryCode(
               dialCode: localeData['dial_code'],
@@ -143,18 +149,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 searchDecoration: InputDecoration(
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Theme.of(context).colorScheme.onSurface,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
                                     ),
                                   ),
                                   fillColor: Theme.of(context).canvasColor,
                                   enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Theme.of(context).colorScheme.onSurface,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
                                     ),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Theme.of(context).colorScheme.onSurface,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
                                     ),
                                   ),
                                 ),
@@ -164,18 +176,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 searchStyle: TextStyle(
                                   fontSize: 18,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                                 showFlag: true,
                                 initialSelection: countryCode.code,
                                 showCountryOnly: false,
                                 dialogTextStyle: TextStyle(
                                   fontSize: 18,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                                 textStyle: TextStyle(
                                   fontSize: 18,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                                 alignLeft: false,
                                 padding: EdgeInsets.zero,
@@ -195,8 +210,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   controller: phoneController,
                                   keyboardType: TextInputType.number,
                                   autofocus: true,
-                                  validator: (String? value) => value!.isEmpty ? "Please enter mobile number" : null,
-                                  style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
+                                  validator: (String? value) => value!.isEmpty
+                                      ? "Please enter mobile number"
+                                      : null,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
                                       vertical: 20,
@@ -204,7 +225,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                     hintText: I10n.of(context).phoneNumber,
                                     border: InputBorder.none,
-                                    fillColor: Theme.of(context).backgroundColor,
+                                    fillColor:
+                                        Theme.of(context).backgroundColor,
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                     ),
@@ -239,7 +261,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             preload: isPreloading,
                             disabled: isPreloading,
                             onPressed: () async {
-                              final String phoneNumber = '${countryCode.dialCode}${phoneController.text}';
+                              final String phoneNumber =
+                                  '${countryCode.dialCode}${phoneController.text}';
                               setState(() {
                                 isPreloading = true;
                               });
@@ -261,7 +284,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     });
                                     showErrorSnack(
                                       message: I10n.of(context).invalid_number,
-                                      title: I10n.of(context).something_went_wrong,
+                                      title:
+                                          I10n.of(context).something_went_wrong,
                                       context: context,
                                       margin: EdgeInsets.only(
                                         top: 8,
@@ -293,7 +317,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         SizedBox(height: 20.0),
                         GestureDetector(
-                          onTap: () => launchUrl("https://vegiapp.co.uk/privacy"),
+                          onTap: () =>
+                              launchUrl("https://vegiapp.co.uk/privacy"),
                           child: Text(
                             "By signing up, you agree to the vegi Terms & Conditions which can be found here",
                             style: TextStyle(

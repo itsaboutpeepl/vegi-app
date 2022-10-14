@@ -12,7 +12,6 @@ class SplashViewModel extends Equatable {
 
   final Function(
     VoidCallback successCallback,
-    VoidCallback errorCallback,
   ) createLocalAccount;
 
   SplashViewModel({
@@ -30,12 +29,10 @@ class SplashViewModel extends Equatable {
       isLoggedOut: store.state.userState.isLoggedOut,
       createLocalAccount: (
         VoidCallback successCallback,
-        VoidCallback errorCallback,
       ) {
         store.dispatch(
           createLocalAccountCall(
             successCallback,
-            errorCallback,
           ),
         );
       },

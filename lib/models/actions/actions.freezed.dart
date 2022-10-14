@@ -115,7 +115,6 @@ class __$$_WalletActionsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
 @JsonSerializable()
 class _$_WalletActions extends _WalletActions with DiagnosticableTreeMixin {
   _$_WalletActions(

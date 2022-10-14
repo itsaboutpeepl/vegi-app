@@ -1,16 +1,21 @@
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:redux/redux.dart';
 
 final userReducers = combineReducers<UserState>([
+  TypedReducer<UserState, SetWalletConnectURI>(
+    _setWalletConnectURI,
+  ),
   TypedReducer<UserState, GetWalletDataSuccess>(_getWalletDataSuccess),
+  TypedReducer<UserState, ScrollToTop>(_scrollToTop),
+  TypedReducer<UserState, ToggleUpgrade>(_toggleUpgrade),
   TypedReducer<UserState, CreateLocalAccountSuccess>(_createNewWalletSuccess),
   TypedReducer<UserState, LoginRequestSuccess>(_loginSuccess),
   TypedReducer<UserState, LoginVerifySuccess>(_loginVerifySuccess),
   TypedReducer<UserState, LogoutRequestSuccess>(_logoutSuccess),
   TypedReducer<UserState, SyncContactsProgress>(_syncContactsProgress),
   TypedReducer<UserState, SyncContactsRejected>(_syncContactsRejected),
-  TypedReducer<UserState, SaveContacts>(_saveContacts),
   TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
   TypedReducer<UserState, SetDisplayName>(_setDisplayName),
   TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
@@ -21,9 +26,6 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, JustInstalled>(_justInstalled),
   TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess),
   TypedReducer<UserState, SetSecurityType>(_setSecurityType),
-  TypedReducer<UserState, ReceiveBackupDialogShowed>(_receiveBackupDialogShowed),
-  TypedReducer<UserState, DepositBannerShowed>(_depositBannerShowed),
-  TypedReducer<UserState, HomeBackupDialogShowed>(_homeBackupDialogShowed),
   TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed),
   TypedReducer<UserState, UpdateCurrency>(_updateCurrency),
   TypedReducer<UserState, UpdateLocale>(_updateLocale),
@@ -33,24 +35,26 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
 ]);
 
+UserState _setWalletConnectURI(UserState state, SetWalletConnectURI action) {
+  return state.copyWith(wcURI: action.wcURI);
+}
+
+UserState _scrollToTop(UserState state, ScrollToTop action) {
+  return state.copyWith(scrollToTop: action.value);
+}
+
+UserState _toggleUpgrade(UserState state, ToggleUpgrade action) {
+  return state.copyWith(
+    hasUpgrade: action.value,
+  );
+}
+
 UserState _updateLocale(UserState state, UpdateLocale action) {
   return state.copyWith(locale: action.locale);
 }
 
 UserState _updateCurrency(UserState state, UpdateCurrency action) {
   return state.copyWith(currency: action.currency);
-}
-
-UserState _receiveBackupDialogShowed(UserState state, ReceiveBackupDialogShowed action) {
-  return state.copyWith(receiveBackupDialogShowed: true);
-}
-
-UserState _depositBannerShowed(UserState state, DepositBannerShowed action) {
-  return state.copyWith(depositBannerShowed: true);
-}
-
-UserState _homeBackupDialogShowed(UserState state, HomeBackupDialogShowed action) {
-  return state.copyWith(homeBackupDialogShowed: true);
 }
 
 UserState _warnSendDialogShowed(UserState state, WarnSendDialogShowed action) {
@@ -71,6 +75,7 @@ UserState _getWalletDataSuccess(UserState state, GetWalletDataSuccess action) {
     networks: action.networks,
     walletAddress: action.walletAddress,
     walletModules: action.walletModules,
+    contractVersion: action.contractVersion,
   );
 }
 
@@ -116,12 +121,7 @@ UserState _loginVerifySuccess(UserState state, LoginVerifySuccess action) {
 
 UserState _logoutSuccess(UserState state, LogoutRequestSuccess action) {
   return state.copyWith(isLoggedOut: true);
-  // return UserState.initial();
 }
-
-// UserState _logoutSuccess(UserState state, LogoutRequestSuccess action) {
-//   return UserState.initial();
-// }
 
 UserState _syncContactsRejected(UserState state, SyncContactsRejected action) {
   return state.copyWith(isContactsSynced: false);
@@ -154,10 +154,6 @@ UserState _syncContactsProgress(UserState state, SyncContactsProgress action) {
   );
 }
 
-UserState _saveContacts(UserState state, SaveContacts action) {
-  return state.copyWith(contacts: action.contacts, isContactsSynced: true);
-}
-
 UserState _setPincode(UserState state, SetPincodeSuccess action) {
   return state.copyWith(pincode: action.pincode);
 }
@@ -178,14 +174,17 @@ UserState _addDeliveryAddress(UserState state, AddDeliveryAddress action) {
   return state.copyWith(listOfDeliveryAddresses: action.listOfAddresses);
 }
 
-UserState _setInitialLoginDateTime(UserState state, SetInitialLoginDateTime action) {
+UserState _setInitialLoginDateTime(
+    UserState state, SetInitialLoginDateTime action) {
   return state.copyWith(initialLoginDateTime: action.initialLoginDateTime);
 }
 
-UserState _setShowSeedPhraseBanner(UserState state, SetShowSeedPhraseBanner action) {
+UserState _setShowSeedPhraseBanner(
+    UserState state, SetShowSeedPhraseBanner action) {
   return state.copyWith(showSeedPhraseBanner: action.showSeedPhraseBanner);
 }
 
-UserState _setHasSavedSeedPhrase(UserState state, SetHasSavedSeedPhrase action) {
+UserState _setHasSavedSeedPhrase(
+    UserState state, SetHasSavedSeedPhrase action) {
   return state.copyWith(hasSavedSeedPhrase: action.hasSavedSeedPhrase);
 }

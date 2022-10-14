@@ -1,6 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/features/screens/webview_screen.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'dart:core';
 
@@ -94,14 +93,11 @@ class SignUpDialogState extends State<SignUpDialog>
                   InkWell(
                     focusColor: Theme.of(context).canvasColor,
                     highlightColor: Theme.of(context).canvasColor,
-                    onTap: () {
-                      AutoRouter.of(context).push(
-                        Webview(
-                          title: I10n.of(context).legal,
-                          url: 'https://fuse.cash/privacy',
-                        ),
-                      );
-                    },
+                    onTap: () => showModalBottomSheet(
+                        context: context,
+                        builder: (_) => WebViewScreen(
+                            url: "https://itsaboutpeepl.com/privacy/",
+                            title: "Legal")),
                     child: Text(
                       I10n.of(context).privacy,
                       style: TextStyle(
