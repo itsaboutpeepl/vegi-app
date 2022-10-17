@@ -42,7 +42,8 @@ mixin _$MenuItemState {
 abstract class $MenuItemStateCopyWith<$Res> {
   factory $MenuItemStateCopyWith(
           MenuItemState value, $Res Function(MenuItemState) then) =
-      _$MenuItemStateCopyWithImpl<$Res>;
+      _$MenuItemStateCopyWithImpl<$Res, MenuItemState>;
+  @useResult
   $Res call(
       {@JsonKey(ignore: true)
           RestaurantMenuItem? menuItem,
@@ -59,55 +60,58 @@ abstract class $MenuItemStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$MenuItemStateCopyWithImpl<$Res>
+class _$MenuItemStateCopyWithImpl<$Res, $Val extends MenuItemState>
     implements $MenuItemStateCopyWith<$Res> {
   _$MenuItemStateCopyWithImpl(this._value, this._then);
 
-  final MenuItemState _value;
   // ignore: unused_field
-  final $Res Function(MenuItemState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? menuItem = freezed,
-    Object? totalPrice = freezed,
-    Object? itemReward = freezed,
-    Object? selectedProductOptionsForCategory = freezed,
-    Object? quantity = freezed,
+    Object? totalPrice = null,
+    Object? itemReward = null,
+    Object? selectedProductOptionsForCategory = null,
+    Object? quantity = null,
   }) {
     return _then(_value.copyWith(
-      menuItem: menuItem == freezed
+      menuItem: freezed == menuItem
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
               as RestaurantMenuItem?,
-      totalPrice: totalPrice == freezed
+      totalPrice: null == totalPrice
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
               as int,
-      itemReward: itemReward == freezed
+      itemReward: null == itemReward
           ? _value.itemReward
           : itemReward // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedProductOptionsForCategory: selectedProductOptionsForCategory ==
-              freezed
+      selectedProductOptionsForCategory: null ==
+              selectedProductOptionsForCategory
           ? _value.selectedProductOptionsForCategory
           : selectedProductOptionsForCategory // ignore: cast_nullable_to_non_nullable
               as Map<int, ProductOptions>,
-      quantity: quantity == freezed
+      quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $RestaurantMenuItemCopyWith<$Res>? get menuItem {
     if (_value.menuItem == null) {
       return null;
     }
 
     return $RestaurantMenuItemCopyWith<$Res>(_value.menuItem!, (value) {
-      return _then(_value.copyWith(menuItem: value));
+      return _then(_value.copyWith(menuItem: value) as $Val);
     });
   }
 }
@@ -119,6 +123,7 @@ abstract class _$$_MenuItemStateCopyWith<$Res>
           _$_MenuItemState value, $Res Function(_$_MenuItemState) then) =
       __$$_MenuItemStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(ignore: true)
           RestaurantMenuItem? menuItem,
@@ -137,42 +142,40 @@ abstract class _$$_MenuItemStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_MenuItemStateCopyWithImpl<$Res>
-    extends _$MenuItemStateCopyWithImpl<$Res>
+    extends _$MenuItemStateCopyWithImpl<$Res, _$_MenuItemState>
     implements _$$_MenuItemStateCopyWith<$Res> {
   __$$_MenuItemStateCopyWithImpl(
       _$_MenuItemState _value, $Res Function(_$_MenuItemState) _then)
-      : super(_value, (v) => _then(v as _$_MenuItemState));
+      : super(_value, _then);
 
-  @override
-  _$_MenuItemState get _value => super._value as _$_MenuItemState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? menuItem = freezed,
-    Object? totalPrice = freezed,
-    Object? itemReward = freezed,
-    Object? selectedProductOptionsForCategory = freezed,
-    Object? quantity = freezed,
+    Object? totalPrice = null,
+    Object? itemReward = null,
+    Object? selectedProductOptionsForCategory = null,
+    Object? quantity = null,
   }) {
     return _then(_$_MenuItemState(
-      menuItem: menuItem == freezed
+      menuItem: freezed == menuItem
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
               as RestaurantMenuItem?,
-      totalPrice: totalPrice == freezed
+      totalPrice: null == totalPrice
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
               as int,
-      itemReward: itemReward == freezed
+      itemReward: null == itemReward
           ? _value.itemReward
           : itemReward // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedProductOptionsForCategory: selectedProductOptionsForCategory ==
-              freezed
+      selectedProductOptionsForCategory: null ==
+              selectedProductOptionsForCategory
           ? _value.selectedProductOptionsForCategory
           : selectedProductOptionsForCategory // ignore: cast_nullable_to_non_nullable
               as Map<int, ProductOptions>,
-      quantity: quantity == freezed
+      quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
@@ -221,35 +224,40 @@ class _$_MenuItemState extends _MenuItemState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MenuItemState &&
-            const DeepCollectionEquality().equals(other.menuItem, menuItem) &&
-            const DeepCollectionEquality()
-                .equals(other.totalPrice, totalPrice) &&
-            const DeepCollectionEquality()
-                .equals(other.itemReward, itemReward) &&
+            (identical(other.menuItem, menuItem) ||
+                other.menuItem == menuItem) &&
+            (identical(other.totalPrice, totalPrice) ||
+                other.totalPrice == totalPrice) &&
+            (identical(other.itemReward, itemReward) ||
+                other.itemReward == itemReward) &&
             const DeepCollectionEquality().equals(
                 other.selectedProductOptionsForCategory,
                 selectedProductOptionsForCategory) &&
-            const DeepCollectionEquality().equals(other.quantity, quantity));
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(menuItem),
-      const DeepCollectionEquality().hash(totalPrice),
-      const DeepCollectionEquality().hash(itemReward),
+      menuItem,
+      totalPrice,
+      itemReward,
       const DeepCollectionEquality().hash(selectedProductOptionsForCategory),
-      const DeepCollectionEquality().hash(quantity));
+      quantity);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_MenuItemStateCopyWith<_$_MenuItemState> get copyWith =>
       __$$_MenuItemStateCopyWithImpl<_$_MenuItemState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MenuItemStateToJson(this);
+    return _$$_MenuItemStateToJson(
+      this,
+    );
   }
 }
 
@@ -272,20 +280,19 @@ abstract class _MenuItemState extends MenuItemState {
 
   @override
   @JsonKey(ignore: true)
-  RestaurantMenuItem? get menuItem => throw _privateConstructorUsedError;
+  RestaurantMenuItem? get menuItem;
   @override
   @JsonKey(ignore: true)
-  int get totalPrice => throw _privateConstructorUsedError;
+  int get totalPrice;
   @override
   @JsonKey(ignore: true)
-  int get itemReward => throw _privateConstructorUsedError;
+  int get itemReward;
   @override
   @JsonKey(ignore: true)
-  Map<int, ProductOptions> get selectedProductOptionsForCategory =>
-      throw _privateConstructorUsedError;
+  Map<int, ProductOptions> get selectedProductOptionsForCategory;
   @override
   @JsonKey(ignore: true)
-  int get quantity => throw _privateConstructorUsedError;
+  int get quantity;
   @override
   @JsonKey(ignore: true)
   _$$_MenuItemStateCopyWith<_$_MenuItemState> get copyWith =>

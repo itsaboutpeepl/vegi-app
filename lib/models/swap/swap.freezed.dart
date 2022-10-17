@@ -38,7 +38,8 @@ mixin _$TradeInfo {
 /// @nodoc
 abstract class $TradeInfoCopyWith<$Res> {
   factory $TradeInfoCopyWith(TradeInfo value, $Res Function(TradeInfo) then) =
-      _$TradeInfoCopyWithImpl<$Res>;
+      _$TradeInfoCopyWithImpl<$Res, TradeInfo>;
+  @useResult
   $Res call(
       {String inputAmount,
       String outputAmount,
@@ -51,58 +52,61 @@ abstract class $TradeInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TradeInfoCopyWithImpl<$Res> implements $TradeInfoCopyWith<$Res> {
+class _$TradeInfoCopyWithImpl<$Res, $Val extends TradeInfo>
+    implements $TradeInfoCopyWith<$Res> {
   _$TradeInfoCopyWithImpl(this._value, this._then);
 
-  final TradeInfo _value;
   // ignore: unused_field
-  final $Res Function(TradeInfo) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? inputAmount = freezed,
-    Object? outputAmount = freezed,
-    Object? route = freezed,
-    Object? inputToken = freezed,
-    Object? outputToken = freezed,
-    Object? executionPrice = freezed,
-    Object? nextMidPrice = freezed,
-    Object? priceImpact = freezed,
+    Object? inputAmount = null,
+    Object? outputAmount = null,
+    Object? route = null,
+    Object? inputToken = null,
+    Object? outputToken = null,
+    Object? executionPrice = null,
+    Object? nextMidPrice = null,
+    Object? priceImpact = null,
   }) {
     return _then(_value.copyWith(
-      inputAmount: inputAmount == freezed
+      inputAmount: null == inputAmount
           ? _value.inputAmount
           : inputAmount // ignore: cast_nullable_to_non_nullable
               as String,
-      outputAmount: outputAmount == freezed
+      outputAmount: null == outputAmount
           ? _value.outputAmount
           : outputAmount // ignore: cast_nullable_to_non_nullable
               as String,
-      route: route == freezed
+      route: null == route
           ? _value.route
           : route // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      inputToken: inputToken == freezed
+      inputToken: null == inputToken
           ? _value.inputToken
           : inputToken // ignore: cast_nullable_to_non_nullable
               as String,
-      outputToken: outputToken == freezed
+      outputToken: null == outputToken
           ? _value.outputToken
           : outputToken // ignore: cast_nullable_to_non_nullable
               as String,
-      executionPrice: executionPrice == freezed
+      executionPrice: null == executionPrice
           ? _value.executionPrice
           : executionPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      nextMidPrice: nextMidPrice == freezed
+      nextMidPrice: null == nextMidPrice
           ? _value.nextMidPrice
           : nextMidPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      priceImpact: priceImpact == freezed
+      priceImpact: null == priceImpact
           ? _value.priceImpact
           : priceImpact // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -112,6 +116,7 @@ abstract class _$$_TradeInfoCopyWith<$Res> implements $TradeInfoCopyWith<$Res> {
           _$_TradeInfo value, $Res Function(_$_TradeInfo) then) =
       __$$_TradeInfoCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String inputAmount,
       String outputAmount,
@@ -124,56 +129,55 @@ abstract class _$$_TradeInfoCopyWith<$Res> implements $TradeInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_TradeInfoCopyWithImpl<$Res> extends _$TradeInfoCopyWithImpl<$Res>
+class __$$_TradeInfoCopyWithImpl<$Res>
+    extends _$TradeInfoCopyWithImpl<$Res, _$_TradeInfo>
     implements _$$_TradeInfoCopyWith<$Res> {
   __$$_TradeInfoCopyWithImpl(
       _$_TradeInfo _value, $Res Function(_$_TradeInfo) _then)
-      : super(_value, (v) => _then(v as _$_TradeInfo));
+      : super(_value, _then);
 
-  @override
-  _$_TradeInfo get _value => super._value as _$_TradeInfo;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? inputAmount = freezed,
-    Object? outputAmount = freezed,
-    Object? route = freezed,
-    Object? inputToken = freezed,
-    Object? outputToken = freezed,
-    Object? executionPrice = freezed,
-    Object? nextMidPrice = freezed,
-    Object? priceImpact = freezed,
+    Object? inputAmount = null,
+    Object? outputAmount = null,
+    Object? route = null,
+    Object? inputToken = null,
+    Object? outputToken = null,
+    Object? executionPrice = null,
+    Object? nextMidPrice = null,
+    Object? priceImpact = null,
   }) {
     return _then(_$_TradeInfo(
-      inputAmount: inputAmount == freezed
+      inputAmount: null == inputAmount
           ? _value.inputAmount
           : inputAmount // ignore: cast_nullable_to_non_nullable
               as String,
-      outputAmount: outputAmount == freezed
+      outputAmount: null == outputAmount
           ? _value.outputAmount
           : outputAmount // ignore: cast_nullable_to_non_nullable
               as String,
-      route: route == freezed
+      route: null == route
           ? _value.route
           : route // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      inputToken: inputToken == freezed
+      inputToken: null == inputToken
           ? _value.inputToken
           : inputToken // ignore: cast_nullable_to_non_nullable
               as String,
-      outputToken: outputToken == freezed
+      outputToken: null == outputToken
           ? _value.outputToken
           : outputToken // ignore: cast_nullable_to_non_nullable
               as String,
-      executionPrice: executionPrice == freezed
+      executionPrice: null == executionPrice
           ? _value.executionPrice
           : executionPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      nextMidPrice: nextMidPrice == freezed
+      nextMidPrice: null == nextMidPrice
           ? _value.nextMidPrice
           : nextMidPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      priceImpact: priceImpact == freezed
+      priceImpact: null == priceImpact
           ? _value.priceImpact
           : priceImpact // ignore: cast_nullable_to_non_nullable
               as String,
@@ -225,44 +229,47 @@ class _$_TradeInfo implements _TradeInfo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_TradeInfo &&
-            const DeepCollectionEquality()
-                .equals(other.inputAmount, inputAmount) &&
-            const DeepCollectionEquality()
-                .equals(other.outputAmount, outputAmount) &&
+            (identical(other.inputAmount, inputAmount) ||
+                other.inputAmount == inputAmount) &&
+            (identical(other.outputAmount, outputAmount) ||
+                other.outputAmount == outputAmount) &&
             const DeepCollectionEquality().equals(other.route, route) &&
-            const DeepCollectionEquality()
-                .equals(other.inputToken, inputToken) &&
-            const DeepCollectionEquality()
-                .equals(other.outputToken, outputToken) &&
-            const DeepCollectionEquality()
-                .equals(other.executionPrice, executionPrice) &&
-            const DeepCollectionEquality()
-                .equals(other.nextMidPrice, nextMidPrice) &&
-            const DeepCollectionEquality()
-                .equals(other.priceImpact, priceImpact));
+            (identical(other.inputToken, inputToken) ||
+                other.inputToken == inputToken) &&
+            (identical(other.outputToken, outputToken) ||
+                other.outputToken == outputToken) &&
+            (identical(other.executionPrice, executionPrice) ||
+                other.executionPrice == executionPrice) &&
+            (identical(other.nextMidPrice, nextMidPrice) ||
+                other.nextMidPrice == nextMidPrice) &&
+            (identical(other.priceImpact, priceImpact) ||
+                other.priceImpact == priceImpact));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(inputAmount),
-      const DeepCollectionEquality().hash(outputAmount),
+      inputAmount,
+      outputAmount,
       const DeepCollectionEquality().hash(route),
-      const DeepCollectionEquality().hash(inputToken),
-      const DeepCollectionEquality().hash(outputToken),
-      const DeepCollectionEquality().hash(executionPrice),
-      const DeepCollectionEquality().hash(nextMidPrice),
-      const DeepCollectionEquality().hash(priceImpact));
+      inputToken,
+      outputToken,
+      executionPrice,
+      nextMidPrice,
+      priceImpact);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_TradeInfoCopyWith<_$_TradeInfo> get copyWith =>
       __$$_TradeInfoCopyWithImpl<_$_TradeInfo>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TradeInfoToJson(this);
+    return _$$_TradeInfoToJson(
+      this,
+    );
   }
 }
 
@@ -281,21 +288,21 @@ abstract class _TradeInfo implements TradeInfo {
       _$_TradeInfo.fromJson;
 
   @override
-  String get inputAmount => throw _privateConstructorUsedError;
+  String get inputAmount;
   @override
-  String get outputAmount => throw _privateConstructorUsedError;
+  String get outputAmount;
   @override
-  List<String> get route => throw _privateConstructorUsedError;
+  List<String> get route;
   @override
-  String get inputToken => throw _privateConstructorUsedError;
+  String get inputToken;
   @override
-  String get outputToken => throw _privateConstructorUsedError;
+  String get outputToken;
   @override
-  String get executionPrice => throw _privateConstructorUsedError;
+  String get executionPrice;
   @override
-  String get nextMidPrice => throw _privateConstructorUsedError;
+  String get nextMidPrice;
   @override
-  String get priceImpact => throw _privateConstructorUsedError;
+  String get priceImpact;
   @override
   @JsonKey(ignore: true)
   _$$_TradeInfoCopyWith<_$_TradeInfo> get copyWith =>
@@ -323,7 +330,8 @@ mixin _$SwapCallParameters {
 abstract class $SwapCallParametersCopyWith<$Res> {
   factory $SwapCallParametersCopyWith(
           SwapCallParameters value, $Res Function(SwapCallParameters) then) =
-      _$SwapCallParametersCopyWithImpl<$Res>;
+      _$SwapCallParametersCopyWithImpl<$Res, SwapCallParameters>;
+  @useResult
   $Res call(
       {String methodName,
       List<dynamic> args,
@@ -332,39 +340,41 @@ abstract class $SwapCallParametersCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SwapCallParametersCopyWithImpl<$Res>
+class _$SwapCallParametersCopyWithImpl<$Res, $Val extends SwapCallParameters>
     implements $SwapCallParametersCopyWith<$Res> {
   _$SwapCallParametersCopyWithImpl(this._value, this._then);
 
-  final SwapCallParameters _value;
   // ignore: unused_field
-  final $Res Function(SwapCallParameters) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? methodName = freezed,
-    Object? args = freezed,
-    Object? value = freezed,
-    Object? rawTxn = freezed,
+    Object? methodName = null,
+    Object? args = null,
+    Object? value = null,
+    Object? rawTxn = null,
   }) {
     return _then(_value.copyWith(
-      methodName: methodName == freezed
+      methodName: null == methodName
           ? _value.methodName
           : methodName // ignore: cast_nullable_to_non_nullable
               as String,
-      args: args == freezed
+      args: null == args
           ? _value.args
           : args // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      value: value == freezed
+      value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
-      rawTxn: rawTxn == freezed
+      rawTxn: null == rawTxn
           ? _value.rawTxn
           : rawTxn // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -375,6 +385,7 @@ abstract class _$$_SwapCallParametersCopyWith<$Res>
           $Res Function(_$_SwapCallParameters) then) =
       __$$_SwapCallParametersCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String methodName,
       List<dynamic> args,
@@ -384,36 +395,34 @@ abstract class _$$_SwapCallParametersCopyWith<$Res>
 
 /// @nodoc
 class __$$_SwapCallParametersCopyWithImpl<$Res>
-    extends _$SwapCallParametersCopyWithImpl<$Res>
+    extends _$SwapCallParametersCopyWithImpl<$Res, _$_SwapCallParameters>
     implements _$$_SwapCallParametersCopyWith<$Res> {
   __$$_SwapCallParametersCopyWithImpl(
       _$_SwapCallParameters _value, $Res Function(_$_SwapCallParameters) _then)
-      : super(_value, (v) => _then(v as _$_SwapCallParameters));
+      : super(_value, _then);
 
-  @override
-  _$_SwapCallParameters get _value => super._value as _$_SwapCallParameters;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? methodName = freezed,
-    Object? args = freezed,
-    Object? value = freezed,
-    Object? rawTxn = freezed,
+    Object? methodName = null,
+    Object? args = null,
+    Object? value = null,
+    Object? rawTxn = null,
   }) {
     return _then(_$_SwapCallParameters(
-      methodName: methodName == freezed
+      methodName: null == methodName
           ? _value.methodName
           : methodName // ignore: cast_nullable_to_non_nullable
               as String,
-      args: args == freezed
+      args: null == args
           ? _value.args
           : args // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      value: value == freezed
+      value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
-      rawTxn: rawTxn == freezed
+      rawTxn: null == rawTxn
           ? _value.rawTxn
           : rawTxn // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>,
@@ -453,10 +462,10 @@ class _$_SwapCallParameters implements _SwapCallParameters {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SwapCallParameters &&
-            const DeepCollectionEquality()
-                .equals(other.methodName, methodName) &&
+            (identical(other.methodName, methodName) ||
+                other.methodName == methodName) &&
             const DeepCollectionEquality().equals(other.args, args) &&
-            const DeepCollectionEquality().equals(other.value, value) &&
+            (identical(other.value, value) || other.value == value) &&
             const DeepCollectionEquality().equals(other.rawTxn, rawTxn));
   }
 
@@ -464,20 +473,23 @@ class _$_SwapCallParameters implements _SwapCallParameters {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(methodName),
+      methodName,
       const DeepCollectionEquality().hash(args),
-      const DeepCollectionEquality().hash(value),
+      value,
       const DeepCollectionEquality().hash(rawTxn));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_SwapCallParametersCopyWith<_$_SwapCallParameters> get copyWith =>
       __$$_SwapCallParametersCopyWithImpl<_$_SwapCallParameters>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SwapCallParametersToJson(this);
+    return _$$_SwapCallParametersToJson(
+      this,
+    );
   }
 }
 
@@ -492,13 +504,13 @@ abstract class _SwapCallParameters implements SwapCallParameters {
       _$_SwapCallParameters.fromJson;
 
   @override
-  String get methodName => throw _privateConstructorUsedError;
+  String get methodName;
   @override
-  List<dynamic> get args => throw _privateConstructorUsedError;
+  List<dynamic> get args;
   @override
-  String get value => throw _privateConstructorUsedError;
+  String get value;
   @override
-  Map<String, dynamic> get rawTxn => throw _privateConstructorUsedError;
+  Map<String, dynamic> get rawTxn;
   @override
   @JsonKey(ignore: true)
   _$$_SwapCallParametersCopyWith<_$_SwapCallParameters> get copyWith =>
@@ -526,7 +538,8 @@ mixin _$SwapRequestBody {
 abstract class $SwapRequestBodyCopyWith<$Res> {
   factory $SwapRequestBodyCopyWith(
           SwapRequestBody value, $Res Function(SwapRequestBody) then) =
-      _$SwapRequestBodyCopyWithImpl<$Res>;
+      _$SwapRequestBodyCopyWithImpl<$Res, SwapRequestBody>;
+  @useResult
   $Res call(
       {String currencyIn,
       String currencyOut,
@@ -535,39 +548,41 @@ abstract class $SwapRequestBodyCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SwapRequestBodyCopyWithImpl<$Res>
+class _$SwapRequestBodyCopyWithImpl<$Res, $Val extends SwapRequestBody>
     implements $SwapRequestBodyCopyWith<$Res> {
   _$SwapRequestBodyCopyWithImpl(this._value, this._then);
 
-  final SwapRequestBody _value;
   // ignore: unused_field
-  final $Res Function(SwapRequestBody) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currencyIn = freezed,
-    Object? currencyOut = freezed,
-    Object? amountIn = freezed,
-    Object? recipient = freezed,
+    Object? currencyIn = null,
+    Object? currencyOut = null,
+    Object? amountIn = null,
+    Object? recipient = null,
   }) {
     return _then(_value.copyWith(
-      currencyIn: currencyIn == freezed
+      currencyIn: null == currencyIn
           ? _value.currencyIn
           : currencyIn // ignore: cast_nullable_to_non_nullable
               as String,
-      currencyOut: currencyOut == freezed
+      currencyOut: null == currencyOut
           ? _value.currencyOut
           : currencyOut // ignore: cast_nullable_to_non_nullable
               as String,
-      amountIn: amountIn == freezed
+      amountIn: null == amountIn
           ? _value.amountIn
           : amountIn // ignore: cast_nullable_to_non_nullable
               as String,
-      recipient: recipient == freezed
+      recipient: null == recipient
           ? _value.recipient
           : recipient // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -578,6 +593,7 @@ abstract class _$$_SwapRequestBodyCopyWith<$Res>
           _$_SwapRequestBody value, $Res Function(_$_SwapRequestBody) then) =
       __$$_SwapRequestBodyCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String currencyIn,
       String currencyOut,
@@ -587,36 +603,34 @@ abstract class _$$_SwapRequestBodyCopyWith<$Res>
 
 /// @nodoc
 class __$$_SwapRequestBodyCopyWithImpl<$Res>
-    extends _$SwapRequestBodyCopyWithImpl<$Res>
+    extends _$SwapRequestBodyCopyWithImpl<$Res, _$_SwapRequestBody>
     implements _$$_SwapRequestBodyCopyWith<$Res> {
   __$$_SwapRequestBodyCopyWithImpl(
       _$_SwapRequestBody _value, $Res Function(_$_SwapRequestBody) _then)
-      : super(_value, (v) => _then(v as _$_SwapRequestBody));
+      : super(_value, _then);
 
-  @override
-  _$_SwapRequestBody get _value => super._value as _$_SwapRequestBody;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currencyIn = freezed,
-    Object? currencyOut = freezed,
-    Object? amountIn = freezed,
-    Object? recipient = freezed,
+    Object? currencyIn = null,
+    Object? currencyOut = null,
+    Object? amountIn = null,
+    Object? recipient = null,
   }) {
     return _then(_$_SwapRequestBody(
-      currencyIn: currencyIn == freezed
+      currencyIn: null == currencyIn
           ? _value.currencyIn
           : currencyIn // ignore: cast_nullable_to_non_nullable
               as String,
-      currencyOut: currencyOut == freezed
+      currencyOut: null == currencyOut
           ? _value.currencyOut
           : currencyOut // ignore: cast_nullable_to_non_nullable
               as String,
-      amountIn: amountIn == freezed
+      amountIn: null == amountIn
           ? _value.amountIn
           : amountIn // ignore: cast_nullable_to_non_nullable
               as String,
-      recipient: recipient == freezed
+      recipient: null == recipient
           ? _value.recipient
           : recipient // ignore: cast_nullable_to_non_nullable
               as String,
@@ -660,31 +674,32 @@ class _$_SwapRequestBody implements _SwapRequestBody {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SwapRequestBody &&
-            const DeepCollectionEquality()
-                .equals(other.currencyIn, currencyIn) &&
-            const DeepCollectionEquality()
-                .equals(other.currencyOut, currencyOut) &&
-            const DeepCollectionEquality().equals(other.amountIn, amountIn) &&
-            const DeepCollectionEquality().equals(other.recipient, recipient));
+            (identical(other.currencyIn, currencyIn) ||
+                other.currencyIn == currencyIn) &&
+            (identical(other.currencyOut, currencyOut) ||
+                other.currencyOut == currencyOut) &&
+            (identical(other.amountIn, amountIn) ||
+                other.amountIn == amountIn) &&
+            (identical(other.recipient, recipient) ||
+                other.recipient == recipient));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(currencyIn),
-      const DeepCollectionEquality().hash(currencyOut),
-      const DeepCollectionEquality().hash(amountIn),
-      const DeepCollectionEquality().hash(recipient));
+  int get hashCode =>
+      Object.hash(runtimeType, currencyIn, currencyOut, amountIn, recipient);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_SwapRequestBodyCopyWith<_$_SwapRequestBody> get copyWith =>
       __$$_SwapRequestBodyCopyWithImpl<_$_SwapRequestBody>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SwapRequestBodyToJson(this);
+    return _$$_SwapRequestBodyToJson(
+      this,
+    );
   }
 }
 
@@ -699,13 +714,13 @@ abstract class _SwapRequestBody implements SwapRequestBody {
       _$_SwapRequestBody.fromJson;
 
   @override
-  String get currencyIn => throw _privateConstructorUsedError;
+  String get currencyIn;
   @override
-  String get currencyOut => throw _privateConstructorUsedError;
+  String get currencyOut;
   @override
-  String get amountIn => throw _privateConstructorUsedError;
+  String get amountIn;
   @override
-  String get recipient => throw _privateConstructorUsedError;
+  String get recipient;
   @override
   @JsonKey(ignore: true)
   _$$_SwapRequestBodyCopyWith<_$_SwapRequestBody> get copyWith =>

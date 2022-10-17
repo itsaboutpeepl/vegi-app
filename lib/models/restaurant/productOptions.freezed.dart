@@ -36,7 +36,8 @@ mixin _$ProductOptions {
 abstract class $ProductOptionsCopyWith<$Res> {
   factory $ProductOptionsCopyWith(
           ProductOptions value, $Res Function(ProductOptions) then) =
-      _$ProductOptionsCopyWithImpl<$Res>;
+      _$ProductOptionsCopyWithImpl<$Res, ProductOptions>;
+  @useResult
   $Res call(
       {int optionID,
       String name,
@@ -46,44 +47,46 @@ abstract class $ProductOptionsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProductOptionsCopyWithImpl<$Res>
+class _$ProductOptionsCopyWithImpl<$Res, $Val extends ProductOptions>
     implements $ProductOptionsCopyWith<$Res> {
   _$ProductOptionsCopyWithImpl(this._value, this._then);
 
-  final ProductOptions _value;
   // ignore: unused_field
-  final $Res Function(ProductOptions) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? optionID = freezed,
-    Object? name = freezed,
-    Object? description = freezed,
-    Object? price = freezed,
-    Object? isAvaliable = freezed,
+    Object? optionID = null,
+    Object? name = null,
+    Object? description = null,
+    Object? price = null,
+    Object? isAvaliable = null,
   }) {
     return _then(_value.copyWith(
-      optionID: optionID == freezed
+      optionID: null == optionID
           ? _value.optionID
           : optionID // ignore: cast_nullable_to_non_nullable
               as int,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      description: description == freezed
+      description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      price: price == freezed
+      price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      isAvaliable: isAvaliable == freezed
+      isAvaliable: null == isAvaliable
           ? _value.isAvaliable
           : isAvaliable // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
@@ -94,6 +97,7 @@ abstract class _$$_ProductOptionsCopyWith<$Res>
           _$_ProductOptions value, $Res Function(_$_ProductOptions) then) =
       __$$_ProductOptionsCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {int optionID,
       String name,
@@ -104,41 +108,39 @@ abstract class _$$_ProductOptionsCopyWith<$Res>
 
 /// @nodoc
 class __$$_ProductOptionsCopyWithImpl<$Res>
-    extends _$ProductOptionsCopyWithImpl<$Res>
+    extends _$ProductOptionsCopyWithImpl<$Res, _$_ProductOptions>
     implements _$$_ProductOptionsCopyWith<$Res> {
   __$$_ProductOptionsCopyWithImpl(
       _$_ProductOptions _value, $Res Function(_$_ProductOptions) _then)
-      : super(_value, (v) => _then(v as _$_ProductOptions));
+      : super(_value, _then);
 
-  @override
-  _$_ProductOptions get _value => super._value as _$_ProductOptions;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? optionID = freezed,
-    Object? name = freezed,
-    Object? description = freezed,
-    Object? price = freezed,
-    Object? isAvaliable = freezed,
+    Object? optionID = null,
+    Object? name = null,
+    Object? description = null,
+    Object? price = null,
+    Object? isAvaliable = null,
   }) {
     return _then(_$_ProductOptions(
-      optionID: optionID == freezed
+      optionID: null == optionID
           ? _value.optionID
           : optionID // ignore: cast_nullable_to_non_nullable
               as int,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      description: description == freezed
+      description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      price: price == freezed
+      price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      isAvaliable: isAvaliable == freezed
+      isAvaliable: null == isAvaliable
           ? _value.isAvaliable
           : isAvaliable // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -182,33 +184,32 @@ class _$_ProductOptions extends _ProductOptions {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProductOptions &&
-            const DeepCollectionEquality().equals(other.optionID, optionID) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description) &&
-            const DeepCollectionEquality().equals(other.price, price) &&
-            const DeepCollectionEquality()
-                .equals(other.isAvaliable, isAvaliable));
+            (identical(other.optionID, optionID) ||
+                other.optionID == optionID) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.isAvaliable, isAvaliable) ||
+                other.isAvaliable == isAvaliable));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(optionID),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(price),
-      const DeepCollectionEquality().hash(isAvaliable));
+  int get hashCode =>
+      Object.hash(runtimeType, optionID, name, description, price, isAvaliable);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ProductOptionsCopyWith<_$_ProductOptions> get copyWith =>
       __$$_ProductOptionsCopyWithImpl<_$_ProductOptions>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProductOptionsToJson(this);
+    return _$$_ProductOptionsToJson(
+      this,
+    );
   }
 }
 
@@ -225,15 +226,15 @@ abstract class _ProductOptions extends ProductOptions {
       _$_ProductOptions.fromJson;
 
   @override
-  int get optionID => throw _privateConstructorUsedError;
+  int get optionID;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  int get price => throw _privateConstructorUsedError;
+  int get price;
   @override
-  bool get isAvaliable => throw _privateConstructorUsedError;
+  bool get isAvaliable;
   @override
   @JsonKey(ignore: true)
   _$$_ProductOptionsCopyWith<_$_ProductOptions> get copyWith =>

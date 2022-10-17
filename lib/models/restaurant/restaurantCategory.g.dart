@@ -12,7 +12,7 @@ _$_RestaurantCategory _$$_RestaurantCategoryFromJson(
       categoryName: json['categoryName'] as String,
       imageURL: json['imageURL'] as String,
       listOfRestaurants: (json['listOfRestaurants'] as List<dynamic>)
-          .map((e) => RestaurantItem.fromJson(e))
+          .map((e) => RestaurantItem.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

@@ -1,80 +1,82 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
-import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:country_code_picker/country_code.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:vegan_liverpool/constants/analytics_events.dart';
-import 'package:vegan_liverpool/constants/analytics_props.dart';
-import 'package:vegan_liverpool/constants/enums.dart';
-import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
-import 'package:vegan_liverpool/models/user_state.dart';
-import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
-import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
-import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/analytics_props.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/user_state.dart';
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/services.dart';
-import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_udid/flutter_udid.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:vegan_liverpool/utils/json_helpers.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SetWalletConnectURI {
-  final String wcURI;
   SetWalletConnectURI(this.wcURI);
+  final String wcURI;
 }
 
 class ScrollToTop {
+  ScrollToTop({
+    required this.value,
+  });
   final bool value;
-  ScrollToTop(
-    this.value,
-  );
 }
 
 class ToggleUpgrade {
-  final bool value;
   ToggleUpgrade({
     required this.value,
   });
+  final bool value;
 }
 
 class UpdateCurrency {
-  final String currency;
   UpdateCurrency({required this.currency});
+  final String currency;
 }
 
 class UpdateLocale {
-  final Locale locale;
   UpdateLocale({required this.locale});
+  final Locale locale;
 }
 
 class WarnSendDialogShowed {
+  WarnSendDialogShowed({
+    required this.value,
+  });
   final bool value;
-  WarnSendDialogShowed(
-    this.value,
-  );
 }
 
 class SetSecurityType {
-  BiometricAuth biometricAuth;
   SetSecurityType({required this.biometricAuth});
+  BiometricAuth biometricAuth;
 }
 
 class CreateLocalAccountSuccess {
-  final List<String> mnemonic;
-  final String privateKey;
-  final String accountAddress;
   CreateLocalAccountSuccess(
     this.mnemonic,
     this.privateKey,
     this.accountAddress,
   );
+  final List<String> mnemonic;
+  final String privateKey;
+  final String accountAddress;
 }
 
 class ReLogin {
@@ -82,16 +84,16 @@ class ReLogin {
 }
 
 class LoginRequestSuccess {
-  final CountryCode countryCode;
-  final String phoneNumber;
-  final String? displayName;
-  final String? email;
   LoginRequestSuccess({
     required this.countryCode,
     required this.phoneNumber,
     this.displayName,
     this.email,
   });
+  final CountryCode countryCode;
+  final String phoneNumber;
+  final String? displayName;
+  final String? email;
 }
 
 class LogoutRequestSuccess {
@@ -99,38 +101,23 @@ class LogoutRequestSuccess {
 }
 
 class LoginVerifySuccess {
-  final String jwtToken;
   LoginVerifySuccess(this.jwtToken);
+  final String jwtToken;
 }
-
-class SyncContactsProgress {
-  List<String> contacts;
-  List<Map<String, dynamic>> newContacts;
-  SyncContactsProgress(this.contacts, this.newContacts);
-}
-
-class SyncContactsRejected {
-  SyncContactsRejected();
-}
-
-// class SaveContacts {
-//   List<Contact> contacts;
-//   SaveContacts(this.contacts);
-// }
 
 class SetPincodeSuccess {
-  String pincode;
   SetPincodeSuccess(this.pincode);
+  String pincode;
 }
 
 class SetDisplayName {
-  String displayName;
   SetDisplayName(this.displayName);
+  String displayName;
 }
 
 class SetUserAvatar {
-  String avatarUrl;
   SetUserAvatar(this.avatarUrl);
+  String avatarUrl;
 }
 
 class BackupRequest {
@@ -142,55 +129,55 @@ class BackupSuccess {
 }
 
 class SetCredentials {
-  PhoneAuthCredential? credentials;
   SetCredentials(this.credentials);
+  PhoneAuthCredential? credentials;
 }
 
 class SetVerificationId {
-  String verificationId;
   SetVerificationId(this.verificationId);
+  String verificationId;
 }
 
 class JustInstalled {
-  final DateTime installedAt;
   JustInstalled(this.installedAt);
+  final DateTime installedAt;
 }
 
 class DeviceIdSuccess {
-  final String identifier;
   DeviceIdSuccess(this.identifier);
+  final String identifier;
 }
 
 class AddDeliveryAddress {
-  final List<DeliveryAddresses> listOfAddresses;
   AddDeliveryAddress(this.listOfAddresses);
+  final List<DeliveryAddresses> listOfAddresses;
 }
 
 class SetInitialLoginDateTime {
-  final String initialLoginDateTime;
   SetInitialLoginDateTime(this.initialLoginDateTime);
+  final String initialLoginDateTime;
 }
 
 class SetShowSeedPhraseBanner {
+  SetShowSeedPhraseBanner({required this.showSeedPhraseBanner});
   final bool showSeedPhraseBanner;
-  SetShowSeedPhraseBanner(this.showSeedPhraseBanner);
 }
 
 class SetHasSavedSeedPhrase {
+  SetHasSavedSeedPhrase({required this.hasSavedSeedPhrase});
   final bool hasSavedSeedPhrase;
-  SetHasSavedSeedPhrase(this.hasSavedSeedPhrase);
 }
 
-ThunkAction loginHandler(
+ThunkAction<AppState> loginHandler(
   CountryCode countryCode,
   PhoneNumber phoneNumber,
   Function onSuccess,
-  Function(dynamic error) onError,
+  void Function(String error) onError,
 ) {
-  return (Store store) async {
+  return (Store<AppState> store) async {
     try {
       store.dispatch(setDeviceId(phoneNumber.e164));
-      Analytics.setUserId(phoneNumber.e164);
+      await Analytics.setUserId(phoneNumber.e164);
       await onBoardStrategy.login(
         store,
         phoneNumber.e164,
@@ -214,7 +201,7 @@ ThunkAction loginHandler(
             eventName: AnalyticsEvents.loginWithPhone,
             properties: {
               AnalyticsProps.status: AnalyticsProps.failed,
-              "error": e.toString(),
+              'error': e.toString(),
             },
           );
           onError(e.toString());
@@ -226,12 +213,12 @@ ThunkAction loginHandler(
         error: e,
         stackTrace: s,
       );
-      onError(e);
-      Analytics.track(
+      onError(e.toString());
+      await Analytics.track(
         eventName: AnalyticsEvents.loginWithPhone,
         properties: {
           AnalyticsProps.status: AnalyticsProps.failed,
-          "error": e.toString(),
+          'error': e.toString(),
         },
       );
       await Sentry.captureException(
@@ -243,12 +230,12 @@ ThunkAction loginHandler(
   };
 }
 
-ThunkAction verifyHandler(
+ThunkAction<AppState> verifyHandler(
   String verificationCode,
   Function onSuccess,
-  Function(dynamic error) onError,
+  void Function(String error) onError,
 ) {
-  return (Store store) async {
+  return (Store<AppState> store) async {
     try {
       await onBoardStrategy.verify(
         store,
@@ -263,16 +250,16 @@ ThunkAction verifyHandler(
           store.dispatch(LoginVerifySuccess(jwtToken));
           chargeApi.setJwtToken(jwtToken);
           onSuccess();
-          rootRouter.push(const UserNameScreen());
+          rootRouter.push(UserNameScreen());
         },
       );
     } catch (error, s) {
       onError(error.toString());
-      Analytics.track(
+      await Analytics.track(
         eventName: AnalyticsEvents.verify,
         properties: {
           AnalyticsProps.status: AnalyticsProps.failed,
-          "error": error.toString(),
+          'error': error.toString(),
         },
       );
       await Sentry.captureException(
@@ -284,27 +271,29 @@ ThunkAction verifyHandler(
   };
 }
 
-ThunkAction restoreWalletCall(
+ThunkAction<AppState> restoreWalletCall(
   List<String> mnemonic,
   VoidCallback successCallback,
   VoidCallback failureCallback,
 ) {
-  return (Store store) async {
+  return (Store<AppState> store) async {
     try {
-      Analytics.track(
+      await Analytics.track(
         eventName: AnalyticsEvents.restoreWallet,
       );
-      log.info('restore wallet');
-      log.info('mnemonic: $mnemonic');
-      log.info('compute pk');
-      String privateKey = await compute(
+      log
+        ..info('restore wallet')
+        ..info('mnemonic: $mnemonic')
+        ..info('compute pk');
+      final String privateKey = await compute(
         Web3.privateKeyFromMnemonic,
         mnemonic.join(' '),
       );
-      Credentials credentials = EthPrivateKey.fromHex(privateKey);
-      EthereumAddress accountAddress = await credentials.extractAddress();
-      log.info('privateKey: $privateKey');
-      log.info('accountAddress: ${accountAddress.toString()}');
+      final Credentials credentials = EthPrivateKey.fromHex(privateKey);
+      final EthereumAddress accountAddress = await credentials.extractAddress();
+      log
+        ..info('privateKey: $privateKey')
+        ..info('accountAddress: ${accountAddress.toString()}');
       store.dispatch(
         CreateLocalAccountSuccess(
           mnemonic,
@@ -329,32 +318,34 @@ ThunkAction restoreWalletCall(
   };
 }
 
-ThunkAction setDeviceId(String phoneNumber) {
-  return (Store store) async {
-    String identifier = await FlutterUdid.udid;
+ThunkAction<AppState> setDeviceId(String phoneNumber) {
+  return (Store<AppState> store) async {
+    final String identifier = await FlutterUdid.udid;
     // mixpanel.alias(identifier, phoneNumber);
-    log.info("device identifier: $identifier");
+    log.info('device identifier: $identifier');
     store.dispatch(DeviceIdSuccess(identifier));
   };
 }
 
-ThunkAction createLocalAccountCall(
+ThunkAction<AppState> createLocalAccountCall(
   VoidCallback successCallback,
 ) {
-  return (Store store) async {
+  return (Store<AppState> store) async {
     try {
       log.info('create wallet');
-      String mnemonic = Web3.generateMnemonic();
-      log.info('mnemonic: $mnemonic');
-      log.info('compute pk');
-      String privateKey = await compute(
+      final String mnemonic = Web3.generateMnemonic();
+      log
+        ..info('mnemonic: $mnemonic')
+        ..info('compute pk');
+      final String privateKey = await compute(
         Web3.privateKeyFromMnemonic,
         mnemonic,
       );
-      Credentials credentials = EthPrivateKey.fromHex(privateKey);
-      EthereumAddress accountAddress = await credentials.extractAddress();
-      log.info('privateKey: $privateKey');
-      log.info('accountAddress: ${accountAddress.toString()}');
+      final Credentials credentials = EthPrivateKey.fromHex(privateKey);
+      final EthereumAddress accountAddress = await credentials.extractAddress();
+      log
+        ..info('privateKey: $privateKey')
+        ..info('accountAddress: ${accountAddress.toString()}');
       store.dispatch(
         CreateLocalAccountSuccess(
           mnemonic.split(' '),
@@ -362,7 +353,7 @@ ThunkAction createLocalAccountCall(
           accountAddress.toString(),
         ),
       );
-      Analytics.track(
+      await Analytics.track(
         eventName: AnalyticsEvents.createWallet,
       );
       successCallback();
@@ -381,110 +372,23 @@ ThunkAction createLocalAccountCall(
   };
 }
 
-ThunkAction reLoginCall() {
-  return (Store store) async {
-    store.dispatch(ReLogin());
-    store.dispatch(getWalletAddressesCall());
+ThunkAction<AppState> reLoginCall() {
+  return (Store<AppState> store) async {
+    store
+      ..dispatch(ReLogin())
+      ..dispatch(getWalletAddressesCall());
   };
 }
 
-// ThunkAction syncContactsCall() {
-//   return (Store store) async {
-//     try {
-//       List<Contact> contacts = List.from(await Contacts.getContacts());
-//       store.dispatch(SaveContacts(contacts));
-//       List<String> syncedContacts = store.state.userState.syncedContacts;
-//       List<String> newPhones = <String>[];
-//       String countryCode = store.state.userState.countryCode;
-//       String isoCode = store.state.userState.isoCode;
-//       for (Contact contact in contacts) {
-//         Future<List<String>> phones = Future.wait(
-//           contact.phones!.map(
-//             (Item phone) async {
-//               String value = clearNotNumbersAndPlusSymbol(phone.value!);
-//               try {
-//                 PhoneNumber phoneNumber = await phoneNumberUtil.parse(value);
-//                 return phoneNumber.e164;
-//               } catch (e) {
-//                 String formatted = formatPhoneNumber(value, countryCode);
-//                 bool isValid = await phoneNumberUtil
-//                     .validate(
-//                       formatted,
-//                       regionCode: isoCode,
-//                     )
-//                     .catchError(
-//                       (error) => false,
-//                     );
-//                 if (isValid) {
-//                   String phoneNum =
-//                       await phoneNumberUtil.format(formatted, isoCode);
-//                   PhoneNumber phoneNumber =
-//                       await phoneNumberUtil.parse(phoneNum);
-//                   return phoneNumber.e164;
-//                 }
-//                 return '';
-//               }
-//             },
-//           ),
-//         );
-//         List<String> result = await phones;
-//         result = result.toSet().toList()
-//           ..removeWhere((element) => element == '');
-//         for (String phone in result) {
-//           if (!syncedContacts.contains(phone)) {
-//             newPhones.add(phone);
-//           }
-//         }
-//       }
-//       if (newPhones.isEmpty) {
-//         dynamic response = await chargeApi.syncContacts(newPhones);
-//         store.dispatch(
-//           SyncContactsProgress(
-//             newPhones,
-//             List<Map<String, dynamic>>.from(
-//               response['newContacts'],
-//             ),
-//           ),
-//         );
-//         await chargeApi.ackSync(response['nonce']);
-//       } else {
-//         int limit = 100;
-//         List<String> partial = newPhones.take(limit).toList();
-//         while (partial.isNotEmpty) {
-//           dynamic response = await chargeApi.syncContacts(partial);
-//           store.dispatch(
-//             SyncContactsProgress(
-//               partial,
-//               List<Map<String, dynamic>>.from(
-//                 response['newContacts'],
-//               ),
-//             ),
-//           );
+ThunkAction<AppState> identifyCall({String? wallet}) {
+  return (Store<AppState> store) async {
+    final UserState userState = store.state.userState;
+    final String displayName = userState.displayName;
 
-//           await chargeApi.ackSync(response['nonce']);
-//           newPhones = newPhones.sublist(partial.length);
-//           partial = newPhones.take(limit).toList();
-//         }
-//       }
-//     } catch (e, s) {
-//       log.error(
-//         'ERROR - syncContactsCall',
-//         error: e,
-//         stackTrace: s,
-//       );
-//     }
-//   };
-// }
-
-ThunkAction identifyCall({String? wallet}) {
-  return (Store store) async {
-    UserState userState = store.state.userState;
-    String displayName = userState.displayName;
-
-    String phoneNumber = userState.phoneNumber;
-    String walletAddress = wallet ?? userState.walletAddress;
-    String accountAddress = userState.accountAddress;
-    String identifier = userState.identifier;
+    final String phoneNumber = userState.phoneNumber;
+    final String walletAddress = wallet ?? userState.walletAddress;
+    final String accountAddress = userState.accountAddress;
+    final String identifier = userState.identifier;
 
     final Map<String, dynamic> properties = {
       'identifier': identifier,
@@ -494,8 +398,8 @@ ThunkAction identifyCall({String? wallet}) {
       'language': userState.locale.toString(),
       'displayName': displayName,
     };
-    Analytics.identify(properties);
-    Analytics.setUserId(phoneNumber);
+    await Analytics.identify(properties);
+    await Analytics.setUserId(phoneNumber);
     DateTime? installedAt = userState.installedAt;
     if (installedAt == null) {
       log.info('Identify - $phoneNumber');
@@ -505,34 +409,34 @@ ThunkAction identifyCall({String? wallet}) {
   };
 }
 
-ThunkAction saveUserProfile(walletAddress) {
-  return (Store store) async {
-    String displayName = store.state.userState.displayName;
+ThunkAction<AppState> saveUserProfile(String walletAddress) {
+  return (Store<AppState> store) async {
+    final String displayName = store.state.userState.displayName;
     store.dispatch(storeUserContext());
     try {
-      Map<String, dynamic> userProfile =
+      final Map<String, dynamic> userProfile =
           await chargeApi.getUserProfile(walletAddress);
       if (userProfile.isNotEmpty) {
         if (userProfile.containsKey('avatarHash')) {
-          store.dispatch(SetUserAvatar(userProfile['imageUri']));
+          store.dispatch(SetUserAvatar(userProfile['imageUri'] as String));
         }
       }
     } catch (e) {
-      Map user = {
-        "accountAddress": walletAddress,
-        "email": 'wallet-user@fuse.io',
-        "provider": 'HDWallet',
-        "subscribe": false,
-        "source": 'wallet-v2',
-        "displayName": displayName
+      final Map<String, dynamic> user = {
+        'accountAddress': walletAddress,
+        'email': 'wallet-user@fuse.io',
+        'provider': 'HDWallet',
+        'subscribe': false,
+        'source': 'wallet-v2',
+        'displayName': displayName
       };
       await chargeApi.saveUserProfile(user);
     }
   };
 }
 
-ThunkAction storeUserContext() {
-  return (Store store) async {
+ThunkAction<AppState> storeUserContext() {
+  return (Store<AppState> store) async {
     try {
       await chargeApi.addUserContext({
         'os': Platform.isAndroid
@@ -551,36 +455,14 @@ ThunkAction storeUserContext() {
   };
 }
 
-// ThunkAction loadContacts() {
-//   return (Store store) async {
-//     try {
-//       bool isPermitted = await Contacts.checkPermissions();
-//       if (isPermitted) {
-//         store.dispatch(syncContactsCall());
-//       }
-//     } catch (e, s) {
-//       log.error(
-//         'ERROR - load contacts',
-//         error: e,
-//         stackTrace: s,
-//       );
-//       await Sentry.captureException(
-//         Exception('Error in load contacts: ${e.toString()}'),
-//         stackTrace: s,
-//         hint: 'ERROR in loadContacts',
-//       );
-//     }
-//   };
-// }
-
-ThunkAction web3Init({
+ThunkAction<AppState> web3Init({
   WalletModules? modules,
 }) {
-  return (Store store) async {
+  return (Store<AppState> store) async {
     try {
-      UserState userState = store.state.userState;
+      final UserState userState = store.state.userState;
       final String privateKey = userState.privateKey;
-      WalletModules? walletModules = modules ?? userState.walletModules;
+      final WalletModules? walletModules = modules ?? userState.walletModules;
       if (walletModules != null) {
         if (getIt.isRegistered<Web3>()) {
           await getIt.unregister(instance: getIt<Web3>());
@@ -604,27 +486,28 @@ ThunkAction web3Init({
   };
 }
 
-ThunkAction setupWalletCall(Map<String, dynamic> walletData) {
-  return (Store store) async {
+ThunkAction<AppState> setupWalletCall(Map<String, dynamic> walletData) {
+  return (Store<AppState> store) async {
     try {
-      final List<String> networks = List<String>.from(walletData['networks']);
-      final String? contractVersion = walletData['version'];
-      final String walletAddress = walletData['walletAddress'];
-      final bool backup =
-          walletData.containsKey('backup') ? walletData['backup'] : false;
+      final List<String> networks =
+          List<String>.from(walletData['networks'] as Iterable);
+      final String? contractVersion = walletData['version'] as String?;
+      final String walletAddress = walletData['walletAddress'] as String;
+      final bool backup = walletData['backup'] as bool? ?? false;
       final WalletModules walletModules = WalletModules.fromJson(
-        walletData['walletModules'],
+        walletData['walletModules'] as Map<String, dynamic>,
       );
-      store.dispatch(
-        GetWalletDataSuccess(
-          backup: backup,
-          walletAddress: walletAddress,
-          networks: networks,
-          contractVersion: contractVersion,
-          walletModules: walletModules,
-        ),
-      );
-      store.dispatch(web3Init(modules: walletModules));
+      store
+        ..dispatch(
+          GetWalletDataSuccess(
+            backup: backup,
+            walletAddress: walletAddress,
+            networks: networks,
+            contractVersion: contractVersion,
+            walletModules: walletModules,
+          ),
+        )
+        ..dispatch(web3Init(modules: walletModules));
     } catch (e, s) {
       log.error(
         'ERROR - setupWalletCall',
@@ -640,10 +523,11 @@ ThunkAction setupWalletCall(Map<String, dynamic> walletData) {
   };
 }
 
-ThunkAction getWalletAddressesCall() {
-  return (Store store) async {
+ThunkAction<AppState> getWalletAddressesCall() {
+  return (Store<AppState> store) async {
     try {
-      final dynamic walletData = await chargeApi.getWallet();
+      final Map<String, dynamic> walletData =
+          await chargeApi.getWallet() as Map<String, dynamic>;
       final Map<String, dynamic> data = Map<String, dynamic>.from({
         ...walletData,
       });
@@ -663,10 +547,10 @@ ThunkAction getWalletAddressesCall() {
   };
 }
 
-ThunkAction updateDisplayNameCall(String displayName) {
-  return (Store store) async {
+ThunkAction<AppState> updateDisplayNameCall(String displayName) {
+  return (Store<AppState> store) async {
     try {
-      String walletAddress = store.state.userState.walletAddress;
+      final String walletAddress = store.state.userState.walletAddress;
       if (walletAddress.isNotEmpty) {
         await chargeApi.updateDisplayName(walletAddress, displayName);
         store.dispatch(SetDisplayName(displayName));
@@ -686,16 +570,20 @@ ThunkAction updateDisplayNameCall(String displayName) {
   };
 }
 
-ThunkAction updateUserAvatarCall(ImageSource source) {
-  return (Store store) async {
+ThunkAction<AppState> updateUserAvatarCall(ImageSource source) {
+  return (Store<AppState> store) async {
     final file = await ImagePicker().pickImage(source: source);
     if (file != null) {
       try {
-        final uploadResponse = await chargeApi.uploadImage(File(file.path));
-        String walletAddress = store.state.userState.walletAddress;
+        final Map<String, dynamic> uploadResponse = await chargeApi
+            .uploadImage(File(file.path)) as Map<String, dynamic>;
+        final String walletAddress = store.state.userState.walletAddress;
         if (walletAddress.isNotEmpty) {
-          await chargeApi.updateAvatar(walletAddress, uploadResponse['hash']);
-          store.dispatch(SetUserAvatar(uploadResponse['uri']));
+          await chargeApi.updateAvatar(
+            walletAddress,
+            uploadResponse['hash'] as String,
+          );
+          store.dispatch(SetUserAvatar(uploadResponse['uri'] as String));
         }
       } catch (e, s) {
         log.error(
@@ -713,10 +601,10 @@ ThunkAction updateUserAvatarCall(ImageSource source) {
   };
 }
 
-ThunkAction checkWalletUpgrades() {
-  return (Store store) async {
+ThunkAction<AppState> checkWalletUpgrades() {
+  return (Store<AppState> store) async {
     try {
-      String walletAddress = store.state.userState.walletAddress;
+      final String walletAddress = store.state.userState.walletAddress;
       if (walletAddress.isNotEmpty) {
         final List<dynamic> response = await chargeApi.getAvailableUpgrades(
           walletAddress,
@@ -744,42 +632,45 @@ ThunkAction checkWalletUpgrades() {
   };
 }
 
-ThunkAction installWalletUpgrades(
+ThunkAction<AppState> installWalletUpgrades(
   VoidCallback onSuccess,
   VoidCallback onError,
 ) {
-  return (Store store) async {
+  return (Store<AppState> store) async {
     try {
-      String walletAddress = store.state.userState.walletAddress;
+      final String walletAddress = store.state.userState.walletAddress;
       final List<WalletUpgrade> walletUpgrades =
           await chargeApi.getAvailableUpgrades(walletAddress);
 
       if (walletUpgrades.isNotEmpty) {
         final WalletUpgrade walletUpgrade = walletUpgrades.first;
-        final Map<String, dynamic> installUpgradeJob =
-            await chargeApi.installUpgrades(
-          getIt<Web3>(),
-          walletAddress,
-          store.state.userState.walletModules.transferManager,
-          walletUpgrade.contractAddress,
-          walletUpgrade.id,
-        );
-        store.dispatch(
-          fetchJobCall(
-            installUpgradeJob['_id'],
-            (Map jobData) {
-              log.info('txHash ${jobData['data']['txHash']}');
-              store.dispatch(getWalletAddressesCall());
-              onSuccess();
-              store.dispatch(ToggleUpgrade(value: false));
-              store.dispatch(checkWalletUpgrades());
-            },
-            (dynamic error) {
-              store.dispatch(ToggleUpgrade(value: false));
-              onError();
-            },
-          ),
-        );
+        if (store.state.userState.walletModules != null) {
+          final Map<String, dynamic> installUpgradeJob =
+              await chargeApi.installUpgrades(
+            getIt<Web3>(),
+            walletAddress,
+            store.state.userState.walletModules!.transferManager,
+            walletUpgrade.contractAddress,
+            walletUpgrade.id,
+          ) as Map<String, dynamic>;
+          store.dispatch(
+            fetchJobCall(
+              installUpgradeJob['_id'] as String,
+              (Map<String, dynamic> jobData) {
+                log.info('txHash ${jobData['data']['txHash']}');
+                store.dispatch(getWalletAddressesCall());
+                onSuccess();
+                store
+                  ..dispatch(ToggleUpgrade(value: false))
+                  ..dispatch(checkWalletUpgrades());
+              },
+              (dynamic error) {
+                store.dispatch(ToggleUpgrade(value: false));
+                onError();
+              },
+            ),
+          );
+        }
       }
     } catch (e, s) {
       store.dispatch(ToggleUpgrade(value: false));
@@ -798,39 +689,44 @@ ThunkAction installWalletUpgrades(
   };
 }
 
-ThunkAction fetchJobCall(
+ThunkAction<AppState> fetchJobCall(
   String jobId,
-  Function(Map jobData) successCallback,
-  Function(dynamic jobData) failureCallback, {
+  void Function(Map<String, dynamic> jobData) successCallback,
+  void Function(dynamic jobData) failureCallback, {
   bool untilDone = true,
   int seconds = 5,
-  Function(String txHash)? onTxCallback,
+  void Function(String txHash)? onTxCallback,
 }) {
-  return (Store store) {
+  //TODO: clean this shit up idk wtf is this
+  return (Store<AppState> store) {
     Timer.periodic(Duration(seconds: seconds), (Timer timer) async {
       try {
         log.info('jobId $jobId');
-        dynamic response = await chargeApi.getJob(jobId);
+        final Map<String, dynamic> response =
+            await chargeApi.getJob(jobId) as Map<String, dynamic>;
         if (untilDone) {
-          if (response['lastFinishedAt'] == null ||
-              response['lastFinishedAt'].isEmpty) {
+          if (isJsonValEmpty(response, 'lastFinishedAt')) {
             log.info('job not done');
             return;
           }
         }
-        final Map jobData = response['data'];
+        final Map<String, dynamic> jobData =
+            response['data'] as Map<String, dynamic>;
         if (jobData.containsKey('transactionBody')) {
           if ((jobData['transactionBody']['status'] != null &&
                   jobData['transactionBody']['status'] == 'failed') ||
               response['failReason'] != null) {
-            final String failReason =
-                response['failReason'] ?? jobData['transactionBody']['status'];
+            final String failReason = response['failReason'] as String? ??
+                jobData['transactionBody']['status'] as String;
+
             log.info('JobId  $jobId failed, failReason: $failReason');
             if (jobData['txHash'] == null) {
               log.info('fetched job with txHash null');
               return;
             } else {
-              onTxCallback?.call(jobData['txHash']);
+              if (onTxCallback != null) {
+                onTxCallback(jobData['txHash'] as String);
+              }
             }
             failureCallback(failReason);
             timer.cancel();
@@ -839,7 +735,9 @@ ThunkAction fetchJobCall(
               log.info('fetched job with txHash null');
               return;
             } else {
-              onTxCallback?.call(jobData['txHash']);
+              if (onTxCallback != null) {
+                onTxCallback(jobData['txHash'] as String);
+              }
             }
             successCallback(response);
             timer.cancel();
@@ -849,7 +747,9 @@ ThunkAction fetchJobCall(
             log.info('fetched job with txHash null');
             return;
           } else {
-            onTxCallback?.call(jobData['txHash']);
+            if (onTxCallback != null) {
+              onTxCallback(jobData['txHash'] as String);
+            }
           }
           successCallback(response);
           timer.cancel();
@@ -863,12 +763,12 @@ ThunkAction fetchJobCall(
   };
 }
 
-ThunkAction addNewDeliveryAddress(DeliveryAddresses newAddress) {
-  return (Store store) {
-    List<DeliveryAddresses> listOfAddresses =
+ThunkAction<AppState> addNewDeliveryAddress(DeliveryAddresses newAddress) {
+  return (Store<AppState> store) {
+    final List<DeliveryAddresses> listOfAddresses =
         List.from(store.state.userState.listOfDeliveryAddresses);
 
-    int index = listOfAddresses
+    final int index = listOfAddresses
         .indexWhere((element) => element.internalID == newAddress.internalID);
 
     listOfAddresses.removeWhere((element) {
@@ -879,18 +779,19 @@ ThunkAction addNewDeliveryAddress(DeliveryAddresses newAddress) {
         ? listOfAddresses.add(newAddress)
         : listOfAddresses.insert(index, newAddress);
 
-    store.dispatch(AddDeliveryAddress(listOfAddresses));
-    store.dispatch(UpdateSelectedDeliveryAddress(newAddress));
+    store
+      ..dispatch(AddDeliveryAddress(listOfAddresses))
+      ..dispatch(UpdateSelectedDeliveryAddress(newAddress));
   };
 }
 
-ThunkAction deleteExistingDeliveryAddress(
+ThunkAction<AppState> deleteExistingDeliveryAddress(
     DeliveryAddresses addressToBeDeleted) {
-  return (Store store) {
-    List<DeliveryAddresses> listOfAddresses =
+  return (Store<AppState> store) {
+    final List<DeliveryAddresses> listOfAddresses =
         List.from(store.state.userState.listOfDeliveryAddresses);
 
-    int indexOfAddress = listOfAddresses.indexOf(addressToBeDeleted);
+    final int indexOfAddress = listOfAddresses.indexOf(addressToBeDeleted);
     listOfAddresses.removeAt(indexOfAddress);
 
     store.dispatch(AddDeliveryAddress(listOfAddresses));
@@ -904,8 +805,8 @@ ThunkAction deleteExistingDeliveryAddress(
   };
 }
 
-ThunkAction checkForSavedSeedPhrase() {
-  return (Store store) async {
+ThunkAction<AppState> checkForSavedSeedPhrase() {
+  return (Store<AppState> store) async {
     if (store.state.userState.hasSavedSeedPhrase) return;
     if (store.state.userState.initialLoginDateTime.isEmpty) return;
     if (DateTime.now()
@@ -919,7 +820,7 @@ ThunkAction checkForSavedSeedPhrase() {
             .inDays <
         7) {
       //show the banner
-      store.dispatch(SetShowSeedPhraseBanner(true));
+      store.dispatch(SetShowSeedPhraseBanner(showSeedPhraseBanner: true));
     }
   };
 }

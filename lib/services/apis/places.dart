@@ -1,21 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:http/http.dart';
-import 'dart:io';
 
 class Place {
-  String streetNumber;
-  String street;
-  String city;
-  String zipCode;
-
   Place({
     required this.streetNumber,
     required this.street,
     required this.city,
     required this.zipCode,
   });
+  String streetNumber;
+  String street;
+  String city;
+  String zipCode;
 
   @override
   String toString() {
@@ -24,10 +23,9 @@ class Place {
 }
 
 class Suggestion {
+  Suggestion(this.placeId, this.description);
   final String placeId;
   final String description;
-
-  Suggestion(this.placeId, this.description);
 
   @override
   String toString() {
@@ -36,13 +34,15 @@ class Suggestion {
 }
 
 class PlaceApiProvider {
+  PlaceApiProvider(this.sessionToken);
   final Client client = Client();
 
-  PlaceApiProvider(this.sessionToken);
-
-  final sessionToken;
-  final apiKey = Platform.isIOS ? dotenv.env['MAP_API_KEY_IOS'] ?? "" : dotenv.env['MAP_API_KEY_ANDROID'] ?? "";
-  final headers = GoogleApiHeaders().getHeaders();
+  final String sessionToken;
+  final String apiKey = Platform.isIOS
+      ? dotenv.env['MAP_API_KEY_IOS'] ?? ''
+      : dotenv.env['MAP_API_KEY_ANDROID'] ?? '';
+  final Future<Map<String, String>> headers =
+      const GoogleApiHeaders().getHeaders();
 
   Future<List<Suggestion>> fetchSuggestions(String input) async {
     final Uri request = Uri(
@@ -61,10 +61,22 @@ class PlaceApiProvider {
     final response = await client.get(request, headers: await headers);
 
     if (response.statusCode == 200) {
-      final result = json.decode(response.body);
+      final Map<String, dynamic> result =
+          json.decode(response.body) as Map<String, dynamic>;
       if (result['status'] == 'OK') {
         // compose suggestions in a list
-        return result['predictions'].map<Suggestion>((p) => Suggestion(p['place_id'], p['description'])).toList();
+
+        final List<Map<String, dynamic>> data =
+            result['predictions'] as List<Map<String, dynamic>>;
+
+        return data
+            .map(
+              (Map<String, dynamic> element) => Suggestion(
+                element['place_id'] as String? ?? '',
+                element['description'] as String? ?? '',
+              ),
+            )
+            .toList();
       }
       if (result['status'] == 'ZERO_RESULTS') {
         return [];
@@ -91,26 +103,29 @@ class PlaceApiProvider {
     final response = await client.get(request, headers: await headers);
 
     if (response.statusCode == 200) {
-      final result = json.decode(response.body);
+      final Map<String, dynamic> result =
+          json.decode(response.body) as Map<String, dynamic>;
       if (result['status'] == 'OK') {
-        final components = result['result']['address_components'] as List<dynamic>;
+        final components =
+            result['result']['address_components'] as List<dynamic>;
         // build result
-        final place = Place(street: '', streetNumber: '', city: '', zipCode: '');
-        components.forEach((c) {
-          final List type = c['types'];
+        final place =
+            Place(street: '', streetNumber: '', city: '', zipCode: '');
+        for (final c in components) {
+          final List type = c['types'] as List<String>;
           if (type.contains('street_number')) {
-            place.streetNumber = c['long_name'];
+            place.streetNumber = c['long_name'] as String? ?? '';
           }
           if (type.contains('route')) {
-            place.street = c['long_name'];
+            place.street = c['long_name'] as String? ?? '';
           }
           if (type.contains('locality') || type.contains('postal_town')) {
-            place.city = c['long_name'];
+            place.city = c['long_name'] as String? ?? '';
           }
           if (type.contains('postal_code')) {
-            place.zipCode = c['long_name'];
+            place.zipCode = c['long_name'] as String? ?? '';
           }
-        });
+        }
         return place;
       }
       throw Exception(result['error_message']);

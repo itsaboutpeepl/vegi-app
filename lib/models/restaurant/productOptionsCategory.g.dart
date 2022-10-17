@@ -12,7 +12,7 @@ _$_ProductOptionsCategory _$$_ProductOptionsCategoryFromJson(
       categoryID: json['categoryID'] as int,
       name: json['name'] as String,
       listOfOptions: (json['listOfOptions'] as List<dynamic>)
-          .map((e) => ProductOptions.fromJson(e))
+          .map((e) => ProductOptions.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

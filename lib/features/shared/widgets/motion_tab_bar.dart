@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
-import 'TabItem.dart';
 import 'package:vector_math/vector_math.dart' as vector;
+import 'package:vegan_liverpool/features/shared/widgets/TabItem.dart';
 
 typedef MotionTabBuilder = Widget Function();
 
-const int ANIM_DURATION = 500;
+const int _animDuration = 500;
 
 class MotionTabBar extends StatefulWidget {
-  final Color tabIconColor, tabSelectedColor;
-  final TextStyle textStyle;
-  final Function onTabItemSelected;
-  final String initialSelectedTab;
-
-  final List<String> labels;
-  final List<IconData> icons;
-
   MotionTabBar({
+    Key? key,
     required this.textStyle,
     required this.tabIconColor,
     required this.tabSelectedColor,
@@ -23,10 +16,18 @@ class MotionTabBar extends StatefulWidget {
     required this.initialSelectedTab,
     required this.labels,
     required this.icons,
-  }) : assert(labels.contains(initialSelectedTab));
+  })  : assert(labels.contains(initialSelectedTab), 'Initial tab not selected'),
+        super(key: key);
+
+  final Color tabIconColor, tabSelectedColor;
+  final TextStyle textStyle;
+  final void Function(int) onTabItemSelected;
+  final String initialSelectedTab;
+  final List<String> labels;
+  final List<IconData> icons;
 
   @override
-  _MotionTabBarState createState() => _MotionTabBarState();
+  State<MotionTabBar> createState() => _MotionTabBarState();
 }
 
 class _MotionTabBarState extends State<MotionTabBar>
@@ -42,10 +43,10 @@ class _MotionTabBarState extends State<MotionTabBar>
   List<String> labels = [];
   Map<String, IconData> icons = {};
 
-  get tabAmount => icons.keys.length;
-  get index => labels.indexOf(selectedTab);
-  get position {
-    double pace = 2 / (labels.length - 1);
+  int get tabAmount => icons.keys.length;
+  int get index => labels.indexOf(selectedTab);
+  double get position {
+    final double pace = 2 / (labels.length - 1);
     return (pace * index) - 1;
   }
 
@@ -58,35 +59,34 @@ class _MotionTabBarState extends State<MotionTabBar>
     super.initState();
 
     labels = widget.labels;
-    icons = Map.fromIterable(
-      labels,
-      key: (label) => label,
-      value: (label) => widget.icons[labels.indexOf(label)],
-    );
+    icons = {
+      for (var label in labels) label: widget.icons[labels.indexOf(label)]
+    };
 
     selectedTab = widget.initialSelectedTab;
     activeIcon = icons[selectedTab]!;
 
     _animationController = AnimationController(
-      duration: Duration(milliseconds: ANIM_DURATION),
+      duration: const Duration(milliseconds: _animDuration),
       vsync: this,
     );
 
     _fadeOutController = AnimationController(
-      duration: Duration(milliseconds: (ANIM_DURATION ~/ 5)),
+      duration: const Duration(milliseconds: _animDuration ~/ 5),
       vsync: this,
     );
 
     _positionTween = Tween<double>(begin: position, end: 1);
 
     _positionAnimation = _positionTween.animate(
-        CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
-      ..addListener(() {
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    )..addListener(() {
         setState(() {});
       });
 
     _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0).animate(
-        CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
+      CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut),
+    )
       ..addListener(() {
         setState(() {
           fabIconAlpha = _fadeFabOutAnimation.value;
@@ -101,10 +101,11 @@ class _MotionTabBarState extends State<MotionTabBar>
       });
 
     _fadeFabInAnimation = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(
-            parent: _animationController,
-            curve: Interval(0.8, 1, curve: Curves.easeOut)))
-      ..addListener(() {
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.8, 1, curve: Curves.easeOut),
+      ),
+    )..addListener(() {
         setState(() {
           fabIconAlpha = _fadeFabInAnimation.value;
         });
@@ -118,22 +119,24 @@ class _MotionTabBarState extends State<MotionTabBar>
       children: <Widget>[
         Container(
           height: 75,
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(0, -1),
-              blurRadius: 5,
-            ),
-          ]),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                offset: Offset(0, -1),
+                blurRadius: 5,
+              ),
+            ],
+          ),
           child: Row(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: generateTabItems(),
           ),
         ),
         IgnorePointer(
-          child: Container(
-            decoration: BoxDecoration(color: Colors.transparent),
+          child: DecoratedBox(
+            decoration: const BoxDecoration(color: Colors.transparent),
             child: Align(
               heightFactor: 0,
               alignment: Alignment(_positionAnimation.value, 0),
@@ -147,21 +150,19 @@ class _MotionTabBarState extends State<MotionTabBar>
                       width: 90,
                       child: ClipRect(
                         clipper: HalfClipper(),
-                        child: Container(
-                          child: Center(
-                            child: Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 8,
-                                  )
-                                ],
-                              ),
+                        child: Center(
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 8,
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -175,7 +176,7 @@ class _MotionTabBarState extends State<MotionTabBar>
                     SizedBox(
                       height: 60,
                       width: 60,
-                      child: Container(
+                      child: DecoratedBox(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: widget.tabSelectedColor,
@@ -186,7 +187,7 @@ class _MotionTabBarState extends State<MotionTabBar>
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(0.0),
+                          padding: EdgeInsets.zero,
                           child: Opacity(
                             opacity: fabIconAlpha,
                             child: Icon(
@@ -228,9 +229,10 @@ class _MotionTabBarState extends State<MotionTabBar>
     }).toList();
   }
 
-  _initAnimationAndStart(double from, double to) {
-    _positionTween.begin = from;
-    _positionTween.end = to;
+  void _initAnimationAndStart(double from, double to) {
+    _positionTween
+      ..begin = from
+      ..end = to;
 
     _animationController.reset();
     _fadeOutController.reset();
@@ -255,14 +257,14 @@ class HalfPainter extends CustomPainter {
     final Rect afterRect =
         Rect.fromLTWH(size.width - 10, (size.height / 2) - 10, 10, 10);
 
-    final path = Path();
-    path.arcTo(beforeRect, vector.radians(0), vector.radians(90), false);
-    path.lineTo(20, size.height / 2);
-    path.arcTo(largeRect, vector.radians(0), -vector.radians(180), false);
-    path.moveTo(size.width - 10, size.height / 2);
-    path.lineTo(size.width - 10, (size.height / 2) - 10);
-    path.arcTo(afterRect, vector.radians(180), vector.radians(-90), false);
-    path.close();
+    final path = Path()
+      ..arcTo(beforeRect, vector.radians(0), vector.radians(90), false)
+      ..lineTo(20, size.height / 2)
+      ..arcTo(largeRect, vector.radians(0), -vector.radians(180), false)
+      ..moveTo(size.width - 10, size.height / 2)
+      ..lineTo(size.width - 10, (size.height / 2) - 10)
+      ..arcTo(afterRect, vector.radians(180), vector.radians(-90), false)
+      ..close();
 
     canvas.drawPath(path, Paint()..color = Colors.white);
   }

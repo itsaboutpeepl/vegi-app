@@ -1,12 +1,10 @@
+import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/models/user_state.dart';
-import 'package:redux/redux.dart';
 
 final userReducers = combineReducers<UserState>([
-  TypedReducer<UserState, SetWalletConnectURI>(
-    _setWalletConnectURI,
-  ),
+  TypedReducer<UserState, SetWalletConnectURI>(_setWalletConnectURI),
   TypedReducer<UserState, GetWalletDataSuccess>(_getWalletDataSuccess),
   TypedReducer<UserState, ScrollToTop>(_scrollToTop),
   TypedReducer<UserState, ToggleUpgrade>(_toggleUpgrade),
@@ -14,8 +12,6 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, LoginRequestSuccess>(_loginSuccess),
   TypedReducer<UserState, LoginVerifySuccess>(_loginVerifySuccess),
   TypedReducer<UserState, LogoutRequestSuccess>(_logoutSuccess),
-  TypedReducer<UserState, SyncContactsProgress>(_syncContactsProgress),
-  TypedReducer<UserState, SyncContactsRejected>(_syncContactsRejected),
   TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
   TypedReducer<UserState, SetDisplayName>(_setDisplayName),
   TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
@@ -35,41 +31,65 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
 ]);
 
-UserState _setWalletConnectURI(UserState state, SetWalletConnectURI action) {
+UserState _setWalletConnectURI(
+  UserState state,
+  SetWalletConnectURI action,
+) {
   return state.copyWith(wcURI: action.wcURI);
 }
 
-UserState _scrollToTop(UserState state, ScrollToTop action) {
+UserState _scrollToTop(
+  UserState state,
+  ScrollToTop action,
+) {
   return state.copyWith(scrollToTop: action.value);
 }
 
-UserState _toggleUpgrade(UserState state, ToggleUpgrade action) {
+UserState _toggleUpgrade(
+  UserState state,
+  ToggleUpgrade action,
+) {
   return state.copyWith(
     hasUpgrade: action.value,
   );
 }
 
-UserState _updateLocale(UserState state, UpdateLocale action) {
+UserState _updateLocale(
+  UserState state,
+  UpdateLocale action,
+) {
   return state.copyWith(locale: action.locale);
 }
 
-UserState _updateCurrency(UserState state, UpdateCurrency action) {
+UserState _updateCurrency(
+  UserState state,
+  UpdateCurrency action,
+) {
   return state.copyWith(currency: action.currency);
 }
 
-UserState _warnSendDialogShowed(UserState state, WarnSendDialogShowed action) {
+UserState _warnSendDialogShowed(
+  UserState state,
+  WarnSendDialogShowed action,
+) {
   return state.copyWith(
     warnSendDialogShowed: action.value,
   );
 }
 
-UserState _setSecurityType(UserState state, SetSecurityType action) {
+UserState _setSecurityType(
+  UserState state,
+  SetSecurityType action,
+) {
   return state.copyWith(
     authType: action.biometricAuth,
   );
 }
 
-UserState _getWalletDataSuccess(UserState state, GetWalletDataSuccess action) {
+UserState _getWalletDataSuccess(
+  UserState state,
+  GetWalletDataSuccess action,
+) {
   return state.copyWith(
     backup: action.backup,
     networks: action.networks,
@@ -79,11 +99,17 @@ UserState _getWalletDataSuccess(UserState state, GetWalletDataSuccess action) {
   );
 }
 
-UserState _backupSuccess(UserState state, BackupSuccess action) {
+UserState _backupSuccess(
+  UserState state,
+  BackupSuccess action,
+) {
   return state.copyWith(backup: true);
 }
 
-UserState _reLoginUser(UserState state, ReLogin action) {
+UserState _reLoginUser(
+  UserState state,
+  ReLogin action,
+) {
   return state.copyWith(isLoggedOut: false);
 }
 
@@ -99,7 +125,10 @@ UserState _createNewWalletSuccess(
   );
 }
 
-UserState _loginSuccess(UserState state, LoginRequestSuccess action) {
+UserState _loginSuccess(
+  UserState state,
+  LoginRequestSuccess action,
+) {
   return state.copyWith(
     countryCode: action.countryCode.dialCode!,
     isoCode: action.countryCode.code!,
@@ -107,84 +136,97 @@ UserState _loginSuccess(UserState state, LoginRequestSuccess action) {
   );
 }
 
-UserState _setVerificationId(UserState state, SetVerificationId action) {
+UserState _setVerificationId(
+  UserState state,
+  SetVerificationId action,
+) {
   return state.copyWith(
     verificationId: action.verificationId,
   );
 }
 
-UserState _loginVerifySuccess(UserState state, LoginVerifySuccess action) {
+UserState _loginVerifySuccess(
+  UserState state,
+  LoginVerifySuccess action,
+) {
   return state.copyWith(
     jwtToken: action.jwtToken,
   );
 }
 
-UserState _logoutSuccess(UserState state, LogoutRequestSuccess action) {
+UserState _logoutSuccess(
+  UserState state,
+  LogoutRequestSuccess action,
+) {
   return state.copyWith(isLoggedOut: true);
 }
 
-UserState _syncContactsRejected(UserState state, SyncContactsRejected action) {
-  return state.copyWith(isContactsSynced: false);
-}
-
-UserState _setDisplayName(UserState state, SetDisplayName action) {
+UserState _setDisplayName(
+  UserState state,
+  SetDisplayName action,
+) {
   return state.copyWith(displayName: action.displayName);
 }
 
-UserState _setUserAvatar(UserState state, SetUserAvatar action) {
+UserState _setUserAvatar(
+  UserState state,
+  SetUserAvatar action,
+) {
   return state.copyWith(avatarUrl: action.avatarUrl);
 }
 
-UserState _syncContactsProgress(UserState state, SyncContactsProgress action) {
-  Map<String, String> reverseContacts = Map<String, String>.from(
-    state.reverseContacts,
-  );
-  Iterable<MapEntry<String, String>> entries = action.newContacts.map(
-    (entry) => MapEntry(
-      entry['walletAddress'].toString().toLowerCase(),
-      entry['phoneNumber'],
-    ),
-  );
-  reverseContacts.addEntries(entries);
-  List<String> syncedContacts = List<String>.from(state.syncedContacts);
-  syncedContacts.addAll(action.contacts);
-  return state.copyWith(
-    reverseContacts: reverseContacts,
-    syncedContacts: syncedContacts,
-  );
-}
-
-UserState _setPincode(UserState state, SetPincodeSuccess action) {
+UserState _setPincode(
+  UserState state,
+  SetPincodeSuccess action,
+) {
   return state.copyWith(pincode: action.pincode);
 }
 
-UserState _setCredentials(UserState state, SetCredentials action) {
+UserState _setCredentials(
+  UserState state,
+  SetCredentials action,
+) {
   return state.copyWith(credentials: action.credentials);
 }
 
-UserState _justInstalled(UserState state, JustInstalled action) {
+UserState _justInstalled(
+  UserState state,
+  JustInstalled action,
+) {
   return state.copyWith(installedAt: action.installedAt);
 }
 
-UserState _deviceIdSuccess(UserState state, DeviceIdSuccess action) {
+UserState _deviceIdSuccess(
+  UserState state,
+  DeviceIdSuccess action,
+) {
   return state.copyWith(identifier: action.identifier);
 }
 
-UserState _addDeliveryAddress(UserState state, AddDeliveryAddress action) {
+UserState _addDeliveryAddress(
+  UserState state,
+  AddDeliveryAddress action,
+) {
   return state.copyWith(listOfDeliveryAddresses: action.listOfAddresses);
 }
 
 UserState _setInitialLoginDateTime(
-    UserState state, SetInitialLoginDateTime action) {
+  UserState state,
+  SetInitialLoginDateTime action,
+) {
   return state.copyWith(initialLoginDateTime: action.initialLoginDateTime);
 }
 
 UserState _setShowSeedPhraseBanner(
-    UserState state, SetShowSeedPhraseBanner action) {
+  UserState state,
+  SetShowSeedPhraseBanner action,
+) {
   return state.copyWith(showSeedPhraseBanner: action.showSeedPhraseBanner);
 }
 
 UserState _setHasSavedSeedPhrase(
-    UserState state, SetHasSavedSeedPhrase action) {
+  UserState state,
+  SetHasSavedSeedPhrase action,
+) {
   return state.copyWith(hasSavedSeedPhrase: action.hasSavedSeedPhrase);
 }

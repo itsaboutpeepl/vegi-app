@@ -102,7 +102,8 @@ mixin _$UserCartState {
 abstract class $UserCartStateCopyWith<$Res> {
   factory $UserCartStateCopyWith(
           UserCartState value, $Res Function(UserCartState) then) =
-      _$UserCartStateCopyWithImpl<$Res>;
+      _$UserCartStateCopyWithImpl<$Res, UserCartState>;
+  @useResult
   $Res call(
       {@JsonKey(ignore: true) List<CartItem> cartItems,
       @JsonKey(ignore: true) int cartSubTotal,
@@ -143,187 +144,190 @@ abstract class $UserCartStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserCartStateCopyWithImpl<$Res>
+class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     implements $UserCartStateCopyWith<$Res> {
   _$UserCartStateCopyWithImpl(this._value, this._then);
 
-  final UserCartState _value;
   // ignore: unused_field
-  final $Res Function(UserCartState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? cartItems = freezed,
-    Object? cartSubTotal = freezed,
-    Object? cartTax = freezed,
-    Object? cartTotal = freezed,
-    Object? cartDiscountPercent = freezed,
-    Object? cartDiscountComputed = freezed,
-    Object? cartDeliveryCharge = freezed,
-    Object? deliverySlots = freezed,
-    Object? collectionSlots = freezed,
+    Object? cartItems = null,
+    Object? cartSubTotal = null,
+    Object? cartTax = null,
+    Object? cartTotal = null,
+    Object? cartDiscountPercent = null,
+    Object? cartDiscountComputed = null,
+    Object? cartDeliveryCharge = null,
+    Object? deliverySlots = null,
+    Object? collectionSlots = null,
     Object? selectedDeliveryAddress = freezed,
-    Object? selectedTimeSlot = freezed,
-    Object? selectedTipAmount = freezed,
-    Object? discountCode = freezed,
-    Object? paymentIntentID = freezed,
-    Object? orderID = freezed,
-    Object? selectedGBPxAmount = freezed,
-    Object? selectedPPLAmount = freezed,
-    Object? transferringTokens = freezed,
-    Object? errorCompletingPayment = freezed,
-    Object? confirmedPayment = freezed,
-    Object? restaurantName = freezed,
-    Object? restaurantID = freezed,
+    Object? selectedTimeSlot = null,
+    Object? selectedTipAmount = null,
+    Object? discountCode = null,
+    Object? paymentIntentID = null,
+    Object? orderID = null,
+    Object? selectedGBPxAmount = null,
+    Object? selectedPPLAmount = null,
+    Object? transferringTokens = null,
+    Object? errorCompletingPayment = null,
+    Object? confirmedPayment = null,
+    Object? restaurantName = null,
+    Object? restaurantID = null,
     Object? restaurantAddress = freezed,
-    Object? restaurantWalletAddress = freezed,
-    Object? deliveryCharge = freezed,
-    Object? collectionCharge = freezed,
-    Object? fulfilmentMethod = freezed,
-    Object? isDelivery = freezed,
-    Object? restaurantMinimumOrder = freezed,
-    Object? restaurantPlatformFee = freezed,
-    Object? deliveryInstructions = freezed,
-    Object? deliveryMethodId = freezed,
-    Object? collectionMethodId = freezed,
+    Object? restaurantWalletAddress = null,
+    Object? deliveryCharge = null,
+    Object? collectionCharge = null,
+    Object? fulfilmentMethod = null,
+    Object? isDelivery = null,
+    Object? restaurantMinimumOrder = null,
+    Object? restaurantPlatformFee = null,
+    Object? deliveryInstructions = null,
+    Object? deliveryMethodId = null,
+    Object? collectionMethodId = null,
   }) {
     return _then(_value.copyWith(
-      cartItems: cartItems == freezed
+      cartItems: null == cartItems
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
               as List<CartItem>,
-      cartSubTotal: cartSubTotal == freezed
+      cartSubTotal: null == cartSubTotal
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
               as int,
-      cartTax: cartTax == freezed
+      cartTax: null == cartTax
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
               as int,
-      cartTotal: cartTotal == freezed
+      cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
               as int,
-      cartDiscountPercent: cartDiscountPercent == freezed
+      cartDiscountPercent: null == cartDiscountPercent
           ? _value.cartDiscountPercent
           : cartDiscountPercent // ignore: cast_nullable_to_non_nullable
               as int,
-      cartDiscountComputed: cartDiscountComputed == freezed
+      cartDiscountComputed: null == cartDiscountComputed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
               as int,
-      cartDeliveryCharge: cartDeliveryCharge == freezed
+      cartDeliveryCharge: null == cartDeliveryCharge
           ? _value.cartDeliveryCharge
           : cartDeliveryCharge // ignore: cast_nullable_to_non_nullable
               as int,
-      deliverySlots: deliverySlots == freezed
+      deliverySlots: null == deliverySlots
           ? _value.deliverySlots
           : deliverySlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
-      collectionSlots: collectionSlots == freezed
+      collectionSlots: null == collectionSlots
           ? _value.collectionSlots
           : collectionSlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
-      selectedDeliveryAddress: selectedDeliveryAddress == freezed
+      selectedDeliveryAddress: freezed == selectedDeliveryAddress
           ? _value.selectedDeliveryAddress
           : selectedDeliveryAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses?,
-      selectedTimeSlot: selectedTimeSlot == freezed
+      selectedTimeSlot: null == selectedTimeSlot
           ? _value.selectedTimeSlot
           : selectedTimeSlot // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      selectedTipAmount: selectedTipAmount == freezed
+      selectedTipAmount: null == selectedTipAmount
           ? _value.selectedTipAmount
           : selectedTipAmount // ignore: cast_nullable_to_non_nullable
               as int,
-      discountCode: discountCode == freezed
+      discountCode: null == discountCode
           ? _value.discountCode
           : discountCode // ignore: cast_nullable_to_non_nullable
               as String,
-      paymentIntentID: paymentIntentID == freezed
+      paymentIntentID: null == paymentIntentID
           ? _value.paymentIntentID
           : paymentIntentID // ignore: cast_nullable_to_non_nullable
               as String,
-      orderID: orderID == freezed
+      orderID: null == orderID
           ? _value.orderID
           : orderID // ignore: cast_nullable_to_non_nullable
               as String,
-      selectedGBPxAmount: selectedGBPxAmount == freezed
+      selectedGBPxAmount: null == selectedGBPxAmount
           ? _value.selectedGBPxAmount
           : selectedGBPxAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      selectedPPLAmount: selectedPPLAmount == freezed
+      selectedPPLAmount: null == selectedPPLAmount
           ? _value.selectedPPLAmount
           : selectedPPLAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      transferringTokens: transferringTokens == freezed
+      transferringTokens: null == transferringTokens
           ? _value.transferringTokens
           : transferringTokens // ignore: cast_nullable_to_non_nullable
               as bool,
-      errorCompletingPayment: errorCompletingPayment == freezed
+      errorCompletingPayment: null == errorCompletingPayment
           ? _value.errorCompletingPayment
           : errorCompletingPayment // ignore: cast_nullable_to_non_nullable
               as bool,
-      confirmedPayment: confirmedPayment == freezed
+      confirmedPayment: null == confirmedPayment
           ? _value.confirmedPayment
           : confirmedPayment // ignore: cast_nullable_to_non_nullable
               as bool,
-      restaurantName: restaurantName == freezed
+      restaurantName: null == restaurantName
           ? _value.restaurantName
           : restaurantName // ignore: cast_nullable_to_non_nullable
               as String,
-      restaurantID: restaurantID == freezed
+      restaurantID: null == restaurantID
           ? _value.restaurantID
           : restaurantID // ignore: cast_nullable_to_non_nullable
               as String,
-      restaurantAddress: restaurantAddress == freezed
+      restaurantAddress: freezed == restaurantAddress
           ? _value.restaurantAddress
           : restaurantAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses?,
-      restaurantWalletAddress: restaurantWalletAddress == freezed
+      restaurantWalletAddress: null == restaurantWalletAddress
           ? _value.restaurantWalletAddress
           : restaurantWalletAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      deliveryCharge: deliveryCharge == freezed
+      deliveryCharge: null == deliveryCharge
           ? _value.deliveryCharge
           : deliveryCharge // ignore: cast_nullable_to_non_nullable
               as int,
-      collectionCharge: collectionCharge == freezed
+      collectionCharge: null == collectionCharge
           ? _value.collectionCharge
           : collectionCharge // ignore: cast_nullable_to_non_nullable
               as int,
-      fulfilmentMethod: fulfilmentMethod == freezed
+      fulfilmentMethod: null == fulfilmentMethod
           ? _value.fulfilmentMethod
           : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
               as FulfilmentMethod,
-      isDelivery: isDelivery == freezed
+      isDelivery: null == isDelivery
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
               as bool,
-      restaurantMinimumOrder: restaurantMinimumOrder == freezed
+      restaurantMinimumOrder: null == restaurantMinimumOrder
           ? _value.restaurantMinimumOrder
           : restaurantMinimumOrder // ignore: cast_nullable_to_non_nullable
               as int,
-      restaurantPlatformFee: restaurantPlatformFee == freezed
+      restaurantPlatformFee: null == restaurantPlatformFee
           ? _value.restaurantPlatformFee
           : restaurantPlatformFee // ignore: cast_nullable_to_non_nullable
               as int,
-      deliveryInstructions: deliveryInstructions == freezed
+      deliveryInstructions: null == deliveryInstructions
           ? _value.deliveryInstructions
           : deliveryInstructions // ignore: cast_nullable_to_non_nullable
               as String,
-      deliveryMethodId: deliveryMethodId == freezed
+      deliveryMethodId: null == deliveryMethodId
           ? _value.deliveryMethodId
           : deliveryMethodId // ignore: cast_nullable_to_non_nullable
               as int,
-      collectionMethodId: collectionMethodId == freezed
+      collectionMethodId: null == collectionMethodId
           ? _value.collectionMethodId
           : collectionMethodId // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress {
     if (_value.selectedDeliveryAddress == null) {
       return null;
@@ -331,18 +335,19 @@ class _$UserCartStateCopyWithImpl<$Res>
 
     return $DeliveryAddressesCopyWith<$Res>(_value.selectedDeliveryAddress!,
         (value) {
-      return _then(_value.copyWith(selectedDeliveryAddress: value));
+      return _then(_value.copyWith(selectedDeliveryAddress: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress {
     if (_value.restaurantAddress == null) {
       return null;
     }
 
     return $DeliveryAddressesCopyWith<$Res>(_value.restaurantAddress!, (value) {
-      return _then(_value.copyWith(restaurantAddress: value));
+      return _then(_value.copyWith(restaurantAddress: value) as $Val);
     });
   }
 }
@@ -354,6 +359,7 @@ abstract class _$$_UserCartStateCopyWith<$Res>
           _$_UserCartState value, $Res Function(_$_UserCartState) then) =
       __$$_UserCartStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(ignore: true) List<CartItem> cartItems,
       @JsonKey(ignore: true) int cartSubTotal,
@@ -397,181 +403,179 @@ abstract class _$$_UserCartStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_UserCartStateCopyWithImpl<$Res>
-    extends _$UserCartStateCopyWithImpl<$Res>
+    extends _$UserCartStateCopyWithImpl<$Res, _$_UserCartState>
     implements _$$_UserCartStateCopyWith<$Res> {
   __$$_UserCartStateCopyWithImpl(
       _$_UserCartState _value, $Res Function(_$_UserCartState) _then)
-      : super(_value, (v) => _then(v as _$_UserCartState));
+      : super(_value, _then);
 
-  @override
-  _$_UserCartState get _value => super._value as _$_UserCartState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? cartItems = freezed,
-    Object? cartSubTotal = freezed,
-    Object? cartTax = freezed,
-    Object? cartTotal = freezed,
-    Object? cartDiscountPercent = freezed,
-    Object? cartDiscountComputed = freezed,
-    Object? cartDeliveryCharge = freezed,
-    Object? deliverySlots = freezed,
-    Object? collectionSlots = freezed,
+    Object? cartItems = null,
+    Object? cartSubTotal = null,
+    Object? cartTax = null,
+    Object? cartTotal = null,
+    Object? cartDiscountPercent = null,
+    Object? cartDiscountComputed = null,
+    Object? cartDeliveryCharge = null,
+    Object? deliverySlots = null,
+    Object? collectionSlots = null,
     Object? selectedDeliveryAddress = freezed,
-    Object? selectedTimeSlot = freezed,
-    Object? selectedTipAmount = freezed,
-    Object? discountCode = freezed,
-    Object? paymentIntentID = freezed,
-    Object? orderID = freezed,
-    Object? selectedGBPxAmount = freezed,
-    Object? selectedPPLAmount = freezed,
-    Object? transferringTokens = freezed,
-    Object? errorCompletingPayment = freezed,
-    Object? confirmedPayment = freezed,
-    Object? restaurantName = freezed,
-    Object? restaurantID = freezed,
+    Object? selectedTimeSlot = null,
+    Object? selectedTipAmount = null,
+    Object? discountCode = null,
+    Object? paymentIntentID = null,
+    Object? orderID = null,
+    Object? selectedGBPxAmount = null,
+    Object? selectedPPLAmount = null,
+    Object? transferringTokens = null,
+    Object? errorCompletingPayment = null,
+    Object? confirmedPayment = null,
+    Object? restaurantName = null,
+    Object? restaurantID = null,
     Object? restaurantAddress = freezed,
-    Object? restaurantWalletAddress = freezed,
-    Object? deliveryCharge = freezed,
-    Object? collectionCharge = freezed,
-    Object? fulfilmentMethod = freezed,
-    Object? isDelivery = freezed,
-    Object? restaurantMinimumOrder = freezed,
-    Object? restaurantPlatformFee = freezed,
-    Object? deliveryInstructions = freezed,
-    Object? deliveryMethodId = freezed,
-    Object? collectionMethodId = freezed,
+    Object? restaurantWalletAddress = null,
+    Object? deliveryCharge = null,
+    Object? collectionCharge = null,
+    Object? fulfilmentMethod = null,
+    Object? isDelivery = null,
+    Object? restaurantMinimumOrder = null,
+    Object? restaurantPlatformFee = null,
+    Object? deliveryInstructions = null,
+    Object? deliveryMethodId = null,
+    Object? collectionMethodId = null,
   }) {
     return _then(_$_UserCartState(
-      cartItems: cartItems == freezed
+      cartItems: null == cartItems
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
               as List<CartItem>,
-      cartSubTotal: cartSubTotal == freezed
+      cartSubTotal: null == cartSubTotal
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
               as int,
-      cartTax: cartTax == freezed
+      cartTax: null == cartTax
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
               as int,
-      cartTotal: cartTotal == freezed
+      cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
               as int,
-      cartDiscountPercent: cartDiscountPercent == freezed
+      cartDiscountPercent: null == cartDiscountPercent
           ? _value.cartDiscountPercent
           : cartDiscountPercent // ignore: cast_nullable_to_non_nullable
               as int,
-      cartDiscountComputed: cartDiscountComputed == freezed
+      cartDiscountComputed: null == cartDiscountComputed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
               as int,
-      cartDeliveryCharge: cartDeliveryCharge == freezed
+      cartDeliveryCharge: null == cartDeliveryCharge
           ? _value.cartDeliveryCharge
           : cartDeliveryCharge // ignore: cast_nullable_to_non_nullable
               as int,
-      deliverySlots: deliverySlots == freezed
+      deliverySlots: null == deliverySlots
           ? _value.deliverySlots
           : deliverySlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
-      collectionSlots: collectionSlots == freezed
+      collectionSlots: null == collectionSlots
           ? _value.collectionSlots
           : collectionSlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
-      selectedDeliveryAddress: selectedDeliveryAddress == freezed
+      selectedDeliveryAddress: freezed == selectedDeliveryAddress
           ? _value.selectedDeliveryAddress
           : selectedDeliveryAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses?,
-      selectedTimeSlot: selectedTimeSlot == freezed
+      selectedTimeSlot: null == selectedTimeSlot
           ? _value.selectedTimeSlot
           : selectedTimeSlot // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      selectedTipAmount: selectedTipAmount == freezed
+      selectedTipAmount: null == selectedTipAmount
           ? _value.selectedTipAmount
           : selectedTipAmount // ignore: cast_nullable_to_non_nullable
               as int,
-      discountCode: discountCode == freezed
+      discountCode: null == discountCode
           ? _value.discountCode
           : discountCode // ignore: cast_nullable_to_non_nullable
               as String,
-      paymentIntentID: paymentIntentID == freezed
+      paymentIntentID: null == paymentIntentID
           ? _value.paymentIntentID
           : paymentIntentID // ignore: cast_nullable_to_non_nullable
               as String,
-      orderID: orderID == freezed
+      orderID: null == orderID
           ? _value.orderID
           : orderID // ignore: cast_nullable_to_non_nullable
               as String,
-      selectedGBPxAmount: selectedGBPxAmount == freezed
+      selectedGBPxAmount: null == selectedGBPxAmount
           ? _value.selectedGBPxAmount
           : selectedGBPxAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      selectedPPLAmount: selectedPPLAmount == freezed
+      selectedPPLAmount: null == selectedPPLAmount
           ? _value.selectedPPLAmount
           : selectedPPLAmount // ignore: cast_nullable_to_non_nullable
               as double,
-      transferringTokens: transferringTokens == freezed
+      transferringTokens: null == transferringTokens
           ? _value.transferringTokens
           : transferringTokens // ignore: cast_nullable_to_non_nullable
               as bool,
-      errorCompletingPayment: errorCompletingPayment == freezed
+      errorCompletingPayment: null == errorCompletingPayment
           ? _value.errorCompletingPayment
           : errorCompletingPayment // ignore: cast_nullable_to_non_nullable
               as bool,
-      confirmedPayment: confirmedPayment == freezed
+      confirmedPayment: null == confirmedPayment
           ? _value.confirmedPayment
           : confirmedPayment // ignore: cast_nullable_to_non_nullable
               as bool,
-      restaurantName: restaurantName == freezed
+      restaurantName: null == restaurantName
           ? _value.restaurantName
           : restaurantName // ignore: cast_nullable_to_non_nullable
               as String,
-      restaurantID: restaurantID == freezed
+      restaurantID: null == restaurantID
           ? _value.restaurantID
           : restaurantID // ignore: cast_nullable_to_non_nullable
               as String,
-      restaurantAddress: restaurantAddress == freezed
+      restaurantAddress: freezed == restaurantAddress
           ? _value.restaurantAddress
           : restaurantAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses?,
-      restaurantWalletAddress: restaurantWalletAddress == freezed
+      restaurantWalletAddress: null == restaurantWalletAddress
           ? _value.restaurantWalletAddress
           : restaurantWalletAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      deliveryCharge: deliveryCharge == freezed
+      deliveryCharge: null == deliveryCharge
           ? _value.deliveryCharge
           : deliveryCharge // ignore: cast_nullable_to_non_nullable
               as int,
-      collectionCharge: collectionCharge == freezed
+      collectionCharge: null == collectionCharge
           ? _value.collectionCharge
           : collectionCharge // ignore: cast_nullable_to_non_nullable
               as int,
-      fulfilmentMethod: fulfilmentMethod == freezed
+      fulfilmentMethod: null == fulfilmentMethod
           ? _value.fulfilmentMethod
           : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
               as FulfilmentMethod,
-      isDelivery: isDelivery == freezed
+      isDelivery: null == isDelivery
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
               as bool,
-      restaurantMinimumOrder: restaurantMinimumOrder == freezed
+      restaurantMinimumOrder: null == restaurantMinimumOrder
           ? _value.restaurantMinimumOrder
           : restaurantMinimumOrder // ignore: cast_nullable_to_non_nullable
               as int,
-      restaurantPlatformFee: restaurantPlatformFee == freezed
+      restaurantPlatformFee: null == restaurantPlatformFee
           ? _value.restaurantPlatformFee
           : restaurantPlatformFee // ignore: cast_nullable_to_non_nullable
               as int,
-      deliveryInstructions: deliveryInstructions == freezed
+      deliveryInstructions: null == deliveryInstructions
           ? _value.deliveryInstructions
           : deliveryInstructions // ignore: cast_nullable_to_non_nullable
               as String,
-      deliveryMethodId: deliveryMethodId == freezed
+      deliveryMethodId: null == deliveryMethodId
           ? _value.deliveryMethodId
           : deliveryMethodId // ignore: cast_nullable_to_non_nullable
               as int,
-      collectionMethodId: collectionMethodId == freezed
+      collectionMethodId: null == collectionMethodId
           ? _value.collectionMethodId
           : collectionMethodId // ignore: cast_nullable_to_non_nullable
               as int,
@@ -596,25 +600,25 @@ class _$_UserCartState extends _UserCartState {
       @JsonKey(ignore: true) this.selectedDeliveryAddress = null,
       @JsonKey(ignore: true) this.selectedTimeSlot = const {},
       @JsonKey(ignore: true) this.selectedTipAmount = 0,
-      @JsonKey(ignore: true) this.discountCode = "",
-      @JsonKey(ignore: true) this.paymentIntentID = "",
-      @JsonKey(ignore: true) this.orderID = "",
+      @JsonKey(ignore: true) this.discountCode = '',
+      @JsonKey(ignore: true) this.paymentIntentID = '',
+      @JsonKey(ignore: true) this.orderID = '',
       @JsonKey(ignore: true) this.selectedGBPxAmount = 0.0,
       @JsonKey(ignore: true) this.selectedPPLAmount = 0.0,
       @JsonKey(ignore: true) this.transferringTokens = false,
       @JsonKey(ignore: true) this.errorCompletingPayment = false,
       @JsonKey(ignore: true) this.confirmedPayment = false,
-      @JsonKey(ignore: true) this.restaurantName = "",
-      @JsonKey(ignore: true) this.restaurantID = "",
+      @JsonKey(ignore: true) this.restaurantName = '',
+      @JsonKey(ignore: true) this.restaurantID = '',
       @JsonKey(ignore: true) this.restaurantAddress = null,
-      @JsonKey(ignore: true) this.restaurantWalletAddress = "",
+      @JsonKey(ignore: true) this.restaurantWalletAddress = '',
       @JsonKey(ignore: true) this.deliveryCharge = 0,
       @JsonKey(ignore: true) this.collectionCharge = 0,
       @JsonKey(ignore: true) this.fulfilmentMethod = FulfilmentMethod.delivery,
       @JsonKey(ignore: true) this.isDelivery = false,
       @JsonKey(ignore: true) this.restaurantMinimumOrder = 0,
       @JsonKey(ignore: true) this.restaurantPlatformFee = 0,
-      @JsonKey(ignore: true) this.deliveryInstructions = "",
+      @JsonKey(ignore: true) this.deliveryInstructions = '',
       @JsonKey(ignore: true) this.deliveryMethodId = 0,
       @JsonKey(ignore: true) this.collectionMethodId = 0})
       : super._();
@@ -733,67 +737,70 @@ class _$_UserCartState extends _UserCartState {
         (other.runtimeType == runtimeType &&
             other is _$_UserCartState &&
             const DeepCollectionEquality().equals(other.cartItems, cartItems) &&
-            const DeepCollectionEquality()
-                .equals(other.cartSubTotal, cartSubTotal) &&
-            const DeepCollectionEquality().equals(other.cartTax, cartTax) &&
-            const DeepCollectionEquality().equals(other.cartTotal, cartTotal) &&
-            const DeepCollectionEquality()
-                .equals(other.cartDiscountPercent, cartDiscountPercent) &&
-            const DeepCollectionEquality()
-                .equals(other.cartDiscountComputed, cartDiscountComputed) &&
-            const DeepCollectionEquality()
-                .equals(other.cartDeliveryCharge, cartDeliveryCharge) &&
+            (identical(other.cartSubTotal, cartSubTotal) ||
+                other.cartSubTotal == cartSubTotal) &&
+            (identical(other.cartTax, cartTax) || other.cartTax == cartTax) &&
+            (identical(other.cartTotal, cartTotal) ||
+                other.cartTotal == cartTotal) &&
+            (identical(other.cartDiscountPercent, cartDiscountPercent) ||
+                other.cartDiscountPercent == cartDiscountPercent) &&
+            (identical(other.cartDiscountComputed, cartDiscountComputed) ||
+                other.cartDiscountComputed == cartDiscountComputed) &&
+            (identical(other.cartDeliveryCharge, cartDeliveryCharge) ||
+                other.cartDeliveryCharge == cartDeliveryCharge) &&
             const DeepCollectionEquality()
                 .equals(other.deliverySlots, deliverySlots) &&
             const DeepCollectionEquality()
                 .equals(other.collectionSlots, collectionSlots) &&
-            const DeepCollectionEquality().equals(
-                other.selectedDeliveryAddress, selectedDeliveryAddress) &&
+            (identical(
+                    other.selectedDeliveryAddress, selectedDeliveryAddress) ||
+                other.selectedDeliveryAddress == selectedDeliveryAddress) &&
             const DeepCollectionEquality()
                 .equals(other.selectedTimeSlot, selectedTimeSlot) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedTipAmount, selectedTipAmount) &&
-            const DeepCollectionEquality()
-                .equals(other.discountCode, discountCode) &&
-            const DeepCollectionEquality()
-                .equals(other.paymentIntentID, paymentIntentID) &&
-            const DeepCollectionEquality().equals(other.orderID, orderID) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedGBPxAmount, selectedGBPxAmount) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedPPLAmount, selectedPPLAmount) &&
-            const DeepCollectionEquality()
-                .equals(other.transferringTokens, transferringTokens) &&
-            const DeepCollectionEquality()
-                .equals(other.errorCompletingPayment, errorCompletingPayment) &&
-            const DeepCollectionEquality()
-                .equals(other.confirmedPayment, confirmedPayment) &&
-            const DeepCollectionEquality()
-                .equals(other.restaurantName, restaurantName) &&
-            const DeepCollectionEquality()
-                .equals(other.restaurantID, restaurantID) &&
-            const DeepCollectionEquality()
-                .equals(other.restaurantAddress, restaurantAddress) &&
-            const DeepCollectionEquality().equals(
-                other.restaurantWalletAddress, restaurantWalletAddress) &&
-            const DeepCollectionEquality()
-                .equals(other.deliveryCharge, deliveryCharge) &&
-            const DeepCollectionEquality()
-                .equals(other.collectionCharge, collectionCharge) &&
-            const DeepCollectionEquality()
-                .equals(other.fulfilmentMethod, fulfilmentMethod) &&
-            const DeepCollectionEquality()
-                .equals(other.isDelivery, isDelivery) &&
-            const DeepCollectionEquality()
-                .equals(other.restaurantMinimumOrder, restaurantMinimumOrder) &&
-            const DeepCollectionEquality()
-                .equals(other.restaurantPlatformFee, restaurantPlatformFee) &&
-            const DeepCollectionEquality()
-                .equals(other.deliveryInstructions, deliveryInstructions) &&
-            const DeepCollectionEquality()
-                .equals(other.deliveryMethodId, deliveryMethodId) &&
-            const DeepCollectionEquality()
-                .equals(other.collectionMethodId, collectionMethodId));
+            (identical(other.selectedTipAmount, selectedTipAmount) ||
+                other.selectedTipAmount == selectedTipAmount) &&
+            (identical(other.discountCode, discountCode) ||
+                other.discountCode == discountCode) &&
+            (identical(other.paymentIntentID, paymentIntentID) ||
+                other.paymentIntentID == paymentIntentID) &&
+            (identical(other.orderID, orderID) || other.orderID == orderID) &&
+            (identical(other.selectedGBPxAmount, selectedGBPxAmount) ||
+                other.selectedGBPxAmount == selectedGBPxAmount) &&
+            (identical(other.selectedPPLAmount, selectedPPLAmount) ||
+                other.selectedPPLAmount == selectedPPLAmount) &&
+            (identical(other.transferringTokens, transferringTokens) ||
+                other.transferringTokens == transferringTokens) &&
+            (identical(other.errorCompletingPayment, errorCompletingPayment) ||
+                other.errorCompletingPayment == errorCompletingPayment) &&
+            (identical(other.confirmedPayment, confirmedPayment) ||
+                other.confirmedPayment == confirmedPayment) &&
+            (identical(other.restaurantName, restaurantName) ||
+                other.restaurantName == restaurantName) &&
+            (identical(other.restaurantID, restaurantID) ||
+                other.restaurantID == restaurantID) &&
+            (identical(other.restaurantAddress, restaurantAddress) ||
+                other.restaurantAddress == restaurantAddress) &&
+            (identical(
+                    other.restaurantWalletAddress, restaurantWalletAddress) ||
+                other.restaurantWalletAddress == restaurantWalletAddress) &&
+            (identical(other.deliveryCharge, deliveryCharge) ||
+                other.deliveryCharge == deliveryCharge) &&
+            (identical(other.collectionCharge, collectionCharge) ||
+                other.collectionCharge == collectionCharge) &&
+            (identical(other.fulfilmentMethod, fulfilmentMethod) ||
+                other.fulfilmentMethod == fulfilmentMethod) &&
+            (identical(other.isDelivery, isDelivery) ||
+                other.isDelivery == isDelivery) &&
+            (identical(other.restaurantMinimumOrder, restaurantMinimumOrder) ||
+                other.restaurantMinimumOrder == restaurantMinimumOrder) &&
+            (identical(other.restaurantPlatformFee, restaurantPlatformFee) ||
+                other.restaurantPlatformFee == restaurantPlatformFee) &&
+            (identical(other.deliveryInstructions, deliveryInstructions) ||
+                other.deliveryInstructions == deliveryInstructions) &&
+            (identical(other.deliveryMethodId, deliveryMethodId) ||
+                other.deliveryMethodId == deliveryMethodId) &&
+            (identical(other.collectionMethodId, collectionMethodId) ||
+                other.collectionMethodId == collectionMethodId));
   }
 
   @JsonKey(ignore: true)
@@ -801,48 +808,51 @@ class _$_UserCartState extends _UserCartState {
   int get hashCode => Object.hashAll([
         runtimeType,
         const DeepCollectionEquality().hash(cartItems),
-        const DeepCollectionEquality().hash(cartSubTotal),
-        const DeepCollectionEquality().hash(cartTax),
-        const DeepCollectionEquality().hash(cartTotal),
-        const DeepCollectionEquality().hash(cartDiscountPercent),
-        const DeepCollectionEquality().hash(cartDiscountComputed),
-        const DeepCollectionEquality().hash(cartDeliveryCharge),
+        cartSubTotal,
+        cartTax,
+        cartTotal,
+        cartDiscountPercent,
+        cartDiscountComputed,
+        cartDeliveryCharge,
         const DeepCollectionEquality().hash(deliverySlots),
         const DeepCollectionEquality().hash(collectionSlots),
-        const DeepCollectionEquality().hash(selectedDeliveryAddress),
+        selectedDeliveryAddress,
         const DeepCollectionEquality().hash(selectedTimeSlot),
-        const DeepCollectionEquality().hash(selectedTipAmount),
-        const DeepCollectionEquality().hash(discountCode),
-        const DeepCollectionEquality().hash(paymentIntentID),
-        const DeepCollectionEquality().hash(orderID),
-        const DeepCollectionEquality().hash(selectedGBPxAmount),
-        const DeepCollectionEquality().hash(selectedPPLAmount),
-        const DeepCollectionEquality().hash(transferringTokens),
-        const DeepCollectionEquality().hash(errorCompletingPayment),
-        const DeepCollectionEquality().hash(confirmedPayment),
-        const DeepCollectionEquality().hash(restaurantName),
-        const DeepCollectionEquality().hash(restaurantID),
-        const DeepCollectionEquality().hash(restaurantAddress),
-        const DeepCollectionEquality().hash(restaurantWalletAddress),
-        const DeepCollectionEquality().hash(deliveryCharge),
-        const DeepCollectionEquality().hash(collectionCharge),
-        const DeepCollectionEquality().hash(fulfilmentMethod),
-        const DeepCollectionEquality().hash(isDelivery),
-        const DeepCollectionEquality().hash(restaurantMinimumOrder),
-        const DeepCollectionEquality().hash(restaurantPlatformFee),
-        const DeepCollectionEquality().hash(deliveryInstructions),
-        const DeepCollectionEquality().hash(deliveryMethodId),
-        const DeepCollectionEquality().hash(collectionMethodId)
+        selectedTipAmount,
+        discountCode,
+        paymentIntentID,
+        orderID,
+        selectedGBPxAmount,
+        selectedPPLAmount,
+        transferringTokens,
+        errorCompletingPayment,
+        confirmedPayment,
+        restaurantName,
+        restaurantID,
+        restaurantAddress,
+        restaurantWalletAddress,
+        deliveryCharge,
+        collectionCharge,
+        fulfilmentMethod,
+        isDelivery,
+        restaurantMinimumOrder,
+        restaurantPlatformFee,
+        deliveryInstructions,
+        deliveryMethodId,
+        collectionMethodId
       ]);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>
       __$$_UserCartStateCopyWithImpl<_$_UserCartState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserCartStateToJson(this);
+    return _$$_UserCartStateToJson(
+      this,
+    );
   }
 }
 
@@ -888,108 +898,103 @@ abstract class _UserCartState extends UserCartState {
 
   @override
   @JsonKey(ignore: true)
-  List<CartItem> get cartItems => throw _privateConstructorUsedError;
+  List<CartItem> get cartItems;
   @override
   @JsonKey(ignore: true)
-  int get cartSubTotal => throw _privateConstructorUsedError;
+  int get cartSubTotal;
   @override
   @JsonKey(ignore: true)
-  int get cartTax => throw _privateConstructorUsedError;
+  int get cartTax;
   @override
   @JsonKey(ignore: true)
-  int get cartTotal => throw _privateConstructorUsedError;
+  int get cartTotal;
   @override
   @JsonKey(ignore: true)
-  int get cartDiscountPercent => throw _privateConstructorUsedError;
+  int get cartDiscountPercent;
   @override
   @JsonKey(ignore: true)
-  int get cartDiscountComputed => throw _privateConstructorUsedError;
+  int get cartDiscountComputed;
   @override
   @JsonKey(ignore: true)
-  int get cartDeliveryCharge => throw _privateConstructorUsedError;
+  int get cartDeliveryCharge;
   @override
   @JsonKey(ignore: true)
-  List<Map<String, String>> get deliverySlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get deliverySlots;
   @override
   @JsonKey(ignore: true)
-  List<Map<String, String>> get collectionSlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get collectionSlots;
   @override
   @JsonKey(ignore: true)
-  DeliveryAddresses? get selectedDeliveryAddress =>
-      throw _privateConstructorUsedError;
+  DeliveryAddresses? get selectedDeliveryAddress;
   @override
   @JsonKey(ignore: true)
-  Map<String, String> get selectedTimeSlot =>
-      throw _privateConstructorUsedError;
+  Map<String, String> get selectedTimeSlot;
   @override
   @JsonKey(ignore: true)
-  int get selectedTipAmount => throw _privateConstructorUsedError;
+  int get selectedTipAmount;
   @override
   @JsonKey(ignore: true)
-  String get discountCode => throw _privateConstructorUsedError;
+  String get discountCode;
   @override
   @JsonKey(ignore: true)
-  String get paymentIntentID => throw _privateConstructorUsedError;
+  String get paymentIntentID;
   @override
   @JsonKey(ignore: true)
-  String get orderID => throw _privateConstructorUsedError;
+  String get orderID;
   @override
   @JsonKey(ignore: true)
-  double get selectedGBPxAmount => throw _privateConstructorUsedError;
+  double get selectedGBPxAmount;
   @override
   @JsonKey(ignore: true)
-  double get selectedPPLAmount => throw _privateConstructorUsedError;
+  double get selectedPPLAmount;
   @override
   @JsonKey(ignore: true)
-  bool get transferringTokens => throw _privateConstructorUsedError;
+  bool get transferringTokens;
   @override
   @JsonKey(ignore: true)
-  bool get errorCompletingPayment => throw _privateConstructorUsedError;
+  bool get errorCompletingPayment;
   @override
   @JsonKey(ignore: true)
-  bool get confirmedPayment => throw _privateConstructorUsedError;
+  bool get confirmedPayment;
   @override
   @JsonKey(ignore: true)
-  String get restaurantName => throw _privateConstructorUsedError;
+  String get restaurantName;
   @override
   @JsonKey(ignore: true)
-  String get restaurantID => throw _privateConstructorUsedError;
+  String get restaurantID;
   @override
   @JsonKey(ignore: true)
-  DeliveryAddresses? get restaurantAddress =>
-      throw _privateConstructorUsedError;
+  DeliveryAddresses? get restaurantAddress;
   @override
   @JsonKey(ignore: true)
-  String get restaurantWalletAddress => throw _privateConstructorUsedError;
+  String get restaurantWalletAddress;
   @override
   @JsonKey(ignore: true)
-  int get deliveryCharge => throw _privateConstructorUsedError;
+  int get deliveryCharge;
   @override
   @JsonKey(ignore: true)
-  int get collectionCharge => throw _privateConstructorUsedError;
+  int get collectionCharge;
   @override
   @JsonKey(ignore: true)
-  FulfilmentMethod get fulfilmentMethod => throw _privateConstructorUsedError;
+  FulfilmentMethod get fulfilmentMethod;
   @override
   @JsonKey(ignore: true)
-  bool get isDelivery => throw _privateConstructorUsedError;
+  bool get isDelivery;
   @override
   @JsonKey(ignore: true)
-  int get restaurantMinimumOrder => throw _privateConstructorUsedError;
+  int get restaurantMinimumOrder;
   @override
   @JsonKey(ignore: true)
-  int get restaurantPlatformFee => throw _privateConstructorUsedError;
+  int get restaurantPlatformFee;
   @override
   @JsonKey(ignore: true)
-  String get deliveryInstructions => throw _privateConstructorUsedError;
+  String get deliveryInstructions;
   @override
   @JsonKey(ignore: true)
-  int get deliveryMethodId => throw _privateConstructorUsedError;
+  int get deliveryMethodId;
   @override
   @JsonKey(ignore: true)
-  int get collectionMethodId => throw _privateConstructorUsedError;
+  int get collectionMethodId;
   @override
   @JsonKey(ignore: true)
   _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>

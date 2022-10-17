@@ -1,18 +1,140 @@
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:decimal/decimal.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/tokens/price.dart';
 import 'package:vegan_liverpool/utils/format.dart';
+import 'package:vegan_liverpool/utils/json_helpers.dart';
 
 part 'wallet_action.freezed.dart';
 part 'wallet_action.g.dart';
 
 @Freezed(unionKey: 'name')
 class WalletAction with _$WalletAction implements Comparable<WalletAction> {
+  @FreezedUnionValue('tokenBonus')
+  const factory WalletAction.bonus({
+    @Default(0) int timestamp,
+    @JsonKey(name: '_id') required String id,
+    @Default('tokenBonus') String name,
+    String? txHash,
+    required String status,
+    @Default(0) int? blockNumber,
+    required String tokenAddress,
+    String? from,
+    required String to,
+    required BigInt value,
+    required String tokenName,
+    required String tokenSymbol,
+    required int tokenDecimal,
+    String? bonusType,
+  }) = Bonus;
+
+  @FreezedUnionValue('sendTokens')
+  const factory WalletAction.send({
+    @Default(0) int timestamp,
+    @JsonKey(name: '_id') required String id,
+    @Default('sendTokens') String name,
+    String? txHash,
+    required String status,
+    @Default(0) int? blockNumber,
+    required String tokenAddress,
+    required String from,
+    required String to,
+    required BigInt value,
+    required String tokenName,
+    required String tokenSymbol,
+    required int tokenDecimal,
+  }) = Send;
+
+  @FreezedUnionValue('fiat-deposit')
+  const factory WalletAction.fiatDeposit({
+    @Default(0) int timestamp,
+    @JsonKey(name: '_id') required String id,
+    @Default('fiat-deposit') String name,
+    String? txHash,
+    required String status,
+    @Default(0) int? blockNumber,
+    required String tokenAddress,
+    String? from,
+    required String to,
+    required BigInt value,
+    required String tokenName,
+    required String tokenSymbol,
+    required int tokenDecimal,
+  }) = FiatDeposit;
+
+  factory WalletAction.fromJson(Map<String, dynamic> json) =>
+      _$WalletActionFromJson(json);
+
+  @FreezedUnionValue('createWallet')
+  const factory WalletAction.createWallet({
+    @Default(0) int timestamp,
+    @JsonKey(name: '_id') required String id,
+    @Default('createWallet') String name,
+    String? txHash,
+    required String status,
+    @Default(0) int? blockNumber,
+  }) = CreateWallet;
+
+  @FreezedUnionValue('swapTokens')
+  const factory WalletAction.swap({
+    @Default(0) int timestamp,
+    @JsonKey(name: '_id') required String id,
+    @Default('swapTokens') String name,
+    String? txHash,
+    required String status,
+    @Default(0) int? blockNumber,
+    @JsonKey(name: 'metadata') Trade? tradeInfo,
+  }) = Swap;
+
+  factory WalletAction.create(Map<String, dynamic> json) {
+    final Map<String, dynamic> newJson = json.containsKey('data')
+        ? Map.from({...json, ...json['data'] as Map<String, dynamic>})
+        : json;
+    newJson['timestamp'] =
+        DateTime.parse(json['updatedAt'] as String).millisecondsSinceEpoch;
+    newJson['value'] = isJsonValEmpty(json, 'value') ? '0' : json['value'];
+    if (json.containsKey('status')) {
+      newJson['status'] = json['status'].toString().toUpperCase();
+    }
+    return WalletAction.fromJson(newJson);
+  }
+
+  @FreezedUnionValue('receiveTokens')
+  const factory WalletAction.receive({
+    @Default(0) int timestamp,
+    @JsonKey(name: '_id') required String id,
+    @Default('receiveTokens') String name,
+    String? txHash,
+    required String status,
+    @Default(0) int? blockNumber,
+    required String tokenAddress,
+    required String from,
+    required String to,
+    required BigInt value,
+    required String tokenName,
+    required String tokenSymbol,
+    required int tokenDecimal,
+  }) = Receive;
+
+  @FreezedUnionValue('receiveNFT')
+  const factory WalletAction.receiveNFT({
+    @Default(0) int timestamp,
+    @JsonKey(name: '_id') required String id,
+    @Default('receiveNFT') String name,
+    String? txHash,
+    required String status,
+    @Default(0) int? blockNumber,
+    required String tokenAddress,
+    required String from,
+    required String to,
+    required String tokenName,
+    required String tokenSymbol,
+    required int tokenDecimal,
+  }) = ReceiveNFT;
   const WalletAction._();
 
   @override
@@ -21,31 +143,15 @@ class WalletAction with _$WalletAction implements Comparable<WalletAction> {
     return timestamp.compareTo(other.timestamp);
   }
 
-  static WalletAction create(Map<String, dynamic> json) {
-    json =
-        json.containsKey('data') ? Map.from({...json, ...json['data']}) : json;
-    json['timestamp'] =
-        DateTime.parse(json['updatedAt']).millisecondsSinceEpoch;
-    json['value'] =
-        json.containsKey('value') && [null, '', 'NaN'].contains(json['value'])
-            ? '0'
-            : json['value'];
-    if (json.containsKey('status')) {
-      json['status'] = json['status']?.toUpperCase();
-    }
-    return WalletAction.fromJson(json);
-  }
-
   static List<WalletAction> actionsFromJson(Iterable<dynamic> docs) =>
-      List.from(docs).fold<List<WalletAction>>([], (previousValue, action) {
+      List<Map<String, dynamic>>.from(docs).fold<List<WalletAction>>([],
+          (previousValue, action) {
         try {
           return [...previousValue, WalletAction.create(action)];
         } catch (e) {
           return previousValue;
         }
       });
-
-  factory WalletAction.fromJson(dynamic json) => _$WalletActionFromJson(json);
 
   bool isPending() => status == 'PENDING' || status == 'STARTED';
   bool isFailed() => status == 'FAILED';
@@ -264,110 +370,4 @@ class WalletAction with _$WalletAction implements Comparable<WalletAction> {
       receive: (value) => value.to,
     );
   }
-
-  @FreezedUnionValue('createWallet')
-  const factory WalletAction.createWallet({
-    @Default(0) int timestamp,
-    @JsonKey(name: '_id') required String id,
-    @Default('createWallet') String name,
-    String? txHash,
-    required String status,
-    @Default(0) int? blockNumber,
-  }) = CreateWallet;
-
-  @FreezedUnionValue('fiat-deposit')
-  const factory WalletAction.fiatDeposit({
-    @Default(0) int timestamp,
-    @JsonKey(name: '_id') required String id,
-    @Default('fiat-deposit') String name,
-    String? txHash,
-    required String status,
-    @Default(0) int? blockNumber,
-    required String tokenAddress,
-    String? from,
-    required String to,
-    required BigInt value,
-    required String tokenName,
-    required String tokenSymbol,
-    required int tokenDecimal,
-  }) = FiatDeposit;
-
-  @FreezedUnionValue('tokenBonus')
-  const factory WalletAction.bonus({
-    @Default(0) int timestamp,
-    @JsonKey(name: '_id') required String id,
-    @Default('tokenBonus') String name,
-    String? txHash,
-    required String status,
-    @Default(0) int? blockNumber,
-    required String tokenAddress,
-    String? from,
-    required String to,
-    required BigInt value,
-    required String tokenName,
-    required String tokenSymbol,
-    required int tokenDecimal,
-    String? bonusType,
-  }) = Bonus;
-
-  @FreezedUnionValue('sendTokens')
-  const factory WalletAction.send({
-    @Default(0) int timestamp,
-    @JsonKey(name: '_id') required String id,
-    @Default('sendTokens') String name,
-    String? txHash,
-    required String status,
-    @Default(0) int? blockNumber,
-    required String tokenAddress,
-    required String from,
-    required String to,
-    required BigInt value,
-    required String tokenName,
-    required String tokenSymbol,
-    required int tokenDecimal,
-  }) = Send;
-
-  @FreezedUnionValue('receiveTokens')
-  const factory WalletAction.receive({
-    @Default(0) int timestamp,
-    @JsonKey(name: '_id') required String id,
-    @Default('receiveTokens') String name,
-    String? txHash,
-    required String status,
-    @Default(0) int? blockNumber,
-    required String tokenAddress,
-    required String from,
-    required String to,
-    required BigInt value,
-    required String tokenName,
-    required String tokenSymbol,
-    required int tokenDecimal,
-  }) = Receive;
-
-  @FreezedUnionValue('swapTokens')
-  const factory WalletAction.swap({
-    @Default(0) int timestamp,
-    @JsonKey(name: '_id') required String id,
-    @Default('swapTokens') String name,
-    String? txHash,
-    required String status,
-    @Default(0) int? blockNumber,
-    @JsonKey(name: 'metadata') Trade? tradeInfo,
-  }) = Swap;
-
-  @FreezedUnionValue('receiveNFT')
-  const factory WalletAction.receiveNFT({
-    @Default(0) int timestamp,
-    @JsonKey(name: '_id') required String id,
-    @Default('receiveNFT') String name,
-    String? txHash,
-    required String status,
-    @Default(0) int? blockNumber,
-    required String tokenAddress,
-    required String from,
-    required String to,
-    required String tokenName,
-    required String tokenSymbol,
-    required int tokenDecimal,
-  }) = ReceiveNFT;
 }

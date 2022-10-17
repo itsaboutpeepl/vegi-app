@@ -3,13 +3,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:redux_persist/redux_persist.dart';
 
 class SecureStorage implements StorageEngine {
-  FlutterSecureStorage flutterSecureStorage;
-
   SecureStorage(this.flutterSecureStorage);
+  FlutterSecureStorage flutterSecureStorage;
 
   @override
   Future<Uint8List> load() async {
-    String? data = await flutterSecureStorage.read(key: "data");
+    final data = await flutterSecureStorage.read(key: 'data');
     return stringToUint8List(data)!;
   }
 

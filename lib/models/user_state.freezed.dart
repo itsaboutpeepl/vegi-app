@@ -70,7 +70,8 @@ mixin _$UserState {
 /// @nodoc
 abstract class $UserStateCopyWith<$Res> {
   factory $UserStateCopyWith(UserState value, $Res Function(UserState) then) =
-      _$UserStateCopyWithImpl<$Res>;
+      _$UserStateCopyWithImpl<$Res, UserState>;
+  @useResult
   $Res call(
       {@JsonKey(ignore: true) String? wcURI,
       String? contractVersion,
@@ -112,13 +113,16 @@ abstract class $UserStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
+class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
+    implements $UserStateCopyWith<$Res> {
   _$UserStateCopyWithImpl(this._value, this._then);
 
-  final UserState _value;
   // ignore: unused_field
-  final $Res Function(UserState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? wcURI = freezed,
@@ -126,189 +130,190 @@ class _$UserStateCopyWithImpl<$Res> implements $UserStateCopyWith<$Res> {
     Object? walletModules = freezed,
     Object? installedAt = freezed,
     Object? isContactsSynced = freezed,
-    Object? isLoggedOut = freezed,
-    Object? backup = freezed,
-    Object? scrollToTop = freezed,
-    Object? walletAddress = freezed,
-    Object? networks = freezed,
-    Object? mnemonic = freezed,
-    Object? privateKey = freezed,
-    Object? pincode = freezed,
-    Object? accountAddress = freezed,
-    Object? countryCode = freezed,
-    Object? phoneNumber = freezed,
-    Object? warnSendDialogShowed = freezed,
-    Object? isoCode = freezed,
-    Object? jwtToken = freezed,
-    Object? displayName = freezed,
-    Object? avatarUrl = freezed,
-    Object? email = freezed,
+    Object? isLoggedOut = null,
+    Object? backup = null,
+    Object? scrollToTop = null,
+    Object? walletAddress = null,
+    Object? networks = null,
+    Object? mnemonic = null,
+    Object? privateKey = null,
+    Object? pincode = null,
+    Object? accountAddress = null,
+    Object? countryCode = null,
+    Object? phoneNumber = null,
+    Object? warnSendDialogShowed = null,
+    Object? isoCode = null,
+    Object? jwtToken = null,
+    Object? displayName = null,
+    Object? avatarUrl = null,
+    Object? email = null,
     Object? verificationId = freezed,
-    Object? identifier = freezed,
-    Object? syncedContacts = freezed,
-    Object? reverseContacts = freezed,
-    Object? currency = freezed,
-    Object? hasUpgrade = freezed,
-    Object? authType = freezed,
+    Object? identifier = null,
+    Object? syncedContacts = null,
+    Object? reverseContacts = null,
+    Object? currency = null,
+    Object? hasUpgrade = null,
+    Object? authType = null,
     Object? locale = freezed,
     Object? credentials = freezed,
-    Object? listOfDeliveryAddresses = freezed,
-    Object? hasSavedSeedPhrase = freezed,
-    Object? initialLoginDateTime = freezed,
-    Object? showSeedPhraseBanner = freezed,
+    Object? listOfDeliveryAddresses = null,
+    Object? hasSavedSeedPhrase = null,
+    Object? initialLoginDateTime = null,
+    Object? showSeedPhraseBanner = null,
   }) {
     return _then(_value.copyWith(
-      wcURI: wcURI == freezed
+      wcURI: freezed == wcURI
           ? _value.wcURI
           : wcURI // ignore: cast_nullable_to_non_nullable
               as String?,
-      contractVersion: contractVersion == freezed
+      contractVersion: freezed == contractVersion
           ? _value.contractVersion
           : contractVersion // ignore: cast_nullable_to_non_nullable
               as String?,
-      walletModules: walletModules == freezed
+      walletModules: freezed == walletModules
           ? _value.walletModules
           : walletModules // ignore: cast_nullable_to_non_nullable
               as WalletModules?,
-      installedAt: installedAt == freezed
+      installedAt: freezed == installedAt
           ? _value.installedAt
           : installedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      isContactsSynced: isContactsSynced == freezed
+      isContactsSynced: freezed == isContactsSynced
           ? _value.isContactsSynced
           : isContactsSynced // ignore: cast_nullable_to_non_nullable
               as bool?,
-      isLoggedOut: isLoggedOut == freezed
+      isLoggedOut: null == isLoggedOut
           ? _value.isLoggedOut
           : isLoggedOut // ignore: cast_nullable_to_non_nullable
               as bool,
-      backup: backup == freezed
+      backup: null == backup
           ? _value.backup
           : backup // ignore: cast_nullable_to_non_nullable
               as bool,
-      scrollToTop: scrollToTop == freezed
+      scrollToTop: null == scrollToTop
           ? _value.scrollToTop
           : scrollToTop // ignore: cast_nullable_to_non_nullable
               as bool,
-      walletAddress: walletAddress == freezed
+      walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      networks: networks == freezed
+      networks: null == networks
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      mnemonic: mnemonic == freezed
+      mnemonic: null == mnemonic
           ? _value.mnemonic
           : mnemonic // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      privateKey: privateKey == freezed
+      privateKey: null == privateKey
           ? _value.privateKey
           : privateKey // ignore: cast_nullable_to_non_nullable
               as String,
-      pincode: pincode == freezed
+      pincode: null == pincode
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
               as String,
-      accountAddress: accountAddress == freezed
+      accountAddress: null == accountAddress
           ? _value.accountAddress
           : accountAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      countryCode: countryCode == freezed
+      countryCode: null == countryCode
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneNumber: phoneNumber == freezed
+      phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      warnSendDialogShowed: warnSendDialogShowed == freezed
+      warnSendDialogShowed: null == warnSendDialogShowed
           ? _value.warnSendDialogShowed
           : warnSendDialogShowed // ignore: cast_nullable_to_non_nullable
               as bool,
-      isoCode: isoCode == freezed
+      isoCode: null == isoCode
           ? _value.isoCode
           : isoCode // ignore: cast_nullable_to_non_nullable
               as String,
-      jwtToken: jwtToken == freezed
+      jwtToken: null == jwtToken
           ? _value.jwtToken
           : jwtToken // ignore: cast_nullable_to_non_nullable
               as String,
-      displayName: displayName == freezed
+      displayName: null == displayName
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
               as String,
-      avatarUrl: avatarUrl == freezed
+      avatarUrl: null == avatarUrl
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      email: email == freezed
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      verificationId: verificationId == freezed
+      verificationId: freezed == verificationId
           ? _value.verificationId
           : verificationId // ignore: cast_nullable_to_non_nullable
               as String?,
-      identifier: identifier == freezed
+      identifier: null == identifier
           ? _value.identifier
           : identifier // ignore: cast_nullable_to_non_nullable
               as String,
-      syncedContacts: syncedContacts == freezed
+      syncedContacts: null == syncedContacts
           ? _value.syncedContacts
           : syncedContacts // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      reverseContacts: reverseContacts == freezed
+      reverseContacts: null == reverseContacts
           ? _value.reverseContacts
           : reverseContacts // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      currency: currency == freezed
+      currency: null == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as String,
-      hasUpgrade: hasUpgrade == freezed
+      hasUpgrade: null == hasUpgrade
           ? _value.hasUpgrade
           : hasUpgrade // ignore: cast_nullable_to_non_nullable
               as bool,
-      authType: authType == freezed
+      authType: null == authType
           ? _value.authType
           : authType // ignore: cast_nullable_to_non_nullable
               as BiometricAuth,
-      locale: locale == freezed
+      locale: freezed == locale
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
-      credentials: credentials == freezed
+      credentials: freezed == credentials
           ? _value.credentials
           : credentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
-      listOfDeliveryAddresses: listOfDeliveryAddresses == freezed
+      listOfDeliveryAddresses: null == listOfDeliveryAddresses
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
               as List<DeliveryAddresses>,
-      hasSavedSeedPhrase: hasSavedSeedPhrase == freezed
+      hasSavedSeedPhrase: null == hasSavedSeedPhrase
           ? _value.hasSavedSeedPhrase
           : hasSavedSeedPhrase // ignore: cast_nullable_to_non_nullable
               as bool,
-      initialLoginDateTime: initialLoginDateTime == freezed
+      initialLoginDateTime: null == initialLoginDateTime
           ? _value.initialLoginDateTime
           : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
               as String,
-      showSeedPhraseBanner: showSeedPhraseBanner == freezed
+      showSeedPhraseBanner: null == showSeedPhraseBanner
           ? _value.showSeedPhraseBanner
           : showSeedPhraseBanner // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $WalletModulesCopyWith<$Res>? get walletModules {
     if (_value.walletModules == null) {
       return null;
     }
 
     return $WalletModulesCopyWith<$Res>(_value.walletModules!, (value) {
-      return _then(_value.copyWith(walletModules: value));
+      return _then(_value.copyWith(walletModules: value) as $Val);
     });
   }
 }
@@ -319,6 +324,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
           _$_UserState value, $Res Function(_$_UserState) then) =
       __$$_UserStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(ignore: true) String? wcURI,
       String? contractVersion,
@@ -361,15 +367,14 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
+class __$$_UserStateCopyWithImpl<$Res>
+    extends _$UserStateCopyWithImpl<$Res, _$_UserState>
     implements _$$_UserStateCopyWith<$Res> {
   __$$_UserStateCopyWithImpl(
       _$_UserState _value, $Res Function(_$_UserState) _then)
-      : super(_value, (v) => _then(v as _$_UserState));
+      : super(_value, _then);
 
-  @override
-  _$_UserState get _value => super._value as _$_UserState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? wcURI = freezed,
@@ -377,175 +382,175 @@ class __$$_UserStateCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res>
     Object? walletModules = freezed,
     Object? installedAt = freezed,
     Object? isContactsSynced = freezed,
-    Object? isLoggedOut = freezed,
-    Object? backup = freezed,
-    Object? scrollToTop = freezed,
-    Object? walletAddress = freezed,
-    Object? networks = freezed,
-    Object? mnemonic = freezed,
-    Object? privateKey = freezed,
-    Object? pincode = freezed,
-    Object? accountAddress = freezed,
-    Object? countryCode = freezed,
-    Object? phoneNumber = freezed,
-    Object? warnSendDialogShowed = freezed,
-    Object? isoCode = freezed,
-    Object? jwtToken = freezed,
-    Object? displayName = freezed,
-    Object? avatarUrl = freezed,
-    Object? email = freezed,
+    Object? isLoggedOut = null,
+    Object? backup = null,
+    Object? scrollToTop = null,
+    Object? walletAddress = null,
+    Object? networks = null,
+    Object? mnemonic = null,
+    Object? privateKey = null,
+    Object? pincode = null,
+    Object? accountAddress = null,
+    Object? countryCode = null,
+    Object? phoneNumber = null,
+    Object? warnSendDialogShowed = null,
+    Object? isoCode = null,
+    Object? jwtToken = null,
+    Object? displayName = null,
+    Object? avatarUrl = null,
+    Object? email = null,
     Object? verificationId = freezed,
-    Object? identifier = freezed,
-    Object? syncedContacts = freezed,
-    Object? reverseContacts = freezed,
-    Object? currency = freezed,
-    Object? hasUpgrade = freezed,
-    Object? authType = freezed,
+    Object? identifier = null,
+    Object? syncedContacts = null,
+    Object? reverseContacts = null,
+    Object? currency = null,
+    Object? hasUpgrade = null,
+    Object? authType = null,
     Object? locale = freezed,
     Object? credentials = freezed,
-    Object? listOfDeliveryAddresses = freezed,
-    Object? hasSavedSeedPhrase = freezed,
-    Object? initialLoginDateTime = freezed,
-    Object? showSeedPhraseBanner = freezed,
+    Object? listOfDeliveryAddresses = null,
+    Object? hasSavedSeedPhrase = null,
+    Object? initialLoginDateTime = null,
+    Object? showSeedPhraseBanner = null,
   }) {
     return _then(_$_UserState(
-      wcURI: wcURI == freezed
+      wcURI: freezed == wcURI
           ? _value.wcURI
           : wcURI // ignore: cast_nullable_to_non_nullable
               as String?,
-      contractVersion: contractVersion == freezed
+      contractVersion: freezed == contractVersion
           ? _value.contractVersion
           : contractVersion // ignore: cast_nullable_to_non_nullable
               as String?,
-      walletModules: walletModules == freezed
+      walletModules: freezed == walletModules
           ? _value.walletModules
           : walletModules // ignore: cast_nullable_to_non_nullable
               as WalletModules?,
-      installedAt: installedAt == freezed
+      installedAt: freezed == installedAt
           ? _value.installedAt
           : installedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      isContactsSynced: isContactsSynced == freezed
+      isContactsSynced: freezed == isContactsSynced
           ? _value.isContactsSynced
           : isContactsSynced // ignore: cast_nullable_to_non_nullable
               as bool?,
-      isLoggedOut: isLoggedOut == freezed
+      isLoggedOut: null == isLoggedOut
           ? _value.isLoggedOut
           : isLoggedOut // ignore: cast_nullable_to_non_nullable
               as bool,
-      backup: backup == freezed
+      backup: null == backup
           ? _value.backup
           : backup // ignore: cast_nullable_to_non_nullable
               as bool,
-      scrollToTop: scrollToTop == freezed
+      scrollToTop: null == scrollToTop
           ? _value.scrollToTop
           : scrollToTop // ignore: cast_nullable_to_non_nullable
               as bool,
-      walletAddress: walletAddress == freezed
+      walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      networks: networks == freezed
+      networks: null == networks
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      mnemonic: mnemonic == freezed
+      mnemonic: null == mnemonic
           ? _value.mnemonic
           : mnemonic // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      privateKey: privateKey == freezed
+      privateKey: null == privateKey
           ? _value.privateKey
           : privateKey // ignore: cast_nullable_to_non_nullable
               as String,
-      pincode: pincode == freezed
+      pincode: null == pincode
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
               as String,
-      accountAddress: accountAddress == freezed
+      accountAddress: null == accountAddress
           ? _value.accountAddress
           : accountAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      countryCode: countryCode == freezed
+      countryCode: null == countryCode
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneNumber: phoneNumber == freezed
+      phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      warnSendDialogShowed: warnSendDialogShowed == freezed
+      warnSendDialogShowed: null == warnSendDialogShowed
           ? _value.warnSendDialogShowed
           : warnSendDialogShowed // ignore: cast_nullable_to_non_nullable
               as bool,
-      isoCode: isoCode == freezed
+      isoCode: null == isoCode
           ? _value.isoCode
           : isoCode // ignore: cast_nullable_to_non_nullable
               as String,
-      jwtToken: jwtToken == freezed
+      jwtToken: null == jwtToken
           ? _value.jwtToken
           : jwtToken // ignore: cast_nullable_to_non_nullable
               as String,
-      displayName: displayName == freezed
+      displayName: null == displayName
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
               as String,
-      avatarUrl: avatarUrl == freezed
+      avatarUrl: null == avatarUrl
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      email: email == freezed
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      verificationId: verificationId == freezed
+      verificationId: freezed == verificationId
           ? _value.verificationId
           : verificationId // ignore: cast_nullable_to_non_nullable
               as String?,
-      identifier: identifier == freezed
+      identifier: null == identifier
           ? _value.identifier
           : identifier // ignore: cast_nullable_to_non_nullable
               as String,
-      syncedContacts: syncedContacts == freezed
+      syncedContacts: null == syncedContacts
           ? _value.syncedContacts
           : syncedContacts // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      reverseContacts: reverseContacts == freezed
+      reverseContacts: null == reverseContacts
           ? _value.reverseContacts
           : reverseContacts // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      currency: currency == freezed
+      currency: null == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as String,
-      hasUpgrade: hasUpgrade == freezed
+      hasUpgrade: null == hasUpgrade
           ? _value.hasUpgrade
           : hasUpgrade // ignore: cast_nullable_to_non_nullable
               as bool,
-      authType: authType == freezed
+      authType: null == authType
           ? _value.authType
           : authType // ignore: cast_nullable_to_non_nullable
               as BiometricAuth,
-      locale: locale == freezed
+      locale: freezed == locale
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
-      credentials: credentials == freezed
+      credentials: freezed == credentials
           ? _value.credentials
           : credentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
-      listOfDeliveryAddresses: listOfDeliveryAddresses == freezed
+      listOfDeliveryAddresses: null == listOfDeliveryAddresses
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
               as List<DeliveryAddresses>,
-      hasSavedSeedPhrase: hasSavedSeedPhrase == freezed
+      hasSavedSeedPhrase: null == hasSavedSeedPhrase
           ? _value.hasSavedSeedPhrase
           : hasSavedSeedPhrase // ignore: cast_nullable_to_non_nullable
               as bool,
-      initialLoginDateTime: initialLoginDateTime == freezed
+      initialLoginDateTime: null == initialLoginDateTime
           ? _value.initialLoginDateTime
           : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
               as String,
-      showSeedPhraseBanner: showSeedPhraseBanner == freezed
+      showSeedPhraseBanner: null == showSeedPhraseBanner
           ? _value.showSeedPhraseBanner
           : showSeedPhraseBanner // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -591,7 +596,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       @JsonKey(ignore: true) this.credentials,
       this.listOfDeliveryAddresses = const [],
       this.hasSavedSeedPhrase = false,
-      this.initialLoginDateTime = "",
+      this.initialLoginDateTime = '',
       this.showSeedPhraseBanner = false})
       : super._();
 
@@ -752,115 +757,122 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UserState &&
-            const DeepCollectionEquality().equals(other.wcURI, wcURI) &&
-            const DeepCollectionEquality()
-                .equals(other.contractVersion, contractVersion) &&
-            const DeepCollectionEquality()
-                .equals(other.walletModules, walletModules) &&
-            const DeepCollectionEquality()
-                .equals(other.installedAt, installedAt) &&
-            const DeepCollectionEquality()
-                .equals(other.isContactsSynced, isContactsSynced) &&
-            const DeepCollectionEquality()
-                .equals(other.isLoggedOut, isLoggedOut) &&
-            const DeepCollectionEquality().equals(other.backup, backup) &&
-            const DeepCollectionEquality()
-                .equals(other.scrollToTop, scrollToTop) &&
-            const DeepCollectionEquality()
-                .equals(other.walletAddress, walletAddress) &&
+            (identical(other.wcURI, wcURI) || other.wcURI == wcURI) &&
+            (identical(other.contractVersion, contractVersion) ||
+                other.contractVersion == contractVersion) &&
+            (identical(other.walletModules, walletModules) ||
+                other.walletModules == walletModules) &&
+            (identical(other.installedAt, installedAt) ||
+                other.installedAt == installedAt) &&
+            (identical(other.isContactsSynced, isContactsSynced) ||
+                other.isContactsSynced == isContactsSynced) &&
+            (identical(other.isLoggedOut, isLoggedOut) ||
+                other.isLoggedOut == isLoggedOut) &&
+            (identical(other.backup, backup) || other.backup == backup) &&
+            (identical(other.scrollToTop, scrollToTop) ||
+                other.scrollToTop == scrollToTop) &&
+            (identical(other.walletAddress, walletAddress) ||
+                other.walletAddress == walletAddress) &&
             const DeepCollectionEquality().equals(other.networks, networks) &&
             const DeepCollectionEquality().equals(other.mnemonic, mnemonic) &&
-            const DeepCollectionEquality()
-                .equals(other.privateKey, privateKey) &&
-            const DeepCollectionEquality().equals(other.pincode, pincode) &&
-            const DeepCollectionEquality()
-                .equals(other.accountAddress, accountAddress) &&
-            const DeepCollectionEquality()
-                .equals(other.countryCode, countryCode) &&
-            const DeepCollectionEquality()
-                .equals(other.phoneNumber, phoneNumber) &&
-            const DeepCollectionEquality()
-                .equals(other.warnSendDialogShowed, warnSendDialogShowed) &&
-            const DeepCollectionEquality().equals(other.isoCode, isoCode) &&
-            const DeepCollectionEquality().equals(other.jwtToken, jwtToken) &&
-            const DeepCollectionEquality()
-                .equals(other.displayName, displayName) &&
-            const DeepCollectionEquality().equals(other.avatarUrl, avatarUrl) &&
-            const DeepCollectionEquality().equals(other.email, email) &&
-            const DeepCollectionEquality()
-                .equals(other.verificationId, verificationId) &&
-            const DeepCollectionEquality()
-                .equals(other.identifier, identifier) &&
+            (identical(other.privateKey, privateKey) ||
+                other.privateKey == privateKey) &&
+            (identical(other.pincode, pincode) || other.pincode == pincode) &&
+            (identical(other.accountAddress, accountAddress) ||
+                other.accountAddress == accountAddress) &&
+            (identical(other.countryCode, countryCode) ||
+                other.countryCode == countryCode) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.warnSendDialogShowed, warnSendDialogShowed) ||
+                other.warnSendDialogShowed == warnSendDialogShowed) &&
+            (identical(other.isoCode, isoCode) || other.isoCode == isoCode) &&
+            (identical(other.jwtToken, jwtToken) ||
+                other.jwtToken == jwtToken) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.avatarUrl, avatarUrl) ||
+                other.avatarUrl == avatarUrl) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.verificationId, verificationId) ||
+                other.verificationId == verificationId) &&
+            (identical(other.identifier, identifier) ||
+                other.identifier == identifier) &&
             const DeepCollectionEquality()
                 .equals(other.syncedContacts, syncedContacts) &&
             const DeepCollectionEquality()
                 .equals(other.reverseContacts, reverseContacts) &&
-            const DeepCollectionEquality().equals(other.currency, currency) &&
-            const DeepCollectionEquality()
-                .equals(other.hasUpgrade, hasUpgrade) &&
-            const DeepCollectionEquality().equals(other.authType, authType) &&
-            const DeepCollectionEquality().equals(other.locale, locale) &&
-            const DeepCollectionEquality()
-                .equals(other.credentials, credentials) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
+            (identical(other.hasUpgrade, hasUpgrade) ||
+                other.hasUpgrade == hasUpgrade) &&
+            (identical(other.authType, authType) ||
+                other.authType == authType) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
+            (identical(other.credentials, credentials) ||
+                other.credentials == credentials) &&
             const DeepCollectionEquality().equals(
                 other.listOfDeliveryAddresses, listOfDeliveryAddresses) &&
-            const DeepCollectionEquality()
-                .equals(other.hasSavedSeedPhrase, hasSavedSeedPhrase) &&
-            const DeepCollectionEquality()
-                .equals(other.initialLoginDateTime, initialLoginDateTime) &&
-            const DeepCollectionEquality()
-                .equals(other.showSeedPhraseBanner, showSeedPhraseBanner));
+            (identical(other.hasSavedSeedPhrase, hasSavedSeedPhrase) ||
+                other.hasSavedSeedPhrase == hasSavedSeedPhrase) &&
+            (identical(other.initialLoginDateTime, initialLoginDateTime) ||
+                other.initialLoginDateTime == initialLoginDateTime) &&
+            (identical(other.showSeedPhraseBanner, showSeedPhraseBanner) ||
+                other.showSeedPhraseBanner == showSeedPhraseBanner));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        const DeepCollectionEquality().hash(wcURI),
-        const DeepCollectionEquality().hash(contractVersion),
-        const DeepCollectionEquality().hash(walletModules),
-        const DeepCollectionEquality().hash(installedAt),
-        const DeepCollectionEquality().hash(isContactsSynced),
-        const DeepCollectionEquality().hash(isLoggedOut),
-        const DeepCollectionEquality().hash(backup),
-        const DeepCollectionEquality().hash(scrollToTop),
-        const DeepCollectionEquality().hash(walletAddress),
+        wcURI,
+        contractVersion,
+        walletModules,
+        installedAt,
+        isContactsSynced,
+        isLoggedOut,
+        backup,
+        scrollToTop,
+        walletAddress,
         const DeepCollectionEquality().hash(networks),
         const DeepCollectionEquality().hash(mnemonic),
-        const DeepCollectionEquality().hash(privateKey),
-        const DeepCollectionEquality().hash(pincode),
-        const DeepCollectionEquality().hash(accountAddress),
-        const DeepCollectionEquality().hash(countryCode),
-        const DeepCollectionEquality().hash(phoneNumber),
-        const DeepCollectionEquality().hash(warnSendDialogShowed),
-        const DeepCollectionEquality().hash(isoCode),
-        const DeepCollectionEquality().hash(jwtToken),
-        const DeepCollectionEquality().hash(displayName),
-        const DeepCollectionEquality().hash(avatarUrl),
-        const DeepCollectionEquality().hash(email),
-        const DeepCollectionEquality().hash(verificationId),
-        const DeepCollectionEquality().hash(identifier),
+        privateKey,
+        pincode,
+        accountAddress,
+        countryCode,
+        phoneNumber,
+        warnSendDialogShowed,
+        isoCode,
+        jwtToken,
+        displayName,
+        avatarUrl,
+        email,
+        verificationId,
+        identifier,
         const DeepCollectionEquality().hash(syncedContacts),
         const DeepCollectionEquality().hash(reverseContacts),
-        const DeepCollectionEquality().hash(currency),
-        const DeepCollectionEquality().hash(hasUpgrade),
-        const DeepCollectionEquality().hash(authType),
-        const DeepCollectionEquality().hash(locale),
-        const DeepCollectionEquality().hash(credentials),
+        currency,
+        hasUpgrade,
+        authType,
+        locale,
+        credentials,
         const DeepCollectionEquality().hash(listOfDeliveryAddresses),
-        const DeepCollectionEquality().hash(hasSavedSeedPhrase),
-        const DeepCollectionEquality().hash(initialLoginDateTime),
-        const DeepCollectionEquality().hash(showSeedPhraseBanner)
+        hasSavedSeedPhrase,
+        initialLoginDateTime,
+        showSeedPhraseBanner
       ]);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>
       __$$_UserStateCopyWithImpl<_$_UserState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserStateToJson(this);
+    return _$$_UserStateToJson(
+      this,
+    );
   }
 }
 
@@ -912,79 +924,78 @@ abstract class _UserState extends UserState {
 
   @override
   @JsonKey(ignore: true)
-  String? get wcURI => throw _privateConstructorUsedError;
+  String? get wcURI;
   @override
-  String? get contractVersion => throw _privateConstructorUsedError;
+  String? get contractVersion;
   @override
-  WalletModules? get walletModules => throw _privateConstructorUsedError;
+  WalletModules? get walletModules;
   @override
-  DateTime? get installedAt => throw _privateConstructorUsedError;
+  DateTime? get installedAt;
   @override
-  bool? get isContactsSynced => throw _privateConstructorUsedError;
+  bool? get isContactsSynced;
   @override
-  bool get isLoggedOut => throw _privateConstructorUsedError;
+  bool get isLoggedOut;
   @override
-  bool get backup => throw _privateConstructorUsedError;
+  bool get backup;
   @override
-  bool get scrollToTop => throw _privateConstructorUsedError;
+  bool get scrollToTop;
   @override
-  String get walletAddress => throw _privateConstructorUsedError;
+  String get walletAddress;
   @override
-  List<String> get networks => throw _privateConstructorUsedError;
+  List<String> get networks;
   @override
-  List<String> get mnemonic => throw _privateConstructorUsedError;
+  List<String> get mnemonic;
   @override
-  String get privateKey => throw _privateConstructorUsedError;
+  String get privateKey;
   @override
-  String get pincode => throw _privateConstructorUsedError;
+  String get pincode;
   @override
-  String get accountAddress => throw _privateConstructorUsedError;
+  String get accountAddress;
   @override
-  String get countryCode => throw _privateConstructorUsedError;
+  String get countryCode;
   @override
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String get phoneNumber;
   @override
-  bool get warnSendDialogShowed => throw _privateConstructorUsedError;
+  bool get warnSendDialogShowed;
   @override
-  String get isoCode => throw _privateConstructorUsedError;
+  String get isoCode;
   @override
-  String get jwtToken => throw _privateConstructorUsedError;
+  String get jwtToken;
   @override
-  String get displayName => throw _privateConstructorUsedError;
+  String get displayName;
   @override
-  String get avatarUrl => throw _privateConstructorUsedError;
+  String get avatarUrl;
   @override
-  String get email => throw _privateConstructorUsedError;
+  String get email;
   @override
-  String? get verificationId => throw _privateConstructorUsedError;
+  String? get verificationId;
   @override
-  String get identifier => throw _privateConstructorUsedError;
+  String get identifier;
   @override
-  List<String> get syncedContacts => throw _privateConstructorUsedError;
+  List<String> get syncedContacts;
   @override
-  Map<String, String> get reverseContacts => throw _privateConstructorUsedError;
+  Map<String, String> get reverseContacts;
   @override
-  String get currency => throw _privateConstructorUsedError;
+  String get currency;
   @override
   @JsonKey(ignore: true)
-  bool get hasUpgrade => throw _privateConstructorUsedError;
+  bool get hasUpgrade;
   @override
-  BiometricAuth get authType => throw _privateConstructorUsedError;
+  BiometricAuth get authType;
   @override
   @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
-  Locale? get locale => throw _privateConstructorUsedError;
+  Locale? get locale;
   @override
   @JsonKey(ignore: true)
-  PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
+  PhoneAuthCredential? get credentials;
   @override
-  List<DeliveryAddresses> get listOfDeliveryAddresses =>
-      throw _privateConstructorUsedError;
+  List<DeliveryAddresses> get listOfDeliveryAddresses;
   @override
-  bool get hasSavedSeedPhrase => throw _privateConstructorUsedError;
+  bool get hasSavedSeedPhrase;
   @override
-  String get initialLoginDateTime => throw _privateConstructorUsedError;
+  String get initialLoginDateTime;
   @override
-  bool get showSeedPhraseBanner => throw _privateConstructorUsedError;
+  bool get showSeedPhraseBanner;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

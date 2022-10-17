@@ -33,18 +33,22 @@ mixin _$Stats {
 /// @nodoc
 abstract class $StatsCopyWith<$Res> {
   factory $StatsCopyWith(Stats value, $Res Function(Stats) then) =
-      _$StatsCopyWithImpl<$Res>;
+      _$StatsCopyWithImpl<$Res, Stats>;
+  @useResult
   $Res call({String? volume, String? price, int? timestamp, DateTime? date});
 }
 
 /// @nodoc
-class _$StatsCopyWithImpl<$Res> implements $StatsCopyWith<$Res> {
+class _$StatsCopyWithImpl<$Res, $Val extends Stats>
+    implements $StatsCopyWith<$Res> {
   _$StatsCopyWithImpl(this._value, this._then);
 
-  final Stats _value;
   // ignore: unused_field
-  final $Res Function(Stats) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? volume = freezed,
@@ -53,23 +57,23 @@ class _$StatsCopyWithImpl<$Res> implements $StatsCopyWith<$Res> {
     Object? date = freezed,
   }) {
     return _then(_value.copyWith(
-      volume: volume == freezed
+      volume: freezed == volume
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
               as String?,
-      price: price == freezed
+      price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String?,
-      timestamp: timestamp == freezed
+      timestamp: freezed == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int?,
-      date: date == freezed
+      date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -78,18 +82,17 @@ abstract class _$$_StatsCopyWith<$Res> implements $StatsCopyWith<$Res> {
   factory _$$_StatsCopyWith(_$_Stats value, $Res Function(_$_Stats) then) =
       __$$_StatsCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String? volume, String? price, int? timestamp, DateTime? date});
 }
 
 /// @nodoc
-class __$$_StatsCopyWithImpl<$Res> extends _$StatsCopyWithImpl<$Res>
+class __$$_StatsCopyWithImpl<$Res> extends _$StatsCopyWithImpl<$Res, _$_Stats>
     implements _$$_StatsCopyWith<$Res> {
   __$$_StatsCopyWithImpl(_$_Stats _value, $Res Function(_$_Stats) _then)
-      : super(_value, (v) => _then(v as _$_Stats));
+      : super(_value, _then);
 
-  @override
-  _$_Stats get _value => super._value as _$_Stats;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? volume = freezed,
@@ -98,19 +101,19 @@ class __$$_StatsCopyWithImpl<$Res> extends _$StatsCopyWithImpl<$Res>
     Object? date = freezed,
   }) {
     return _then(_$_Stats(
-      volume: volume == freezed
+      volume: freezed == volume
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
               as String?,
-      price: price == freezed
+      price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String?,
-      timestamp: timestamp == freezed
+      timestamp: freezed == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int?,
-      date: date == freezed
+      date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime?,
@@ -157,29 +160,28 @@ class _$_Stats with DiagnosticableTreeMixin implements _Stats {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Stats &&
-            const DeepCollectionEquality().equals(other.volume, volume) &&
-            const DeepCollectionEquality().equals(other.price, price) &&
-            const DeepCollectionEquality().equals(other.timestamp, timestamp) &&
-            const DeepCollectionEquality().equals(other.date, date));
+            (identical(other.volume, volume) || other.volume == volume) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
+            (identical(other.date, date) || other.date == date));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(volume),
-      const DeepCollectionEquality().hash(price),
-      const DeepCollectionEquality().hash(timestamp),
-      const DeepCollectionEquality().hash(date));
+  int get hashCode => Object.hash(runtimeType, volume, price, timestamp, date);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_StatsCopyWith<_$_Stats> get copyWith =>
       __$$_StatsCopyWithImpl<_$_Stats>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_StatsToJson(this);
+    return _$$_StatsToJson(
+      this,
+    );
   }
 }
 
@@ -193,13 +195,13 @@ abstract class _Stats implements Stats {
   factory _Stats.fromJson(Map<String, dynamic> json) = _$_Stats.fromJson;
 
   @override
-  String? get volume => throw _privateConstructorUsedError;
+  String? get volume;
   @override
-  String? get price => throw _privateConstructorUsedError;
+  String? get price;
   @override
-  int? get timestamp => throw _privateConstructorUsedError;
+  int? get timestamp;
   @override
-  DateTime? get date => throw _privateConstructorUsedError;
+  DateTime? get date;
   @override
   @JsonKey(ignore: true)
   _$$_StatsCopyWith<_$_Stats> get copyWith =>

@@ -44,7 +44,8 @@ mixin _$OrderDetails {
 abstract class $OrderDetailsCopyWith<$Res> {
   factory $OrderDetailsCopyWith(
           OrderDetails value, $Res Function(OrderDetails) then) =
-      _$OrderDetailsCopyWithImpl<$Res>;
+      _$OrderDetailsCopyWithImpl<$Res, OrderDetails>;
+  @useResult
   $Res call(
       {Map<String, String> selectedSlot,
       bool isDelivery,
@@ -63,84 +64,88 @@ abstract class $OrderDetailsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$OrderDetailsCopyWithImpl<$Res> implements $OrderDetailsCopyWith<$Res> {
+class _$OrderDetailsCopyWithImpl<$Res, $Val extends OrderDetails>
+    implements $OrderDetailsCopyWith<$Res> {
   _$OrderDetailsCopyWithImpl(this._value, this._then);
 
-  final OrderDetails _value;
   // ignore: unused_field
-  final $Res Function(OrderDetails) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? selectedSlot = freezed,
-    Object? isDelivery = freezed,
-    Object? orderAddress = freezed,
-    Object? restaurantName = freezed,
-    Object? cartItems = freezed,
-    Object? cartTotal = freezed,
-    Object? orderID = freezed,
-    Object? userName = freezed,
-    Object? phoneNumber = freezed,
-    Object? GBPxAmountPaid = freezed,
-    Object? PPLAmountPaid = freezed,
-    Object? orderAcceptanceStatus = freezed,
+    Object? selectedSlot = null,
+    Object? isDelivery = null,
+    Object? orderAddress = null,
+    Object? restaurantName = null,
+    Object? cartItems = null,
+    Object? cartTotal = null,
+    Object? orderID = null,
+    Object? userName = null,
+    Object? phoneNumber = null,
+    Object? GBPxAmountPaid = null,
+    Object? PPLAmountPaid = null,
+    Object? orderAcceptanceStatus = null,
   }) {
     return _then(_value.copyWith(
-      selectedSlot: selectedSlot == freezed
+      selectedSlot: null == selectedSlot
           ? _value.selectedSlot
           : selectedSlot // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      isDelivery: isDelivery == freezed
+      isDelivery: null == isDelivery
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
               as bool,
-      orderAddress: orderAddress == freezed
+      orderAddress: null == orderAddress
           ? _value.orderAddress
           : orderAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses,
-      restaurantName: restaurantName == freezed
+      restaurantName: null == restaurantName
           ? _value.restaurantName
           : restaurantName // ignore: cast_nullable_to_non_nullable
               as String,
-      cartItems: cartItems == freezed
+      cartItems: null == cartItems
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
               as List<CartItem>,
-      cartTotal: cartTotal == freezed
+      cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
               as int,
-      orderID: orderID == freezed
+      orderID: null == orderID
           ? _value.orderID
           : orderID // ignore: cast_nullable_to_non_nullable
               as String,
-      userName: userName == freezed
+      userName: null == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneNumber: phoneNumber == freezed
+      phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      GBPxAmountPaid: GBPxAmountPaid == freezed
+      GBPxAmountPaid: null == GBPxAmountPaid
           ? _value.GBPxAmountPaid
           : GBPxAmountPaid // ignore: cast_nullable_to_non_nullable
               as double,
-      PPLAmountPaid: PPLAmountPaid == freezed
+      PPLAmountPaid: null == PPLAmountPaid
           ? _value.PPLAmountPaid
           : PPLAmountPaid // ignore: cast_nullable_to_non_nullable
               as double,
-      orderAcceptanceStatus: orderAcceptanceStatus == freezed
+      orderAcceptanceStatus: null == orderAcceptanceStatus
           ? _value.orderAcceptanceStatus
           : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
               as OrderAcceptanceStatus,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeliveryAddressesCopyWith<$Res> get orderAddress {
     return $DeliveryAddressesCopyWith<$Res>(_value.orderAddress, (value) {
-      return _then(_value.copyWith(orderAddress: value));
+      return _then(_value.copyWith(orderAddress: value) as $Val);
     });
   }
 }
@@ -152,6 +157,7 @@ abstract class _$$_OrderDetailsCopyWith<$Res>
           _$_OrderDetails value, $Res Function(_$_OrderDetails) then) =
       __$$_OrderDetailsCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {Map<String, String> selectedSlot,
       bool isDelivery,
@@ -172,76 +178,74 @@ abstract class _$$_OrderDetailsCopyWith<$Res>
 
 /// @nodoc
 class __$$_OrderDetailsCopyWithImpl<$Res>
-    extends _$OrderDetailsCopyWithImpl<$Res>
+    extends _$OrderDetailsCopyWithImpl<$Res, _$_OrderDetails>
     implements _$$_OrderDetailsCopyWith<$Res> {
   __$$_OrderDetailsCopyWithImpl(
       _$_OrderDetails _value, $Res Function(_$_OrderDetails) _then)
-      : super(_value, (v) => _then(v as _$_OrderDetails));
+      : super(_value, _then);
 
-  @override
-  _$_OrderDetails get _value => super._value as _$_OrderDetails;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? selectedSlot = freezed,
-    Object? isDelivery = freezed,
-    Object? orderAddress = freezed,
-    Object? restaurantName = freezed,
-    Object? cartItems = freezed,
-    Object? cartTotal = freezed,
-    Object? orderID = freezed,
-    Object? userName = freezed,
-    Object? phoneNumber = freezed,
-    Object? GBPxAmountPaid = freezed,
-    Object? PPLAmountPaid = freezed,
-    Object? orderAcceptanceStatus = freezed,
+    Object? selectedSlot = null,
+    Object? isDelivery = null,
+    Object? orderAddress = null,
+    Object? restaurantName = null,
+    Object? cartItems = null,
+    Object? cartTotal = null,
+    Object? orderID = null,
+    Object? userName = null,
+    Object? phoneNumber = null,
+    Object? GBPxAmountPaid = null,
+    Object? PPLAmountPaid = null,
+    Object? orderAcceptanceStatus = null,
   }) {
     return _then(_$_OrderDetails(
-      selectedSlot: selectedSlot == freezed
+      selectedSlot: null == selectedSlot
           ? _value.selectedSlot
           : selectedSlot // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      isDelivery: isDelivery == freezed
+      isDelivery: null == isDelivery
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
               as bool,
-      orderAddress: orderAddress == freezed
+      orderAddress: null == orderAddress
           ? _value.orderAddress
           : orderAddress // ignore: cast_nullable_to_non_nullable
               as DeliveryAddresses,
-      restaurantName: restaurantName == freezed
+      restaurantName: null == restaurantName
           ? _value.restaurantName
           : restaurantName // ignore: cast_nullable_to_non_nullable
               as String,
-      cartItems: cartItems == freezed
+      cartItems: null == cartItems
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
               as List<CartItem>,
-      cartTotal: cartTotal == freezed
+      cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
               as int,
-      orderID: orderID == freezed
+      orderID: null == orderID
           ? _value.orderID
           : orderID // ignore: cast_nullable_to_non_nullable
               as String,
-      userName: userName == freezed
+      userName: null == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      phoneNumber: phoneNumber == freezed
+      phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      GBPxAmountPaid: GBPxAmountPaid == freezed
+      GBPxAmountPaid: null == GBPxAmountPaid
           ? _value.GBPxAmountPaid
           : GBPxAmountPaid // ignore: cast_nullable_to_non_nullable
               as double,
-      PPLAmountPaid: PPLAmountPaid == freezed
+      PPLAmountPaid: null == PPLAmountPaid
           ? _value.PPLAmountPaid
           : PPLAmountPaid // ignore: cast_nullable_to_non_nullable
               as double,
-      orderAcceptanceStatus: orderAcceptanceStatus == freezed
+      orderAcceptanceStatus: null == orderAcceptanceStatus
           ? _value.orderAcceptanceStatus
           : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
               as OrderAcceptanceStatus,
@@ -308,24 +312,26 @@ class _$_OrderDetails extends _OrderDetails {
             other is _$_OrderDetails &&
             const DeepCollectionEquality()
                 .equals(other.selectedSlot, selectedSlot) &&
-            const DeepCollectionEquality()
-                .equals(other.isDelivery, isDelivery) &&
-            const DeepCollectionEquality()
-                .equals(other.orderAddress, orderAddress) &&
-            const DeepCollectionEquality()
-                .equals(other.restaurantName, restaurantName) &&
+            (identical(other.isDelivery, isDelivery) ||
+                other.isDelivery == isDelivery) &&
+            (identical(other.orderAddress, orderAddress) ||
+                other.orderAddress == orderAddress) &&
+            (identical(other.restaurantName, restaurantName) ||
+                other.restaurantName == restaurantName) &&
             const DeepCollectionEquality().equals(other.cartItems, cartItems) &&
-            const DeepCollectionEquality().equals(other.cartTotal, cartTotal) &&
-            const DeepCollectionEquality().equals(other.orderID, orderID) &&
-            const DeepCollectionEquality().equals(other.userName, userName) &&
-            const DeepCollectionEquality()
-                .equals(other.phoneNumber, phoneNumber) &&
-            const DeepCollectionEquality()
-                .equals(other.GBPxAmountPaid, GBPxAmountPaid) &&
-            const DeepCollectionEquality()
-                .equals(other.PPLAmountPaid, PPLAmountPaid) &&
-            const DeepCollectionEquality()
-                .equals(other.orderAcceptanceStatus, orderAcceptanceStatus));
+            (identical(other.cartTotal, cartTotal) ||
+                other.cartTotal == cartTotal) &&
+            (identical(other.orderID, orderID) || other.orderID == orderID) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.GBPxAmountPaid, GBPxAmountPaid) ||
+                other.GBPxAmountPaid == GBPxAmountPaid) &&
+            (identical(other.PPLAmountPaid, PPLAmountPaid) ||
+                other.PPLAmountPaid == PPLAmountPaid) &&
+            (identical(other.orderAcceptanceStatus, orderAcceptanceStatus) ||
+                other.orderAcceptanceStatus == orderAcceptanceStatus));
   }
 
   @JsonKey(ignore: true)
@@ -333,26 +339,29 @@ class _$_OrderDetails extends _OrderDetails {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(selectedSlot),
-      const DeepCollectionEquality().hash(isDelivery),
-      const DeepCollectionEquality().hash(orderAddress),
-      const DeepCollectionEquality().hash(restaurantName),
+      isDelivery,
+      orderAddress,
+      restaurantName,
       const DeepCollectionEquality().hash(cartItems),
-      const DeepCollectionEquality().hash(cartTotal),
-      const DeepCollectionEquality().hash(orderID),
-      const DeepCollectionEquality().hash(userName),
-      const DeepCollectionEquality().hash(phoneNumber),
-      const DeepCollectionEquality().hash(GBPxAmountPaid),
-      const DeepCollectionEquality().hash(PPLAmountPaid),
-      const DeepCollectionEquality().hash(orderAcceptanceStatus));
+      cartTotal,
+      orderID,
+      userName,
+      phoneNumber,
+      GBPxAmountPaid,
+      PPLAmountPaid,
+      orderAcceptanceStatus);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_OrderDetailsCopyWith<_$_OrderDetails> get copyWith =>
       __$$_OrderDetailsCopyWithImpl<_$_OrderDetails>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_OrderDetailsToJson(this);
+    return _$$_OrderDetailsToJson(
+      this,
+    );
   }
 }
 
@@ -377,30 +386,29 @@ abstract class _OrderDetails extends OrderDetails {
       _$_OrderDetails.fromJson;
 
   @override
-  Map<String, String> get selectedSlot => throw _privateConstructorUsedError;
+  Map<String, String> get selectedSlot;
   @override
-  bool get isDelivery => throw _privateConstructorUsedError;
+  bool get isDelivery;
   @override
-  DeliveryAddresses get orderAddress => throw _privateConstructorUsedError;
+  DeliveryAddresses get orderAddress;
   @override
-  String get restaurantName => throw _privateConstructorUsedError;
+  String get restaurantName;
   @override
-  List<CartItem> get cartItems => throw _privateConstructorUsedError;
+  List<CartItem> get cartItems;
   @override
-  int get cartTotal => throw _privateConstructorUsedError;
+  int get cartTotal;
   @override
-  String get orderID => throw _privateConstructorUsedError;
+  String get orderID;
   @override
-  String get userName => throw _privateConstructorUsedError;
+  String get userName;
   @override
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String get phoneNumber;
   @override
-  double get GBPxAmountPaid => throw _privateConstructorUsedError;
+  double get GBPxAmountPaid;
   @override
-  double get PPLAmountPaid => throw _privateConstructorUsedError;
+  double get PPLAmountPaid;
   @override
-  OrderAcceptanceStatus get orderAcceptanceStatus =>
-      throw _privateConstructorUsedError;
+  OrderAcceptanceStatus get orderAcceptanceStatus;
   @override
   @JsonKey(ignore: true)
   _$$_OrderDetailsCopyWith<_$_OrderDetails> get copyWith =>

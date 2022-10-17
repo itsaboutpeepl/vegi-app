@@ -40,7 +40,8 @@ mixin _$DeliveryAddresses {
 abstract class $DeliveryAddressesCopyWith<$Res> {
   factory $DeliveryAddressesCopyWith(
           DeliveryAddresses value, $Res Function(DeliveryAddresses) then) =
-      _$DeliveryAddressesCopyWithImpl<$Res>;
+      _$DeliveryAddressesCopyWithImpl<$Res, DeliveryAddresses>;
+  @useResult
   $Res call(
       {int internalID,
       String addressLine1,
@@ -54,64 +55,66 @@ abstract class $DeliveryAddressesCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DeliveryAddressesCopyWithImpl<$Res>
+class _$DeliveryAddressesCopyWithImpl<$Res, $Val extends DeliveryAddresses>
     implements $DeliveryAddressesCopyWith<$Res> {
   _$DeliveryAddressesCopyWithImpl(this._value, this._then);
 
-  final DeliveryAddresses _value;
   // ignore: unused_field
-  final $Res Function(DeliveryAddresses) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? internalID = freezed,
-    Object? addressLine1 = freezed,
-    Object? addressLine2 = freezed,
-    Object? townCity = freezed,
-    Object? postalCode = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
+    Object? internalID = null,
+    Object? addressLine1 = null,
+    Object? addressLine2 = null,
+    Object? townCity = null,
+    Object? postalCode = null,
+    Object? latitude = null,
+    Object? longitude = null,
     Object? phoneNumber = freezed,
     Object? label = freezed,
   }) {
     return _then(_value.copyWith(
-      internalID: internalID == freezed
+      internalID: null == internalID
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
               as int,
-      addressLine1: addressLine1 == freezed
+      addressLine1: null == addressLine1
           ? _value.addressLine1
           : addressLine1 // ignore: cast_nullable_to_non_nullable
               as String,
-      addressLine2: addressLine2 == freezed
+      addressLine2: null == addressLine2
           ? _value.addressLine2
           : addressLine2 // ignore: cast_nullable_to_non_nullable
               as String,
-      townCity: townCity == freezed
+      townCity: null == townCity
           ? _value.townCity
           : townCity // ignore: cast_nullable_to_non_nullable
               as String,
-      postalCode: postalCode == freezed
+      postalCode: null == postalCode
           ? _value.postalCode
           : postalCode // ignore: cast_nullable_to_non_nullable
               as String,
-      latitude: latitude == freezed
+      latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: longitude == freezed
+      longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-      phoneNumber: phoneNumber == freezed
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String?,
-      label: label == freezed
+      label: freezed == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -122,6 +125,7 @@ abstract class _$$_DeliveryAddressesCopyWith<$Res>
           $Res Function(_$_DeliveryAddresses) then) =
       __$$_DeliveryAddressesCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {int internalID,
       String addressLine1,
@@ -136,61 +140,59 @@ abstract class _$$_DeliveryAddressesCopyWith<$Res>
 
 /// @nodoc
 class __$$_DeliveryAddressesCopyWithImpl<$Res>
-    extends _$DeliveryAddressesCopyWithImpl<$Res>
+    extends _$DeliveryAddressesCopyWithImpl<$Res, _$_DeliveryAddresses>
     implements _$$_DeliveryAddressesCopyWith<$Res> {
   __$$_DeliveryAddressesCopyWithImpl(
       _$_DeliveryAddresses _value, $Res Function(_$_DeliveryAddresses) _then)
-      : super(_value, (v) => _then(v as _$_DeliveryAddresses));
+      : super(_value, _then);
 
-  @override
-  _$_DeliveryAddresses get _value => super._value as _$_DeliveryAddresses;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? internalID = freezed,
-    Object? addressLine1 = freezed,
-    Object? addressLine2 = freezed,
-    Object? townCity = freezed,
-    Object? postalCode = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
+    Object? internalID = null,
+    Object? addressLine1 = null,
+    Object? addressLine2 = null,
+    Object? townCity = null,
+    Object? postalCode = null,
+    Object? latitude = null,
+    Object? longitude = null,
     Object? phoneNumber = freezed,
     Object? label = freezed,
   }) {
     return _then(_$_DeliveryAddresses(
-      internalID: internalID == freezed
+      internalID: null == internalID
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
               as int,
-      addressLine1: addressLine1 == freezed
+      addressLine1: null == addressLine1
           ? _value.addressLine1
           : addressLine1 // ignore: cast_nullable_to_non_nullable
               as String,
-      addressLine2: addressLine2 == freezed
+      addressLine2: null == addressLine2
           ? _value.addressLine2
           : addressLine2 // ignore: cast_nullable_to_non_nullable
               as String,
-      townCity: townCity == freezed
+      townCity: null == townCity
           ? _value.townCity
           : townCity // ignore: cast_nullable_to_non_nullable
               as String,
-      postalCode: postalCode == freezed
+      postalCode: null == postalCode
           ? _value.postalCode
           : postalCode // ignore: cast_nullable_to_non_nullable
               as String,
-      latitude: latitude == freezed
+      latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: longitude == freezed
+      longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-      phoneNumber: phoneNumber == freezed
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String?,
-      label: label == freezed
+      label: freezed == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -246,45 +248,51 @@ class _$_DeliveryAddresses extends _DeliveryAddresses {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_DeliveryAddresses &&
-            const DeepCollectionEquality()
-                .equals(other.internalID, internalID) &&
-            const DeepCollectionEquality()
-                .equals(other.addressLine1, addressLine1) &&
-            const DeepCollectionEquality()
-                .equals(other.addressLine2, addressLine2) &&
-            const DeepCollectionEquality().equals(other.townCity, townCity) &&
-            const DeepCollectionEquality()
-                .equals(other.postalCode, postalCode) &&
-            const DeepCollectionEquality().equals(other.latitude, latitude) &&
-            const DeepCollectionEquality().equals(other.longitude, longitude) &&
-            const DeepCollectionEquality()
-                .equals(other.phoneNumber, phoneNumber) &&
-            const DeepCollectionEquality().equals(other.label, label));
+            (identical(other.internalID, internalID) ||
+                other.internalID == internalID) &&
+            (identical(other.addressLine1, addressLine1) ||
+                other.addressLine1 == addressLine1) &&
+            (identical(other.addressLine2, addressLine2) ||
+                other.addressLine2 == addressLine2) &&
+            (identical(other.townCity, townCity) ||
+                other.townCity == townCity) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.label, label) || other.label == label));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(internalID),
-      const DeepCollectionEquality().hash(addressLine1),
-      const DeepCollectionEquality().hash(addressLine2),
-      const DeepCollectionEquality().hash(townCity),
-      const DeepCollectionEquality().hash(postalCode),
-      const DeepCollectionEquality().hash(latitude),
-      const DeepCollectionEquality().hash(longitude),
-      const DeepCollectionEquality().hash(phoneNumber),
-      const DeepCollectionEquality().hash(label));
+      internalID,
+      addressLine1,
+      addressLine2,
+      townCity,
+      postalCode,
+      latitude,
+      longitude,
+      phoneNumber,
+      label);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_DeliveryAddressesCopyWith<_$_DeliveryAddresses> get copyWith =>
       __$$_DeliveryAddressesCopyWithImpl<_$_DeliveryAddresses>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeliveryAddressesToJson(this);
+    return _$$_DeliveryAddressesToJson(
+      this,
+    );
   }
 }
 
@@ -305,23 +313,23 @@ abstract class _DeliveryAddresses extends DeliveryAddresses {
       _$_DeliveryAddresses.fromJson;
 
   @override
-  int get internalID => throw _privateConstructorUsedError;
+  int get internalID;
   @override
-  String get addressLine1 => throw _privateConstructorUsedError;
+  String get addressLine1;
   @override
-  String get addressLine2 => throw _privateConstructorUsedError;
+  String get addressLine2;
   @override
-  String get townCity => throw _privateConstructorUsedError;
+  String get townCity;
   @override
-  String get postalCode => throw _privateConstructorUsedError;
+  String get postalCode;
   @override
-  double get latitude => throw _privateConstructorUsedError;
+  double get latitude;
   @override
-  double get longitude => throw _privateConstructorUsedError;
+  double get longitude;
   @override
-  String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get phoneNumber;
   @override
-  String? get label => throw _privateConstructorUsedError;
+  String? get label;
   @override
   @JsonKey(ignore: true)
   _$$_DeliveryAddressesCopyWith<_$_DeliveryAddresses> get copyWith =>

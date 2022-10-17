@@ -1,5 +1,4 @@
-import 'package:auto_route/src/router/auto_router_x.dart';
-import 'package:vegan_liverpool/services.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
@@ -7,10 +6,10 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
-import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/paymentSheet.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
@@ -18,7 +17,7 @@ class PaymentSheet extends StatefulWidget {
   const PaymentSheet({Key? key}) : super(key: key);
 
   @override
-  _PaymentSheetState createState() => _PaymentSheetState();
+  State<PaymentSheet> createState() => _PaymentSheetState();
 }
 
 class _PaymentSheetState extends State<PaymentSheet> {
@@ -28,41 +27,47 @@ class _PaymentSheetState extends State<PaymentSheet> {
       distinct: true,
       converter: PaymentSheetViewModel.fromStore,
       onInit: (store) {
-        store.dispatch(SetTransferringPayment(false));
-        store.dispatch(
-            UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0));
+        store
+          ..dispatch(SetTransferringPayment(flag: false))
+          ..dispatch(
+            UpdateSelectedAmounts((store.state.cartState.cartTotal) / 100, 0),
+          );
       },
       builder: (_, viewmodel) {
         return FractionallySizedBox(
           heightFactor: 0.55,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 20, bottom: 10),
+                  left: 20,
+                  right: 20,
+                  top: 20,
+                  bottom: 10,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Peepl Pay",
+                    const Text(
+                      'Peepl Pay',
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w800),
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     IconButton(
                       splashRadius: 25,
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Container(
+                      icon: DecoratedBox(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.grey[800],
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Icon(
                             Icons.close,
                             color: Colors.white,
@@ -74,11 +79,11 @@ class _PaymentSheetState extends State<PaymentSheet> {
                   ],
                 ),
               ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+              const Spacer(),
+              const Padding(
+                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 child: Text(
-                  "Current Wallet Balance",
+                  'Current Wallet Balance',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -101,17 +106,17 @@ class _PaymentSheetState extends State<PaymentSheet> {
                       children: [
                         Text(
                           viewmodel.gbpXBalance,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text(
-                          "GBPx",
+                        const Text(
+                          'GBPx',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -132,20 +137,20 @@ class _PaymentSheetState extends State<PaymentSheet> {
                       children: [
                         Text(
                           viewmodel.pplBalance,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
                         Image.asset(
-                          "assets/images/avatar-ppl-red.png",
+                          'assets/images/avatar-ppl-red.png',
                           width: 25,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                       ],
@@ -153,109 +158,110 @@ class _PaymentSheetState extends State<PaymentSheet> {
                   ],
                 ),
               ),
-              Spacer(),
-              PPLSlider(),
-              Spacer(),
-              viewmodel.transferringTokens
-                  ? CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  : SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: ShimmerButton(
-                          buttonContent: Center(
-                            child: Text(
-                              "Pay Now",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                          buttonAction: () async {
-                            if (await BiometricUtils
-                                .authenticateIsAvailable()) {
-                              final BiometricAuth biometricAuth =
-                                  await BiometricUtils.getAvailableBiometrics();
-                              final String biometric =
-                                  BiometricUtils.getBiometricString(
-                                context,
-                                biometricAuth,
-                              );
-                              await BiometricUtils
-                                  .showDefaultPopupCheckBiometricAuth(
-                                message:
-                                    '${I10n.of(context).please_use} $biometric ${I10n.of(context).to_unlock}',
-                                callback: (bool result) {
-                                  result
-                                      ? (parseBalance(viewmodel.gbpXBalance) <=
-                                              viewmodel.selectedGBPxAmount)
-                                          ? stripeService.handleStripe(
-                                              walletAddress:
-                                                  viewmodel.walletAddress,
-                                              amountText: ((parseBalance(viewmodel
-                                                                  .gbpXBalance) -
-                                                              viewmodel
-                                                                  .selectedGBPxAmount)
-                                                          .abs() +
-                                                      0.01)
-                                                  .toStringAsFixed(2),
-                                              context: context,
-                                              shouldPushToHome: false,
-                                            )
-                                          : viewmodel.sendToken(
-                                              () {
-                                                context.router.push(
-                                                    OrderConfirmedScreen());
-                                              },
-                                              () {
-                                                print("error took place");
-                                                showErrorSnack(
-                                                    context: context,
-                                                    title:
-                                                        "Something went wrong");
-                                              },
-                                            )
-                                      : context.router.pop();
+              const Spacer(),
+              const PPLSlider(),
+              const Spacer(),
+              if (viewmodel.transferringTokens)
+                const CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              else
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: ShimmerButton(
+                    buttonContent: const Center(
+                      child: Text(
+                        'Pay Now',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    buttonAction: () async {
+                      if (await BiometricUtils.authenticateIsAvailable()) {
+                        final BiometricAuth biometricAuth =
+                            await BiometricUtils.getAvailableBiometrics();
+                        final String biometric =
+                            BiometricUtils.getBiometricString(
+                          biometricAuth,
+                        );
+                        await BiometricUtils.showDefaultPopupCheckBiometricAuth(
+                          message: 'Please use $biometric to unlock',
+                          callback: (bool result) {
+                            result
+                                ? (parseBalance(viewmodel.gbpXBalance) <=
+                                        viewmodel.selectedGBPxAmount)
+                                    ? stripeService.handleStripe(
+                                        walletAddress: viewmodel.walletAddress,
+                                        amountText: ((parseBalance(
+                                                          viewmodel.gbpXBalance,
+                                                        ) -
+                                                        viewmodel
+                                                            .selectedGBPxAmount)
+                                                    .abs() +
+                                                0.01)
+                                            .toStringAsFixed(2),
+                                        context: context,
+                                        shouldPushToHome: false,
+                                      )
+                                    : viewmodel.sendToken(
+                                        () {
+                                          context.router.push(
+                                            const OrderConfirmedScreen(),
+                                          );
+                                        },
+                                        () {
+                                          print('error took place');
+                                          showErrorSnack(
+                                            context: context,
+                                            title: 'Something went wrong',
+                                          );
+                                        },
+                                      )
+                                : context.router.pop();
+                          },
+                        );
+                      } else {
+                        //TODO: add pincode screen verification.
+                        (double.parse(
+                                  viewmodel.gbpXBalance.replaceAll(',', ''),
+                                ) <=
+                                viewmodel.selectedGBPxAmount)
+                            ? stripeService.handleStripe(
+                                walletAddress: viewmodel.walletAddress,
+                                amountText: ((double.parse(
+                                                  viewmodel.gbpXBalance
+                                                      .replaceAll(',', ''),
+                                                ) -
+                                                viewmodel.selectedGBPxAmount)
+                                            .abs() +
+                                        0.01)
+                                    .toStringAsFixed(2),
+                                context: context,
+                                shouldPushToHome: false,
+                              )
+                            : viewmodel.sendToken(
+                                () {
+                                  context.router
+                                      .push(const OrderConfirmedScreen());
+                                },
+                                () {
+                                  print('error took place');
+                                  showErrorSnack(
+                                    context: context,
+                                    title: 'Something went wrong',
+                                  );
                                 },
                               );
-                            } else {
-                              //TODO: add pincode screen verification.
-                              (double.parse(viewmodel.gbpXBalance
-                                          .replaceAll(",", "")) <=
-                                      viewmodel.selectedGBPxAmount)
-                                  ? stripeService.handleStripe(
-                                      walletAddress: viewmodel.walletAddress,
-                                      amountText: ((double.parse(viewmodel
-                                                          .gbpXBalance
-                                                          .replaceAll(
-                                                              ",", "")) -
-                                                      viewmodel
-                                                          .selectedGBPxAmount)
-                                                  .abs() +
-                                              0.01)
-                                          .toStringAsFixed(2),
-                                      context: context,
-                                      shouldPushToHome: false,
-                                    )
-                                  : viewmodel.sendToken(
-                                      () {
-                                        context.router
-                                            .push(OrderConfirmedScreen());
-                                      },
-                                      () {
-                                        print("error took place");
-                                        showErrorSnack(
-                                            context: context,
-                                            title: "Something went wrong");
-                                      },
-                                    );
-                            }
-                          },
-                          baseColor: Colors.grey[800]!,
-                          highlightColor: Colors.grey[850]!),
-                    ),
-              Spacer()
+                      }
+                    },
+                    baseColor: Colors.grey[800]!,
+                    highlightColor: Colors.grey[850]!,
+                  ),
+                ),
+              const Spacer()
             ],
           ),
         );
@@ -283,10 +289,10 @@ class PPLSlider extends StatefulWidget {
 }
 
 class _PPLSliderState extends State<PPLSlider> {
-  double _pplSliderValue = 0.0;
-  double _GBPXSliderValue = 0.0;
-  double _amountToBePaid = 0.0;
-  double _pplBalance = 0.0;
+  double _pplSliderValue = 0;
+  double _gbpxSliderValue = 0;
+  double _amountToBePaid = 0;
+  double _pplBalance = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -295,36 +301,35 @@ class _PPLSliderState extends State<PPLSlider> {
       distinct: true,
       onInit: (store) {
         _amountToBePaid = store.state.cartState.cartTotal.toDouble(); //in pence
-        _GBPXSliderValue =
+        _gbpxSliderValue =
             store.state.cartState.cartTotal.toDouble(); //in pence
-        _pplBalance = double.parse(store
-            .state.cashWalletState.tokens[PeeplToken.address]!
-            .getBalance(true));
+        _pplBalance = double.parse(
+          store.state.cashWalletState.tokens[PeeplToken.address]!
+              .getBalance(withPrecision: true),
+        );
       },
       builder: (_, viewmodel) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: (viewmodel.pplBalance != "0.0"
+            children: (viewmodel.pplBalance != '0.0'
                     ? [
                         SliderTheme(
                           data: SliderTheme.of(context).copyWith(
-                            trackHeight: 5.0,
-                            trackShape: RoundedRectSliderTrackShape(),
+                            trackHeight: 5,
+                            trackShape: const RoundedRectSliderTrackShape(),
                             activeTrackColor: Colors.grey[800],
                             inactiveTrackColor: Colors.grey[400],
-                            thumbShape: RoundSliderThumbShape(
-                              enabledThumbRadius: 9.0,
-                              pressedElevation: 8.0,
+                            thumbShape: const RoundSliderThumbShape(
+                              enabledThumbRadius: 9,
+                              pressedElevation: 8,
                             ),
                             thumbColor: Colors.white,
                             overlayColor: Colors.grey.withOpacity(0.2),
                             overlayShape:
-                                RoundSliderOverlayShape(overlayRadius: 0.0),
+                                const RoundSliderOverlayShape(overlayRadius: 0),
                           ),
                           child: Slider(
-                            min: 0.0,
                             max: getPPLValueFromPence(_amountToBePaid) <
                                     _pplBalance // compare values in PPL terms //665 < 171.66 ? || 35 < 171.66
                                 ? getPPLValueFromPence(_amountToBePaid)
@@ -332,18 +337,20 @@ class _PPLSliderState extends State<PPLSlider> {
                             value: _pplSliderValue,
                             divisions: 100,
                             onChangeEnd: (value) {
-                              _GBPXSliderValue = _amountToBePaid -
+                              _gbpxSliderValue = _amountToBePaid -
                                   value *
                                       10; //converting the PPL slider value into pence again
                               _pplSliderValue = value;
                               setState(() {});
                               viewmodel.updateSelectedValues(
-                                  _GBPXSliderValue / 100, _pplSliderValue);
+                                _gbpxSliderValue / 100,
+                                _pplSliderValue,
+                              );
                             },
                             onChanged: (value) {
                               setState(
                                 () {
-                                  _GBPXSliderValue = _amountToBePaid -
+                                  _gbpxSliderValue = _amountToBePaid -
                                       value *
                                           10; //converting the PPL slider value into pence again
                                   _pplSliderValue = value;
@@ -352,41 +359,42 @@ class _PPLSliderState extends State<PPLSlider> {
                             },
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(
-                          "Slide to use your Peepl Token balance",
+                          'Slide to use your Peepl Token balance',
                           style: TextStyle(
                             color: Colors.grey[300],
                             fontSize: 14,
                             fontWeight: FontWeight.w200,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                       ]
-                    : <Widget>[SizedBox.shrink()]) +
+                    : <Widget>[const SizedBox.shrink()]) +
                 [
                   Text(
-                    "Pay ${viewmodel.restaurantName}",
+                    'Pay ${viewmodel.restaurantName}',
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 14,
                       fontWeight: FontWeight.w200,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text.rich(
                     TextSpan(
                       text:
-                          "GBPx ${(_GBPXSliderValue / 100).toStringAsFixed(2)},",
+                          'GBPx ${(_gbpxSliderValue / 100).toStringAsFixed(2)},',
                       children: [
                         TextSpan(
-                            text: " PPL ${_pplSliderValue.toStringAsFixed(2)}")
+                          text: ' PPL ${_pplSliderValue.toStringAsFixed(2)}',
+                        )
                       ],
                     ),
                     style: TextStyle(
@@ -395,19 +403,20 @@ class _PPLSliderState extends State<PPLSlider> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text.rich(
                     TextSpan(
-                      text: "Total ${cFPrice(viewmodel.cartTotal)} | ",
+                      text: 'Total ${cFPrice(viewmodel.cartTotal)} | ',
                       children: [
                         TextSpan(
-                            text:
-                                "Earn ${getPPLRewardsFromPence(_GBPXSliderValue).toStringAsFixed(2)} "),
+                          text:
+                              'Earn ${getPPLRewardsFromPence(_gbpxSliderValue).toStringAsFixed(2)} ',
+                        ),
                         WidgetSpan(
                           child: Image.asset(
-                            "assets/images/avatar-ppl-red.png",
+                            'assets/images/avatar-ppl-red.png',
                             width: 25,
                           ),
                         )
@@ -419,7 +428,7 @@ class _PPLSliderState extends State<PPLSlider> {
                       fontWeight: FontWeight.w200,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],

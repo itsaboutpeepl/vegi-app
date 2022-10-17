@@ -1,16 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/constants/enums.dart';
-import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
-import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/constants/demoData.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 
 part 'user_cart_state.freezed.dart';
 part 'user_cart_state.g.dart';
 
 @Freezed()
 class UserCartState with _$UserCartState {
-  const UserCartState._();
-
   @JsonSerializable()
   factory UserCartState({
     @JsonKey(ignore: true) @Default([]) List<CartItem> cartItems,
@@ -29,18 +27,18 @@ class UserCartState with _$UserCartState {
         DeliveryAddresses? selectedDeliveryAddress,
     @JsonKey(ignore: true) @Default({}) Map<String, String> selectedTimeSlot,
     @JsonKey(ignore: true) @Default(0) int selectedTipAmount,
-    @JsonKey(ignore: true) @Default("") String discountCode,
-    @JsonKey(ignore: true) @Default("") String paymentIntentID,
-    @JsonKey(ignore: true) @Default("") String orderID,
+    @JsonKey(ignore: true) @Default('') String discountCode,
+    @JsonKey(ignore: true) @Default('') String paymentIntentID,
+    @JsonKey(ignore: true) @Default('') String orderID,
     @JsonKey(ignore: true) @Default(0.0) double selectedGBPxAmount,
     @JsonKey(ignore: true) @Default(0.0) double selectedPPLAmount,
     @JsonKey(ignore: true) @Default(false) bool transferringTokens,
     @JsonKey(ignore: true) @Default(false) bool errorCompletingPayment,
     @JsonKey(ignore: true) @Default(false) bool confirmedPayment,
-    @JsonKey(ignore: true) @Default("") String restaurantName,
-    @JsonKey(ignore: true) @Default("") String restaurantID,
+    @JsonKey(ignore: true) @Default('') String restaurantName,
+    @JsonKey(ignore: true) @Default('') String restaurantID,
     @JsonKey(ignore: true) @Default(null) DeliveryAddresses? restaurantAddress,
-    @JsonKey(ignore: true) @Default("") String restaurantWalletAddress,
+    @JsonKey(ignore: true) @Default('') String restaurantWalletAddress,
     @JsonKey(ignore: true) @Default(0) int deliveryCharge,
     @JsonKey(ignore: true) @Default(0) int collectionCharge,
     @JsonKey(ignore: true)
@@ -49,10 +47,12 @@ class UserCartState with _$UserCartState {
     @JsonKey(ignore: true) @Default(false) bool isDelivery,
     @JsonKey(ignore: true) @Default(0) int restaurantMinimumOrder,
     @JsonKey(ignore: true) @Default(0) int restaurantPlatformFee,
-    @JsonKey(ignore: true) @Default("") String deliveryInstructions,
+    @JsonKey(ignore: true) @Default('') String deliveryInstructions,
     @JsonKey(ignore: true) @Default(0) int deliveryMethodId,
     @JsonKey(ignore: true) @Default(0) int collectionMethodId,
   }) = _UserCartState;
+
+  const UserCartState._();
 
   factory UserCartState.initial() => UserCartState(
         cartItems: [],
@@ -65,21 +65,20 @@ class UserCartState with _$UserCartState {
         deliverySlots: [],
         collectionSlots: [],
         selectedTipAmount: 0,
-        discountCode: "",
-        paymentIntentID: "",
-        orderID: "",
-        selectedGBPxAmount: 0.0,
-        selectedPPLAmount: 0.0,
+        discountCode: '',
+        paymentIntentID: '',
+        orderID: '',
+        selectedGBPxAmount: 0,
+        selectedPPLAmount: 0,
         transferringTokens: false,
         errorCompletingPayment: false,
         confirmedPayment: false,
-        restaurantName: "",
-        restaurantID: "",
+        restaurantName: '',
+        restaurantID: '',
         restaurantAddress: demoAddress,
-        restaurantWalletAddress: "",
+        restaurantWalletAddress: '',
         deliveryCharge: 0,
         collectionCharge: 0,
-        selectedDeliveryAddress: null,
         selectedTimeSlot: {},
         fulfilmentMethod: FulfilmentMethod.delivery,
         isDelivery: false,
@@ -87,7 +86,8 @@ class UserCartState with _$UserCartState {
         collectionMethodId: 0,
       );
 
-  factory UserCartState.fromJson(dynamic json) => _$UserCartStateFromJson(json);
+  factory UserCartState.fromJson(Map<String, dynamic> json) =>
+      _$UserCartStateFromJson(json);
 }
 
 class UserCartStateConverter

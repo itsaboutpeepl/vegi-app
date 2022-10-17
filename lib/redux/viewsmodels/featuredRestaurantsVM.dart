@@ -1,22 +1,13 @@
 import 'package:equatable/equatable.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 
 class FeaturedRestaurantsVM extends Equatable {
-  final List<RestaurantItem> featuredRestaurants;
-  final bool isLoadingHomePage;
-  final Function(String outCode) changeOutCode;
-  final String avatarUrl;
-  final List<String> postalCodes;
-  final bool isDelivery;
-  final Function(bool isDelivery) setIsDelivery;
-  final List<OrderDetails> listOfScheduledOrders;
-
-  FeaturedRestaurantsVM({
+  const FeaturedRestaurantsVM({
     required this.featuredRestaurants,
     required this.isLoadingHomePage,
     required this.avatarUrl,
@@ -27,7 +18,7 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.listOfScheduledOrders,
   });
 
-  static FeaturedRestaurantsVM fromStore(Store<AppState> store) {
+  factory FeaturedRestaurantsVM.fromStore(Store<AppState> store) {
     return FeaturedRestaurantsVM(
       featuredRestaurants: store.state.homePageState.featuredRestaurants,
       isLoadingHomePage: store.state.homePageState.isLoadingHomePage,
@@ -39,11 +30,20 @@ class FeaturedRestaurantsVM extends Equatable {
         store.dispatch(fetchFeaturedRestaurants(outCode: outCode));
       },
       setIsDelivery: (isDelivery) {
-        store.dispatch(SetIsDelivery(isDelivery));
-        store.dispatch(computeCartTotals());
+        store
+          ..dispatch(SetIsDelivery(isDelivery: isDelivery))
+          ..dispatch(computeCartTotals());
       },
     );
   }
+  final List<RestaurantItem> featuredRestaurants;
+  final bool isLoadingHomePage;
+  final void Function(String outCode) changeOutCode;
+  final String avatarUrl;
+  final List<String> postalCodes;
+  final bool isDelivery;
+  final void Function(bool isDelivery) setIsDelivery;
+  final List<OrderDetails> listOfScheduledOrders;
 
   @override
   List<Object> get props => [

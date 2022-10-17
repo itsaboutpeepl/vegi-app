@@ -10,8 +10,8 @@ void showErrorSnack({
   EdgeInsets? margin,
   String? message,
 }) {
-  Flushbar(
-      boxShadows: [
+  Flushbar<void>(
+      boxShadows: const [
         BoxShadow(
           offset: Offset(0.5, 0.5),
           blurRadius: 5,
@@ -20,31 +20,36 @@ void showErrorSnack({
       duration: Duration(seconds: duration),
       titleText: Text(
         title ?? I10n.of(context).transaction_failed,
-        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
       messageText: Text(
-        message ?? "Try again later!",
-        style: TextStyle(
-          fontSize: 14.0,
+        message ?? 'Try again later!',
+        style: const TextStyle(
+          fontSize: 14,
         ),
       ),
       backgroundColor: Theme.of(context).bottomAppBarColor,
-      margin: margin ?? EdgeInsets.only(top: 8, right: 8, left: 8, bottom: MediaQuery.of(context).size.height * 0.01),
-      borderRadius: BorderRadius.all(
-        Radius.circular(8.0),
+      margin: margin ??
+          EdgeInsets.only(
+            top: 8,
+            right: 8,
+            left: 8,
+            bottom: MediaQuery.of(context).size.height * 0.01,
+          ),
+      borderRadius: const BorderRadius.all(
+        Radius.circular(8),
       ),
       icon: SvgPicture.asset(
         'assets/images/failed_icon.svg',
         width: 20,
         height: 20,
-      ))
-    ..show(context);
+      )).show(context);
 }
 
-void showCopiedFlushbar(context) {
-  Flushbar(
-    duration: Duration(seconds: 1),
-    boxShadows: [
+void showCopiedFlushbar(BuildContext context) {
+  Flushbar<void>(
+    duration: const Duration(seconds: 1),
+    boxShadows: const [
       BoxShadow(
         offset: Offset(0.5, 0.5),
         blurRadius: 5,
@@ -55,40 +60,40 @@ void showCopiedFlushbar(context) {
       textAlign: TextAlign.center,
     ),
     backgroundColor: Theme.of(context).bottomAppBarColor,
-    margin: EdgeInsets.only(
+    margin: const EdgeInsets.only(
       top: 25,
       right: 25,
       left: 25,
       bottom: 25,
     ),
-    borderRadius: BorderRadius.all(
-      Radius.circular(8.0),
+    borderRadius: const BorderRadius.all(
+      Radius.circular(8),
     ),
-  )..show(context);
+  ).show(context);
 }
 
-void showPlayBackCompletedFlushBar(context) {
-  Flushbar(
-    duration: Duration(seconds: 4),
-    boxShadows: [
+void showPlayBackCompletedFlushBar(BuildContext context) {
+  Flushbar<void>(
+    duration: const Duration(seconds: 4),
+    boxShadows: const [
       BoxShadow(
         offset: Offset(0.5, 0.5),
         blurRadius: 5,
       ),
     ],
-    messageText: Text(
-      "Thanks for watching. Your Reward will be added to your wallet.",
+    messageText: const Text(
+      'Thanks for watching. Your Reward will be added to your wallet.',
       textAlign: TextAlign.center,
     ),
     backgroundColor: Theme.of(context).bottomAppBarColor,
-    margin: EdgeInsets.only(
+    margin: const EdgeInsets.only(
       top: 8,
       right: 8,
       left: 8,
       bottom: 10,
     ),
-    borderRadius: BorderRadius.all(
-      Radius.circular(8.0),
+    borderRadius: const BorderRadius.all(
+      Radius.circular(8),
     ),
-  )..show(context);
+  ).show(context);
 }

@@ -35,36 +35,39 @@ mixin _$PastOrderState {
 abstract class $PastOrderStateCopyWith<$Res> {
   factory $PastOrderStateCopyWith(
           PastOrderState value, $Res Function(PastOrderState) then) =
-      _$PastOrderStateCopyWithImpl<$Res>;
+      _$PastOrderStateCopyWithImpl<$Res, PastOrderState>;
+  @useResult
   $Res call(
       {List<OrderDetails> listOfScheduledOrders,
       List<OrderDetails> listOfOngoingOrders});
 }
 
 /// @nodoc
-class _$PastOrderStateCopyWithImpl<$Res>
+class _$PastOrderStateCopyWithImpl<$Res, $Val extends PastOrderState>
     implements $PastOrderStateCopyWith<$Res> {
   _$PastOrderStateCopyWithImpl(this._value, this._then);
 
-  final PastOrderState _value;
   // ignore: unused_field
-  final $Res Function(PastOrderState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? listOfScheduledOrders = freezed,
-    Object? listOfOngoingOrders = freezed,
+    Object? listOfScheduledOrders = null,
+    Object? listOfOngoingOrders = null,
   }) {
     return _then(_value.copyWith(
-      listOfScheduledOrders: listOfScheduledOrders == freezed
+      listOfScheduledOrders: null == listOfScheduledOrders
           ? _value.listOfScheduledOrders
           : listOfScheduledOrders // ignore: cast_nullable_to_non_nullable
               as List<OrderDetails>,
-      listOfOngoingOrders: listOfOngoingOrders == freezed
+      listOfOngoingOrders: null == listOfOngoingOrders
           ? _value.listOfOngoingOrders
           : listOfOngoingOrders // ignore: cast_nullable_to_non_nullable
               as List<OrderDetails>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -75,6 +78,7 @@ abstract class _$$_PastOrderStateCopyWith<$Res>
           _$_PastOrderState value, $Res Function(_$_PastOrderState) then) =
       __$$_PastOrderStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {List<OrderDetails> listOfScheduledOrders,
       List<OrderDetails> listOfOngoingOrders});
@@ -82,26 +86,24 @@ abstract class _$$_PastOrderStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_PastOrderStateCopyWithImpl<$Res>
-    extends _$PastOrderStateCopyWithImpl<$Res>
+    extends _$PastOrderStateCopyWithImpl<$Res, _$_PastOrderState>
     implements _$$_PastOrderStateCopyWith<$Res> {
   __$$_PastOrderStateCopyWithImpl(
       _$_PastOrderState _value, $Res Function(_$_PastOrderState) _then)
-      : super(_value, (v) => _then(v as _$_PastOrderState));
+      : super(_value, _then);
 
-  @override
-  _$_PastOrderState get _value => super._value as _$_PastOrderState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? listOfScheduledOrders = freezed,
-    Object? listOfOngoingOrders = freezed,
+    Object? listOfScheduledOrders = null,
+    Object? listOfOngoingOrders = null,
   }) {
     return _then(_$_PastOrderState(
-      listOfScheduledOrders: listOfScheduledOrders == freezed
+      listOfScheduledOrders: null == listOfScheduledOrders
           ? _value.listOfScheduledOrders
           : listOfScheduledOrders // ignore: cast_nullable_to_non_nullable
               as List<OrderDetails>,
-      listOfOngoingOrders: listOfOngoingOrders == freezed
+      listOfOngoingOrders: null == listOfOngoingOrders
           ? _value.listOfOngoingOrders
           : listOfOngoingOrders // ignore: cast_nullable_to_non_nullable
               as List<OrderDetails>,
@@ -153,12 +155,15 @@ class _$_PastOrderState extends _PastOrderState {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_PastOrderStateCopyWith<_$_PastOrderState> get copyWith =>
       __$$_PastOrderStateCopyWithImpl<_$_PastOrderState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PastOrderStateToJson(this);
+    return _$$_PastOrderStateToJson(
+      this,
+    );
   }
 }
 
@@ -172,11 +177,9 @@ abstract class _PastOrderState extends PastOrderState {
       _$_PastOrderState.fromJson;
 
   @override
-  List<OrderDetails> get listOfScheduledOrders =>
-      throw _privateConstructorUsedError;
+  List<OrderDetails> get listOfScheduledOrders;
   @override
-  List<OrderDetails> get listOfOngoingOrders =>
-      throw _privateConstructorUsedError;
+  List<OrderDetails> get listOfOngoingOrders;
   @override
   @JsonKey(ignore: true)
   _$$_PastOrderStateCopyWith<_$_PastOrderState> get copyWith =>

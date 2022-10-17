@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
@@ -13,7 +12,7 @@ class TipCard extends StatefulWidget {
   final int tipAmount;
 
   @override
-  _TipCardState createState() => _TipCardState();
+  State<TipCard> createState() => _TipCardState();
 }
 
 class _TipCardState extends State<TipCard> {
@@ -24,11 +23,9 @@ class _TipCardState extends State<TipCard> {
       distinct: true,
       builder: (_, viewmodel) {
         return Card(
-          color: viewmodel.fulfilmentMethod == FulfilmentMethod.collection
-              ? viewmodel.updateTipAmount(0)
-              : viewmodel.selectedUserTip == widget.tipAmount
-                  ? flexColorSchemeLight.primary
-                  : Colors.white,
+          color: viewmodel.selectedUserTip == widget.tipAmount
+              ? flexColorSchemeLight.primary
+              : Colors.white,
           margin: const EdgeInsets.only(top: 5),
           child: InkWell(
             onTap: () {
@@ -37,7 +34,7 @@ class _TipCardState extends State<TipCard> {
                   : viewmodel.updateTipAmount(widget.tipAmount);
             },
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(6),
               child: Row(
                 children: [
                   Text.rich(
@@ -50,8 +47,8 @@ class _TipCardState extends State<TipCard> {
                           ),
                         ),
                         TextSpan(
-                          text: " £${widget.tipAmount}",
-                          style: TextStyle(
+                          text: ' £${widget.tipAmount}',
+                          style: const TextStyle(
                             fontSize: 18,
                           ),
                         )

@@ -1,5 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 
@@ -31,13 +31,13 @@ Map<String, Token> tokensFromJson(Map<String, dynamic> tokens) => tokens.map(
 
 @freezed
 class SwapState with _$SwapState {
-  const SwapState._();
-
   factory SwapState({
     @JsonKey(fromJson: tokensFromJson) @Default({}) Map<String, Token> tokens,
     @Default({}) Map<String, String> tokensImages,
     @JsonKey(ignore: true) @Default(false) bool isFetching,
   }) = _SwapState;
+
+  const SwapState._();
 
   factory SwapState.initial() {
     return SwapState(
@@ -46,7 +46,8 @@ class SwapState with _$SwapState {
     );
   }
 
-  factory SwapState.fromJson(dynamic json) => _$SwapStateFromJson(json);
+  factory SwapState.fromJson(Map<String, dynamic> json) =>
+      _$SwapStateFromJson(json);
 }
 
 class SwapStateConverter

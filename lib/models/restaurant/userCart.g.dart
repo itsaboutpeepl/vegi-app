@@ -8,7 +8,7 @@ part of 'userCart.dart';
 
 _$_UserCart _$$_UserCartFromJson(Map<String, dynamic> json) => _$_UserCart(
       cartItems: (json['cartItems'] as List<dynamic>)
-          .map((e) => CartItem.fromJson(e))
+          .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       cartSubTotal: json['cartSubTotal'] as int,
       cartTax: json['cartTax'] as int,

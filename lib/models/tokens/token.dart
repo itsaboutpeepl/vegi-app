@@ -1,7 +1,7 @@
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:decimal/decimal.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
@@ -15,15 +15,6 @@ part 'token.g.dart';
 
 @Freezed()
 class Token with _$Token implements Comparable<Token> {
-  const Token._();
-
-  @override
-  int compareTo(Token? other) {
-    if (other == null) return 1;
-    return num.parse(getFiatBalance(true))
-        .compareTo(num.parse(other.getFiatBalance(true)));
-  }
-
   factory Token({
     required String address,
     required String name,
@@ -41,13 +32,24 @@ class Token with _$Token implements Comparable<Token> {
     @JsonKey(fromJson: walletActionsFromJson) WalletActions? walletActions,
   }) = _Token;
 
-  String getBalance([withPrecision = false]) => Formatter.formatValue(
+  factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
+
+  const Token._();
+
+  @override
+  int compareTo(Token? other) {
+    if (other == null) return 1;
+    return num.parse(getFiatBalance(withPrecision: true))
+        .compareTo(num.parse(other.getFiatBalance(withPrecision: true)));
+  }
+
+  String getBalance({bool withPrecision = false}) => Formatter.formatValue(
         amount,
         decimals,
         withPrecision,
       );
 
-  String getFiatBalance([bool withPrecision = false]) => hasPriceInfo
+  String getFiatBalance({bool withPrecision = false}) => hasPriceInfo
       ? Formatter.formatValueToFiat(
           amount,
           decimals,
@@ -60,24 +62,23 @@ class Token with _$Token implements Comparable<Token> {
 
   Future<dynamic> fetchBalance(
     String accountAddress, {
-    required Function(BigInt) onDone,
+    required void Function(BigInt) onDone,
     Function? onError,
   }) async {
     if ([null, ''].contains(accountAddress) || [null, ''].contains(address)) {
       return;
     }
-    final Function balanceFetcher =
-        isNative ? getIt<Web3>().getBalance : getIt<Web3>().getTokenBalance;
     try {
       final dynamic balance = isNative
-          ? await balanceFetcher(
-              address: accountAddress,
-            )
-          : await balanceFetcher(
+          ? await getIt<Web3>().getBalance(address: address)
+          : await getIt<Web3>().getTokenBalance(
               address,
               address: accountAddress,
             );
-      final BigInt value = isNative ? balance.getInWei : balance;
+
+      final BigInt value =
+          balance is EtherAmount ? balance.getInWei : balance as BigInt;
+
       onDone(value);
     } catch (e, s) {
       log.error(
@@ -130,6 +131,4 @@ class Token with _$Token implements Comparable<Token> {
       onError(e, s);
     }
   }
-
-  factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
 }

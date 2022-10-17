@@ -5,8 +5,6 @@ part 'productOptions.g.dart';
 
 @Freezed()
 class ProductOptions with _$ProductOptions {
-  const ProductOptions._();
-
   @JsonSerializable()
   factory ProductOptions({
     required int optionID,
@@ -16,5 +14,8 @@ class ProductOptions with _$ProductOptions {
     required bool isAvaliable,
   }) = _ProductOptions;
 
-  factory ProductOptions.fromJson(dynamic json) => _$ProductOptionsFromJson(json);
+  const ProductOptions._();
+
+  factory ProductOptions.fromJson(Map<String, dynamic> json) =>
+      _$ProductOptionsFromJson(json);
 }

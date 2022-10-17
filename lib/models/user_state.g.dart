@@ -53,13 +53,14 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       authType: $enumDecodeNullable(_$BiometricAuthEnumMap, json['authType']) ??
           BiometricAuth.none,
       locale: localeFromJson(json['locale'] as Map<String, dynamic>?),
-      listOfDeliveryAddresses:
-          (json['listOfDeliveryAddresses'] as List<dynamic>?)
-                  ?.map((e) => DeliveryAddresses.fromJson(e))
-                  .toList() ??
-              const [],
+      listOfDeliveryAddresses: (json['listOfDeliveryAddresses']
+                  as List<dynamic>?)
+              ?.map(
+                  (e) => DeliveryAddresses.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       hasSavedSeedPhrase: json['hasSavedSeedPhrase'] as bool? ?? false,
-      initialLoginDateTime: json['initialLoginDateTime'] as String? ?? "",
+      initialLoginDateTime: json['initialLoginDateTime'] as String? ?? '',
       showSeedPhraseBanner: json['showSeedPhraseBanner'] as bool? ?? false,
     );
 

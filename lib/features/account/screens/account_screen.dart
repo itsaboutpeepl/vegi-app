@@ -46,41 +46,41 @@ class AccountScreen extends StatelessWidget {
                               menuIcon: 'settings_icon.svg',
                               onTap: () {},
                             ),
-                            MenuTile(
-                              label: I10n.of(context).protect_wallet,
-                              menuIcon: 'protect_wallet.svg',
-                              onTap: () {
-                                context.router.push(ProtectYourWallet());
-                              },
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  !viewModel.isBackup
-                                      ? Flexible(
-                                          child: SvgPicture.asset(
-                                            'assets/images/back_up_icon.svg',
-                                            width: 12,
-                                          ),
-                                        )
-                                      : SizedBox.shrink(),
-                                  !viewModel.isBackup
-                                      ? Flexible(
-                                          child: SizedBox(
-                                            width: 10,
-                                          ),
-                                        )
-                                      : SizedBox.shrink(),
-                                  Flexible(
-                                    child: Icon(
-                                      Icons.navigate_next,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // MenuTile(
+                            //   label: I10n.of(context).protect_wallet,
+                            //   menuIcon: 'protect_wallet.svg',
+                            //   onTap: () {
+                            //     context.router.push(ProtectYourWallet());
+                            //   },
+                            //   trailing: Row(
+                            //     mainAxisSize: MainAxisSize.min,
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       !viewModel.isBackup
+                            //           ? Flexible(
+                            //               child: SvgPicture.asset(
+                            //                 'assets/images/back_up_icon.svg',
+                            //                 width: 12,
+                            //               ),
+                            //             )
+                            //           : SizedBox.shrink(),
+                            //       !viewModel.isBackup
+                            //           ? Flexible(
+                            //               child: SizedBox(
+                            //                 width: 10,
+                            //               ),
+                            //             )
+                            //           : SizedBox.shrink(),
+                            //       Flexible(
+                            //         child: Icon(
+                            //           Icons.navigate_next,
+                            //           color: Colors.black,
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             MenuTile(
                               label: '${I10n.of(context).top_up} £',
                               menuIcon: 'top_up_icon.svg',

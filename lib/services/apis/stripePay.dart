@@ -5,19 +5,21 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 
 @lazySingleton
 class StripePayService {
-  final Dio dio;
-
   StripePayService(this.dio) {
     dio.options.baseUrl = dotenv.env['STRIPE_PAY_URL']!;
-    dio.options.headers = Map.from({"Content-Type": 'application/json'});
+    dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
+  final Dio dio;
 
-  Future<Map<dynamic, dynamic>> startPaymentIntentCheck(String paymentIntentID) async {
-    Response response = await dio.get("api/v1/payment_intents/$paymentIntentID");
+  Future<Map<dynamic, dynamic>> startPaymentIntentCheck(
+    String paymentIntentID,
+  ) async {
+    final Response<dynamic> response =
+        await dio.get('api/v1/payment_intents/$paymentIntentID');
 
-    Map<dynamic, dynamic> result = response.data;
+    final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
-    print("Payment Intent Result $result");
+    print('Payment Intent Result $result');
 
     return result;
   }
@@ -27,10 +29,11 @@ class StripePayService {
     required String currency,
     required String walletAddress,
   }) async {
-    final int amountNew = (double.parse(amount) * 100).toInt(); // Pounds to pence
+    final int amountNew =
+        (double.parse(amount) * 100).toInt(); // Pounds to pence
     try {
-      Response response = await dio.post(
-        "/stripe/createPaymentIntent",
+      final Response<dynamic> response = await dio.post(
+        '/stripe/createPaymentIntent',
         data: {
           'amount': amountNew,
           'currency': currency,
@@ -38,7 +41,7 @@ class StripePayService {
         },
       );
 
-      return response.data['data']['paymentIntent']['clientSecret'];
+      return response.data['data']['paymentIntent']['clientSecret'] as String;
     } catch (e) {
       log.info('Error createStripePaymentIntent ${e.toString()}');
       return e.toString();

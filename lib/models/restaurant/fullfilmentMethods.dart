@@ -5,8 +5,6 @@ part 'fullfilmentMethods.g.dart';
 
 @Freezed()
 class FullfilmentMethods with _$FullfilmentMethods {
-  const FullfilmentMethods._();
-
   @JsonSerializable()
   factory FullfilmentMethods({
     required Map<String, dynamic>? collectionMethod,
@@ -15,5 +13,8 @@ class FullfilmentMethods with _$FullfilmentMethods {
     required List<Map<String, String>> deliverySlots,
   }) = _FullfilmentMethods;
 
-  factory FullfilmentMethods.fromJson(dynamic json) => _$FullfilmentMethodsFromJson(json);
+  const FullfilmentMethods._();
+
+  factory FullfilmentMethods.fromJson(Map<String, dynamic> json) =>
+      _$FullfilmentMethodsFromJson(json);
 }

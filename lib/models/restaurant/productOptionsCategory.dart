@@ -6,13 +6,14 @@ part 'productOptionsCategory.g.dart';
 
 @Freezed()
 class ProductOptionsCategory with _$ProductOptionsCategory {
-  const ProductOptionsCategory._();
-
   @JsonSerializable()
   factory ProductOptionsCategory(
       {required int categoryID,
       required String name,
       required List<ProductOptions> listOfOptions}) = _ProductOptionsCategory;
 
-  factory ProductOptionsCategory.fromJson(dynamic json) => _$ProductOptionsCategoryFromJson(json);
+  const ProductOptionsCategory._();
+
+  factory ProductOptionsCategory.fromJson(Map<String, dynamic> json) =>
+      _$ProductOptionsCategoryFromJson(json);
 }

@@ -1,5 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
@@ -57,8 +57,6 @@ Map<String, Token> tokensFromJson(Map<String, dynamic> tokens) => tokens.map(
 
 @freezed
 class CashWalletState with _$CashWalletState {
-  const CashWalletState._();
-
   factory CashWalletState({
     @JsonKey(fromJson: tokensFromJson) @Default({}) Map<String, Token> tokens,
     @JsonKey(fromJson: walletActionsFromJson) WalletActions? walletActions,
@@ -66,6 +64,8 @@ class CashWalletState with _$CashWalletState {
     @JsonKey(ignore: true) @Default(false) bool isFetchingBalances,
     @Default([]) List<WCSessionStore> wcSessionStores,
   }) = _CashWalletState;
+
+  const CashWalletState._();
 
   factory CashWalletState.initial() {
     return CashWalletState(
@@ -80,7 +80,7 @@ class CashWalletState with _$CashWalletState {
     );
   }
 
-  factory CashWalletState.fromJson(dynamic json) =>
+  factory CashWalletState.fromJson(Map<String, dynamic> json) =>
       _$CashWalletStateFromJson(json);
 }
 

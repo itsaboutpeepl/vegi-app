@@ -5,108 +5,110 @@ import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
-import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
 @lazySingleton
 class PeeplEatsService {
-  final Dio dio;
-
   PeeplEatsService(this.dio) {
     dio.options.baseUrl = dotenv.env['VEGI_EATS_BACKEND']!;
-    dio.options.headers = Map.from({"Content-Type": 'application/json'});
+    dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
 
+  final Dio dio;
+
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
-    Response response =
-        await dio.get('api/v1/vendors?outcode=$outCode').timeout(
-      Duration(seconds: 5),
+    final Response<dynamic> response =
+        await dio.get<dynamic>('api/v1/vendors?outcode=$outCode').timeout(
+      const Duration(seconds: 5),
       onTimeout: () {
         return Response(
-          data: {"vendors": []},
-          requestOptions: RequestOptions(path: ""),
+          data: {'vendors': List<RestaurantItem>.empty()},
+          requestOptions: RequestOptions(path: ''),
         );
       },
     ).onError(
       (error, stackTrace) => Response(
-        data: {"vendors": []},
-        requestOptions: RequestOptions(path: ""),
+        data: {'vendors': List<RestaurantItem>.empty()},
+        requestOptions: RequestOptions(path: ''),
       ),
     );
 
-    List<dynamic> results = response.data['vendors'] as List;
+    final List<Map<String, dynamic>> results =
+        response.data['vendors'] as List<Map<String, dynamic>>;
 
-    List<RestaurantItem> restaurantsActive = [];
+    final List<RestaurantItem> restaurantsActive = [];
 
-    results.forEach(
-      (element) {
-        if (element['status'] == "active") {
-          restaurantsActive.add(
-            RestaurantItem(
-                restaurantID: element["id"].toString(),
-                name: element['name'] ?? "",
-                description: element["description"] ?? "",
-                phoneNumber: element['phoneNumber'] ?? "",
-                status: element['status'] ?? "draft",
-                deliveryRestrictionDetails: [], // TODO: Remove this entirely
-                imageURL: element["imageUrl"],
-                category: "Category",
-                costLevel: element['costLevel'] ?? 2,
-                rating: element['rating'] ?? 2,
-                address: DeliveryAddresses(
-                    internalID: Random(DateTime.now().millisecondsSinceEpoch)
-                        .nextInt(10000),
-                    addressLine1: element["pickupAddressLineOne"] ?? "",
-                    addressLine2: element["pickupAddressLineTwo"] ?? "",
-                    townCity: element["pickupAddressCity"] ?? "",
-                    postalCode: element["pickupAddressPostCode"] ?? "",
-                    latitude: 0.0,
-                    longitude: 0.0),
-                walletAddress: element['walletAddress'],
-                listOfMenuItems: [],
-                isVegan: element['isVegan'] ?? false,
-                minimumOrderAmount: element['minimumOrderAmount'],
-                platformFee: element['platformFee']),
-          );
-        }
-      },
-    );
+    for (final Map<String, dynamic> element in results) {
+      if (element['status'] == 'active') {
+        restaurantsActive.add(
+          RestaurantItem(
+            restaurantID: element['id'].toString(),
+            name: element['name'] as String? ?? '',
+            description: element['description'] as String? ?? '',
+            phoneNumber: element['phoneNumber'] as String? ?? '',
+            status: element['status'] as String? ?? 'draft',
+            deliveryRestrictionDetails: [], // TODO: Remove this entirely
+            imageURL: element['imageUrl'] as String? ?? '',
+            category: 'Category',
+            costLevel: element['costLevel'] as int? ?? 2,
+            rating: element['rating'] as int? ?? 2,
+            address: DeliveryAddresses(
+              internalID:
+                  Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
+              addressLine1: element['pickupAddressLineOne'] as String? ?? '',
+              addressLine2: element['pickupAddressLineTwo'] as String? ?? '',
+              townCity: element['pickupAddressCity'] as String? ?? '',
+              postalCode: element['pickupAddressPostCode'] as String? ?? '',
+              latitude: 0,
+              longitude: 0,
+            ),
+            walletAddress: element['walletAddress'] as String? ?? '',
+            listOfMenuItems: [],
+            isVegan: element['isVegan'] as bool? ?? false,
+            minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
+            platformFee: element['platformFee'] as int? ?? 0,
+          ),
+        );
+      }
+    }
 
-    restaurantsActive.removeWhere((element) => element.status == "draft");
+    restaurantsActive.removeWhere((element) => element.status == 'draft');
 
     return restaurantsActive;
   }
 
   Future<List<RestaurantMenuItem>> getRestaurantMenuItems(
       String restaurantID) async {
-    Response response = await dio.get('api/v1/vendors/$restaurantID?');
+    final Response<dynamic> response =
+        await dio.get('api/v1/vendors/$restaurantID?');
 
-    List<dynamic> results = response.data['vendor']['products'] as List;
+    final List<Map<String, dynamic>> results =
+        response.data['vendor']['products'] as List<Map<String, dynamic>>;
 
-    List<RestaurantMenuItem> menuItems = [];
+    final List<RestaurantMenuItem> menuItems = [];
 
-    results.forEach(
-      (element) {
-        if (element["isAvailable"])
-          menuItems.add(
-            RestaurantMenuItem(
-              isFeatured: element['isFeatured'] ?? Random().nextBool(),
-              menuItemID: element["id"].toString(),
-              restaurantID: restaurantID,
-              name: element['name'],
-              imageURL: element["imageUrl"] ?? "",
-              category: "Category",
-              price: element['basePrice'],
-              description: element['description'],
-              extras: {},
-              listOfProductOptions: [],
-              priority: element['priority'] ?? 0,
-            ),
-          );
-      },
-    );
+    for (final Map<String, dynamic> element in results) {
+      if (element['isAvailable'] as bool) {
+        menuItems.add(
+          RestaurantMenuItem(
+            isFeatured: element['isFeatured'] as bool? ?? Random().nextBool(),
+            menuItemID: element['id'].toString(),
+            restaurantID: restaurantID,
+            name: element['name'] as String? ?? '',
+            imageURL: element['imageUrl'] as String? ?? '',
+            category: 'Category',
+            price: element['basePrice'] as int? ?? 0,
+            description: element['description'] as String? ?? '',
+            extras: {},
+            listOfProductOptions: [],
+            priority: element['priority'] as int? ?? 0,
+          ),
+        );
+      }
+    }
 
     menuItems.sort((a, b) => a.priority.compareTo(b.priority));
 
@@ -114,97 +116,141 @@ class PeeplEatsService {
   }
 
   Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {
-    Response response =
+    // final Response<dynamic> response =
+    //     await dio.get('api/v1/products/get-product-options/$itemID?');
+
+    // final List<Map<String, dynamic>> results =
+    //     response.data as List<Map<String, dynamic>>;
+
+    // final List<ProductOptionsCategory> listOfProductOptions = [];
+
+    // for (final Map<String, dynamic> category in results) {
+    //   final List<ProductOptions> listOfOptions = [];
+    //   category['values'].forEach(
+    //     (option) {
+    //       listOfOptions.add(
+    //         ProductOptions(
+    //           optionID: option['id'],
+    //           name: option['name'],
+    //           description: option['description'],
+    //           price: option['priceModifier'],
+    //           isAvaliable: option['isAvailable'],
+    //         ),
+    //       );
+    //     },
+    //   );
+
+    //   if (category['values'].isEmpty) continue;
+
+    //   listOfProductOptions.add(
+    //     ProductOptionsCategory(
+    //       categoryID: category['id'],
+    //       name: category['name'],
+    //       listOfOptions: listOfOptions,
+    //     ),
+    //   );
+    // }
+
+    // return listOfProductOptions;
+
+    final Response<dynamic> response =
         await dio.get('api/v1/products/get-product-options/$itemID?');
 
-    List<dynamic> results = response.data as List;
+    final List<Map<String, dynamic>> results =
+        response.data as List<Map<String, dynamic>>;
 
-    List<ProductOptionsCategory> listOfProductOptions = [];
+    final List<ProductOptionsCategory> listOfProductOptions = [];
 
-    results.forEach(
-      (category) {
-        List<ProductOptions> listOfOptions = [];
-        category['values'].forEach(
-          (option) {
-            listOfOptions.add(
-              ProductOptions(
-                optionID: option['id'],
-                name: option['name'],
-                description: option['description'],
-                price: option['priceModifier'],
-                isAvaliable: option['isAvailable'],
-              ),
-            );
-          },
-        );
+    for (final Map<String, dynamic> category in results) {
+      final List<ProductOptions> listOfOptions = [];
 
-        if (category["values"].isEmpty) return;
+      final List<Map<String, dynamic>> options =
+          category['values'] as List<Map<String, dynamic>>;
 
-        listOfProductOptions.add(
-          ProductOptionsCategory(
-            categoryID: category['id'],
-            name: category['name'],
-            listOfOptions: listOfOptions,
+      for (final Map<String, dynamic> option in options) {
+        listOfOptions.add(
+          ProductOptions(
+            optionID: option['id'] as int? ?? 0,
+            name: option['name'] as String? ?? '',
+            description: option['description'] as String? ?? '',
+            price: option['priceModifier'] as int? ?? 0,
+            isAvaliable: option['isAvailable'] as bool? ?? false,
           ),
         );
-      },
-    );
+      }
+
+      if (options.isEmpty) continue;
+
+      listOfProductOptions.add(
+        ProductOptionsCategory(
+          categoryID: category['id'] as int? ?? 0,
+          name: category['name'] as String? ?? '',
+          listOfOptions: listOfOptions,
+        ),
+      );
+    }
 
     return listOfProductOptions;
   }
 
   Future<int> checkDiscountCode(String discountCode) async {
-    Response response =
+    final Response<dynamic> response =
         await dio.get('api/v1/discounts/check-discount-code/$discountCode?');
 
-    Map<dynamic, dynamic> results = response.data['discount'] as Map;
+    final Map<dynamic, dynamic> results = response.data['discount'] as Map;
 
-    return results['percentage'];
+    return results['percentage'] as int? ?? 0;
   }
 
   Future<FullfilmentMethods> getFulfilmentSlots(
       {required String vendorID, required String dateRequired}) async {
-    Response response = await dio.get(
+    final Response<dynamic> response = await dio.get(
         'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
 
-    FullfilmentMethods methods = FullfilmentMethods.fromJson(response.data);
+    final FullfilmentMethods methods =
+        FullfilmentMethods.fromJson(response.data as Map<String, dynamic>);
 
     return methods;
   }
 
-  Future<Map<dynamic, dynamic>> createOrder(
+  Future<Map<String, dynamic>> createOrder(
       Map<String, dynamic> orderObject) async {
-    Response response =
+    final Response<dynamic> response =
         await dio.post('/api/v1/orders/create-order', data: orderObject);
 
-    Map<dynamic, dynamic> result = response.data;
+    final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
     return result;
   }
 
   Future<Map<dynamic, dynamic>> checkOrderStatus(String orderID) async {
-    Response response =
+    final Response<dynamic> response =
         await dio.get('/api/v1/orders/get-order-status?orderId=$orderID');
 
-    Map<dynamic, dynamic> result = response.data;
+    final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
     return result;
   }
 
   Future<List<Map<String, dynamic>>> getPastOrders(String walletAddress) async {
-    Response response = await dio.get('/api/v1/orders?walletId=$walletAddress');
-    return sanitizeOrdersList(response.data);
+    final Response<dynamic> response =
+        await dio.get('/api/v1/orders?walletId=$walletAddress');
+
+    return sanitizeOrdersList(response.data as Map<String, dynamic>);
   }
 
   Future<List<String>> getPostalCodes() async {
-    Response response =
+    final Response<dynamic> response =
         await dio.get('api/v1/postal-districts/get-all-postal-districts');
 
-    List<String> outCodes = [];
+    final List<String> outCodes = [];
 
-    response.data.forEach((element) {
-      outCodes.add(element["outcode"].toUpperCase());
-    });
+    final List<Map<String, dynamic>> data =
+        response.data as List<Map<String, dynamic>>;
+
+    for (final Map<String, dynamic> outcode in data) {
+      outCodes.add((outcode['outcode'] as String? ?? '').toUpperCase());
+    }
 
     return outCodes;
   }

@@ -1,48 +1,55 @@
+import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
-import 'package:redux/redux.dart';
 
 class ResetMenuItem {
   ResetMenuItem();
 }
 
 class SetMenuItem {
+  SetMenuItem({required this.menuItem, required this.selectedExtras});
   final RestaurantMenuItem menuItem;
   final List<bool> selectedExtras;
-  SetMenuItem({required this.menuItem, required this.selectedExtras});
 }
 
 class UpdateTotalPrice {
+  UpdateTotalPrice({required this.totalPrice, required this.totalRewards});
   final int totalPrice;
   final int totalRewards;
-  UpdateTotalPrice({required this.totalPrice, required this.totalRewards});
 }
 
 class UpdateQuantity {
-  final int quantity;
   UpdateQuantity(this.quantity);
+  final int quantity;
 }
 
 class UpdateMenuItemWithProductOptions {
-  final RestaurantMenuItem menuItem;
   UpdateMenuItemWithProductOptions(this.menuItem);
+  final RestaurantMenuItem menuItem;
 }
 
-ThunkAction fetchProductOptions(String itemID) {
-  return (Store store) async {
+ThunkAction<AppState> fetchProductOptions(String itemID) {
+  return (Store<AppState> store) async {
     try {
-      List<ProductOptionsCategory> listOfProductOptionCategories = await peeplEatsService.getProductOptions(itemID);
+      final List<ProductOptionsCategory> listOfProductOptionCategories =
+          await peeplEatsService.getProductOptions(itemID);
 
-      RestaurantMenuItem currentItem = store.state.menuItemState.menuItem;
+      if (store.state.menuItemState.menuItem != null) {
+        final RestaurantMenuItem currentItem =
+            store.state.menuItemState.menuItem!;
 
-      RestaurantMenuItem newItem = currentItem.copyWith(listOfProductOptions: listOfProductOptionCategories);
+        final RestaurantMenuItem newItem = currentItem.copyWith(
+          listOfProductOptions: listOfProductOptionCategories,
+        );
 
-      store.dispatch(UpdateMenuItemWithProductOptions(newItem));
+        store.dispatch(UpdateMenuItemWithProductOptions(newItem));
+      }
     } catch (e, s) {
       log.error('ERROR - updateQuantity $e');
       await Sentry.captureException(
@@ -54,16 +61,19 @@ ThunkAction fetchProductOptions(String itemID) {
   };
 }
 
-ThunkAction updateComputeQuantity(bool isAdd) {
-  return (Store store) async {
+ThunkAction<AppState> updateComputeQuantity({required bool isAdd}) {
+  return (Store<AppState> store) async {
     try {
       int oldQuantity = store.state.menuItemState.quantity;
-
-      isAdd
-          ? oldQuantity++
-          : oldQuantity <= 1
-              ? null
-              : oldQuantity--;
+      if (isAdd) {
+        oldQuantity++;
+      } else {
+        if (oldQuantity <= 1) {
+          return;
+        } else {
+          oldQuantity--;
+        }
+      }
 
       store.dispatch(UpdateQuantity(oldQuantity));
       //store.dispatch(calculateItemTotalPrice());
@@ -78,24 +88,28 @@ ThunkAction updateComputeQuantity(bool isAdd) {
   };
 }
 
-ThunkAction calculateItemTotalPrice() {
-  return (Store store) async {
+ThunkAction<AppState> calculateItemTotalPrice() {
+  return (Store<AppState> store) async {
     try {
       int total = 0;
 
-      total = store.state.menuItemState.quantity * store.state.menuItemState.menuItem.price;
+      final RestaurantMenuItem? menuItem = store.state.menuItemState.menuItem;
 
-      store.state.menuItemState.selectedProductOptionsForCategory
-          .forEach((int optionID, ProductOptions productOptions) {
-        total += productOptions.price;
-      });
+      if (menuItem != null) {
+        total = store.state.menuItemState.quantity * menuItem.price;
 
-      store.dispatch(
-        UpdateTotalPrice(
-          totalPrice: total,
-          totalRewards: (total * 5 ~/ 100),
-        ),
-      );
+        store.state.menuItemState.selectedProductOptionsForCategory
+            .forEach((int optionID, ProductOptions productOptions) {
+          total += productOptions.price;
+        });
+
+        store.dispatch(
+          UpdateTotalPrice(
+            totalPrice: total,
+            totalRewards: total * 5 ~/ 100,
+          ),
+        );
+      }
     } catch (e, s) {
       log.error('ERROR - calculateItemTotalPrice $e');
       await Sentry.captureException(
@@ -107,15 +121,16 @@ ThunkAction calculateItemTotalPrice() {
   };
 }
 
-ThunkAction setUpMenuItemStructures(RestaurantMenuItem? menuItem) {
-  return (Store store) async {
+ThunkAction<AppState> setUpMenuItemStructures(RestaurantMenuItem? menuItem) {
+  return (Store<AppState> store) async {
     try {
       menuItem == null
           ? store.dispatch(ResetMenuItem())
           : store.dispatch(
               SetMenuItem(
                 menuItem: menuItem,
-                selectedExtras: List.generate(menuItem.extras.length, (i) => false),
+                selectedExtras:
+                    List.generate(menuItem.extras.length, (i) => false),
               ),
             );
     } catch (e, s) {

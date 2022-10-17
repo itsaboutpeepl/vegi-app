@@ -35,7 +35,8 @@ mixin _$RestaurantCategory {
 abstract class $RestaurantCategoryCopyWith<$Res> {
   factory $RestaurantCategoryCopyWith(
           RestaurantCategory value, $Res Function(RestaurantCategory) then) =
-      _$RestaurantCategoryCopyWithImpl<$Res>;
+      _$RestaurantCategoryCopyWithImpl<$Res, RestaurantCategory>;
+  @useResult
   $Res call(
       {String categoryName,
       String imageURL,
@@ -43,34 +44,36 @@ abstract class $RestaurantCategoryCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RestaurantCategoryCopyWithImpl<$Res>
+class _$RestaurantCategoryCopyWithImpl<$Res, $Val extends RestaurantCategory>
     implements $RestaurantCategoryCopyWith<$Res> {
   _$RestaurantCategoryCopyWithImpl(this._value, this._then);
 
-  final RestaurantCategory _value;
   // ignore: unused_field
-  final $Res Function(RestaurantCategory) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? categoryName = freezed,
-    Object? imageURL = freezed,
-    Object? listOfRestaurants = freezed,
+    Object? categoryName = null,
+    Object? imageURL = null,
+    Object? listOfRestaurants = null,
   }) {
     return _then(_value.copyWith(
-      categoryName: categoryName == freezed
+      categoryName: null == categoryName
           ? _value.categoryName
           : categoryName // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURL: imageURL == freezed
+      imageURL: null == imageURL
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
               as String,
-      listOfRestaurants: listOfRestaurants == freezed
+      listOfRestaurants: null == listOfRestaurants
           ? _value.listOfRestaurants
           : listOfRestaurants // ignore: cast_nullable_to_non_nullable
               as List<RestaurantItem>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -81,6 +84,7 @@ abstract class _$$_RestaurantCategoryCopyWith<$Res>
           $Res Function(_$_RestaurantCategory) then) =
       __$$_RestaurantCategoryCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String categoryName,
       String imageURL,
@@ -89,31 +93,29 @@ abstract class _$$_RestaurantCategoryCopyWith<$Res>
 
 /// @nodoc
 class __$$_RestaurantCategoryCopyWithImpl<$Res>
-    extends _$RestaurantCategoryCopyWithImpl<$Res>
+    extends _$RestaurantCategoryCopyWithImpl<$Res, _$_RestaurantCategory>
     implements _$$_RestaurantCategoryCopyWith<$Res> {
   __$$_RestaurantCategoryCopyWithImpl(
       _$_RestaurantCategory _value, $Res Function(_$_RestaurantCategory) _then)
-      : super(_value, (v) => _then(v as _$_RestaurantCategory));
+      : super(_value, _then);
 
-  @override
-  _$_RestaurantCategory get _value => super._value as _$_RestaurantCategory;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? categoryName = freezed,
-    Object? imageURL = freezed,
-    Object? listOfRestaurants = freezed,
+    Object? categoryName = null,
+    Object? imageURL = null,
+    Object? listOfRestaurants = null,
   }) {
     return _then(_$_RestaurantCategory(
-      categoryName: categoryName == freezed
+      categoryName: null == categoryName
           ? _value.categoryName
           : categoryName // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURL: imageURL == freezed
+      imageURL: null == imageURL
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
               as String,
-      listOfRestaurants: listOfRestaurants == freezed
+      listOfRestaurants: null == listOfRestaurants
           ? _value.listOfRestaurants
           : listOfRestaurants // ignore: cast_nullable_to_non_nullable
               as List<RestaurantItem>,
@@ -151,30 +153,31 @@ class _$_RestaurantCategory extends _RestaurantCategory {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RestaurantCategory &&
-            const DeepCollectionEquality()
-                .equals(other.categoryName, categoryName) &&
-            const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
+            (identical(other.categoryName, categoryName) ||
+                other.categoryName == categoryName) &&
+            (identical(other.imageURL, imageURL) ||
+                other.imageURL == imageURL) &&
             const DeepCollectionEquality()
                 .equals(other.listOfRestaurants, listOfRestaurants));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(categoryName),
-      const DeepCollectionEquality().hash(imageURL),
+  int get hashCode => Object.hash(runtimeType, categoryName, imageURL,
       const DeepCollectionEquality().hash(listOfRestaurants));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_RestaurantCategoryCopyWith<_$_RestaurantCategory> get copyWith =>
       __$$_RestaurantCategoryCopyWithImpl<_$_RestaurantCategory>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RestaurantCategoryToJson(this);
+    return _$$_RestaurantCategoryToJson(
+      this,
+    );
   }
 }
 
@@ -190,12 +193,11 @@ abstract class _RestaurantCategory extends RestaurantCategory {
       _$_RestaurantCategory.fromJson;
 
   @override
-  String get categoryName => throw _privateConstructorUsedError;
+  String get categoryName;
   @override
-  String get imageURL => throw _privateConstructorUsedError;
+  String get imageURL;
   @override
-  List<RestaurantItem> get listOfRestaurants =>
-      throw _privateConstructorUsedError;
+  List<RestaurantItem> get listOfRestaurants;
   @override
   @JsonKey(ignore: true)
   _$$_RestaurantCategoryCopyWith<_$_RestaurantCategory> get copyWith =>

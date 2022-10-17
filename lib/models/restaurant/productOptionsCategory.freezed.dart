@@ -35,39 +35,43 @@ mixin _$ProductOptionsCategory {
 abstract class $ProductOptionsCategoryCopyWith<$Res> {
   factory $ProductOptionsCategoryCopyWith(ProductOptionsCategory value,
           $Res Function(ProductOptionsCategory) then) =
-      _$ProductOptionsCategoryCopyWithImpl<$Res>;
+      _$ProductOptionsCategoryCopyWithImpl<$Res, ProductOptionsCategory>;
+  @useResult
   $Res call({int categoryID, String name, List<ProductOptions> listOfOptions});
 }
 
 /// @nodoc
-class _$ProductOptionsCategoryCopyWithImpl<$Res>
+class _$ProductOptionsCategoryCopyWithImpl<$Res,
+        $Val extends ProductOptionsCategory>
     implements $ProductOptionsCategoryCopyWith<$Res> {
   _$ProductOptionsCategoryCopyWithImpl(this._value, this._then);
 
-  final ProductOptionsCategory _value;
   // ignore: unused_field
-  final $Res Function(ProductOptionsCategory) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? categoryID = freezed,
-    Object? name = freezed,
-    Object? listOfOptions = freezed,
+    Object? categoryID = null,
+    Object? name = null,
+    Object? listOfOptions = null,
   }) {
     return _then(_value.copyWith(
-      categoryID: categoryID == freezed
+      categoryID: null == categoryID
           ? _value.categoryID
           : categoryID // ignore: cast_nullable_to_non_nullable
               as int,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      listOfOptions: listOfOptions == freezed
+      listOfOptions: null == listOfOptions
           ? _value.listOfOptions
           : listOfOptions // ignore: cast_nullable_to_non_nullable
               as List<ProductOptions>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -78,37 +82,36 @@ abstract class _$$_ProductOptionsCategoryCopyWith<$Res>
           $Res Function(_$_ProductOptionsCategory) then) =
       __$$_ProductOptionsCategoryCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({int categoryID, String name, List<ProductOptions> listOfOptions});
 }
 
 /// @nodoc
 class __$$_ProductOptionsCategoryCopyWithImpl<$Res>
-    extends _$ProductOptionsCategoryCopyWithImpl<$Res>
+    extends _$ProductOptionsCategoryCopyWithImpl<$Res,
+        _$_ProductOptionsCategory>
     implements _$$_ProductOptionsCategoryCopyWith<$Res> {
   __$$_ProductOptionsCategoryCopyWithImpl(_$_ProductOptionsCategory _value,
       $Res Function(_$_ProductOptionsCategory) _then)
-      : super(_value, (v) => _then(v as _$_ProductOptionsCategory));
+      : super(_value, _then);
 
-  @override
-  _$_ProductOptionsCategory get _value =>
-      super._value as _$_ProductOptionsCategory;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? categoryID = freezed,
-    Object? name = freezed,
-    Object? listOfOptions = freezed,
+    Object? categoryID = null,
+    Object? name = null,
+    Object? listOfOptions = null,
   }) {
     return _then(_$_ProductOptionsCategory(
-      categoryID: categoryID == freezed
+      categoryID: null == categoryID
           ? _value.categoryID
           : categoryID // ignore: cast_nullable_to_non_nullable
               as int,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      listOfOptions: listOfOptions == freezed
+      listOfOptions: null == listOfOptions
           ? _value.listOfOptions
           : listOfOptions // ignore: cast_nullable_to_non_nullable
               as List<ProductOptions>,
@@ -146,30 +149,30 @@ class _$_ProductOptionsCategory extends _ProductOptionsCategory {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProductOptionsCategory &&
-            const DeepCollectionEquality()
-                .equals(other.categoryID, categoryID) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            (identical(other.categoryID, categoryID) ||
+                other.categoryID == categoryID) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
                 .equals(other.listOfOptions, listOfOptions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(categoryID),
-      const DeepCollectionEquality().hash(name),
+  int get hashCode => Object.hash(runtimeType, categoryID, name,
       const DeepCollectionEquality().hash(listOfOptions));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ProductOptionsCategoryCopyWith<_$_ProductOptionsCategory> get copyWith =>
       __$$_ProductOptionsCategoryCopyWithImpl<_$_ProductOptionsCategory>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProductOptionsCategoryToJson(this);
+    return _$$_ProductOptionsCategoryToJson(
+      this,
+    );
   }
 }
 
@@ -185,11 +188,11 @@ abstract class _ProductOptionsCategory extends ProductOptionsCategory {
       _$_ProductOptionsCategory.fromJson;
 
   @override
-  int get categoryID => throw _privateConstructorUsedError;
+  int get categoryID;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  List<ProductOptions> get listOfOptions => throw _privateConstructorUsedError;
+  List<ProductOptions> get listOfOptions;
   @override
   @JsonKey(ignore: true)
   _$$_ProductOptionsCategoryCopyWith<_$_ProductOptionsCategory> get copyWith =>

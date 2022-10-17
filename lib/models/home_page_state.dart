@@ -6,14 +6,16 @@ part 'home_page_state.g.dart';
 
 @Freezed()
 class HomePageState with _$HomePageState {
-  const HomePageState._();
-
   @JsonSerializable()
   factory HomePageState({
-    @JsonKey(ignore: true) @Default([]) List<RestaurantItem> featuredRestaurants,
+    @JsonKey(ignore: true)
+    @Default([])
+        List<RestaurantItem> featuredRestaurants,
     @JsonKey(ignore: true) @Default(false) bool isLoadingHomePage,
     @JsonKey(ignore: true) @Default([]) List<String> postalCodes,
   }) = _HomePageState;
+
+  const HomePageState._();
 
   factory HomePageState.initial() => HomePageState(
         featuredRestaurants: [],
@@ -21,10 +23,12 @@ class HomePageState with _$HomePageState {
         postalCodes: [],
       );
 
-  factory HomePageState.fromJson(dynamic json) => _$HomePageStateFromJson(json);
+  factory HomePageState.fromJson(Map<String, dynamic> json) =>
+      _$HomePageStateFromJson(json);
 }
 
-class HomePageStateConverter implements JsonConverter<HomePageState, Map<String, dynamic>?> {
+class HomePageStateConverter
+    implements JsonConverter<HomePageState, Map<String, dynamic>?> {
   const HomePageStateConverter();
 
   @override

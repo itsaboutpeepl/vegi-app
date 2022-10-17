@@ -41,12 +41,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.initState();
   }
 
-  void _updateCountryCode(_) async {
+  Future<void> _updateCountryCode(_) async {
     try {
-      String? currentCountryCode = await CarrierInfo.isoCountryCode;
+      final String? currentCountryCode = await CarrierInfo.isoCountryCode;
       if (currentCountryCode != null) {
-        Map localeData = codes.firstWhere(
-          (Map code) =>
+        final Map<String, String> localeData = codes.firstWhere(
+          (Map<String, String> code) =>
               code['code'].toString().toLowerCase() ==
               currentCountryCode.toLowerCase(),
         );
@@ -71,270 +71,256 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return MyScaffold(
       resizeToAvoidBottomInset: false,
       title: I10n.of(context).sign_up,
-      body: Container(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    I10n.of(context).enter_phone_number,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                    ),
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  I10n.of(context).enter_phone_number,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      focusColor: Theme.of(context).canvasColor,
-                      highlightColor: Theme.of(context).canvasColor,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => SignUpDialog(),
-                        );
-                      },
-                      child: Center(
-                        child: Text(
-                          I10n.of(context).why_do_we_need_this,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    focusColor: Theme.of(context).canvasColor,
+                    highlightColor: Theme.of(context).canvasColor,
+                    onTap: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) => SignUpDialog(),
+                      );
+                    },
+                    child: Center(
+                      child: Text(
+                        I10n.of(context).why_do_we_need_this,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 10,
-                    left: 30,
-                    right: 30,
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 280,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                width: 2.0,
-                              ),
+          ),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 30,
+                  right: 30,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 280,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              width: 2,
                             ),
                           ),
-                          child: Row(
-                            children: <Widget>[
-                              CountryCodePicker(
-                                onChanged: (_countryCode) {
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            CountryCodePicker(
+                              onChanged: (_countryCode) {
+                                setState(() {
+                                  countryCode = _countryCode;
+                                });
+                              },
+                              searchDecoration: InputDecoration(
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                                fillColor: Theme.of(context).canvasColor,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                              dialogSize: Size(
+                                MediaQuery.of(context).size.width * .9,
+                                MediaQuery.of(context).size.height * 0.85,
+                              ),
+                              searchStyle: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              initialSelection: countryCode.code,
+                              dialogTextStyle: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              textStyle: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              padding: EdgeInsets.zero,
+                            ),
+                            const Icon(Icons.arrow_drop_down),
+                            Container(
+                              height: 35,
+                              width: 1,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              margin: const EdgeInsets.only(
+                                left: 5,
+                                right: 5,
+                              ),
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                controller: phoneController,
+                                keyboardType: TextInputType.number,
+                                autofocus: true,
+                                validator: (String? value) => value!.isEmpty
+                                    ? 'Please enter mobile number'
+                                    : null,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 20,
+                                    horizontal: 10,
+                                  ),
+                                  hintText: I10n.of(context).phoneNumber,
+                                  border: InputBorder.none,
+                                  fillColor: Theme.of(context).backgroundColor,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      StoreConnector<AppState, SignUp>(
+                        distinct: true,
+                        converter: (store) => (
+                          CountryCode countryCode,
+                          PhoneNumber phoneNumber,
+                          Function onSuccess,
+                          dynamic Function(dynamic) onError,
+                        ) =>
+                            store.dispatch(
+                              loginHandler(
+                                countryCode,
+                                phoneNumber,
+                                onSuccess,
+                                onError,
+                              ),
+                            ),
+                        builder: (_, signUp) => PrimaryButton(
+                          label: I10n.of(context).next_button,
+                          preload: isPreloading,
+                          disabled: isPreloading,
+                          onPressed: () async {
+                            final String phoneNumber =
+                                '${countryCode.dialCode}${phoneController.text}';
+                            setState(() {
+                              isPreloading = true;
+                            });
+                            try {
+                              final value = await phoneNumberUtil.parse(
+                                phoneNumber,
+                              );
+                              signUp(
+                                countryCode,
+                                value,
+                                () {
                                   setState(() {
-                                    countryCode = _countryCode;
+                                    isPreloading = false;
                                   });
                                 },
-                                searchDecoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
+                                (error) {
+                                  setState(() {
+                                    isPreloading = false;
+                                  });
+                                  showErrorSnack(
+                                    message: I10n.of(context).invalid_number,
+                                    title:
+                                        I10n.of(context).something_went_wrong,
+                                    context: context,
+                                    margin: const EdgeInsets.only(
+                                      top: 8,
+                                      right: 8,
+                                      left: 8,
+                                      bottom: 120,
                                     ),
-                                  ),
-                                  fillColor: Theme.of(context).canvasColor,
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                                  ),
-                                ),
-                                dialogSize: Size(
-                                  MediaQuery.of(context).size.width * .9,
-                                  MediaQuery.of(context).size.height * 0.85,
-                                ),
-                                searchStyle: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                                showFlag: true,
-                                initialSelection: countryCode.code,
-                                showCountryOnly: false,
-                                dialogTextStyle: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                                textStyle: TextStyle(
-                                  fontSize: 18,
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                                alignLeft: false,
-                                padding: EdgeInsets.zero,
-                              ),
-                              Icon(Icons.arrow_drop_down),
-                              Container(
-                                height: 35,
-                                width: 1,
-                                color: Theme.of(context).colorScheme.onSurface,
-                                margin: EdgeInsets.only(
-                                  left: 5.0,
-                                  right: 5.0,
-                                ),
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  controller: phoneController,
-                                  keyboardType: TextInputType.number,
-                                  autofocus: true,
-                                  validator: (String? value) => value!.isEmpty
-                                      ? "Please enter mobile number"
-                                      : null,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface),
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 20,
-                                      horizontal: 10,
-                                    ),
-                                    hintText: I10n.of(context).phoneNumber,
-                                    border: InputBorder.none,
-                                    fillColor:
-                                        Theme.of(context).backgroundColor,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 40.0),
-                        StoreConnector<AppState, SignUp>(
-                          distinct: true,
-                          converter: (store) => (
-                            CountryCode countryCode,
-                            PhoneNumber phoneNumber,
-                            Function onSuccess,
-                            dynamic Function(dynamic) onError,
-                          ) =>
-                              store.dispatch(
-                                loginHandler(
-                                  countryCode,
-                                  phoneNumber,
-                                  onSuccess,
-                                  onError,
-                                ),
-                              ),
-                          builder: (_, signUp) => PrimaryButton(
-                            label: I10n.of(context).next_button,
-                            preload: isPreloading,
-                            disabled: isPreloading,
-                            onPressed: () async {
-                              final String phoneNumber =
-                                  '${countryCode.dialCode}${phoneController.text}';
+                                  );
+                                },
+                              );
+                            } catch (e) {
                               setState(() {
-                                isPreloading = true;
+                                isPreloading = false;
                               });
-                              try {
-                                PhoneNumber value = await phoneNumberUtil.parse(
-                                  phoneNumber,
-                                );
-                                signUp(
-                                  countryCode,
-                                  value,
-                                  () {
-                                    setState(() {
-                                      isPreloading = false;
-                                    });
-                                  },
-                                  (error) {
-                                    setState(() {
-                                      isPreloading = false;
-                                    });
-                                    showErrorSnack(
-                                      message: I10n.of(context).invalid_number,
-                                      title:
-                                          I10n.of(context).something_went_wrong,
-                                      context: context,
-                                      margin: EdgeInsets.only(
-                                        top: 8,
-                                        right: 8,
-                                        left: 8,
-                                        bottom: 120,
-                                      ),
-                                    );
-                                  },
-                                );
-                              } catch (e) {
-                                setState(() {
-                                  isPreloading = false;
-                                });
-                                showErrorSnack(
-                                  message: I10n.of(context).invalid_number,
-                                  title: I10n.of(context).something_went_wrong,
-                                  context: context,
-                                  margin: EdgeInsets.only(
-                                    top: 8,
-                                    right: 8,
-                                    left: 8,
-                                    bottom: 120,
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+                              showErrorSnack(
+                                message: I10n.of(context).invalid_number,
+                                title: I10n.of(context).something_went_wrong,
+                                context: context,
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  right: 8,
+                                  left: 8,
+                                  bottom: 120,
+                                ),
+                              );
+                            }
+                          },
                         ),
-                        SizedBox(height: 20.0),
-                        GestureDetector(
-                          onTap: () =>
-                              launchUrl("https://vegiapp.co.uk/privacy"),
-                          child: Text(
-                            "By signing up, you agree to the vegi Terms & Conditions which can be found here",
-                            style: TextStyle(
-                              color: Colors.grey[500],
-                            ),
-                            textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () => launchUrl('https://vegiapp.co.uk/privacy'),
+                        child: Text(
+                          'By signing up, you agree to the vegi Terms & Conditions which can be found here',
+                          style: TextStyle(
+                            color: Colors.grey[500],
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            )
-          ],
-        ),
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }

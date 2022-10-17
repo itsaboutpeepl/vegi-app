@@ -43,7 +43,8 @@ mixin _$RestaurantMenuItem {
 abstract class $RestaurantMenuItemCopyWith<$Res> {
   factory $RestaurantMenuItemCopyWith(
           RestaurantMenuItem value, $Res Function(RestaurantMenuItem) then) =
-      _$RestaurantMenuItemCopyWithImpl<$Res>;
+      _$RestaurantMenuItemCopyWithImpl<$Res, RestaurantMenuItem>;
+  @useResult
   $Res call(
       {String menuItemID,
       String restaurantID,
@@ -59,74 +60,76 @@ abstract class $RestaurantMenuItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RestaurantMenuItemCopyWithImpl<$Res>
+class _$RestaurantMenuItemCopyWithImpl<$Res, $Val extends RestaurantMenuItem>
     implements $RestaurantMenuItemCopyWith<$Res> {
   _$RestaurantMenuItemCopyWithImpl(this._value, this._then);
 
-  final RestaurantMenuItem _value;
   // ignore: unused_field
-  final $Res Function(RestaurantMenuItem) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? menuItemID = freezed,
-    Object? restaurantID = freezed,
-    Object? name = freezed,
-    Object? imageURL = freezed,
-    Object? category = freezed,
-    Object? price = freezed,
-    Object? description = freezed,
-    Object? extras = freezed,
-    Object? listOfProductOptions = freezed,
-    Object? isFeatured = freezed,
-    Object? priority = freezed,
+    Object? menuItemID = null,
+    Object? restaurantID = null,
+    Object? name = null,
+    Object? imageURL = null,
+    Object? category = null,
+    Object? price = null,
+    Object? description = null,
+    Object? extras = null,
+    Object? listOfProductOptions = null,
+    Object? isFeatured = null,
+    Object? priority = null,
   }) {
     return _then(_value.copyWith(
-      menuItemID: menuItemID == freezed
+      menuItemID: null == menuItemID
           ? _value.menuItemID
           : menuItemID // ignore: cast_nullable_to_non_nullable
               as String,
-      restaurantID: restaurantID == freezed
+      restaurantID: null == restaurantID
           ? _value.restaurantID
           : restaurantID // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURL: imageURL == freezed
+      imageURL: null == imageURL
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
               as String,
-      category: category == freezed
+      category: null == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as String,
-      price: price == freezed
+      price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      description: description == freezed
+      description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      extras: extras == freezed
+      extras: null == extras
           ? _value.extras
           : extras // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      listOfProductOptions: listOfProductOptions == freezed
+      listOfProductOptions: null == listOfProductOptions
           ? _value.listOfProductOptions
           : listOfProductOptions // ignore: cast_nullable_to_non_nullable
               as List<ProductOptionsCategory>,
-      isFeatured: isFeatured == freezed
+      isFeatured: null == isFeatured
           ? _value.isFeatured
           : isFeatured // ignore: cast_nullable_to_non_nullable
               as bool,
-      priority: priority == freezed
+      priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 }
 
@@ -137,6 +140,7 @@ abstract class _$$_RestaurantMenuItemCopyWith<$Res>
           $Res Function(_$_RestaurantMenuItem) then) =
       __$$_RestaurantMenuItemCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String menuItemID,
       String restaurantID,
@@ -153,71 +157,69 @@ abstract class _$$_RestaurantMenuItemCopyWith<$Res>
 
 /// @nodoc
 class __$$_RestaurantMenuItemCopyWithImpl<$Res>
-    extends _$RestaurantMenuItemCopyWithImpl<$Res>
+    extends _$RestaurantMenuItemCopyWithImpl<$Res, _$_RestaurantMenuItem>
     implements _$$_RestaurantMenuItemCopyWith<$Res> {
   __$$_RestaurantMenuItemCopyWithImpl(
       _$_RestaurantMenuItem _value, $Res Function(_$_RestaurantMenuItem) _then)
-      : super(_value, (v) => _then(v as _$_RestaurantMenuItem));
+      : super(_value, _then);
 
-  @override
-  _$_RestaurantMenuItem get _value => super._value as _$_RestaurantMenuItem;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? menuItemID = freezed,
-    Object? restaurantID = freezed,
-    Object? name = freezed,
-    Object? imageURL = freezed,
-    Object? category = freezed,
-    Object? price = freezed,
-    Object? description = freezed,
-    Object? extras = freezed,
-    Object? listOfProductOptions = freezed,
-    Object? isFeatured = freezed,
-    Object? priority = freezed,
+    Object? menuItemID = null,
+    Object? restaurantID = null,
+    Object? name = null,
+    Object? imageURL = null,
+    Object? category = null,
+    Object? price = null,
+    Object? description = null,
+    Object? extras = null,
+    Object? listOfProductOptions = null,
+    Object? isFeatured = null,
+    Object? priority = null,
   }) {
     return _then(_$_RestaurantMenuItem(
-      menuItemID: menuItemID == freezed
+      menuItemID: null == menuItemID
           ? _value.menuItemID
           : menuItemID // ignore: cast_nullable_to_non_nullable
               as String,
-      restaurantID: restaurantID == freezed
+      restaurantID: null == restaurantID
           ? _value.restaurantID
           : restaurantID // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageURL: imageURL == freezed
+      imageURL: null == imageURL
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
               as String,
-      category: category == freezed
+      category: null == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as String,
-      price: price == freezed
+      price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      description: description == freezed
+      description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      extras: extras == freezed
+      extras: null == extras
           ? _value.extras
           : extras // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      listOfProductOptions: listOfProductOptions == freezed
+      listOfProductOptions: null == listOfProductOptions
           ? _value.listOfProductOptions
           : listOfProductOptions // ignore: cast_nullable_to_non_nullable
               as List<ProductOptionsCategory>,
-      isFeatured: isFeatured == freezed
+      isFeatured: null == isFeatured
           ? _value.isFeatured
           : isFeatured // ignore: cast_nullable_to_non_nullable
               as bool,
-      priority: priority == freezed
+      priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as int,
@@ -279,49 +281,55 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RestaurantMenuItem &&
-            const DeepCollectionEquality()
-                .equals(other.menuItemID, menuItemID) &&
-            const DeepCollectionEquality()
-                .equals(other.restaurantID, restaurantID) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
-            const DeepCollectionEquality().equals(other.category, category) &&
-            const DeepCollectionEquality().equals(other.price, price) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description) &&
+            (identical(other.menuItemID, menuItemID) ||
+                other.menuItemID == menuItemID) &&
+            (identical(other.restaurantID, restaurantID) ||
+                other.restaurantID == restaurantID) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.imageURL, imageURL) ||
+                other.imageURL == imageURL) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             const DeepCollectionEquality().equals(other.extras, extras) &&
             const DeepCollectionEquality()
                 .equals(other.listOfProductOptions, listOfProductOptions) &&
-            const DeepCollectionEquality()
-                .equals(other.isFeatured, isFeatured) &&
-            const DeepCollectionEquality().equals(other.priority, priority));
+            (identical(other.isFeatured, isFeatured) ||
+                other.isFeatured == isFeatured) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(menuItemID),
-      const DeepCollectionEquality().hash(restaurantID),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(imageURL),
-      const DeepCollectionEquality().hash(category),
-      const DeepCollectionEquality().hash(price),
-      const DeepCollectionEquality().hash(description),
+      menuItemID,
+      restaurantID,
+      name,
+      imageURL,
+      category,
+      price,
+      description,
       const DeepCollectionEquality().hash(extras),
       const DeepCollectionEquality().hash(listOfProductOptions),
-      const DeepCollectionEquality().hash(isFeatured),
-      const DeepCollectionEquality().hash(priority));
+      isFeatured,
+      priority);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_RestaurantMenuItemCopyWith<_$_RestaurantMenuItem> get copyWith =>
       __$$_RestaurantMenuItemCopyWithImpl<_$_RestaurantMenuItem>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RestaurantMenuItemToJson(this);
+    return _$$_RestaurantMenuItemToJson(
+      this,
+    );
   }
 }
 
@@ -344,28 +352,27 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
       _$_RestaurantMenuItem.fromJson;
 
   @override
-  String get menuItemID => throw _privateConstructorUsedError;
+  String get menuItemID;
   @override
-  String get restaurantID => throw _privateConstructorUsedError;
+  String get restaurantID;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get imageURL => throw _privateConstructorUsedError;
+  String get imageURL;
   @override
-  String get category => throw _privateConstructorUsedError;
+  String get category;
   @override
-  int get price => throw _privateConstructorUsedError;
+  int get price;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  Map<String, int> get extras => throw _privateConstructorUsedError;
+  Map<String, int> get extras;
   @override
-  List<ProductOptionsCategory> get listOfProductOptions =>
-      throw _privateConstructorUsedError;
+  List<ProductOptionsCategory> get listOfProductOptions;
   @override
-  bool get isFeatured => throw _privateConstructorUsedError;
+  bool get isFeatured;
   @override
-  int get priority => throw _privateConstructorUsedError;
+  int get priority;
   @override
   @JsonKey(ignore: true)
   _$$_RestaurantMenuItemCopyWith<_$_RestaurantMenuItem> get copyWith =>

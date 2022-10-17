@@ -5,8 +5,6 @@ part 'deliveryAddresses.g.dart';
 
 @Freezed()
 class DeliveryAddresses with _$DeliveryAddresses {
-  const DeliveryAddresses._();
-
   @JsonSerializable()
   factory DeliveryAddresses({
     required int internalID,
@@ -20,5 +18,8 @@ class DeliveryAddresses with _$DeliveryAddresses {
     String? label,
   }) = _DeliveryAddresses;
 
-  factory DeliveryAddresses.fromJson(dynamic json) => _$DeliveryAddressesFromJson(json);
+  const DeliveryAddresses._();
+
+  factory DeliveryAddresses.fromJson(Map<String, dynamic> json) =>
+      _$DeliveryAddressesFromJson(json);
 }

@@ -7,8 +7,6 @@ part 'restaurantItem.g.dart';
 
 @Freezed()
 class RestaurantItem with _$RestaurantItem {
-  const RestaurantItem._();
-
   @JsonSerializable()
   factory RestaurantItem({
     required String restaurantID,
@@ -29,5 +27,8 @@ class RestaurantItem with _$RestaurantItem {
     required int platformFee,
   }) = _RestaurantItem;
 
-  factory RestaurantItem.fromJson(dynamic json) => _$RestaurantItemFromJson(json);
+  const RestaurantItem._();
+
+  factory RestaurantItem.fromJson(Map<String, dynamic> json) =>
+      _$RestaurantItemFromJson(json);
 }

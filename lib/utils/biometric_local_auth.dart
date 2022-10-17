@@ -7,7 +7,8 @@ class BiometricUtils {
   static Future<BiometricAuth> getAvailableBiometrics({
     BiometricType type = BiometricType.fingerprint,
   }) async {
-    final List<BiometricType> availableBiometrics = await LocalAuthentication().getAvailableBiometrics();
+    final List<BiometricType> availableBiometrics =
+        await LocalAuthentication().getAvailableBiometrics();
     if (availableBiometrics.contains(BiometricType.face)) {
       return BiometricAuth.faceID;
     } else if (availableBiometrics.contains(BiometricType.fingerprint)) {
@@ -36,16 +37,19 @@ class BiometricUtils {
   }
 
   static String getBiometricString(
-    BuildContext context,
     BiometricAuth? type,
   ) {
     switch (type) {
       case BiometricAuth.faceID:
-        return I10n.of(context).face_id;
+        return 'Face ID';
       case BiometricAuth.touchID:
-        return I10n.of(context).touch_id;
-      default:
-        return I10n.of(context).touch_id;
+        return 'Touch ID';
+      case BiometricAuth.pincode:
+        return '';
+      case BiometricAuth.none:
+        return '';
+      case null:
+        return '';
     }
   }
 }

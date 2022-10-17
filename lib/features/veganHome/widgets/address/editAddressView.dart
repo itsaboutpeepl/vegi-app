@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:uuid/uuid.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -21,15 +20,15 @@ class AddressView extends StatefulWidget {
   final DeliveryAddresses? existingAddress;
 
   @override
-  _AddressViewState createState() => _AddressViewState();
+  State<AddressView> createState() => _AddressViewState();
 }
 
 class _AddressViewState extends State<AddressView> {
   bool _isExistingAddress = false;
-  final _sessionToken = Uuid().v4();
+  final _sessionToken = const Uuid().v4();
   late PlaceApiProvider _placeApiProvider;
   late GlobalKey<FormBuilderState> _addressFormKey;
-  TextEditingController _typeAheadController = TextEditingController();
+  final TextEditingController _typeAheadController = TextEditingController();
 
   @override
   void initState() {
@@ -59,17 +58,16 @@ class _AddressViewState extends State<AddressView> {
                   FormBuilderTypeAhead(
                     controller: _typeAheadController,
                     initialValue: _isExistingAddress
-                        ? Suggestion("", widget.existingAddress!.addressLine1)
+                        ? Suggestion('', widget.existingAddress!.addressLine1)
                         : null,
                     name: 'addressLine1',
                     hideOnEmpty: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: themeShade300, width: 3.0),
+                        borderSide: BorderSide(color: themeShade300, width: 3),
                       ),
                       fillColor: Colors.transparent,
                       labelText: 'Address Line 1',
@@ -77,35 +75,34 @@ class _AddressViewState extends State<AddressView> {
                     onSaved: (dynamic suggestion) {
                       if (suggestion == null) {
                         _addressFormKey.currentState!.setInternalFieldValue(
-                            "addressLine1Internal",
-                            "${_typeAheadController.text}",
-                            isSetState: false);
+                          'addressLine1Internal',
+                          _typeAheadController.text,
+                          isSetState: false,
+                        );
                       }
                     },
-                    onSuggestionSelected: (dynamic suggestion) {
-                      if (suggestion is Suggestion)
-                        _placeApiProvider
-                            .getPlaceDetailFromId(suggestion.placeId)
-                            .then((Place place) {
-                          _addressFormKey.currentState!.setInternalFieldValue(
-                              "addressLine1Internal",
-                              "${place.streetNumber} ${place.street}",
-                              isSetState: false);
-                          _addressFormKey.currentState!.fields["townCity"]!
-                              .didChange(place.city);
-                          _addressFormKey.currentState!.fields["postalCode"]!
-                              .didChange(place.zipCode);
-                        });
+                    onSuggestionSelected: (Suggestion suggestion) {
+                      _placeApiProvider
+                          .getPlaceDetailFromId(suggestion.placeId)
+                          .then((Place place) {
+                        _addressFormKey.currentState!.setInternalFieldValue(
+                          'addressLine1Internal',
+                          '${place.streetNumber} ${place.street}',
+                          isSetState: false,
+                        );
+                        _addressFormKey.currentState!.fields['townCity']!
+                            .didChange(place.city);
+                        _addressFormKey.currentState!.fields['postalCode']!
+                            .didChange(place.zipCode);
+                      });
                     },
-                    itemBuilder: (context, dynamic suggestion) {
+                    itemBuilder: (context, Suggestion suggestion) {
                       return ListTile(title: Text(suggestion.description));
                     },
-                    selectionToTextTransformer: (dynamic suggestion) {
-                      if (suggestion is Suggestion)
-                        return suggestion.description;
-                      return "";
+                    selectionToTextTransformer: (Suggestion suggestion) {
+                      return suggestion.description;
                     },
-                    loadingBuilder: (_) => CircularProgressIndicator(
+                    loadingBuilder: (_) => const CircularProgressIndicator(
                       color: themeShade600,
                     ),
                     suggestionsCallback: (query) {
@@ -115,23 +112,20 @@ class _AddressViewState extends State<AddressView> {
                         return [];
                       }
                     },
-                    valueTransformer: (dynamic suggestion) =>
-                        suggestion == null && suggestion is Suggestion?
-                            ? ""
-                            : suggestion.description,
+                    valueTransformer: (Suggestion? suggestion) =>
+                        suggestion == null ? '' : suggestion.description,
                   ),
                   FormBuilderTextField(
                     initialValue: _isExistingAddress
                         ? widget.existingAddress!.addressLine2
                         : null,
                     name: 'addressLine2',
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: themeShade300, width: 3.0),
+                        borderSide: BorderSide(color: themeShade300, width: 3),
                       ),
                       fillColor: Colors.transparent,
                       labelText: 'Address Line 2',
@@ -145,44 +139,50 @@ class _AddressViewState extends State<AddressView> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: FormBuilderTextField(
-                            initialValue: _isExistingAddress
-                                ? widget.existingAddress!.townCity
-                                : null,
-                            name: 'townCity',
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeShade300, width: 3.0),
-                              ),
-                              fillColor: Colors.transparent,
-                              labelText: 'Town/City',
+                          initialValue: _isExistingAddress
+                              ? widget.existingAddress!.townCity
+                              : null,
+                          name: 'townCity',
+                          decoration: const InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                             ),
-                            keyboardType: TextInputType.text,
-                            validator: FormBuilderValidators.required()),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: themeShade300,
+                                width: 3,
+                              ),
+                            ),
+                            fillColor: Colors.transparent,
+                            labelText: 'Town/City',
+                          ),
+                          keyboardType: TextInputType.text,
+                          validator: FormBuilderValidators.required(),
+                        ),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: FormBuilderTextField(
-                            initialValue: _isExistingAddress
-                                ? widget.existingAddress!.postalCode
-                                : null,
-                            name: 'postalCode',
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeShade300, width: 3.0),
-                              ),
-                              fillColor: Colors.transparent,
-                              labelText: 'Postal Code',
+                          initialValue: _isExistingAddress
+                              ? widget.existingAddress!.postalCode
+                              : null,
+                          name: 'postalCode',
+                          decoration: const InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                             ),
-                            keyboardType: TextInputType.text,
-                            validator: FormBuilderValidators.required()),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: themeShade300,
+                                width: 3,
+                              ),
+                            ),
+                            fillColor: Colors.transparent,
+                            labelText: 'Postal Code',
+                          ),
+                          keyboardType: TextInputType.text,
+                          validator: FormBuilderValidators.required(),
+                        ),
                       ),
                     ],
                   ),
@@ -191,13 +191,12 @@ class _AddressViewState extends State<AddressView> {
                         ? widget.existingAddress!.phoneNumber
                         : null,
                     name: 'phoneNumber',
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: themeShade300, width: 3.0),
+                        borderSide: BorderSide(color: themeShade300, width: 3),
                       ),
                       fillColor: Colors.transparent,
                       labelText: 'Phone Number',
@@ -210,15 +209,15 @@ class _AddressViewState extends State<AddressView> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       onPrimary: Colors.grey[800],
                       primary: themeShade300,
-                      textStyle:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+                      textStyle: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.w800),
                       fixedSize:
                           Size(MediaQuery.of(context).size.width * 0.9, 50),
                     ),
@@ -226,37 +225,43 @@ class _AddressViewState extends State<AddressView> {
                       if (_addressFormKey.currentState!.saveAndValidate()) {
                         _tryFetchMapLocation().then((LatLng? value) {
                           viewmodel.addDeliveryAddress(
-                              saveDeliveryAddress(position: value));
+                            saveDeliveryAddress(position: value),
+                          );
                           Navigator.pop(context);
                         });
                       }
                     },
                     child: const Text('Save Address'),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  _isExistingAddress
-                      ? ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            onPrimary: Colors.grey[800],
-                            primary: Colors.red,
-                            textStyle: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w800),
-                            fixedSize: Size(
-                                MediaQuery.of(context).size.width * 0.9, 50),
-                          ),
-                          onPressed: () {
-                            viewmodel
-                                .deleteDeliveryAddress(widget.existingAddress!);
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Delete Address',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      : SizedBox.shrink(),
+                  if (_isExistingAddress)
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        onPrimary: Colors.grey[800],
+                        primary: Colors.red,
+                        textStyle: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        fixedSize: Size(
+                          MediaQuery.of(context).size.width * 0.9,
+                          50,
+                        ),
+                      ),
+                      onPressed: () {
+                        viewmodel
+                            .deleteDeliveryAddress(widget.existingAddress!);
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Delete Address',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  else
+                    const SizedBox.shrink(),
                 ],
               ),
             ),
@@ -267,43 +272,48 @@ class _AddressViewState extends State<AddressView> {
   }
 
   Future<LatLng?> _tryFetchMapLocation() async {
-    print("Hello from auto fill map location");
+    print('Hello from auto fill map location');
 
-    Suggestion? address =
-        _addressFormKey.currentState!.fields["addressLine1"]!.value;
+    final Suggestion? address = _addressFormKey
+        .currentState!.fields['addressLine1']!.value as Suggestion?;
+
     if (address == null) {
       return null;
     }
 
-    List<Location> possibleLocations =
+    final List<Location> possibleLocations =
         await locationFromAddress(address.description)
             .onError((error, stackTrace) => []);
 
     if (possibleLocations.isNotEmpty) {
       return LatLng(
-          possibleLocations[0].latitude, possibleLocations[0].longitude);
+        possibleLocations[0].latitude,
+        possibleLocations[0].longitude,
+      );
     }
     return null;
   }
 
   DeliveryAddresses saveDeliveryAddress({LatLng? position}) {
-    Map<String, dynamic> formValue = _addressFormKey.currentState!.value;
+    final Map<String, dynamic> formValue = _addressFormKey.currentState!.value;
 
     return DeliveryAddresses(
       internalID: _isExistingAddress
           ? widget.existingAddress!.internalID
           : Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
-      label: formValue['label'],
-      addressLine1:
-          formValue['addressLine1Internal'] ?? formValue['addressLine1'],
-      addressLine2: formValue['addressLine2'] ?? "",
-      townCity: formValue['townCity'],
-      postalCode: formValue['postalCode'],
-      phoneNumber: formValue['phoneNumber'],
-      latitude:
-          position != null ? position.latitude : formValue['latitude'] ?? 0.0,
-      longitude:
-          position != null ? position.longitude : formValue['longitude'] ?? 0.0,
+      label: formValue['label'] as String,
+      addressLine1: (formValue['addressLine1Internal'] as String?) ??
+          formValue['addressLine1'] as String,
+      addressLine2: formValue['addressLine2'] as String? ?? '',
+      townCity: formValue['townCity'] as String,
+      postalCode: formValue['postalCode'] as String,
+      phoneNumber: formValue['phoneNumber'] as String,
+      latitude: position != null
+          ? position.latitude
+          : formValue['latitude'] as double? ?? 0.0,
+      longitude: position != null
+          ? position.longitude
+          : formValue['longitude'] as double? ?? 0.0,
     );
   }
 }

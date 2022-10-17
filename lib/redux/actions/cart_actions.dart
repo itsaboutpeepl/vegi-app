@@ -3,39 +3,43 @@ import 'dart:convert';
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
+import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
-import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
-import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
-import 'package:redux/redux.dart';
-import 'package:intl/intl.dart';
 
 class UpdateCartItems {
-  final List<CartItem> cartItems;
   UpdateCartItems({required this.cartItems});
+  final List<CartItem> cartItems;
 }
 
 class UpdateComputedCartValues {
+  UpdateComputedCartValues(
+    this.cartSubTotal,
+    this.cartTax,
+    this.cartTotal,
+    this.cartDiscountComputed,
+  );
   final int cartSubTotal;
   final int cartTax;
   final int cartTotal;
   final int cartDiscountComputed;
-
-  UpdateComputedCartValues(this.cartSubTotal, this.cartTax, this.cartTotal,
-      this.cartDiscountComputed);
 }
 
 class UpdateCartDiscount {
+  UpdateCartDiscount(this.cartDiscountPercent, this.discountCode);
   final int cartDiscountPercent;
   final String discountCode;
-  UpdateCartDiscount(this.cartDiscountPercent, this.discountCode);
 }
 
 class ClearCart {
@@ -43,62 +47,54 @@ class ClearCart {
 }
 
 class UpdateSlots {
+  UpdateSlots(this.deliverySlots, this.collectionSlots);
   final List<Map<String, String>> deliverySlots;
   final List<Map<String, String>> collectionSlots;
-
-  UpdateSlots(this.deliverySlots, this.collectionSlots);
 }
 
 class UpdateSelectedDeliveryAddress {
-  final DeliveryAddresses? selectedAddress;
   UpdateSelectedDeliveryAddress(this.selectedAddress);
+  final DeliveryAddresses? selectedAddress;
 }
 
 class UpdateSelectedTimeSlot {
-  final Map<String, String> selectedTimeSlot;
   UpdateSelectedTimeSlot(this.selectedTimeSlot);
+  final Map<String, String> selectedTimeSlot;
 }
 
 class UpdateTipAmount {
-  final int tipAmount;
   UpdateTipAmount(this.tipAmount);
+  final int tipAmount;
 }
 
 class CreateOrder {
+  CreateOrder(this.orderID, this.paymentIntentID);
   final String orderID;
   final String paymentIntentID;
-  CreateOrder(this.orderID, this.paymentIntentID);
 }
 
 class SetTransferringPayment {
+  SetTransferringPayment({required this.flag});
   bool flag;
-  SetTransferringPayment(this.flag);
 }
 
 class SetError {
+  SetError({required this.flag});
   bool flag;
-  SetError(this.flag);
 }
 
 class SetConfirmed {
+  SetConfirmed({required this.flag});
   bool flag;
-  SetConfirmed(this.flag);
 }
 
 class UpdateSelectedAmounts {
+  UpdateSelectedAmounts(this.GBPxAmount, this.PPLAmount);
   final double GBPxAmount;
   final double PPLAmount;
-  UpdateSelectedAmounts(this.GBPxAmount, this.PPLAmount);
 }
 
 class SetRestaurantDetails {
-  final String restaurantID;
-  final String restaurantName;
-  final DeliveryAddresses restaurantAddress;
-  final String walletAddress;
-  final int minimumOrder;
-  final int platformFee;
-
   SetRestaurantDetails(
     this.restaurantID,
     this.restaurantName,
@@ -107,75 +103,90 @@ class SetRestaurantDetails {
     this.minimumOrder,
     this.platformFee,
   );
+  final String restaurantID;
+  final String restaurantName;
+  final DeliveryAddresses restaurantAddress;
+  final String walletAddress;
+  final int minimumOrder;
+  final int platformFee;
 }
 
 class SetDeliveryCharge {
-  final int deliveryCharge;
-
   SetDeliveryCharge(this.deliveryCharge);
+  final int deliveryCharge;
 }
 
 class SetFulfilmentFees {
+  SetFulfilmentFees(this.deliveryCharge, this.collectionCharge);
   final int deliveryCharge;
   final int collectionCharge;
-
-  SetFulfilmentFees(this.deliveryCharge, this.collectionCharge);
 }
 
 class SetFulfilmentMethodIds {
+  SetFulfilmentMethodIds(this.deliveryMethodId, this.collectionMethodId);
   final int deliveryMethodId;
   final int collectionMethodId;
-
-  SetFulfilmentMethodIds(this.deliveryMethodId, this.collectionMethodId);
 }
 
 class SetFulfilmentMethod {
-  final FulfilmentMethod fulfilmentMethod;
   SetFulfilmentMethod(this.fulfilmentMethod);
+  final FulfilmentMethod fulfilmentMethod;
 }
 
 class SetIsDelivery {
+  SetIsDelivery({required this.isDelivery});
   final bool isDelivery;
-  SetIsDelivery(this.isDelivery);
 }
 
 class SetDeliveryInstructions {
-  final String deliveryInstructions;
   SetDeliveryInstructions(this.deliveryInstructions);
+  final String deliveryInstructions;
 }
 
-ThunkAction getFullfillmentMethods({DateTime? newDate}) {
-  return (Store store) async {
+ThunkAction<AppState> getFullfillmentMethods({DateTime? newDate}) {
+  return (Store<AppState> store) async {
     try {
-      DateFormat formatter = DateFormat('yyyy-MM-dd');
+      final DateFormat formatter = DateFormat('yyyy-MM-dd');
       FullfilmentMethods fullfilmentMethods;
 
-      if ([null, ""].contains(newDate)) {
+      if (newDate == null) {
         fullfilmentMethods = await peeplEatsService.getFulfilmentSlots(
-            vendorID: store.state.cartState.restaurantID,
-            dateRequired: formatter.format(DateTime.now()));
+          vendorID: store.state.cartState.restaurantID,
+          dateRequired: formatter.format(DateTime.now()),
+        );
       } else {
         fullfilmentMethods = await peeplEatsService.getFulfilmentSlots(
-            vendorID: store.state.cartState.restaurantID,
-            dateRequired: formatter.format(newDate!));
+          vendorID: store.state.cartState.restaurantID,
+          dateRequired: formatter.format(newDate),
+        );
       }
-      store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots,
-          fullfilmentMethods.collectionSlots));
-
-      store.dispatch(SetFulfilmentFees(
-        fullfilmentMethods.deliveryMethod == null
-            ? 0
-            : fullfilmentMethods.deliveryMethod!['priceModifier'] ?? 0,
-        fullfilmentMethods.collectionMethod == null
-            ? 0
-            : fullfilmentMethods.collectionMethod!['priceModifier'] ?? 0,
-      ));
-
-      store.dispatch(SetFulfilmentMethodIds(
-          fullfilmentMethods.deliveryMethod!['id'],
-          fullfilmentMethods.collectionMethod!['id']));
-
-      store.dispatch(computeCartTotals());
+      store
+        ..dispatch(
+          UpdateSlots(
+            fullfilmentMethods.deliverySlots,
+            fullfilmentMethods.collectionSlots,
+          ),
+        )
+        ..dispatch(
+          SetFulfilmentFees(
+            fullfilmentMethods.deliveryMethod == null
+                ? 0
+                : fullfilmentMethods.deliveryMethod!['priceModifier'] as int? ??
+                    0,
+            fullfilmentMethods.collectionMethod == null
+                ? 0
+                : fullfilmentMethods.collectionMethod!['priceModifier']
+                        as int? ??
+                    0,
+          ),
+        )
+        ..dispatch(
+          SetFulfilmentMethodIds(
+            fullfilmentMethods.deliveryMethod!['id'] as int,
+            fullfilmentMethods.collectionMethod!['id'] as int,
+          ),
+        )
+        ..dispatch(computeCartTotals());
     } catch (e, s) {
       log.error('ERROR - getFullfillmentMethods $e');
       await Sentry.captureException(
@@ -187,11 +198,12 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
   };
 }
 
-ThunkAction updateCartTip(int newTip) {
-  return (Store store) async {
+ThunkAction<AppState> updateCartTip(int newTip) {
+  return (Store<AppState> store) async {
     try {
-      store.dispatch(UpdateTipAmount(newTip));
-      store.dispatch(computeCartTotals());
+      store
+        ..dispatch(UpdateTipAmount(newTip))
+        ..dispatch(computeCartTotals());
     } catch (e, s) {
       log.error('ERROR - updateCartTip $e');
       await Sentry.captureException(
@@ -203,15 +215,18 @@ ThunkAction updateCartTip(int newTip) {
   };
 }
 
-ThunkAction updateCartDiscount(
-    String newDiscountCode, VoidCallback errorCallback) {
-  return (Store store) async {
+ThunkAction<AppState> updateCartDiscount(
+  String newDiscountCode,
+  VoidCallback errorCallback,
+) {
+  return (Store<AppState> store) async {
     try {
       if (newDiscountCode == 'REMOVE') {
-        store.dispatch(UpdateCartDiscount(0, ""));
-        store.dispatch(computeCartTotals());
+        store
+          ..dispatch(UpdateCartDiscount(0, ''))
+          ..dispatch(computeCartTotals());
       } else {
-        int discountPercent =
+        final int discountPercent =
             await peeplEatsService.checkDiscountCode(newDiscountCode).onError(
           (error, stackTrace) {
             errorCallback();
@@ -220,8 +235,9 @@ ThunkAction updateCartDiscount(
         );
 
         if (discountPercent != 0) {
-          store.dispatch(UpdateCartDiscount(discountPercent, newDiscountCode));
-          store.dispatch(computeCartTotals());
+          store
+            ..dispatch(UpdateCartDiscount(discountPercent, newDiscountCode))
+            ..dispatch(computeCartTotals());
         }
       }
     } catch (e, s) {
@@ -236,16 +252,15 @@ ThunkAction updateCartDiscount(
   };
 }
 
-ThunkAction updateCartItems(List<CartItem> itemsToAdd) {
-  return (Store store) async {
+ThunkAction<AppState> updateCartItems(List<CartItem> itemsToAdd) {
+  return (Store<AppState> store) async {
     try {
-      List<CartItem> cartItems = List.from(store.state.cartState.cartItems);
+      final List<CartItem> cartItems =
+          List.from(store.state.cartState.cartItems)..addAll(itemsToAdd);
 
-      cartItems.addAll(itemsToAdd);
-
-      store.dispatch(UpdateCartItems(cartItems: cartItems));
-
-      store.dispatch(computeCartTotals());
+      store
+        ..dispatch(UpdateCartItems(cartItems: cartItems))
+        ..dispatch(computeCartTotals());
     } catch (e, s) {
       log.error('ERROR - updateComputeUserCart $e');
       await Sentry.captureException(
@@ -257,26 +272,29 @@ ThunkAction updateCartItems(List<CartItem> itemsToAdd) {
   };
 }
 
-ThunkAction updateCartItemQuantity(CartItem itemToAdd) {
-  return (Store store) async {
+ThunkAction<AppState> updateCartItemQuantity(CartItem itemToAdd) {
+  return (Store<AppState> store) async {
     try {
-      List<CartItem> cartItems = store.state.cartState.cartItems;
+      final List<CartItem> cartItems = store.state.cartState.cartItems;
       if (itemToAdd.itemQuantity == 0) {
         cartItems.removeWhere(
-            (element) => element.internalID == itemToAdd.internalID);
+          (element) => element.internalID == itemToAdd.internalID,
+        );
       } else {
-        int index = cartItems.indexWhere(
-            (element) => element.internalID == itemToAdd.internalID);
+        final int index = cartItems.indexWhere(
+          (element) => element.internalID == itemToAdd.internalID,
+        );
 
-        cartItems.removeWhere(
-            (element) => element.internalID == itemToAdd.internalID);
-
-        cartItems.insert(index, itemToAdd);
+        cartItems
+          ..removeWhere(
+            (element) => element.internalID == itemToAdd.internalID,
+          )
+          ..insert(index, itemToAdd);
       }
 
-      store.dispatch(UpdateCartItems(cartItems: cartItems));
-
-      store.dispatch(computeCartTotals());
+      store
+        ..dispatch(UpdateCartItems(cartItems: cartItems))
+        ..dispatch(computeCartTotals());
     } catch (e, s) {
       log.error('ERROR - updateComputeUserCart $e');
       await Sentry.captureException(
@@ -288,25 +306,25 @@ ThunkAction updateCartItemQuantity(CartItem itemToAdd) {
   };
 }
 
-ThunkAction computeCartTotals() {
-  return (Store store) async {
+ThunkAction<AppState> computeCartTotals() {
+  return (Store<AppState> store) async {
     try {
-      List<CartItem> cartItems = store.state.cartState.cartItems;
+      final List<CartItem> cartItems = store.state.cartState.cartItems;
 
       int cartSubTotal = 0;
-      int cartTax = 0;
+      const int cartTax = 0;
       int cartTotal = 0;
-      int deliveryFee = store.state.cartState.deliveryCharge;
-      int collectionFee = store.state.cartState.collectionCharge;
-      int platformFee = store.state.cartState.restaurantPlatformFee;
-      int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
+      final int deliveryFee = store.state.cartState.deliveryCharge;
+      final int collectionFee = store.state.cartState.collectionCharge;
+      final int platformFee = store.state.cartState.restaurantPlatformFee;
+      final int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
       int cartDiscountComputed = 0;
-      int cartTip = store.state.cartState.selectedTipAmount * 100;
-      bool isDelivery = store.state.cartState.isDelivery;
+      final int cartTip = store.state.cartState.selectedTipAmount * 100;
+      final bool isDelivery = store.state.cartState.isDelivery;
 
-      cartItems.forEach((element) {
+      for (final element in cartItems) {
         cartSubTotal += element.totalItemPrice;
-      });
+      }
 
       // add price of each order Item (which has options included)
 
@@ -325,8 +343,14 @@ ThunkAction computeCartTotals() {
                 cartDiscountComputed;
       }
 
-      store.dispatch(UpdateComputedCartValues(
-          cartSubTotal, cartTax, cartTotal, cartDiscountComputed));
+      store.dispatch(
+        UpdateComputedCartValues(
+          cartSubTotal,
+          cartTax,
+          cartTotal,
+          cartDiscountComputed,
+        ),
+      );
     } catch (e, s) {
       log.error('ERROR - updateComputeUserCart $e');
       await Sentry.captureException(
@@ -338,133 +362,140 @@ ThunkAction computeCartTotals() {
   };
 }
 
-ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
-    VoidCallback successCallback) {
-  return (Store store) async {
-    int temp = ((store.state.cartState.cartSubTotal *
+ThunkAction<AppState> prepareAndSendOrder(
+  void Function(String errorText) errorCallback,
+  VoidCallback successCallback,
+) {
+  return (Store<AppState> store) async {
+    final int temp = (store.state.cartState.cartSubTotal *
             store.state.cartState.cartDiscountPercent) ~/
-        100);
+        100;
 
     try {
       if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.none) {
-        errorCallback("Please select or create an address");
+        errorCallback('Please select or create an address');
         return;
       } else if (store.state.cartState.selectedTimeSlot.isEmpty) {
-        errorCallback("Please select a time slot");
+        errorCallback('Please select a time slot');
         return;
       } else if (store.state.cartState.restaurantMinimumOrder >
           store.state.cartState.cartSubTotal - temp) {
-        errorCallback("Your order does not satisfy the minimum order amount");
+        errorCallback('Your order does not satisfy the minimum order amount');
         return;
       }
 
-      Map<String, dynamic> orderObject = {};
-
-      orderObject.addAll({
-        "items": store.state.cartState.cartItems
-            .map(
-              (e) => {
-                "id": int.parse(e.menuItem.menuItemID),
-                "quantity": e.itemQuantity,
-                "options": e.selectedProductOptions.map(
-                  (key, value) =>
-                      MapEntry<String, int>(key.toString(), value.optionID),
-                ),
-              },
-            )
-            .toList(),
-        "total": store.state.cartState.cartTotal,
-        "tipAmount": store.state.cartState.selectedTipAmount * 100,
-        "marketingOptIn": false,
-        "discountCode": store.state.cartState.discountCode,
-        "vendor": store.state.cartState.restaurantID,
-        "walletAddress": store.state.userState.walletAddress,
-      });
+      final Map<String, dynamic> orderObject = {}..addAll({
+          'items': store.state.cartState.cartItems
+              .map(
+                (e) => {
+                  'id': int.parse(e.menuItem.menuItemID),
+                  'quantity': e.itemQuantity,
+                  'options': e.selectedProductOptions.map(
+                    (key, value) =>
+                        MapEntry<String, int>(key.toString(), value.optionID),
+                  ),
+                },
+              )
+              .toList(),
+          'total': store.state.cartState.cartTotal,
+          'tipAmount': store.state.cartState.selectedTipAmount * 100,
+          'marketingOptIn': false,
+          'discountCode': store.state.cartState.discountCode,
+          'vendor': store.state.cartState.restaurantID,
+          'walletAddress': store.state.userState.walletAddress,
+        });
 
       if (store.state.cartState.fulfilmentMethod == FulfilmentMethod.delivery) {
         if (store.state.cartState.selectedDeliveryAddress == null) {
-          errorCallback("Please select an address");
+          errorCallback('Please select an address');
           return;
         }
-        DeliveryAddresses selectedAddress =
+        final DeliveryAddresses selectedAddress =
             store.state.cartState.selectedDeliveryAddress!;
 
         orderObject.addAll(
           {
-            "address": {
-              "name": store.state.userState.displayName,
-              "phoneNumber": selectedAddress.phoneNumber ??
-                  store.state.userState.phoneNumber ??
-                  "",
-              "email": store.state.userState.email == ""
-                  ? "email@notprovided.com"
+            'address': {
+              'name': store.state.userState.displayName,
+              'phoneNumber': selectedAddress.phoneNumber ?? '',
+              'email': store.state.userState.email == ''
+                  ? 'email@notprovided.com'
                   : store.state.userState.email,
-              "lineOne": selectedAddress.addressLine1,
-              "lineTwo": selectedAddress.addressLine2 +
-                  ", " +
-                  selectedAddress.townCity,
-              "postCode": selectedAddress.postalCode,
-              "deliveryInstructions":
+              'lineOne': selectedAddress.addressLine1,
+              'lineTwo':
+                  '${selectedAddress.addressLine2}, ${selectedAddress.townCity}',
+              'postCode': selectedAddress.postalCode,
+              'deliveryInstructions':
                   store.state.cartState.deliveryInstructions,
             },
-            "fulfilmentMethod": store.state.cartState.deliveryMethodId,
-            "fulfilmentSlotFrom": formatDateForOrderObject(
-                store.state.cartState.selectedTimeSlot.entries.first.value),
-            "fulfilmentSlotTo": formatDateForOrderObject(
-                store.state.cartState.selectedTimeSlot.entries.last.value),
+            'fulfilmentMethod': store.state.cartState.deliveryMethodId,
+            'fulfilmentSlotFrom': formatDateForOrderObject(
+              store.state.cartState.selectedTimeSlot.entries.first.value,
+            ),
+            'fulfilmentSlotTo': formatDateForOrderObject(
+              store.state.cartState.selectedTimeSlot.entries.last.value,
+            ),
           },
         );
       } else if (store.state.cartState.fulfilmentMethod ==
           FulfilmentMethod.collection) {
         orderObject.addAll(
           {
-            "address": {
-              "name": store.state.userState.displayName,
-              "email": store.state.userState.email == ""
-                  ? "email@notprovided.com"
+            'address': {
+              'name': store.state.userState.displayName,
+              'email': store.state.userState.email == ''
+                  ? 'email@notprovided.com'
                   : store.state.userState.email,
-              "phoneNumber": store.state.userState.phoneNumber,
-              "lineOne": "Collection Order",
-              "lineTwo": "",
-              "postCode": "L7 0HG",
-              "deliveryInstructions":
+              'phoneNumber': store.state.userState.phoneNumber,
+              'lineOne': 'Collection Order',
+              'lineTwo': '',
+              'postCode': 'L7 0HG',
+              'deliveryInstructions':
                   store.state.cartState.deliveryInstructions,
             },
-            "fulfilmentMethod": store.state.cartState.collectionMethodId,
-            "fulfilmentSlotFrom": formatDateForOrderObject(
-                store.state.cartState.selectedTimeSlot.entries.first.value),
-            "fulfilmentSlotTo": formatDateForOrderObject(
-                store.state.cartState.selectedTimeSlot.entries.last.value),
+            'fulfilmentMethod': store.state.cartState.collectionMethodId,
+            'fulfilmentSlotFrom': formatDateForOrderObject(
+              store.state.cartState.selectedTimeSlot.entries.first.value,
+            ),
+            'fulfilmentSlotTo': formatDateForOrderObject(
+              store.state.cartState.selectedTimeSlot.entries.last.value,
+            ),
           },
         );
       }
 
-      print("Order Object Created: ${json.encode(orderObject).toString()}");
+      print('Order Object Created: ${json.encode(orderObject)}');
 
       //Call create order API with prepared orderobject
-      Map result = await peeplEatsService
-          .createOrder(orderObject)
-          .timeout(Duration(seconds: 10), onTimeout: () {
-        return {}; //return empty map on timeout to trigger errorCallback
-      });
+      final Map<String, dynamic> result =
+          await peeplEatsService.createOrder(orderObject).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          return {}; //return empty map on timeout to trigger errorCallback
+        },
+      );
 
       if (result.isNotEmpty) {
         //Call Peepl Pay API to start checking the paymentIntentID
-        Map checkResult = await peeplPayService
-            .startPaymentIntentCheck(result['paymentIntentID']);
+        final Map<String, dynamic> checkResult = await peeplPayService
+            .startPaymentIntentCheck(result['paymentIntentID'] as String);
 
-        print("Order Result $result");
+        print('Order Result $result');
 
         //Crosscheck the PaymentIntentID with the amount calculcated on device.
         if (checkResult['paymentIntent']['amount'] ==
             store.state.cartState.cartTotal) {
-          store.dispatch(CreateOrder(
-              result['orderID'].toString(), result['paymentIntentID']));
+          store.dispatch(
+            CreateOrder(
+              result['orderID'].toString(),
+              result['paymentIntentID'] as String,
+            ),
+          );
 
           //subscribe to firebase topic of orderID
 
-          firebaseMessaging
-              .subscribeToTopic('order-' + result['orderID'].toString());
+          await firebaseMessaging
+              .subscribeToTopic('order-${result['orderID']}');
 
           successCallback();
         } else {
@@ -472,16 +503,17 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
           errorCallback("Order totals aren't matching");
         }
       } else {
-        errorCallback("Our servers seem to be down");
+        errorCallback('Our servers seem to be down');
       }
     } on DioError catch (e) {
       if (e.response != null) {
         print(e.response!.data);
         errorCallback(
-            getErrorMessageForOrder(e.response!.data['cause']['code']));
+          getErrorMessageForOrder(e.response!.data['cause']['code'] as String),
+        );
       }
     } catch (e, s) {
-      errorCallback("Something went wrong");
+      errorCallback('Something went wrong');
       log.error('ERROR - prepareAndSendOrder $e');
       await Sentry.captureException(
         e,
@@ -492,63 +524,109 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
   };
 }
 
-ThunkAction sendTokenPayment(
-    VoidCallback successCallback, VoidCallback errorCallback) {
-  return (Store store) async {
+ThunkAction<AppState> sendTokenPayment(
+  VoidCallback successCallback,
+  VoidCallback errorCallback,
+) {
+  return (Store<AppState> store) async {
     try {
       //Set loading to true
-      store.dispatch(SetTransferringPayment(true));
+      store.dispatch(SetTransferringPayment(flag: true));
+
+      final BigInt currentGBPXAmount =
+          store.state.cashWalletState.tokens[GBPxToken.address]!.amount;
+
+      final BigInt currentPPLAmount =
+          store.state.cashWalletState.tokens[GBPxToken.address]!.amount;
+
+      final BigInt selectedGBPXAmount =
+          BigInt.from(store.state.cartState.selectedGBPxAmount);
+
+      final BigInt selectedPPLAmount =
+          BigInt.from(store.state.cartState.selectedPPLAmount);
+
+      Map<String, dynamic> gbpxResponse = {};
+      Map<String, dynamic> pplResponse = {};
 
       //Get tokens for GBPx and PPL
-      Token GBPxToken = store.state.cashWalletState.tokens.values.firstWhere(
-        (token) =>
-            token.symbol.toLowerCase() == "GBPx".toString().toLowerCase(),
-      );
+      // final Token GBPxToken =
+      //     store.state.cashWalletState.tokens.values.firstWhere(
+      //   (token) =>
+      //       token.symbol.toLowerCase() == 'GBPx'.toString().toLowerCase(),
+      // );
 
-      Token PPLToken = store.state.cashWalletState.tokens.values.firstWhere(
-        (token) => token.symbol.toLowerCase() == "PPL".toString().toLowerCase(),
-      );
+      // final Token PPLToken =
+      //     store.state.cashWalletState.tokens.values.firstWhere(
+      //   (token) => token.symbol.toLowerCase() == 'PPL'.toString().toLowerCase(),
+      // );
 
       //If Selected GBPx amount is not 0, transfer GBPx
-      Map<String, dynamic> GBPxResponse =
-          store.state.cartState.selectedGBPxAmount != 0.0
-              ? GBPxToken.amount > store.state.cartState.selectedGBPxAmount
-                  ? await chargeApi.tokenTransfer(
-                      getIt<Web3>(),
-                      store.state.userState.walletAddress,
-                      GBPxToken.address,
-                      store.state.cartState.restaurantWalletAddress,
-                      tokensAmount:
-                          store.state.cartState.selectedGBPxAmount.toString(),
-                      externalId: store.state.cartState.paymentIntentID,
-                    )
-                  : {}
-              : {};
 
-      print(GBPxResponse);
+      if (selectedGBPXAmount.compareTo(BigInt.zero) > 0) {
+        if (currentGBPXAmount.compareTo(selectedGBPXAmount) > 0) {
+          gbpxResponse = await chargeApi.tokenTransfer(
+            getIt<Web3>(),
+            store.state.userState.walletAddress,
+            GBPxToken.address,
+            store.state.cartState.restaurantWalletAddress,
+            tokensAmount: store.state.cartState.selectedGBPxAmount.toString(),
+            externalId: store.state.cartState.paymentIntentID,
+          ) as Map<String, dynamic>;
+        }
+      }
+
+      if (selectedPPLAmount.compareTo(BigInt.zero) > 0) {
+        if (currentPPLAmount.compareTo(selectedPPLAmount) > 0) {
+          pplResponse = await chargeApi.tokenTransfer(
+            getIt<Web3>(),
+            store.state.userState.walletAddress,
+            PeeplToken.address,
+            store.state.cartState.restaurantWalletAddress,
+            tokensAmount: store.state.cartState.selectedPPLAmount.toString(),
+            externalId: store.state.cartState.paymentIntentID,
+          ) as Map<String, dynamic>;
+        }
+      }
+
+      // final Map<String, dynamic> GBPxResponse =
+      //     store.state.cartState.selectedGBPxAmount != 0.0
+      //         ? GBPxToken.amount > store.state.cartState.selectedGBPxAmount
+      //             ? await chargeApi.tokenTransfer(
+      //                 getIt<Web3>(),
+      //                 store.state.userState.walletAddress,
+      //                 GBPxToken.address,
+      //                 store.state.cartState.restaurantWalletAddress,
+      //                 tokensAmount:
+      //                     store.state.cartState.selectedGBPxAmount.toString(),
+      //                 externalId: store.state.cartState.paymentIntentID,
+      //               )
+      //             : {}
+      //         : {};
+
+      // print(GBPxResponse);
 
       //If Selected PPL Amount is not 0, transfer PPL
-      Map<String, dynamic> PPLResponse =
-          store.state.cartState.selectedPPLAmount != 0.0
-              ? PPLToken.amount > store.state.cartState.selectedPPLAmount
-                  ? await chargeApi.tokenTransfer(
-                      getIt<Web3>(),
-                      store.state.userState.walletAddress,
-                      PPLToken.address,
-                      store.state.cartState.restaurantWalletAddress,
-                      tokensAmount:
-                          store.state.cartState.selectedPPLAmount.toString(),
-                      externalId: store.state.cartState.paymentIntentID,
-                    )
-                  : {}
-              : {};
+      // final Map<String, dynamic> PPLResponse =
+      //     store.state.cartState.selectedPPLAmount != 0.0
+      //         ? PPLToken.amount > store.state.cartState.selectedPPLAmount
+      //             ? await chargeApi.tokenTransfer(
+      //                 getIt<Web3>(),
+      //                 store.state.userState.walletAddress,
+      //                 PPLToken.address,
+      //                 store.state.cartState.restaurantWalletAddress,
+      //                 tokensAmount:
+      //                     store.state.cartState.selectedPPLAmount.toString(),
+      //                 externalId: store.state.cartState.paymentIntentID,
+      //               )
+      //             : {}
+      //         : {};
 
-      print(PPLResponse);
+      // print(PPLResponse);
 
       //Make periodic API calls to check the order status
       //If status is paid, then set loading = false, and confirmed = true
 
-      if (GBPxResponse.isNotEmpty || PPLResponse.isNotEmpty) {
+      if (gbpxResponse.isNotEmpty || pplResponse.isNotEmpty) {
         Timer.periodic(
           const Duration(seconds: 4),
           (timer) async {
@@ -556,11 +634,12 @@ ThunkAction sendTokenPayment(
                 peeplEatsService
                     .checkOrderStatus(store.state.cartState.orderID);
 
-            checkOrderResponse.then(
+            await checkOrderResponse.then(
               (completedValue) {
-                if (completedValue['paymentStatus'] == "paid") {
-                  store.dispatch(SetTransferringPayment(false));
-                  store.dispatch(SetConfirmed(true));
+                if (completedValue['paymentStatus'] == 'paid') {
+                  store
+                    ..dispatch(SetTransferringPayment(flag: false))
+                    ..dispatch(SetConfirmed(flag: true));
                   successCallback();
                   timer.cancel();
                 }
@@ -570,7 +649,7 @@ ThunkAction sendTokenPayment(
         );
       }
     } catch (e, s) {
-      store.dispatch(SetError(true));
+      store.dispatch(SetError(flag: true));
       log.error('ERROR - sendTokenPayment $e');
       await Sentry.captureException(
         e,
@@ -581,7 +660,7 @@ ThunkAction sendTokenPayment(
   };
 }
 
-ThunkAction setRestaurantDetails({
+ThunkAction<AppState> setRestaurantDetails({
   required String restaurantID,
   required String restaurantName,
   required DeliveryAddresses restaurantAddress,
@@ -590,24 +669,25 @@ ThunkAction setRestaurantDetails({
   required int platformFee,
   required VoidCallback sendSnackBar,
 }) {
-  return (Store store) async {
+  return (Store<AppState> store) async {
     try {
       //If cart has existing items -> clear cart, set new restaurant details, show snackbar if cart had items.
 
       if (store.state.cartState.restaurantName.isNotEmpty &&
           store.state.cartState.restaurantID.isNotEmpty) {
         sendSnackBar();
-        store.dispatch(ClearCart());
-        store.dispatch(
-          SetRestaurantDetails(
-            restaurantID,
-            restaurantName,
-            restaurantAddress,
-            walletAddress,
-            minimumOrder,
-            platformFee,
-          ),
-        );
+        store
+          ..dispatch(ClearCart())
+          ..dispatch(
+            SetRestaurantDetails(
+              restaurantID,
+              restaurantName,
+              restaurantAddress,
+              walletAddress,
+              minimumOrder,
+              platformFee,
+            ),
+          );
       } else {
         store.dispatch(
           SetRestaurantDetails(
@@ -623,7 +703,7 @@ ThunkAction setRestaurantDetails({
       // If cart does not have existing items -> set new restaurant details
 
     } catch (e, s) {
-      store.dispatch(SetError(true));
+      store.dispatch(SetError(flag: true));
       log.error('ERROR - setRestaurantDetails $e');
       await Sentry.captureException(
         e,

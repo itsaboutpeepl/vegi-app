@@ -51,6 +51,7 @@ dependencies:
   local_auth: ^2.1.2
   logger: ^1.0.0
   modal_bottom_sheet: ^2.1.2
+  nil: ^1.1.1 #TODO: replace SizedBox.shrink with Nil everywhere
   number_display: ^3.0.0
   package_info: ^2.0.2 #Gets application info, used to show application and build version
   phone_number: ^1.0.0

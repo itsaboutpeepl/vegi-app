@@ -9,11 +9,11 @@ part of 'past_order_state.dart';
 _$_PastOrderState _$$_PastOrderStateFromJson(Map<String, dynamic> json) =>
     _$_PastOrderState(
       listOfScheduledOrders: (json['listOfScheduledOrders'] as List<dynamic>?)
-              ?.map((e) => OrderDetails.fromJson(e))
+              ?.map((e) => OrderDetails.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       listOfOngoingOrders: (json['listOfOngoingOrders'] as List<dynamic>?)
-              ?.map((e) => OrderDetails.fromJson(e))
+              ?.map((e) => OrderDetails.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
     );

@@ -8,17 +8,17 @@ class PeeplPaySerivce {
 
   PeeplPaySerivce(this.dio) {
     dio.options.baseUrl = dotenv.env['PEEPL_PAY_BACKEND']!;
-    dio.options.headers = Map.from({"Content-Type": 'application/json'});
+    dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
 
-  Future<Map<dynamic, dynamic>> startPaymentIntentCheck(
+  Future<Map<String, dynamic>> startPaymentIntentCheck(
       String paymentIntentID) async {
-    Response response =
-        await dio.get("api/v1/payment_intents/$paymentIntentID");
+    final Response<dynamic> response =
+        await dio.get('api/v1/payment_intents/$paymentIntentID');
 
-    Map<dynamic, dynamic> result = response.data;
+    final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
-    print("Payment Intent Result $result");
+    print('Payment Intent Result $result');
 
     return result;
   }

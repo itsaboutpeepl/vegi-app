@@ -36,7 +36,8 @@ mixin _$CartItem {
 /// @nodoc
 abstract class $CartItemCopyWith<$Res> {
   factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
-      _$CartItemCopyWithImpl<$Res>;
+      _$CartItemCopyWithImpl<$Res, CartItem>;
+  @useResult
   $Res call(
       {int internalID,
       RestaurantMenuItem menuItem,
@@ -48,49 +49,53 @@ abstract class $CartItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CartItemCopyWithImpl<$Res> implements $CartItemCopyWith<$Res> {
+class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
+    implements $CartItemCopyWith<$Res> {
   _$CartItemCopyWithImpl(this._value, this._then);
 
-  final CartItem _value;
   // ignore: unused_field
-  final $Res Function(CartItem) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? internalID = freezed,
-    Object? menuItem = freezed,
-    Object? totalItemPrice = freezed,
-    Object? itemQuantity = freezed,
-    Object? selectedProductOptions = freezed,
+    Object? internalID = null,
+    Object? menuItem = null,
+    Object? totalItemPrice = null,
+    Object? itemQuantity = null,
+    Object? selectedProductOptions = null,
   }) {
     return _then(_value.copyWith(
-      internalID: internalID == freezed
+      internalID: null == internalID
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
               as int,
-      menuItem: menuItem == freezed
+      menuItem: null == menuItem
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
               as RestaurantMenuItem,
-      totalItemPrice: totalItemPrice == freezed
+      totalItemPrice: null == totalItemPrice
           ? _value.totalItemPrice
           : totalItemPrice // ignore: cast_nullable_to_non_nullable
               as int,
-      itemQuantity: itemQuantity == freezed
+      itemQuantity: null == itemQuantity
           ? _value.itemQuantity
           : itemQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedProductOptions: selectedProductOptions == freezed
+      selectedProductOptions: null == selectedProductOptions
           ? _value.selectedProductOptions
           : selectedProductOptions // ignore: cast_nullable_to_non_nullable
               as Map<int, ProductOptions>,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $RestaurantMenuItemCopyWith<$Res> get menuItem {
     return $RestaurantMenuItemCopyWith<$Res>(_value.menuItem, (value) {
-      return _then(_value.copyWith(menuItem: value));
+      return _then(_value.copyWith(menuItem: value) as $Val);
     });
   }
 }
@@ -101,6 +106,7 @@ abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
           _$_CartItem value, $Res Function(_$_CartItem) then) =
       __$$_CartItemCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {int internalID,
       RestaurantMenuItem menuItem,
@@ -113,41 +119,40 @@ abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_CartItemCopyWithImpl<$Res> extends _$CartItemCopyWithImpl<$Res>
+class __$$_CartItemCopyWithImpl<$Res>
+    extends _$CartItemCopyWithImpl<$Res, _$_CartItem>
     implements _$$_CartItemCopyWith<$Res> {
   __$$_CartItemCopyWithImpl(
       _$_CartItem _value, $Res Function(_$_CartItem) _then)
-      : super(_value, (v) => _then(v as _$_CartItem));
+      : super(_value, _then);
 
-  @override
-  _$_CartItem get _value => super._value as _$_CartItem;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? internalID = freezed,
-    Object? menuItem = freezed,
-    Object? totalItemPrice = freezed,
-    Object? itemQuantity = freezed,
-    Object? selectedProductOptions = freezed,
+    Object? internalID = null,
+    Object? menuItem = null,
+    Object? totalItemPrice = null,
+    Object? itemQuantity = null,
+    Object? selectedProductOptions = null,
   }) {
     return _then(_$_CartItem(
-      internalID: internalID == freezed
+      internalID: null == internalID
           ? _value.internalID
           : internalID // ignore: cast_nullable_to_non_nullable
               as int,
-      menuItem: menuItem == freezed
+      menuItem: null == menuItem
           ? _value.menuItem
           : menuItem // ignore: cast_nullable_to_non_nullable
               as RestaurantMenuItem,
-      totalItemPrice: totalItemPrice == freezed
+      totalItemPrice: null == totalItemPrice
           ? _value.totalItemPrice
           : totalItemPrice // ignore: cast_nullable_to_non_nullable
               as int,
-      itemQuantity: itemQuantity == freezed
+      itemQuantity: null == itemQuantity
           ? _value.itemQuantity
           : itemQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedProductOptions: selectedProductOptions == freezed
+      selectedProductOptions: null == selectedProductOptions
           ? _value.selectedProductOptions
           : selectedProductOptions // ignore: cast_nullable_to_non_nullable
               as Map<int, ProductOptions>,
@@ -191,13 +196,14 @@ class _$_CartItem extends _CartItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CartItem &&
-            const DeepCollectionEquality()
-                .equals(other.internalID, internalID) &&
-            const DeepCollectionEquality().equals(other.menuItem, menuItem) &&
-            const DeepCollectionEquality()
-                .equals(other.totalItemPrice, totalItemPrice) &&
-            const DeepCollectionEquality()
-                .equals(other.itemQuantity, itemQuantity) &&
+            (identical(other.internalID, internalID) ||
+                other.internalID == internalID) &&
+            (identical(other.menuItem, menuItem) ||
+                other.menuItem == menuItem) &&
+            (identical(other.totalItemPrice, totalItemPrice) ||
+                other.totalItemPrice == totalItemPrice) &&
+            (identical(other.itemQuantity, itemQuantity) ||
+                other.itemQuantity == itemQuantity) &&
             const DeepCollectionEquality()
                 .equals(other.selectedProductOptions, selectedProductOptions));
   }
@@ -206,20 +212,23 @@ class _$_CartItem extends _CartItem {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(internalID),
-      const DeepCollectionEquality().hash(menuItem),
-      const DeepCollectionEquality().hash(totalItemPrice),
-      const DeepCollectionEquality().hash(itemQuantity),
+      internalID,
+      menuItem,
+      totalItemPrice,
+      itemQuantity,
       const DeepCollectionEquality().hash(selectedProductOptions));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_CartItemCopyWith<_$_CartItem> get copyWith =>
       __$$_CartItemCopyWithImpl<_$_CartItem>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CartItemToJson(this);
+    return _$$_CartItemToJson(
+      this,
+    );
   }
 }
 
@@ -236,16 +245,15 @@ abstract class _CartItem extends CartItem {
   factory _CartItem.fromJson(Map<String, dynamic> json) = _$_CartItem.fromJson;
 
   @override
-  int get internalID => throw _privateConstructorUsedError;
+  int get internalID;
   @override
-  RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
+  RestaurantMenuItem get menuItem;
   @override
-  int get totalItemPrice => throw _privateConstructorUsedError;
+  int get totalItemPrice;
   @override
-  int get itemQuantity => throw _privateConstructorUsedError;
+  int get itemQuantity;
   @override
-  Map<int, ProductOptions> get selectedProductOptions =>
-      throw _privateConstructorUsedError;
+  Map<int, ProductOptions> get selectedProductOptions;
   @override
   @JsonKey(ignore: true)
   _$$_CartItemCopyWith<_$_CartItem> get copyWith =>

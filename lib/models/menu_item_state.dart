@@ -1,15 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/constants/demoData.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
 part 'menu_item_state.freezed.dart';
 part 'menu_item_state.g.dart';
 
 @Freezed()
 class MenuItemState with _$MenuItemState {
-  const MenuItemState._();
-
   @JsonSerializable()
   factory MenuItemState({
     @JsonKey(ignore: true) @Default(null) RestaurantMenuItem? menuItem,
@@ -21,6 +19,8 @@ class MenuItemState with _$MenuItemState {
     @JsonKey(ignore: true) @Default(0) int quantity,
   }) = _MenuItemState;
 
+  const MenuItemState._();
+
   factory MenuItemState.initial() => MenuItemState(
         menuItem: bagel1,
         totalPrice: 0,
@@ -29,7 +29,8 @@ class MenuItemState with _$MenuItemState {
         selectedProductOptionsForCategory: {},
       );
 
-  factory MenuItemState.fromJson(dynamic json) => _$MenuItemStateFromJson(json);
+  factory MenuItemState.fromJson(Map<String, dynamic> json) =>
+      _$MenuItemStateFromJson(json);
 }
 
 class MenuItemStateConverter

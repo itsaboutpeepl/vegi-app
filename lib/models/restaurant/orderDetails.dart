@@ -8,8 +8,6 @@ part 'orderDetails.g.dart';
 
 @Freezed()
 class OrderDetails with _$OrderDetails {
-  const OrderDetails._();
-
   @JsonSerializable()
   factory OrderDetails({
     required Map<String, String> selectedSlot,
@@ -26,5 +24,8 @@ class OrderDetails with _$OrderDetails {
     required OrderAcceptanceStatus orderAcceptanceStatus,
   }) = _OrderDetails;
 
-  factory OrderDetails.fromJson(dynamic json) => _$OrderDetailsFromJson(json);
+  const OrderDetails._();
+
+  factory OrderDetails.fromJson(Map<String, dynamic> json) =>
+      _$OrderDetailsFromJson(json);
 }

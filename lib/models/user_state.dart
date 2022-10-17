@@ -1,23 +1,23 @@
 import 'package:charge_wallet_sdk/models/wallet_modules/wallet_modules.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 
 part 'user_state.freezed.dart';
 part 'user_state.g.dart';
 
-String currencyJson(String? currency) => currency == null ? 'usd' : currency;
+String currencyJson(String? currency) => currency ?? 'usd';
 
-authTypeFromJson(String auth) =>
+BiometricAuth? authTypeFromJson(String auth) =>
     EnumToString.fromString(BiometricAuth.values, auth);
 
 Locale localeFromJson(Map<String, dynamic>? map) => map == null
-    ? Locale('en', 'US')
-    : Locale(map['languageCode'], map['countryCode']);
+    ? const Locale('en', 'US')
+    : Locale(map['languageCode'].toString(), map['countryCode'].toString());
 
 Map<String, dynamic> localeToJson(Locale? locale) => locale == null
     ? {'languageCode': 'en', 'countryCode': 'US'}
@@ -25,8 +25,6 @@ Map<String, dynamic> localeToJson(Locale? locale) => locale == null
 
 @freezed
 class UserState with _$UserState {
-  const UserState._();
-
   @JsonSerializable()
   factory UserState({
     @JsonKey(ignore: true) String? wcURI,
@@ -62,23 +60,26 @@ class UserState with _$UserState {
     @JsonKey(ignore: true) PhoneAuthCredential? credentials,
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
     @Default(false) bool hasSavedSeedPhrase,
-    @Default("") String initialLoginDateTime,
+    @Default('') String initialLoginDateTime,
     @Default(false) bool showSeedPhraseBanner,
   }) = _UserState;
+
+  const UserState._();
 
   factory UserState.initial() => UserState(
         networks: [],
         mnemonic: [],
         syncedContacts: [],
-        reverseContacts: Map<String, String>(),
-        displayName: "Anom",
+        reverseContacts: <String, String>{},
+        displayName: 'Anom',
         backup: false,
         authType: BiometricAuth.none,
         currency: 'usd',
         listOfDeliveryAddresses: [],
       );
 
-  factory UserState.fromJson(dynamic json) => _$UserStateFromJson(json);
+  factory UserState.fromJson(Map<String, dynamic> json) =>
+      _$UserStateFromJson(json);
 }
 
 class UserStateConverter

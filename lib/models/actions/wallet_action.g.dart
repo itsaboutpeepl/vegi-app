@@ -6,60 +6,6 @@ part of 'wallet_action.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CreateWallet _$$CreateWalletFromJson(Map<String, dynamic> json) =>
-    _$CreateWallet(
-      timestamp: json['timestamp'] as int? ?? 0,
-      id: json['_id'] as String,
-      name: json['name'] as String? ?? 'createWallet',
-      txHash: json['txHash'] as String?,
-      status: json['status'] as String,
-      blockNumber: json['blockNumber'] as int? ?? 0,
-    );
-
-Map<String, dynamic> _$$CreateWalletToJson(_$CreateWallet instance) =>
-    <String, dynamic>{
-      'timestamp': instance.timestamp,
-      '_id': instance.id,
-      'name': instance.name,
-      'txHash': instance.txHash,
-      'status': instance.status,
-      'blockNumber': instance.blockNumber,
-    };
-
-_$FiatDeposit _$$FiatDepositFromJson(Map<String, dynamic> json) =>
-    _$FiatDeposit(
-      timestamp: json['timestamp'] as int? ?? 0,
-      id: json['_id'] as String,
-      name: json['name'] as String? ?? 'fiat-deposit',
-      txHash: json['txHash'] as String?,
-      status: json['status'] as String,
-      blockNumber: json['blockNumber'] as int? ?? 0,
-      tokenAddress: json['tokenAddress'] as String,
-      from: json['from'] as String?,
-      to: json['to'] as String,
-      value: BigInt.parse(json['value'] as String),
-      tokenName: json['tokenName'] as String,
-      tokenSymbol: json['tokenSymbol'] as String,
-      tokenDecimal: json['tokenDecimal'] as int,
-    );
-
-Map<String, dynamic> _$$FiatDepositToJson(_$FiatDeposit instance) =>
-    <String, dynamic>{
-      'timestamp': instance.timestamp,
-      '_id': instance.id,
-      'name': instance.name,
-      'txHash': instance.txHash,
-      'status': instance.status,
-      'blockNumber': instance.blockNumber,
-      'tokenAddress': instance.tokenAddress,
-      'from': instance.from,
-      'to': instance.to,
-      'value': instance.value.toString(),
-      'tokenName': instance.tokenName,
-      'tokenSymbol': instance.tokenSymbol,
-      'tokenDecimal': instance.tokenDecimal,
-    };
-
 _$Bonus _$$BonusFromJson(Map<String, dynamic> json) => _$Bonus(
       timestamp: json['timestamp'] as int? ?? 0,
       id: json['_id'] as String,
@@ -126,6 +72,82 @@ Map<String, dynamic> _$$SendToJson(_$Send instance) => <String, dynamic>{
       'tokenDecimal': instance.tokenDecimal,
     };
 
+_$FiatDeposit _$$FiatDepositFromJson(Map<String, dynamic> json) =>
+    _$FiatDeposit(
+      timestamp: json['timestamp'] as int? ?? 0,
+      id: json['_id'] as String,
+      name: json['name'] as String? ?? 'fiat-deposit',
+      txHash: json['txHash'] as String?,
+      status: json['status'] as String,
+      blockNumber: json['blockNumber'] as int? ?? 0,
+      tokenAddress: json['tokenAddress'] as String,
+      from: json['from'] as String?,
+      to: json['to'] as String,
+      value: BigInt.parse(json['value'] as String),
+      tokenName: json['tokenName'] as String,
+      tokenSymbol: json['tokenSymbol'] as String,
+      tokenDecimal: json['tokenDecimal'] as int,
+    );
+
+Map<String, dynamic> _$$FiatDepositToJson(_$FiatDeposit instance) =>
+    <String, dynamic>{
+      'timestamp': instance.timestamp,
+      '_id': instance.id,
+      'name': instance.name,
+      'txHash': instance.txHash,
+      'status': instance.status,
+      'blockNumber': instance.blockNumber,
+      'tokenAddress': instance.tokenAddress,
+      'from': instance.from,
+      'to': instance.to,
+      'value': instance.value.toString(),
+      'tokenName': instance.tokenName,
+      'tokenSymbol': instance.tokenSymbol,
+      'tokenDecimal': instance.tokenDecimal,
+    };
+
+_$CreateWallet _$$CreateWalletFromJson(Map<String, dynamic> json) =>
+    _$CreateWallet(
+      timestamp: json['timestamp'] as int? ?? 0,
+      id: json['_id'] as String,
+      name: json['name'] as String? ?? 'createWallet',
+      txHash: json['txHash'] as String?,
+      status: json['status'] as String,
+      blockNumber: json['blockNumber'] as int? ?? 0,
+    );
+
+Map<String, dynamic> _$$CreateWalletToJson(_$CreateWallet instance) =>
+    <String, dynamic>{
+      'timestamp': instance.timestamp,
+      '_id': instance.id,
+      'name': instance.name,
+      'txHash': instance.txHash,
+      'status': instance.status,
+      'blockNumber': instance.blockNumber,
+    };
+
+_$Swap _$$SwapFromJson(Map<String, dynamic> json) => _$Swap(
+      timestamp: json['timestamp'] as int? ?? 0,
+      id: json['_id'] as String,
+      name: json['name'] as String? ?? 'swapTokens',
+      txHash: json['txHash'] as String?,
+      status: json['status'] as String,
+      blockNumber: json['blockNumber'] as int? ?? 0,
+      tradeInfo: json['metadata'] == null
+          ? null
+          : Trade.fromJson(json['metadata'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$SwapToJson(_$Swap instance) => <String, dynamic>{
+      'timestamp': instance.timestamp,
+      '_id': instance.id,
+      'name': instance.name,
+      'txHash': instance.txHash,
+      'status': instance.status,
+      'blockNumber': instance.blockNumber,
+      'metadata': instance.tradeInfo?.toJson(),
+    };
+
 _$Receive _$$ReceiveFromJson(Map<String, dynamic> json) => _$Receive(
       timestamp: json['timestamp'] as int? ?? 0,
       id: json['_id'] as String,
@@ -156,28 +178,6 @@ Map<String, dynamic> _$$ReceiveToJson(_$Receive instance) => <String, dynamic>{
       'tokenName': instance.tokenName,
       'tokenSymbol': instance.tokenSymbol,
       'tokenDecimal': instance.tokenDecimal,
-    };
-
-_$Swap _$$SwapFromJson(Map<String, dynamic> json) => _$Swap(
-      timestamp: json['timestamp'] as int? ?? 0,
-      id: json['_id'] as String,
-      name: json['name'] as String? ?? 'swapTokens',
-      txHash: json['txHash'] as String?,
-      status: json['status'] as String,
-      blockNumber: json['blockNumber'] as int? ?? 0,
-      tradeInfo: json['metadata'] == null
-          ? null
-          : Trade.fromJson(json['metadata'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$$SwapToJson(_$Swap instance) => <String, dynamic>{
-      'timestamp': instance.timestamp,
-      '_id': instance.id,
-      'name': instance.name,
-      'txHash': instance.txHash,
-      'status': instance.status,
-      'blockNumber': instance.blockNumber,
-      'metadata': instance.tradeInfo?.toJson(),
     };
 
 _$ReceiveNFT _$$ReceiveNFTFromJson(Map<String, dynamic> json) => _$ReceiveNFT(

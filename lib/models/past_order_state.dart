@@ -6,23 +6,25 @@ part 'past_order_state.g.dart';
 
 @Freezed()
 class PastOrderState with _$PastOrderState {
-  const PastOrderState._();
-
   @JsonSerializable()
   factory PastOrderState({
     @Default([]) List<OrderDetails> listOfScheduledOrders,
     @Default([]) List<OrderDetails> listOfOngoingOrders,
   }) = _PastOrderState;
 
+  const PastOrderState._();
+
   factory PastOrderState.initial() => PastOrderState(
         listOfScheduledOrders: [],
         listOfOngoingOrders: [],
       );
 
-  factory PastOrderState.fromJson(dynamic json) => _$PastOrderStateFromJson(json);
+  factory PastOrderState.fromJson(Map<String, dynamic> json) =>
+      _$PastOrderStateFromJson(json);
 }
 
-class PastOrderStateConverter implements JsonConverter<PastOrderState, Map<String, dynamic>?> {
+class PastOrderStateConverter
+    implements JsonConverter<PastOrderState, Map<String, dynamic>?> {
   const PastOrderStateConverter();
 
   @override

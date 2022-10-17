@@ -6,8 +6,6 @@ part 'userCart.g.dart';
 
 @Freezed()
 class UserCart with _$UserCart {
-  const UserCart._();
-
   @JsonSerializable()
   factory UserCart({
     required List<CartItem> cartItems,
@@ -17,6 +15,8 @@ class UserCart with _$UserCart {
     required int cartDiscount,
   }) = _UserCart;
 
+  const UserCart._();
+
   factory UserCart.initial() => UserCart(
         cartItems: [],
         cartSubTotal: 0,
@@ -25,5 +25,6 @@ class UserCart with _$UserCart {
         cartDiscount: 0,
       );
 
-  factory UserCart.fromJson(dynamic json) => _$UserCartFromJson(json);
+  factory UserCart.fromJson(Map<String, dynamic> json) =>
+      _$UserCartFromJson(json);
 }

@@ -2,16 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.dart';
+import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 
 class SignUpButtons extends StatefulWidget {
+  const SignUpButtons({Key? key}) : super(key: key);
+
   @override
-  _SignUpButtonsState createState() => _SignUpButtonsState();
+  State<SignUpButtons> createState() => _SignUpButtonsState();
 }
 
 class _SignUpButtonsState extends State<SignUpButtons> {
@@ -29,7 +31,6 @@ class _SignUpButtonsState extends State<SignUpButtons> {
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     flex: 6,
@@ -42,18 +43,15 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                   Flexible(
                     flex: 2,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
+                      children: [
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             primary: Colors.white,
                             side: BorderSide(
                               color: Colors.grey[100]!,
                               width: 2,
-                              style: BorderStyle.solid,
                             ),
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 20,
                               vertical: 15,
                             ),
@@ -88,18 +86,17 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                   setState(() {
                                     isPrimaryPreloading = false;
                                   });
-                                  context.router.push(SignUpScreen());
+                                  context.router.push(const SignUpScreen());
                                 },
                               );
                             }
                           },
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.only(top: 20),
                           child: viewmodel.isLoggedOut
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     TransparentButton(
                                       fontSize: 14,
@@ -109,8 +106,8 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                           eventName:
                                               'Existing User: Restore wallet from backup',
                                         );
-                                        context.router
-                                            .push(RestoreFromBackupScreen());
+                                        context.router.push(
+                                            const RestoreFromBackupScreen());
                                       },
                                       textColor: Colors.grey[100]!,
                                     ),
@@ -126,19 +123,20 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                       label: I10n.of(context).create__wallet,
                                       preload: isTransparentPreloading,
                                       onPressed: () async {
-                                        bool result = await showDialog(
+                                        final bool? result =
+                                            await showDialog<bool>(
                                           context: context,
                                           builder: (context) =>
                                               WarnBeforeReCreation(),
                                         );
-                                        if (result) {
+                                        if (result!) {
                                           setState(() {
                                             isTransparentPreloading = true;
                                           });
                                           viewmodel.createLocalAccount(
                                             () {
                                               context.router
-                                                  .push(SignUpScreen());
+                                                  .push(const SignUpScreen());
                                             },
                                           );
                                         }
@@ -156,7 +154,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                           'Existing User: Restore wallet from backup',
                                     );
                                     context.router
-                                        .push(RestoreFromBackupScreen());
+                                        .push(const RestoreFromBackupScreen());
                                   },
                                 ),
                         )

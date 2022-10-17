@@ -35,7 +35,8 @@ mixin _$SwapState {
 /// @nodoc
 abstract class $SwapStateCopyWith<$Res> {
   factory $SwapStateCopyWith(SwapState value, $Res Function(SwapState) then) =
-      _$SwapStateCopyWithImpl<$Res>;
+      _$SwapStateCopyWithImpl<$Res, SwapState>;
+  @useResult
   $Res call(
       {@JsonKey(fromJson: tokensFromJson) Map<String, Token> tokens,
       Map<String, String> tokensImages,
@@ -43,33 +44,36 @@ abstract class $SwapStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SwapStateCopyWithImpl<$Res> implements $SwapStateCopyWith<$Res> {
+class _$SwapStateCopyWithImpl<$Res, $Val extends SwapState>
+    implements $SwapStateCopyWith<$Res> {
   _$SwapStateCopyWithImpl(this._value, this._then);
 
-  final SwapState _value;
   // ignore: unused_field
-  final $Res Function(SwapState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tokens = freezed,
-    Object? tokensImages = freezed,
-    Object? isFetching = freezed,
+    Object? tokens = null,
+    Object? tokensImages = null,
+    Object? isFetching = null,
   }) {
     return _then(_value.copyWith(
-      tokens: tokens == freezed
+      tokens: null == tokens
           ? _value.tokens
           : tokens // ignore: cast_nullable_to_non_nullable
               as Map<String, Token>,
-      tokensImages: tokensImages == freezed
+      tokensImages: null == tokensImages
           ? _value.tokensImages
           : tokensImages // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      isFetching: isFetching == freezed
+      isFetching: null == isFetching
           ? _value.isFetching
           : isFetching // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
@@ -79,6 +83,7 @@ abstract class _$$_SwapStateCopyWith<$Res> implements $SwapStateCopyWith<$Res> {
           _$_SwapState value, $Res Function(_$_SwapState) then) =
       __$$_SwapStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(fromJson: tokensFromJson) Map<String, Token> tokens,
       Map<String, String> tokensImages,
@@ -86,31 +91,30 @@ abstract class _$$_SwapStateCopyWith<$Res> implements $SwapStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_SwapStateCopyWithImpl<$Res> extends _$SwapStateCopyWithImpl<$Res>
+class __$$_SwapStateCopyWithImpl<$Res>
+    extends _$SwapStateCopyWithImpl<$Res, _$_SwapState>
     implements _$$_SwapStateCopyWith<$Res> {
   __$$_SwapStateCopyWithImpl(
       _$_SwapState _value, $Res Function(_$_SwapState) _then)
-      : super(_value, (v) => _then(v as _$_SwapState));
+      : super(_value, _then);
 
-  @override
-  _$_SwapState get _value => super._value as _$_SwapState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tokens = freezed,
-    Object? tokensImages = freezed,
-    Object? isFetching = freezed,
+    Object? tokens = null,
+    Object? tokensImages = null,
+    Object? isFetching = null,
   }) {
     return _then(_$_SwapState(
-      tokens: tokens == freezed
+      tokens: null == tokens
           ? _value.tokens
           : tokens // ignore: cast_nullable_to_non_nullable
               as Map<String, Token>,
-      tokensImages: tokensImages == freezed
+      tokensImages: null == tokensImages
           ? _value.tokensImages
           : tokensImages // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      isFetching: isFetching == freezed
+      isFetching: null == isFetching
           ? _value.isFetching
           : isFetching // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -163,8 +167,8 @@ class _$_SwapState extends _SwapState with DiagnosticableTreeMixin {
             const DeepCollectionEquality().equals(other.tokens, tokens) &&
             const DeepCollectionEquality()
                 .equals(other.tokensImages, tokensImages) &&
-            const DeepCollectionEquality()
-                .equals(other.isFetching, isFetching));
+            (identical(other.isFetching, isFetching) ||
+                other.isFetching == isFetching));
   }
 
   @JsonKey(ignore: true)
@@ -173,16 +177,19 @@ class _$_SwapState extends _SwapState with DiagnosticableTreeMixin {
       runtimeType,
       const DeepCollectionEquality().hash(tokens),
       const DeepCollectionEquality().hash(tokensImages),
-      const DeepCollectionEquality().hash(isFetching));
+      isFetching);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_SwapStateCopyWith<_$_SwapState> get copyWith =>
       __$$_SwapStateCopyWithImpl<_$_SwapState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SwapStateToJson(this);
+    return _$$_SwapStateToJson(
+      this,
+    );
   }
 }
 
@@ -198,12 +205,12 @@ abstract class _SwapState extends SwapState {
 
   @override
   @JsonKey(fromJson: tokensFromJson)
-  Map<String, Token> get tokens => throw _privateConstructorUsedError;
+  Map<String, Token> get tokens;
   @override
-  Map<String, String> get tokensImages => throw _privateConstructorUsedError;
+  Map<String, String> get tokensImages;
   @override
   @JsonKey(ignore: true)
-  bool get isFetching => throw _privateConstructorUsedError;
+  bool get isFetching;
   @override
   @JsonKey(ignore: true)
   _$$_SwapStateCopyWith<_$_SwapState> get copyWith =>

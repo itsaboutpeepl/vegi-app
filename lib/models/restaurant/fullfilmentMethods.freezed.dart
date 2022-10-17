@@ -39,7 +39,8 @@ mixin _$FullfilmentMethods {
 abstract class $FullfilmentMethodsCopyWith<$Res> {
   factory $FullfilmentMethodsCopyWith(
           FullfilmentMethods value, $Res Function(FullfilmentMethods) then) =
-      _$FullfilmentMethodsCopyWithImpl<$Res>;
+      _$FullfilmentMethodsCopyWithImpl<$Res, FullfilmentMethods>;
+  @useResult
   $Res call(
       {Map<String, dynamic>? collectionMethod,
       Map<String, dynamic>? deliveryMethod,
@@ -48,39 +49,41 @@ abstract class $FullfilmentMethodsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FullfilmentMethodsCopyWithImpl<$Res>
+class _$FullfilmentMethodsCopyWithImpl<$Res, $Val extends FullfilmentMethods>
     implements $FullfilmentMethodsCopyWith<$Res> {
   _$FullfilmentMethodsCopyWithImpl(this._value, this._then);
 
-  final FullfilmentMethods _value;
   // ignore: unused_field
-  final $Res Function(FullfilmentMethods) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? collectionMethod = freezed,
     Object? deliveryMethod = freezed,
-    Object? collectionSlots = freezed,
-    Object? deliverySlots = freezed,
+    Object? collectionSlots = null,
+    Object? deliverySlots = null,
   }) {
     return _then(_value.copyWith(
-      collectionMethod: collectionMethod == freezed
+      collectionMethod: freezed == collectionMethod
           ? _value.collectionMethod
           : collectionMethod // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
-      deliveryMethod: deliveryMethod == freezed
+      deliveryMethod: freezed == deliveryMethod
           ? _value.deliveryMethod
           : deliveryMethod // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
-      collectionSlots: collectionSlots == freezed
+      collectionSlots: null == collectionSlots
           ? _value.collectionSlots
           : collectionSlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
-      deliverySlots: deliverySlots == freezed
+      deliverySlots: null == deliverySlots
           ? _value.deliverySlots
           : deliverySlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -91,6 +94,7 @@ abstract class _$$_FullfilmentMethodsCopyWith<$Res>
           $Res Function(_$_FullfilmentMethods) then) =
       __$$_FullfilmentMethodsCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {Map<String, dynamic>? collectionMethod,
       Map<String, dynamic>? deliveryMethod,
@@ -100,36 +104,34 @@ abstract class _$$_FullfilmentMethodsCopyWith<$Res>
 
 /// @nodoc
 class __$$_FullfilmentMethodsCopyWithImpl<$Res>
-    extends _$FullfilmentMethodsCopyWithImpl<$Res>
+    extends _$FullfilmentMethodsCopyWithImpl<$Res, _$_FullfilmentMethods>
     implements _$$_FullfilmentMethodsCopyWith<$Res> {
   __$$_FullfilmentMethodsCopyWithImpl(
       _$_FullfilmentMethods _value, $Res Function(_$_FullfilmentMethods) _then)
-      : super(_value, (v) => _then(v as _$_FullfilmentMethods));
+      : super(_value, _then);
 
-  @override
-  _$_FullfilmentMethods get _value => super._value as _$_FullfilmentMethods;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? collectionMethod = freezed,
     Object? deliveryMethod = freezed,
-    Object? collectionSlots = freezed,
-    Object? deliverySlots = freezed,
+    Object? collectionSlots = null,
+    Object? deliverySlots = null,
   }) {
     return _then(_$_FullfilmentMethods(
-      collectionMethod: collectionMethod == freezed
+      collectionMethod: freezed == collectionMethod
           ? _value.collectionMethod
           : collectionMethod // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
-      deliveryMethod: deliveryMethod == freezed
+      deliveryMethod: freezed == deliveryMethod
           ? _value.deliveryMethod
           : deliveryMethod // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
-      collectionSlots: collectionSlots == freezed
+      collectionSlots: null == collectionSlots
           ? _value.collectionSlots
           : collectionSlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
-      deliverySlots: deliverySlots == freezed
+      deliverySlots: null == deliverySlots
           ? _value.deliverySlots
           : deliverySlots // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>,
@@ -191,13 +193,16 @@ class _$_FullfilmentMethods extends _FullfilmentMethods {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>
       __$$_FullfilmentMethodsCopyWithImpl<_$_FullfilmentMethods>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FullfilmentMethodsToJson(this);
+    return _$$_FullfilmentMethodsToJson(
+      this,
+    );
   }
 }
 
@@ -214,17 +219,13 @@ abstract class _FullfilmentMethods extends FullfilmentMethods {
       _$_FullfilmentMethods.fromJson;
 
   @override
-  Map<String, dynamic>? get collectionMethod =>
-      throw _privateConstructorUsedError;
+  Map<String, dynamic>? get collectionMethod;
   @override
-  Map<String, dynamic>? get deliveryMethod =>
-      throw _privateConstructorUsedError;
+  Map<String, dynamic>? get deliveryMethod;
   @override
-  List<Map<String, String>> get collectionSlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get collectionSlots;
   @override
-  List<Map<String, String>> get deliverySlots =>
-      throw _privateConstructorUsedError;
+  List<Map<String, String>> get deliverySlots;
   @override
   @JsonKey(ignore: true)
   _$$_FullfilmentMethodsCopyWith<_$_FullfilmentMethods> get copyWith =>

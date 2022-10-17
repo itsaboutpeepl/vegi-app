@@ -10,10 +10,11 @@ _$_OrderDetails _$$_OrderDetailsFromJson(Map<String, dynamic> json) =>
     _$_OrderDetails(
       selectedSlot: Map<String, String>.from(json['selectedSlot'] as Map),
       isDelivery: json['isDelivery'] as bool,
-      orderAddress: DeliveryAddresses.fromJson(json['orderAddress']),
+      orderAddress: DeliveryAddresses.fromJson(
+          json['orderAddress'] as Map<String, dynamic>),
       restaurantName: json['restaurantName'] as String,
       cartItems: (json['cartItems'] as List<dynamic>)
-          .map((e) => CartItem.fromJson(e))
+          .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       cartTotal: json['cartTotal'] as int,
       orderID: json['orderID'] as String,

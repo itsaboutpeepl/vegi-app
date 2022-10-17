@@ -6,8 +6,6 @@ part 'restaurantCategory.g.dart';
 
 @Freezed()
 class RestaurantCategory with _$RestaurantCategory {
-  const RestaurantCategory._();
-
   @JsonSerializable()
   factory RestaurantCategory({
     required String categoryName,
@@ -15,5 +13,8 @@ class RestaurantCategory with _$RestaurantCategory {
     required List<RestaurantItem> listOfRestaurants,
   }) = _RestaurantCategory;
 
-  factory RestaurantCategory.fromJson(dynamic json) => _$RestaurantCategoryFromJson(json);
+  const RestaurantCategory._();
+
+  factory RestaurantCategory.fromJson(Map<String, dynamic> json) =>
+      _$RestaurantCategoryFromJson(json);
 }

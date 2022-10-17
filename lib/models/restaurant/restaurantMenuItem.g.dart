@@ -18,7 +18,8 @@ _$_RestaurantMenuItem _$$_RestaurantMenuItemFromJson(
       description: json['description'] as String,
       extras: Map<String, int>.from(json['extras'] as Map),
       listOfProductOptions: (json['listOfProductOptions'] as List<dynamic>)
-          .map((e) => ProductOptionsCategory.fromJson(e))
+          .map(
+              (e) => ProductOptionsCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
       isFeatured: json['isFeatured'] as bool,
       priority: json['priority'] as int,

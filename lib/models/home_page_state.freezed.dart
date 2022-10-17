@@ -38,7 +38,8 @@ mixin _$HomePageState {
 abstract class $HomePageStateCopyWith<$Res> {
   factory $HomePageStateCopyWith(
           HomePageState value, $Res Function(HomePageState) then) =
-      _$HomePageStateCopyWithImpl<$Res>;
+      _$HomePageStateCopyWithImpl<$Res, HomePageState>;
+  @useResult
   $Res call(
       {@JsonKey(ignore: true) List<RestaurantItem> featuredRestaurants,
       @JsonKey(ignore: true) bool isLoadingHomePage,
@@ -46,34 +47,36 @@ abstract class $HomePageStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$HomePageStateCopyWithImpl<$Res>
+class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
     implements $HomePageStateCopyWith<$Res> {
   _$HomePageStateCopyWithImpl(this._value, this._then);
 
-  final HomePageState _value;
   // ignore: unused_field
-  final $Res Function(HomePageState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? featuredRestaurants = freezed,
-    Object? isLoadingHomePage = freezed,
-    Object? postalCodes = freezed,
+    Object? featuredRestaurants = null,
+    Object? isLoadingHomePage = null,
+    Object? postalCodes = null,
   }) {
     return _then(_value.copyWith(
-      featuredRestaurants: featuredRestaurants == freezed
+      featuredRestaurants: null == featuredRestaurants
           ? _value.featuredRestaurants
           : featuredRestaurants // ignore: cast_nullable_to_non_nullable
               as List<RestaurantItem>,
-      isLoadingHomePage: isLoadingHomePage == freezed
+      isLoadingHomePage: null == isLoadingHomePage
           ? _value.isLoadingHomePage
           : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
               as bool,
-      postalCodes: postalCodes == freezed
+      postalCodes: null == postalCodes
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
               as List<String>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -84,6 +87,7 @@ abstract class _$$_HomePageStateCopyWith<$Res>
           _$_HomePageState value, $Res Function(_$_HomePageState) then) =
       __$$_HomePageStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(ignore: true) List<RestaurantItem> featuredRestaurants,
       @JsonKey(ignore: true) bool isLoadingHomePage,
@@ -92,31 +96,29 @@ abstract class _$$_HomePageStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_HomePageStateCopyWithImpl<$Res>
-    extends _$HomePageStateCopyWithImpl<$Res>
+    extends _$HomePageStateCopyWithImpl<$Res, _$_HomePageState>
     implements _$$_HomePageStateCopyWith<$Res> {
   __$$_HomePageStateCopyWithImpl(
       _$_HomePageState _value, $Res Function(_$_HomePageState) _then)
-      : super(_value, (v) => _then(v as _$_HomePageState));
+      : super(_value, _then);
 
-  @override
-  _$_HomePageState get _value => super._value as _$_HomePageState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? featuredRestaurants = freezed,
-    Object? isLoadingHomePage = freezed,
-    Object? postalCodes = freezed,
+    Object? featuredRestaurants = null,
+    Object? isLoadingHomePage = null,
+    Object? postalCodes = null,
   }) {
     return _then(_$_HomePageState(
-      featuredRestaurants: featuredRestaurants == freezed
+      featuredRestaurants: null == featuredRestaurants
           ? _value.featuredRestaurants
           : featuredRestaurants // ignore: cast_nullable_to_non_nullable
               as List<RestaurantItem>,
-      isLoadingHomePage: isLoadingHomePage == freezed
+      isLoadingHomePage: null == isLoadingHomePage
           ? _value.isLoadingHomePage
           : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
               as bool,
-      postalCodes: postalCodes == freezed
+      postalCodes: null == postalCodes
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
               as List<String>,
@@ -159,8 +161,8 @@ class _$_HomePageState extends _HomePageState {
             other is _$_HomePageState &&
             const DeepCollectionEquality()
                 .equals(other.featuredRestaurants, featuredRestaurants) &&
-            const DeepCollectionEquality()
-                .equals(other.isLoadingHomePage, isLoadingHomePage) &&
+            (identical(other.isLoadingHomePage, isLoadingHomePage) ||
+                other.isLoadingHomePage == isLoadingHomePage) &&
             const DeepCollectionEquality()
                 .equals(other.postalCodes, postalCodes));
   }
@@ -170,17 +172,20 @@ class _$_HomePageState extends _HomePageState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(featuredRestaurants),
-      const DeepCollectionEquality().hash(isLoadingHomePage),
+      isLoadingHomePage,
       const DeepCollectionEquality().hash(postalCodes));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_HomePageStateCopyWith<_$_HomePageState> get copyWith =>
       __$$_HomePageStateCopyWithImpl<_$_HomePageState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_HomePageStateToJson(this);
+    return _$$_HomePageStateToJson(
+      this,
+    );
   }
 }
 
@@ -199,14 +204,13 @@ abstract class _HomePageState extends HomePageState {
 
   @override
   @JsonKey(ignore: true)
-  List<RestaurantItem> get featuredRestaurants =>
-      throw _privateConstructorUsedError;
+  List<RestaurantItem> get featuredRestaurants;
   @override
   @JsonKey(ignore: true)
-  bool get isLoadingHomePage => throw _privateConstructorUsedError;
+  bool get isLoadingHomePage;
   @override
   @JsonKey(ignore: true)
-  List<String> get postalCodes => throw _privateConstructorUsedError;
+  List<String> get postalCodes;
   @override
   @JsonKey(ignore: true)
   _$$_HomePageStateCopyWith<_$_HomePageState> get copyWith =>
