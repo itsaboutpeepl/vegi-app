@@ -6,12 +6,12 @@
 // import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 // import 'package:vegan_liverpool/utils/addresses.dart' as util;
 
+import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
-import '../../models/app_state.dart';
-import 'package:equatable/equatable.dart';
 
 class DrawerViewModel extends Equatable {
   final Function() logout;

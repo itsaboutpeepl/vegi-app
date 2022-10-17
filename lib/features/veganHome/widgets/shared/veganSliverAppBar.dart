@@ -62,44 +62,44 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            viewmodel.isDelivery
-                                ? Padding(
-                                    padding: const EdgeInsets.only(bottom: 1.5),
-                                    child: DropdownButton<String>(
-                                      menuMaxHeight:
-                                          MediaQuery.of(context).size.height *
-                                              0.3,
-                                      alignment: Alignment.centerLeft,
-                                      isDense: true,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black,
-                                        fontFamily: "Europa",
-                                      ),
-                                      value: _dropdownValue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      underline: SizedBox.shrink(),
-                                      items: viewmodel.postalCodes
-                                          .map(
-                                            (value) => DropdownMenuItem<String>(
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(fontSize: 20),
-                                              ),
-                                              value: value,
-                                            ),
-                                          )
-                                          .toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _dropdownValue = value!;
-                                          viewmodel.changeOutCode(value);
-                                        });
-                                      },
-                                    ),
-                                  )
-                                : SizedBox.shrink(),
+                            if (viewmodel.isDelivery)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 1.5),
+                                child: DropdownButton<String>(
+                                  menuMaxHeight:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  alignment: Alignment.centerLeft,
+                                  isDense: true,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
+                                    fontFamily: "Europa",
+                                  ),
+                                  value: _dropdownValue,
+                                  borderRadius: BorderRadius.circular(10),
+                                  underline: SizedBox.shrink(),
+                                  items: viewmodel.postalCodes
+                                      .map(
+                                        (value) => DropdownMenuItem<String>(
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                          value: value,
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dropdownValue = value!;
+                                      viewmodel.changeOutCode(value);
+                                    });
+                                  },
+                                ),
+                              )
+                            else
+                              SizedBox.shrink(),
                           ],
                         ),
                         GestureDetector(
@@ -129,39 +129,48 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         },
                         child: Stack(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: CachedNetworkImage(
-                                width: 40,
-                                height: 40,
-                                imageUrl: viewmodel.avatarUrl,
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/images/anom.png'),
-                                  radius: 30,
-                                ),
-                                imageBuilder: (context, imageProvider) => Image(
-                                  image: imageProvider,
-                                  fit: BoxFit.fill,
+                            if (viewmodel.avatarUrl == '')
+                              const CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/images/anom.png'),
+                                radius: 23,
+                              )
+                            else
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: CachedNetworkImage(
+                                  width: 40,
+                                  height: 40,
+                                  imageUrl: viewmodel.avatarUrl,
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      const CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/images/anom.png'),
+                                    radius: 30,
+                                  ),
+                                  imageBuilder: (context, imageProvider) =>
+                                      Image(
+                                    image: imageProvider,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
-                            ),
-                            viewmodel.listOfScheduledOrders.length > 0
-                                ? Positioned(
-                                    right: 0,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: themeAccent500,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      width: 10,
-                                      height: 10,
-                                    ),
-                                  )
-                                : SizedBox.shrink()
+                            if (viewmodel.listOfScheduledOrders.isNotEmpty)
+                              Positioned(
+                                right: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: themeAccent500,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  width: 10,
+                                  height: 10,
+                                ),
+                              )
+                            else
+                              SizedBox.shrink()
                           ],
                         ),
                       ),
