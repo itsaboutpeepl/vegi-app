@@ -13,5 +13,6 @@ abstract class FirebaseInjectableModule {
   FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
 
   @preResolve
-  Future<FirebaseApp> get firebaseApp => Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Future<FirebaseApp> get firebaseApp =>
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }

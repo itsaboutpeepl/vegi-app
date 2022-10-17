@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 //     painter: RPSCustomPainter(),
 // )
 
+// ignore_for_file: cascade_invocations, require_trailing_commas, non_constant_identifier_names, lines_longer_than_80_chars
+
 //Copy this CustomPainter code to the Bottom of the File
 class Shape1 extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
+    final Path path_0 = Path();
     path_0.moveTo(size.width * 0.9979711, size.height * -0.1525910);
     path_0.cubicTo(
         size.width * 0.9819461,
@@ -49,11 +51,11 @@ class Shape1 extends CustomPainter {
         size.height * -0.1525910);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xffC4FF7F).withOpacity(1.0);
+    final Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
+    paint_0_fill.color = const Color(0xffC4FF7F).withOpacity(1);
     canvas.drawPath(path_0, paint_0_fill);
 
-    Path path_1 = Path();
+    final Path path_1 = Path();
     path_1.moveTo(size.width * 0.9979711, size.height * -0.1525910);
     path_1.cubicTo(
         size.width * 0.9819461,
@@ -92,7 +94,7 @@ class Shape1 extends CustomPainter {
         size.height * -0.1525910);
     path_1.close();
 
-    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
+    final Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
     paint_1_fill.color = Colors.black.withOpacity(0.2);
     canvas.drawPath(path_1, paint_1_fill);
   }

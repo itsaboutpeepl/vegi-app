@@ -3,12 +3,14 @@
 //     painter: RPSCustomPainter(),
 // )
 
+// ignore_for_file: cascade_invocations, require_trailing_commas, non_constant_identifier_names, lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 
 class CustomButton1 extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
+    final Path path_0 = Path();
     path_0.moveTo(size.width * 0.6139016, size.height * 0.8484549);
     path_0.cubicTo(
         size.width * 0.7390159,
@@ -47,7 +49,7 @@ class CustomButton1 extends CustomPainter {
         size.height * 0.8484549);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
+    final Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
     paint_0_fill.color = Colors.white;
     canvas.drawPath(path_0, paint_0_fill);
   }

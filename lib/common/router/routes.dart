@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/router/router.dart';
-import 'package:vegan_liverpool/features/screens/main_screen.dart';
-import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/restore_wallet_screen.dart';
-import 'package:vegan_liverpool/features/onboard/screens/username_screen.dart';
+import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/signup_screen.dart';
+import 'package:vegan_liverpool/features/onboard/screens/username_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/verify_screen.dart';
+import 'package:vegan_liverpool/features/screens/main_screen.dart';
 import 'package:vegan_liverpool/features/screens/on_board_screen.dart';
 import 'package:vegan_liverpool/features/screens/pincode_screen.dart';
 import 'package:vegan_liverpool/features/screens/splash_screen.dart';

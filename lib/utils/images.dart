@@ -40,7 +40,7 @@
 //   }
 
 //   static String getTokenUrl(tokenAddress) {
-//     return tokenAddress == Addresses.ZERO_ADDRESS
+//     return tokenAddress == Addresses.zeroAddress
 //         ? 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png'
 //         : "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/$tokenAddress/logo.png";
 //   }

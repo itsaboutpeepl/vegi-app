@@ -21,6 +21,7 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - "**/*.config.dart"
   errors:
     todo: ignore
     invalid_annotation_target: ignore

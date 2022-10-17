@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 //     painter: RPSCustomPainter(),
 // )
 
+// ignore_for_file: cascade_invocations, require_trailing_commas, non_constant_identifier_names, lines_longer_than_80_chars
+
 //Copy this CustomPainter code to the Bottom of the File
 class PeamanPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
+    final Path path_0 = Path();
     path_0.moveTo(size.width * 0.4182918, size.height * 0.8373284);
     path_0.cubicTo(
         size.width * 0.2563020,
@@ -42,11 +44,11 @@ class PeamanPainter extends CustomPainter {
         size.height * 0.8373284);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xffC4FF7F).withOpacity(1.0);
+    final Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
+    paint_0_fill.color = const Color(0xffC4FF7F).withOpacity(1);
     canvas.drawPath(path_0, paint_0_fill);
 
-    Path path_1 = Path();
+    final Path path_1 = Path();
     path_1.moveTo(size.width * 0.4182918, size.height * 0.8373284);
     path_1.cubicTo(
         size.width * 0.2563020,
@@ -78,11 +80,11 @@ class PeamanPainter extends CustomPainter {
         size.height * 0.8373284);
     path_1.close();
 
-    Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
+    final Paint paint_1_fill = Paint()..style = PaintingStyle.fill;
     paint_1_fill.color = Colors.black.withOpacity(0.2);
     canvas.drawPath(path_1, paint_1_fill);
 
-    Path path_2 = Path();
+    final Path path_2 = Path();
     path_2.moveTo(size.width * 0.4204744, size.height * 0.3684458);
     path_2.cubicTo(
         size.width * 0.4231758,
@@ -258,11 +260,11 @@ class PeamanPainter extends CustomPainter {
     path_2.lineTo(size.width * 0.3311587, size.height * 0.4056285);
     path_2.close();
 
-    Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
-    paint_2_fill.color = Color(0xff0D2A21).withOpacity(1.0);
+    final Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
+    paint_2_fill.color = const Color(0xff0D2A21).withOpacity(1);
     canvas.drawPath(path_2, paint_2_fill);
 
-    Path path_3 = Path();
+    final Path path_3 = Path();
     path_3.moveTo(size.width * 0.3670256, size.height * 0.4616003);
     path_3.cubicTo(
         size.width * 0.3641331,
@@ -372,8 +374,8 @@ class PeamanPainter extends CustomPainter {
     path_3.lineTo(size.width * 0.3557918, size.height * 0.4707207);
     path_3.close();
 
-    Paint paint_3_fill = Paint()..style = PaintingStyle.fill;
-    paint_3_fill.color = Color(0xff0D2A21).withOpacity(1.0);
+    final Paint paint_3_fill = Paint()..style = PaintingStyle.fill;
+    paint_3_fill.color = const Color(0xff0D2A21).withOpacity(1);
     canvas.drawPath(path_3, paint_3_fill);
   }
 

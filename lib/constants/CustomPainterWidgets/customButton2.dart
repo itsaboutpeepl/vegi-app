@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 
+// ignore_for_file: cascade_invocations, require_trailing_commas, non_constant_identifier_names, lines_longer_than_80_chars
+
 class CustomButton2 extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
+    final Path path_0 = Path();
     path_0.moveTo(size.width * 0.02601944, size.height * 0.3042606);
     path_0.cubicTo(
         size.width * -0.07858477,
@@ -43,7 +45,7 @@ class CustomButton2 extends CustomPainter {
         size.height * 0.3042606);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
+    final Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
     paint_0_fill.color = themeAccent600;
     canvas.drawPath(path_0, paint_0_fill);
   }
