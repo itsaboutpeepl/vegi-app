@@ -19,8 +19,8 @@ class SmsStrategy implements IOnBoardStrategy {
     void Function(dynamic error) onError,
   ) async {
     await chargeApi.loginWithSMS(phoneNumber ?? '');
-    await rootRouter.push(VerifyPhoneNumber());
     onSuccess();
+    await rootRouter.push(VerifyPhoneNumber());
   }
 
   @override
