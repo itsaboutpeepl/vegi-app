@@ -1,4 +1,3 @@
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
@@ -30,10 +29,6 @@ class SimpleStrategy implements IOnBoardStrategy {
     log.info('jwtToken $jwtToken');
     store.dispatch(LoginVerifySuccess(jwtToken));
     chargeApi.setJwtToken(jwtToken);
-
-    await Segment.track(
-      eventName: 'Sign up: VerificationCode_NextBtn_Press',
-    );
     await rootRouter.push(UserNameScreen());
     onSuccess();
   }

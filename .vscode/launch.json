@@ -5,15 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "VeganLiverpool",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "VeganLiverpool (profile mode)",
+            "name": "vegi - Debug",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "debug",
+            "program": "lib/main_dev.dart",
+        },
+        {
+            "name": "vegi - Profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main.dart"
         }
     ]
 }

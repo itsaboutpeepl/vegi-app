@@ -6,30 +6,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/app.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/redux_state_viewer.dart';
+import 'package:vegan_liverpool/main.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
 
-Future<AppState> loadState(Persistor<AppState> persistor) async {
-  try {
-    final initialState = await persistor.load();
-    if (initialState == null) throw Exception('InitialState is null');
-    return initialState;
-  } catch (e, s) {
-    print('Load AppState failed ${e.toString()} ${s.toString()}');
-    return AppState.initial();
-  }
-}
-
-void main() async {
+// The Dev version of your app. It will build a DevToolsStore instead of a
+// normal Store. In addition, it will provide a DevDrawer for the app, which
+// will contain the ReduxDevTools themselves.
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SystemChrome.setPreferredOrientations([
@@ -44,11 +39,11 @@ void main() async {
 
   final Persistor<AppState> persistor = Persistor<AppState>(
     storage: SecureStorage(const FlutterSecureStorage()),
-    serializer: JsonSerializer<AppState>(AppState.fromJsonForPersistor),
+    serializer: JsonSerializer<AppState>(AppState.fromJson),
     debug: kDebugMode,
   );
 
-  final AppState initialState = await loadState(persistor);
+  //final AppState initialState = await loadState(persistor);
 
   final List<Middleware<AppState>> wms = [
     thunkMiddleware,
@@ -59,24 +54,33 @@ void main() async {
     wms.add(LoggingMiddleware<AppState>.printer());
   }
 
-  final Store<AppState> store = Store<AppState>(
+  final DevToolsStore<AppState> store = DevToolsStore<AppState>(
     appReducer,
-    initialState: initialState,
+    initialState: await loadState(persistor),
     middleware: wms,
   );
+
+  getIt.registerSingleton<DevToolsStore<AppState>>(store);
 
   await runZonedGuarded(() async {
     await SentryFlutter.init(
       (options) {
         options
-          ..debug = !kReleaseMode
+          ..debug = kDebugMode
           ..dsn = dotenv.env['SENTRY_DSN']
-          ..environment = 'prod';
+          ..environment = 'dev';
       },
     );
 
     //Pass the store to the Main App which injects it into the entire tree.
-    runApp(MyApp(store));
+    runApp(
+      ReduxDevToolsContainer(
+        store: store,
+        child: MyApp(
+          store,
+        ),
+      ),
+    );
     if (Platform.isIOS) {
       await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     } else {
@@ -92,3 +96,7 @@ void main() async {
     }
   });
 }
+
+// void registerDevStoreForDI(DevToolsStore store) {
+//   getIt.registerSingleton<DevToolsStore>(store);
+// }

@@ -214,4 +214,11 @@ extension CapitalizeString on String {
   String capitalize() {
     return this[0].toUpperCase() + substring(1);
   }
+
+  String maxChars(int count) {
+    if (length > count) {
+      return substring(0, count);
+    }
+    return this;
+  }
 }

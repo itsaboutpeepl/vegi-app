@@ -36,6 +36,20 @@ class AppState with _$AppState {
     );
   }
 
+  factory AppState.fromJsonForPersistor(dynamic json) {
+    return AppState(
+      userState: const UserStateConverter()
+          .fromJson(json['userState'] as Map<String, dynamic>?),
+      cashWalletState: const CashWalletStateConverter()
+          .fromJson(json['cashWalletState'] as Map<String, dynamic>?),
+      homePageState: HomePageState.initial(),
+      cartState: UserCartState.initial(),
+      menuItemState: MenuItemState.initial(),
+      pastOrderState: const PastOrderStateConverter()
+          .fromJson(json['pastOrderState'] as Map<String, dynamic>?),
+    );
+  }
+
   factory AppState.fromJson(dynamic json) =>
       _$AppStateFromJson(json as Map<String, dynamic>);
 }
