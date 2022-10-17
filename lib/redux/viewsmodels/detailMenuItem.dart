@@ -19,6 +19,7 @@ class DetailMenuItem extends Equatable {
     required this.selectedOptions,
     required this.resetMenuItem,
     required this.reCalcTotals,
+    required this.loadingProductOptions,
   });
 
   factory DetailMenuItem.fromStore(Store<AppState> store) {
@@ -29,6 +30,7 @@ class DetailMenuItem extends Equatable {
       quantity: store.state.menuItemState.quantity,
       selectedOptions:
           store.state.menuItemState.selectedProductOptionsForCategory,
+      loadingProductOptions: store.state.menuItemState.loadingProductOptions,
       addOrderItems: (itemsToAdd) {
         store.dispatch(updateCartItems(itemsToAdd));
       },
@@ -51,6 +53,7 @@ class DetailMenuItem extends Equatable {
   final int itemReward;
   final int quantity;
   final Map<int, ProductOptions> selectedOptions;
+  final bool loadingProductOptions;
   final void Function(List<CartItem> itemsToAdd) addOrderItems;
   final void Function(RestaurantMenuItem? menuItem) setMenuItem;
   final void Function() resetMenuItem;
@@ -58,5 +61,11 @@ class DetailMenuItem extends Equatable {
   final void Function() reCalcTotals;
 
   @override
-  List<Object> get props => [menuItem!, totalPrice, itemReward, quantity];
+  List<Object> get props => [
+        menuItem!,
+        totalPrice,
+        itemReward,
+        quantity,
+        loadingProductOptions,
+      ];
 }

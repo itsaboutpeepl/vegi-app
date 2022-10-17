@@ -37,7 +37,7 @@ class PeeplEatsService {
     );
 
     final List<Map<String, dynamic>> results =
-        response.data['vendors'] as List<Map<String, dynamic>>;
+        List.from(response.data['vendors'] as Iterable<dynamic>);
 
     final List<RestaurantItem> restaurantsActive = [];
 
@@ -86,7 +86,7 @@ class PeeplEatsService {
         await dio.get('api/v1/vendors/$restaurantID?');
 
     final List<Map<String, dynamic>> results =
-        response.data['vendor']['products'] as List<Map<String, dynamic>>;
+        List.from(response.data['vendor']['products'] as Iterable<dynamic>);
 
     final List<RestaurantMenuItem> menuItems = [];
 
@@ -116,48 +116,11 @@ class PeeplEatsService {
   }
 
   Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {
-    // final Response<dynamic> response =
-    //     await dio.get('api/v1/products/get-product-options/$itemID?');
-
-    // final List<Map<String, dynamic>> results =
-    //     response.data as List<Map<String, dynamic>>;
-
-    // final List<ProductOptionsCategory> listOfProductOptions = [];
-
-    // for (final Map<String, dynamic> category in results) {
-    //   final List<ProductOptions> listOfOptions = [];
-    //   category['values'].forEach(
-    //     (option) {
-    //       listOfOptions.add(
-    //         ProductOptions(
-    //           optionID: option['id'],
-    //           name: option['name'],
-    //           description: option['description'],
-    //           price: option['priceModifier'],
-    //           isAvaliable: option['isAvailable'],
-    //         ),
-    //       );
-    //     },
-    //   );
-
-    //   if (category['values'].isEmpty) continue;
-
-    //   listOfProductOptions.add(
-    //     ProductOptionsCategory(
-    //       categoryID: category['id'],
-    //       name: category['name'],
-    //       listOfOptions: listOfOptions,
-    //     ),
-    //   );
-    // }
-
-    // return listOfProductOptions;
-
     final Response<dynamic> response =
         await dio.get('api/v1/products/get-product-options/$itemID?');
 
     final List<Map<String, dynamic>> results =
-        response.data as List<Map<String, dynamic>>;
+        List.from(response.data as Iterable<dynamic>);
 
     final List<ProductOptionsCategory> listOfProductOptions = [];
 
@@ -165,7 +128,7 @@ class PeeplEatsService {
       final List<ProductOptions> listOfOptions = [];
 
       final List<Map<String, dynamic>> options =
-          category['values'] as List<Map<String, dynamic>>;
+          List.from(category['values'] as Iterable<dynamic>);
 
       for (final Map<String, dynamic> option in options) {
         listOfOptions.add(
@@ -246,7 +209,7 @@ class PeeplEatsService {
     final List<String> outCodes = [];
 
     final List<Map<String, dynamic>> data =
-        response.data as List<Map<String, dynamic>>;
+        List.from(response.data as Iterable<dynamic>);
 
     for (final Map<String, dynamic> outcode in data) {
       outCodes.add((outcode['outcode'] as String? ?? '').toUpperCase());

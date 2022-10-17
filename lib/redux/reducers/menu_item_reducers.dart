@@ -1,6 +1,5 @@
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/menu_item_state.dart';
-import 'package:vegan_liverpool/constants/demoData.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 
 final MenuItemReducers = combineReducers<MenuItemState>(
@@ -10,7 +9,11 @@ final MenuItemReducers = combineReducers<MenuItemState>(
     TypedReducer<MenuItemState, UpdateTotalPrice>(_calculateTotalPrice),
     TypedReducer<MenuItemState, UpdateQuantity>(_updateQuantity),
     TypedReducer<MenuItemState, UpdateMenuItemWithProductOptions>(
-        _updateProductOptions),
+      _updateProductOptions,
+    ),
+    TypedReducer<MenuItemState, LoadingProductOptions>(
+      _setLoadingProductOptions,
+    ),
   ],
 );
 
@@ -19,7 +22,7 @@ MenuItemState _resetMenuItem(
   ResetMenuItem action,
 ) {
   return state.copyWith(
-    menuItem: bagel1,
+    menuItem: null,
     totalPrice: 0,
     itemReward: 0,
     quantity: 0,
@@ -62,4 +65,11 @@ MenuItemState _updateProductOptions(
   UpdateMenuItemWithProductOptions action,
 ) {
   return state.copyWith(menuItem: action.menuItem);
+}
+
+MenuItemState _setLoadingProductOptions(
+  MenuItemState state,
+  LoadingProductOptions action,
+) {
+  return state.copyWith(loadingProductOptions: action.flag);
 }

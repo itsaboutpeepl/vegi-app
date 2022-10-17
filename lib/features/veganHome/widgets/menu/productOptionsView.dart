@@ -11,7 +11,7 @@ class ProductOptionsView extends StatefulWidget {
   const ProductOptionsView({Key? key}) : super(key: key);
 
   @override
-  _ProductOptionsViewState createState() => _ProductOptionsViewState();
+  State<ProductOptionsView> createState() => _ProductOptionsViewState();
 }
 
 class _ProductOptionsViewState extends State<ProductOptionsView> {
@@ -27,9 +27,11 @@ class _ProductOptionsViewState extends State<ProductOptionsView> {
       builder: (_, viewmodel) {
         return Column(
           children: viewmodel.menuItem!.listOfProductOptions
-              .map((e) => ProductOptionsCategoryView(
-                    productOptionsCategory: e,
-                  ))
+              .map(
+                (e) => ProductOptionsCategoryView(
+                  productOptionsCategory: e,
+                ),
+              )
               .toList(),
         );
       },
@@ -38,15 +40,19 @@ class _ProductOptionsViewState extends State<ProductOptionsView> {
 }
 
 class ProductOptionsCategoryView extends StatefulWidget {
-  const ProductOptionsCategoryView({Key? key, required this.productOptionsCategory}) : super(key: key);
+  const ProductOptionsCategoryView(
+      {Key? key, required this.productOptionsCategory})
+      : super(key: key);
 
   final ProductOptionsCategory productOptionsCategory;
 
   @override
-  State<ProductOptionsCategoryView> createState() => _ProductOptionsCategoryViewState();
+  State<ProductOptionsCategoryView> createState() =>
+      _ProductOptionsCategoryViewState();
 }
 
-class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView> {
+class _ProductOptionsCategoryViewState
+    extends State<ProductOptionsCategoryView> {
   int _selectedIndex = 0;
 
   @override
@@ -54,8 +60,9 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
     return StoreConnector<AppState, DetailMenuItem>(
       converter: DetailMenuItem.fromStore,
       onInit: (store) {
-        store.state.menuItemState.selectedProductOptionsForCategory[widget.productOptionsCategory.categoryID] =
-            widget.productOptionsCategory.listOfOptions[0];
+        store.state.menuItemState.selectedProductOptionsForCategory[widget
+            .productOptionsCategory
+            .categoryID] = widget.productOptionsCategory.listOfOptions[0];
 
         store.dispatch(calculateItemTotalPrice());
       },
@@ -63,7 +70,8 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.productOptionsCategory.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
+            Text(widget.productOptionsCategory.name,
+                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
             SizedBox(
               height: 15,
             ),
@@ -74,7 +82,8 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
               itemBuilder: (_, index) => ListTile(
                 onTap: () => setState(() {
                   _selectedIndex = index;
-                  viewmodel.selectedOptions[widget.productOptionsCategory.categoryID] =
+                  viewmodel.selectedOptions[
+                          widget.productOptionsCategory.categoryID] =
                       widget.productOptionsCategory.listOfOptions[index];
 
                   viewmodel.reCalcTotals();
@@ -82,14 +91,16 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
                 selected: _selectedIndex == index,
                 selectedTileColor: themeShade100,
                 dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 leading: Checkbox(
                   activeColor: Colors.grey[800],
                   value: _selectedIndex == index,
                   onChanged: (value) {
                     setState(() {
                       _selectedIndex = index;
-                      viewmodel.selectedOptions[widget.productOptionsCategory.categoryID] =
+                      viewmodel.selectedOptions[
+                              widget.productOptionsCategory.categoryID] =
                           widget.productOptionsCategory.listOfOptions[index];
 
                       viewmodel.reCalcTotals();
@@ -100,13 +111,16 @@ class _ProductOptionsCategoryViewState extends State<ProductOptionsCategoryView>
                   widget.productOptionsCategory.listOfOptions[index].name,
                   style: TextStyle(color: Colors.grey[800]),
                 ),
-                subtitle: Text(widget.productOptionsCategory.listOfOptions[index].description),
+                subtitle: Text(widget
+                    .productOptionsCategory.listOfOptions[index].description),
                 trailing: Text(
-                  cFPrice(widget.productOptionsCategory.listOfOptions[index].price),
+                  cFPrice(
+                      widget.productOptionsCategory.listOfOptions[index].price),
                   style: TextStyle(color: Colors.grey[800]),
                 ),
               ),
-              separatorBuilder: (context, index) => Padding(padding: EdgeInsets.only(bottom: 5)),
+              separatorBuilder: (context, index) =>
+                  Padding(padding: EdgeInsets.only(bottom: 5)),
             )
           ],
         );

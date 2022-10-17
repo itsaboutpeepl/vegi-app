@@ -34,9 +34,15 @@ class UpdateMenuItemWithProductOptions {
   final RestaurantMenuItem menuItem;
 }
 
+class LoadingProductOptions {
+  LoadingProductOptions({required this.flag});
+  final bool flag;
+}
+
 ThunkAction<AppState> fetchProductOptions(String itemID) {
   return (Store<AppState> store) async {
     try {
+      store.dispatch(LoadingProductOptions(flag: true));
       final List<ProductOptionsCategory> listOfProductOptionCategories =
           await peeplEatsService.getProductOptions(itemID);
 
@@ -48,14 +54,16 @@ ThunkAction<AppState> fetchProductOptions(String itemID) {
           listOfProductOptions: listOfProductOptionCategories,
         );
 
-        store.dispatch(UpdateMenuItemWithProductOptions(newItem));
+        store
+          ..dispatch(UpdateMenuItemWithProductOptions(newItem))
+          ..dispatch(LoadingProductOptions(flag: false));
       }
     } catch (e, s) {
-      log.error('ERROR - updateQuantity $e');
+      log.error('ERROR - fetchProductOptions $e');
       await Sentry.captureException(
         e,
         stackTrace: s,
-        hint: 'ERROR - updateQuantity $e',
+        hint: 'ERROR - fetchProductOptions $e',
       );
     }
   };

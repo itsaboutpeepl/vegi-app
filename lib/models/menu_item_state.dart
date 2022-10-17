@@ -16,6 +16,7 @@ class MenuItemState with _$MenuItemState {
     @JsonKey(ignore: true)
     @Default({})
         Map<int, ProductOptions> selectedProductOptionsForCategory,
+    @JsonKey(ignore: true) @Default(false) bool loadingProductOptions,
     @JsonKey(ignore: true) @Default(0) int quantity,
   }) = _MenuItemState;
 
