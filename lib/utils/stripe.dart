@@ -10,13 +10,12 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 
 //TODO: Move class
 class StripeCustomResponse {
-  final bool ok;
-  final String? msg;
-
   StripeCustomResponse({
     required this.ok,
     this.msg = '',
   });
+  final bool ok;
+  final String? msg;
 }
 
 @lazySingleton
@@ -24,7 +23,8 @@ class StripeService {
   final Stripe instance = Stripe.instance;
 
   void init() {
-    Stripe.publishableKey = dotenv.env['STRIPE_API_KEY']!;
+    Stripe.publishableKey =
+        dotenv.env['STRIPE_API_KEY']!; //TODO: Add kDebugMode check
   }
 
   Future<void> handleStripe({
@@ -49,7 +49,7 @@ class StripeService {
       );
       await instance.presentPaymentSheet();
 
-      showDialog(
+      await showDialog<void>(
         context: context,
         builder: (context) {
           return MintingDialog(
@@ -61,26 +61,33 @@ class StripeService {
       );
     } on Exception catch (e, s) {
       if (e is StripeException) {
-        log.error(e.error.localizedMessage);
-        Sentry.captureException(
-          e,
-          stackTrace: s,
-          hint: 'ERROR - Stripe Exception: ${e.error.localizedMessage}',
-        );
-        showDialog(
-          context: context,
-          builder: (context) => TopUpFailed(
-            isFailed: true,
-          ),
-        );
+        if (e.error.code != FailureCode.Canceled) {
+          log.error(e.error.localizedMessage);
+          await Sentry.captureException(
+            e,
+            stackTrace: s,
+            hint: 'ERROR - Stripe Exception: ${e.error.localizedMessage}',
+          );
+          await showDialog<void>(
+            context: context,
+            builder: (context) => TopUpFailed(
+              isFailed: true,
+            ),
+          );
+        } else {
+          await showDialog<void>(
+            context: context,
+            builder: (context) => TopUpFailed(),
+          );
+        }
       } else {
         log.error(e);
-        Sentry.captureException(
+        await Sentry.captureException(
           e,
           stackTrace: s,
           hint: 'ERROR - Stripe Exception: $e',
         );
-        showDialog(
+        await showDialog<void>(
           context: context,
           builder: (context) => TopUpFailed(
             isFailed: true,
