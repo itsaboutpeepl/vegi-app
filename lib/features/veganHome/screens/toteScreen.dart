@@ -29,18 +29,21 @@ class _ToteScreenState extends State<ToteScreen> {
       converter: UserCartViewModel.fromStore,
       distinct: true,
       onInit: (store) {
-        store.state.cartState.restaurantID != ""
+        store.state.cartState.restaurantID != ''
             ? store.dispatch(getFullfillmentMethods())
             : null;
       },
       builder: (_, viewmodel) {
         return Scaffold(
           appBar: CustomAppBar(
-            pageTitle: "Cart",
+            pageTitle: 'Cart',
             otherAction: IconButton(
-              onPressed: () => viewmodel.clearCart(),
+              onPressed: () {
+                viewmodel.clearCart();
+                context.router.replaceAll(const [VeganHomeScreenAlt()]);
+              },
               icon: ImageIcon(
-                AssetImage("assets/images/clear-shopping-tote.png"),
+                AssetImage('assets/images/clear-shopping-tote.png'),
               ),
             ),
           ),
@@ -114,15 +117,15 @@ class _ToteScreenState extends State<ToteScreen> {
                             height: 10,
                           ),
                           totalsPriceItemTile(
-                            "Subtotal",
+                            'Subtotal',
                             cFPrice(viewmodel.cartSubTotal),
                           ),
                           totalsPriceItemTile(
-                            "Delivery Charge",
+                            'Delivery Charge',
                             cFPrice(viewmodel.cartDeliveryCharge),
                           ),
                           totalsPriceItemTile(
-                            "Service Charge",
+                            'Service Charge',
                             cFPrice(viewmodel.cartServiceCharge),
                           ),
                           Divider(
@@ -133,7 +136,7 @@ class _ToteScreenState extends State<ToteScreen> {
                             endIndent: 20,
                           ),
                           totalsPriceItemTile(
-                            "Total",
+                            'Total',
                             cFPrice(viewmodel.cartTotal),
                           ),
                           Padding(
@@ -148,9 +151,9 @@ class _ToteScreenState extends State<ToteScreen> {
                                   showErrorSnack(
                                       context: context,
                                       title:
-                                          "This restaurant has a minimum order!",
+                                          'This restaurant has a minimum order!',
                                       message:
-                                          "Try adding more items to your tote!");
+                                          'Try adding more items to your tote!');
                                   return;
                                 }
                                 context.router.push(CheckoutScreen());
@@ -166,7 +169,7 @@ class _ToteScreenState extends State<ToteScreen> {
                                     width: 20,
                                   ),
                                   Text(
-                                    "Checkout",
+                                    'Checkout',
                                     style: TextStyle(
                                       color: Colors.grey[800],
                                       fontWeight: FontWeight.w900,
@@ -184,10 +187,10 @@ class _ToteScreenState extends State<ToteScreen> {
                   ),
                 )
               : EmptyStatePage(
-                  emoji: "😐",
-                  title: "No items in your bag… yet!",
+                  emoji: '😐',
+                  title: 'No items in your bag… yet!',
                   subtitle:
-                      "Try adding an item from one of our amazing restauarants to fill this page up!",
+                      'Try adding an item from one of our amazing restauarants to fill this page up!',
                 ),
         );
       },
