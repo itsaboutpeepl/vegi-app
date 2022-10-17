@@ -29,9 +29,9 @@ class PaymentSheetViewModel extends Equatable {
     return PaymentSheetViewModel(
       cartTotal: store.state.cartState.cartTotal,
       pplBalance:
-          store.state.cashWalletState.tokens[PeeplToken.address]!.getBalance(),
+          store.state.cashWalletState.tokens[pplToken.address]!.getBalance(),
       gbpXBalance:
-          store.state.cashWalletState.tokens[GBPxToken.address]!.getBalance(),
+          store.state.cashWalletState.tokens[gbpxToken.address]!.getBalance(),
       paymentIntentID: store.state.cartState.paymentIntentID,
       selectedGBPxAmount: store.state.cartState.selectedGBPxAmount,
       selectedPPLAmount: store.state.cartState.selectedPPLAmount,

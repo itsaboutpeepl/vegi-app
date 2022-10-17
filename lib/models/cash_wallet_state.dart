@@ -53,7 +53,9 @@ Map<String, Token> tokensFromJson(Map<String, dynamic> tokens) => tokens.map(
       ..putIfAbsent(
         Addresses.fusdTokenAddress,
         () => fuseDollarToken,
-      );
+      )
+      ..putIfAbsent(Addresses.gbpxTokenAddress, () => gbpxToken)
+      ..putIfAbsent(Addresses.pplTokenAddress, () => pplToken);
 
 @freezed
 class CashWalletState with _$CashWalletState {

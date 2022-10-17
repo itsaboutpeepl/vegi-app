@@ -304,7 +304,7 @@ class _PPLSliderState extends State<PPLSlider> {
         _gbpxSliderValue =
             store.state.cartState.cartTotal.toDouble(); //in pence
         _pplBalance = double.parse(
-          store.state.cashWalletState.tokens[PeeplToken.address]!
+          store.state.cashWalletState.tokens[pplToken.address]!
               .getBalance(withPrecision: true),
         );
       },

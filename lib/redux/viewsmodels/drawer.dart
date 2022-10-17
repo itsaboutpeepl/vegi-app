@@ -40,8 +40,8 @@ class DrawerViewModel extends Equatable {
         String fullName = store.state.userState.displayName;
         return fullName.split(' ')[0];
       },
-      pplBalance: cashWalletState.tokens[PeeplToken.address]!.getBalance(),
-      gbpxBalance: cashWalletState.tokens[GBPxToken.address]!.getBalance(),
+      pplBalance: cashWalletState.tokens[pplToken.address]!.getBalance(),
+      gbpxBalance: cashWalletState.tokens[gbpxToken.address]!.getBalance(),
     );
   }
 

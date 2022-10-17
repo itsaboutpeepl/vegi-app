@@ -55,7 +55,7 @@ class _AddressViewState extends State<AddressView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FormBuilderTypeAhead(
+                  FormBuilderTypeAhead<Suggestion>(
                     controller: _typeAheadController,
                     initialValue: _isExistingAddress
                         ? Suggestion('', widget.existingAddress!.addressLine1)

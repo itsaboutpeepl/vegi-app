@@ -534,10 +534,10 @@ ThunkAction<AppState> sendTokenPayment(
       store.dispatch(SetTransferringPayment(flag: true));
 
       final BigInt currentGBPXAmount =
-          store.state.cashWalletState.tokens[GBPxToken.address]!.amount;
+          store.state.cashWalletState.tokens[gbpxToken.address]!.amount;
 
       final BigInt currentPPLAmount =
-          store.state.cashWalletState.tokens[GBPxToken.address]!.amount;
+          store.state.cashWalletState.tokens[gbpxToken.address]!.amount;
 
       final BigInt selectedGBPXAmount =
           BigInt.from(store.state.cartState.selectedGBPxAmount);
@@ -549,7 +549,7 @@ ThunkAction<AppState> sendTokenPayment(
       Map<String, dynamic> pplResponse = {};
 
       //Get tokens for GBPx and PPL
-      // final Token GBPxToken =
+      // final Token gbpxToken =
       //     store.state.cashWalletState.tokens.values.firstWhere(
       //   (token) =>
       //       token.symbol.toLowerCase() == 'GBPx'.toString().toLowerCase(),
@@ -567,7 +567,7 @@ ThunkAction<AppState> sendTokenPayment(
           gbpxResponse = await chargeApi.tokenTransfer(
             getIt<Web3>(),
             store.state.userState.walletAddress,
-            GBPxToken.address,
+            gbpxToken.address,
             store.state.cartState.restaurantWalletAddress,
             tokensAmount: store.state.cartState.selectedGBPxAmount.toString(),
             externalId: store.state.cartState.paymentIntentID,
@@ -580,7 +580,7 @@ ThunkAction<AppState> sendTokenPayment(
           pplResponse = await chargeApi.tokenTransfer(
             getIt<Web3>(),
             store.state.userState.walletAddress,
-            PeeplToken.address,
+            pplToken.address,
             store.state.cartState.restaurantWalletAddress,
             tokensAmount: store.state.cartState.selectedPPLAmount.toString(),
             externalId: store.state.cartState.paymentIntentID,
@@ -590,11 +590,11 @@ ThunkAction<AppState> sendTokenPayment(
 
       // final Map<String, dynamic> GBPxResponse =
       //     store.state.cartState.selectedGBPxAmount != 0.0
-      //         ? GBPxToken.amount > store.state.cartState.selectedGBPxAmount
+      //         ? gbpxToken.amount > store.state.cartState.selectedGBPxAmount
       //             ? await chargeApi.tokenTransfer(
       //                 getIt<Web3>(),
       //                 store.state.userState.walletAddress,
-      //                 GBPxToken.address,
+      //                 gbpxToken.address,
       //                 store.state.cartState.restaurantWalletAddress,
       //                 tokensAmount:
       //                     store.state.cartState.selectedGBPxAmount.toString(),

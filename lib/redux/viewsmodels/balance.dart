@@ -30,8 +30,8 @@ class BalanceViewModel extends Equatable {
     // final num value = homeTokens.fold<num>(0, combiner);
 
     return BalanceViewModel(
-      pplBalance: cashWalletState.tokens[PeeplToken.address]!.getBalance(),
-      gbpxbalance: cashWalletState.tokens[GBPxToken.address]!.getBalance(),
+      pplBalance: cashWalletState.tokens[pplToken.address]!.getBalance(),
+      gbpxbalance: cashWalletState.tokens[gbpxToken.address]!.getBalance(),
       // usdValue: display(value),
     );
   }

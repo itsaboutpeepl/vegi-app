@@ -838,7 +838,7 @@ ThunkAction<AppState> getPPLBalance() {
   return (Store<AppState> store) async {
     try {
       final BigInt peeplBalance =
-          store.state.cashWalletState.tokens[PeeplToken.address]?.amount ??
+          store.state.cashWalletState.tokens[pplToken.address]?.amount ??
               BigInt.zero;
       final String walletAddress = store.state.userState.walletAddress;
       final EtherAmount balance = await getIt<Web3>().getBalance(
@@ -848,12 +848,12 @@ ThunkAction<AppState> getPPLBalance() {
         store
           ..dispatch(
             AddCashToken(
-              token: PeeplToken.copyWith(
+              token: pplToken.copyWith(
                 amount: balance.getInWei,
               ),
             ),
           )
-          ..dispatch(getTokenPriceCall(PeeplToken));
+          ..dispatch(getTokenPriceCall(pplToken));
       }
     } catch (e, s) {
       log.error(

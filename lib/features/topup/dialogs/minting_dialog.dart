@@ -18,7 +18,7 @@ class _MintingDialogViewModel extends Equatable {
 
   static _MintingDialogViewModel fromStore(Store<AppState> store) {
     return _MintingDialogViewModel(
-      secondaryToken: store.state.cashWalletState.tokens[GBPxToken.address]!,
+      secondaryToken: store.state.cashWalletState.tokens[gbpxToken.address]!,
     );
   }
 
@@ -39,7 +39,8 @@ class MintingDialog extends StatefulWidget {
   _MintingDialogState createState() => _MintingDialogState();
 }
 
-class _MintingDialogState extends State<MintingDialog> with SingleTickerProviderStateMixin {
+class _MintingDialogState extends State<MintingDialog>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
   bool isPreloading = false;
@@ -55,8 +56,10 @@ class _MintingDialogState extends State<MintingDialog> with SingleTickerProvider
   void initState() {
     super.initState();
 
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
-    scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    scaleAnimation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
       setState(() {});
@@ -92,12 +95,15 @@ class _MintingDialogState extends State<MintingDialog> with SingleTickerProvider
       builder: (_, viewModel) => ScaleTransition(
         scale: scaleAnimation,
         child: AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           title: Center(
             child: Container(
               child: Center(
                 child: AnimatedCrossFade(
-                  crossFadeState: _isMinting ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                  crossFadeState: _isMinting
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
                   duration: Duration(milliseconds: 500),
                   firstChild: SizedBox(
                     width: 60,
@@ -133,7 +139,9 @@ class _MintingDialogState extends State<MintingDialog> with SingleTickerProvider
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 500),
                   child: Text(
-                    _isMinting ? "Adding balance to your wallet, won’t be long" : "Token minting complete!",
+                    _isMinting
+                        ? "Adding balance to your wallet, won’t be long"
+                        : "Token minting complete!",
                     key: ValueKey(_isMinting),
                     textAlign: TextAlign.center,
                     style: TextStyle(

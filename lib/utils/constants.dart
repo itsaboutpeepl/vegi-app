@@ -21,7 +21,7 @@ final Token fuseToken = Token(
   walletActions: WalletActions.initial(),
 );
 
-final Token GBPxToken = Token(
+final Token gbpxToken = Token(
   name: 'GBPx',
   symbol: 'GBPX',
   // imageUrl: "https://fuselogo.s3.eu-central-1.amazonaws.com/fuse-dollar.png",
@@ -32,7 +32,7 @@ final Token GBPxToken = Token(
   walletActions: WalletActions.initial(),
 );
 
-final Token PeeplToken = Token(
+final Token pplToken = Token(
   name: 'Peepl',
   symbol: 'PPL',
   // imageUrl: 'https://fuselogo.s3.eu-central-1.amazonaws.com/fuse-token.png',

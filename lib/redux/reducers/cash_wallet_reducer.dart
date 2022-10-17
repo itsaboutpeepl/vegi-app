@@ -217,8 +217,8 @@ CashWalletState _getTokenBalanceSuccess(
   GetTokenBalanceSuccess action,
 ) {
   final String tokenAddress = action.tokenAddress;
-  Token current = state.tokens[action.tokenAddress]!;
-  Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
+  final Token current = state.tokens[action.tokenAddress]!;
+  final Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
   newOne[tokenAddress] = current.copyWith(amount: action.tokenBalance);
   return state.copyWith(tokens: newOne);
 }
