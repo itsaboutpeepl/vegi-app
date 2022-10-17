@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
@@ -102,10 +101,6 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                       fontSize: 14,
                                       label: I10n.of(context).restore_backup,
                                       onPressed: () {
-                                        Segment.track(
-                                          eventName:
-                                              'Existing User: Restore wallet from backup',
-                                        );
                                         context.router.push(
                                             const RestoreFromBackupScreen());
                                       },
@@ -149,10 +144,6 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                   label: I10n.of(context).restore_from_backup,
                                   textColor: Colors.grey[100]!,
                                   onPressed: () {
-                                    Segment.track(
-                                      eventName:
-                                          'Existing User: Restore wallet from backup',
-                                    );
                                     context.router
                                         .push(const RestoreFromBackupScreen());
                                   },

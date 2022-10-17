@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_segment/flutter_segment.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
@@ -175,21 +175,8 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                               'Please use $biometric to unlock!',
                                           callback: (bool result) {
                                             if (result) {
-                                              Segment.track(
-                                                eventName:
-                                                    'Sign up: Choose Protection Type',
-                                                properties: Map.from(
-                                                  {
-                                                    'protectionType': biometric,
-                                                  },
-                                                ),
-                                              );
                                               viewModel.setSecurityType(
                                                 snapshot.requireData,
-                                              );
-                                              Segment.track(
-                                                eventName:
-                                                    'Sign up: Protection Done',
                                               );
                                               context.router
                                                   .replace(MainScreen());
@@ -244,23 +231,12 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                         ),
                                       ),
                                       onTap: () {
-                                        Segment.track(
-                                          eventName:
-                                              'Sign up: Choose Protection Type',
-                                          properties: Map.from(
-                                            {'protectionType': 'PinCode'},
-                                          ),
-                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute<SetUpPinCodeScreen>(
                                             builder: (context) =>
                                                 SetUpPinCodeScreen(
                                               onSuccess: () {
-                                                Segment.track(
-                                                  eventName:
-                                                      'Sign up: Protection Done',
-                                                );
                                                 context.router
                                                     .push(MainScreen());
                                               },

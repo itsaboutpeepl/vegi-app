@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -31,15 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
     String jwtToken = store.state.userState.jwtToken;
     bool isLoggedOut = store.state.userState.isLoggedOut;
     if (privateKey.isEmpty || jwtToken.isEmpty || isLoggedOut) {
-      await Segment.setContext({});
       context.router.replaceAll([OnBoardScreen()]);
       widget.onLoginResult?.call(false);
     } else {
       UserState userState = store.state.userState;
       if (userState.authType != BiometricAuth.none) {
-        Segment.track(
-          eventName: 'Session Start: Authentication request for existed user',
-        );
         store.dispatch(getWalletAddressesCall());
         store.dispatch(identifyCall());
         // await AppTrackingTransparency.requestTrackingAuthorization();
@@ -53,15 +48,9 @@ class _SplashScreenState extends State<SplashScreen> {
         //     userState.authType,
         //   ),
         // );
-        Segment.track(
-          eventName: 'Session Start: Authentication success',
-        );
         context.router.replaceAll([MainScreen()]);
         widget.onLoginResult?.call(true);
       } else if (userState.authType == BiometricAuth.pincode) {
-        Segment.track(
-          eventName: 'Session Start: Authentication success',
-        );
         context.router.replaceAll([MainScreen()]);
         widget.onLoginResult?.call(true);
       } else {

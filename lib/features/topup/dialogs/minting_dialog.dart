@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
@@ -75,7 +74,6 @@ class _MintingDialogState extends State<MintingDialog>
       converter: _MintingDialogViewModel.fromStore,
       onWillChange: (prevVM, nextVM) {
         if (prevVM?.secondaryToken.amount != nextVM.secondaryToken.amount) {
-          Segment.track(eventName: 'Token Mint Success, showed success dialog');
           setState(() {
             _isMinting = false;
           });

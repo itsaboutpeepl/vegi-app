@@ -1,14 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:another_flushbar/flushbar.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_segment/flutter_segment.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
 class PinCodeScreen extends StatefulWidget {
   @override
@@ -101,9 +100,11 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                 animationType: AnimationType.fade,
                                 controller: pincodeController,
                                 // errorAnimationController: errorController,
-                                validator: (String? value) => value!.length != 6 && value == viewModel.pincode
-                                    ? I10n.of(context).invalid_pincode
-                                    : null,
+                                validator: (String? value) =>
+                                    value!.length != 6 &&
+                                            value == viewModel.pincode
+                                        ? I10n.of(context).invalid_pincode
+                                        : null,
                                 textStyle: TextStyle(
                                   fontSize: 30,
                                   color: Colors.black,
@@ -124,18 +125,18 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                 ),
                                 onCompleted: (value) {
                                   if (viewModel.pincode == value) {
-                                    Segment.track(
-                                      eventName: 'Session Start: Authentication success',
-                                    );
                                     context.router.replaceAll([MainScreen()]);
                                     pincodeController.clear();
                                   } else {
                                     flush = Flushbar<bool>(
                                       title: I10n.of(context).invalid_pincode,
-                                      message: I10n.of(context).auth_failed_message,
+                                      message:
+                                          I10n.of(context).auth_failed_message,
                                       icon: Icon(
                                         Icons.info_outline,
-                                        color: Theme.of(context).colorScheme.primary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                       ),
                                       mainButton: TextButton(
                                         onPressed: () async {
@@ -143,14 +144,19 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                         },
                                         child: Text(
                                           I10n.of(context).try_again,
-                                          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary),
                                         ),
                                       ),
                                     )..show(context).then(
                                         (result) async {
                                           if (result == true) {
                                             pincodeController.clear();
-                                            WidgetsBinding.instance.focusManager.primaryFocus?.previousFocus();
+                                            WidgetsBinding.instance.focusManager
+                                                .primaryFocus
+                                                ?.previousFocus();
                                           }
                                         },
                                       );
