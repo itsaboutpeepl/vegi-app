@@ -12,7 +12,8 @@ class DetailMenuViewFloatingBar extends StatefulWidget {
   const DetailMenuViewFloatingBar({Key? key}) : super(key: key);
 
   @override
-  _DetailMenuViewFloatingBarState createState() => _DetailMenuViewFloatingBarState();
+  _DetailMenuViewFloatingBarState createState() =>
+      _DetailMenuViewFloatingBarState();
 }
 
 class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
@@ -60,7 +61,8 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                                 totalItemPrice: viewmodel.totalPrice,
                                 itemQuantity:
                                     1, //this quantity always needs to be 1 to work with the api. the actual quantity of the object is calculated using the viewmodel quantity field. Then the object is just duplicated and added to the cart items.
-                                selectedProductOptions: viewmodel.selectedOptions,
+                                selectedProductOptions:
+                                    viewmodel.selectedOptions,
                               ),
                             );
                           }
@@ -68,8 +70,8 @@ class _DetailMenuViewFloatingBarState extends State<DetailMenuViewFloatingBar> {
                           viewmodel.addOrderItems(orderList);
                           Navigator.pop(context);
                           Future.delayed(
-                            Duration(seconds: 1),
-                            (() => viewmodel.resetMenuItem()),
+                            const Duration(milliseconds: 500),
+                            () => viewmodel.resetMenuItem(),
                           );
                         },
                         child: Text("Add to Tote"),

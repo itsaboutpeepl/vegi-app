@@ -21,13 +21,18 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
       converter: DetailMenuItem.fromStore,
       distinct: true,
       onInit: (store) {
-        store.dispatch(
-          fetchProductOptions(
-            store.state.menuItemState.menuItem!.menuItemID,
-          ),
-        );
+        if (store.state.menuItemState.menuItem != null) {
+          store.dispatch(
+            fetchProductOptions(
+              store.state.menuItemState.menuItem!.menuItemID,
+            ),
+          );
+        }
       },
       builder: (_, viewmodel) {
+        if (viewmodel.menuItem == null) {
+          return const SizedBox.shrink();
+        }
         return Stack(
           children: [
             SingleChildScrollView(
