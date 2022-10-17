@@ -2,9 +2,12 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/firebase_options.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 
 class MainScreen extends StatefulWidget {
@@ -64,20 +67,28 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        if (_tabsRouter.canPop()) {
-          return Future.value(true);
-        } else {
-          return Future.value(false);
-        }
+    return StoreConnector<AppState, void>(
+      onInit: (store) {
+        store.dispatch(web3Init());
       },
-      child: AutoTabsScaffold(
-        animationDuration: Duration(milliseconds: 0),
-        routes: [
-          VeganHomeAltTab(),
-        ],
-      ),
+      converter: (store) {},
+      builder: (_, vm) {
+        return WillPopScope(
+          onWillPop: () {
+            if (_tabsRouter.canPop()) {
+              return Future.value(true);
+            } else {
+              return Future.value(false);
+            }
+          },
+          child: const AutoTabsScaffold(
+            animationDuration: Duration.zero,
+            routes: [
+              VeganHomeAltTab(),
+            ],
+          ),
+        );
+      },
     );
   }
 
