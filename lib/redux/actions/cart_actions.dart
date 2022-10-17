@@ -21,6 +21,11 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 class UpdateCartItems {
   UpdateCartItems({required this.cartItems});
   final List<CartItem> cartItems;
+
+  @override
+  String toString() {
+    return 'UpdateCartItems : $cartItems';
+  }
 }
 
 class UpdateComputedCartValues {
@@ -34,64 +39,124 @@ class UpdateComputedCartValues {
   final int cartTax;
   final int cartTotal;
   final int cartDiscountComputed;
+
+  @override
+  String toString() {
+    return 'UpdateComputedCartValues : CartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountComputed: $cartDiscountComputed';
+  }
 }
 
 class UpdateCartDiscount {
   UpdateCartDiscount(this.cartDiscountPercent, this.discountCode);
   final int cartDiscountPercent;
   final String discountCode;
+
+  @override
+  String toString() {
+    return 'UpdateCartDiscount : cartDiscountPercent: $cartDiscountPercent, discountCode: $discountCode';
+  }
 }
 
 class ClearCart {
   ClearCart();
+
+  @override
+  String toString() {
+    return 'ClearCart';
+  }
 }
 
 class UpdateSlots {
   UpdateSlots(this.deliverySlots, this.collectionSlots);
   final List<Map<String, String>> deliverySlots;
   final List<Map<String, String>> collectionSlots;
+
+  @override
+  String toString() {
+    return 'UpdateSlots : deliverySlots: $deliverySlots, collectionSlots: $collectionSlots';
+  }
 }
 
 class UpdateSelectedDeliveryAddress {
   UpdateSelectedDeliveryAddress(this.selectedAddress);
   final DeliveryAddresses? selectedAddress;
+
+  @override
+  String toString() {
+    return 'UpdateSelectedDeliveryAddress : selectedAddress: $selectedAddress';
+  }
 }
 
 class UpdateSelectedTimeSlot {
   UpdateSelectedTimeSlot(this.selectedTimeSlot);
   final Map<String, String> selectedTimeSlot;
+
+  @override
+  String toString() {
+    return 'UpdateSelectedTimeSlot : selectedTimeSlot: $selectedTimeSlot';
+  }
 }
 
 class UpdateTipAmount {
   UpdateTipAmount(this.tipAmount);
   final int tipAmount;
+
+  @override
+  String toString() {
+    return 'UpdateTipAmount : tipAmount: $tipAmount';
+  }
 }
 
 class CreateOrder {
   CreateOrder(this.orderID, this.paymentIntentID);
   final String orderID;
   final String paymentIntentID;
+
+  @override
+  String toString() {
+    return 'CreateOrder : orderID: $orderID, paymentIntentID: $paymentIntentID';
+  }
 }
 
 class SetTransferringPayment {
   SetTransferringPayment({required this.flag});
   bool flag;
+
+  @override
+  String toString() {
+    return 'SetTransferringPayment : flag;$flag';
+  }
 }
 
 class SetError {
   SetError({required this.flag});
   bool flag;
+
+  @override
+  String toString() {
+    return 'SetError : flag: $flag';
+  }
 }
 
 class SetConfirmed {
   SetConfirmed({required this.flag});
   bool flag;
+
+  @override
+  String toString() {
+    return 'SetConfirmed : flag: $flag';
+  }
 }
 
 class UpdateSelectedAmounts {
   UpdateSelectedAmounts(this.GBPxAmount, this.PPLAmount);
   final double GBPxAmount;
   final double PPLAmount;
+
+  @override
+  String toString() {
+    return 'UpdateSelectedAmounts : GBPxAmount: $GBPxAmount, PPLAmount:$PPLAmount';
+  }
 }
 
 class SetRestaurantDetails {
@@ -109,38 +174,73 @@ class SetRestaurantDetails {
   final String walletAddress;
   final int minimumOrder;
   final int platformFee;
+
+  @override
+  String toString() {
+    return 'SetRestaurantDetails : restaurantID: $restaurantID, restaurantName: $restaurantName, restaurantAddress:$restaurantAddress, walletAddress:$walletAddress, minimumOrder:$minimumOrder, platformFee:$platformFee';
+  }
 }
 
 class SetDeliveryCharge {
   SetDeliveryCharge(this.deliveryCharge);
   final int deliveryCharge;
+
+  @override
+  String toString() {
+    return 'SetDeliveryCharge : deliveryCharge: $deliveryCharge';
+  }
 }
 
 class SetFulfilmentFees {
   SetFulfilmentFees(this.deliveryCharge, this.collectionCharge);
   final int deliveryCharge;
   final int collectionCharge;
+
+  @override
+  String toString() {
+    return 'SetFulfilmentFees : deliveryCharge: $deliveryCharge, collectionCharge: $collectionCharge';
+  }
 }
 
 class SetFulfilmentMethodIds {
   SetFulfilmentMethodIds(this.deliveryMethodId, this.collectionMethodId);
   final int deliveryMethodId;
   final int collectionMethodId;
+
+  @override
+  String toString() {
+    return 'SetFulfilmentMethodIds : deliveryMethodId: $deliveryMethodId, collectionMethodId: $collectionMethodId';
+  }
 }
 
 class SetFulfilmentMethod {
   SetFulfilmentMethod(this.fulfilmentMethod);
   final FulfilmentMethod fulfilmentMethod;
+
+  @override
+  String toString() {
+    return 'SetFulfilmentMethod : fulfilmentMethod: $fulfilmentMethod';
+  }
 }
 
 class SetIsDelivery {
   SetIsDelivery({required this.isDelivery});
   final bool isDelivery;
+
+  @override
+  String toString() {
+    return 'SetIsDelivery : isDelivery: $isDelivery';
+  }
 }
 
 class SetDeliveryInstructions {
   SetDeliveryInstructions(this.deliveryInstructions);
   final String deliveryInstructions;
+
+  @override
+  String toString() {
+    return 'SetDeliveryInstructions : deliveryInstructions: $deliveryInstructions';
+  }
 }
 
 ThunkAction<AppState> getFullfillmentMethods({DateTime? newDate}) {

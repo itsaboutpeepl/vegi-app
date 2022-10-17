@@ -10,33 +10,53 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 
 class ResetMenuItem {
   ResetMenuItem();
+  @override
+  String toString() => 'ResetMenuItem';
 }
 
 class SetMenuItem {
   SetMenuItem({required this.menuItem, required this.selectedExtras});
   final RestaurantMenuItem menuItem;
   final List<bool> selectedExtras;
+
+  @override
+  String toString() =>
+      'SetMenuItem : menuItem: $menuItem, selectedExtras: $selectedExtras,';
 }
 
 class UpdateTotalPrice {
   UpdateTotalPrice({required this.totalPrice, required this.totalRewards});
   final int totalPrice;
   final int totalRewards;
+
+  @override
+  String toString() =>
+      'UpdateTotalPrice : totalPrice: $totalPrice, totalPrice: $totalPrice';
 }
 
 class UpdateQuantity {
   UpdateQuantity(this.quantity);
   final int quantity;
+
+  @override
+  String toString() => 'UpdateQuantity : quantity: $quantity';
 }
 
 class UpdateMenuItemWithProductOptions {
   UpdateMenuItemWithProductOptions(this.menuItem);
   final RestaurantMenuItem menuItem;
+
+  @override
+  String toString() =>
+      'UpdateMenuItemWithProductOptions : menuItem: $menuItem,';
 }
 
 class LoadingProductOptions {
   LoadingProductOptions({required this.flag});
   final bool flag;
+
+  @override
+  String toString() => 'LoadingProductOptions : flag: $flag';
 }
 
 ThunkAction<AppState> fetchProductOptions(String itemID) {

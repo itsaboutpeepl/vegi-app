@@ -11,21 +11,41 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 class UpdateRestaurantCategories {
   UpdateRestaurantCategories({required this.listOfRestaurantCategories});
   final List<RestaurantCategory> listOfRestaurantCategories;
+
+  @override
+  String toString() {
+    return 'UpdateRestaurantCategories : $listOfRestaurantCategories';
+  }
 }
 
 class UpdateFeaturedRestaurants {
   UpdateFeaturedRestaurants({required this.listOfFeaturedRestaurants});
   final List<RestaurantItem> listOfFeaturedRestaurants;
+
+  @override
+  String toString() {
+    return 'UpdateFeaturedRestaurants : $listOfFeaturedRestaurants';
+  }
 }
 
 class SetIsLoadingHomePage {
   SetIsLoadingHomePage({required this.isLoading});
   final bool isLoading;
+
+  @override
+  String toString() {
+    return 'SetIsLoadingHomePage : $isLoading';
+  }
 }
 
 class UpdatePostalCodes {
   UpdatePostalCodes(this.postalCodes);
   final List<String> postalCodes;
+
+  @override
+  String toString() {
+    return 'UpdatePostalCodes : $postalCodes';
+  }
 }
 
 // ThunkAction<AppState> fetchRestaurantCategories() {

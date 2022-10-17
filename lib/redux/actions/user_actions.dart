@@ -30,6 +30,9 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 class SetWalletConnectURI {
   SetWalletConnectURI(this.wcURI);
   final String wcURI;
+
+  @override
+  String toString() => 'SetWalletConnectURI : wcURI: $wcURI';
 }
 
 class ScrollToTop {
@@ -37,6 +40,9 @@ class ScrollToTop {
     required this.value,
   });
   final bool value;
+
+  @override
+  String toString() => 'ScrollToTop : value: $value';
 }
 
 class ToggleUpgrade {
@@ -44,16 +50,25 @@ class ToggleUpgrade {
     required this.value,
   });
   final bool value;
+
+  @override
+  String toString() => 'ToggleUpgrade : value: $value';
 }
 
 class UpdateCurrency {
   UpdateCurrency({required this.currency});
   final String currency;
+
+  @override
+  String toString() => 'UpdateCurrency : currency: $currency';
 }
 
 class UpdateLocale {
   UpdateLocale({required this.locale});
   final Locale locale;
+
+  @override
+  String toString() => 'UpdateLocale : locale: $locale';
 }
 
 class WarnSendDialogShowed {
@@ -61,11 +76,17 @@ class WarnSendDialogShowed {
     required this.value,
   });
   final bool value;
+
+  @override
+  String toString() => 'WarnSendDialogShowed : value: $value';
 }
 
 class SetSecurityType {
   SetSecurityType({required this.biometricAuth});
   BiometricAuth biometricAuth;
+
+  @override
+  String toString() => 'SetSecurityType : biometricAuth: $biometricAuth';
 }
 
 class CreateLocalAccountSuccess {
@@ -77,10 +98,17 @@ class CreateLocalAccountSuccess {
   final List<String> mnemonic;
   final String privateKey;
   final String accountAddress;
+
+  @override
+  String toString() =>
+      'CreateLocalAccountSuccess : mnemonic: $mnemonic, privateKey: $privateKey, accountAddress: $accountAddress';
 }
 
 class ReLogin {
   ReLogin();
+
+  @override
+  String toString() => 'ReLogin';
 }
 
 class LoginRequestSuccess {
@@ -94,78 +122,121 @@ class LoginRequestSuccess {
   final String phoneNumber;
   final String? displayName;
   final String? email;
+
+  @override
+  String toString() =>
+      'LoginRequestSuccess : countryCode: $countryCode, phoneNumber: $phoneNumber, displayName: $displayName, email: $email';
 }
 
 class LogoutRequestSuccess {
   LogoutRequestSuccess();
+
+  @override
+  String toString() => 'LogoutRequestSuccess';
 }
 
 class LoginVerifySuccess {
   LoginVerifySuccess(this.jwtToken);
   final String jwtToken;
+
+  @override
+  String toString() => 'LoginVerifySuccess : jwtToken: $jwtToken,';
 }
 
 class SetPincodeSuccess {
   SetPincodeSuccess(this.pincode);
   String pincode;
+
+  @override
+  String toString() => 'SetPincodeSuccess : pincode: $pincode';
 }
 
 class SetDisplayName {
   SetDisplayName(this.displayName);
   String displayName;
+
+  @override
+  String toString() => 'SetDisplayName : displayName: $displayName';
 }
 
 class SetUserAvatar {
   SetUserAvatar(this.avatarUrl);
   String avatarUrl;
+
+  @override
+  String toString() => 'SetUserAvatar : avatarUrl: $avatarUrl';
 }
 
 class BackupRequest {
   BackupRequest();
+
+  @override
+  String toString() => 'BackupRequest';
 }
 
 class BackupSuccess {
   BackupSuccess();
+
+  @override
+  String toString() => 'BackupSuccess';
 }
 
 class SetCredentials {
   SetCredentials(this.credentials);
   PhoneAuthCredential? credentials;
+
+  @override
+  String toString() => 'SetCredentials : credentials: $credentials';
 }
 
 class SetVerificationId {
   SetVerificationId(this.verificationId);
   String verificationId;
+
+  @override
+  String toString() => 'SetVerificationId : verificationId: $verificationId';
 }
 
 class JustInstalled {
   JustInstalled(this.installedAt);
   final DateTime installedAt;
+
+  @override
+  String toString() => 'JustInstalled : installedAt: $installedAt';
 }
 
 class DeviceIdSuccess {
   DeviceIdSuccess(this.identifier);
   final String identifier;
+
+  @override
+  String toString() => 'DeviceIdSuccess : identifier: $identifier';
 }
 
 class AddDeliveryAddress {
   AddDeliveryAddress(this.listOfAddresses);
   final List<DeliveryAddresses> listOfAddresses;
-}
 
-class SetInitialLoginDateTime {
-  SetInitialLoginDateTime(this.initialLoginDateTime);
-  final String initialLoginDateTime;
+  @override
+  String toString() => 'AddDeliveryAddress : listOfAddresses: $listOfAddresses';
 }
 
 class SetShowSeedPhraseBanner {
   SetShowSeedPhraseBanner({required this.showSeedPhraseBanner});
   final bool showSeedPhraseBanner;
+
+  @override
+  String toString() =>
+      'SetShowSeedPhraseBanner : showSeedPhraseBanner: $showSeedPhraseBanner,';
 }
 
 class SetHasSavedSeedPhrase {
   SetHasSavedSeedPhrase({required this.hasSavedSeedPhrase});
   final bool hasSavedSeedPhrase;
+
+  @override
+  String toString() =>
+      'SetHasSavedSeedPhrase : hasSavedSeedPhrase: $hasSavedSeedPhrase';
 }
 
 ThunkAction<AppState> loginHandler(

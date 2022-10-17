@@ -39,11 +39,21 @@ bool clearTokensWithZero(String key, Token token) {
 class AddSession {
   AddSession(this.session);
   final WCSessionStore session;
+
+  @override
+  String toString() {
+    return 'AddSession : session: $session';
+  }
 }
 
 class RemoveSession {
   RemoveSession(this.session);
   final WCSessionStore session;
+
+  @override
+  String toString() {
+    return 'RemoveSession : session: $session';
+  }
 }
 
 class AddCashTokens {
@@ -51,6 +61,11 @@ class AddCashTokens {
     required this.tokens,
   });
   final Map<String, Token> tokens;
+
+  @override
+  String toString() {
+    return 'AddCashTokens : tokens: $tokens';
+  }
 }
 
 class AddCashToken {
@@ -58,6 +73,11 @@ class AddCashToken {
     required this.token,
   });
   final Token token;
+
+  @override
+  String toString() {
+    return 'AddCashToken : token: $token';
+  }
 }
 
 class UpdateTokenPrice {
@@ -67,6 +87,11 @@ class UpdateTokenPrice {
   });
   final Price price;
   final String tokenAddress;
+
+  @override
+  String toString() {
+    return 'UpdateTokenPrice : price: $price, tokenAddress: $tokenAddress';
+  }
 }
 
 class GetWalletDataSuccess {
@@ -82,6 +107,11 @@ class GetWalletDataSuccess {
   final bool backup;
   final WalletModules walletModules;
   final String? contractVersion;
+
+  @override
+  String toString() {
+    return 'GetWalletDataSuccess : walletAddress: $walletAddress ,networks: $networks, backup: $backup, walletModules: $walletModules, contractVersion: $contractVersion';
+  }
 }
 
 class GetTokenBalanceSuccess {
@@ -91,6 +121,11 @@ class GetTokenBalanceSuccess {
   });
   final String tokenAddress;
   final BigInt tokenBalance;
+
+  @override
+  String toString() {
+    return 'GetTokenBalanceSuccess : tokenAddress: $tokenAddress, tokenBalance: $tokenBalance';
+  }
 }
 
 class GetTokenIntervalStatsSuccess {
@@ -104,6 +139,11 @@ class GetTokenIntervalStatsSuccess {
   final List<IntervalStats> intervalStats;
   final TimeFrame timeFrame;
   final num priceChange;
+
+  @override
+  String toString() {
+    return 'GetTokenIntervalStatsSuccess : tokenAddress: $tokenAddress, intervalStats: $intervalStats, timeFrame: $timeFrame, priceChange: $priceChange';
+  }
 }
 
 class GetActionsSuccess {
@@ -113,6 +153,10 @@ class GetActionsSuccess {
   });
   final List<WalletAction> walletActions;
   final int? nextPage;
+
+  @override
+  String toString() =>
+      'GetActionsSuccess : walletActions: $walletActions, nextPage: $nextPage';
 }
 
 class GetTokenWalletActionsSuccess {
@@ -126,10 +170,19 @@ class GetTokenWalletActionsSuccess {
   final List<WalletAction> walletActions;
   final num updateAt;
   final int? nextPage;
+
+  @override
+  String toString() =>
+      'GetTokenWalletActionsSuccess : token: $token, walletActions: $walletActions, updateAt: $updateAt, nextPage: $nextPage';
 }
 
 class StartBalanceFetchingSuccess {
   StartBalanceFetchingSuccess();
+
+  @override
+  String toString() {
+    return 'StartBalanceFetchingSuccess';
+  }
 }
 
 class SetIsTransfersFetching {
@@ -137,10 +190,20 @@ class SetIsTransfersFetching {
     required this.isFetching,
   });
   final bool isFetching;
+
+  @override
+  String toString() {
+    return 'SetIsTransfersFetching : isFetching: $isFetching';
+  }
 }
 
 class ResetTokenTxs {
   ResetTokenTxs();
+
+  @override
+  String toString() {
+    return 'ResetTokenTxs';
+  }
 }
 
 class SetIsFetchingBalances {
@@ -148,11 +211,21 @@ class SetIsFetchingBalances {
     required this.isFetching,
   });
   final bool isFetching;
+
+  @override
+  String toString() {
+    return 'SetIsFetchingBalances : isFetching: $isFetching';
+  }
 }
 
 class FetchNewPage {
   FetchNewPage({required this.page});
   final int page;
+
+  @override
+  String toString() {
+    return 'FetchNewPage : page: $page';
+  }
 }
 
 ThunkAction<AppState> enablePushNotifications(String walletAddress) {

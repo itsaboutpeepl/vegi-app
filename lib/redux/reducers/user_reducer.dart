@@ -26,7 +26,6 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, UpdateCurrency>(_updateCurrency),
   TypedReducer<UserState, UpdateLocale>(_updateLocale),
   TypedReducer<UserState, AddDeliveryAddress>(_addDeliveryAddress),
-  TypedReducer<UserState, SetInitialLoginDateTime>(_setInitialLoginDateTime),
   TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner),
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
 ]);
@@ -208,13 +207,6 @@ UserState _addDeliveryAddress(
   AddDeliveryAddress action,
 ) {
   return state.copyWith(listOfDeliveryAddresses: action.listOfAddresses);
-}
-
-UserState _setInitialLoginDateTime(
-  UserState state,
-  SetInitialLoginDateTime action,
-) {
-  return state.copyWith(initialLoginDateTime: action.initialLoginDateTime);
 }
 
 UserState _setShowSeedPhraseBanner(
