@@ -14,8 +14,8 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
 class DrawerViewModel extends Equatable {
-  final Function() logout;
-  final Function() firstName;
+  final void Function() logout;
+  final String Function() firstName;
   final String pplBalance;
   final String gbpxBalance;
   final String avatarUrl;
@@ -29,7 +29,7 @@ class DrawerViewModel extends Equatable {
   });
 
   static DrawerViewModel fromStore(Store<AppState> store) {
-    CashWalletState cashWalletState = store.state.cashWalletState;
+    final CashWalletState cashWalletState = store.state.cashWalletState;
 
     return DrawerViewModel(
       logout: () {
@@ -37,11 +37,14 @@ class DrawerViewModel extends Equatable {
       },
       avatarUrl: store.state.userState.avatarUrl,
       firstName: () {
-        String fullName = store.state.userState.displayName;
-        return fullName.split(' ')[0];
+        return store.state.userState.displayName.split(' ')[0];
       },
-      pplBalance: cashWalletState.tokens[pplToken.address]!.getBalance(),
-      gbpxBalance: cashWalletState.tokens[gbpxToken.address]!.getBalance(),
+      pplBalance: cashWalletState.tokens.containsKey(pplToken.address)
+          ? cashWalletState.tokens[pplToken.address]!.getBalance()
+          : '0',
+      gbpxBalance: cashWalletState.tokens.containsKey(gbpxToken.address)
+          ? cashWalletState.tokens[gbpxToken.address]!.getBalance()
+          : '0',
     );
   }
 
