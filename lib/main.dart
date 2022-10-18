@@ -71,7 +71,7 @@ void main() async {
         options
           ..debug = !kReleaseMode
           ..dsn = dotenv.env['SENTRY_DSN']
-          ..environment = 'prod';
+          ..environment = dotenv.env['MODE'];
       },
     );
 
