@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>526129377-bm990b988blrv79qkrmc2m964frnlin4.apps.googleusercontent.com</string>
+	<string>526129377-hogf35nhebt59qdn7j4m2qhb7a4jc6r2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.526129377-bm990b988blrv79qkrmc2m964frnlin4</string>
+	<string>com.googleusercontent.apps.526129377-hogf35nhebt59qdn7j4m2qhb7a4jc6r2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDg5GfOmBR_gYVSEws6pLd1A8P78d6PysI</string>
+	<string>AIzaSyCa0YnaqwKNrQq05Xxo0oqQmAThalUYeck</string>
 	<key>GCM_SENDER_ID</key>
 	<string>526129377</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.vegi.vegiapp</string>
+	<string>com.vegi.vegiAppTest</string>
 	<key>PROJECT_ID</key>
 	<string>vegiliverpool</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:526129377:ios:69d1fac6f1aad59370bfa0</string>
+	<string>1:526129377:ios:7fdd83bd162d99c470bfa0</string>
 </dict>
 </plist>
