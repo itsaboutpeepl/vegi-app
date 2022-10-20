@@ -1,19 +1,20 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/firebase_options.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
@@ -21,55 +22,41 @@ class _MainScreenState extends State<MainScreen> {
 
   //TODO: remove Firebase stuff from here
 
-  void handleFirebaseConfig() {
-    firebaseMessaging.requestPermission();
-    firebaseMessaging.setForegroundNotificationPresentationOptions(
-        alert: true, badge: true, sound: true);
+  // void handleFirebaseConfig() {
+  //   firebaseMessaging.requestPermission();
+  //   firebaseMessaging.setForegroundNotificationPresentationOptions(
+  //       alert: true, badge: true, sound: true);
 
-    firebaseMessaging.setForegroundNotificationPresentationOptions(
-        alert: true, sound: true);
-  }
+  //   firebaseMessaging.setForegroundNotificationPresentationOptions(
+  //       alert: true, sound: true);
+  // }
+
+  //handleFirebaseConfig();
+  // firebaseMessaging
+  //     .getToken()
+  //     .then((value) => print("FCM TOKEN HEREEE $value"));
+
+  // firebaseMessaging
+  //     .getAPNSToken()
+  //     .then((value) => print("APNS TOKEN $value"));
 
   @override
   void initState() {
-    handleFirebaseConfig();
-    firebaseMessaging
-        .getToken()
-        .then((value) => print("FCM TOKEN HEREEE $value"));
-
-    firebaseMessaging
-        .getAPNSToken()
-        .then((value) => print("APNS TOKEN $value"));
-
-    Function handleFCM = (RemoteMessage? remoteMessage) {
-      if (remoteMessage != null) {
-        print("PRINTING REMOTE MESSAGE HELOOOOO");
-        print("RMDATA ${remoteMessage.data}");
-        print("RMNOTIF ${remoteMessage.notification}");
-        print("RMFROM ${remoteMessage.from}");
-      }
-    };
-
-    firebaseMessaging.getInitialMessage().then((RemoteMessage? remoteMessage) {
-      handleFCM(remoteMessage);
-    });
-
+    firebaseMessaging.getInitialMessage().then(handleFCM);
     startFirebaseNotifs();
-
-    Future.delayed(Duration(seconds: 5), () => requestAppTracking());
-
+    Future.delayed(const Duration(seconds: 5), requestAppTracking);
     super.initState();
-  }
-
-  void requestAppTracking() async {
-    await AppTrackingTransparency.requestTrackingAuthorization();
   }
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, void>(
       onInit: (store) {
-        store.dispatch(web3Init());
+        store
+          ..dispatch(web3Init())
+          ..dispatch(
+            enablePushNotifications(store.state.userState.walletAddress),
+          );
       },
       converter: (store) {},
       builder: (_, vm) {
@@ -91,28 +78,30 @@ class _MainScreenState extends State<MainScreen> {
       },
     );
   }
+}
 
-  void startFirebaseNotifs() {
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+Future<void> requestAppTracking() async {
+  await AppTrackingTransparency.requestTrackingAuthorization();
+}
 
-    FirebaseMessaging.onMessageOpenedApp
-        .listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
+void startFirebaseNotifs() {
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    FirebaseMessaging.onMessage
-        .listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
-  }
+  FirebaseMessaging.onMessageOpenedApp.listen(handleFCM);
 
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage remoteMessage) async {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onMessage.listen(handleFCM);
+}
 
-    handleFCM(remoteMessage);
-  }
+Future<void> _firebaseMessagingBackgroundHandler(
+  RemoteMessage remoteMessage,
+) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  void handleFCM(RemoteMessage? remoteMessage) async {
-    if (remoteMessage != null) {
-      print("GOT MESSAGE FROM FIREBASE: ${remoteMessage.data}");
-    }
+  await handleFCM(remoteMessage);
+}
+
+Future<void> handleFCM(RemoteMessage? remoteMessage) async {
+  if (remoteMessage != null) {
+    print('New Message From Firebase: ${remoteMessage.data}');
   }
 }

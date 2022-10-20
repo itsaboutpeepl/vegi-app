@@ -127,11 +127,9 @@ class RootRouter extends _i27.RootStackRouter {
       );
     },
     MainScreen.name: (routeData) {
-      final args = routeData.argsAs<MainScreenArgs>(
-          orElse: () => const MainScreenArgs());
       return _i27.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i10.MainScreen(key: args.key),
+        child: const _i10.MainScreen(),
       );
     },
     VeganHomeAltTab.name: (routeData) {
@@ -653,29 +651,15 @@ class ReduxStateViewerArgs {
 
 /// generated route for
 /// [_i10.MainScreen]
-class MainScreen extends _i27.PageRouteInfo<MainScreenArgs> {
-  MainScreen({
-    _i30.Key? key,
-    List<_i27.PageRouteInfo>? children,
-  }) : super(
+class MainScreen extends _i27.PageRouteInfo<void> {
+  const MainScreen({List<_i27.PageRouteInfo>? children})
+      : super(
           MainScreen.name,
           path: '/main-screen',
-          args: MainScreenArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'MainScreen';
-}
-
-class MainScreenArgs {
-  const MainScreenArgs({this.key});
-
-  final _i30.Key? key;
-
-  @override
-  String toString() {
-    return 'MainScreenArgs{key: $key}';
-  }
 }
 
 /// generated route for
