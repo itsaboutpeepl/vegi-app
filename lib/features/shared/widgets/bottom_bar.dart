@@ -20,8 +20,6 @@ class BottomBar extends StatelessWidget {
       distinct: true,
       converter: (store) {},
       onInit: (store) {
-        // store.dispatch(fetchSwapList());
-        store.dispatch(startFetchingCall());
         store.dispatch(startFetchTokensBalances());
         store.dispatch(updateTokensPrices());
       },

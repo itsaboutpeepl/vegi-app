@@ -259,125 +259,65 @@ ThunkAction<AppState> startFetchTokensBalances() {
     final String walletAddress = store.state.userState.walletAddress;
     if (!isFetchingBalances) {
       log.info('Start Fetching token balances');
-      Timer.periodic(const Duration(seconds: Variables.intervalSeconds),
-          (Timer timer) async {
-        final String currentWalletAddress = store.state.userState.walletAddress;
-        if (currentWalletAddress != walletAddress) {
-          log.error('Timer stopped - startFetchTokensBalances');
-          store.dispatch(SetIsFetchingBalances(isFetching: false));
-          timer.cancel();
-        } else {
-          final NetworkInfo networkInfo = getIt<NetworkInfo>();
-          if (await networkInfo.isConnected) {
-            try {
-              final Map<String, Token> tokens =
-                  store.state.cashWalletState.tokens;
-              store.dispatch(getFuseBalance());
-              for (final Token token in tokens.values) {
-                await token.fetchBalance(
-                  walletAddress,
-                  onDone: (balance) {
-                    if (balance.compareTo(token.amount) != 0) {
-                      store.dispatch(
-                        GetTokenBalanceSuccess(
-                          tokenBalance: balance,
-                          tokenAddress: token.address,
-                        ),
-                      );
-                    }
-                  },
-                  onError: (
-                    Object e,
-                    StackTrace s,
-                  ) {
-                    log.error(
-                      'Error - fetch token balance ${token.name}',
-                      error: e,
-                      stackTrace: s,
-                    );
-                  },
-                );
-              }
-            } catch (e, s) {
-              log.error(
-                'Error fetch tokens balances - ${e.toString()}',
-                error: e,
-                stackTrace: s,
-              );
-              await Sentry.captureException(
-                Exception('Error fetch tokens balances - $e'),
-                stackTrace: s,
-                hint: 'Error fetch tokens balances',
-              );
-            }
-          } else {
-            log.error("Looks like you're offline");
-          }
-        }
-      });
-      store.dispatch(SetIsFetchingBalances(isFetching: true));
-    }
-  };
-}
-
-ThunkAction<AppState> startFetchingCall() {
-  return (Store<AppState> store) async {
-    final bool isTransfersFetchingStarted =
-        store.state.cashWalletState.isTransfersFetchingStarted;
-    final String walletAddress = store.state.userState.walletAddress;
-    if (!isTransfersFetchingStarted) {
-      store
-          //..dispatch(fetchSwapList())
-          .dispatch(SetIsTransfersFetching(isFetching: true));
       Timer.periodic(
         const Duration(seconds: Variables.intervalSeconds),
-        (Timer t) async {
+        (Timer timer) async {
           final String currentWalletAddress =
               store.state.userState.walletAddress;
           if (currentWalletAddress != walletAddress) {
-            log.error('Timer stopped - startFetchingCall');
-            store.dispatch(SetIsTransfersFetching(isFetching: false));
-            t.cancel();
-            return;
-          }
-          final NetworkInfo networkInfo = getIt<NetworkInfo>();
-          if (await networkInfo.isConnected) {
-            store.dispatch(fetchTokenList());
-            final CashWalletState cashWalletState = store.state.cashWalletState;
-            final List<WalletAction> walletActions = [
-              ...cashWalletState.walletActions?.list ?? []
-            ];
-            if (walletActions.isNotEmpty) {
+            log.error('Timer stopped - startFetchTokensBalances');
+            store.dispatch(SetIsFetchingBalances(isFetching: false));
+            timer.cancel();
+          } else {
+            final NetworkInfo networkInfo = getIt<NetworkInfo>();
+            if (await networkInfo.isConnected) {
               try {
-                final Map<String, dynamic> res =
-                    await chargeApi.getActionsByWalletAddress(
-                  walletAddress,
-                  updatedAt: walletActions.last.timestamp + 1,
-                );
-                final Iterable<dynamic> docs = res['docs'] as Iterable? ?? [];
-                if (docs.isNotEmpty) {
-                  store.dispatch(getWalletActionsCall(pageIndex: 1));
+                final Map<String, Token> tokens =
+                    store.state.cashWalletState.tokens;
+                for (final Token token in tokens.values) {
+                  await token.fetchBalance(
+                    walletAddress,
+                    onDone: (balance) {
+                      if (balance.compareTo(token.amount) != 0) {
+                        store.dispatch(
+                          GetTokenBalanceSuccess(
+                            tokenBalance: balance,
+                            tokenAddress: token.address,
+                          ),
+                        );
+                      }
+                    },
+                    onError: (
+                      Object e,
+                      StackTrace s,
+                    ) {
+                      log.error(
+                        'Error - fetch token balance ${token.name}',
+                        error: e,
+                        stackTrace: s,
+                      );
+                    },
+                  );
                 }
               } catch (e, s) {
                 log.error(
-                  'ERROR - startFetchingCall',
+                  'Error fetch tokens balances - ${e.toString()}',
                   error: e,
                   stackTrace: s,
                 );
                 await Sentry.captureException(
-                  Exception('ERROR - startFetchingCall - $e'),
+                  Exception('Error fetch tokens balances - $e'),
                   stackTrace: s,
-                  hint: 'ERROR - startFetchingCall',
+                  hint: 'Error fetch tokens balances',
                 );
               }
             } else {
-              store.dispatch(getWalletActionsCall(pageIndex: 1));
+              log.error("Looks like you're offline");
             }
-          } else {
-            log.error("Looks like you're offline");
           }
         },
       );
+      store.dispatch(SetIsFetchingBalances(isFetching: true));
     }
   };
 }
@@ -827,122 +767,6 @@ ThunkAction<AppState> getTokenWalletActionsCall(Token token) {
   };
 }
 
-// ThunkAction<AppState> sendTokenToContactCall(
-//   Token token,
-//   String contactPhoneNumber,
-//   String tokensAmount,
-//   VoidCallback sendSuccessCallback,
-//   VoidCallback sendFailureCallback,
-// ) {
-//   return (Store<AppState> store) async {
-//     try {
-//       Map? wallet = await chargeApi.getWalletByPhoneNumber(contactPhoneNumber);
-//       log.info('Trying to send $tokensAmount to phone $contactPhoneNumber');
-//       String? walletAddress = (wallet != null) ? wallet["walletAddress"] : null;
-//       if (walletAddress == null || walletAddress.isEmpty) {
-//         store.dispatch(inviteAndSendCall(
-//           token,
-//           contactPhoneNumber,
-//           tokensAmount,
-//           sendSuccessCallback,
-//           sendFailureCallback,
-//         ));
-//       } else {
-//         store.dispatch(sendTokenCall(
-//           token,
-//           walletAddress,
-//           tokensAmount,
-//           sendSuccessCallback,
-//           sendFailureCallback,
-//         ));
-//       }
-//     } catch (e, s) {
-//       log.error(
-//         'ERROR - sendTokenToContactCall $e',
-//         error: e,
-//         stackTrace: s,
-//       );
-//       await Sentry.captureException(
-//         Exception('ERROR - sendTokenToContactCall $e'),
-//         stackTrace: s,
-//         hint: 'ERROR - sendTokenToContactCall',
-//       );
-//     }
-//   };
-// }
-
-ThunkAction<AppState> getFuseBalance() {
-  return (Store<AppState> store) async {
-    try {
-      final BigInt fuseBalance =
-          store.state.cashWalletState.tokens[fuseToken.address]?.amount ??
-              BigInt.zero;
-      final String walletAddress = store.state.userState.walletAddress;
-      final EtherAmount balance = await getIt<Web3>().getBalance(
-        address: walletAddress,
-      );
-      if (balance.getInWei.compareTo(fuseBalance) != 0) {
-        store
-          ..dispatch(
-            AddCashToken(
-              token: fuseToken.copyWith(
-                amount: balance.getInWei,
-              ),
-            ),
-          )
-          ..dispatch(getTokenPriceCall(fuseToken));
-      }
-    } catch (e, s) {
-      log.error(
-        'Error in Get Fuse Balance ${e.toString()}',
-        error: e,
-        stackTrace: s,
-      );
-      await Sentry.captureException(
-        Exception('Error in Get Fuse Balance ${e.toString()}'),
-        stackTrace: s,
-        hint: 'Error in Get Fuse Balance',
-      );
-    }
-  };
-}
-
-ThunkAction<AppState> getPPLBalance() {
-  return (Store<AppState> store) async {
-    try {
-      final BigInt peeplBalance =
-          store.state.cashWalletState.tokens[pplToken.address]?.amount ??
-              BigInt.zero;
-      final String walletAddress = store.state.userState.walletAddress;
-      final EtherAmount balance = await getIt<Web3>().getBalance(
-        address: walletAddress,
-      );
-      if (balance.getInWei.compareTo(peeplBalance) != 0) {
-        store
-          ..dispatch(
-            AddCashToken(
-              token: pplToken.copyWith(
-                amount: balance.getInWei,
-              ),
-            ),
-          )
-          ..dispatch(getTokenPriceCall(pplToken));
-      }
-    } catch (e, s) {
-      log.error(
-        'Error in Get Fuse Balance ${e.toString()}',
-        error: e,
-        stackTrace: s,
-      );
-      await Sentry.captureException(
-        Exception('Error in Get Fuse Balance ${e.toString()}'),
-        stackTrace: s,
-        hint: 'Error in Get Fuse Balance',
-      );
-    }
-  };
-}
-
 ThunkAction<AppState> refresh() {
   return (Store<AppState> store) async {
     store
@@ -952,15 +776,3 @@ ThunkAction<AppState> refresh() {
       ..dispatch(updateTokensPrices());
   };
 }
-
-
-// log.error(
-//         'ERROR - fetchCommunityMetadataCall',
-//         error: e,
-//         stackTrace: s,
-//       );
-//       await Sentry.captureException(
-//         Exception('ERROR while trying to fetch community metadata: ${e.toString()}'),
-//         stackTrace: s,
-//         hint: 'ERROR while trying to fetch community metadata',
-//       );

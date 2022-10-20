@@ -46,16 +46,8 @@ Map<String, Token> tokensFromJson(Map<String, dynamic> tokens) => tokens.map(
         }
       },
     )
-      ..putIfAbsent(
-        Addresses.nativeTokenAddress,
-        () => fuseToken,
-      )
-      ..putIfAbsent(
-        Addresses.fusdTokenAddress,
-        () => fuseDollarToken,
-      )
-      ..putIfAbsent(Addresses.gbpxTokenAddress, () => gbpxToken)
-      ..putIfAbsent(Addresses.pplTokenAddress, () => pplToken);
+      ..putIfAbsent(gbpxToken.address, () => gbpxToken)
+      ..putIfAbsent(pplToken.address, () => pplToken);
 
 @freezed
 class CashWalletState with _$CashWalletState {
@@ -72,8 +64,14 @@ class CashWalletState with _$CashWalletState {
   factory CashWalletState.initial() {
     return CashWalletState(
       tokens: Map<String, Token>.fromIterables(
-        {fuseDollarToken.address, fuseToken.address},
-        [fuseDollarToken.copyWith(), fuseToken.copyWith()],
+        {
+          gbpxToken.address,
+          pplToken.address,
+        },
+        [
+          gbpxToken.copyWith(),
+          pplToken.copyWith(),
+        ],
       ),
       walletActions: WalletActions().copyWith(
         list: <WalletAction>[],
