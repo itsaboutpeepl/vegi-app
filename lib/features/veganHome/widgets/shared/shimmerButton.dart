@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 
-class ShimmerButton extends StatefulWidget {
-  const ShimmerButton(
-      {Key? key,
-      required this.buttonContent,
-      required this.buttonAction,
-      required this.baseColor,
-      required this.highlightColor})
-      : super(key: key);
+class ShimmerButton extends StatelessWidget {
+  const ShimmerButton({
+    Key? key,
+    required this.buttonContent,
+    required this.buttonAction,
+    required this.baseColor,
+    required this.highlightColor,
+  }) : super(key: key);
 
   final Widget buttonContent;
   final Function() buttonAction;
@@ -17,14 +17,9 @@ class ShimmerButton extends StatefulWidget {
   final Color highlightColor;
 
   @override
-  _ShimmerButtonState createState() => _ShimmerButtonState();
-}
-
-class _ShimmerButtonState extends State<ShimmerButton> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.buttonAction,
+      onTap: buttonAction,
       child: Stack(
         children: [
           Material(
@@ -33,19 +28,19 @@ class _ShimmerButtonState extends State<ShimmerButton> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Shimmer.fromColors(
-                period: Duration(seconds: 3),
-                baseColor: widget.baseColor,
-                highlightColor: widget.highlightColor,
+                period: const Duration(seconds: 3),
+                baseColor: baseColor,
+                highlightColor: highlightColor,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 60,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: themeShade500,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(4, 4),
-                        blurRadius: 5.0,
+                        blurRadius: 5,
                       )
                     ],
                   ),
@@ -56,12 +51,12 @@ class _ShimmerButtonState extends State<ShimmerButton> {
           Positioned.fill(
             child: Padding(
               padding: const EdgeInsets.only(
-                left: 15.0,
-                right: 15.0,
-                top: 5.0,
-                bottom: 5.0,
+                left: 15,
+                right: 15,
+                top: 5,
+                bottom: 5,
               ),
-              child: widget.buttonContent,
+              child: buttonContent,
             ),
           ),
         ],

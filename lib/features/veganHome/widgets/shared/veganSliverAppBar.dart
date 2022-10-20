@@ -12,11 +12,11 @@ class VeganSliverAppBar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _VeganSliverAppBarState createState() => _VeganSliverAppBarState();
+  State<VeganSliverAppBar> createState() => _VeganSliverAppBarState();
 }
 
 class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
-  String _dropdownValue = "L1";
+  String _dropdownValue = 'L1';
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +28,10 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
-          floating: false,
-          pinned: false,
-          snap: false,
           centerTitle: false,
           expandedHeight: MediaQuery.of(context).size.height * 0.1,
           flexibleSpace: FlexibleSpaceBar(
-            background: Container(
+            background: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: colorToWhiteGradient,
@@ -55,9 +52,9 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                           children: [
                             Text(
                               viewmodel.isDelivery
-                                  ? "Delivering To "
-                                  : "Collection",
-                              style: TextStyle(
+                                  ? 'Delivering To '
+                                  : 'Collection',
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -70,23 +67,24 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                       MediaQuery.of(context).size.height * 0.3,
                                   alignment: Alignment.centerLeft,
                                   isDense: true,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.black,
-                                    fontFamily: "Europa",
+                                    fontFamily: 'Europa',
                                   ),
                                   value: _dropdownValue,
                                   borderRadius: BorderRadius.circular(10),
-                                  underline: SizedBox.shrink(),
+                                  underline: const SizedBox.shrink(),
                                   items: viewmodel.postalCodes
                                       .map(
                                         (value) => DropdownMenuItem<String>(
+                                          value: value,
                                           child: Text(
                                             value,
-                                            style: TextStyle(fontSize: 20),
+                                            style:
+                                                const TextStyle(fontSize: 20),
                                           ),
-                                          value: value,
                                         ),
                                       )
                                       .toList(),
@@ -99,7 +97,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                 ),
                               )
                             else
-                              SizedBox.shrink(),
+                              const SizedBox.shrink(),
                           ],
                         ),
                         GestureDetector(
@@ -108,9 +106,9 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                           },
                           child: Text(
                             viewmodel.isDelivery
-                                ? "Switch to Collection"
-                                : "Switch to Delivery",
-                            style: TextStyle(
+                                ? 'Switch to Collection'
+                                : 'Switch to Delivery',
+                            style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -119,7 +117,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         )
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Material(
                       borderRadius: BorderRadius.circular(50),
                       elevation: 3,
@@ -161,7 +159,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                               Positioned(
                                 right: 0,
                                 child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: themeAccent500,
                                     shape: BoxShape.circle,
                                   ),
@@ -170,7 +168,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                 ),
                               )
                             else
-                              SizedBox.shrink()
+                              const SizedBox.shrink()
                           ],
                         ),
                       ),
@@ -180,7 +178,6 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
               ),
             ),
             centerTitle: true,
-            collapseMode: CollapseMode.parallax,
           ),
         );
       },

@@ -24,39 +24,37 @@ class _TipCardState extends State<TipCard> {
       builder: (_, viewmodel) {
         return Card(
           color: viewmodel.selectedUserTip == widget.tipAmount
-              ? flexColorSchemeLight.primary
+              ? themeShade300
               : Colors.white,
-          margin: const EdgeInsets.only(top: 5),
+          margin: const EdgeInsets.all(3),
           child: InkWell(
             onTap: () {
-              viewmodel.selectedUserTip == widget.tipAmount
-                  ? viewmodel.updateTipAmount(0)
-                  : viewmodel.updateTipAmount(widget.tipAmount);
+              Future.delayed(const Duration(milliseconds: 100), () {
+                viewmodel.selectedUserTip == widget.tipAmount
+                    ? viewmodel.updateTipAmount(0)
+                    : viewmodel.updateTipAmount(widget.tipAmount);
+              });
             },
             child: Padding(
               padding: const EdgeInsets.all(6),
-              child: Row(
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        WidgetSpan(
-                          child: Image.asset(
-                            widget.emoji,
-                            width: 18,
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' £${widget.tipAmount}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        )
-                      ],
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Image.asset(
+                        widget.emoji,
+                        width: 18,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  )
-                ],
+                    TextSpan(
+                      text: ' £${widget.tipAmount}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    )
+                  ],
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),

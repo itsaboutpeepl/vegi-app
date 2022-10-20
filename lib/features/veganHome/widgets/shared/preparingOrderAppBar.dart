@@ -6,7 +6,8 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 
 class PreparingOrderAppBar extends StatelessWidget {
-  const PreparingOrderAppBar({Key? key, required this.orderDetails}) : super(key: key);
+  const PreparingOrderAppBar({Key? key, required this.orderDetails})
+      : super(key: key);
 
   final OrderDetails orderDetails;
 
@@ -16,39 +17,37 @@ class PreparingOrderAppBar extends StatelessWidget {
       toolbarHeight: 30,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
-      floating: false,
-      pinned: false,
-      snap: false,
       centerTitle: false,
       expandedHeight: MediaQuery.of(context).size.height * 0.01,
       flexibleSpace: FlexibleSpaceBar(
         title: GestureDetector(
-          onTap: () => context.router.push(PreparingOrderPage(orderDetails: orderDetails)),
+          onTap: () => context.router.push(
+            PreparingOrderPage(orderDetails: orderDetails),
+          ),
           child: Card(
+            color: themeShade200,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: themeShade900,
+                width: 2,
+              ),
+            ),
             child: SizedBox(
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12),
                 child: Text(
-                  "Order #${orderDetails.orderID} ${orderDetails.orderAcceptanceStatus.displayTitle}",
-                  style: TextStyle(
+                  'Order #${orderDetails.orderID} ${orderDetails.orderAcceptanceStatus.displayTitle}',
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
             ),
-            color: themeShade200,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: themeShade900,
-                width: 2,
-              ),
-            ),
           ),
         ),
         centerTitle: true,
-        collapseMode: CollapseMode.parallax,
       ),
     );
   }
