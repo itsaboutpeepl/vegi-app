@@ -1,12 +1,10 @@
-import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart'
-    as ts;
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleRegularMenuItem.dart';
@@ -29,6 +27,10 @@ class RestaurantMenuScreen extends StatefulWidget {
 class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
   final List<RestaurantMenuItem> _featuredList = [];
   final List<RestaurantMenuItem> _regularList = [];
+  final ExpandableSliverListController<RestaurantMenuItem>
+      featuredListController = ExpandableSliverListController();
+  final ExpandableSliverListController<RestaurantMenuItem>
+      regularListController = ExpandableSliverListController();
 
   @override
   void initState() {
@@ -41,75 +43,58 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
   }
 
   @override
+  void dispose() {
+    featuredListController.dispose();
+    regularListController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         CustomScrollView(
           slivers: [
-            RestaurantMenuAppBar(),
+            const RestaurantMenuAppBar(),
+            const SliverPadding(padding: EdgeInsets.only(bottom: 10)),
             SliverStickyHeader(
-              header: const MenuStickyHeader(title: 'Featured Items'),
+              header: MenuStickyHeader(
+                title: 'Featured Items',
+                controller: featuredListController,
+              ),
               sliver: SliverPadding(
                 padding: const EdgeInsets.only(top: 10, bottom: 20),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => SingleFeaturedMenuItem(
-                      menuItem: _featuredList[index],
-                    ),
-                    childCount: _featuredList.length,
+                sliver: ExpandableSliverList<RestaurantMenuItem>(
+                  initialItems: _featuredList,
+                  builder: (context, item, index) => SingleFeaturedMenuItem(
+                    menuItem: _featuredList[index],
                   ),
+                  controller: featuredListController,
                 ),
               ),
             ),
             SliverStickyHeader(
-              header: const MenuStickyHeader(
+              header: MenuStickyHeader(
                 title: 'Regular Items',
+                controller: regularListController,
               ),
               sliver: SliverPadding(
                 padding: const EdgeInsets.only(top: 10, bottom: 20),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => SingleRegularMenuItem(
-                      menuItem: _regularList[index],
-                    ),
-                    childCount: _regularList.length,
+                sliver: ExpandableSliverList<RestaurantMenuItem>(
+                  initialItems: _regularList,
+                  builder: (context, item, index) => SingleRegularMenuItem(
+                    menuItem: _regularList[index],
                   ),
+                  controller: regularListController,
                 ),
               ),
             ),
+            const SliverPadding(padding: EdgeInsets.only(bottom: 100)),
           ],
         ),
         const FloatingCartBar(),
       ],
     );
-    // return Scaffold(
-    //   // floatingActionButton: OpenContainer(
-    //   //   transitionDuration: const Duration(milliseconds: 500),
-    //   //   openBuilder: (BuildContext context, VoidCallback _) {
-    //   //     return const ts.ToteScreen();
-    //   //   },
-    //   //   closedElevation: 6,
-    //   //   closedShape: const RoundedRectangleBorder(
-    //   //     borderRadius: BorderRadius.all(
-    //   //       Radius.circular(56 / 2),
-    //   //     ),
-    //   //   ),
-    //   //   closedColor: themeShade400,
-    //   //   closedBuilder: (BuildContext context, VoidCallback openContainer) {
-    //   //     return SizedBox(
-    //   //       height: 56,
-    //   //       width: 56,
-    //   //       child: Center(
-    //   //         child: Icon(
-    //   //           Icons.shopping_basket,
-    //   //           color: Colors.grey[800],
-    //   //         ),
-    //   //       ),
-    //   //     );
-    //   //   },
-    //   // ),
-    //   body:
-    // );
   }
 }
 
