@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/features/onboard/screens/verify_user_mnemonic.da
 import 'package:vegan_liverpool/features/veganHome/screens/aboutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/allOrdersPage.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/checkout_screen_2.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/faqScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/preparingOrderScreen.dart';
@@ -96,5 +97,10 @@ const veganHomeTab = AutoRoute(
       name: 'verifyUserMnemonic',
       guards: [AuthGuard],
     ),
+    AutoRoute(
+      page: CheckoutScreenPt2,
+      name: 'checkoutScreenPt2',
+      guards: [AuthGuard],
+    )
   ],
 );
