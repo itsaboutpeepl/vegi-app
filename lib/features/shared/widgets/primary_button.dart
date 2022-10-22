@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 
 class PrimaryButton extends StatelessWidget {
-  PrimaryButton({
+  const PrimaryButton({
+    Key? key,
     this.fontSize = 20,
     required this.onPressed,
     required this.label,
     this.width = 255.0,
     this.height = 50.0,
     this.preload = false,
-    this.opacity = 0.4,
     this.disabled = false,
-  });
-  final double opacity;
+  }) : super(key: key);
   final GestureTapCallback onPressed;
   final String label;
   final double width;
@@ -32,42 +31,47 @@ class PrimaryButton extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: disabled
-              ? [Theme.of(context).colorScheme.secondary, Theme.of(context).colorScheme.secondary]
+              ? [
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.secondary
+                ]
               : [
                   Theme.of(context).colorScheme.primary,
                   Theme.of(context).colorScheme.primary,
                 ],
         ),
-        borderRadius: BorderRadius.all(Radius.circular(11.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(11)),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: disabled ? () {} : onPressed,
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          highlightColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
-          splashColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.6),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
+          highlightColor:
+              Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
+          splashColor:
+              Theme.of(context).scaffoldBackgroundColor.withOpacity(0.6),
           child: Center(
             child: !preload
                 ? AutoSizeText(
                     label,
                     style: TextStyle(
-                      color: disabled ? Color(0xFF797979) : themeShade100,
-                      fontSize: this.fontSize,
+                      color: disabled ? const Color(0xFF797979) : Colors.white,
+                      fontSize: fontSize,
                       fontWeight: FontWeight.normal,
                     ),
                     maxLines: 1,
                   )
                 : Container(
+                    width: 21,
+                    height: 21,
+                    margin: const EdgeInsets.only(left: 28, right: 28),
                     child: CircularProgressIndicator(
                       strokeWidth: 3,
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Theme.of(context).canvasColor,
                       ),
                     ),
-                    width: 21.0,
-                    height: 21.0,
-                    margin: EdgeInsets.only(left: 28, right: 28),
                   ),
           ),
         ),

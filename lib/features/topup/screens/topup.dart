@@ -179,7 +179,6 @@ class _TopupScreenState extends State<TopupScreen>
               converter: TopUpViewModel.fromStore,
               builder: (_, viewModel) => Center(
                 child: PrimaryButton(
-                  opacity: 1,
                   // labelFontWeight: FontWeight.normal,
                   label: I10n.of(context).next_button,
                   onPressed: () => stripeService.handleStripe(

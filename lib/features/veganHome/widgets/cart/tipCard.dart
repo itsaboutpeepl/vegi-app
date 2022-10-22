@@ -49,7 +49,7 @@ class _TipCardState extends State<TipCard> {
                     TextSpan(
                       text: ' £${widget.tipAmount}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     )
                   ],
