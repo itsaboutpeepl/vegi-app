@@ -221,4 +221,60 @@ extension CapitalizeString on String {
     }
     return this;
   }
+
+  String capitalizeWords() {
+    return replaceAll(RegExp(' +'), ' ')
+        .split(' ')
+        .map((str) => str.capitalize())
+        .join(' ');
+  }
+}
+
+List<Map<String, String>> getSelectableDatesForDeliverySlots() {
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  final List<Map<String, String>> listOfSelectableDates = [];
+
+  DateTime currentDate = DateTime.parse(formatter.format(DateTime.now()));
+  final DateTime currentDate2 =
+      DateTime.parse(formatter.format(DateTime.now()));
+
+  for (var i = 0; i < 8; i++) {
+    listOfSelectableDates.add(
+      {currentDate.ordinalDate(): currentDate2.relativeDay(currentDate)},
+    );
+    currentDate = currentDate.add(const Duration(days: 1));
+  }
+
+  return listOfSelectableDates;
+}
+
+extension DateTimeHelpers on DateTime {
+  String relativeDay(DateTime other) {
+    switch (difference(other).inDays.abs()) {
+      case 0:
+        return 'Today';
+      case 1:
+        return 'Tomorrow';
+      default:
+        return DateFormat(DateFormat.WEEKDAY).format(other);
+    }
+  }
+
+  String ordinalDate() {
+    if (day >= 11 && day <= 13) {
+      return '${day}th';
+    }
+
+    switch (day % 10) {
+      case 1:
+        return '${day}st';
+      case 2:
+        return '${day}nd';
+      case 3:
+        return '${day}rd';
+      default:
+        return '${day}th';
+    }
+  }
 }

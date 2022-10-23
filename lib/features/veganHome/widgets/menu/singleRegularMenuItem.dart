@@ -7,28 +7,20 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 
-class SingleRegularMenuItem extends StatefulWidget {
-  const SingleRegularMenuItem({Key? key, required this.menuItem}) : super(key: key);
+class SingleRegularMenuItem extends StatelessWidget {
+  const SingleRegularMenuItem({Key? key, required this.menuItem})
+      : super(key: key);
 
   final RestaurantMenuItem menuItem;
 
   @override
-  _SingleRegularMenuItemState createState() => _SingleRegularMenuItemState();
-}
-
-class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return StoreConnector<AppState, DetailMenuItem>(
       converter: DetailMenuItem.fromStore,
       builder: (_, viewmodel) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: GestureDetector(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,60 +30,79 @@ class _SingleRegularMenuItemState extends State<SingleRegularMenuItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.menuItem.name,
-                        style: TextStyle(
+                        menuItem.name,
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
                           fontSize: 16,
                         ),
                       ),
-                      widget.menuItem.price != 0
-                          ? Text(
-                              widget.menuItem.formattedPrice,
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w900,
-                                fontSize: 13,
-                              ),
-                            )
-                          : Text(
-                              "Price on selection",
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w900,
-                                fontSize: 13,
-                              ),
-                            ),
+                      if (menuItem.price != 0)
+                        Text(
+                          menuItem.formattedPrice,
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
+                        )
+                      else
+                        const Text(
+                          'Price on selection',
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
+                        ),
+                      const SizedBox(
+                        height: 5,
+                      ),
                       Text(
-                        widget.menuItem.description,
+                        menuItem.description,
                         maxLines: 3,
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                        ),
                       )
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: CachedNetworkImage(
-                    memCacheHeight: (MediaQuery.of(context).size.height * 0.2).toInt(),
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    height: MediaQuery.of(context).size.width * 0.2,
-                    fit: BoxFit.cover,
-                    imageUrl: widget.menuItem.imageURL,
-                    errorWidget: (context, error, stackTrace) {
-                      return SizedBox.shrink(); //TODO: ADD default Image
-                    },
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black12,
+                      strokeAlign: StrokeAlign.outside,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      memCacheHeight: (size.height * 0.2).toInt(),
+                      width: size.width * 0.3,
+                      height: size.width * 0.2,
+                      fit: BoxFit.cover,
+                      imageUrl: menuItem.imageURL,
+                      errorWidget: (context, error, stackTrace) => const Icon(
+                        Icons.broken_image,
+                        size: 50,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
             onTap: () => {
-              viewmodel.setMenuItem(widget.menuItem),
-              showBarModalBottomSheet(
+              viewmodel.setMenuItem(menuItem),
+              showBarModalBottomSheet<Widget>(
                 context: context,
-                builder: (context) => DetailMenuItemView(),
+                builder: (context) => const DetailMenuItemView(),
               ),
             },
           ),
