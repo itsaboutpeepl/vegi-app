@@ -43,6 +43,7 @@ class DetailMenuViewFloatingBar extends StatelessWidget {
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
+                          if (viewmodel.loadingProductOptions) return;
                           final List<CartItem> orderList = [];
 
                           for (var i = 0; i < viewmodel.quantity; i++) {
