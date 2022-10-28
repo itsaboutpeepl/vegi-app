@@ -159,6 +159,14 @@ class SetDisplayName {
   String toString() => 'SetDisplayName : displayName: $displayName';
 }
 
+class SetEmail {
+  SetEmail(this.email);
+  String email;
+
+  @override
+  String toString() => 'SetEmail : email: $email';
+}
+
 class SetUserAvatar {
   SetUserAvatar(this.avatarUrl);
   String avatarUrl;
@@ -213,12 +221,13 @@ class DeviceIdSuccess {
   String toString() => 'DeviceIdSuccess : identifier: $identifier';
 }
 
-class AddDeliveryAddress {
-  AddDeliveryAddress(this.listOfAddresses);
+class UpdateListOfDeliveryAddresses {
+  UpdateListOfDeliveryAddresses(this.listOfAddresses);
   final List<DeliveryAddresses> listOfAddresses;
 
   @override
-  String toString() => 'AddDeliveryAddress : listOfAddresses: $listOfAddresses';
+  String toString() =>
+      'UpdateListOfDeliveryAddresses : listOfAddresses: $listOfAddresses';
 }
 
 class SetShowSeedPhraseBanner {
@@ -834,45 +843,91 @@ ThunkAction<AppState> fetchJobCall(
   };
 }
 
-ThunkAction<AppState> addNewDeliveryAddress(DeliveryAddresses newAddress) {
+ThunkAction<AppState> addDeliveryAddress({
+  required DeliveryAddresses newAddress,
+}) {
   return (Store<AppState> store) {
-    final List<DeliveryAddresses> listOfAddresses =
-        List.from(store.state.userState.listOfDeliveryAddresses);
+    try {
+      final List<DeliveryAddresses> listOfAddresses =
+          List.from(store.state.userState.listOfDeliveryAddresses)
+            ..add(newAddress);
 
-    final int index = listOfAddresses
-        .indexWhere((element) => element.internalID == newAddress.internalID);
-
-    listOfAddresses.removeWhere((element) {
-      return element.internalID == newAddress.internalID;
-    });
-
-    index == -1
-        ? listOfAddresses.add(newAddress)
-        : listOfAddresses.insert(index, newAddress);
-
-    store
-      ..dispatch(AddDeliveryAddress(listOfAddresses))
-      ..dispatch(UpdateSelectedDeliveryAddress(newAddress));
+      store.dispatch(UpdateListOfDeliveryAddresses(listOfAddresses));
+    } catch (e, s) {
+      log.error(
+        'ERROR - addDeliveryAddress',
+        error: e,
+        stackTrace: s,
+      );
+      Sentry.captureException(
+        Exception('ERROR - addDeliveryAddress: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR - addDeliveryAddress',
+      );
+    }
   };
 }
 
-ThunkAction<AppState> deleteExistingDeliveryAddress(
-    DeliveryAddresses addressToBeDeleted) {
+ThunkAction<AppState> removeDeliveryAddress({
+  required int addressId,
+}) {
   return (Store<AppState> store) {
-    final List<DeliveryAddresses> listOfAddresses =
-        List.from(store.state.userState.listOfDeliveryAddresses);
+    try {
+      final List<DeliveryAddresses> listOfAddresses =
+          List.from(store.state.userState.listOfDeliveryAddresses)
+            ..removeWhere((element) => element.internalID == addressId);
 
-    final int indexOfAddress = listOfAddresses.indexOf(addressToBeDeleted);
-    listOfAddresses.removeAt(indexOfAddress);
+      store.dispatch(UpdateListOfDeliveryAddresses(listOfAddresses));
+    } catch (e, s) {
+      log.error(
+        'ERROR - removeDeliveryAddress',
+        error: e,
+        stackTrace: s,
+      );
+      Sentry.captureException(
+        Exception('ERROR - removeDeliveryAddress: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR - removeDeliveryAddress',
+      );
+    }
+    // listOfAddresses.isEmpty
+    //     ? store.dispatch(UpdateSelectedDeliveryAddress(null))
+    //     : listOfAddresses.length - 1 == indexOfAddress
+    //         ? store.dispatch(
+    //             UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress]))
+    //         : store.dispatch(UpdateSelectedDeliveryAddress(
+    //             listOfAddresses[indexOfAddress - 1]));
+  };
+}
 
-    store.dispatch(AddDeliveryAddress(listOfAddresses));
-    listOfAddresses.isEmpty
-        ? store.dispatch(UpdateSelectedDeliveryAddress(null))
-        : listOfAddresses.length - 1 == indexOfAddress
-            ? store.dispatch(
-                UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress]))
-            : store.dispatch(UpdateSelectedDeliveryAddress(
-                listOfAddresses[indexOfAddress - 1]));
+ThunkAction<AppState> updateDeliveryAddress({
+  required int oldId,
+  required DeliveryAddresses newAddress,
+}) {
+  return (Store<AppState> store) {
+    try {
+      final List<DeliveryAddresses> listOfAddresses =
+          List.from(store.state.userState.listOfDeliveryAddresses);
+      final index =
+          listOfAddresses.indexWhere((element) => element.internalID == oldId);
+
+      listOfAddresses
+        ..removeAt(index)
+        ..insert(index, newAddress);
+
+      store.dispatch(UpdateListOfDeliveryAddresses(listOfAddresses));
+    } catch (e, s) {
+      log.error(
+        'ERROR - updateDeliveryAddress',
+        error: e,
+        stackTrace: s,
+      );
+      Sentry.captureException(
+        Exception('ERROR - updateDeliveryAddress: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR - updateDeliveryAddress',
+      );
+    }
   };
 }
 

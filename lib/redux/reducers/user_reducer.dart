@@ -14,6 +14,7 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, LogoutRequestSuccess>(_logoutSuccess),
   TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
   TypedReducer<UserState, SetDisplayName>(_setDisplayName),
+  TypedReducer<UserState, SetEmail>(_setEmail),
   TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
   TypedReducer<UserState, ReLogin>(_reLoginUser),
   TypedReducer<UserState, BackupSuccess>(_backupSuccess),
@@ -25,7 +26,7 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed),
   TypedReducer<UserState, UpdateCurrency>(_updateCurrency),
   TypedReducer<UserState, UpdateLocale>(_updateLocale),
-  TypedReducer<UserState, AddDeliveryAddress>(_addDeliveryAddress),
+  TypedReducer<UserState, UpdateListOfDeliveryAddresses>(_addDeliveryAddress),
   TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner),
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
 ]);
@@ -167,6 +168,13 @@ UserState _setDisplayName(
   return state.copyWith(displayName: action.displayName);
 }
 
+UserState _setEmail(
+  UserState state,
+  SetEmail action,
+) {
+  return state.copyWith(email: action.email);
+}
+
 UserState _setUserAvatar(
   UserState state,
   SetUserAvatar action,
@@ -204,7 +212,7 @@ UserState _deviceIdSuccess(
 
 UserState _addDeliveryAddress(
   UserState state,
-  AddDeliveryAddress action,
+  UpdateListOfDeliveryAddresses action,
 ) {
   return state.copyWith(listOfDeliveryAddresses: action.listOfAddresses);
 }
