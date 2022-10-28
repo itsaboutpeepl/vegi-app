@@ -1,20 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:vegan_liverpool/common/router/routes.gr.dart';
-import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/floating_cart_bar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleRegularMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurantMenuAppBar.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/checkout/floating_cart_bar_vm.dart';
 
 class RestaurantMenuScreen extends StatefulWidget {
   const RestaurantMenuScreen({Key? key, required this.menuList})

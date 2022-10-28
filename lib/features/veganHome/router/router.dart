@@ -7,14 +7,12 @@ import 'package:vegan_liverpool/features/onboard/screens/verify_user_mnemonic.da
 import 'package:vegan_liverpool/features/topup/screens/topup.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/aboutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/allOrdersPage.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/checkout_screen_2.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/faqScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/preparingOrderScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/scheduledOrdersPage.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
 
 const veganHomeTab = AutoRoute(
@@ -33,17 +31,6 @@ const veganHomeTab = AutoRoute(
       name: 'restaurantMenuScreen',
       guards: [AuthGuard],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-    ),
-    CustomRoute(
-      page: ToteScreen,
-      name: 'toteScreen',
-      guards: [AuthGuard],
-    ),
-    CustomRoute(
-      page: CheckoutScreen,
-      name: 'checkoutScreen',
-      guards: [AuthGuard],
-      transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute(
       page: OrderConfirmedScreen,

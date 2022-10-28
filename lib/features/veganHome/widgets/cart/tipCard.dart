@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/tip_selection_vm.dart';
 
 class TipCard extends StatefulWidget {
