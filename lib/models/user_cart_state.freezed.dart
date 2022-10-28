@@ -41,6 +41,7 @@ mixin _$UserCartState {
   String get orderID => throw _privateConstructorUsedError;
   double get selectedGBPxAmount => throw _privateConstructorUsedError;
   double get selectedPPLAmount => throw _privateConstructorUsedError;
+  bool get payButtonLoading => throw _privateConstructorUsedError;
   bool get transferringTokens => throw _privateConstructorUsedError;
   bool get errorCompletingPayment => throw _privateConstructorUsedError;
   bool get confirmedPayment => throw _privateConstructorUsedError;
@@ -58,6 +59,8 @@ mixin _$UserCartState {
   String get deliveryInstructions => throw _privateConstructorUsedError;
   int get deliveryMethodId => throw _privateConstructorUsedError;
   int get collectionMethodId => throw _privateConstructorUsedError;
+  PaymentMethod? get selectedPaymentMethod =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -89,6 +92,7 @@ abstract class $UserCartStateCopyWith<$Res> {
       String orderID,
       double selectedGBPxAmount,
       double selectedPPLAmount,
+      bool payButtonLoading,
       bool transferringTokens,
       bool errorCompletingPayment,
       bool confirmedPayment,
@@ -104,7 +108,8 @@ abstract class $UserCartStateCopyWith<$Res> {
       int restaurantPlatformFee,
       String deliveryInstructions,
       int deliveryMethodId,
-      int collectionMethodId});
+      int collectionMethodId,
+      PaymentMethod? selectedPaymentMethod});
 
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress;
@@ -140,6 +145,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? orderID = null,
     Object? selectedGBPxAmount = null,
     Object? selectedPPLAmount = null,
+    Object? payButtonLoading = null,
     Object? transferringTokens = null,
     Object? errorCompletingPayment = null,
     Object? confirmedPayment = null,
@@ -156,6 +162,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? deliveryInstructions = null,
     Object? deliveryMethodId = null,
     Object? collectionMethodId = null,
+    Object? selectedPaymentMethod = freezed,
   }) {
     return _then(_value.copyWith(
       cartItems: null == cartItems
@@ -226,6 +233,10 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
           ? _value.selectedPPLAmount
           : selectedPPLAmount // ignore: cast_nullable_to_non_nullable
               as double,
+      payButtonLoading: null == payButtonLoading
+          ? _value.payButtonLoading
+          : payButtonLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
       transferringTokens: null == transferringTokens
           ? _value.transferringTokens
           : transferringTokens // ignore: cast_nullable_to_non_nullable
@@ -290,6 +301,10 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
           ? _value.collectionMethodId
           : collectionMethodId // ignore: cast_nullable_to_non_nullable
               as int,
+      selectedPaymentMethod: freezed == selectedPaymentMethod
+          ? _value.selectedPaymentMethod
+          : selectedPaymentMethod // ignore: cast_nullable_to_non_nullable
+              as PaymentMethod?,
     ) as $Val);
   }
 
@@ -345,6 +360,7 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       String orderID,
       double selectedGBPxAmount,
       double selectedPPLAmount,
+      bool payButtonLoading,
       bool transferringTokens,
       bool errorCompletingPayment,
       bool confirmedPayment,
@@ -360,7 +376,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       int restaurantPlatformFee,
       String deliveryInstructions,
       int deliveryMethodId,
-      int collectionMethodId});
+      int collectionMethodId,
+      PaymentMethod? selectedPaymentMethod});
 
   @override
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
@@ -396,6 +413,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? orderID = null,
     Object? selectedGBPxAmount = null,
     Object? selectedPPLAmount = null,
+    Object? payButtonLoading = null,
     Object? transferringTokens = null,
     Object? errorCompletingPayment = null,
     Object? confirmedPayment = null,
@@ -412,6 +430,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? deliveryInstructions = null,
     Object? deliveryMethodId = null,
     Object? collectionMethodId = null,
+    Object? selectedPaymentMethod = freezed,
   }) {
     return _then(_$_UserCartState(
       cartItems: null == cartItems
@@ -482,6 +501,10 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.selectedPPLAmount
           : selectedPPLAmount // ignore: cast_nullable_to_non_nullable
               as double,
+      payButtonLoading: null == payButtonLoading
+          ? _value.payButtonLoading
+          : payButtonLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
       transferringTokens: null == transferringTokens
           ? _value.transferringTokens
           : transferringTokens // ignore: cast_nullable_to_non_nullable
@@ -546,6 +569,10 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.collectionMethodId
           : collectionMethodId // ignore: cast_nullable_to_non_nullable
               as int,
+      selectedPaymentMethod: freezed == selectedPaymentMethod
+          ? _value.selectedPaymentMethod
+          : selectedPaymentMethod // ignore: cast_nullable_to_non_nullable
+              as PaymentMethod?,
     ));
   }
 }
@@ -572,6 +599,7 @@ class _$_UserCartState extends _UserCartState {
       this.orderID = '',
       this.selectedGBPxAmount = 0.0,
       this.selectedPPLAmount = 0.0,
+      this.payButtonLoading = false,
       this.transferringTokens = false,
       this.errorCompletingPayment = false,
       this.confirmedPayment = false,
@@ -587,7 +615,8 @@ class _$_UserCartState extends _UserCartState {
       this.restaurantPlatformFee = 0,
       this.deliveryInstructions = '',
       this.deliveryMethodId = 0,
-      this.collectionMethodId = 0})
+      this.collectionMethodId = 0,
+      this.selectedPaymentMethod = null})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>
@@ -646,6 +675,9 @@ class _$_UserCartState extends _UserCartState {
   final double selectedPPLAmount;
   @override
   @JsonKey()
+  final bool payButtonLoading;
+  @override
+  @JsonKey()
   final bool transferringTokens;
   @override
   @JsonKey()
@@ -692,10 +724,13 @@ class _$_UserCartState extends _UserCartState {
   @override
   @JsonKey()
   final int collectionMethodId;
+  @override
+  @JsonKey()
+  final PaymentMethod? selectedPaymentMethod;
 
   @override
   String toString() {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, cartDeliveryCharge: $cartDeliveryCharge, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, deliveryCharge: $deliveryCharge, collectionCharge: $collectionCharge, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, deliveryMethodId: $deliveryMethodId, collectionMethodId: $collectionMethodId)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, cartDeliveryCharge: $cartDeliveryCharge, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, deliveryCharge: $deliveryCharge, collectionCharge: $collectionCharge, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, deliveryMethodId: $deliveryMethodId, collectionMethodId: $collectionMethodId, selectedPaymentMethod: $selectedPaymentMethod)';
   }
 
   @override
@@ -719,8 +754,7 @@ class _$_UserCartState extends _UserCartState {
                 .equals(other.deliverySlots, deliverySlots) &&
             const DeepCollectionEquality()
                 .equals(other.collectionSlots, collectionSlots) &&
-            (identical(
-                    other.selectedDeliveryAddress, selectedDeliveryAddress) ||
+            (identical(other.selectedDeliveryAddress, selectedDeliveryAddress) ||
                 other.selectedDeliveryAddress == selectedDeliveryAddress) &&
             const DeepCollectionEquality()
                 .equals(other.selectedTimeSlot, selectedTimeSlot) &&
@@ -735,6 +769,8 @@ class _$_UserCartState extends _UserCartState {
                 other.selectedGBPxAmount == selectedGBPxAmount) &&
             (identical(other.selectedPPLAmount, selectedPPLAmount) ||
                 other.selectedPPLAmount == selectedPPLAmount) &&
+            (identical(other.payButtonLoading, payButtonLoading) ||
+                other.payButtonLoading == payButtonLoading) &&
             (identical(other.transferringTokens, transferringTokens) ||
                 other.transferringTokens == transferringTokens) &&
             (identical(other.errorCompletingPayment, errorCompletingPayment) ||
@@ -747,8 +783,7 @@ class _$_UserCartState extends _UserCartState {
                 other.restaurantID == restaurantID) &&
             (identical(other.restaurantAddress, restaurantAddress) ||
                 other.restaurantAddress == restaurantAddress) &&
-            (identical(
-                    other.restaurantWalletAddress, restaurantWalletAddress) ||
+            (identical(other.restaurantWalletAddress, restaurantWalletAddress) ||
                 other.restaurantWalletAddress == restaurantWalletAddress) &&
             (identical(other.deliveryCharge, deliveryCharge) ||
                 other.deliveryCharge == deliveryCharge) &&
@@ -767,7 +802,9 @@ class _$_UserCartState extends _UserCartState {
             (identical(other.deliveryMethodId, deliveryMethodId) ||
                 other.deliveryMethodId == deliveryMethodId) &&
             (identical(other.collectionMethodId, collectionMethodId) ||
-                other.collectionMethodId == collectionMethodId));
+                other.collectionMethodId == collectionMethodId) &&
+            (identical(other.selectedPaymentMethod, selectedPaymentMethod) ||
+                other.selectedPaymentMethod == selectedPaymentMethod));
   }
 
   @JsonKey(ignore: true)
@@ -791,6 +828,7 @@ class _$_UserCartState extends _UserCartState {
         orderID,
         selectedGBPxAmount,
         selectedPPLAmount,
+        payButtonLoading,
         transferringTokens,
         errorCompletingPayment,
         confirmedPayment,
@@ -806,7 +844,8 @@ class _$_UserCartState extends _UserCartState {
         restaurantPlatformFee,
         deliveryInstructions,
         deliveryMethodId,
-        collectionMethodId
+        collectionMethodId,
+        selectedPaymentMethod
       ]);
 
   @JsonKey(ignore: true)
@@ -842,6 +881,7 @@ abstract class _UserCartState extends UserCartState {
       final String orderID,
       final double selectedGBPxAmount,
       final double selectedPPLAmount,
+      final bool payButtonLoading,
       final bool transferringTokens,
       final bool errorCompletingPayment,
       final bool confirmedPayment,
@@ -857,7 +897,8 @@ abstract class _UserCartState extends UserCartState {
       final int restaurantPlatformFee,
       final String deliveryInstructions,
       final int deliveryMethodId,
-      final int collectionMethodId}) = _$_UserCartState;
+      final int collectionMethodId,
+      final PaymentMethod? selectedPaymentMethod}) = _$_UserCartState;
   _UserCartState._() : super._();
 
   factory _UserCartState.fromJson(Map<String, dynamic> json) =
@@ -898,6 +939,8 @@ abstract class _UserCartState extends UserCartState {
   @override
   double get selectedPPLAmount;
   @override
+  bool get payButtonLoading;
+  @override
   bool get transferringTokens;
   @override
   bool get errorCompletingPayment;
@@ -929,6 +972,8 @@ abstract class _UserCartState extends UserCartState {
   int get deliveryMethodId;
   @override
   int get collectionMethodId;
+  @override
+  PaymentMethod? get selectedPaymentMethod;
   @override
   @JsonKey(ignore: true)
   _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>

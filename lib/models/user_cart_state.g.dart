@@ -42,6 +42,7 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       selectedGBPxAmount:
           (json['selectedGBPxAmount'] as num?)?.toDouble() ?? 0.0,
       selectedPPLAmount: (json['selectedPPLAmount'] as num?)?.toDouble() ?? 0.0,
+      payButtonLoading: json['payButtonLoading'] as bool? ?? false,
       transferringTokens: json['transferringTokens'] as bool? ?? false,
       errorCompletingPayment: json['errorCompletingPayment'] as bool? ?? false,
       confirmedPayment: json['confirmedPayment'] as bool? ?? false,
@@ -63,6 +64,9 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       deliveryInstructions: json['deliveryInstructions'] as String? ?? '',
       deliveryMethodId: json['deliveryMethodId'] as int? ?? 0,
       collectionMethodId: json['collectionMethodId'] as int? ?? 0,
+      selectedPaymentMethod: $enumDecodeNullable(
+              _$PaymentMethodEnumMap, json['selectedPaymentMethod']) ??
+          null,
     );
 
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
@@ -84,6 +88,7 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'orderID': instance.orderID,
       'selectedGBPxAmount': instance.selectedGBPxAmount,
       'selectedPPLAmount': instance.selectedPPLAmount,
+      'payButtonLoading': instance.payButtonLoading,
       'transferringTokens': instance.transferringTokens,
       'errorCompletingPayment': instance.errorCompletingPayment,
       'confirmedPayment': instance.confirmedPayment,
@@ -100,10 +105,18 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'deliveryInstructions': instance.deliveryInstructions,
       'deliveryMethodId': instance.deliveryMethodId,
       'collectionMethodId': instance.collectionMethodId,
+      'selectedPaymentMethod':
+          _$PaymentMethodEnumMap[instance.selectedPaymentMethod],
     };
 
 const _$FulfilmentMethodEnumMap = {
   FulfilmentMethod.collection: 'collection',
   FulfilmentMethod.delivery: 'delivery',
   FulfilmentMethod.none: 'none',
+};
+
+const _$PaymentMethodEnumMap = {
+  PaymentMethod.stripe: 'stripe',
+  PaymentMethod.peeplPay: 'peeplPay',
+  PaymentMethod.applePay: 'applePay',
 };

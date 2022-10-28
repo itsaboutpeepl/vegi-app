@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/constants/demoData.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
 
 part 'user_cart_state.freezed.dart';
 part 'user_cart_state.g.dart';
@@ -28,6 +28,7 @@ class UserCartState with _$UserCartState {
     @Default('') String orderID,
     @Default(0.0) double selectedGBPxAmount,
     @Default(0.0) double selectedPPLAmount,
+    @Default(false) bool payButtonLoading,
     @Default(false) bool transferringTokens,
     @Default(false) bool errorCompletingPayment,
     @Default(false) bool confirmedPayment,
@@ -44,6 +45,7 @@ class UserCartState with _$UserCartState {
     @Default('') String deliveryInstructions,
     @Default(0) int deliveryMethodId,
     @Default(0) int collectionMethodId,
+    @Default(null) PaymentMethod? selectedPaymentMethod,
   }) = _UserCartState;
 
   const UserCartState._();
@@ -64,12 +66,12 @@ class UserCartState with _$UserCartState {
         orderID: '',
         selectedGBPxAmount: 0,
         selectedPPLAmount: 0,
+        payButtonLoading: false,
         transferringTokens: false,
         errorCompletingPayment: false,
         confirmedPayment: false,
         restaurantName: '',
         restaurantID: '',
-        restaurantAddress: demoAddress,
         restaurantWalletAddress: '',
         deliveryCharge: 0,
         collectionCharge: 0,
