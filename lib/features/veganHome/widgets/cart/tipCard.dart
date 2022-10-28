@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/checkout/tip_selection_vm.dart';
 
 class TipCard extends StatefulWidget {
   const TipCard({Key? key, required this.emoji, required this.tipAmount})
@@ -19,8 +20,8 @@ class TipCard extends StatefulWidget {
 class _TipCardState extends State<TipCard> {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, CheckoutViewModel>(
-      converter: CheckoutViewModel.fromStore,
+    return StoreConnector<AppState, TipSelectionViewModel>(
+      converter: TipSelectionViewModel.fromStore,
       distinct: true,
       builder: (_, viewmodel) {
         return Card(
@@ -32,8 +33,8 @@ class _TipCardState extends State<TipCard> {
             onTap: () {
               Future.delayed(const Duration(milliseconds: 100), () {
                 viewmodel.selectedUserTip == widget.tipAmount
-                    ? viewmodel.updateTipAmount(0)
-                    : viewmodel.updateTipAmount(widget.tipAmount);
+                    ? viewmodel.updateUserTip(tipAmount: 0)
+                    : viewmodel.updateUserTip(tipAmount: widget.tipAmount);
               });
             },
             child: Padding(
