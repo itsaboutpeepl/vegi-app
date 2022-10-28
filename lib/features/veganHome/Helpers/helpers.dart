@@ -33,16 +33,37 @@ String mapPreviewImage({required double latitude, required double longitude}) {
 }
 
 String mapToString(Map<String, String> map) {
+  final DateFormat dateFormat = DateFormat(DateFormat.HOUR);
   final DateTime startTime = DateTime.parse(map.entries.first.value);
   final DateTime endTime = DateTime.parse(map.entries.last.value);
 
-  return '${startTime.hour.toString()}:00 - ${endTime.hour.toString()}:00';
+  return '${dateFormat.format(startTime).replaceAll(' AM', '').replaceAll(' PM', '')}-${dateFormat.format(endTime)}';
 }
 
 String mapToStringDate(Map<String, String> map) {
   final DateTime startTime = DateTime.parse(map.entries.first.value);
   final DateFormat formatter = DateFormat(DateFormat.ABBR_MONTH_WEEKDAY_DAY);
   return formatter.format(startTime);
+}
+
+String slotMapToString(Map<String, String> map) {
+  final DateTime startTime = DateTime.parse(map.entries.first.value);
+  final DateTime endTime = DateTime.parse(map.entries.last.value);
+  final DateFormat hourFormatter = DateFormat(DateFormat.HOUR);
+  final DateFormat monthFormatter = DateFormat(DateFormat.ABBR_MONTH);
+
+  final String startHour = hourFormatter
+      .format(startTime)
+      .replaceAll(' AM', '')
+      .replaceAll(' PM', '');
+
+  final String endHour = hourFormatter.format(endTime).replaceAll(' ', '');
+
+  final String month = monthFormatter.format(startTime);
+
+  //12-1pm, 13th Oct
+
+  return '$startHour-$endHour, ${startTime.ordinalDate()} $month';
 }
 
 String formatDateForOrderObject(String date) {
@@ -171,6 +192,10 @@ double getPPLRewardsFromPence(num penceAmount) {
   return getPPLValueFromPence((penceAmount * 5) / 100);
 }
 
+String getPoundValueFromPPL(num pplAmount) {
+  return (pplAmount / 10).toStringAsFixed(2);
+}
+
 // Conversion
 // 1000GBP => 100,000 => 10,000 PPL Tokens
 // 1GBP => 100 pence => 10 PPL tokens
@@ -212,6 +237,7 @@ extension DateTimeExtension on DateTime {
 
 extension CapitalizeString on String {
   String capitalize() {
+    if (isEmpty) return '';
     return this[0].toUpperCase() + substring(1);
   }
 
@@ -228,6 +254,11 @@ extension CapitalizeString on String {
         .map((str) => str.capitalize())
         .join(' ');
   }
+}
+
+extension NumHelpers on num {
+  String get formattedPrice => '£${(this / 100).toStringAsFixed(2)}';
+  String get formattedPriceNoDec => '£${(this / 100).toStringAsFixed(0)}';
 }
 
 List<Map<String, String>> getSelectableDatesForDeliverySlots() {
@@ -250,6 +281,18 @@ List<Map<String, String>> getSelectableDatesForDeliverySlots() {
 }
 
 extension DateTimeHelpers on DateTime {
+  /// Returns a [String] containing the relative day from [other].
+  /// Counts in terms of absolute values.
+  ///
+  /// Example:
+  ///
+  /// Current Date is 12-02-2022
+  ///
+  /// Other Date is 13-02-2022: Will return 'Today'
+  ///
+  /// Other date is 14-02-2022: Will return 'Tomorrow'
+  ///
+  /// Any other day is returned as [DateFormat.WEEKDAY]
   String relativeDay(DateTime other) {
     switch (difference(other).inDays.abs()) {
       case 0:
@@ -261,6 +304,13 @@ extension DateTimeHelpers on DateTime {
     }
   }
 
+  /// Returns a [String] containing the Ordinal Date
+  ///
+  /// Example:
+  ///
+  /// 01-12-2022 will return 1st
+  ///
+  /// 29-08-2021 will return 29th
   String ordinalDate() {
     if (day >= 11 && day <= 13) {
       return '${day}th';
