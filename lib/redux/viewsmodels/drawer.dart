@@ -14,13 +14,7 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
 class DrawerViewModel extends Equatable {
-  final void Function() logout;
-  final String Function() firstName;
-  final String pplBalance;
-  final String gbpxBalance;
-  final String avatarUrl;
-
-  DrawerViewModel({
+  const DrawerViewModel({
     required this.firstName,
     required this.logout,
     required this.pplBalance,
@@ -28,7 +22,7 @@ class DrawerViewModel extends Equatable {
     required this.avatarUrl,
   });
 
-  static DrawerViewModel fromStore(Store<AppState> store) {
+  factory DrawerViewModel.fromStore(Store<AppState> store) {
     final CashWalletState cashWalletState = store.state.cashWalletState;
 
     return DrawerViewModel(
@@ -37,19 +31,26 @@ class DrawerViewModel extends Equatable {
       },
       avatarUrl: store.state.userState.avatarUrl,
       firstName: () {
-        return store.state.userState.displayName.split(' ')[0];
+        final String fullName = store.state.userState.displayName;
+        return fullName.split(' ')[0];
       },
-      pplBalance: cashWalletState.tokens.containsKey(pplToken.address)
-          ? cashWalletState.tokens[pplToken.address]!.getBalance()
-          : '0',
-      gbpxBalance: cashWalletState.tokens.containsKey(gbpxToken.address)
-          ? cashWalletState.tokens[gbpxToken.address]!.getBalance()
-          : '0',
+      pplBalance: cashWalletState.tokens[pplToken.address]!
+          .getAmount()
+          .toStringAsFixed(2),
+      gbpxBalance: cashWalletState.tokens[gbpxToken.address]!
+          .getAmount()
+          .toStringAsFixed(2),
     );
   }
 
+  final void Function() logout;
+  final String Function() firstName;
+  final String pplBalance;
+  final String gbpxBalance;
+  final String avatarUrl;
+
   @override
-  List get props => [
+  List<Object> get props => [
         avatarUrl,
         pplBalance,
         gbpxBalance,
