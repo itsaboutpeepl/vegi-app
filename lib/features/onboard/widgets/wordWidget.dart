@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Word extends StatelessWidget {
-  Word({
+  const Word({
     Key? key,
     required this.mnemonic,
     required this.wordIndex,
@@ -12,10 +12,9 @@ class Word extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autofocus: false,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(0.0),
-        labelText: "Word" + wordIndex.toString(),
+        contentPadding: EdgeInsets.zero,
+        labelText: 'Word $wordIndex',
         border: UnderlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.onSurface,
@@ -42,7 +41,7 @@ class Word extends StatelessWidget {
       cursorColor: Theme.of(context).colorScheme.onSurface,
       validator: (String? value) {
         if (mnemonic[wordIndex - 1] != value?.trim()) {
-          return "Does not match";
+          return 'Does not match';
         }
         return null;
       },

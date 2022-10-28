@@ -99,7 +99,7 @@ class Token with _$Token implements Comparable<Token> {
     required Function onError,
   }) async {
     try {
-      String price = await chargeApi.price(address);
+      final String price = await chargeApi.price(address);
       onDone(Price(currency: currency, quote: Decimal.parse(price).toString()));
     } catch (e, s) {
       onError(e, s);

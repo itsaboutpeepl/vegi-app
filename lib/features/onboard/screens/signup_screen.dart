@@ -97,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onTap: () {
                       showDialog<void>(
                         context: context,
-                        builder: (BuildContext context) => SignUpDialog(),
+                        builder: (BuildContext context) => const SignUpDialog(),
                       );
                     },
                     child: Center(
@@ -307,7 +307,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       GestureDetector(
                         onTap: () => launchUrl('https://vegiapp.co.uk/privacy'),
                         child: Text(
-                          'By signing up, you agree to the vegi Terms & Conditions which can be found here',
+                          'By signing up, you agree to the vegi'
+                          ' Terms & Conditions which can be found here',
                           style: TextStyle(
                             color: Colors.grey[500],
                           ),

@@ -10,14 +10,16 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
 
 class PinCodeScreen extends StatefulWidget {
+  const PinCodeScreen({Key? key}) : super(key: key);
+
   @override
-  _PinCodeScreenState createState() => _PinCodeScreenState();
+  State<PinCodeScreen> createState() => _PinCodeScreenState();
 }
 
 class _PinCodeScreenState extends State<PinCodeScreen> {
-  final pincodeController = TextEditingController(text: "");
-  String currentText = "";
-  late Flushbar flush;
+  final pincodeController = TextEditingController(text: '');
+  String currentText = '';
+  late Flushbar<bool> flush;
   final formKey = GlobalKey<FormState>();
   // StreamController<ErrorAnimationType> errorController;
 
@@ -37,7 +39,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
@@ -47,16 +49,13 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height * .5,
               width: MediaQuery.of(context).size.width * .9,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 100,
                   ),
                   Expanded(
@@ -70,19 +69,19 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                       children: <Widget>[
                         Text(
                           I10n.of(context).enter_pincode,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         StoreConnector<AppState, LockScreenViewModel>(
                           converter: LockScreenViewModel.fromStore,
                           builder: (_, viewModel) => Form(
                             key: formKey,
-                            child: Container(
+                            child: SizedBox(
                               width: 250,
                               child: PinCodeTextField(
                                 backgroundColor: Colors.transparent,
@@ -93,10 +92,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                 enableActiveFill: true,
                                 obscureText: true,
                                 enablePinAutofill: false,
-                                keyboardType: TextInputType.numberWithOptions(
-                                  signed: false,
-                                  decimal: false,
-                                ),
+                                keyboardType: TextInputType.number,
                                 animationType: AnimationType.fade,
                                 controller: pincodeController,
                                 // errorAnimationController: errorController,
@@ -105,7 +101,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                             value == viewModel.pincode
                                         ? I10n.of(context).invalid_pincode
                                         : null,
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                   fontSize: 30,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -125,7 +121,8 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                 ),
                                 onCompleted: (value) {
                                   if (viewModel.pincode == value) {
-                                    context.router.replaceAll([MainScreen()]);
+                                    context.router
+                                        .replaceAll([const MainScreen()]);
                                     pincodeController.clear();
                                   } else {
                                     flush = Flushbar<bool>(
@@ -139,15 +136,14 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                             .primary,
                                       ),
                                       mainButton: TextButton(
-                                        onPressed: () async {
-                                          flush.dismiss(true);
-                                        },
+                                        onPressed: () => flush.dismiss(true),
                                         child: Text(
                                           I10n.of(context).try_again,
                                           style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
                                         ),
                                       ),
                                     )..show(context).then(

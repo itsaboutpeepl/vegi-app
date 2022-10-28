@@ -5,12 +5,13 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_app_bar.dart';
 
 class MyScaffold extends StatelessWidget {
-  MyScaffold({
+  const MyScaffold({
+    Key? key,
     required this.title,
     required this.body,
     this.automaticallyImplyLeading = true,
     this.resizeToAvoidBottomInset = true,
-  });
+  }) : super(key: key);
   final String title;
   final Widget body;
   final bool automaticallyImplyLeading;
@@ -25,7 +26,7 @@ class MyScaffold extends StatelessWidget {
         child: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           iconTheme: IconThemeData(
-            color: Theme.of(context).colorScheme.onSurface, //change your color here
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           automaticallyImplyLeading: automaticallyImplyLeading,
           backgroundColor: themeShade300,

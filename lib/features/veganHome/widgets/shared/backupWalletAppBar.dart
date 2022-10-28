@@ -19,29 +19,35 @@ class BackupWalletAppBar extends StatelessWidget {
                 toolbarHeight: 30,
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.transparent,
-                floating: false,
-                pinned: false,
-                snap: false,
                 centerTitle: false,
                 expandedHeight: MediaQuery.of(context).size.height * 0.01,
                 flexibleSpace: FlexibleSpaceBar(
                   title: GestureDetector(
-                    onTap: () => context.router.push(ShowUserMnemonic()),
+                    onTap: () => context.router.push(const ShowUserMnemonic()),
                     child: Card(
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      child: SizedBox(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      color: themeShade200,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: themeShade900,
+                          width: 2,
+                        ),
+                      ),
+                      child: const SizedBox(
                         child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: EdgeInsets.all(12),
                           child: Text.rich(
                             TextSpan(
-                              text: "Please save your seed phrase",
+                              text: 'Please save your seed phrase',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               ),
                               children: [
                                 TextSpan(
-                                  text: "\nYour seed phrase is used to restore access to your wallet",
+                                  text:
+                                      '\nYour seed phrase is used to restore access to your wallet',
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -52,21 +58,12 @@ class BackupWalletAppBar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      color: themeShade200,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(
-                          color: themeShade900,
-                          width: 2,
-                        ),
-                      ),
                     ),
                   ),
                   centerTitle: true,
-                  collapseMode: CollapseMode.parallax,
                 ),
               )
-            : SliverToBoxAdapter(
+            : const SliverToBoxAdapter(
                 child: SizedBox.shrink(),
               );
       },

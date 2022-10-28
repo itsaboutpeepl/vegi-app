@@ -17,73 +17,75 @@ class FloatingCartBar extends StatelessWidget {
       converter: FloatingCartBarViewModel.fromStore,
       builder: (_, viewmodel) {
         return AnimatedPositioned(
-            duration: const Duration(milliseconds: 500),
-            bottom: viewmodel.hasItems ? 0 : -100,
-            child: Column(
-              children: [
-                if (viewmodel.isBelowOrderMinimum)
-                  Container(
-                    height: 25,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black,
-                    child: Center(
-                      child: Text(
-                        'This restaurant is not accepting orders below ${viewmodel.orderMinimum}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ColoredBox(
-                  color: themeShade200,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 100,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: ShimmerButton(
-                        buttonContent: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${viewmodel.itemCount} Items',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  viewmodel.itemTotal,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            const Text(
-                              'Next',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        buttonAction: () =>
-                            context.router.push(const CheckoutScreenPt2()),
-                        baseColor: Colors.white,
-                        highlightColor: Colors.grey.shade200,
-                      ),
+          duration: const Duration(milliseconds: 500),
+          bottom: viewmodel.hasItems ? 0 : -100,
+          child: Column(
+            children: [
+              if (viewmodel.isBelowOrderMinimum)
+                Container(
+                  height: 25,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.black,
+                  child: Center(
+                    child: Text(
+                      'This restaurant is not accepting orders below ${viewmodel.orderMinimum}',
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
-              ],
-            ));
+              ColoredBox(
+                color: themeShade200,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ShimmerButton(
+                      buttonContent: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${viewmodel.itemCount} Items',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                viewmodel.itemTotal,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          const Text(
+                            'Next',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      buttonAction: () =>
+                          context.router.push(const CheckoutScreenPt2()),
+                      baseColor: Colors.white,
+                      highlightColor: Colors.grey.shade200,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
   }

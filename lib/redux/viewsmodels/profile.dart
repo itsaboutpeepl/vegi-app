@@ -1,19 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 class ProfileViewModel extends Equatable {
-  final String phone;
-  final String walletAddress;
-  final String avatarUrl;
-  final String displayName;
-  final List<String> seedPhrase;
-  final void Function(String displayName) updateDisplayName;
-  final void Function(ImageSource source) editAvatar;
-
-  ProfileViewModel({
+  const ProfileViewModel({
     required this.phone,
     required this.walletAddress,
     required this.displayName,
@@ -23,7 +15,7 @@ class ProfileViewModel extends Equatable {
     required this.updateDisplayName,
   });
 
-  static ProfileViewModel fromStore(Store<AppState> store) {
+  factory ProfileViewModel.fromStore(Store<AppState> store) {
     return ProfileViewModel(
       displayName: store.state.userState.displayName,
       phone: store.state.userState.phoneNumber,
@@ -39,8 +31,16 @@ class ProfileViewModel extends Equatable {
     );
   }
 
+  final String phone;
+  final String walletAddress;
+  final String avatarUrl;
+  final String displayName;
+  final List<String> seedPhrase;
+  final void Function(String displayName) updateDisplayName;
+  final void Function(ImageSource source) editAvatar;
+
   @override
-  List get props => [
+  List<Object> get props => [
         walletAddress,
         phone,
         displayName,

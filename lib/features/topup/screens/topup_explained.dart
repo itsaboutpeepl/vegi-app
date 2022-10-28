@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 
 class TopupExplained extends StatefulWidget {
-  TopupExplained({
+  const TopupExplained({
     Key? key,
   }) : super(key: key);
 
   @override
-  _TopupExplainedState createState() => _TopupExplainedState();
+  State<TopupExplained> createState() => _TopupExplainedState();
 }
 
 class _TopupExplainedState extends State<TopupExplained> {
@@ -18,9 +18,9 @@ class _TopupExplainedState extends State<TopupExplained> {
   }
 
   final List<String> texts = [
-    "Top up using Stripe, one of the worlds most trusted payment processors.",
-    "Just use your credit or debit card. It takes less than a minute. 😉",
-    "Stripe is fully regulated by the FCA and used by millions of businesses worldwide."
+    'Top up using Stripe, one of the worlds most trusted payment processors.',
+    'Just use your credit or debit card. It takes less than a minute. 😉',
+    'Stripe is fully regulated by the FCA and used by millions of businesses worldwide.'
   ];
 
   @override
@@ -29,9 +29,8 @@ class _TopupExplainedState extends State<TopupExplained> {
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Flexible(
+            const Flexible(
               child: Text(
                 'Top up your Peepl wallet using Stripe',
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),

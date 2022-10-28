@@ -73,12 +73,14 @@ class _OnBoardScreenState extends State<OnBoardScreen>
       const FirstOnboardingPage(),
       const OnBoardingScreenGeneric(
         'Shop plant-based',
-        'Find plant-based, planet-kind and ethical products from local businesses and growers',
+        'Find plant-based, planet-kind and ethical '
+            'products from local businesses and growers',
         'plant-icon.svg',
       ),
       const OnBoardingScreenGeneric(
         'Shop local',
-        'vegi is a digital wallet that supports independents only. Top your wallet and spend with Liverpool locals',
+        'vegi is a digital wallet that supports independents'
+            ' only. Top your wallet and spend with Liverpool locals',
         'local-icon.svg',
       ),
       const OnBoardingScreenGeneric(

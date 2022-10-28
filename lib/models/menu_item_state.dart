@@ -22,7 +22,6 @@ class MenuItemState with _$MenuItemState {
   const MenuItemState._();
 
   factory MenuItemState.initial() => MenuItemState(
-        menuItem: null,
         totalPrice: 0,
         itemReward: 0,
         quantity: 0,

@@ -43,7 +43,7 @@ class Formatter {
     int decimals, [
     bool withPrecision = false,
   ]) {
-    Decimal formattedValue = fromWei(value, decimals);
+    final Decimal formattedValue = fromWei(value, decimals);
     if (withPrecision) return formattedValue.toStringAsFixed(8);
     return smallNumbersConvertor(formattedValue);
   }
@@ -57,13 +57,12 @@ class Formatter {
     final bool hasPriceInfo =
         ![null, '', '0', 0, 'NaN'].contains(priceInfo?.quote);
     if (hasPriceInfo) {
-      return '\$' +
-          formatValueToFiat(
-            value,
-            decimals,
-            double.parse(priceInfo!.quote),
-            withPrecision,
-          );
+      return '\$${formatValueToFiat(
+        value,
+        decimals,
+        double.parse(priceInfo!.quote),
+        withPrecision,
+      )}';
     } else {
       return formatValue(
         value,
@@ -79,7 +78,7 @@ class Formatter {
     double price, [
     bool withPrecision = false,
   ]) {
-    Decimal formattedValue =
+    final Decimal formattedValue =
         fromWei(value, decimals) * Decimal.parse(price.toString());
     if (withPrecision) return formattedValue.toStringAsFixed(8);
     return smallNumbersConvertor(formattedValue);
@@ -92,16 +91,16 @@ class Formatter {
 
   static BigInt toBigInt(dynamic value, int? decimals) {
     if (value == null || decimals == null) return BigInt.zero;
-    Decimal tokensAmountDecimal = Decimal.parse(value.toString());
-    Decimal decimalsPow = Decimal.parse(pow(10, decimals).toString());
+    final Decimal tokensAmountDecimal = Decimal.parse(value.toString());
+    final Decimal decimalsPow = Decimal.parse(pow(10, decimals).toString());
     return BigInt.parse((tokensAmountDecimal * decimalsPow).toString());
   }
 
   static String formatTokenName(String tokenName) {
     if (tokenName.endsWith('on Fuse')) {
-      List splitted = tokenName.split(" ")
+      final List splitted = tokenName.split(' ')
         ..removeWhere((ele) => ele == 'on' || ele == 'Fuse');
-      return splitted.join(" ");
+      return splitted.join(' ');
     }
     return tokenName;
   }
@@ -124,13 +123,13 @@ final Display display6 = createDisplay(
 );
 
 final Map<String, num> fees = {
-  "DZAR": 17,
-  "DAI": 1,
-  "USDT": 1,
-  "USDC": 1,
-  "IDRT": 14442.61,
-  "EURS": 1,
-  "TUSD": 1,
+  'DZAR': 17,
+  'DAI': 1,
+  'USDT': 1,
+  'USDC': 1,
+  'IDRT': 14442.61,
+  'EURS': 1,
+  'TUSD': 1,
 };
 
 num getPercentChange(num valueNow, num value24HoursAgo) {

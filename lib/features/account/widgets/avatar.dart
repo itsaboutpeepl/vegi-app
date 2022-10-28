@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/utils/format.dart';
-import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class Avatar extends StatelessWidget {
       converter: AccountViewModel.fromStore,
       builder: (_, viewModel) {
         return Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: 20,
           ),
           child: InkWell(
@@ -39,8 +39,8 @@ class Avatar extends StatelessWidget {
                       height: 60,
                       imageUrl: viewModel.avatarUrl,
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => CircleAvatar(
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const CircleAvatar(
                         backgroundImage: AssetImage('assets/images/anom.png'),
                         radius: 30,
                       ),
@@ -51,10 +51,9 @@ class Avatar extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       viewModel.displayName,
@@ -64,19 +63,19 @@ class Avatar extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 2),
-                    Icon(
+                    const SizedBox(width: 2),
+                    const Icon(
                       Icons.edit,
                       size: 20,
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Flexible(
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width * .425,
                         child: TextButton(
                           onPressed: () {
@@ -86,39 +85,40 @@ class Avatar extends StatelessWidget {
                             showCopiedFlushbar(context);
                           },
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.all(15),
                             backgroundColor:
                                 Theme.of(context).colorScheme.secondary,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(
-                                  12.0,
+                                  12,
                                 ),
                               ),
                             ),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               SvgPicture.asset(
                                 'assets/images/copy.svg',
                                 width: 16,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Flexible(
                                 child: AutoSizeText(
                                   Formatter.formatEthAddress(
-                                      viewModel.walletAddress, 4),
+                                    viewModel.walletAddress,
+                                    4,
+                                  ),
                                   style: TextStyle(
                                     letterSpacing: 0.3,
                                     color:
                                         Theme.of(context).colorScheme.onSurface,
                                   ),
                                   maxLines: 1,
-                                  presetFontSizes: [
+                                  presetFontSizes: const [
                                     16,
                                     15,
                                   ],

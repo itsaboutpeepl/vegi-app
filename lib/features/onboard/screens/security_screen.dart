@@ -179,7 +179,7 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                                 snapshot.requireData,
                                               );
                                               context.router
-                                                  .replace(MainScreen());
+                                                  .replace(const MainScreen());
                                             }
                                           },
                                         );
@@ -238,7 +238,7 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                                 SetUpPinCodeScreen(
                                               onSuccess: () {
                                                 context.router
-                                                    .push(MainScreen());
+                                                    .push(const MainScreen());
                                               },
                                             ),
                                           ),

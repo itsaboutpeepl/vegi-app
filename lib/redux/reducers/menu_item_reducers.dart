@@ -2,7 +2,7 @@ import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/menu_item_state.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 
-final MenuItemReducers = combineReducers<MenuItemState>(
+final menuItemReducers = combineReducers<MenuItemState>(
   [
     TypedReducer<MenuItemState, ResetMenuItem>(_resetMenuItem),
     TypedReducer<MenuItemState, SetMenuItem>(_setMenuItem),
@@ -37,7 +37,7 @@ MenuItemState _setMenuItem(
   return state.copyWith(
     menuItem: action.menuItem,
     totalPrice: action.menuItem.price,
-    itemReward: (action.menuItem.price * 5 ~/ 100),
+    itemReward: action.menuItem.price * 5 ~/ 100,
     selectedProductOptionsForCategory: {},
     quantity: 1,
   );

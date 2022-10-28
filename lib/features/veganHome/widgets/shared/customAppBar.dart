@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomAppBar({Key? key, required this.pageTitle, this.otherAction})
-      : preferredSize = Size.fromHeight(115),
+  const CustomAppBar({Key? key, required this.pageTitle, this.otherAction})
+      : preferredSize = const Size.fromHeight(115),
         super(key: key);
 
   @override
@@ -19,17 +19,17 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: colorToWhiteGradient,
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            tileMode: TileMode.clamp),
+          colors: colorToWhiteGradient,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
       child: AppBar(
         automaticallyImplyLeading: false,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         title: Column(
@@ -42,27 +42,28 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                 ),
-                Spacer(
+                const Spacer(
                   flex: 2,
                 ),
-                Spacer(
+                const Spacer(
                   flex: 3,
                 ),
-                widget.otherAction != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 0),
-                        child: Container(height: 40, child: widget.otherAction),
-                      )
-                    : SizedBox.shrink(),
+                if (widget.otherAction != null)
+                  Padding(
+                    padding: EdgeInsets.zero,
+                    child: SizedBox(height: 40, child: widget.otherAction),
+                  )
+                else
+                  const SizedBox.shrink(),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Text(
                 widget.pageTitle,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w900,
                   color: Colors.black,

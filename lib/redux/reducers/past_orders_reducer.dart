@@ -1,5 +1,5 @@
-import 'package:vegan_liverpool/models/past_order_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/past_order_state.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 
 final pastOrdersReducer = combineReducers<PastOrderState>([

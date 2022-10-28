@@ -237,42 +237,6 @@ class StatePropertyTile extends StatelessWidget {
 }
 
 class ReduxDevToolsViewModel {
-  final String latestAction;
-  final String latestState;
-  final Map<String, dynamic> userState;
-  final Map<String, dynamic> cashWalletState;
-  final Map<String, dynamic> cartState;
-  final Map<String, dynamic> menuItemState;
-  final Map<String, dynamic> pastOrderState;
-  final VoidCallback onSavePressed;
-  final VoidCallback onResetPressed;
-  final VoidCallback onRecomputePressed;
-  final ValueChanged<double> onSliderChanged;
-  final double sliderMax;
-  final double sliderPosition;
-  final Color? recomputeColor;
-  final String recomputeButtonString;
-  final List<dynamic> stagedActions;
-
-  ReduxDevToolsViewModel._({
-    required this.recomputeColor,
-    required this.latestAction,
-    required this.latestState,
-    required this.onSavePressed,
-    required this.onResetPressed,
-    required this.onRecomputePressed,
-    required this.onSliderChanged,
-    required this.sliderMax,
-    required this.sliderPosition,
-    required this.recomputeButtonString,
-    required this.userState,
-    required this.cartState,
-    required this.cashWalletState,
-    required this.menuItemState,
-    required this.pastOrderState,
-    required this.stagedActions,
-  });
-
   factory ReduxDevToolsViewModel(
     DevToolsStore<AppState> store,
     _ContainerState? containerState,
@@ -309,6 +273,41 @@ class ReduxDevToolsViewModel {
       sliderPosition: store.devToolsState.currentPosition.toDouble(),
     );
   }
+
+  ReduxDevToolsViewModel._({
+    required this.recomputeColor,
+    required this.latestAction,
+    required this.latestState,
+    required this.onSavePressed,
+    required this.onResetPressed,
+    required this.onRecomputePressed,
+    required this.onSliderChanged,
+    required this.sliderMax,
+    required this.sliderPosition,
+    required this.recomputeButtonString,
+    required this.userState,
+    required this.cartState,
+    required this.cashWalletState,
+    required this.menuItemState,
+    required this.pastOrderState,
+    required this.stagedActions,
+  });
+  final String latestAction;
+  final String latestState;
+  final Map<String, dynamic> userState;
+  final Map<String, dynamic> cashWalletState;
+  final Map<String, dynamic> cartState;
+  final Map<String, dynamic> menuItemState;
+  final Map<String, dynamic> pastOrderState;
+  final VoidCallback onSavePressed;
+  final VoidCallback onResetPressed;
+  final VoidCallback onRecomputePressed;
+  final ValueChanged<double> onSliderChanged;
+  final double sliderMax;
+  final double sliderPosition;
+  final Color? recomputeColor;
+  final String recomputeButtonString;
+  final List<dynamic> stagedActions;
 }
 
 /// Hot Reload for your State! Change your Reducers? The state will be
@@ -322,16 +321,15 @@ class ReduxDevToolsViewModel {
 /// best to only use this in Dev mode. See the `example` directory of this
 /// repo for a demonstration of how to do this.
 class ReduxDevToolsContainer<S> extends StatefulWidget {
-  final Store<S> store;
-  final Widget child;
-  final bool recomputeOnHotReload;
-
-  ReduxDevToolsContainer({
+  const ReduxDevToolsContainer({
     Key? key,
     required this.store,
     required this.child,
     this.recomputeOnHotReload = true,
   }) : super(key: key);
+  final Store<S> store;
+  final Widget child;
+  final bool recomputeOnHotReload;
 
   @override
   _ReduxDevToolsRecomputeState createState() {
@@ -375,15 +373,14 @@ class _ReduxDevToolsRecomputeState extends State<ReduxDevToolsContainer> {
 }
 
 class _ContainerState extends InheritedWidget {
-  final bool recomputeOnHotReload;
-  final Function() toggleRecomputeOnHotReload;
-
-  _ContainerState({
+  const _ContainerState({
     Key? key,
     required Widget child,
     required this.recomputeOnHotReload,
     required this.toggleRecomputeOnHotReload,
   }) : super(key: key, child: child);
+  final bool recomputeOnHotReload;
+  final Function() toggleRecomputeOnHotReload;
 
   static _ContainerState? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_ContainerState>();

@@ -1,18 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:redux/redux.dart';
 
 class BackupViewModel extends Equatable {
-  final Function() backupWallet;
-  final List<String> userMnemonic;
-
   const BackupViewModel({
     required this.backupWallet,
     required this.userMnemonic,
   });
 
-  static BackupViewModel fromStore(Store<AppState> store) {
+  factory BackupViewModel.fromStore(Store<AppState> store) {
     return BackupViewModel(
       userMnemonic: store.state.userState.mnemonic,
       backupWallet: () {
@@ -21,22 +18,25 @@ class BackupViewModel extends Equatable {
     );
   }
 
+  final void Function() backupWallet;
+  final List<String> userMnemonic;
+
   @override
   List<Object?> get props => [userMnemonic];
 }
 
 class LockScreenViewModel extends Equatable {
-  final String pincode;
-
   const LockScreenViewModel({
     required this.pincode,
   });
 
-  static LockScreenViewModel fromStore(Store<AppState> store) {
+  factory LockScreenViewModel.fromStore(Store<AppState> store) {
     return LockScreenViewModel(
       pincode: store.state.userState.pincode,
     );
   }
+
+  final String pincode;
 
   @override
   List<Object?> get props => [pincode];

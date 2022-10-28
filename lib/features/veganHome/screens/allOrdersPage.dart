@@ -42,7 +42,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
       onInit: (store) => fetchOrdersList(store.state.userState.walletAddress),
       builder: (_, viewmodel) {
         return Scaffold(
-          appBar: CustomAppBar(
+          appBar: const CustomAppBar(
             pageTitle: 'My Orders',
           ),
           body: _isLoading
@@ -51,8 +51,8 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                   ? const EmptyStatePage(
                       emoji: '😐',
                       title: 'You have no upcoming orders… yet!',
-                      subtitle:
-                          'If this is incorrect, please contact our Support team for assistance. Details are in our FAQ section.',
+                      subtitle: 'If this is incorrect, please contact support '
+                          ' for assistance. Details are in our FAQ section.',
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.symmetric(vertical: 30),
@@ -143,7 +143,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                       children: [
                         TextSpan(
                           text:
-                              "Status: ${widget.order['restaurantAcceptanceStatus'].toString().capitalize()}",
+                              "Status: ${widget.order['restaurantAcceptanceStatus'].capitalize()}",
                         ),
                       ],
                     ),
@@ -163,7 +163,8 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (_, index) => SingleProductOrderItem(
-                    product: widget.order['products'][index]),
+                  product: widget.order['products'][index],
+                ),
                 separatorBuilder: (_, index) => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 4),
                 ),
@@ -259,9 +260,12 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text.rich(
-                  TextSpan(text: widget.product['name'], children: [
-                    TextSpan(text: "\n${widget.product['basePrice']}")
-                  ]),
+                  TextSpan(
+                    text: widget.product['name'],
+                    children: [
+                      TextSpan(text: "\n${widget.product['basePrice']}")
+                    ],
+                  ),
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

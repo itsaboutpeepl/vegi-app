@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Preloader extends StatelessWidget {
-  Preloader({
+  const Preloader({
+    Key? key,
     this.width = 60,
     this.height = 60,
-  });
+  }) : super(key: key);
   final double width;
   final double height;
 
@@ -14,7 +15,7 @@ class Preloader extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        margin: EdgeInsets.only(left: 28, right: 28),
+        margin: const EdgeInsets.only(left: 28, right: 28),
         child: CircularProgressIndicator(
           strokeWidth: 3,
           valueColor: AlwaysStoppedAnimation<Color>(

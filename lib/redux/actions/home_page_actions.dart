@@ -48,26 +48,6 @@ class UpdatePostalCodes {
   }
 }
 
-// ThunkAction<AppState> fetchRestaurantCategories() {
-//   return (Store<AppState> store) async {
-//     try {
-//       List<RestaurantCategory> listOfRestaurantCategories = [
-//         restaurantCategory2,
-//         restaurantCategory1,
-//       ];
-
-//       store.dispatch(UpdateRestaurantCategories(listOfRestaurantCategories: listOfRestaurantCategories));
-//     } catch (e, s) {
-//       log.error('ERROR - fetchRestaurantCategories $e');
-//       await Sentry.captureException(
-//         e,
-//         stackTrace: s,
-//         hint: 'ERROR - fetchRestaurantCategories $e',
-//       );
-//     }
-//   };
-// }
-
 ThunkAction<AppState> fetchFeaturedRestaurants({String outCode = 'L1'}) {
   return (Store<AppState> store) async {
     try {

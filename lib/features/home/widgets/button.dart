@@ -16,29 +16,28 @@ class Button extends StatelessWidget {
   final double? width;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: width ?? MediaQuery.of(context).size.width * .425,
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(
-                12.0,
+                12,
               ),
             ),
           ),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SvgPicture.asset(
               'assets/images/$icon.svg',
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Flexible(
@@ -49,7 +48,7 @@ class Button extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 maxLines: 1,
-                presetFontSizes: [
+                presetFontSizes: const [
                   20,
                   17,
                 ],

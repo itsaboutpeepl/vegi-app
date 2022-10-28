@@ -22,7 +22,7 @@ class OnBoardingScreenGeneric extends StatelessWidget {
           'assets/images/Vegi-Logo-horizontal.png',
           width: MediaQuery.of(context).size.width * .4,
         ),
-        SizedBox(
+        const SizedBox(
           height: 80,
         ),
         SvgPicture.asset(
@@ -30,29 +30,31 @@ class OnBoardingScreenGeneric extends StatelessWidget {
           height: 75,
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 20.0, top: 20),
+          padding: const EdgeInsets.only(bottom: 20, top: 20),
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 60,
               color: Colors.white,
-              fontFamily: "Fat Cheeks",
+              fontFamily: 'Fat Cheeks',
             ),
             textAlign: TextAlign.center,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
           child: AutoSizeText.rich(
-            TextSpan(children: [
-              TextSpan(
-                text: subTitle,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: subTitle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
             minFontSize: 16,
             maxFontSize: 20,
             textAlign: TextAlign.center,

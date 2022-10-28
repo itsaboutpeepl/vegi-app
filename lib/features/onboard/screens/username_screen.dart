@@ -39,7 +39,6 @@ class UserNameScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(
                       left: 30,
                       right: 30,
-                      bottom: 0,
                       top: 20,
                     ),
                     child: Column(

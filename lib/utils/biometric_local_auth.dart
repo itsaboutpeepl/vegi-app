@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/constants/enums.dart';
-import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 
 class BiometricUtils {
   static Future<BiometricAuth> getAvailableBiometrics({
@@ -26,7 +24,7 @@ class BiometricUtils {
 
   static Future<void> showDefaultPopupCheckBiometricAuth({
     String message = '',
-    required Function(bool) callback,
+    required void Function(bool) callback,
     bool stickyAuth = false,
   }) async {
     final localAuth = LocalAuthentication();

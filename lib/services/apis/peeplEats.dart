@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
@@ -62,8 +63,7 @@ class PeeplEatsService {
               addressLine2: element['pickupAddressLineTwo'] as String? ?? '',
               townCity: element['pickupAddressCity'] as String? ?? '',
               postalCode: element['pickupAddressPostCode'] as String? ?? '',
-              latitude: 0,
-              longitude: 0,
+              label: DeliveryAddressLabel.home,
             ),
             walletAddress: element['walletAddress'] as String? ?? '',
             listOfMenuItems: [],
@@ -81,7 +81,8 @@ class PeeplEatsService {
   }
 
   Future<List<RestaurantMenuItem>> getRestaurantMenuItems(
-      String restaurantID) async {
+    String restaurantID,
+  ) async {
     final Response<dynamic> response =
         await dio.get('api/v1/vendors/$restaurantID?');
 
@@ -165,10 +166,13 @@ class PeeplEatsService {
     return results['percentage'] as int? ?? 0;
   }
 
-  Future<FullfilmentMethods> getFulfilmentSlots(
-      {required String vendorID, required String dateRequired}) async {
+  Future<FullfilmentMethods> getFulfilmentSlots({
+    required String vendorID,
+    required String dateRequired,
+  }) async {
     final Response<dynamic> response = await dio.get(
-        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
+      'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired',
+    );
 
     final FullfilmentMethods methods =
         FullfilmentMethods.fromJson(response.data as Map<String, dynamic>);
@@ -177,7 +181,8 @@ class PeeplEatsService {
   }
 
   Future<Map<String, dynamic>> createOrder(
-      Map<String, dynamic> orderObject) async {
+    Map<String, dynamic> orderObject,
+  ) async {
     final Response<dynamic> response =
         await dio.post('/api/v1/orders/create-order', data: orderObject);
 

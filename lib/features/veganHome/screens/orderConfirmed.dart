@@ -1,4 +1,4 @@
-import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -18,7 +18,7 @@ class OrderConfirmedScreen extends StatefulWidget {
   const OrderConfirmedScreen({Key? key}) : super(key: key);
 
   @override
-  _OrderConfirmedScreenState createState() => _OrderConfirmedScreenState();
+  State<OrderConfirmedScreen> createState() => _OrderConfirmedScreenState();
 }
 
 class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
@@ -26,7 +26,8 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
 
   @override
   void initState() {
-    _confettiController = ConfettiController(duration: const Duration(seconds: 10));
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 10));
 
     playConfetti();
 
@@ -34,8 +35,7 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
   }
 
   void playConfetti() {
-    Future.delayed(Duration(milliseconds: 500), () {
-      print("Playing confeetitititit");
+    Future.delayed(const Duration(milliseconds: 500), () {
       _confettiController.play();
     });
   }
@@ -63,24 +63,24 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
           orderID: store.state.cartState.orderID,
           userName: store.state.userState.displayName,
           phoneNumber: store.state.cartState.isDelivery
-              ? store.state.cartState.selectedDeliveryAddress!.phoneNumber ?? ""
-              : store.state.cartState.restaurantAddress!.phoneNumber ?? "",
+              ? store.state.userState.phoneNumber
+              : store.state.cartState.restaurantAddress!.townCity, //TODO: fix
           GBPxAmountPaid: store.state.cartState.selectedGBPxAmount,
           PPLAmountPaid: store.state.cartState.selectedPPLAmount,
           orderAcceptanceStatus: OrderAcceptanceStatus.pending,
         );
 
         if (isScheduledDelivery(orderDetails.selectedSlot)) {
-          List<OrderDetails> listOfScheduledOrders =
-              List<OrderDetails>.from(store.state.pastOrderState.listOfScheduledOrders);
-
-          listOfScheduledOrders.add(orderDetails);
+          final List<OrderDetails> listOfScheduledOrders =
+              List<OrderDetails>.from(
+            store.state.pastOrderState.listOfScheduledOrders,
+          )..add(orderDetails);
           store.dispatch(UpdateScheduledOrders(listOfScheduledOrders));
         } else {
-          List<OrderDetails> listOfOngoingOrders =
-              List<OrderDetails>.from(store.state.pastOrderState.listOfOngoingOrders);
-
-          listOfOngoingOrders.add(orderDetails);
+          final List<OrderDetails> listOfOngoingOrders =
+              List<OrderDetails>.from(
+            store.state.pastOrderState.listOfOngoingOrders,
+          )..add(orderDetails);
           store.dispatch(UpdateOngoingOrderList(listOfOngoingOrders));
         }
       },
@@ -88,13 +88,13 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
         return Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 30.0),
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: colorToWhiteGradient,
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    tileMode: TileMode.clamp),
+                  colors: colorToWhiteGradient,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
               ),
               child: Column(
                 children: [
@@ -104,16 +104,16 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          viewmodel.isDelivery
-                              ? Image.asset("assets/images/order-confirmed.png")
-                              : Image.asset(
-                                  "assets/images/order-confirmed-collection.png",
-                                  width: MediaQuery.of(context).size.width * 0.6,
-                                ),
+                          if (viewmodel.isDelivery)
+                            Image.asset('assets/images/order-confirmed.png')
+                          else
+                            Image.asset(
+                              'assets/images/order-confirmed-collection.png',
+                              width: MediaQuery.of(context).size.width * 0.6,
+                            ),
                           ConfettiWidget(
                             confettiController: _confettiController,
                             blastDirectionality: BlastDirectionality.explosive,
-                            shouldLoop: false,
                             colors: [
                               Colors.green.withOpacity(0.8),
                               Colors.blue.withOpacity(0.8),
@@ -125,16 +125,16 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       GestureDetector(
                         onTap: () {
-                          print("playing");
+                          print('playing');
                           _confettiController.play();
                         },
-                        child: Text(
-                          "Thank you for choosing vegi!",
+                        child: const Text(
+                          'Thank you for choosing vegi!',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w900,
@@ -142,55 +142,70 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        "Your order #${viewmodel.orderID} has been received and will be confirmed shortly. We'll send you a text with an update once they respond! \n Thank you for ordering with vegi 💚",
+                        'Your order #${viewmodel.orderID} has been received '
+                        "and will be confirmed shortly. We'll send you a text "
+                        'with an update once they respond! \n Thank you for '
+                        'ordering with vegi 💚',
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
                         children: [
                           Card(
                             elevation: 3,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             margin: EdgeInsets.zero,
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.42,
                               child: Padding(
-                                padding: const EdgeInsets.all(20.0),
+                                padding: const EdgeInsets.all(20),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text.rich(
                                       TextSpan(
-                                        text: viewmodel.isDelivery ? "Delivering To \n\n" : "Collecting From \n\n",
+                                        text: viewmodel.isDelivery
+                                            ? 'Delivering To \n\n'
+                                            : 'Collecting From \n\n',
                                         children: [
                                           TextSpan(
                                             text: viewmodel.isDelivery
-                                                ? "${viewmodel.userName}\n"
-                                                : "${viewmodel.restaurantName}\n",
-                                            style: TextStyle(
+                                                ? '${viewmodel.userName}\n'
+                                                : '${viewmodel.restaurantName}\n',
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.w900,
                                               fontSize: 18,
                                             ),
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.addressLine1 + ", ",
+                                            text:
+                                                '${viewmodel.orderAddress.addressLine1}, ',
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.addressLine2 + "\n",
+                                            text:
+                                                '${viewmodel.orderAddress.addressLine2}\n',
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.postalCode + ", ",
+                                            text:
+                                                '${viewmodel.orderAddress.postalCode}, ',
                                           ),
                                           TextSpan(
-                                            text: viewmodel.orderAddress.townCity,
+                                            text:
+                                                viewmodel.orderAddress.townCity,
                                           ),
-                                          TextSpan(text: "\nSlot: " + mapToString(viewmodel.selectedSlot))
+                                          TextSpan(
+                                            text: '\nSlot: ${mapToString(
+                                              viewmodel.selectedSlot,
+                                            )}',
+                                          )
                                         ],
                                       ),
                                     ),
@@ -199,53 +214,58 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                               ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Card(
                             elevation: 3,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             margin: EdgeInsets.zero,
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.42,
                               child: Padding(
-                                padding: const EdgeInsets.all(20.0),
+                                padding: const EdgeInsets.all(20),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text.rich(
                                       TextSpan(
-                                        text: "Order Details \n\n\n",
+                                        text: 'Order Details \n\n\n',
                                         children: [
                                           TextSpan(
-                                            text: "${cFPrice(viewmodel.cartTotal)}\n",
-                                            style: TextStyle(
+                                            text:
+                                                '${cFPrice(viewmodel.cartTotal)}\n',
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.w900,
                                               fontSize: 18,
                                             ),
                                           ),
                                           TextSpan(
-                                            text: "${(viewmodel.GBPxAmountPaid / 100).toStringAsFixed(2)} GBPx\n",
+                                            text:
+                                                '${(viewmodel.GBPxAmountPaid / 100).toStringAsFixed(2)} GBPx\n',
                                           ),
                                           TextSpan(
-                                            text: "${viewmodel.PPLAmountPaid.toStringAsFixed(2)} ",
+                                            text:
+                                                '${viewmodel.PPLAmountPaid.toStringAsFixed(2)} ',
                                           ),
                                           WidgetSpan(
                                             child: Image.asset(
-                                              "assets/images/avatar-ppl-red.png",
+                                              'assets/images/avatar-ppl-red.png',
                                               width: 20,
                                             ),
                                           ),
                                           TextSpan(
                                             text:
-                                                "\n${getPPLRewardsFromPence(viewmodel.GBPxAmountPaid).toStringAsFixed(2)} ",
+                                                '\n${getPPLRewardsFromPence(viewmodel.GBPxAmountPaid).toStringAsFixed(2)} ',
                                           ),
                                           WidgetSpan(
                                             child: Image.asset(
-                                              "assets/images/avatar-ppl-red.png",
+                                              'assets/images/avatar-ppl-red.png',
                                               width: 20,
                                             ),
                                           ),
-                                          TextSpan(
-                                            text: " earned",
+                                          const TextSpan(
+                                            text: ' earned',
                                           ),
                                         ],
                                       ),
@@ -266,28 +286,33 @@ class _OrderConfirmedScreenState extends State<OrderConfirmedScreen> {
                         )
                         .toList() +
                     [
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: ShimmerButton(
-                            buttonContent: Center(
-                              child: Text(
-                                "Back to Home",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18,
-                                ),
+                          buttonContent: const Center(
+                            child: Text(
+                              'Back to Home',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18,
                               ),
                             ),
-                            buttonAction: () {
-                              context.router.replaceAll([VeganHomeScreenAlt()]);
-                              Future.delayed(Duration(seconds: 2), () => viewmodel.clearCart());
-                            },
-                            baseColor: Colors.grey[900]!,
-                            highlightColor: Colors.grey[800]!),
+                          ),
+                          buttonAction: () {
+                            context.router
+                                .replaceAll([const VeganHomeScreenAlt()]);
+                            Future.delayed(
+                              const Duration(seconds: 2),
+                              () => viewmodel.clearCart(),
+                            );
+                          },
+                          baseColor: Colors.grey[900]!,
+                          highlightColor: Colors.grey[800]!,
+                        ),
                       )
                     ],
               ),

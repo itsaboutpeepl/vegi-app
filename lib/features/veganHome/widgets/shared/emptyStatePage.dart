@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class EmptyStatePage extends StatelessWidget {
-  const EmptyStatePage(
-      {Key? key,
-      required this.emoji,
-      required this.title,
-      required this.subtitle})
-      : super(key: key);
+  const EmptyStatePage({
+    Key? key,
+    required this.emoji,
+    required this.title,
+    required this.subtitle,
+  }) : super(key: key);
   final String emoji;
   final String title;
   final String subtitle;
@@ -16,8 +16,6 @@ class EmptyStatePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(
             width: double.infinity,
@@ -26,7 +24,7 @@ class EmptyStatePage extends StatelessWidget {
           Text(
             emoji,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 150,
               fontWeight: FontWeight.w900,
             ),
@@ -37,7 +35,7 @@ class EmptyStatePage extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 35,
               fontWeight: FontWeight.w900,
             ),
@@ -48,7 +46,7 @@ class EmptyStatePage extends StatelessWidget {
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w500,
             ),

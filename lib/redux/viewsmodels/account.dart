@@ -1,16 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 
 class AccountViewModel extends Equatable {
-  final String walletAddress;
-  final String avatarUrl;
-  final String displayName;
-  final bool isBackup;
-  final String firstName;
-  final List<String> mnemonic;
-
-  AccountViewModel({
+  const AccountViewModel({
     required this.walletAddress,
     required this.avatarUrl,
     required this.displayName,
@@ -19,7 +12,7 @@ class AccountViewModel extends Equatable {
     required this.mnemonic,
   });
 
-  static AccountViewModel fromStore(Store<AppState> store) {
+  factory AccountViewModel.fromStore(Store<AppState> store) {
     return AccountViewModel(
       isBackup: store.state.userState.backup,
       displayName: store.state.userState.displayName,
@@ -29,6 +22,13 @@ class AccountViewModel extends Equatable {
       mnemonic: store.state.userState.mnemonic,
     );
   }
+
+  final String walletAddress;
+  final String avatarUrl;
+  final String displayName;
+  final bool isBackup;
+  final String firstName;
+  final List<String> mnemonic;
 
   @override
   List<Object> get props => [

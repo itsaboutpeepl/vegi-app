@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/profile.dart';
 import 'package:vegan_liverpool/utils/format.dart';
-import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
-import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -56,8 +56,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           children: [
                             GestureDetector(
-                              onTap: () => _showSourceImagePicker(context,
-                                  (source) => viewmodel.editAvatar(source)),
+                              onTap: () => _showSourceImagePicker(
+                                context,
+                                (source) => viewmodel.editAvatar(source),
+                              ),
                               child: SizedBox(
                                 height: 70,
                                 width: 70,
@@ -70,7 +72,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         if (viewmodel.avatarUrl == '')
                                           const CircleAvatar(
                                             backgroundImage: AssetImage(
-                                                'assets/images/anom.png'),
+                                              'assets/images/anom.png',
+                                            ),
                                             radius: 40,
                                           )
                                         else
@@ -85,7 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   (context, url, error) =>
                                                       const CircleAvatar(
                                                 backgroundImage: AssetImage(
-                                                    'assets/images/anom.png'),
+                                                  'assets/images/anom.png',
+                                                ),
                                                 radius: 30,
                                               ),
                                               imageBuilder:
@@ -97,26 +101,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             ),
                                           ),
                                         Positioned.directional(
-                                            textDirection: TextDirection.ltr,
-                                            bottom: 0,
-                                            start: 0,
-                                            end: 0,
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 3),
-                                              alignment: Alignment.center,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface,
-                                              child: Text(
-                                                I10n.of(context).edit,
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .canvasColor,
-                                                    fontSize: 9),
+                                          textDirection: TextDirection.ltr,
+                                          bottom: 0,
+                                          start: 0,
+                                          end: 0,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 3,
+                                            ),
+                                            alignment: Alignment.center,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                            child: Text(
+                                              I10n.of(context).edit,
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .canvasColor,
+                                                fontSize: 9,
                                               ),
-                                            ))
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -124,37 +130,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             const SizedBox(height: 5),
-                            Text(viewmodel.displayName,
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                    fontSize: 18))
+                            Text(
+                              viewmodel.displayName,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontSize: 18,
+                              ),
+                            )
                           ],
                         ),
                       ),
                       const Divider(),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
+                          vertical: 8,
+                          horizontal: 16,
+                        ),
                         child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(I10n.of(context).name,
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.grey))),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            I10n.of(context).name,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.zero,
                         child: TextFormField(
                           style: TextStyle(
-                              fontSize: 20,
-                              color: Theme.of(context).colorScheme.onSurface),
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           initialValue: viewmodel.displayName,
                           keyboardType: TextInputType.text,
                           cursorColor: const Color(0xFFC6C6C6),
                           onChanged: (value) => displayName = value,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
                             border: const UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.transparent,
@@ -186,11 +204,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         I10n.of(context).wallet_address,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               Formatter.formatEthAddress(
-                                  viewmodel.walletAddress),
+                                viewmodel.walletAddress,
+                              ),
                               style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.grey,
@@ -229,16 +247,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const Divider(),
                       _buildGroup(
-                        "Seed Phrase",
+                        'Seed Phrase',
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: Text(
-                                viewmodel.seedPhrase.toString().substring(1,
-                                    viewmodel.seedPhrase.toString().length - 1),
+                                viewmodel.seedPhrase.toString().substring(
+                                      1,
+                                      viewmodel.seedPhrase.toString().length -
+                                          1,
+                                    ),
                                 style: const TextStyle(
                                   fontSize: 18,
                                   color: Colors.grey,
@@ -254,11 +274,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     text: viewmodel.seedPhrase
                                         .toString()
                                         .substring(
-                                            1,
-                                            viewmodel.seedPhrase
-                                                    .toString()
-                                                    .length -
-                                                1),
+                                          1,
+                                          viewmodel.seedPhrase
+                                                  .toString()
+                                                  .length -
+                                              1,
+                                        ),
                                   ),
                                 );
                                 showCopiedFlushbar(context);
@@ -276,7 +297,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      PrimaryButton(onPressed: () {}, label: "Delete Account")
+                      PrimaryButton(onPressed: () {}, label: 'Delete Account')
                     ],
                   )
                 ],
@@ -294,7 +315,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -315,7 +335,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     BuildContext context,
     void Function(ImageSource source) callback,
   ) =>
-      showBarModalBottomSheet(
+      showBarModalBottomSheet<Widget>(
         useRootNavigator: true,
         context: context,
         builder: (context) => BottomSheet(
@@ -323,20 +343,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (context) => Container(
             padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                )),
+              color: Theme.of(context).canvasColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                    title: Text(I10n.of(context).camera),
-                    onTap: () {
-                      callback(ImageSource.camera);
-                      Navigator.pop(context);
-                    }),
+                  title: Text(I10n.of(context).camera),
+                  onTap: () {
+                    callback(ImageSource.camera);
+                    Navigator.pop(context);
+                  },
+                ),
                 ListTile(
                   title: Text(I10n.of(context).gallery),
                   onTap: () {

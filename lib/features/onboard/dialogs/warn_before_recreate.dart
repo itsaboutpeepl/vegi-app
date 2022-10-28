@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 
 class WarnBeforeReCreation extends StatefulWidget {
+  const WarnBeforeReCreation({Key? key}) : super(key: key);
+
   @override
-  _WarnBeforeReCreationState createState() => _WarnBeforeReCreationState();
+  State<WarnBeforeReCreation> createState() => _WarnBeforeReCreationState();
 }
 
 class _WarnBeforeReCreationState extends State<WarnBeforeReCreation>
@@ -23,16 +25,18 @@ class _WarnBeforeReCreationState extends State<WarnBeforeReCreation>
   void initState() {
     super.initState();
 
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
     scaleAnimatoin =
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
-    controller.addListener(() {
-      setState(() {});
-    });
-
-    controller.forward();
+    controller
+      ..addListener(() {
+        setState(() {});
+      })
+      ..forward();
   }
 
   @override
@@ -40,8 +44,9 @@ class _WarnBeforeReCreationState extends State<WarnBeforeReCreation>
     return ScaleTransition(
       scale: scaleAnimatoin,
       child: AlertDialog(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
         title: Center(
           child: SvgPicture.asset(
             'assets/images/important.svg',
@@ -53,14 +58,17 @@ class _WarnBeforeReCreationState extends State<WarnBeforeReCreation>
         actions: <Widget>[
           TextButton(
             style: TextButton.styleFrom(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                 color: Color(0xFF009DFF),
               ),
             ),
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop(true);
             },
-            child: Text(I10n.of(context).yes, style: TextStyle(fontSize: 16)),
+            child: Text(
+              I10n.of(context).yes,
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
           TextButton(
             onPressed: () {

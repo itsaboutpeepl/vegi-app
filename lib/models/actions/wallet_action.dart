@@ -225,12 +225,14 @@ class WalletAction with _$WalletAction implements Comparable<WalletAction> {
       ),
       swap: (value) {
         if (priceInfo != null && priceInfo.hasPriceInfo) {
-          Decimal fiatValue = Decimal.parse(value.tradeInfo!.outputAmount) *
-              Decimal.parse(priceInfo.quote);
+          final Decimal fiatValue =
+              Decimal.parse(value.tradeInfo!.outputAmount) *
+                  Decimal.parse(priceInfo.quote);
           return '\$${Formatter.smallNumbersConvertor(fiatValue)}';
         }
         return Formatter.smallNumbersConvertor(
-            Decimal.parse(value.tradeInfo?.outputAmount ?? '0'));
+          Decimal.parse(value.tradeInfo?.outputAmount ?? '0'),
+        );
       },
     );
   }

@@ -45,7 +45,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                       children: [
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            primary: Colors.white,
+                            foregroundColor: Colors.white,
                             side: BorderSide(
                               color: Colors.grey[100]!,
                               width: 2,
@@ -75,7 +75,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                               if (context.router.canPop()) {
                                 context.router.popUntilRoot();
                               }
-                              context.router.replace(MainScreen());
+                              context.router.replace(const MainScreen());
                             } else {
                               setState(() {
                                 isPrimaryPreloading = true;
@@ -102,7 +102,8 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                       label: I10n.of(context).restore_backup,
                                       onPressed: () {
                                         context.router.push(
-                                            const RestoreFromBackupScreen());
+                                          const RestoreFromBackupScreen(),
+                                        );
                                       },
                                       textColor: Colors.grey[100]!,
                                     ),
@@ -122,7 +123,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                             await showDialog<bool>(
                                           context: context,
                                           builder: (context) =>
-                                              WarnBeforeReCreation(),
+                                              const WarnBeforeReCreation(),
                                         );
                                         if (result!) {
                                           setState(() {

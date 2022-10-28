@@ -19,10 +19,9 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
   final _formKey = GlobalKey<FormState>();
 
   List<int> getRandom3Numbers() {
-    List<int> list = new List<int>.generate(12, (int index) => index + 1);
-    list.shuffle();
-    List<int> _l = list.sublist(0, 3);
-    _l.sort();
+    final List<int> list = List<int>.generate(12, (int index) => index + 1)
+      ..shuffle();
+    final List<int> _l = list.sublist(0, 3)..sort();
     return _l;
   }
 
@@ -36,18 +35,16 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      title: "Verify Seed Phrase",
+      title: 'Verify Seed Phrase',
       body: StoreConnector<AppState, AccountViewModel>(
         converter: AccountViewModel.fromStore,
         builder: (_, viewmodel) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Text(
-                  "Please enter the correct words below",
+                  'Please enter the correct words below',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20,
@@ -55,7 +52,7 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
                   ),
                 ),
               ),
-              Spacer(flex: 1),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Form(
@@ -66,12 +63,12 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
                         mnemonic: viewmodel.mnemonic,
                         wordIndex: selectedWordsNum[0],
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16),
                       Word(
                         mnemonic: viewmodel.mnemonic,
                         wordIndex: selectedWordsNum[1],
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16),
                       Word(
                         mnemonic: viewmodel.mnemonic,
                         wordIndex: selectedWordsNum[2],
@@ -80,13 +77,13 @@ class _VerifyUserMnemonicState extends State<VerifyUserMnemonic> {
                   ),
                 ),
               ),
-              Spacer(
+              const Spacer(
                 flex: 10,
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: PrimaryButton(
-                  label: "Verify",
+                  label: 'Verify',
                   onPressed: () {
                     //viewmodel.finishSaveSeedPhrase();
                     if (_formKey.currentState!.validate()) {

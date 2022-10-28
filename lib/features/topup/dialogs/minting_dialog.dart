@@ -155,7 +155,8 @@ class _MintingDialogState extends State<MintingDialog>
                   duration: const Duration(milliseconds: 500),
                   child: Text(
                     _isMinting
-                        ? "We're hooking up some extra lemons to make this go faster!"
+                        ? "We're hooking up some extra lemons "
+                            'to make this go faster!'
                         : 'Thanks for topping up your Peepl Wallet!',
                     key: ValueKey(_isMinting),
                     textAlign: TextAlign.center,

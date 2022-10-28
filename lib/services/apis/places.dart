@@ -107,7 +107,8 @@ class PlaceApiProvider {
           json.decode(response.body) as Map<String, dynamic>;
       if (result['status'] == 'OK') {
         final components = List<Map<String, dynamic>>.from(
-            result['result']['address_components'] as Iterable<dynamic>);
+          result['result']['address_components'] as Iterable<dynamic>,
+        );
         // build result
         final place =
             Place(street: '', streetNumber: '', city: '', zipCode: '');

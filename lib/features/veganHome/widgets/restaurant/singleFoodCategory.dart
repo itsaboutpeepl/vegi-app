@@ -2,19 +2,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SingleCategoryItem extends StatefulWidget {
-  const SingleCategoryItem({Key? key, required this.imageURL, required this.title}) : super(key: key);
+  const SingleCategoryItem({
+    Key? key,
+    required this.imageURL,
+    required this.title,
+  }) : super(key: key);
   final String imageURL;
   final String title;
 
   @override
-  _SingleCategoryItemState createState() => _SingleCategoryItemState();
+  State<SingleCategoryItem> createState() => _SingleCategoryItemState();
 }
 
 class _SingleCategoryItemState extends State<SingleCategoryItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => null,
+      onTap: () {},
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -23,7 +27,7 @@ class _SingleCategoryItemState extends State<SingleCategoryItem> {
             elevation: 20,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
-              child: Container(
+              child: SizedBox(
                 width: 300,
                 height: 200,
                 child: CachedNetworkImage(
@@ -34,12 +38,15 @@ class _SingleCategoryItemState extends State<SingleCategoryItem> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Text(
             widget.title,
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+            style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w900,
+            ),
           ),
         ],
       ),

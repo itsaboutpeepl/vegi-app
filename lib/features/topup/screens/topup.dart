@@ -10,16 +10,17 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/topup.dart';
 import 'package:vegan_liverpool/services.dart';
 
-//TODO: add save card functionality
 class TopupScreen extends StatefulWidget {
+  const TopupScreen({Key? key}) : super(key: key);
+
   @override
-  _TopupScreenState createState() => _TopupScreenState();
+  State<TopupScreen> createState() => _TopupScreenState();
 }
 
 class _TopupScreenState extends State<TopupScreen>
     with SingleTickerProviderStateMixin {
-  String _amountText = "25";
-  bool _isPreloading = false;
+  String _amountText = '25';
+  final bool _isPreloading = false;
 
   @override
   void dispose() {
@@ -33,9 +34,9 @@ class _TopupScreenState extends State<TopupScreen>
 
   //decimal place checker
   String decimalChecker(double a, {int decimalPlaces = 2}) {
-    List<String> values = a.toString().split('.');
+    final List<String> values = a.toString().split('.');
     if (values.length == 2 && values[1].length > decimalPlaces) {
-      return "Too long";
+      return 'Too long';
     } else {
       return a.toString();
     }
@@ -43,7 +44,7 @@ class _TopupScreenState extends State<TopupScreen>
 
   void _onKeyPress(String value, {bool back = false}) {
     if (back) {
-      if (_amountText.length == 0) return;
+      if (_amountText.isEmpty) return;
       _amountText = _amountText.substring(0, _amountText.length - 1);
     } else {
       if (_amountText == '0' && value == '0') {
@@ -62,16 +63,16 @@ class _TopupScreenState extends State<TopupScreen>
   Widget build(BuildContext context) {
     return MyScaffold(
       title: 'Top up using your card',
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height * 0.9,
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: const Text(
                 'Topups are limited to £250',
                 style: TextStyle(
                   color: Color(
@@ -80,37 +81,35 @@ class _TopupScreenState extends State<TopupScreen>
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Column(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Row(
                         children: <Widget>[
                           Expanded(
                             child: AutoSizeText(
                               _amountText,
                               maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 40.0,
+                              style: const TextStyle(
+                                fontSize: 40,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 10,
                               vertical: 5,
                             ),
                             decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
                               color: Theme.of(context).backgroundColor,
                               borderRadius: BorderRadius.circular(
                                 20,
@@ -118,7 +117,7 @@ class _TopupScreenState extends State<TopupScreen>
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   'GBP',
                                   style: TextStyle(
@@ -135,7 +134,7 @@ class _TopupScreenState extends State<TopupScreen>
                         ],
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: 40,
                         vertical: 20,
@@ -162,7 +161,7 @@ class _TopupScreenState extends State<TopupScreen>
                       return;
                     } else {
                       setState(() {
-                        _amountText = _amountText + '.';
+                        _amountText = '$_amountText.';
                       });
                     }
                   },
@@ -183,7 +182,7 @@ class _TopupScreenState extends State<TopupScreen>
                   label: I10n.of(context).next_button,
                   onPressed: () => stripeService.handleStripe(
                     walletAddress: viewModel.walletAddress,
-                    amountText: _amountText,
+                    amount: int.parse(_amountText) * 100,
                     context: context,
                     shouldPushToHome: true,
                   ),
@@ -199,8 +198,3 @@ class _TopupScreenState extends State<TopupScreen>
     );
   }
 }
-
-// Leave the topup screen as it is. should work with any amount. 
-//if the user does not have a balance during checkout, then just popup the stripe sheet and get the payment done.
-//after the payment is done, make a call to update the balances and show dialog saying that it was a success or error.
-//after that, show the peepl pay sheet and then its the normal order flow. 

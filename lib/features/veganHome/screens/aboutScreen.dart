@@ -12,96 +12,108 @@ class AboutScreen extends StatelessWidget {
     return MyScaffold(
       title: 'About Us',
       body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: constraints.maxWidth,
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      children: [
-                        Image.asset('assets/images/Vegi-Logo-horizontal.png'),
-                        const SizedBox(
-                          height: 20,
+        padding: const EdgeInsets.all(20),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: constraints.maxWidth,
+                  minHeight: constraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      Image.asset('assets/images/Vegi-Logo-horizontal.png'),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'We are vegi, your local vegan shopping app!',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w900,
                         ),
-                        const Text(
-                          'We are vegi, your local vegan shopping app!',
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.w900),
-                          textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Buy groceries, takeaways and plant-based products'
+                        ' from independent businesses using your vegi wallet.',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
                         ),
-                        const SizedBox(
-                          height: 20,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Follow our journey on our website www.vegiapp.co.uk'
+                        ' or on our Instagram or Tiktok @vegi_app',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
                         ),
-                        const Text(
-                          'Buy groceries, takeaways and plant-based products from independent businesses using your vegi wallet.',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Follow our journey on our website www.vegiapp.co.uk or on our Instagram or Tiktok @vegi_app',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                onPressed: () => launchUrl(
-                                    'https://www.instagram.com/vegi_liverpool/'),
-                                icon: Icon(
-                                  FontAwesomeIcons.instagram,
-                                  color: Colors.grey[400],
-                                  size: 30,
-                                ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              onPressed: () => launchUrl(
+                                'https://www.instagram.com/vegi_liverpool/',
                               ),
-                              IconButton(
-                                onPressed: () => launchUrl(
-                                    'https://vm.tiktok.com/ZMNF3ekHX/'),
-                                icon: Icon(
-                                  FontAwesomeIcons.tiktok,
-                                  color: Colors.grey[400],
-                                  size: 28,
-                                ),
+                              icon: Icon(
+                                FontAwesomeIcons.instagram,
+                                color: Colors.grey[400],
+                                size: 30,
                               ),
-                              IconButton(
-                                onPressed: () =>
-                                    launchUrl('https://vegiapp.co.uk'),
-                                icon: Icon(
-                                  Icons.launch,
-                                  color: Colors.grey[400],
-                                  size: 30,
-                                ),
+                            ),
+                            IconButton(
+                              onPressed: () => launchUrl(
+                                'https://vm.tiktok.com/ZMNF3ekHX/',
                               ),
-                            ],
-                          ),
+                              icon: Icon(
+                                FontAwesomeIcons.tiktok,
+                                color: Colors.grey[400],
+                                size: 28,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () =>
+                                  launchUrl('https://vegiapp.co.uk'),
+                              icon: Icon(
+                                Icons.launch,
+                                color: Colors.grey[400],
+                                size: 30,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Version ${packageInfo.version}, Build ${packageInfo.buildNumber}',
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        'Version ${packageInfo.version},'
+                        ' Build ${packageInfo.buildNumber}',
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
-          )),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

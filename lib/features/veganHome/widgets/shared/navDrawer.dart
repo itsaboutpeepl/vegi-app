@@ -151,9 +151,10 @@ class _NavDrawerState extends State<NavDrawer> {
                 onTap: () => context.router.push(ProfileScreen()),
               ),
               ListTile(
-                  leading: const Icon(Icons.quiz),
-                  title: const Text('FAQs'),
-                  onTap: () => context.router.push(const FAQScreen())),
+                leading: const Icon(Icons.quiz),
+                title: const Text('FAQs'),
+                onTap: () => context.router.push(const FAQScreen()),
+              ),
               ListTile(
                 leading: const Icon(Icons.help_sharp),
                 title: const Text('About Us'),
@@ -172,8 +173,11 @@ class _NavDrawerState extends State<NavDrawer> {
                 ListTile(
                   leading: const Icon(Icons.exit_to_app),
                   title: const Text('DevTools'),
-                  onTap: () => rootRouter.push(ReduxStateViewer(
-                      store: getIt<DevToolsStore<AppState>>())),
+                  onTap: () => rootRouter.push(
+                    ReduxStateViewer(
+                      store: getIt<DevToolsStore<AppState>>(),
+                    ),
+                  ),
                 ),
               const Spacer(),
               Padding(
@@ -185,7 +189,8 @@ class _NavDrawerState extends State<NavDrawer> {
                     children: [
                       IconButton(
                         onPressed: () => launchUrl(
-                            'https://www.instagram.com/vegi_liverpool/'),
+                          'https://www.instagram.com/vegi_liverpool/',
+                        ),
                         icon: Icon(
                           FontAwesomeIcons.instagram,
                           color: Colors.grey[400],

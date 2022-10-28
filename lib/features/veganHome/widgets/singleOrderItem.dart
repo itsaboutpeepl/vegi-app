@@ -10,7 +10,7 @@ class SingleCartItem extends StatefulWidget {
   final CartItem orderItem;
 
   @override
-  _SingleCartItemState createState() => _SingleCartItemState();
+  State<SingleCartItem> createState() => _SingleCartItemState();
 }
 
 class _SingleCartItemState extends State<SingleCartItem> {
@@ -25,17 +25,18 @@ class _SingleCartItemState extends State<SingleCartItem> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(13),
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.width * 0.2,
               width: MediaQuery.of(context).size.width * 0.2,
               child: CachedNetworkImage(
-                memCacheHeight: (MediaQuery.of(context).size.width * 0.2).toInt(),
+                memCacheHeight:
+                    (MediaQuery.of(context).size.width * 0.2).toInt(),
                 imageUrl: widget.orderItem.menuItem.imageURL,
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Expanded(
@@ -44,9 +45,12 @@ class _SingleCartItemState extends State<SingleCartItem> {
               children: [
                     Text(
                       widget.orderItem.menuItem.name,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Row(
@@ -54,26 +58,28 @@ class _SingleCartItemState extends State<SingleCartItem> {
                       children: [
                         Text(
                           widget.orderItem.menuItem.formattedPrice,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                           ),
                         ),
-                        widget.orderItem.selectedProductOptions.entries.isNotEmpty
-                            ? GestureDetector(
-                                onTap: () => setState(() {
-                                  _showOptions = !_showOptions;
-                                }),
-                                child: CircleAvatar(
-                                  radius: 12,
-                                  backgroundColor: Colors.grey[800],
-                                  child: Icon(
-                                    _showOptions ? Icons.remove : Icons.add,
-                                    size: 19,
-                                    color: themeShade300,
-                                  ),
-                                ),
-                              )
-                            : SizedBox.shrink(),
+                        if (widget.orderItem.selectedProductOptions.entries
+                            .isNotEmpty)
+                          GestureDetector(
+                            onTap: () => setState(() {
+                              _showOptions = !_showOptions;
+                            }),
+                            child: CircleAvatar(
+                              radius: 12,
+                              backgroundColor: Colors.grey[800],
+                              child: Icon(
+                                _showOptions ? Icons.remove : Icons.add,
+                                size: 19,
+                                color: themeShade300,
+                              ),
+                            ),
+                          )
+                        else
+                          const SizedBox.shrink(),
                       ],
                     ),
                   ] +
@@ -83,11 +89,14 @@ class _SingleCartItemState extends State<SingleCartItem> {
                             ? Text.rich(
                                 TextSpan(
                                   text: e.value.name,
-                                  children: [TextSpan(text: " - "), TextSpan(text: cFPrice(e.value.price))],
+                                  children: [
+                                    const TextSpan(text: ' - '),
+                                    TextSpan(text: cFPrice(e.value.price))
+                                  ],
                                 ),
                                 style: TextStyle(color: Colors.grey[700]),
                               )
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                       )
                       .toList(),
             ),

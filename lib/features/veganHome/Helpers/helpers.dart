@@ -127,36 +127,33 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
         final List<Map<String, dynamic>> listOfProductsOrdered = [];
 
         //Products in Order
-        final List<Map<String, dynamic>> productsOrderedListJson =
-            singleOrder['items'] as List<Map<String, dynamic>>
-              ..forEach((productItem) {
-                final Map<String, dynamic> singleProductItem = {};
-                singleProductItem['name'] = productItem['product']['name'];
-                singleProductItem['basePrice'] =
-                    cFPrice(productItem['product']['basePrice'] as int);
+        final List<Map<String, dynamic>> productsOrderedListJson = singleOrder[
+            'items'] as List<Map<String, dynamic>>
+          ..forEach((productItem) {
+            final Map<String, dynamic> singleProductItem = {};
+            singleProductItem['name'] = productItem['product']['name'];
+            singleProductItem['basePrice'] =
+                cFPrice(productItem['product']['basePrice'] as int);
 
-                //Options in Product
-                if (productItem.containsKey('optionValues')) {
-                  final List<Map<String, dynamic>> listOfChosenProductOptions =
-                      [];
+            //Options in Product
+            if (productItem.containsKey('optionValues')) {
+              final List<Map<String, dynamic>> listOfChosenProductOptions = [];
 
-                  List<Map<String, dynamic>> productsOptionValuesListJson =
-                      productItem['optionValues'] as List<Map<String, dynamic>>
-                        ..forEach((productOption) {
-                          //Add Options in Product to ListOfProductOptions.
-                          listOfChosenProductOptions.add({
-                            'name': productOption['option']['name'],
-                            'chosenOption': productOption['optionValue']
-                                ['name'],
-                            'priceModifier': productOption['optionValue']
-                                ['priceModifier'],
-                          });
-                        });
-                  singleProductItem['options'] = listOfChosenProductOptions;
-                }
-                //Add SingleProductItem to listOfProductsOrdered, clear listOfProductOptions
-                listOfProductsOrdered.add(singleProductItem);
-              });
+              final List<Map<String, dynamic>> productsOptionValuesListJson =
+                  productItem['optionValues'] as List<Map<String, dynamic>>
+                    ..forEach((productOption) {
+                      //Add Options in Product to ListOfProductOptions.
+                      listOfChosenProductOptions.add({
+                        'name': productOption['option']['name'],
+                        'chosenOption': productOption['optionValue']['name'],
+                        'priceModifier': productOption['optionValue']
+                            ['priceModifier'],
+                      });
+                    });
+              singleProductItem['options'] = listOfChosenProductOptions;
+            }
+            listOfProductsOrdered.add(singleProductItem);
+          });
         sanitizedOrderObject['products'] = listOfProductsOrdered;
         listOfOrders.add(sanitizedOrderObject);
       });

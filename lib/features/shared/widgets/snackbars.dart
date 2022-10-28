@@ -11,39 +11,40 @@ void showErrorSnack({
   String? message,
 }) {
   Flushbar<void>(
-      boxShadows: const [
-        BoxShadow(
-          offset: Offset(0.5, 0.5),
-          blurRadius: 5,
+    boxShadows: const [
+      BoxShadow(
+        offset: Offset(0.5, 0.5),
+        blurRadius: 5,
+      ),
+    ],
+    duration: Duration(seconds: duration),
+    titleText: Text(
+      title ?? I10n.of(context).transaction_failed,
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    ),
+    messageText: Text(
+      message ?? 'Try again later!',
+      style: const TextStyle(
+        fontSize: 14,
+      ),
+    ),
+    backgroundColor: Theme.of(context).bottomAppBarColor,
+    margin: margin ??
+        EdgeInsets.only(
+          top: 8,
+          right: 8,
+          left: 8,
+          bottom: MediaQuery.of(context).size.height * 0.01,
         ),
-      ],
-      duration: Duration(seconds: duration),
-      titleText: Text(
-        title ?? I10n.of(context).transaction_failed,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      messageText: Text(
-        message ?? 'Try again later!',
-        style: const TextStyle(
-          fontSize: 14,
-        ),
-      ),
-      backgroundColor: Theme.of(context).bottomAppBarColor,
-      margin: margin ??
-          EdgeInsets.only(
-            top: 8,
-            right: 8,
-            left: 8,
-            bottom: MediaQuery.of(context).size.height * 0.01,
-          ),
-      borderRadius: const BorderRadius.all(
-        Radius.circular(8),
-      ),
-      icon: SvgPicture.asset(
-        'assets/images/failed_icon.svg',
-        width: 20,
-        height: 20,
-      )).show(context);
+    borderRadius: const BorderRadius.all(
+      Radius.circular(8),
+    ),
+    icon: SvgPicture.asset(
+      'assets/images/failed_icon.svg',
+      width: 20,
+      height: 20,
+    ),
+  ).show(context);
 }
 
 void showCopiedFlushbar(BuildContext context) {

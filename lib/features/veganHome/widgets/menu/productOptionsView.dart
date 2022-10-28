@@ -40,9 +40,10 @@ class _ProductOptionsViewState extends State<ProductOptionsView> {
 }
 
 class ProductOptionsCategoryView extends StatefulWidget {
-  const ProductOptionsCategoryView(
-      {Key? key, required this.productOptionsCategory})
-      : super(key: key);
+  const ProductOptionsCategoryView({
+    Key? key,
+    required this.productOptionsCategory,
+  }) : super(key: key);
 
   final ProductOptionsCategory productOptionsCategory;
 
@@ -70,13 +71,15 @@ class _ProductOptionsCategoryViewState
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.productOptionsCategory.name,
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
-            SizedBox(
+            Text(
+              widget.productOptionsCategory.name,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
               height: 15,
             ),
             ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: widget.productOptionsCategory.listOfOptions.length,
               itemBuilder: (_, index) => ListTile(
@@ -92,7 +95,8 @@ class _ProductOptionsCategoryViewState
                 selectedTileColor: themeShade100,
                 dense: true,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 leading: Checkbox(
                   activeColor: Colors.grey[800],
                   value: _selectedIndex == index,
@@ -111,16 +115,19 @@ class _ProductOptionsCategoryViewState
                   widget.productOptionsCategory.listOfOptions[index].name,
                   style: TextStyle(color: Colors.grey[800]),
                 ),
-                subtitle: Text(widget
-                    .productOptionsCategory.listOfOptions[index].description),
+                subtitle: Text(
+                  widget
+                      .productOptionsCategory.listOfOptions[index].description,
+                ),
                 trailing: Text(
                   cFPrice(
-                      widget.productOptionsCategory.listOfOptions[index].price),
+                    widget.productOptionsCategory.listOfOptions[index].price,
+                  ),
                   style: TextStyle(color: Colors.grey[800]),
                 ),
               ),
               separatorBuilder: (context, index) =>
-                  Padding(padding: EdgeInsets.only(bottom: 5)),
+                  const Padding(padding: EdgeInsets.only(bottom: 5)),
             )
           ],
         );
@@ -128,45 +135,3 @@ class _ProductOptionsCategoryViewState
     );
   }
 }
-
-
-
-// List of Product Options Category
-// Each List has multiple categories under it. (can be solved by rebuilding for each item in the list)
-// Each Category has multiple options under it. 
-// You can only choose one option from the multiple options provided for each category.
-// Each category needs to have atleast one option selected. (can be solved by default selection)
-
-
-// ListView.separated(
-//           separatorBuilder: (context, index) =>
-//               Padding(padding: EdgeInsets.only(bottom: 5)),
-//           shrinkWrap: true,
-//           physics: NeverScrollableScrollPhysics(),
-//           itemCount: viewmodel.menuItem.extras.length,
-//           itemBuilder: (_, index) => ListTile(
-//             dense: true,
-//             shape:
-//                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//             tileColor:
-//                 viewmodel.selectedExtras[index] ? themeShade500[100] : null,
-//             title: Text(viewmodel.menuItem.extras.keys.elementAt(index)),
-//             trailing: Text(
-//               cFPrice(viewmodel.menuItem.extras.values.elementAt(index)),
-//             ),
-//             onTap: () => setState(
-//               () {
-//                 viewmodel.selectedExtras[index] =
-//                     !viewmodel.selectedExtras[index];
-
-//                 viewmodel.selectedExtrasMap.containsKey(
-//                         viewmodel.menuItem.extras.keys.elementAt(index))
-//                     ? viewmodel.selectedExtrasMap
-//                         .remove(viewmodel.menuItem.extras.keys.elementAt(index))
-//                     : viewmodel.selectedExtrasMap[
-//                             viewmodel.menuItem.extras.keys.elementAt(index)] =
-//                         viewmodel.menuItem.extras.values.elementAt(index);
-//               },
-//             ),
-//           ),
-//         );

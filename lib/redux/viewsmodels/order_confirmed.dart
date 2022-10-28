@@ -1,25 +1,12 @@
 import 'package:equatable/equatable.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:redux/redux.dart';
-import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class OrderConfirmedViewModel extends Equatable {
-  final Map<String, String> selectedSlot;
-  final bool isDelivery;
-  final DeliveryAddresses orderAddress;
-  final String restaurantName;
-  final List<CartItem> cartItems;
-  final int cartTotal;
-  final String orderID;
-  final Function() clearCart;
-  final String userName;
-  final String phoneNumber;
-  final double GBPxAmountPaid;
-  final double PPLAmountPaid;
-
-  OrderConfirmedViewModel({
+  const OrderConfirmedViewModel({
     required this.selectedSlot,
     required this.isDelivery,
     required this.orderAddress,
@@ -34,7 +21,7 @@ class OrderConfirmedViewModel extends Equatable {
     required this.PPLAmountPaid,
   });
 
-  static OrderConfirmedViewModel fromStore(Store<AppState> store) {
+  factory OrderConfirmedViewModel.fromStore(Store<AppState> store) {
     return OrderConfirmedViewModel(
       selectedSlot: store.state.cartState.selectedTimeSlot,
       isDelivery: store.state.cartState.isDelivery,
@@ -54,6 +41,19 @@ class OrderConfirmedViewModel extends Equatable {
       },
     );
   }
+
+  final Map<String, String> selectedSlot;
+  final bool isDelivery;
+  final DeliveryAddresses orderAddress;
+  final String restaurantName;
+  final List<CartItem> cartItems;
+  final int cartTotal;
+  final String orderID;
+  final Function() clearCart;
+  final String userName;
+  final String phoneNumber;
+  final double GBPxAmountPaid;
+  final double PPLAmountPaid;
 
   @override
   List<Object> get props => [];

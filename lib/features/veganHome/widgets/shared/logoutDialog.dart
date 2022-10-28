@@ -7,8 +7,10 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 class LogoutDialog extends StatefulWidget {
+  const LogoutDialog({Key? key}) : super(key: key);
+
   @override
-  _LogoutDialogState createState() => _LogoutDialogState();
+  State<LogoutDialog> createState() => _LogoutDialogState();
 }
 
 class _LogoutDialogState extends State<LogoutDialog>
@@ -16,21 +18,23 @@ class _LogoutDialogState extends State<LogoutDialog>
   late AnimationController controller;
   late Animation<double> scaleAnimation;
 
-  late Function logout;
+  late void Function() logout;
 
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
     scaleAnimation =
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
-    controller.addListener(() {
-      setState(() {});
-    });
-
-    controller.forward();
+    controller
+      ..addListener(() {
+        setState(() {});
+      })
+      ..forward();
   }
 
   @override
@@ -46,43 +50,44 @@ class _LogoutDialogState extends State<LogoutDialog>
         logout = () {
           if (store.state.userState.hasSavedSeedPhrase) {
             store.dispatch(LogoutRequestSuccess());
-            context.router.replace(OnBoardScreen());
+            context.router.replace(const OnBoardScreen());
           }
           context.router.pop();
-          context.router.push(ShowUserMnemonic());
+          context.router.push(const ShowUserMnemonic());
         };
       },
       builder: (_, viewmodel) {
         return ScaleTransition(
           scale: scaleAnimation,
           child: AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
             content: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "Please save your seed phrase before logging out!",
+                  const Text(
+                    'Please save your seed phrase before logging out!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
-                    "Your seed phrase can be found in the Account section. See you soon 👋",
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Your seed phrase can be found in the'
+                    ' Account section. See you soon 👋',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  PrimaryButton(onPressed: () => logout(), label: "Logout")
+                  const SizedBox(height: 20),
+                  PrimaryButton(onPressed: () => logout(), label: 'Logout')
                 ],
               ),
             ),

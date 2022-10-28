@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/balance.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/balance.dart';
 
 class Balance extends StatelessWidget {
   const Balance({Key? key}) : super(key: key);
@@ -25,11 +25,11 @@ class Balance extends StatelessWidget {
                     I10n.of(context).balance,
                     style: TextStyle(
                       color: Theme.of(context).canvasColor,
-                      fontSize: 13.0,
+                      fontSize: 13,
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 35,
                 ),
                 Flexible(
@@ -37,7 +37,7 @@ class Balance extends StatelessWidget {
                     'Rewards',
                     style: TextStyle(
                       color: Theme.of(context).canvasColor,
-                      fontSize: 13.0,
+                      fontSize: 13,
                     ),
                   ),
                 ),
@@ -67,7 +67,7 @@ class Balance extends StatelessWidget {
                     fontSize: 40,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 30,
                 ),
                 AutoSizeText.rich(

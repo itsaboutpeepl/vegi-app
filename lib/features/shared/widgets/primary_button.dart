@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/constants/theme.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({

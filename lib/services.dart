@@ -1,13 +1,13 @@
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
-import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/peeplEats.dart';
+import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/stripePay.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
-import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
 
 final RootRouter rootRouter = getIt<RootRouter>();

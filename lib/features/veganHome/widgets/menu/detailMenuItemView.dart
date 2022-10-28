@@ -61,7 +61,8 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                               )
                             ],
                             borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(100)),
+                              top: Radius.circular(100),
+                            ),
                             color: Colors.white,
                           ),
                           width: MediaQuery.of(context).size.width,
@@ -78,7 +79,9 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                         Text(
                           viewmodel.menuItem!.name,
                           style: const TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.w900),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -86,7 +89,9 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                         Text(
                           cFPrice(viewmodel.totalPrice),
                           style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w900),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         const SizedBox(
                           height: 10,

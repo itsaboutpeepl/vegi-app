@@ -2,7 +2,7 @@ import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
-final CartStateReducers = combineReducers<UserCartState>([
+final cartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartItems>(_updateCartItems),
   TypedReducer<UserCartState, UpdateComputedCartValues>(_computeCartTotals),
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
@@ -11,7 +11,8 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateSelectedTimeSlot>(_updateSelectedTimeSlot),
   TypedReducer<UserCartState, UpdateTipAmount>(_updateTipAmount),
   TypedReducer<UserCartState, UpdateSelectedDeliveryAddress>(
-      _updateSelectedDeliveryAddress),
+    _updateSelectedDeliveryAddress,
+  ),
   TypedReducer<UserCartState, CreateOrder>(_createOrder),
   TypedReducer<UserCartState, SetTransferringPayment>(_toggleTransfer),
   TypedReducer<UserCartState, SetError>(_toggleError),
@@ -23,7 +24,8 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, SetFulfilmentMethod>(_setFulfilmentMethod),
   TypedReducer<UserCartState, SetIsDelivery>(_setIsDelivery),
   TypedReducer<UserCartState, SetDeliveryInstructions>(
-      _setDeliveryInstructions),
+    _setDeliveryInstructions,
+  ),
   TypedReducer<UserCartState, SetFulfilmentMethodIds>(_setFulfilmentMethodIds),
   TypedReducer<UserCartState, SetPaymentMethod>(_setPaymentMethod),
   TypedReducer<UserCartState, SetPaymentButtonFlag>(_setPaymentButtonFlag)
@@ -65,8 +67,8 @@ UserCartState _clearCart(
     selectedDeliveryAddress: null,
     paymentIntentID: '',
     orderID: '',
-    selectedGBPxAmount: 0.0,
-    selectedPPLAmount: 0.0,
+    selectedGBPxAmount: 0,
+    selectedPPLAmount: 0,
     transferringTokens: false,
     errorCompletingPayment: false,
     confirmedPayment: false,
@@ -82,8 +84,9 @@ UserCartState _updateCartDiscount(
   UpdateCartDiscount action,
 ) {
   return state.copyWith(
-      cartDiscountPercent: action.cartDiscountPercent,
-      discountCode: action.discountCode);
+    cartDiscountPercent: action.cartDiscountPercent,
+    discountCode: action.discountCode,
+  );
 }
 
 UserCartState _updateSlots(
@@ -91,8 +94,9 @@ UserCartState _updateSlots(
   UpdateSlots action,
 ) {
   return state.copyWith(
-      deliverySlots: action.deliverySlots,
-      collectionSlots: action.collectionSlots);
+    deliverySlots: action.deliverySlots,
+    collectionSlots: action.collectionSlots,
+  );
 }
 
 UserCartState _updateSelectedTimeSlot(
@@ -121,7 +125,9 @@ UserCartState _createOrder(
   CreateOrder action,
 ) {
   return state.copyWith(
-      orderID: action.orderID, paymentIntentID: action.paymentIntentID);
+    orderID: action.orderID,
+    paymentIntentID: action.paymentIntentID,
+  );
 }
 
 UserCartState _toggleTransfer(
@@ -200,15 +206,20 @@ UserCartState _setIsDelivery(UserCartState state, SetIsDelivery action) {
 }
 
 UserCartState _setDeliveryInstructions(
-    UserCartState state, SetDeliveryInstructions action) {
+  UserCartState state,
+  SetDeliveryInstructions action,
+) {
   return state.copyWith(deliveryInstructions: action.deliveryInstructions);
 }
 
 UserCartState _setFulfilmentMethodIds(
-    UserCartState state, SetFulfilmentMethodIds action) {
+  UserCartState state,
+  SetFulfilmentMethodIds action,
+) {
   return state.copyWith(
-      deliveryMethodId: action.deliveryMethodId,
-      collectionMethodId: action.collectionMethodId);
+    deliveryMethodId: action.deliveryMethodId,
+    collectionMethodId: action.collectionMethodId,
+  );
 }
 
 UserCartState _setPaymentMethod(UserCartState state, SetPaymentMethod action) {

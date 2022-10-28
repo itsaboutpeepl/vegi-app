@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 
@@ -6,14 +8,14 @@ class Analytics {
     required String eventName,
     Map<String, dynamic>? properties,
   }) async {
-    getIt<FirebaseAnalytics>().logEvent(
+    unawaited(getIt<FirebaseAnalytics>().logEvent(
       name: eventName,
       parameters: properties,
-    );
+    ));
   }
 
   static Future<void> setUserId(String userId) async {
-    getIt<FirebaseAnalytics>().setUserId(id: userId);
+    unawaited(getIt<FirebaseAnalytics>().setUserId(id: userId));
   }
 
   static Future<void> identify(

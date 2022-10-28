@@ -20,7 +20,6 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
-import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
@@ -100,8 +99,8 @@ class CreateLocalAccountSuccess {
   final String accountAddress;
 
   @override
-  String toString() =>
-      'CreateLocalAccountSuccess : mnemonic: $mnemonic, privateKey: $privateKey, accountAddress: $accountAddress';
+  String toString() => 'CreateLocalAccountSuccess : mnemonic: $mnemonic, '
+      'privateKey: $privateKey, accountAddress: $accountAddress';
 }
 
 class ReLogin {
@@ -124,8 +123,8 @@ class LoginRequestSuccess {
   final String? email;
 
   @override
-  String toString() =>
-      'LoginRequestSuccess : countryCode: $countryCode, phoneNumber: $phoneNumber, displayName: $displayName, email: $email';
+  String toString() => 'LoginRequestSuccess : countryCode: $countryCode, '
+      'phoneNumber: $phoneNumber, displayName: $displayName, email: $email';
 }
 
 class LogoutRequestSuccess {
@@ -890,13 +889,6 @@ ThunkAction<AppState> removeDeliveryAddress({
         hint: 'ERROR - removeDeliveryAddress',
       );
     }
-    // listOfAddresses.isEmpty
-    //     ? store.dispatch(UpdateSelectedDeliveryAddress(null))
-    //     : listOfAddresses.length - 1 == indexOfAddress
-    //         ? store.dispatch(
-    //             UpdateSelectedDeliveryAddress(listOfAddresses[indexOfAddress]))
-    //         : store.dispatch(UpdateSelectedDeliveryAddress(
-    //             listOfAddresses[indexOfAddress - 1]));
   };
 }
 

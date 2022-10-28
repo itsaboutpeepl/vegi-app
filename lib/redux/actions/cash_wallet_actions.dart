@@ -17,7 +17,6 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
 import 'package:vegan_liverpool/models/tokens/price.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
-import 'package:vegan_liverpool/redux/actions/swap_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
@@ -110,7 +109,9 @@ class GetWalletDataSuccess {
 
   @override
   String toString() {
-    return 'GetWalletDataSuccess : walletAddress: $walletAddress ,networks: $networks, backup: $backup, walletModules: $walletModules, contractVersion: $contractVersion';
+    return 'GetWalletDataSuccess : walletAddress: $walletAddress'
+        ',networks: $networks, backup: $backup, walletModules:'
+        ' $walletModules, contractVersion: $contractVersion';
   }
 }
 
@@ -124,7 +125,8 @@ class GetTokenBalanceSuccess {
 
   @override
   String toString() {
-    return 'GetTokenBalanceSuccess : tokenAddress: $tokenAddress, tokenBalance: $tokenBalance';
+    return 'GetTokenBalanceSuccess : tokenAddress: '
+        '$tokenAddress, tokenBalance: $tokenBalance';
   }
 }
 
@@ -142,7 +144,9 @@ class GetTokenIntervalStatsSuccess {
 
   @override
   String toString() {
-    return 'GetTokenIntervalStatsSuccess : tokenAddress: $tokenAddress, intervalStats: $intervalStats, timeFrame: $timeFrame, priceChange: $priceChange';
+    return 'GetTokenIntervalStatsSuccess : tokenAddress: '
+        '$tokenAddress, intervalStats: $intervalStats, '
+        'timeFrame: $timeFrame, priceChange: $priceChange';
   }
 }
 
@@ -172,8 +176,8 @@ class GetTokenWalletActionsSuccess {
   final int? nextPage;
 
   @override
-  String toString() =>
-      'GetTokenWalletActionsSuccess : token: $token, walletActions: $walletActions, updateAt: $updateAt, nextPage: $nextPage';
+  String toString() => 'GetTokenWalletActionsSuccess : token: $token, '
+      'walletActions: $walletActions, updateAt: $updateAt, nextPage: $nextPage';
 }
 
 class StartBalanceFetchingSuccess {
@@ -432,7 +436,7 @@ ThunkAction<AppState> sendNativeTokenCall(
     try {
       final String walletAddress = store.state.userState.walletAddress;
       final BigInt amount = Formatter.toBigInt(tokensAmount, 18);
-      final Map transactionBody = Map.from({
+      final Map<String, dynamic> transactionBody = Map.from({
         'status': 'pending',
         'from': walletAddress,
         'to': receiverAddress,

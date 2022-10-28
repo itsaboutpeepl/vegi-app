@@ -4,9 +4,9 @@ import 'package:logger/logger.dart';
 
 @lazySingleton
 class LogIt {
-  final Logger logger;
-
   LogIt(this.logger);
+
+  final Logger logger;
 
   /// Log a message at level [Level.verbose].
   void verbose(

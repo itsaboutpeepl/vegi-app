@@ -4,9 +4,11 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
 class MenuStickyHeader extends StatelessWidget {
-  const MenuStickyHeader(
-      {Key? key, required this.title, required this.controller})
-      : super(key: key);
+  const MenuStickyHeader({
+    Key? key,
+    required this.title,
+    required this.controller,
+  }) : super(key: key);
 
   final String title;
   final ExpandableSliverListController<RestaurantMenuItem> controller;

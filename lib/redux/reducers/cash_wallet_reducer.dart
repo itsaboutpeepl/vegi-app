@@ -1,12 +1,12 @@
 import 'package:ethereum_addresses/ethereum_addresses.dart';
-import 'package:wallet_connect/wc_session_store.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
+import 'package:vegan_liverpool/models/cash_wallet_state.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/models/cash_wallet_state.dart';
-import 'package:redux/redux.dart';
+import 'package:wallet_connect/wc_session_store.dart';
 
 final cashWalletReducers = combineReducers<CashWalletState>([
   TypedReducer<CashWalletState, GetTokenIntervalStatsSuccess>(
@@ -22,14 +22,17 @@ final cashWalletReducers = combineReducers<CashWalletState>([
   TypedReducer<CashWalletState, UpdateTokenPrice>(_updateTokenPrice),
   TypedReducer<CashWalletState, GetActionsSuccess>(_getActionsSuccess),
   TypedReducer<CashWalletState, GetTokenWalletActionsSuccess>(
-      _getTokenWalletActionsSuccess),
+    _getTokenWalletActionsSuccess,
+  ),
   TypedReducer<CashWalletState, AddCashTokens>(_addCashTokens),
   TypedReducer<CashWalletState, AddCashToken>(_addCashToken),
   TypedReducer<CashWalletState, GetTokenBalanceSuccess>(
-      _getTokenBalanceSuccess),
+    _getTokenBalanceSuccess,
+  ),
   TypedReducer<CashWalletState, ResetTokenTxs>(_resetTokensTxs),
   TypedReducer<CashWalletState, SetIsTransfersFetching>(
-      _setIsTransfersFetching),
+    _setIsTransfersFetching,
+  ),
   TypedReducer<CashWalletState, SetIsFetchingBalances>(_setIsFetchingBalances),
 ]);
 
@@ -38,8 +41,8 @@ CashWalletState _getTokenIntervalStatsSuccess(
   GetTokenIntervalStatsSuccess action,
 ) {
   final String tokenAddress = action.tokenAddress;
-  Token current = state.tokens[action.tokenAddress]!;
-  Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
+  final Token current = state.tokens[action.tokenAddress]!;
+  final Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
   newOne[tokenAddress] = current.copyWith(
     intervalStats: action.intervalStats,
     timeFrame: action.timeFrame,
@@ -91,8 +94,8 @@ CashWalletState _updateTokenPrice(
   CashWalletState state,
   UpdateTokenPrice action,
 ) {
-  Token token = state.tokens[action.tokenAddress]!;
-  Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
+  final Token token = state.tokens[action.tokenAddress]!;
+  final Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
   newOne[token.address] = token.copyWith(priceInfo: action.price);
   return state.copyWith(tokens: newOne);
 }
@@ -101,10 +104,10 @@ CashWalletState _getTokenWalletActionsSuccess(
   CashWalletState state,
   GetTokenWalletActionsSuccess action,
 ) {
-  Token token = state.tokens[action.token.address]!;
-  List<WalletAction> walletActions = token.walletActions!.list.toList();
-  for (WalletAction walletAction in action.walletActions) {
-    int savedIndex = walletActions.indexWhere(
+  final Token token = state.tokens[action.token.address]!;
+  final List<WalletAction> walletActions = token.walletActions!.list.toList();
+  for (final WalletAction walletAction in action.walletActions) {
+    final int savedIndex = walletActions.indexWhere(
       (action) => action.id == walletAction.id,
     );
     if (savedIndex != -1) {
@@ -114,7 +117,7 @@ CashWalletState _getTokenWalletActionsSuccess(
     }
   }
 
-  Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
+  final Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
   newOne[token.address] = token.copyWith(
     walletActions: WalletActions().copyWith(
       list: walletActions..sort(),
@@ -131,9 +134,9 @@ CashWalletState _getActionsSuccess(
   CashWalletState state,
   GetActionsSuccess action,
 ) {
-  List<WalletAction> list = state.walletActions!.list.toList();
-  for (WalletAction walletAction in action.walletActions) {
-    int savedIndex = list.indexWhere(
+  final List<WalletAction> list = state.walletActions!.list.toList();
+  for (final WalletAction walletAction in action.walletActions) {
+    final int savedIndex = list.indexWhere(
       (action) => action.id == walletAction.id,
     );
     if (savedIndex != -1) {
@@ -154,9 +157,9 @@ CashWalletState _addCashTokens(
   CashWalletState state,
   AddCashTokens action,
 ) {
-  Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
-  newOne.removeWhere(clearTokensWithZero);
-  for (String tokenAddress in action.tokens.keys) {
+  final Map<String, Token> newOne = Map<String, Token>.from(state.tokens)
+    ..removeWhere(clearTokensWithZero);
+  for (final String tokenAddress in action.tokens.keys) {
     if (newOne.containsKey(tokenAddress)) {
       newOne[tokenAddress] = newOne[tokenAddress]!.copyWith(
         amount: action.tokens[tokenAddress]!.amount,
@@ -172,9 +175,9 @@ CashWalletState _addCashToken(
   CashWalletState state,
   AddCashToken action,
 ) {
-  Token token = action.token;
-  Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
-  newOne.removeWhere(clearTokensWithZero);
+  final Token token = action.token;
+  final Map<String, Token> newOne = Map<String, Token>.from(state.tokens)
+    ..removeWhere(clearTokensWithZero);
   if (!newOne.containsKey(token.address)) {
     newOne[token.address] = token;
   } else {
@@ -189,11 +192,12 @@ CashWalletState _resetTokensTxs(
   CashWalletState state,
   ResetTokenTxs action,
 ) {
-  Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
-  Map<String, Token> tokens = {};
+  final Map<String, Token> newOne = Map<String, Token>.from(state.tokens);
+  final Map<String, Token> tokens = {};
   final List<String> tokenAddresses = List<String>.from(
-      newOne.keys.map((e) => e.toLowerCase()).toSet().toList());
-  for (String tokenAddress in tokenAddresses) {
+    newOne.keys.map((e) => e.toLowerCase()).toSet().toList(),
+  );
+  for (final String tokenAddress in tokenAddresses) {
     final Token token =
         newOne.containsKey(checksumEthereumAddress(tokenAddress))
             ? newOne[checksumEthereumAddress(tokenAddress)]!

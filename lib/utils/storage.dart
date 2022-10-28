@@ -15,7 +15,7 @@ class SecureStorage implements StorageEngine {
   @override
   Future<void> save(Uint8List? data) async {
     await flutterSecureStorage.write(
-      key: "data",
+      key: 'data',
       value: uint8ListToString(
         data,
       ),

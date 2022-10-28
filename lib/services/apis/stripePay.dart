@@ -52,7 +52,7 @@ class StripePayService {
       );
 
       return response.data['data']['paymentIntent']['clientSecret'] as String;
-    } on StripeException catch (e, s) {
+    } on StripeException catch (e) {
       return e.error.localizedMessage ?? '';
     } catch (e, s) {
       log.info('Error createStripePaymentIntent ${e.toString()}');

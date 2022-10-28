@@ -1,29 +1,31 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 class SetUpPinCodeScreen extends StatefulWidget {
-  final Function onSuccess;
-  SetUpPinCodeScreen({
+  const SetUpPinCodeScreen({
+    Key? key,
     required this.onSuccess,
-  });
+  }) : super(key: key);
+  final void Function() onSuccess;
   @override
-  _SetUpPinCodeScreenState createState() => _SetUpPinCodeScreenState();
+  State<SetUpPinCodeScreen> createState() => _SetUpPinCodeScreenState();
 }
 
 class _SetUpPinCodeScreenState extends State<SetUpPinCodeScreen> {
-  final textEditingController = TextEditingController(text: "");
+  final textEditingController = TextEditingController(text: '');
   final formKey = GlobalKey<FormState>();
   late StreamController<ErrorAnimationType> errorController;
   late String lastPinCode;
   bool isRetype = false;
-  String currentText = "";
+  String currentText = '';
   FocusNode textNode = FocusNode();
 
   @override
@@ -43,14 +45,12 @@ class _SetUpPinCodeScreenState extends State<SetUpPinCodeScreen> {
   Widget build(BuildContext context) {
     return MyScaffold(
       title: I10n.of(context).pincode,
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height * .5,
         width: MediaQuery.of(context).size.height * .5,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 150,
             ),
             Column(
@@ -60,16 +60,16 @@ class _SetUpPinCodeScreenState extends State<SetUpPinCodeScreen> {
                   isRetype
                       ? I10n.of(context).re_type_passcode
                       : I10n.of(context).create_passcode,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Form(
                   key: formKey,
-                  child: Container(
+                  child: SizedBox(
                     width: 250,
                     child: PinCodeTextField(
                       length: 6,
@@ -80,17 +80,14 @@ class _SetUpPinCodeScreenState extends State<SetUpPinCodeScreen> {
                       enablePinAutofill: false,
                       autoFocus: true,
                       focusNode: textNode,
-                      keyboardType: TextInputType.numberWithOptions(
-                        signed: false,
-                        decimal: false,
-                      ),
+                      keyboardType: TextInputType.number,
                       animationType: AnimationType.fade,
                       controller: textEditingController,
                       errorAnimationController: errorController,
                       pinTheme: PinTheme(
                         borderWidth: 4,
                         shape: PinCodeFieldShape.underline,
-                        inactiveColor: Color(0xFFDDDDDD),
+                        inactiveColor: const Color(0xFFDDDDDD),
                         inactiveFillColor: Theme.of(context).canvasColor,
                         selectedFillColor: Theme.of(context).canvasColor,
                         disabledColor: Theme.of(context).primaryColor,
@@ -100,13 +97,13 @@ class _SetUpPinCodeScreenState extends State<SetUpPinCodeScreen> {
                       ),
                       onCompleted: (pin) {
                         if (isRetype && pin == lastPinCode) {
-                          final store = StoreProvider.of<AppState>(context);
-                          store.dispatch(
-                            SetSecurityType(
-                              biometricAuth: BiometricAuth.pincode,
-                            ),
-                          );
-                          store.dispatch(SetPincodeSuccess(pin));
+                          StoreProvider.of<AppState>(context)
+                            ..dispatch(
+                              SetSecurityType(
+                                biometricAuth: BiometricAuth.pincode,
+                              ),
+                            )
+                            ..dispatch(SetPincodeSuccess(pin));
                           widget.onSuccess();
                         } else {
                           setState(() {
