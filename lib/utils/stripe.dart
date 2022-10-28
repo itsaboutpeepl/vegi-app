@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/card_failed.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/minting_dialog.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -27,18 +28,19 @@ class StripeService {
         dotenv.env['STRIPE_API_KEY']!; //TODO: Add kDebugMode check
   }
 
-  Future<void> handleStripe({
+  Future<bool> handleStripe({
     required String walletAddress,
-    required String amountText,
+    required int amount,
     required BuildContext context,
     required bool shouldPushToHome,
   }) async {
     try {
       final paymentIntentClientSecret =
           await stripePayService.createStripePaymentIntent(
-              amount: amountText,
-              currency: 'gbp',
-              walletAddress: walletAddress);
+        amount: amount,
+        currency: 'gbp',
+        walletAddress: walletAddress,
+      );
 
       await instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -53,12 +55,13 @@ class StripeService {
         context: context,
         builder: (context) {
           return MintingDialog(
-            amountText: amountText,
+            amountText: amount.formattedPrice,
             shouldPushToHome: shouldPushToHome,
           );
         },
         barrierDismissible: false,
       );
+      return true;
     } on Exception catch (e, s) {
       if (e is StripeException) {
         if (e.error.code != FailureCode.Canceled) {
@@ -70,15 +73,13 @@ class StripeService {
           );
           await showDialog<void>(
             context: context,
-            builder: (context) => TopUpFailed(
+            builder: (context) => const TopUpFailed(
               isFailed: true,
             ),
           );
+          return false;
         } else {
-          await showDialog<void>(
-            context: context,
-            builder: (context) => TopUpFailed(),
-          );
+          return false;
         }
       } else {
         log.error(e);
@@ -89,10 +90,11 @@ class StripeService {
         );
         await showDialog<void>(
           context: context,
-          builder: (context) => TopUpFailed(
+          builder: (context) => const TopUpFailed(
             isFailed: true,
           ),
         );
+        return false;
       }
     }
   }
