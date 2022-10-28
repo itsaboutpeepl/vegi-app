@@ -1,25 +1,24 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
-import 'package:redux/redux.dart';
 
 class _MintingDialogViewModel extends Equatable {
-  final Token secondaryToken;
-
-  _MintingDialogViewModel({
+  const _MintingDialogViewModel({
     required this.secondaryToken,
   });
 
-  static _MintingDialogViewModel fromStore(Store<AppState> store) {
+  factory _MintingDialogViewModel.fromStore(Store<AppState> store) {
     return _MintingDialogViewModel(
       secondaryToken: store.state.cashWalletState.tokens[gbpxToken.address]!,
     );
   }
+  final Token secondaryToken;
 
   @override
   List<Object> get props => [
@@ -28,14 +27,15 @@ class _MintingDialogViewModel extends Equatable {
 }
 
 class MintingDialog extends StatefulWidget {
-  final String amountText;
-  final bool shouldPushToHome;
-  MintingDialog({
+  const MintingDialog({
+    Key? key,
     required this.amountText,
     required this.shouldPushToHome,
-  });
+  }) : super(key: key);
+  final String amountText;
+  final bool shouldPushToHome;
   @override
-  _MintingDialogState createState() => _MintingDialogState();
+  State<MintingDialog> createState() => _MintingDialogState();
 }
 
 class _MintingDialogState extends State<MintingDialog>
@@ -55,16 +55,18 @@ class _MintingDialogState extends State<MintingDialog>
   void initState() {
     super.initState();
 
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
     scaleAnimation =
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
-    controller.addListener(() {
-      setState(() {});
-    });
-
-    controller.forward();
+    controller
+      ..addListener(() {
+        setState(() {});
+      })
+      ..forward();
   }
 
   @override
@@ -79,12 +81,12 @@ class _MintingDialogState extends State<MintingDialog>
           });
 
           Future.delayed(
-            Duration(seconds: 2),
+            const Duration(seconds: 1),
             () {
               context.router.pop();
 
               if (widget.shouldPushToHome) {
-                context.router.navigate(VeganHomeAltTab());
+                context.router.navigate(const VeganHomeAltTab());
               }
             },
           );
@@ -93,16 +95,18 @@ class _MintingDialogState extends State<MintingDialog>
       builder: (_, viewModel) => ScaleTransition(
         scale: scaleAnimation,
         child: AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
           title: Center(
             child: Container(
+              margin: const EdgeInsets.only(left: 28, right: 28),
               child: Center(
                 child: AnimatedCrossFade(
                   crossFadeState: _isMinting
                       ? CrossFadeState.showFirst
                       : CrossFadeState.showSecond,
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   firstChild: SizedBox(
                     width: 60,
                     height: 60,
@@ -124,40 +128,38 @@ class _MintingDialogState extends State<MintingDialog>
                   ),
                 ),
               ),
-              margin: EdgeInsets.only(left: 28, right: 28),
             ),
           ),
           content: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 AnimatedSwitcher(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   child: Text(
                     _isMinting
-                        ? "Adding balance to your wallet, won’t be long"
-                        : "Token minting complete!",
+                        ? "Adding balance to your wallet, won't be long"
+                        : 'Token minting complete!',
                     key: ValueKey(_isMinting),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20),
                 AnimatedSwitcher(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   child: Text(
                     _isMinting
                         ? "We're hooking up some extra lemons to make this go faster!"
-                        : "Thanks for topping up your Peepl Wallet!",
+                        : 'Thanks for topping up your Peepl Wallet!',
                     key: ValueKey(_isMinting),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
