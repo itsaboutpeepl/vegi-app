@@ -43,6 +43,8 @@ class Token with _$Token implements Comparable<Token> {
         .compareTo(num.parse(other.getFiatBalance(withPrecision: true)));
   }
 
+  double getAmount() => Formatter.fromWei(amount, decimals).toDouble();
+
   String getBalance({bool withPrecision = false}) => Formatter.formatValue(
         amount,
         decimals,
