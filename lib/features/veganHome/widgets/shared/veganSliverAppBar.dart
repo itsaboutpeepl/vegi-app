@@ -40,7 +40,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 25),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -104,14 +104,19 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                           onTap: () {
                             viewmodel.setIsDelivery(!viewmodel.isDelivery);
                           },
-                          child: Text(
-                            viewmodel.isDelivery
-                                ? 'Switch to Collection'
-                                : 'Switch to Delivery',
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              border: Border(bottom: BorderSide()),
+                            ),
+                            child: Text(
+                              viewmodel.isDelivery
+                                  ? 'Switch to collection'
+                                  : 'Switch to delivery',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         )
