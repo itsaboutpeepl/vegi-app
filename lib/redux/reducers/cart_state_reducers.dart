@@ -1,7 +1,6 @@
-import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
-import 'package:vegan_liverpool/constants/demoData.dart';
 
 final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartItems>(_updateCartItems),
@@ -25,7 +24,9 @@ final CartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, SetIsDelivery>(_setIsDelivery),
   TypedReducer<UserCartState, SetDeliveryInstructions>(
       _setDeliveryInstructions),
-  TypedReducer<UserCartState, SetFulfilmentMethodIds>(_setFulfilmentMethodIds)
+  TypedReducer<UserCartState, SetFulfilmentMethodIds>(_setFulfilmentMethodIds),
+  TypedReducer<UserCartState, SetPaymentMethod>(_setPaymentMethod),
+  TypedReducer<UserCartState, SetPaymentButtonFlag>(_setPaymentButtonFlag)
 ]);
 
 UserCartState _updateCartItems(
@@ -40,10 +41,11 @@ UserCartState _computeCartTotals(
   UpdateComputedCartValues action,
 ) {
   return state.copyWith(
-      cartSubTotal: action.cartSubTotal,
-      cartTax: action.cartTax,
-      cartTotal: action.cartTotal,
-      cartDiscountComputed: action.cartDiscountComputed);
+    cartSubTotal: action.cartSubTotal,
+    cartTax: action.cartTax,
+    cartTotal: action.cartTotal,
+    cartDiscountComputed: action.cartDiscountComputed,
+  );
 }
 
 UserCartState _clearCart(
@@ -59,18 +61,19 @@ UserCartState _clearCart(
     cartDiscountComputed: 0,
     selectedTimeSlot: {},
     selectedTipAmount: 0,
-    discountCode: "",
+    discountCode: '',
     selectedDeliveryAddress: null,
-    paymentIntentID: "",
-    orderID: "",
+    paymentIntentID: '',
+    orderID: '',
     selectedGBPxAmount: 0.0,
     selectedPPLAmount: 0.0,
     transferringTokens: false,
     errorCompletingPayment: false,
     confirmedPayment: false,
-    restaurantName: "",
-    restaurantID: "",
-    restaurantAddress: demoAddress,
+    payButtonLoading: false,
+    restaurantName: '',
+    restaurantID: '',
+    restaurantAddress: null,
   );
 }
 
@@ -147,8 +150,9 @@ UserCartState _updateSelectedAmounts(
   UpdateSelectedAmounts action,
 ) {
   return state.copyWith(
-      selectedGBPxAmount: action.GBPxAmount,
-      selectedPPLAmount: action.PPLAmount);
+    selectedGBPxAmount: action.gbpxAmount,
+    selectedPPLAmount: action.pplAmount,
+  );
 }
 
 UserCartState _setRestaurantDetails(
@@ -205,4 +209,15 @@ UserCartState _setFulfilmentMethodIds(
   return state.copyWith(
       deliveryMethodId: action.deliveryMethodId,
       collectionMethodId: action.collectionMethodId);
+}
+
+UserCartState _setPaymentMethod(UserCartState state, SetPaymentMethod action) {
+  return state.copyWith(selectedPaymentMethod: action.paymentMethod);
+}
+
+UserCartState _setPaymentButtonFlag(
+  UserCartState state,
+  SetPaymentButtonFlag action,
+) {
+  return state.copyWith(payButtonLoading: action.flag);
 }
