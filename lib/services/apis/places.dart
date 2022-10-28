@@ -67,7 +67,7 @@ class PlaceApiProvider {
         // compose suggestions in a list
 
         final List<Map<String, dynamic>> data =
-            result['predictions'] as List<Map<String, dynamic>>;
+            List.from(result['predictions'] as Iterable<dynamic>);
 
         return data
             .map(
@@ -106,13 +106,13 @@ class PlaceApiProvider {
       final Map<String, dynamic> result =
           json.decode(response.body) as Map<String, dynamic>;
       if (result['status'] == 'OK') {
-        final components =
-            result['result']['address_components'] as List<dynamic>;
+        final components = List<Map<String, dynamic>>.from(
+            result['result']['address_components'] as Iterable<dynamic>);
         // build result
         final place =
             Place(street: '', streetNumber: '', city: '', zipCode: '');
         for (final c in components) {
-          final List type = c['types'] as List<String>;
+          final List<String> type = List.from(c['types'] as Iterable<dynamic>);
           if (type.contains('street_number')) {
             place.streetNumber = c['long_name'] as String? ?? '';
           }
