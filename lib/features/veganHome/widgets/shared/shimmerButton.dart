@@ -9,12 +9,14 @@ class ShimmerButton extends StatelessWidget {
     required this.buttonAction,
     required this.baseColor,
     required this.highlightColor,
+    this.isLoading = false,
   }) : super(key: key);
 
   final Widget buttonContent;
-  final Function() buttonAction;
+  final void Function() buttonAction;
   final Color baseColor;
   final Color highlightColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,11 @@ class ShimmerButton extends StatelessWidget {
                 top: 5,
                 bottom: 5,
               ),
-              child: buttonContent,
+              child: isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : buttonContent,
             ),
           ),
         ],
