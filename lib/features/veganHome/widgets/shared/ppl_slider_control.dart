@@ -20,8 +20,8 @@ class _PPLSliderState extends State<PPLSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, PaymentSheetViewModel>(
-      converter: PaymentSheetViewModel.fromStore,
+    return StoreConnector<AppState, PeeplPaySheetViewModel>(
+      converter: PeeplPaySheetViewModel.fromStore,
       distinct: true,
       onInit: (store) {
         _amountToBePaid = store.state.cartState.cartTotal.toDouble(); //in pence

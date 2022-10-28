@@ -12,9 +12,9 @@ class PaymentSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, PaymentSheetViewModel>(
+    return StoreConnector<AppState, PeeplPaySheetViewModel>(
       distinct: true,
-      converter: PaymentSheetViewModel.fromStore,
+      converter: PeeplPaySheetViewModel.fromStore,
       onInit: (store) {
         store
           ..dispatch(SetTransferringPayment(flag: false))

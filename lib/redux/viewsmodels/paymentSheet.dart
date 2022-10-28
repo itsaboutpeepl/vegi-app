@@ -5,8 +5,8 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
-class PaymentSheetViewModel extends Equatable {
-  const PaymentSheetViewModel({
+class PeeplPaySheetViewModel extends Equatable {
+  const PeeplPaySheetViewModel({
     required this.startPaymentProcess,
     required this.selectedGBPxAmount,
     required this.selectedPPLAmount,
@@ -18,8 +18,8 @@ class PaymentSheetViewModel extends Equatable {
     required this.cartTotal,
   });
 
-  factory PaymentSheetViewModel.fromStore(Store<AppState> store) {
-    return PaymentSheetViewModel(
+  factory PeeplPaySheetViewModel.fromStore(Store<AppState> store) {
+    return PeeplPaySheetViewModel(
       cartTotal: store.state.cartState.cartTotal.formattedPrice,
       selectedGBPxAmount: store.state.cartState.selectedGBPxAmount,
       selectedPPLAmount: store.state.cartState.selectedPPLAmount,
