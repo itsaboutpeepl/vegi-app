@@ -90,4 +90,17 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
         return FontAwesomeIcons.hotel;
     }
   }
+
+  static DeliveryAddressLabel fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'home':
+        return DeliveryAddressLabel.home;
+      case 'work':
+        return DeliveryAddressLabel.work;
+      case 'hotel':
+        return DeliveryAddressLabel.hotel;
+      default:
+        return DeliveryAddressLabel.home;
+    }
+  }
 }
