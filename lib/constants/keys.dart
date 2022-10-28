@@ -6,4 +6,5 @@ class AppKeys {
   static final GlobalKey<ScaffoldState> homePageKey = GlobalKey();
   static final GlobalKey<FormBuilderState> peeplPayTestFormKey =
       GlobalKey<FormBuilderState>();
+  static final GlobalKey<AnimatedListState> listKey = GlobalKey();
 }
