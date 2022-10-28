@@ -61,13 +61,14 @@ class _TopUpFailedState extends State<TopUpFailed>
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Sorry, it seems top up is not currently working, please try again later.',
-                style: TextStyle(
-                  fontSize: 20,
+              if (widget.isFailed)
+                const Text(
+                  'Sorry, it seems top up is not currently working, please try again later.',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
             ],
           ),
         ),
