@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/constants/demoData.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
@@ -23,7 +22,7 @@ class MenuItemState with _$MenuItemState {
   const MenuItemState._();
 
   factory MenuItemState.initial() => MenuItemState(
-        menuItem: bagel1,
+        menuItem: null,
         totalPrice: 0,
         itemReward: 0,
         quantity: 0,
