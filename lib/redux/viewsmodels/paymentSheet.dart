@@ -1,17 +1,13 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
-import 'package:vegan_liverpool/utils/constants.dart';
 
 class PaymentSheetViewModel extends Equatable {
   const PaymentSheetViewModel({
-    required this.cartTotal,
-    required this.pplBalance,
-    required this.gbpXBalance,
-    required this.paymentIntentID,
-    required this.sendToken,
+    required this.startPaymentProcess,
     required this.selectedGBPxAmount,
     required this.selectedPPLAmount,
     required this.updateSelectedValues,
@@ -19,68 +15,43 @@ class PaymentSheetViewModel extends Equatable {
     required this.errorCompletingPayment,
     required this.confirmedPayment,
     required this.restaurantName,
-    required this.setTransferringPayment,
-    required this.setError,
-    required this.setConfirmed,
-    required this.walletAddress,
+    required this.cartTotal,
   });
 
   factory PaymentSheetViewModel.fromStore(Store<AppState> store) {
     return PaymentSheetViewModel(
-      cartTotal: store.state.cartState.cartTotal,
-      pplBalance:
-          store.state.cashWalletState.tokens[pplToken.address]!.getBalance(),
-      gbpXBalance:
-          store.state.cashWalletState.tokens[gbpxToken.address]!.getBalance(),
-      paymentIntentID: store.state.cartState.paymentIntentID,
+      cartTotal: store.state.cartState.cartTotal.formattedPrice,
       selectedGBPxAmount: store.state.cartState.selectedGBPxAmount,
       selectedPPLAmount: store.state.cartState.selectedPPLAmount,
       transferringTokens: store.state.cartState.transferringTokens,
       errorCompletingPayment: store.state.cartState.errorCompletingPayment,
       confirmedPayment: store.state.cartState.confirmedPayment,
       restaurantName: store.state.cartState.restaurantName,
-      walletAddress: store.state.userState.walletAddress,
-      updateSelectedValues: (GBPxAmount, PPLAmount) {
-        store.dispatch(UpdateSelectedAmounts(GBPxAmount, PPLAmount));
+      updateSelectedValues: (gbpxAmount, pplAmount) {
+        store.dispatch(
+          UpdateSelectedAmounts(
+            gbpxAmount: gbpxAmount,
+            pplAmount: pplAmount,
+          ),
+        );
       },
-      sendToken: (successCallback, errorCallback) {
-        store.dispatch(sendTokenPayment(successCallback, errorCallback));
-      },
-      setTransferringPayment: (flag) {
-        store.dispatch(SetTransferringPayment(flag: flag));
-      },
-      setError: (flag) {
-        store.dispatch(SetError(flag: flag));
-      },
-      setConfirmed: (flag) {
-        store.dispatch(SetConfirmed(flag: flag));
+      startPaymentProcess: ({required BuildContext context}) {
+        store.dispatch(startPeeplPayProcess(context: context));
       },
     );
   }
-  final int cartTotal;
-  final String pplBalance;
-  final String gbpXBalance;
-  final String paymentIntentID;
   final double selectedGBPxAmount;
   final double selectedPPLAmount;
+  final String cartTotal;
   final bool transferringTokens;
   final bool errorCompletingPayment;
   final bool confirmedPayment;
   final String restaurantName;
-  final String walletAddress;
-  final void Function(double GBPxAmount, double PPLAmount) updateSelectedValues;
-  final void Function(VoidCallback successCallBack, VoidCallback errorCallback)
-      sendToken;
-  final void Function(bool) setTransferringPayment;
-  final void Function(bool) setError;
-  final void Function(bool) setConfirmed;
+  final void Function(double gbpxAmount, double pplAmount) updateSelectedValues;
+  final void Function({required BuildContext context}) startPaymentProcess;
 
   @override
   List<Object> get props => [
-        cartTotal,
-        pplBalance,
-        gbpXBalance,
-        paymentIntentID,
         selectedGBPxAmount,
         selectedPPLAmount,
         transferringTokens,
