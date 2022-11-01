@@ -18,22 +18,14 @@ class CartItemListViewModel extends Equatable {
     final cartItems = store.state.cartState.cartItems;
     final List<String> itemNames = [];
     final List<String> itemPrices = [];
-    final List<String> optionValues = [];
+    final List<List<String>> optionValues = [];
     final List<int> itemIds = [];
 
     for (final cartItem in cartItems) {
       itemIds.add(cartItem.internalID);
       itemPrices.add(cartItem.formattedPrice);
       itemNames.add(cartItem.menuItem.name.capitalizeWords());
-
-      optionValues.add(
-        cartItem.selectedProductOptions.values.fold<String>(
-          '',
-          (String previousValue, element) {
-            return previousValue + element.description;
-          },
-        ).capitalizeWords(),
-      );
+      optionValues.add(cartItem.selectedProductOptionsString);
     }
 
     return CartItemListViewModel(
@@ -52,7 +44,7 @@ class CartItemListViewModel extends Equatable {
 
   final List<String> names;
   final List<String> prices;
-  final List<String> optionValues;
+  final List<List<String>> optionValues;
   final List<int> ids;
   final void Function(int id) addCartItem;
   final void Function(int id) removeCartItem;

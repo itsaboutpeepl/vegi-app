@@ -37,21 +37,18 @@ class CartItemSingle extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          viewmodel.names[index],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text(
-                          viewmodel.optionValues[index],
-                          style: const TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
+                      children: <Widget>[
+                            Text(
+                              viewmodel.names[index],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ] +
+                          viewmodel.optionValues[index]
+                              .map<Widget>(Text.new)
+                              .toList(),
                     ),
                   ),
                   const SizedBox(
