@@ -1,11 +1,11 @@
-import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/order_item_single.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/singleOrderItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 
 class PreparingOrderPage extends StatelessWidget {
@@ -191,7 +191,7 @@ class PreparingOrderPage extends StatelessWidget {
                 ] +
                 orderDetails.cartItems
                     .map<Widget>(
-                      (element) => SingleCartItem(
+                      (element) => OrderItemSingle(
                         orderItem: element,
                       ),
                     )
