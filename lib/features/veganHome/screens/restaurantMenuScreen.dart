@@ -1,8 +1,8 @@
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/floating_cart_bar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/floating_cart_bar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleRegularMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurantMenuAppBar.dart';

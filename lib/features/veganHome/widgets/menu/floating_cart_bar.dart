@@ -21,14 +21,15 @@ class FloatingCartBar extends StatelessWidget {
           bottom: viewmodel.hasItems ? 0 : -100,
           child: Column(
             children: [
-              if (viewmodel.isBelowOrderMinimum)
+              if (viewmodel.isBelowOrderMinimum && viewmodel.hasItems)
                 Container(
                   height: 25,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.black,
                   child: Center(
                     child: Text(
-                      'This restaurant is not accepting orders below ${viewmodel.orderMinimum}',
+                      'This restaurant is not accepting'
+                      ' orders below ${viewmodel.orderMinimum}',
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
