@@ -17,6 +17,41 @@ class UpdateScheduledOrders {
   final List<OrderDetails> listOfScheduledOrders;
 }
 
+ThunkAction<AppState> createNewPastOrder() {
+  return (Store<AppState> store) async {
+    final OrderDetails orderDetails = OrderDetails(
+      selectedSlot: store.state.cartState.selectedTimeSlot,
+      isDelivery: store.state.cartState.isDelivery,
+      orderAddress: store.state.cartState.isDelivery
+          ? store.state.cartState.selectedDeliveryAddress!
+          : store.state.cartState.restaurantAddress!,
+      restaurantName: store.state.cartState.restaurantName,
+      cartItems: store.state.cartState.cartItems,
+      cartTotal: store.state.cartState.cartTotal,
+      orderID: store.state.cartState.orderID,
+      userName: store.state.userState.displayName,
+      phoneNumber: store.state.cartState.isDelivery
+          ? store.state.userState.phoneNumber
+          : store.state.cartState.restaurantAddress!.townCity,
+      GBPxAmountPaid: store.state.cartState.selectedGBPxAmount,
+      PPLAmountPaid: store.state.cartState.selectedPPLAmount,
+      orderAcceptanceStatus: OrderAcceptanceStatus.pending,
+    );
+
+    if (isScheduledDelivery(orderDetails.selectedSlot)) {
+      final List<OrderDetails> listOfScheduledOrders = List<OrderDetails>.from(
+        store.state.pastOrderState.listOfScheduledOrders,
+      )..add(orderDetails);
+      store.dispatch(UpdateScheduledOrders(listOfScheduledOrders));
+    } else {
+      final List<OrderDetails> listOfOngoingOrders = List<OrderDetails>.from(
+        store.state.pastOrderState.listOfOngoingOrders,
+      )..add(orderDetails);
+      store.dispatch(UpdateOngoingOrderList(listOfOngoingOrders));
+    }
+  };
+}
+
 ThunkAction<AppState> startScheduleCheckCall() {
   return (Store<AppState> store) async {
     final List<OrderDetails> listOfScheduledOrders =
