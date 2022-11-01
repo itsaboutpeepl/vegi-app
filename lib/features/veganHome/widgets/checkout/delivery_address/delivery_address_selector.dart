@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/checkout_screen_2.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/address/editAddressView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_address/saved_address_list.dart';
 import 'package:vegan_liverpool/models/app_state.dart';

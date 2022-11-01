@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/checkout/appbars/chec
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/appbars/ppl_rewards_appbar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/cart_items/cart_items_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_address/delivery_address_selector.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_address/fulfilment_method_selector.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_slots/delivery_time_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/other_cards/bill_summary_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/other_cards/discount_card.dart';
@@ -38,6 +39,7 @@ class CheckoutScreenPt2 extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   children: [
                     const DeliveryTimeCard(),
+                    const FulfilmentMethodSelector(),
                     const CartItemsCard(),
                     const DiscountCard(),
                     const BillSummaryCard(),
