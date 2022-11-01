@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/checkout/app_bar_vm.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/checkout/checkout_app_bar_vm.dart';
 
 class CheckoutAppBar extends StatelessWidget {
   const CheckoutAppBar({Key? key}) : super(key: key);
