@@ -16,9 +16,6 @@ class OrderConfirmedViewModel extends Equatable {
     required this.orderID,
     required this.clearCart,
     required this.userName,
-    required this.phoneNumber,
-    required this.GBPxAmountPaid,
-    required this.PPLAmountPaid,
   });
 
   factory OrderConfirmedViewModel.fromStore(Store<AppState> store) {
@@ -33,9 +30,6 @@ class OrderConfirmedViewModel extends Equatable {
       cartTotal: store.state.cartState.cartTotal,
       orderID: store.state.cartState.orderID,
       userName: store.state.userState.displayName,
-      phoneNumber: store.state.userState.phoneNumber,
-      GBPxAmountPaid: store.state.cartState.selectedGBPxAmount,
-      PPLAmountPaid: store.state.cartState.selectedPPLAmount,
       clearCart: () {
         store.dispatch(ClearCart());
       },
@@ -49,11 +43,8 @@ class OrderConfirmedViewModel extends Equatable {
   final List<CartItem> cartItems;
   final int cartTotal;
   final String orderID;
-  final Function() clearCart;
+  final void Function() clearCart;
   final String userName;
-  final String phoneNumber;
-  final double GBPxAmountPaid;
-  final double PPLAmountPaid;
 
   @override
   List<Object> get props => [];
