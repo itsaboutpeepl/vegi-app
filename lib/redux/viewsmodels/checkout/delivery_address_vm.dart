@@ -16,11 +16,16 @@ class DeliveryAddressViewModel extends Equatable {
     required this.selectedAddress,
     required this.restaurantAddress,
     required this.restaurantName,
+    required this.setDelivery,
   });
 
   factory DeliveryAddressViewModel.fromStore(Store<AppState> store) {
     return DeliveryAddressViewModel(
       savedAddresses: store.state.userState.listOfDeliveryAddresses,
+      isDelivery: store.state.cartState.isDelivery,
+      selectedAddress: store.state.cartState.selectedDeliveryAddress,
+      restaurantAddress: store.state.cartState.restaurantAddress,
+      restaurantName: store.state.cartState.restaurantName,
       removeAddress: ({
         required int id,
       }) {
@@ -44,10 +49,11 @@ class DeliveryAddressViewModel extends Equatable {
           updateDeliveryAddress(oldId: oldId, newAddress: newAddress),
         );
       },
-      isDelivery: store.state.cartState.isDelivery,
-      selectedAddress: store.state.cartState.selectedDeliveryAddress,
-      restaurantAddress: store.state.cartState.restaurantAddress,
-      restaurantName: store.state.cartState.restaurantName,
+      setDelivery: ({required bool isDelivery}) {
+        store
+          ..dispatch(cartActions.SetIsDelivery(isDelivery: isDelivery))
+          ..dispatch(cartActions.computeCartTotals());
+      },
     );
   }
 
@@ -69,6 +75,7 @@ class DeliveryAddressViewModel extends Equatable {
   final DeliveryAddresses? selectedAddress;
   final DeliveryAddresses? restaurantAddress;
   final String restaurantName;
+  final void Function({required bool isDelivery}) setDelivery;
 
   @override
   List<Object?> get props => [savedAddresses, isDelivery];
