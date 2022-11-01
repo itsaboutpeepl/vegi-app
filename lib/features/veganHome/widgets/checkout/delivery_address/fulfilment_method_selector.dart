@@ -39,7 +39,8 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
                 ..dispatch(
                   SetIsDelivery(isDelivery: _tabController.index == 0),
                 )
-                ..dispatch(computeCartTotals());
+                ..dispatch(computeCartTotals())
+                ..dispatch(UpdateSelectedTimeSlot({}));
             }
           },
         );
