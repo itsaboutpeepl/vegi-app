@@ -17,6 +17,7 @@ linter:
     public_member_api_docs: false
     omit_local_variable_types: false
     library_prefixes: false
+    flutter_style_todos: false
 
 analyzer:
   exclude:

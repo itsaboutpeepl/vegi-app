@@ -297,7 +297,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      PrimaryButton(onPressed: () {}, label: 'Delete Account')
+                      //PrimaryButton(onPressed: () {}, label: 'Delete Account')
                     ],
                   )
                 ],

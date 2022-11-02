@@ -1,6 +1,4 @@
 PODS:
-  - Amplitude-iOS (4.8.2)
-  - Analytics (3.7.0)
   - app_tracking_transparency (0.0.1):
     - Flutter
   - carrier_info (0.0.1):
@@ -96,10 +94,6 @@ PODS:
     - Flutter
   - flutter_secure_storage (3.3.1):
     - Flutter
-  - flutter_segment (0.0.1):
-    - Analytics (= 3.7.0)
-    - Flutter
-    - Segment-Amplitude (= 3.0.1)
   - flutter_udid (0.0.1):
     - Flutter
     - SAMKeychain
@@ -182,9 +176,6 @@ PODS:
   - PhoneNumberKit/PhoneNumberKitCore (3.3.4)
   - PromisesObjC (2.1.1)
   - SAMKeychain (1.5.3)
-  - Segment-Amplitude (3.0.1):
-    - Amplitude-iOS (~> 4.8.0)
-    - Analytics (~> 3.7.0)
   - Sentry (7.27.1):
     - Sentry/Core (= 7.27.1)
   - Sentry/Core (7.27.1)
@@ -232,7 +223,6 @@ DEPENDENCIES:
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - flutter_segment (from `.symlinks/plugins/flutter_segment/ios`)
   - flutter_udid (from `.symlinks/plugins/flutter_udid/ios`)
   - geocoding (from `.symlinks/plugins/geocoding/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
@@ -249,8 +239,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Amplitude-iOS
-    - Analytics
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -270,7 +258,6 @@ SPEC REPOS:
     - PhoneNumberKit
     - PromisesObjC
     - SAMKeychain
-    - Segment-Amplitude
     - Sentry
     - Stripe
     - StripeApplePay
@@ -301,8 +288,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
-  flutter_segment:
-    :path: ".symlinks/plugins/flutter_segment/ios"
   flutter_udid:
     :path: ".symlinks/plugins/flutter_udid/ios"
   geocoding:
@@ -331,8 +316,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
-  Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   carrier_info: 74da91657834617c4409e6afdb706ac4685efe66
   Firebase: 5ae8b7cf8efce559a653aef0ad95bab3f427c351
@@ -347,12 +330,11 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: bca76517fe1ed381e989f5e7d8abb0da8d85bed3
   FirebaseInstallations: 0a115432c4e223c5ab20b0dbbe4cbefa793a0e8e
   FirebaseMessaging: a4d7910e4af663c9cbfc1071c5bef34651690949
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
-  flutter_segment: ed8d1215725d0b4190e28105436f253b9e092934
   flutter_udid: 0848809dbed4c055175747ae6a45a8b4f6771e1c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
@@ -373,7 +355,6 @@ SPEC CHECKSUMS:
   PhoneNumberKit: 441e8b26ec88d598e3591de9061eff18f5dd12e8
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
-  Segment-Amplitude: 1b3b02a2e92f4b08a413a72bf7aa44f78566ab3b
   Sentry: bc644307e2eb6a4c9c55cf117a80b895bb2a25a7
   sentry_flutter: 649559f0512e00d3f6fc92cf51f74bc2fe68d1d3
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
