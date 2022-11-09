@@ -11,6 +11,8 @@ class FullfilmentMethods with _$FullfilmentMethods {
     required Map<String, dynamic>? deliveryMethod,
     required List<Map<String, String>> collectionSlots,
     required List<Map<String, String>> deliverySlots,
+    required List<Map<String, String>> eligibleCollectionDates,
+    required List<Map<String, String>> eligibleDeliveryDates,
   }) = _FullfilmentMethods;
 
   const FullfilmentMethods._();

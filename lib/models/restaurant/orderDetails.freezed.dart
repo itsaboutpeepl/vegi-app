@@ -20,7 +20,7 @@ OrderDetails _$OrderDetailsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$OrderDetails {
-  Map<String, String> get selectedSlot => throw _privateConstructorUsedError;
+  TimeSlot get selectedSlot => throw _privateConstructorUsedError;
   bool get isDelivery => throw _privateConstructorUsedError;
   DeliveryAddresses get orderAddress => throw _privateConstructorUsedError;
   String get restaurantName => throw _privateConstructorUsedError;
@@ -47,7 +47,7 @@ abstract class $OrderDetailsCopyWith<$Res> {
       _$OrderDetailsCopyWithImpl<$Res, OrderDetails>;
   @useResult
   $Res call(
-      {Map<String, String> selectedSlot,
+      {TimeSlot selectedSlot,
       bool isDelivery,
       DeliveryAddresses orderAddress,
       String restaurantName,
@@ -60,6 +60,7 @@ abstract class $OrderDetailsCopyWith<$Res> {
       double PPLAmountPaid,
       OrderAcceptanceStatus orderAcceptanceStatus});
 
+  $TimeSlotCopyWith<$Res> get selectedSlot;
   $DeliveryAddressesCopyWith<$Res> get orderAddress;
 }
 
@@ -93,7 +94,7 @@ class _$OrderDetailsCopyWithImpl<$Res, $Val extends OrderDetails>
       selectedSlot: null == selectedSlot
           ? _value.selectedSlot
           : selectedSlot // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as TimeSlot,
       isDelivery: null == isDelivery
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
@@ -143,6 +144,14 @@ class _$OrderDetailsCopyWithImpl<$Res, $Val extends OrderDetails>
 
   @override
   @pragma('vm:prefer-inline')
+  $TimeSlotCopyWith<$Res> get selectedSlot {
+    return $TimeSlotCopyWith<$Res>(_value.selectedSlot, (value) {
+      return _then(_value.copyWith(selectedSlot: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $DeliveryAddressesCopyWith<$Res> get orderAddress {
     return $DeliveryAddressesCopyWith<$Res>(_value.orderAddress, (value) {
       return _then(_value.copyWith(orderAddress: value) as $Val);
@@ -159,7 +168,7 @@ abstract class _$$_OrderDetailsCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Map<String, String> selectedSlot,
+      {TimeSlot selectedSlot,
       bool isDelivery,
       DeliveryAddresses orderAddress,
       String restaurantName,
@@ -172,6 +181,8 @@ abstract class _$$_OrderDetailsCopyWith<$Res>
       double PPLAmountPaid,
       OrderAcceptanceStatus orderAcceptanceStatus});
 
+  @override
+  $TimeSlotCopyWith<$Res> get selectedSlot;
   @override
   $DeliveryAddressesCopyWith<$Res> get orderAddress;
 }
@@ -204,7 +215,7 @@ class __$$_OrderDetailsCopyWithImpl<$Res>
       selectedSlot: null == selectedSlot
           ? _value.selectedSlot
           : selectedSlot // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as TimeSlot,
       isDelivery: null == isDelivery
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
@@ -276,7 +287,7 @@ class _$_OrderDetails extends _OrderDetails {
       _$$_OrderDetailsFromJson(json);
 
   @override
-  final Map<String, String> selectedSlot;
+  final TimeSlot selectedSlot;
   @override
   final bool isDelivery;
   @override
@@ -310,8 +321,8 @@ class _$_OrderDetails extends _OrderDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_OrderDetails &&
-            const DeepCollectionEquality()
-                .equals(other.selectedSlot, selectedSlot) &&
+            (identical(other.selectedSlot, selectedSlot) ||
+                other.selectedSlot == selectedSlot) &&
             (identical(other.isDelivery, isDelivery) ||
                 other.isDelivery == isDelivery) &&
             (identical(other.orderAddress, orderAddress) ||
@@ -338,7 +349,7 @@ class _$_OrderDetails extends _OrderDetails {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(selectedSlot),
+      selectedSlot,
       isDelivery,
       orderAddress,
       restaurantName,
@@ -367,7 +378,7 @@ class _$_OrderDetails extends _OrderDetails {
 
 abstract class _OrderDetails extends OrderDetails {
   factory _OrderDetails(
-          {required final Map<String, String> selectedSlot,
+          {required final TimeSlot selectedSlot,
           required final bool isDelivery,
           required final DeliveryAddresses orderAddress,
           required final String restaurantName,
@@ -386,7 +397,7 @@ abstract class _OrderDetails extends OrderDetails {
       _$_OrderDetails.fromJson;
 
   @override
-  Map<String, String> get selectedSlot;
+  TimeSlot get selectedSlot;
   @override
   bool get isDelivery;
   @override

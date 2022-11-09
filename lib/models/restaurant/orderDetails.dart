@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 
 part 'orderDetails.freezed.dart';
 part 'orderDetails.g.dart';
@@ -10,7 +11,7 @@ part 'orderDetails.g.dart';
 class OrderDetails with _$OrderDetails {
   @JsonSerializable()
   factory OrderDetails({
-    required Map<String, String> selectedSlot,
+    required TimeSlot selectedSlot,
     required bool isDelivery,
     required DeliveryAddresses orderAddress,
     required String restaurantName,

@@ -37,4 +37,18 @@ class DeliveryAddresses with _$DeliveryAddresses {
         ' \n${postalCode.capitalizeWords()},'
         ' ${townCity.capitalizeWords()}';
   }
+
+  bool deliversTo(List<String> fulfilmentPostalDistricts) {
+    final RegExp regex = RegExp(
+      r'^(((([A-Z][A-Z]{0,1})[0-9][A-Z0-9]{0,1}) {0,}[0-9])[A-Z]{2})$',
+    );
+
+    if (regex.hasMatch(postalCode)) {
+      final match = regex.firstMatch(postalCode);
+      if (match!.groupCount > 0) {
+        return fulfilmentPostalDistricts.contains(match.group(3));
+      }
+    }
+    return false;
+  }
 }

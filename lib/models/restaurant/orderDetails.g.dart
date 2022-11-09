@@ -8,7 +8,8 @@ part of 'orderDetails.dart';
 
 _$_OrderDetails _$$_OrderDetailsFromJson(Map<String, dynamic> json) =>
     _$_OrderDetails(
-      selectedSlot: Map<String, String>.from(json['selectedSlot'] as Map),
+      selectedSlot:
+          TimeSlot.fromJson(json['selectedSlot'] as Map<String, dynamic>),
       isDelivery: json['isDelivery'] as bool,
       orderAddress: DeliveryAddresses.fromJson(
           json['orderAddress'] as Map<String, dynamic>),
@@ -28,7 +29,7 @@ _$_OrderDetails _$$_OrderDetailsFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_OrderDetailsToJson(_$_OrderDetails instance) =>
     <String, dynamic>{
-      'selectedSlot': instance.selectedSlot,
+      'selectedSlot': instance.selectedSlot.toJson(),
       'isDelivery': instance.isDelivery,
       'orderAddress': instance.orderAddress.toJson(),
       'restaurantName': instance.restaurantName,
