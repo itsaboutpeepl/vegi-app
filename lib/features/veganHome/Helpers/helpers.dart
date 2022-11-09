@@ -1,7 +1,6 @@
-import 'dart:io';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -22,48 +21,6 @@ String parseHtmlString(String htmlString) {
 
 double parseBalance(String balance) {
   return double.parse(balance.replaceAll('<', '').replaceAll(',', ''));
-}
-
-String mapPreviewImage({required double latitude, required double longitude}) {
-  final _apiKey = Platform.isIOS
-      ? dotenv.env['MAP_API_KEY_IOS'] ?? ''
-      : dotenv.env['MAP_API_KEY_ANDROID'] ?? '';
-
-  return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=800x400&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=$_apiKey&style=feature:|element:|visibility:simplified';
-}
-
-String mapToString(Map<String, String> map) {
-  final DateFormat dateFormat = DateFormat(DateFormat.HOUR);
-  final DateTime startTime = DateTime.parse(map.entries.first.value);
-  final DateTime endTime = DateTime.parse(map.entries.last.value);
-
-  return '${dateFormat.format(startTime).replaceAll(' AM', '').replaceAll(' PM', '')}-${dateFormat.format(endTime)}';
-}
-
-String mapToStringDate(Map<String, String> map) {
-  final DateTime startTime = DateTime.parse(map.entries.first.value);
-  final DateFormat formatter = DateFormat(DateFormat.ABBR_MONTH_WEEKDAY_DAY);
-  return formatter.format(startTime);
-}
-
-String slotMapToString(Map<String, String> map) {
-  final DateTime startTime = DateTime.parse(map.entries.first.value);
-  final DateTime endTime = DateTime.parse(map.entries.last.value);
-  final DateFormat hourFormatter = DateFormat(DateFormat.HOUR);
-  final DateFormat monthFormatter = DateFormat(DateFormat.ABBR_MONTH);
-
-  final String startHour = hourFormatter
-      .format(startTime)
-      .replaceAll(' AM', '')
-      .replaceAll(' PM', '');
-
-  final String endHour = hourFormatter.format(endTime).replaceAll(' ', '');
-
-  final String month = monthFormatter.format(startTime);
-
-  //12-1pm, 13th Oct
-
-  return '$startHour-$endHour, ${startTime.ordinalDate()} $month';
 }
 
 String formatDateForOrderObject(String date) {
@@ -163,18 +120,16 @@ List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
   }
 }
 
-bool isScheduledDelivery(Map<String, String> selectedSlot) {
-  final DateTime startTime = DateTime.parse(selectedSlot.entries.first.value);
-  if (startTime.difference(DateTime.now()).inHours > 5) {
+bool isScheduledDelivery(TimeSlot selectedSlot) {
+  if (selectedSlot.startTime.difference(DateTime.now()).inHours > 5) {
     return true;
   } else {
     return false;
   }
 }
 
-bool shouldEndOngoing(Map<String, String> selectedSlot) {
-  final DateTime endTime = DateTime.parse(selectedSlot.entries.last.value);
-  if (endTime.isBefore(DateTime.now())) {
+bool shouldEndOngoing(TimeSlot selectedSlot) {
+  if (selectedSlot.endTime.isBefore(DateTime.now())) {
     return true;
   } else {
     return false;
@@ -217,111 +172,9 @@ String getErrorMessageForOrder(String errorCode) {
       return 'This slot is full. Please choose another slot!';
     case 'invalidDiscountCode':
       return 'The discount code entered is invalid, sorry!';
+    case 'invalidUserAddress':
+      return 'The address entered is invalid, sorry!';
     default:
-      return 'Something went wrong!';
-  }
-}
-
-extension DateTimeExtension on DateTime {
-  DateTime next(int day) {
-    return add(
-      Duration(
-        days: (day - weekday) % DateTime.daysPerWeek,
-      ),
-    );
-  }
-}
-
-extension CapitalizeString on String {
-  String capitalize() {
-    if (isEmpty) return '';
-    return this[0].toUpperCase() + substring(1);
-  }
-
-  String maxChars(int count) {
-    if (length > count) {
-      return substring(0, count);
-    }
-    return this;
-  }
-
-  String capitalizeWords() {
-    return replaceAll(RegExp(' +'), ' ')
-        .split(' ')
-        .map((str) => str.capitalize())
-        .join(' ');
-  }
-}
-
-extension NumHelpers on num {
-  String get formattedPrice => '£${(this / 100).toStringAsFixed(2)}';
-  String get formattedPriceNoDec => '£${(this / 100).toStringAsFixed(0)}';
-}
-
-List<Map<String, String>> getSelectableDatesForDeliverySlots() {
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
-
-  final List<Map<String, String>> listOfSelectableDates = [];
-
-  DateTime currentDate = DateTime.parse(formatter.format(DateTime.now()));
-  final DateTime currentDate2 =
-      DateTime.parse(formatter.format(DateTime.now()));
-
-  for (var i = 0; i < 8; i++) {
-    listOfSelectableDates.add(
-      {currentDate.ordinalDate(): currentDate2.relativeDay(currentDate)},
-    );
-    currentDate = currentDate.add(const Duration(days: 1));
-  }
-
-  return listOfSelectableDates;
-}
-
-extension DateTimeHelpers on DateTime {
-  /// Returns a [String] containing the relative day from [other].
-  /// Counts in terms of absolute values.
-  ///
-  /// Example:
-  ///
-  /// Current Date is 12-02-2022
-  ///
-  /// Other Date is 13-02-2022: Will return 'Today'
-  ///
-  /// Other date is 14-02-2022: Will return 'Tomorrow'
-  ///
-  /// Any other day is returned as [DateFormat.WEEKDAY]
-  String relativeDay(DateTime other) {
-    switch (difference(other).inDays.abs()) {
-      case 0:
-        return 'Today';
-      case 1:
-        return 'Tomorrow';
-      default:
-        return DateFormat(DateFormat.WEEKDAY).format(other);
-    }
-  }
-
-  /// Returns a [String] containing the Ordinal Date
-  ///
-  /// Example:
-  ///
-  /// 01-12-2022 will return 1st
-  ///
-  /// 29-08-2021 will return 29th
-  String ordinalDate() {
-    if (day >= 11 && day <= 13) {
-      return '${day}th';
-    }
-
-    switch (day % 10) {
-      case 1:
-        return '${day}st';
-      case 2:
-        return '${day}nd';
-      case 3:
-        return '${day}rd';
-      default:
-        return '${day}th';
-    }
+      return 'Something went wrong: $errorCode';
   }
 }
