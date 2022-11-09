@@ -123,6 +123,7 @@ class SingleRestaurantItem extends StatelessWidget {
                   restaurantItem.walletAddress,
                   restaurantItem.minimumOrderAmount,
                   restaurantItem.platformFee,
+                  restaurantItem.deliveryRestrictionDetails,
                   () => showErrorSnack(
                     context: context,
                     title: 'Existing Items in cart were removed',

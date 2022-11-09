@@ -12,12 +12,14 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/processing_payment.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/paymentSheet.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
+import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -74,9 +76,9 @@ class ClearCart {
 }
 
 class UpdateSlots {
-  UpdateSlots(this.deliverySlots, this.collectionSlots);
-  final List<Map<String, String>> deliverySlots;
-  final List<Map<String, String>> collectionSlots;
+  UpdateSlots({required this.deliverySlots, required this.collectionSlots});
+  final List<TimeSlot> deliverySlots;
+  final List<TimeSlot> collectionSlots;
 
   @override
   String toString() {
@@ -97,7 +99,7 @@ class UpdateSelectedDeliveryAddress {
 
 class UpdateSelectedTimeSlot {
   UpdateSelectedTimeSlot(this.selectedTimeSlot);
-  final Map<String, String> selectedTimeSlot;
+  final TimeSlot? selectedTimeSlot;
 
   @override
   String toString() {
@@ -176,6 +178,7 @@ class SetRestaurantDetails {
     this.walletAddress,
     this.minimumOrder,
     this.platformFee,
+    this.fulfilmentPostalDistricts,
   );
   final String restaurantID;
   final String restaurantName;
@@ -183,57 +186,25 @@ class SetRestaurantDetails {
   final String walletAddress;
   final int minimumOrder;
   final int platformFee;
+  final List<String> fulfilmentPostalDistricts;
 
   @override
   String toString() {
     return 'SetRestaurantDetails : restaurantID: $restaurantID, '
         'restaurantName: $restaurantName, restaurantAddress:'
         '$restaurantAddress, walletAddress:$walletAddress, '
-        'minimumOrder:$minimumOrder, platformFee:$platformFee';
+        'minimumOrder:$minimumOrder, platformFee:$platformFee, '
+        'fulfilmentPostalDistricts: $fulfilmentPostalDistricts';
   }
 }
 
-class SetDeliveryCharge {
-  SetDeliveryCharge(this.deliveryCharge);
-  final int deliveryCharge;
+class SetFulfilmentCharge {
+  SetFulfilmentCharge(this.fulfilmentCharge);
+  final int fulfilmentCharge;
 
   @override
   String toString() {
-    return 'SetDeliveryCharge : deliveryCharge: $deliveryCharge';
-  }
-}
-
-class SetFulfilmentFees {
-  SetFulfilmentFees(this.deliveryCharge, this.collectionCharge);
-  final int deliveryCharge;
-  final int collectionCharge;
-
-  @override
-  String toString() {
-    return 'SetFulfilmentFees : deliveryCharge: $deliveryCharge, '
-        'collectionCharge: $collectionCharge';
-  }
-}
-
-class SetFulfilmentMethodIds {
-  SetFulfilmentMethodIds(this.deliveryMethodId, this.collectionMethodId);
-  final int deliveryMethodId;
-  final int collectionMethodId;
-
-  @override
-  String toString() {
-    return 'SetFulfilmentMethodIds : deliveryMethodId: $deliveryMethodId, '
-        'collectionMethodId: $collectionMethodId';
-  }
-}
-
-class SetFulfilmentMethod {
-  SetFulfilmentMethod(this.fulfilmentMethod);
-  final FulfilmentMethod fulfilmentMethod;
-
-  @override
-  String toString() {
-    return 'SetFulfilmentMethod : fulfilmentMethod: $fulfilmentMethod';
+    return 'SetFulfilmentCharge : fulfilmentCharge: $fulfilmentCharge';
   }
 }
 
@@ -278,56 +249,120 @@ class SetPaymentButtonFlag {
   }
 }
 
-ThunkAction<AppState> getFullfillmentMethods({DateTime? newDate}) {
+class UpdateEligibleOrderDates {
+  UpdateEligibleOrderDates(this.eligibleOrderDates);
+  final List<DateTime> eligibleOrderDates;
+
+  @override
+  String toString() {
+    return 'UpdateEligibleOrderDates : eligibleOrderDates: $eligibleOrderDates';
+  }
+}
+
+class UpdateNextAvaliableTimeSlots {
+  UpdateNextAvaliableTimeSlots({
+    required this.collectionSlot,
+    required this.deliverySlot,
+  });
+  final TimeSlot collectionSlot;
+  final TimeSlot deliverySlot;
+  @override
+  String toString() {
+    return 'UpdateNextAvaliableTimeSlots : collectionSlot: '
+        '$collectionSlot, deliverySlot: $deliverySlot';
+  }
+}
+
+ThunkAction<AppState> getTimeSlots({required DateTime newDate}) {
   return (Store<AppState> store) async {
     try {
       final DateFormat formatter = DateFormat('yyyy-MM-dd');
-      FullfilmentMethods fullfilmentMethods;
+      final Map<String, List<TimeSlot>> timeSlots =
+          await peeplEatsService.getFulfilmentSlots(
+        vendorID: store.state.cartState.restaurantID,
+        dateRequired: formatter.format(newDate),
+      );
 
-      if (newDate == null) {
-        fullfilmentMethods = await peeplEatsService.getFulfilmentSlots(
-          vendorID: store.state.cartState.restaurantID,
-          dateRequired: formatter.format(DateTime.now()),
-        );
-      } else {
-        fullfilmentMethods = await peeplEatsService.getFulfilmentSlots(
-          vendorID: store.state.cartState.restaurantID,
-          dateRequired: formatter.format(newDate),
-        );
-      }
-      store
-        ..dispatch(
-          UpdateSlots(
-            fullfilmentMethods.deliverySlots,
-            fullfilmentMethods.collectionSlots,
-          ),
-        )
-        ..dispatch(
-          SetFulfilmentFees(
-            fullfilmentMethods.deliveryMethod == null
-                ? 0
-                : fullfilmentMethods.deliveryMethod!['priceModifier'] as int? ??
-                    0,
-            fullfilmentMethods.collectionMethod == null
-                ? 0
-                : fullfilmentMethods.collectionMethod!['priceModifier']
-                        as int? ??
-                    0,
-          ),
-        )
-        ..dispatch(
-          SetFulfilmentMethodIds(
-            fullfilmentMethods.deliveryMethod!['id'] as int,
-            fullfilmentMethods.collectionMethod!['id'] as int,
-          ),
-        )
-        ..dispatch(computeCartTotals());
+      store.dispatch(
+        UpdateSlots(
+          deliverySlots: timeSlots['deliverySlots']!,
+          collectionSlots: timeSlots['collectionSlots']!,
+        ),
+      );
     } catch (e, s) {
       log.error('ERROR - getFullfillmentMethods $e');
       await Sentry.captureException(
         e,
         stackTrace: s,
         hint: 'ERROR - getFullfillmentMethods $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> getNextAvaliableSlot() {
+  return (Store<AppState> store) async {
+    try {
+      final Map<String, TimeSlot> nextAvaliableSlots =
+          await peeplEatsService.getNextAvaliableSlot(
+        vendorID: store.state.cartState.restaurantID,
+      );
+
+      store.dispatch(
+        UpdateNextAvaliableTimeSlots(
+          collectionSlot: nextAvaliableSlots['collectionSlot']!,
+          deliverySlot: nextAvaliableSlots['deliverySlot']!,
+        ),
+      );
+
+      if (store.state.cartState.isDelivery) {
+        store.dispatch(
+          updateSelectedTimeSlot(
+            selectedTimeSlot: nextAvaliableSlots['deliverySlot']!,
+          ),
+        );
+      } else {
+        store.dispatch(
+          updateSelectedTimeSlot(
+            selectedTimeSlot: nextAvaliableSlots['collectionSlot']!,
+          ),
+        );
+      }
+    } catch (e, s) {
+      log.error('ERROR - getNextAvaliableSlot $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - getNextAvaliableSlot $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> getEligibleOrderDates() {
+  return (Store<AppState> store) async {
+    try {
+      final List<String> eligibleDatesString =
+          await peeplEatsService.getAvaliableDates(
+        vendorID: store.state.cartState.restaurantID,
+        isDelivery: store.state.cartState.isDelivery,
+      );
+
+      final List<DateTime> eligibleDates = [];
+
+      for (final date in eligibleDatesString) {
+        eligibleDates.add(DateTime.parse(date));
+      }
+
+      eligibleDates.sort((first, next) => first.compareTo(next));
+
+      store.dispatch(UpdateEligibleOrderDates(eligibleDates));
+    } catch (e, s) {
+      log.error('ERROR - getEligibleOrderDates $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - getEligibleOrderDates $e',
       );
     }
   };
@@ -374,6 +409,33 @@ ThunkAction<AppState> updateCartDiscount({
     } catch (e, s) {
       log.error('ERROR - updateCartDiscount $e');
       errorCallback();
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - updateCartDiscount $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> updateSelectedTimeSlot({
+  bool? isDelivery,
+  required TimeSlot selectedTimeSlot,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      if (isDelivery != null) {
+        store.dispatch(
+          SetIsDelivery(isDelivery: isDelivery),
+        );
+      }
+      store
+        ..dispatch(
+          UpdateSelectedTimeSlot(selectedTimeSlot),
+        )
+        ..dispatch(computeCartTotals());
+    } catch (e, s) {
+      log.error('ERROR - updateCartDiscount $e');
       await Sentry.captureException(
         e,
         stackTrace: s,
@@ -482,34 +544,25 @@ ThunkAction<AppState> computeCartTotals() {
       int cartSubTotal = 0;
       const int cartTax = 0;
       int cartTotal = 0;
-      final int deliveryFee = store.state.cartState.deliveryCharge;
-      final int collectionFee = store.state.cartState.collectionCharge;
+      final int fulfilmentCharge =
+          store.state.cartState.selectedTimeSlot != null
+              ? store.state.cartState.selectedTimeSlot!.priceModifier
+              : 0;
       final int platformFee = store.state.cartState.restaurantPlatformFee;
       final int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
       int cartDiscountComputed = 0;
       final int cartTip = store.state.cartState.selectedTipAmount;
-      final bool isDelivery = store.state.cartState.isDelivery;
 
       for (final element in cartItems) {
         cartSubTotal += element.totalItemPrice;
       }
 
-      // add price of each order Item (which has options included)
-
       cartDiscountComputed =
           (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
 
-      //cartTax = ((cartSubTotal - cartDiscountComputed) * 5) ~/ 100;
-
-      if (isDelivery) {
-        cartTotal =
-            (cartSubTotal + cartTax + cartTip + deliveryFee + platformFee) -
-                cartDiscountComputed;
-      } else {
-        cartTotal =
-            (cartSubTotal + cartTax + cartTip + collectionFee + platformFee) -
-                cartDiscountComputed;
-      }
+      cartTotal =
+          (cartSubTotal + cartTax + cartTip + fulfilmentCharge + platformFee) -
+              cartDiscountComputed;
 
       if (cartItems.isEmpty) {
         cartSubTotal = 0;
@@ -542,7 +595,7 @@ ThunkAction<AppState> startOrderCreationProcess({
   return (Store<AppState> store) async {
     try {
       final cartState = store.state.cartState;
-      if (cartState.selectedTimeSlot.isEmpty) {
+      if (cartState.selectedTimeSlot == null) {
         showErrorSnack(context: context, title: 'Please select a time slot');
         return;
       }
@@ -618,19 +671,18 @@ ThunkAction<AppState> prepareOrderObjectForDelivery({
                   ? 'email@notprovided.com'
                   : store.state.userState.email,
               'lineOne': selectedAddress.addressLine1,
-              'lineTwo': '${selectedAddress.addressLine2}, '
-                  '${selectedAddress.townCity}',
+              'lineTwo': selectedAddress.addressLine2,
               'postCode': selectedAddress.postalCode,
+              'city': selectedAddress.townCity,
               'deliveryInstructions':
                   store.state.cartState.deliveryInstructions,
             },
-            'fulfilmentMethod': store.state.cartState.deliveryMethodId,
-            'fulfilmentSlotFrom': formatDateForOrderObject(
-              store.state.cartState.selectedTimeSlot.entries.first.value,
-            ),
-            'fulfilmentSlotTo': formatDateForOrderObject(
-              store.state.cartState.selectedTimeSlot.entries.last.value,
-            ),
+            'fulfilmentMethod':
+                store.state.cartState.selectedTimeSlot!.fulfilmentMethodId,
+            'fulfilmentSlotFrom': store
+                .state.cartState.selectedTimeSlot!.startTime.formattedForAPI,
+            'fulfilmentSlotTo':
+                store.state.cartState.selectedTimeSlot!.endTime.formattedForAPI
           },
         );
 
@@ -690,16 +742,18 @@ ThunkAction<AppState> prepareOrderObjectForCollection({
               'lineOne': 'Collection Order',
               'lineTwo': store.state.cartState.restaurantAddress!.shortAddress,
               'postCode': store.state.cartState.restaurantAddress!.postalCode,
+              'city': store.state.cartState.restaurantAddress!.townCity.isEmpty
+                  ? 'Liverpool'
+                  : store.state.cartState.restaurantAddress!.townCity,
               'deliveryInstructions':
                   store.state.cartState.deliveryInstructions,
             },
-            'fulfilmentMethod': store.state.cartState.collectionMethodId,
-            'fulfilmentSlotFrom': formatDateForOrderObject(
-              store.state.cartState.selectedTimeSlot.entries.first.value,
-            ),
-            'fulfilmentSlotTo': formatDateForOrderObject(
-              store.state.cartState.selectedTimeSlot.entries.last.value,
-            ),
+            'fulfilmentMethod':
+                store.state.cartState.selectedTimeSlot!.fulfilmentMethodId,
+            'fulfilmentSlotFrom': store
+                .state.cartState.selectedTimeSlot!.startTime.formattedForAPI,
+            'fulfilmentSlotTo': store.state.cartState.selectedTimeSlot!.endTime
+                .formattedForAPI //TODO: check
           },
         );
 
@@ -765,6 +819,17 @@ ThunkAction<AppState> sendOrderObject({
     } on DioError catch (e) {
       store.dispatch(SetPaymentButtonFlag(false));
       if (e.response != null) {
+        if (e.response == 'Interal Server Error') {
+          await Sentry.captureException(
+            e,
+            hint: 'DioError - sendOrderObject - '
+                "Internal Server Error",
+          );
+          showErrorSnack(
+            context: context,
+            title: 'Our servers seem to be down',
+          );
+        }
         log.error(e.response!.data);
         await Sentry.captureException(
           e,
@@ -1041,6 +1106,7 @@ ThunkAction<AppState> setRestaurantDetails({
   required String walletAddress,
   required int minimumOrder,
   required int platformFee,
+  required List<String> fulfilmentPostalDistricts,
   required VoidCallback sendSnackBar,
 }) {
   return (Store<AppState> store) async {
@@ -1061,6 +1127,7 @@ ThunkAction<AppState> setRestaurantDetails({
               walletAddress,
               minimumOrder,
               platformFee,
+              fulfilmentPostalDistricts,
             ),
           );
       } else {
@@ -1072,6 +1139,7 @@ ThunkAction<AppState> setRestaurantDetails({
             walletAddress,
             minimumOrder,
             platformFee,
+            fulfilmentPostalDistricts,
           ),
         );
       }

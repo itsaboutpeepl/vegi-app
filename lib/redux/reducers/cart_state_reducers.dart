@@ -19,16 +19,18 @@ final cartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, SetConfirmed>(_toggleConfirmed),
   TypedReducer<UserCartState, UpdateSelectedAmounts>(_updateSelectedAmounts),
   TypedReducer<UserCartState, SetRestaurantDetails>(_setRestaurantDetails),
-  TypedReducer<UserCartState, SetDeliveryCharge>(_setDeliveryCharge),
-  TypedReducer<UserCartState, SetFulfilmentFees>(_setFulfilmentFees),
-  TypedReducer<UserCartState, SetFulfilmentMethod>(_setFulfilmentMethod),
   TypedReducer<UserCartState, SetIsDelivery>(_setIsDelivery),
   TypedReducer<UserCartState, SetDeliveryInstructions>(
     _setDeliveryInstructions,
   ),
-  TypedReducer<UserCartState, SetFulfilmentMethodIds>(_setFulfilmentMethodIds),
   TypedReducer<UserCartState, SetPaymentMethod>(_setPaymentMethod),
-  TypedReducer<UserCartState, SetPaymentButtonFlag>(_setPaymentButtonFlag)
+  TypedReducer<UserCartState, SetPaymentButtonFlag>(_setPaymentButtonFlag),
+  TypedReducer<UserCartState, UpdateEligibleOrderDates>(
+    _updateEligibleOrderDates,
+  ),
+  TypedReducer<UserCartState, UpdateNextAvaliableTimeSlots>(
+    _updateNextAvaliableSlots,
+  ),
 ]);
 
 UserCartState _updateCartItems(
@@ -61,7 +63,7 @@ UserCartState _clearCart(
     cartTotal: 0,
     cartDiscountPercent: 0,
     cartDiscountComputed: 0,
-    selectedTimeSlot: {},
+    selectedTimeSlot: null,
     selectedTipAmount: 0,
     discountCode: '',
     selectedDeliveryAddress: null,
@@ -172,33 +174,8 @@ UserCartState _setRestaurantDetails(
     restaurantWalletAddress: action.walletAddress,
     restaurantMinimumOrder: action.minimumOrder,
     restaurantPlatformFee: action.platformFee,
+    fulfilmentPostalDistricts: action.fulfilmentPostalDistricts,
   );
-}
-
-UserCartState _setDeliveryCharge(
-  UserCartState state,
-  SetDeliveryCharge action,
-) {
-  return state.copyWith(
-    cartDeliveryCharge: action.deliveryCharge,
-  );
-}
-
-UserCartState _setFulfilmentFees(
-  UserCartState state,
-  SetFulfilmentFees action,
-) {
-  return state.copyWith(
-    deliveryCharge: action.deliveryCharge,
-    collectionCharge: action.collectionCharge,
-  );
-}
-
-UserCartState _setFulfilmentMethod(
-  UserCartState state,
-  SetFulfilmentMethod action,
-) {
-  return state.copyWith(fulfilmentMethod: action.fulfilmentMethod);
 }
 
 UserCartState _setIsDelivery(UserCartState state, SetIsDelivery action) {
@@ -212,16 +189,6 @@ UserCartState _setDeliveryInstructions(
   return state.copyWith(deliveryInstructions: action.deliveryInstructions);
 }
 
-UserCartState _setFulfilmentMethodIds(
-  UserCartState state,
-  SetFulfilmentMethodIds action,
-) {
-  return state.copyWith(
-    deliveryMethodId: action.deliveryMethodId,
-    collectionMethodId: action.collectionMethodId,
-  );
-}
-
 UserCartState _setPaymentMethod(UserCartState state, SetPaymentMethod action) {
   return state.copyWith(selectedPaymentMethod: action.paymentMethod);
 }
@@ -231,4 +198,21 @@ UserCartState _setPaymentButtonFlag(
   SetPaymentButtonFlag action,
 ) {
   return state.copyWith(payButtonLoading: action.flag);
+}
+
+UserCartState _updateEligibleOrderDates(
+  UserCartState state,
+  UpdateEligibleOrderDates action,
+) {
+  return state.copyWith(eligibleOrderDates: action.eligibleOrderDates);
+}
+
+UserCartState _updateNextAvaliableSlots(
+  UserCartState state,
+  UpdateNextAvaliableTimeSlots action,
+) {
+  return state.copyWith(
+    nextDeliverySlot: action.deliverySlot,
+    nextCollectionSlot: action.collectionSlot,
+  );
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 
 class ReduxStateViewer extends StatefulWidget {

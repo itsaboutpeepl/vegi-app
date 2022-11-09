@@ -3,6 +3,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -20,7 +21,7 @@ class UpdateScheduledOrders {
 ThunkAction<AppState> createNewPastOrder() {
   return (Store<AppState> store) async {
     final OrderDetails orderDetails = OrderDetails(
-      selectedSlot: store.state.cartState.selectedTimeSlot,
+      selectedSlot: store.state.cartState.selectedTimeSlot!,
       isDelivery: store.state.cartState.isDelivery,
       orderAddress: store.state.cartState.isDelivery
           ? store.state.cartState.selectedDeliveryAddress!

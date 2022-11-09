@@ -4,12 +4,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
+import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 
 @lazySingleton
 class PeeplEatsService {
@@ -44,6 +46,16 @@ class PeeplEatsService {
 
     for (final Map<String, dynamic> element in results) {
       if (element['status'] == 'active') {
+        final List<Map<String, dynamic>> postalCodes = List.from(
+          element['fulfilmentPostalDistricts'] as Iterable<dynamic>,
+        );
+
+        final List<String> deliversTo = [];
+
+        for (final element in postalCodes) {
+          deliversTo.add((element['outcode'] as String? ?? '').toUpperCase());
+        }
+
         restaurantsActive.add(
           RestaurantItem(
             restaurantID: element['id'].toString(),
@@ -51,7 +63,7 @@ class PeeplEatsService {
             description: element['description'] as String? ?? '',
             phoneNumber: element['phoneNumber'] as String? ?? '',
             status: element['status'] as String? ?? 'draft',
-            deliveryRestrictionDetails: [], // TODO: Remove this entirely
+            deliveryRestrictionDetails: deliversTo,
             imageURL: element['imageUrl'] as String? ?? '',
             category: 'Category',
             costLevel: element['costLevel'] as int? ?? 2,
@@ -74,8 +86,6 @@ class PeeplEatsService {
         );
       }
     }
-
-    restaurantsActive.removeWhere((element) => element.status == 'draft');
 
     return restaurantsActive;
   }
@@ -166,7 +176,7 @@ class PeeplEatsService {
     return results['percentage'] as int? ?? 0;
   }
 
-  Future<FullfilmentMethods> getFulfilmentSlots({
+  Future<Map<String, List<TimeSlot>>> getFulfilmentSlots({
     required String vendorID,
     required String dateRequired,
   }) async {
@@ -174,10 +184,58 @@ class PeeplEatsService {
       'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired',
     );
 
-    final FullfilmentMethods methods =
-        FullfilmentMethods.fromJson(response.data as Map<String, dynamic>);
+    final List<dynamic> availableSlots =
+        response.data['slots'] as List<dynamic>;
 
-    return methods;
+    final List<TimeSlot> collectionSlots = [];
+    final List<TimeSlot> deliverySlots = [];
+
+    for (final slot in availableSlots) {
+      if (slot['fulfilmentMethod']['methodType'] == 'delivery') {
+        deliverySlots.add(TimeSlot.fromJsonApi(slot as Map<String, dynamic>));
+      } else {
+        collectionSlots.add(TimeSlot.fromJsonApi(slot as Map<String, dynamic>));
+      }
+    }
+
+    return {'collectionSlots': collectionSlots, 'deliverySlots': deliverySlots};
+  }
+
+  Future<List<String>> getAvaliableDates({
+    required String vendorID,
+    required bool isDelivery,
+  }) async {
+    final Response<dynamic> response = await dio
+        .get('api/v1/vendors/get-eligible-order-dates?vendor=$vendorID');
+
+    final Map<String, dynamic> collectionDates =
+        response.data['collection'] as Map<String, dynamic>;
+    final Map<String, dynamic> deliveryDates =
+        response.data['delivery'] as Map<String, dynamic>;
+
+    if (isDelivery) {
+      return List<String>.from(deliveryDates.keys);
+    } else {
+      return List<String>.from(collectionDates.keys);
+    }
+  }
+
+  Future<Map<String, TimeSlot>> getNextAvaliableSlot({
+    required String vendorID,
+  }) async {
+    final Response<dynamic> response = await dio.get(
+      'api/v1/vendors/get-next-fulfilment-slot?vendor=$vendorID',
+    );
+
+    final Map<String, dynamic> collectionSlotJson =
+        response.data['slot']['collection'] as Map<String, dynamic>;
+    final Map<String, dynamic> deliverySlotJson =
+        response.data['slot']['delivery'] as Map<String, dynamic>;
+
+    final TimeSlot collectionSlot = TimeSlot.fromJsonApi(collectionSlotJson);
+    final TimeSlot deliverySlot = TimeSlot.fromJsonApi(deliverySlotJson);
+
+    return {'collectionSlot': collectionSlot, 'deliverySlot': deliverySlot};
   }
 
   Future<Map<String, dynamic>> createOrder(
@@ -214,7 +272,7 @@ class PeeplEatsService {
     final List<String> outCodes = [];
 
     final List<Map<String, dynamic>> data =
-        List.from(response.data as Iterable<dynamic>);
+        List.from(response.data['postalDistricts'] as Iterable<dynamic>);
 
     for (final Map<String, dynamic> outcode in data) {
       outCodes.add((outcode['outcode'] as String? ?? '').toUpperCase());

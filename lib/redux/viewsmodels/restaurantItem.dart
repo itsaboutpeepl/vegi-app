@@ -19,13 +19,14 @@ class RestaurantItemViewModel extends Equatable {
       restaurantName: store.state.cartState.restaurantName,
       restaurantAddress: store.state.cartState.restaurantAddress,
       updateRestaurantDetails: (
-        restaurantID,
-        restaurantName,
-        restaurantAddress,
-        walletAddress,
-        minimumOrder,
-        platformFee,
-        sendSnackBar,
+        String restaurantID,
+        String restaurantName,
+        DeliveryAddresses restaurantAddress,
+        String walletAddress,
+        int minimumOrder,
+        int platformFee,
+        List<String> fulfilmentPostalDistricts,
+        void Function() sendSnackBar,
       ) =>
           store.dispatch(
         setRestaurantDetails(
@@ -36,6 +37,7 @@ class RestaurantItemViewModel extends Equatable {
           minimumOrder: minimumOrder,
           platformFee: platformFee,
           sendSnackBar: sendSnackBar,
+          fulfilmentPostalDistricts: fulfilmentPostalDistricts,
         ),
       ),
     );
@@ -45,12 +47,13 @@ class RestaurantItemViewModel extends Equatable {
   final String restaurantName;
   final DeliveryAddresses? restaurantAddress;
   final void Function(
-    String,
-    String,
-    DeliveryAddresses,
-    String,
-    int,
-    int,
+    String restaurantID,
+    String restaurantName,
+    DeliveryAddresses restaurantAddress,
+    String walletAddress,
+    int minimumOrder,
+    int platformFee,
+    List<String> fulfilmentPostalDistricts,
     VoidCallback,
   ) updateRestaurantDetails;
 

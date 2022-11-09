@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/time_slot_list_vm.dart';
@@ -14,39 +15,24 @@ class DayListBuilder extends StatefulWidget {
 }
 
 class _DayListBuilderState extends State<DayListBuilder> {
-  int _selected = -1;
+  int _selected = 0;
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> listOfSelectableDays =
-        getSelectableDatesForDeliverySlots();
     return StoreConnector<AppState, TimeSlotListViewModel>(
       converter: TimeSlotListViewModel.fromStore,
-      onInit: (store) {
-        if (store.state.cartState.selectedTimeSlot.isNotEmpty) {
-          final day = DateTime.parse(
-            store.state.cartState.selectedTimeSlot.values.first,
-          ).day.toString();
-          final index = listOfSelectableDays.indexWhere(
-            (element) => element.keys.elementAt(0).substring(0, 2) == day,
-          );
-
-          _selected = index;
-          store.dispatch(
-            getFullfillmentMethods(
-              newDate: DateTime.now().add(
-                Duration(days: index),
-              ),
-            ),
-          );
-        } else {
-          _selected = 0;
-        }
+      onInit: (store) async {
+        store.dispatch(getEligibleOrderDates());
       },
       builder: (context, viewmodel) {
+        final now = DateTimeHelpers.nowDateOnly;
+        if (viewmodel.eligibleOrderDates.isEmpty) {
+          return const CircularProgressIndicator();
+        }
         return GridView.builder(
+          shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: listOfSelectableDays.length,
+          itemCount: viewmodel.eligibleOrderDates.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
             crossAxisSpacing: 5,
@@ -58,11 +44,7 @@ class _DayListBuilderState extends State<DayListBuilder> {
               onTap: () {
                 setState(() {
                   _selected = index;
-                  viewmodel.getFullfillmentMethods(
-                    DateTime.now().add(
-                      Duration(days: index),
-                    ),
-                  );
+                  viewmodel.getTimeSlots(viewmodel.eligibleOrderDates[index]);
                 });
               },
               child: Ink(
@@ -76,12 +58,14 @@ class _DayListBuilderState extends State<DayListBuilder> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(listOfSelectableDays[index].values.elementAt(0)),
+                    Text(viewmodel.eligibleOrderDates[index].ordinalDate()),
                     const SizedBox(
                       height: 2,
                     ),
                     Text(
-                      listOfSelectableDays[index].keys.elementAt(0),
+                      viewmodel.eligibleOrderDates[index]
+                          .relativeDay(now)
+                          .substring(0, 3),
                       style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 22,

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 
 class DeliveryCardViewModel extends Equatable {
@@ -11,13 +10,13 @@ class DeliveryCardViewModel extends Equatable {
   });
 
   factory DeliveryCardViewModel.fromStore(Store<AppState> store) {
-    final hasTimeSlot = store.state.cartState.selectedTimeSlot.isNotEmpty;
+    final hasTimeSlot = store.state.cartState.selectedTimeSlot != null;
 
     return DeliveryCardViewModel(
       hasTimeSlot: hasTimeSlot,
       isDelivery: store.state.cartState.isDelivery,
       selectedTimeSlot: hasTimeSlot
-          ? slotMapToString(store.state.cartState.selectedTimeSlot)
+          ? store.state.cartState.selectedTimeSlot!.formattedDate
           : 'Please select a time slot',
     );
   }

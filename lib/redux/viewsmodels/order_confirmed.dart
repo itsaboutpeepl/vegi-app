@@ -3,6 +3,7 @@ import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class OrderConfirmedViewModel extends Equatable {
@@ -36,7 +37,7 @@ class OrderConfirmedViewModel extends Equatable {
     );
   }
 
-  final Map<String, String> selectedSlot;
+  final TimeSlot? selectedSlot;
   final bool isDelivery;
   final DeliveryAddresses orderAddress;
   final String restaurantName;
