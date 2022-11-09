@@ -36,7 +36,7 @@ class OrderConfirmedScreen extends StatelessWidget {
                   AddressCard(
                     isDelivery: viewmodel.isDelivery,
                     orderAddress: viewmodel.orderAddress,
-                    selectedSlot: viewmodel.selectedSlot,
+                    selectedSlot: viewmodel.selectedSlot!,
                     userName: viewmodel.userName,
                     restaurantName: viewmodel.restaurantName,
                   ),

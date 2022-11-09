@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/time_slot_list_vm.dart';
 
@@ -49,7 +48,7 @@ class _TimeSlotListBuilderState extends State<TimeSlotListBuilder> {
                       ),
                       child: Center(
                         child: Text(
-                          mapToString(viewmodel.timeSlots[index]),
+                          viewmodel.timeSlots[index].formattedDateTimeOnly,
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 18,

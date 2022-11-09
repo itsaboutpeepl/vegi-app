@@ -8,14 +8,9 @@ import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
 
-class FeaturedRestaurantList extends StatefulWidget {
+class FeaturedRestaurantList extends StatelessWidget {
   const FeaturedRestaurantList({Key? key}) : super(key: key);
 
-  @override
-  State<FeaturedRestaurantList> createState() => _FeaturedRestaurantListState();
-}
-
-class _FeaturedRestaurantListState extends State<FeaturedRestaurantList> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, FeaturedRestaurantsVM>(

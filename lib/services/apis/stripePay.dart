@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -52,8 +51,6 @@ class StripePayService {
       );
 
       return response.data['data']['paymentIntent']['clientSecret'] as String;
-    } on StripeException catch (e) {
-      return e.error.localizedMessage ?? '';
     } catch (e, s) {
       log.info('Error createStripePaymentIntent ${e.toString()}');
       await Sentry.captureException(

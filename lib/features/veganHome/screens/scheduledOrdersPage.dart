@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -129,12 +130,9 @@ class SingleScheduledOrderCard extends StatelessWidget {
                   ),
                   Text.rich(
                     TextSpan(
-                      text: '${mapToStringDate(orderDetails.selectedSlot)}\n',
-                      children: [
+                      text: '${orderDetails.selectedSlot.formattedDate}\n',
+                      children: const [
                         TextSpan(
-                          text: '${mapToString(orderDetails.selectedSlot)}\n',
-                        ),
-                        const TextSpan(
                           text: 'Status: Paid',
                         ),
                       ],

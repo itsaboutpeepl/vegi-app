@@ -7,18 +7,8 @@ import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 
-class ProductOptionsView extends StatefulWidget {
+class ProductOptionsView extends StatelessWidget {
   const ProductOptionsView({Key? key}) : super(key: key);
-
-  @override
-  State<ProductOptionsView> createState() => _ProductOptionsViewState();
-}
-
-class _ProductOptionsViewState extends State<ProductOptionsView> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

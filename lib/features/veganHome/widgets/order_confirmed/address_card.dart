@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 
 class AddressCard extends StatelessWidget {
   const AddressCard({
@@ -17,7 +17,7 @@ class AddressCard extends StatelessWidget {
   final String userName;
   final String restaurantName;
   final DeliveryAddresses orderAddress;
-  final Map<String, String> selectedSlot;
+  final TimeSlot selectedSlot;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class AddressCard extends StatelessWidget {
                 height: 5,
               ),
               Text(orderAddress.shortAddress),
-              Text('Time: ${slotMapToString(selectedSlot)}')
+              Text('Time: ${selectedSlot.formattedDate}')
             ],
           ),
         ),

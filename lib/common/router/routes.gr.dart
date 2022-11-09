@@ -76,13 +76,13 @@ class RootRouter extends _i26.RootStackRouter {
     PinCodeScreen.name: (routeData) {
       return _i26.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i3.PinCodeScreen(),
+        child: const _i3.PinCodeScreen(),
       );
     },
     RestoreFromBackupScreen.name: (routeData) {
       return _i26.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i4.RestoreFromBackupScreen(),
+        child: const _i4.RestoreFromBackupScreen(),
       );
     },
     OnBoardScreen.name: (routeData) {
@@ -102,7 +102,10 @@ class RootRouter extends _i26.RootStackRouter {
           orElse: () => const VerifyPhoneNumberArgs());
       return _i26.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.VerifyPhoneNumber(verificationId: args.verificationId),
+        child: _i7.VerifyPhoneNumber(
+          key: args.key,
+          verificationId: args.verificationId,
+        ),
       );
     },
     UserNameScreen.name: (routeData) {
@@ -178,17 +181,15 @@ class RootRouter extends _i26.RootStackRouter {
       );
     },
     ProfileScreen.name: (routeData) {
-      final args = routeData.argsAs<ProfileScreenArgs>(
-          orElse: () => const ProfileScreenArgs());
       return _i26.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i15.ProfileScreen(key: args.key),
+        child: const _i15.ProfileScreen(),
       );
     },
     TopUpScreen.name: (routeData) {
       return _i26.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i16.TopupScreen(),
+        child: const _i16.TopupScreen(),
       );
     },
     AllOrdersPage.name: (routeData) {
@@ -249,15 +250,13 @@ class RootRouter extends _i26.RootStackRouter {
     TopupScreen.name: (routeData) {
       return _i26.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i16.TopupScreen(),
+        child: const _i16.TopupScreen(),
       );
     },
     TopupExplained.name: (routeData) {
-      final args = routeData.argsAs<TopupExplainedArgs>(
-          orElse: () => const TopupExplainedArgs());
       return _i26.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i25.TopupExplained(key: args.key),
+        child: const _i25.TopupExplained(),
       );
     },
   };
@@ -542,24 +541,34 @@ class SignUpScreen extends _i26.PageRouteInfo<void> {
 /// generated route for
 /// [_i7.VerifyPhoneNumber]
 class VerifyPhoneNumber extends _i26.PageRouteInfo<VerifyPhoneNumberArgs> {
-  VerifyPhoneNumber({String? verificationId})
-      : super(
+  VerifyPhoneNumber({
+    _i29.Key? key,
+    String? verificationId,
+  }) : super(
           VerifyPhoneNumber.name,
           path: '/verify-phone-number',
-          args: VerifyPhoneNumberArgs(verificationId: verificationId),
+          args: VerifyPhoneNumberArgs(
+            key: key,
+            verificationId: verificationId,
+          ),
         );
 
   static const String name = 'VerifyPhoneNumber';
 }
 
 class VerifyPhoneNumberArgs {
-  const VerifyPhoneNumberArgs({this.verificationId});
+  const VerifyPhoneNumberArgs({
+    this.key,
+    this.verificationId,
+  });
+
+  final _i29.Key? key;
 
   final String? verificationId;
 
   @override
   String toString() {
-    return 'VerifyPhoneNumberArgs{verificationId: $verificationId}';
+    return 'VerifyPhoneNumberArgs{key: $key, verificationId: $verificationId}';
   }
 }
 
@@ -744,26 +753,14 @@ class OrderConfirmedScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i15.ProfileScreen]
-class ProfileScreen extends _i26.PageRouteInfo<ProfileScreenArgs> {
-  ProfileScreen({_i29.Key? key})
+class ProfileScreen extends _i26.PageRouteInfo<void> {
+  const ProfileScreen()
       : super(
           ProfileScreen.name,
           path: 'profile-screen',
-          args: ProfileScreenArgs(key: key),
         );
 
   static const String name = 'ProfileScreen';
-}
-
-class ProfileScreenArgs {
-  const ProfileScreenArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'ProfileScreenArgs{key: $key}';
-  }
 }
 
 /// generated route for
@@ -910,24 +907,12 @@ class TopupScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i25.TopupExplained]
-class TopupExplained extends _i26.PageRouteInfo<TopupExplainedArgs> {
-  TopupExplained({_i29.Key? key})
+class TopupExplained extends _i26.PageRouteInfo<void> {
+  const TopupExplained()
       : super(
           TopupExplained.name,
           path: 'topup-explained',
-          args: TopupExplainedArgs(key: key),
         );
 
   static const String name = 'TopupExplained';
-}
-
-class TopupExplainedArgs {
-  const TopupExplainedArgs({this.key});
-
-  final _i29.Key? key;
-
-  @override
-  String toString() {
-    return 'TopupExplainedArgs{key: $key}';
-  }
 }

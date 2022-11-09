@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/checkout_screen_2.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/cart_items/cart_item_quantity_selector.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/cart_item_list_vm.dart';

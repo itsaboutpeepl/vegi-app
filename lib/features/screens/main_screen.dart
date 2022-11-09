@@ -20,26 +20,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late TabsRouter _tabsRouter;
 
-  //TODO: remove Firebase stuff from here
-
-  // void handleFirebaseConfig() {
-  //   firebaseMessaging.requestPermission();
-  //   firebaseMessaging.setForegroundNotificationPresentationOptions(
-  //       alert: true, badge: true, sound: true);
-
-  //   firebaseMessaging.setForegroundNotificationPresentationOptions(
-  //       alert: true, sound: true);
-  // }
-
-  //handleFirebaseConfig();
-  // firebaseMessaging
-  //     .getToken()
-  //     .then((value) => print("FCM TOKEN HEREEE $value"));
-
-  // firebaseMessaging
-  //     .getAPNSToken()
-  //     .then((value) => print("APNS TOKEN $value"));
-
   @override
   void initState() {
     firebaseMessaging.getInitialMessage().then(handleFCM);

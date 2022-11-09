@@ -108,10 +108,7 @@ class DeliverySlotSelectorModalSheet extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Expanded(
-            flex: 3,
-            child: DayListBuilder(),
-          ),
+          const DayListBuilder(),
           const Divider(
             color: themeShade300,
             thickness: 2,
