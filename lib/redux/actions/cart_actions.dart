@@ -806,13 +806,13 @@ ThunkAction<AppState> sendOrderObject({
           store
             ..dispatch(
               CreateOrder(
-                result['orderID'].toString(),
+                result['orderId'].toString(),
                 result['paymentIntentID'] as String,
               ),
             )
             ..dispatch(startPaymentProcess(context: context));
           unawaited(
-            firebaseMessaging.subscribeToTopic('order-${result['orderID']}'),
+            firebaseMessaging.subscribeToTopic('order-${result['orderId']}'),
           );
         }
       }
@@ -871,7 +871,9 @@ ThunkAction<AppState> startPaymentProcess({
             .then(
           (value) {
             if (!value) {
-              store.dispatch(SetTransferringPayment(flag: value));
+              store
+                ..dispatch(SetPaymentButtonFlag(false))
+                ..dispatch(SetTransferringPayment(flag: value));
               return;
             }
             store
@@ -1086,6 +1088,7 @@ ThunkAction<AppState> startPaymentConfirmationCheck() {
                 'orderID: ${store.state.cartState.orderID}');
           }
         } catch (e, s) {
+          timer.cancel();
           store.dispatch(SetError(flag: true));
           log.error('ERROR - startPaymentConfirmationCheck $e');
           await Sentry.captureException(
