@@ -74,7 +74,8 @@ class DetailMenuViewFloatingBar extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors
+                              .white, // ~ The backgroundColor and foregroundColor properties were introduced in Flutter 3.3. Prior to that, they were called primary and onPrimary.
                           foregroundColor: Colors.black,
                           fixedSize: const Size(120, 40),
                           textStyle:

@@ -31,7 +31,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  await dotenv.load(fileName: 'environment/.env');
+  await dotenv.load(fileName: 'environment/.env_dev');
 
   StripeService().init();
 
