@@ -213,6 +213,7 @@ class _AddressViewState extends State<AddressView> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: FormBuilderTextField(
+                          textCapitalization: TextCapitalization.characters,
                           initialValue: _isExistingAddress
                               ? widget.existingAddress!.postalCode
                               : null,
