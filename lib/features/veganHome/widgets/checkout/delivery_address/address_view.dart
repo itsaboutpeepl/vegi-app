@@ -252,6 +252,11 @@ class _AddressViewState extends State<AddressView> {
                         } else {
                           viewmodel.addAddress(newAddress: address);
                         }
+                        if (address
+                            .deliversTo(viewmodel.fulfilmentPostalDistricts)) {
+                          viewmodel.setDeliveryAddress(id: address.internalID);
+                          Navigator.pop(context);
+                        }
                         Navigator.pop(context);
                       }
                     },
