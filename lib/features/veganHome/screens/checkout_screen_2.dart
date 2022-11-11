@@ -49,7 +49,7 @@ class CheckoutScreenPt2 extends StatelessWidget {
                     const BillSummaryCard(),
                     if (isDelivery) const TipSelectionCard(),
                     const YourDetailsCard(),
-                    const SaveTheOceansCard(),
+                    //const SaveTheOceansCard(),
                     const SizedBox(
                       height: 200,
                     )
