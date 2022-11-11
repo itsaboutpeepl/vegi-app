@@ -3,11 +3,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/confirm_switch_restaurant_dialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class SingleRestaurantItem extends StatelessWidget {
   const SingleRestaurantItem({
@@ -123,6 +125,9 @@ class SingleRestaurantItem extends StatelessWidget {
                   ),
                 );
               } else {
+                viewmodel.updateRestaurantDetails(
+                  restaurantItem: restaurantItem,
+                );
                 context.router.push(
                   RestaurantMenuScreen(
                     menuList: restaurantItem.listOfMenuItems,
