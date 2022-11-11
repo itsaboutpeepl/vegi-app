@@ -97,7 +97,7 @@ extension DateTimeHelpers on DateTime {
       case 1:
         return 'Tomorrow';
       default:
-        return DateFormat(DateFormat.WEEKDAY).format(other);
+        return DateFormat(DateFormat.WEEKDAY).format(this);
     }
   }
 
