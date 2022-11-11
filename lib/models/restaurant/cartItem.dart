@@ -24,11 +24,7 @@ class CartItem with _$CartItem {
       _$CartItemFromJson(json);
 
   String get formattedPrice {
-    if (menuItem.price != 0) {
-      return cFPrice(menuItem.price);
-    } else {
-      return cFPrice(totalItemPrice);
-    }
+    return cFPrice(totalItemPrice);
   }
 
   List<String> get selectedProductOptionsString {
