@@ -55,7 +55,7 @@ class _TopUpFailedState extends State<TopUpFailed>
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                widget.isFailed ? 'Topup Failed' : 'Topup Cancelled',
+                widget.isFailed ? 'Topup Unsuccessful' : 'Topup Cancelled',
                 style: const TextStyle(
                   fontSize: 20,
                 ),
@@ -63,8 +63,8 @@ class _TopUpFailedState extends State<TopUpFailed>
               const SizedBox(height: 20),
               if (widget.isFailed)
                 const Text(
-                  'Sorry, it seems top up is not '
-                  'currently working, please try again later.',
+                  'Please contact us in the account area '
+                  'for assistance.',
                   style: TextStyle(
                     fontSize: 20,
                   ),
