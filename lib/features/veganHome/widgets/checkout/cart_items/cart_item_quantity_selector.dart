@@ -44,7 +44,7 @@ class CartItemQuantitySelector extends StatelessWidget {
                         animation: animation,
                       ),
                     );
-                    Future.delayed(const Duration(milliseconds: 300), () {
+                    Future.delayed(const Duration(milliseconds: 500), () {
                       viewmodel.removeCartItem(viewmodel.ids[index]);
                     });
                   },
