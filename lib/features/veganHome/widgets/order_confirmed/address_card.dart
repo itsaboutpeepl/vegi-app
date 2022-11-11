@@ -46,7 +46,7 @@ class AddressCard extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                restaurantName,
+                isDelivery ? userName : restaurantName,
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
