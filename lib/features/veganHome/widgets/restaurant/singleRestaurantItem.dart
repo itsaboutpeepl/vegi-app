@@ -3,8 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
-import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/confirm_switch_restaurant_dialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
@@ -115,26 +115,20 @@ class SingleRestaurantItem extends StatelessWidget {
               ],
             ),
             onTap: () {
-              if (viewmodel.restaurantID != restaurantItem.restaurantID) {
-                viewmodel.updateRestaurantDetails(
-                  restaurantItem.restaurantID,
-                  restaurantItem.name,
-                  restaurantItem.address,
-                  restaurantItem.walletAddress,
-                  restaurantItem.minimumOrderAmount,
-                  restaurantItem.platformFee,
-                  restaurantItem.deliveryRestrictionDetails,
-                  () => showErrorSnack(
-                    context: context,
-                    title: 'Existing Items in cart were removed',
+              if (viewmodel.needsCartCheckPopup) {
+                showDialog<Widget>(
+                  context: context,
+                  builder: (_) => ConfirmSwitchRestaurant(
+                    restaurantItem: restaurantItem,
+                  ),
+                );
+              } else {
+                context.router.push(
+                  RestaurantMenuScreen(
+                    menuList: restaurantItem.listOfMenuItems,
                   ),
                 );
               }
-              context.router.push(
-                RestaurantMenuScreen(
-                  menuList: restaurantItem.listOfMenuItems,
-                ),
-              );
             },
           ),
         );

@@ -1016,16 +1016,13 @@ ThunkAction<AppState> setRestaurantDetails({
   required int minimumOrder,
   required int platformFee,
   required List<String> fulfilmentPostalDistricts,
-  required VoidCallback sendSnackBar,
 }) {
   return (Store<AppState> store) async {
     try {
       //If cart has existing items -> clear cart, set new restaurant details,
-      // show snackbar if cart had items.
 
       if (store.state.cartState.restaurantName.isNotEmpty &&
           store.state.cartState.restaurantID.isNotEmpty) {
-        sendSnackBar();
         store
           ..dispatch(ClearCart())
           ..dispatch(
@@ -1052,8 +1049,6 @@ ThunkAction<AppState> setRestaurantDetails({
           ),
         );
       }
-      // If cart does not have existing items -> set new restaurant details
-
     } catch (e, s) {
       store.dispatch(SetError(flag: true));
       log.error('ERROR - setRestaurantDetails $e');
