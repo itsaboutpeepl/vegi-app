@@ -36,13 +36,21 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
           () {
             if (_tabController.indexIsChanging) {
               store.dispatch(
-                updateSelectedTimeSlot(
-                  isDelivery: _tabController.index == 0,
-                  selectedTimeSlot: _tabController.index == 0
-                      ? store.state.cartState.nextDeliverySlot!
-                      : store.state.cartState.nextCollectionSlot!,
-                ),
+                SetIsDelivery(isDelivery: _tabController.index == 0),
               );
+              if (_tabController.index == 0) {
+                store.dispatch(
+                  updateSelectedTimeSlot(
+                    selectedTimeSlot: store.state.cartState.nextDeliverySlot,
+                  ),
+                );
+              } else {
+                store.dispatch(
+                  updateSelectedTimeSlot(
+                    selectedTimeSlot: store.state.cartState.nextCollectionSlot,
+                  ),
+                );
+              }
             }
           },
         );

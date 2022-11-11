@@ -205,7 +205,7 @@ class PeeplEatsService {
     }
   }
 
-  Future<Map<String, TimeSlot>> getNextAvaliableSlot({
+  Future<Map<String, TimeSlot?>> getNextAvaliableSlot({
     required String vendorID,
   }) async {
     final Response<dynamic> response = await dio.get(
@@ -213,14 +213,26 @@ class PeeplEatsService {
     );
 
     final Map<String, dynamic> collectionSlotJson =
-        response.data['slot']['collection'] as Map<String, dynamic>;
+        response.data['slot']['collection'] as Map<String, dynamic>? ?? {};
     final Map<String, dynamic> deliverySlotJson =
-        response.data['slot']['delivery'] as Map<String, dynamic>;
+        response.data['slot']['delivery'] as Map<String, dynamic>? ?? {};
 
-    final TimeSlot collectionSlot = TimeSlot.fromJsonApi(collectionSlotJson);
-    final TimeSlot deliverySlot = TimeSlot.fromJsonApi(deliverySlotJson);
+    final Map<String, TimeSlot?> nextSlots = {};
 
-    return {'collectionSlot': collectionSlot, 'deliverySlot': deliverySlot};
+    if (collectionSlotJson.isNotEmpty) {
+      final TimeSlot collectionSlot = TimeSlot.fromJsonApi(collectionSlotJson);
+      nextSlots['collectionSlot'] = collectionSlot;
+    } else {
+      nextSlots['collectionSlot'] = null;
+    }
+    if (deliverySlotJson.isNotEmpty) {
+      final TimeSlot deliverySlot = TimeSlot.fromJsonApi(deliverySlotJson);
+      nextSlots['deliverySlot'] = deliverySlot;
+    } else {
+      nextSlots['deliverySlot'] = null;
+    }
+
+    return nextSlots;
   }
 
   Future<Map<String, dynamic>> createOrder<T extends CreateOrderForFulfilment>(

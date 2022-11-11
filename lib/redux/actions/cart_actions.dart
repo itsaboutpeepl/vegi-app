@@ -267,8 +267,8 @@ class UpdateNextAvaliableTimeSlots {
     required this.collectionSlot,
     required this.deliverySlot,
   });
-  final TimeSlot collectionSlot;
-  final TimeSlot deliverySlot;
+  final TimeSlot? collectionSlot;
+  final TimeSlot? deliverySlot;
   @override
   String toString() {
     return 'UpdateNextAvaliableTimeSlots : collectionSlot: '
@@ -306,28 +306,28 @@ ThunkAction<AppState> getTimeSlots({required DateTime newDate}) {
 ThunkAction<AppState> getNextAvaliableSlot() {
   return (Store<AppState> store) async {
     try {
-      final Map<String, TimeSlot> nextAvaliableSlots =
+      final Map<String, TimeSlot?> nextAvaliableSlots =
           await peeplEatsService.getNextAvaliableSlot(
         vendorID: store.state.cartState.restaurantID,
       );
 
       store.dispatch(
         UpdateNextAvaliableTimeSlots(
-          collectionSlot: nextAvaliableSlots['collectionSlot']!,
-          deliverySlot: nextAvaliableSlots['deliverySlot']!,
+          collectionSlot: nextAvaliableSlots['collectionSlot'],
+          deliverySlot: nextAvaliableSlots['deliverySlot'],
         ),
       );
 
       if (store.state.cartState.isDelivery) {
         store.dispatch(
           updateSelectedTimeSlot(
-            selectedTimeSlot: nextAvaliableSlots['deliverySlot']!,
+            selectedTimeSlot: nextAvaliableSlots['deliverySlot'],
           ),
         );
       } else {
         store.dispatch(
           updateSelectedTimeSlot(
-            selectedTimeSlot: nextAvaliableSlots['collectionSlot']!,
+            selectedTimeSlot: nextAvaliableSlots['collectionSlot'],
           ),
         );
       }
@@ -422,16 +422,10 @@ ThunkAction<AppState> updateCartDiscount({
 }
 
 ThunkAction<AppState> updateSelectedTimeSlot({
-  bool? isDelivery,
-  required TimeSlot selectedTimeSlot,
+  required TimeSlot? selectedTimeSlot,
 }) {
   return (Store<AppState> store) async {
     try {
-      if (isDelivery != null) {
-        store.dispatch(
-          SetIsDelivery(isDelivery: isDelivery),
-        );
-      }
       store
         ..dispatch(
           UpdateSelectedTimeSlot(selectedTimeSlot),
