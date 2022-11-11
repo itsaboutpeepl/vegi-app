@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class FulfilmentMethodSelector extends StatefulWidget {
   const FulfilmentMethodSelector({Key? key}) : super(key: key);
@@ -51,6 +53,12 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
                   ),
                 );
               }
+              Analytics.track(
+                eventName: AnalyticsEvents.switchFulfilmentMethod,
+                properties: {
+                  'screen': 'checkout',
+                },
+              );
             }
           },
         );

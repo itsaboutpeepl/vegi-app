@@ -4,12 +4,14 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/screens/set_up_pincode.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/security.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
 
 class ChooseSecurityOption extends StatefulWidget {
@@ -175,11 +177,24 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                               'Please use $biometric to unlock!',
                                           callback: (bool result) {
                                             if (result) {
+                                              Analytics.track(
+                                                eventName: AnalyticsEvents
+                                                    .securityScreen,
+                                                properties: {
+                                                  'auth_type': snapshot
+                                                      .requireData
+                                                      .toString()
+                                                },
+                                              );
                                               viewModel.setSecurityType(
                                                 snapshot.requireData,
                                               );
                                               context.router
                                                   .replace(const MainScreen());
+                                              Analytics.track(
+                                                eventName: AnalyticsEvents
+                                                    .onboardingCompleted,
+                                              );
                                             }
                                           },
                                         );
@@ -231,6 +246,11 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                         ),
                                       ),
                                       onTap: () {
+                                        Analytics.track(
+                                          eventName:
+                                              AnalyticsEvents.securityScreen,
+                                          properties: {'auth_type': 'pincode'},
+                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute<SetUpPinCodeScreen>(
@@ -242,6 +262,10 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                               },
                                             ),
                                           ),
+                                        );
+                                        Analytics.track(
+                                          eventName: AnalyticsEvents
+                                              .onboardingCompleted,
                                         );
                                       },
                                     ),

@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class SetUpPinCodeScreen extends StatefulWidget {
   const SetUpPinCodeScreen({
@@ -96,6 +98,9 @@ class _SetUpPinCodeScreenState extends State<SetUpPinCodeScreen> {
                         activeFillColor: Theme.of(context).canvasColor,
                       ),
                       onCompleted: (pin) {
+                        Analytics.track(
+                          eventName: AnalyticsEvents.pincodeScreen,
+                        );
                         if (isRetype && pin == lastPinCode) {
                           StoreProvider.of<AppState>(context)
                             ..dispatch(

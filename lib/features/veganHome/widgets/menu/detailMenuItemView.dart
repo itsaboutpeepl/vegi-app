@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuViewFloatingBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/productOptionsView.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class DetailMenuItemView extends StatefulWidget {
   const DetailMenuItemView({Key? key}) : super(key: key);
@@ -26,6 +28,13 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
             fetchProductOptions(
               store.state.menuItemState.menuItem!.menuItemID,
             ),
+          );
+          Analytics.track(
+            eventName: AnalyticsEvents.viewItem,
+            properties: {
+              'itemName': store.state.menuItemState.menuItem!.name,
+              'itemId': store.state.menuItemState.menuItem!.menuItemID,
+            },
           );
         }
       },

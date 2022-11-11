@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_slots/day_list.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_slots/time_slot_list.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/delivery_time_card_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class DeliveryTimeCard extends StatelessWidget {
   const DeliveryTimeCard({Key? key}) : super(key: key);
@@ -17,15 +19,20 @@ class DeliveryTimeCard extends StatelessWidget {
       converter: DeliveryCardViewModel.fromStore,
       builder: (context, viewmodel) {
         return GestureDetector(
-          onTap: () => showModalBottomSheet<Widget>(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(20),
+          onTap: () {
+            Analytics.track(
+              eventName: AnalyticsEvents.changeTimeSlot,
+            );
+            showModalBottomSheet<Widget>(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
               ),
-            ),
-            context: context,
-            builder: (_) => const DeliverySlotSelectorModalSheet(),
-          ),
+              context: context,
+              builder: (_) => const DeliverySlotSelectorModalSheet(),
+            );
+          },
           child: Card(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             color: themeShade100,

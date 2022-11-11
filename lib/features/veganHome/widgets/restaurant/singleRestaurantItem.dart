@@ -117,6 +117,10 @@ class SingleRestaurantItem extends StatelessWidget {
               ],
             ),
             onTap: () {
+              Analytics.track(
+                eventName: AnalyticsEvents.viewRestaurant,
+                properties: {'restaurantName': restaurantItem.name},
+              );
               if (viewmodel.needsCartCheckPopup) {
                 showDialog<Widget>(
                   context: context,

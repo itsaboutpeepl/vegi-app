@@ -7,11 +7,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
 class NavDrawer extends StatefulWidget {
@@ -128,6 +130,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 leading: const Icon(Icons.timer_outlined),
                 title: const Text('Scheduled Order'),
                 onTap: () {
+                  Analytics.track(eventName: AnalyticsEvents.viewSchOrders);
                   context.router.push(const ScheduledOrdersPage());
                 },
               ),
@@ -142,31 +145,40 @@ class _NavDrawerState extends State<NavDrawer> {
                 leading: const Icon(FontAwesomeIcons.clockRotateLeft),
                 title: const Text('My Orders'),
                 onTap: () {
+                  Analytics.track(eventName: AnalyticsEvents.viewAllOrders);
                   context.router.push(const AllOrdersPage());
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
                 title: const Text('Account'),
-                onTap: () => context.router.push(ProfileScreen()),
+                onTap: () {
+                  Analytics.track(eventName: AnalyticsEvents.viewAccount);
+                  context.router.push(const ProfileScreen());
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.quiz),
                 title: const Text('FAQs'),
-                onTap: () => context.router.push(const FAQScreen()),
+                onTap: () {
+                  Analytics.track(eventName: AnalyticsEvents.viewFAQ);
+                  context.router.push(const FAQScreen());
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.help_sharp),
                 title: const Text('About Us'),
-                onTap: () => context.router.push(const AboutScreen()),
+                onTap: () {
+                  Analytics.track(eventName: AnalyticsEvents.viewAbout);
+                  context.router.push(const AboutScreen());
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.exit_to_app),
                 title: const Text('Logout'),
-                onTap: () => showDialog(
+                onTap: () => showDialog<Widget>(
                   context: context,
-                  builder: (context) => LogoutDialog(),
-                  barrierDismissible: true,
+                  builder: (context) => const LogoutDialog(),
                 ),
               ),
               if (kDebugMode)

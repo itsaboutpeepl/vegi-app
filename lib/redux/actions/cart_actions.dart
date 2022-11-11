@@ -9,6 +9,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/processing_payment.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
@@ -23,6 +24,7 @@ import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -720,9 +722,28 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           unawaited(
             firebaseMessaging.subscribeToTopic('order-${result['orderId']}'),
           );
+          unawaited(
+            Analytics.track(
+              eventName: AnalyticsEvents.orderGen,
+              properties: {
+                'status': 'success',
+                'orderId': result['orderId'].toString(),
+                'orderTotal': store.state.cartState.cartTotal,
+                'paymentIntentID': result['paymentIntentID'] as String,
+              },
+            ),
+          );
         }
       }
     } on DioError catch (e) {
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.orderGen,
+          properties: {
+            'status': 'failure',
+          },
+        ),
+      );
       store.dispatch(SetPaymentButtonFlag(false));
       if (e.response != null) {
         if (e.response == 'Interal Server Error') {
@@ -750,6 +771,14 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
         );
       }
     } catch (e, s) {
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.orderGen,
+          properties: {
+            'status': 'failure',
+          },
+        ),
+      );
       store.dispatch(SetPaymentButtonFlag(false));
       log.error('ERROR - sendOrderObject $e');
       await Sentry.captureException(
@@ -767,6 +796,11 @@ ThunkAction<AppState> startPaymentProcess({
   return (Store<AppState> store) async {
     try {
       if (store.state.cartState.selectedPaymentMethod == PaymentMethod.stripe) {
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.payStripe,
+          ),
+        );
         await stripeService
             .handleStripe(
           walletAddress: store.state.userState.walletAddress,
@@ -782,6 +816,14 @@ ThunkAction<AppState> startPaymentProcess({
                 ..dispatch(SetTransferringPayment(flag: value));
               return;
             }
+            unawaited(
+              Analytics.track(
+                eventName: AnalyticsEvents.mint,
+                properties: {
+                  'status': 'success',
+                },
+              ),
+            );
             store
               ..dispatch(
                 UpdateSelectedAmounts(
@@ -798,6 +840,11 @@ ThunkAction<AppState> startPaymentProcess({
         );
       } else if (store.state.cartState.selectedPaymentMethod ==
           PaymentMethod.peeplPay) {
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.payPeepl,
+          ),
+        );
         //show the peepl pay sheet
         //user selects to pay with peepl rewards or GBPx
         //if gbpx is not enough -> stripe payment until GBPx gets added.
@@ -951,6 +998,14 @@ ThunkAction<AppState> startTokenPaymentToRestaurant({
         ..info('pplResponse: $pplResponse');
       store.dispatch(startPaymentConfirmationCheck());
     } catch (e, s) {
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.payment,
+          properties: {
+            'status': 'failure',
+          },
+        ),
+      );
       store.dispatch(SetError(flag: true));
       log.error('ERROR - startTokenPaymentToRestaurant $e');
       await Sentry.captureException(
@@ -984,17 +1039,41 @@ ThunkAction<AppState> startPaymentConfirmationCheck() {
                   ..dispatch(SetTransferringPayment(flag: false))
                   ..dispatch(SetConfirmed(flag: true));
                 timer.cancel();
+                unawaited(
+                  Analytics.track(
+                    eventName: AnalyticsEvents.payment,
+                    properties: {
+                      'status': 'success',
+                    },
+                  ),
+                );
               }
             },
           );
 
-          if (counter > 10) {
+          if (counter > 15) {
             timer.cancel();
+            unawaited(
+              Analytics.track(
+                eventName: AnalyticsEvents.payment,
+                properties: {
+                  'status': 'failure',
+                },
+              ),
+            );
             throw Exception('Payment checks exceeded time limit: '
                 'orderID: ${store.state.cartState.orderID}');
           }
         } catch (e, s) {
           timer.cancel();
+          unawaited(
+            Analytics.track(
+              eventName: AnalyticsEvents.payment,
+              properties: {
+                'status': 'failure',
+              },
+            ),
+          );
           store.dispatch(SetError(flag: true));
           log.error('ERROR - startPaymentConfirmationCheck $e');
           await Sentry.captureException(

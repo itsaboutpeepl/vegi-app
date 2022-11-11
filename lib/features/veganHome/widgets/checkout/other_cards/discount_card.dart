@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/discount_card_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class DiscountCard extends StatelessWidget {
   const DiscountCard({Key? key}) : super(key: key);
@@ -15,16 +17,21 @@ class DiscountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => showModalBottomSheet<Widget>(
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
+      onTap: () {
+        Analytics.track(
+          eventName: AnalyticsEvents.addDiscount,
+        );
+        showModalBottomSheet<Widget>(
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
           ),
-        ),
-        context: context,
-        builder: (_) => const DiscountSelectorModalSheet(),
-      ),
+          context: context,
+          builder: (_) => const DiscountSelectorModalSheet(),
+        );
+      },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         color: themeShade100,

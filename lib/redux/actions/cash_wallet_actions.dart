@@ -457,27 +457,11 @@ ThunkAction<AppState> sendNativeTokenCall(
       );
 
       final String jobId = response['job']['_id'] as String;
-      await Analytics.identify({
-        AnalyticsProps.fundSending: true,
-      });
       store.dispatch(
         fetchJobCall(
           jobId,
-          (Map jobData) {
-            Analytics.track(
-              eventName: AnalyticsEvents.send4Approve,
-              properties: {'status': 'success'},
-            );
-          },
-          (dynamic failReason) {
-            Analytics.track(
-              eventName: AnalyticsEvents.send4Approve,
-              properties: {
-                'status': 'failed',
-                'failReason': failReason,
-              },
-            );
-          },
+          (Map jobData) {},
+          (dynamic failReason) {},
         ),
       );
       log
@@ -530,30 +514,14 @@ ThunkAction<AppState> sendTokenCall(
           receiverAddress,
           tokensAmount: tokensAmount,
         );
-        await Analytics.identify({
-          AnalyticsProps.fundSending: true,
-        });
 
         final String jobId = response['job']['_id'] as String;
         log.info('Job $jobId for sending token sent to the relay service');
         store.dispatch(
           fetchJobCall(
             jobId,
-            (Map jobData) {
-              Analytics.track(
-                eventName: AnalyticsEvents.send4Approve,
-                properties: {'status': 'success'},
-              );
-            },
-            (dynamic failReason) {
-              Analytics.track(
-                eventName: AnalyticsEvents.send4Approve,
-                properties: {
-                  'status': 'failed',
-                  'failReason': failReason,
-                },
-              );
-            },
+            (Map jobData) {},
+            (dynamic failReason) {},
           ),
         );
         sendSuccessCallback();

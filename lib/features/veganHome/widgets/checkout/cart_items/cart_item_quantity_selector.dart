@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/keys.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/cart_items/cart_item_single.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/cart_item_list_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class CartItemQuantitySelector extends StatelessWidget {
   const CartItemQuantitySelector({
@@ -36,6 +38,9 @@ class CartItemQuantitySelector extends StatelessWidget {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () {
+                    Analytics.track(
+                      eventName: AnalyticsEvents.updateQuantity,
+                    );
                     AppKeys.listKey.currentState!.removeItem(
                       index,
                       (_, animation) => CartItemSingle(
@@ -68,6 +73,9 @@ class CartItemQuantitySelector extends StatelessWidget {
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () {
+                    Analytics.track(
+                      eventName: AnalyticsEvents.updateQuantity,
+                    );
                     AppKeys.listKey.currentState!.insertItem(
                       viewmodel.ids.length,
                     );

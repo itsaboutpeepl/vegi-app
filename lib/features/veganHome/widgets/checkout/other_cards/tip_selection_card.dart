@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/tip_selection_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class TipSelectionCard extends StatelessWidget {
   const TipSelectionCard({Key? key}) : super(key: key);
@@ -94,6 +96,12 @@ class _TipCardState extends State<TipCard> {
           margin: const EdgeInsets.all(3),
           child: InkWell(
             onTap: () {
+              Analytics.track(
+                eventName: AnalyticsEvents.selectTip,
+                properties: {
+                  'tipAmount': widget.tipAmount,
+                },
+              );
               Future.delayed(const Duration(milliseconds: 100), () {
                 viewmodel.selectedUserTip == widget.tipAmount
                     ? viewmodel.updateUserTip(tipAmount: 0)

@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/checkout_app_bar_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class CheckoutAppBar extends StatelessWidget {
   const CheckoutAppBar({Key? key}) : super(key: key);
@@ -25,6 +27,9 @@ class CheckoutAppBar extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: IconButton(
                 onPressed: () {
+                  Analytics.track(
+                    eventName: AnalyticsEvents.clearCart,
+                  );
                   viewmodel.clearCart();
                   context.router.navigate(const VeganHomeScreenAlt());
                 },

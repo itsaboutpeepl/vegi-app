@@ -2,10 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/floating_cart_bar_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class FloatingCartBar extends StatelessWidget {
   const FloatingCartBar({Key? key}) : super(key: key);
@@ -76,8 +78,12 @@ class FloatingCartBar extends StatelessWidget {
                           ),
                         ],
                       ),
-                      buttonAction: () =>
-                          context.router.push(const CheckoutScreenPt2()),
+                      buttonAction: () {
+                        Analytics.track(
+                          eventName: AnalyticsEvents.viewCheckout,
+                        );
+                        context.router.push(const CheckoutScreenPt2());
+                      },
                       baseColor: Colors.white,
                       highlightColor: Colors.grey.shade200,
                     ),

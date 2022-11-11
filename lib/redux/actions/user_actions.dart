@@ -250,7 +250,7 @@ class SetHasSavedSeedPhrase {
 ThunkAction<AppState> loginHandler(
   CountryCode countryCode,
   PhoneNumber phoneNumber,
-  Function onSuccess,
+  void Function() onSuccess,
   void Function(String error) onError,
 ) {
   return (Store<AppState> store) async {
@@ -477,7 +477,7 @@ ThunkAction<AppState> identifyCall({String? wallet}) {
       'language': userState.locale.toString(),
       'displayName': displayName,
     };
-    await Analytics.identify(properties);
+    await Analytics.setUserInformation(properties);
     await Analytics.setUserId(phoneNumber);
     DateTime? installedAt = userState.installedAt;
     if (installedAt == null) {

@@ -2,10 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/instructions_card_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class InstructionsCard extends StatelessWidget {
   const InstructionsCard({Key? key}) : super(key: key);
@@ -14,16 +16,21 @@ class InstructionsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () => showModalBottomSheet<Widget>(
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
+      onTap: () {
+        Analytics.track(
+          eventName: AnalyticsEvents.addInstructions,
+        );
+        showModalBottomSheet<Widget>(
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
           ),
-        ),
-        context: context,
-        builder: (_) => const AdditionalInstructionsModalSheet(),
-      ),
+          context: context,
+          builder: (_) => const AdditionalInstructionsModalSheet(),
+        );
+      },
       child: StoreConnector<AppState, InstructionsCardViewModel>(
         converter: InstructionsCardViewModel.fromStore,
         builder: (context, viewmodel) {

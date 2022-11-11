@@ -17,7 +17,7 @@ import 'package:vegan_liverpool/utils/url.dart';
 typedef SignUp = void Function(
   CountryCode,
   PhoneNumber,
-  Function onSuccess,
+  void Function() onSuccess,
   void Function(dynamic error) onError,
 );
 
@@ -237,7 +237,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         converter: (store) => (
                           CountryCode countryCode,
                           PhoneNumber phoneNumber,
-                          Function onSuccess,
+                          void Function() onSuccess,
                           dynamic Function(dynamic) onError,
                         ) =>
                             store.dispatch(

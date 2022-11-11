@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
@@ -11,6 +14,7 @@ import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class UserNameScreen extends StatelessWidget {
   UserNameScreen({Key? key}) : super(key: key);
@@ -29,6 +33,7 @@ class UserNameScreen extends StatelessWidget {
           store
             ..dispatch(SetDisplayName(displayName))
             ..dispatch(createAccountWalletCall());
+          unawaited(Analytics.track(eventName: AnalyticsEvents.fillUserName));
         },
         builder: (_, setDisplayName) {
           return Column(

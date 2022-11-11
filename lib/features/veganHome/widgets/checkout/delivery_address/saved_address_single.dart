@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
@@ -8,6 +9,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_add
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/delivery_address_vm.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class SingleSavedAddressItem extends StatelessWidget {
   const SingleSavedAddressItem({Key? key, required this.index})
@@ -48,6 +50,9 @@ class SingleSavedAddressItem extends StatelessWidget {
                     if (!isValidPostCodeForDelivery) return;
                     viewmodel.setDeliveryAddress(id: address.internalID);
                     context.router.pop();
+                    Analytics.track(
+                      eventName: AnalyticsEvents.selectAddress,
+                    );
                   },
                   subtitle: Text(address.longAddress),
                   trailing: PopupMenuButton<String>(
@@ -66,7 +71,13 @@ class SingleSavedAddressItem extends StatelessWidget {
                             existingAddress: address,
                           ),
                         );
+                        Analytics.track(
+                          eventName: AnalyticsEvents.editAddress,
+                        );
                       } else {
+                        Analytics.track(
+                          eventName: AnalyticsEvents.deleteAddress,
+                        );
                         viewmodel.removeAddress(id: address.internalID);
                       }
                     },

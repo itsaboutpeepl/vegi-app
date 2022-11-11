@@ -1,11 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuViewQuantityButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 
 class DetailMenuViewFloatingBar extends StatelessWidget {
   const DetailMenuViewFloatingBar({Key? key}) : super(key: key);
@@ -43,6 +45,13 @@ class DetailMenuViewFloatingBar extends StatelessWidget {
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
+                          Analytics.track(
+                            eventName: AnalyticsEvents.addItem,
+                            properties: {
+                              'itemName': viewmodel.menuItem!.name,
+                              'itemId': viewmodel.menuItem!.menuItemID,
+                            },
+                          );
                           if (viewmodel.loadingProductOptions) return;
                           final List<CartItem> orderList = [];
 
