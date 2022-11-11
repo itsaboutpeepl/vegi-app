@@ -59,8 +59,7 @@ ThunkAction<AppState> fetchFeaturedRestaurants({String outCode = 'L1'}) {
         ..dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
         )
-        ..dispatch(fetchMenuItemsForRestaurant())
-        ..dispatch(SetIsLoadingHomePage(isLoading: false));
+        ..dispatch(fetchMenuItemsForRestaurant());
     } catch (e, s) {
       log.error('ERROR - fetchFeaturedRestaurants $e');
       await Sentry.captureException(
@@ -87,9 +86,11 @@ ThunkAction<AppState> fetchMenuItemsForRestaurant() {
         },
       );
 
-      store.dispatch(
-        UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList),
-      );
+      store
+        ..dispatch(
+          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList),
+        )
+        ..dispatch(SetIsLoadingHomePage(isLoading: false));
     } catch (e, s) {
       log.error('ERROR - fetchMenuItemsForRestaurant $e');
       await Sentry.captureException(
@@ -121,7 +122,6 @@ ThunkAction<AppState> fetchPostalCodes() {
 ThunkAction<AppState> fetchHomePageData() {
   return (Store<AppState> store) async {
     try {
-      //store.dispatch(fetchRestaurantCategories());
       store
         ..dispatch(fetchFeaturedRestaurants())
         ..dispatch(fetchPostalCodes())
