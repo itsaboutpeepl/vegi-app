@@ -134,15 +134,7 @@ class PeeplEatsService {
           List.from(category['values'] as Iterable<dynamic>);
 
       for (final Map<String, dynamic> option in options) {
-        listOfOptions.add(
-          ProductOptions(
-            optionID: option['id'] as int? ?? 0,
-            name: option['name'] as String? ?? '',
-            description: option['description'] as String? ?? '',
-            price: option['priceModifier'] as int? ?? 0,
-            isAvaliable: option['isAvailable'] as bool? ?? false,
-          ),
-        );
+        listOfOptions.add(ProductOptions.fromJson(option));
       }
 
       if (options.isEmpty) continue;
