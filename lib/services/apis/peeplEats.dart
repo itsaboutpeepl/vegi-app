@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -66,15 +67,7 @@ class PeeplEatsService {
             category: 'Category',
             costLevel: element['costLevel'] as int? ?? 2,
             rating: element['rating'] as int? ?? 2,
-            address: DeliveryAddresses(
-              internalID:
-                  Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
-              addressLine1: element['pickupAddressLineOne'] as String? ?? '',
-              addressLine2: element['pickupAddressLineTwo'] as String? ?? '',
-              townCity: element['pickupAddressCity'] as String? ?? '',
-              postalCode: element['pickupAddressPostCode'] as String? ?? '',
-              label: DeliveryAddressLabel.home,
-            ),
+            address: DeliveryAddresses.fromVendorJson(element),
             walletAddress: element['walletAddress'] as String? ?? '',
             listOfMenuItems: [],
             isVegan: element['isVegan'] as bool? ?? false,
@@ -237,11 +230,11 @@ class PeeplEatsService {
     return {'collectionSlot': collectionSlot, 'deliverySlot': deliverySlot};
   }
 
-  Future<Map<String, dynamic>> createOrder(
-    Map<String, dynamic> orderObject,
+  Future<Map<String, dynamic>> createOrder<T extends CreateOrderForFulfilment>(
+    T orderObject,
   ) async {
-    final Response<dynamic> response =
-        await dio.post('/api/v1/orders/create-order', data: orderObject);
+    final Response<dynamic> response = await dio
+        .post('/api/v1/orders/create-order', data: orderObject.toJson());
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 

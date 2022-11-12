@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
 extension CapitalizeString on String {
   String capitalize() {
@@ -18,6 +19,19 @@ extension CapitalizeString on String {
         .split(' ')
         .map((str) => str.capitalize())
         .join(' ');
+  }
+}
+
+extension EnumHelpers on Enum {
+  static T? enumFromStringPreDart2dot15<T>(Iterable<T> values, String? value) {
+    return value == null
+        ? null
+        : values.firstWhereOrNull(
+            (type) => type.toString().split('.').last == value);
+  }
+
+  static T? enumFromString<T extends Enum>(Iterable<T> values, String? value) {
+    return value == null ? null : values.asNameMap()[value];
   }
 }
 
