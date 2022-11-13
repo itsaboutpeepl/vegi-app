@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -242,7 +243,7 @@ class PeeplEatsService {
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getPastOrders(String walletAddress) async {
+  Future<List<Order>> getPastOrders(String walletAddress) async {
     final Response<dynamic> response =
         await dio.get('/api/v1/orders?walletId=$walletAddress');
 

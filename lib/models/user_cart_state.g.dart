@@ -51,8 +51,8 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
               json['restaurantAddress'] as Map<String, dynamic>),
       restaurantWalletAddress: json['restaurantWalletAddress'] as String? ?? '',
       fulfilmentMethod: $enumDecodeNullable(
-              _$FulfilmentMethodEnumMap, json['fulfilmentMethod']) ??
-          FulfilmentMethod.delivery,
+              _$FulfilmentMethodTypeEnumMap, json['fulfilmentMethod']) ??
+          FulfilmentMethodType.delivery,
       isDelivery: json['isDelivery'] as bool? ?? false,
       restaurantMinimumOrder: json['restaurantMinimumOrder'] as int? ?? 0,
       restaurantPlatformFee: json['restaurantPlatformFee'] as int? ?? 0,
@@ -105,7 +105,8 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'restaurantID': instance.restaurantID,
       'restaurantAddress': instance.restaurantAddress?.toJson(),
       'restaurantWalletAddress': instance.restaurantWalletAddress,
-      'fulfilmentMethod': _$FulfilmentMethodEnumMap[instance.fulfilmentMethod]!,
+      'fulfilmentMethod':
+          _$FulfilmentMethodTypeEnumMap[instance.fulfilmentMethod]!,
       'isDelivery': instance.isDelivery,
       'restaurantMinimumOrder': instance.restaurantMinimumOrder,
       'restaurantPlatformFee': instance.restaurantPlatformFee,
@@ -119,10 +120,10 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'nextDeliverySlot': instance.nextDeliverySlot?.toJson(),
     };
 
-const _$FulfilmentMethodEnumMap = {
-  FulfilmentMethod.collection: 'collection',
-  FulfilmentMethod.delivery: 'delivery',
-  FulfilmentMethod.none: 'none',
+const _$FulfilmentMethodTypeEnumMap = {
+  FulfilmentMethodType.collection: 'collection',
+  FulfilmentMethodType.delivery: 'delivery',
+  FulfilmentMethodType.none: 'none',
 };
 
 const _$PaymentMethodEnumMap = {

@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
+import 'package:vegan_liverpool/models/cart/orderItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/services.dart';
 
@@ -21,7 +24,7 @@ class AllOrdersPage extends StatefulWidget {
 }
 
 class _AllOrdersPageState extends State<AllOrdersPage> {
-  late List<Map<String, dynamic>> listOfOrders;
+  late List<Order> listOfOrders;
   bool _isLoading = true;
   bool _isEmpty = false;
 
@@ -72,7 +75,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
 class SingleOrderCard extends StatefulWidget {
   const SingleOrderCard({Key? key, required this.order}) : super(key: key);
 
-  final Map<String, dynamic> order;
+  final Order order;
 
   @override
   State<SingleOrderCard> createState() => _SingleOrderCardState();
@@ -102,18 +105,17 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 children: [
                   Text.rich(
                     TextSpan(
-                      text: '${widget.order['restaurantName']}\n',
+                      text: '${widget.order.restaurantName}\n',
                       children: [
                         TextSpan(
-                          text: '${widget.order['total']}\n',
+                          text: '${widget.order.total.formattedPrice}\n',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         TextSpan(
                           text:
-                              widget.order['rewardsIssued'].toStringAsFixed(2) +
-                                  ' ',
+                              '${widget.order.rewardsIssued.toStringAsFixed(2)} ',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
@@ -139,11 +141,11 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                   ),
                   Text.rich(
                     TextSpan(
-                      text: '${widget.order['orderedDateTime']}\n',
+                      text: '${widget.order.orderedDateTime.formattedForUI}\n',
                       children: [
                         TextSpan(
                           text:
-                              "Status: ${widget.order['restaurantAcceptanceStatus'].capitalize()}",
+                              'Status: ${widget.order.restaurantAcceptanceStatus.name.capitalize()}',
                         ),
                       ],
                     ),
@@ -163,14 +165,14 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (_, index) => SingleProductOrderItem(
-                  product: widget.order['products'][index],
+                  orderItem: widget.order.items[index],
                 ),
                 separatorBuilder: (_, index) => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 4),
                 ),
-                itemCount: widget.order['products'].length,
+                itemCount: widget.order.items.length,
               ),
-              if (widget.order['isCollection'] as bool? ?? true)
+              if (widget.order.isCollection)
                 const SizedBox.shrink()
               else
                 TransparentButton(
@@ -199,28 +201,26 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: widget.order['deliveryName'] + '\n',
+                              text: '${widget.order.deliveryName}\n',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
                                 fontSize: 18,
                               ),
                             ),
                             TextSpan(
-                              text: widget.order['deliveryEmail'] + '\n',
+                              text: '${widget.order.deliveryEmail}\n',
                             ),
                             TextSpan(
-                              text: widget.order['deliveryPhoneNumber'] + '\n',
+                              text: '${widget.order.deliveryPhoneNumber}\n',
                             ),
                             TextSpan(
-                              text:
-                                  widget.order['deliveryAddressLineOne'] + ', ',
+                              text: '${widget.order.deliveryAddressLineOne}, ',
                             ),
                             TextSpan(
-                              text:
-                                  widget.order['deliveryAddressLineTwo'] + '\n',
+                              text: '${widget.order.deliveryAddressLineTwo}\n',
                             ),
                             TextSpan(
-                              text: widget.order['deliveryAddressPostCode'],
+                              text: widget.order.deliveryAddressPostCode,
                             )
                           ],
                         ),
@@ -239,10 +239,10 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
 }
 
 class SingleProductOrderItem extends StatefulWidget {
-  const SingleProductOrderItem({Key? key, required this.product})
+  const SingleProductOrderItem({Key? key, required this.orderItem})
       : super(key: key);
 
-  final Map<String, dynamic> product;
+  final OrderItem orderItem;
 
   @override
   State<SingleProductOrderItem> createState() => _SingleProductOrderItemState();
@@ -261,9 +261,11 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               children: [
                 Text.rich(
                   TextSpan(
-                    text: widget.product['name'],
+                    text: widget.orderItem.product.name,
                     children: [
-                      TextSpan(text: "\n${widget.product['basePrice']}")
+                      TextSpan(
+                          text:
+                              '\n${widget.orderItem.product.basePrice.formattedPrice}')
                     ],
                   ),
                   style: const TextStyle(
@@ -271,7 +273,7 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (widget.product['options'].isNotEmpty as bool)
+                if (widget.orderItem.product.options.isNotEmpty)
                   GestureDetector(
                     onTap: () => setState(() {
                       _showOptions = !_showOptions;
@@ -291,17 +293,17 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               ],
             ),
           ] +
-          widget.product['options']
+          widget.orderItem.product.options
               .map<Widget>(
-                (Map<String, dynamic> option) => _showOptions
+                (option) => _showOptions
                     ? Text.rich(
                         TextSpan(
-                          text: option['name'],
+                          text: option.name,
                           children: [
                             const TextSpan(text: ': '),
-                            TextSpan(text: option['chosenOption']),
+                            TextSpan(text: option.chosenOption),
                             const TextSpan(text: ' - '),
-                            TextSpan(text: cFPrice(option['priceModifier']))
+                            TextSpan(text: cFPrice(option.priceModifier))
                           ],
                         ),
                         style: TextStyle(color: Colors.grey[700]),

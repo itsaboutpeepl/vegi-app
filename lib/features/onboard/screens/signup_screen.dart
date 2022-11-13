@@ -174,6 +174,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
                               initialSelection: countryCode.code,
+                              favorite: const <String>[
+                                'GB', // /Users/joeyd/.pub-cache/hosted/pub.dartlang.org/country_code_picker-2.0.2/lib/country_codes.dart:1174
+                                'US', // /Users/joeyd/.pub-cache/hosted/pub.dartlang.org/country_code_picker-2.0.2/lib/country_codes.dart:1179
+                              ],
+                              showDropDownButton: true,
                               dialogTextStyle: TextStyle(
                                 fontSize: 18,
                                 color: Theme.of(context).colorScheme.onSurface,
@@ -184,7 +189,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               padding: EdgeInsets.zero,
                             ),
-                            const Icon(Icons.arrow_drop_down),
                             Container(
                               height: 35,
                               width: 1,

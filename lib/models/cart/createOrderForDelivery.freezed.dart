@@ -278,11 +278,6 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
   final String fulfilmentSlotTo;
 
   @override
-  String toString() {
-    return 'CreateOrderForDelivery(items: $items, total: $total, tipAmount: $tipAmount, marketingOptIn: $marketingOptIn, discountCode: $discountCode, vendor: $vendor, walletAddress: $walletAddress, address: $address, fulfilmentMethod: $fulfilmentMethod, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo)';
-  }
-
-  @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&

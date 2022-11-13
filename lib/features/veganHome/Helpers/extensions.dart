@@ -40,6 +40,12 @@ extension NumHelpers on num {
   String get formattedPriceNoDec => '£${(this / 100).toStringAsFixed(0)}';
 }
 
+extension IntHelpers on int {
+  DateTime toTimeStamp() => DateTime.fromMillisecondsSinceEpoch(
+        this,
+      ).toLocal();
+}
+
 extension DateTimeHelpers on DateTime {
   DateTime next(int day) {
     return add(
@@ -55,11 +61,22 @@ extension DateTimeHelpers on DateTime {
     return formatter.format(this);
   }
 
+  String get formattedForUI {
+    final DateFormat formatter = DateFormat(
+        'HH:mm - E, d MMM'); // ~ https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html
+
+    return formatter.format(this);
+  }
+
   static DateTime get nowDateOnly {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     return DateTime.parse(formatter.format(DateTime.now()));
   }
+
+  static DateTime parseFormat(String value, DateFormat format) =>
+      format.parse(value);
+  static DateTime parseISOFormat(String value) => DateTime.parse(value);
 
   /// Returns a [String] containing the relative day from [other].
   /// Counts in terms of absolute values.

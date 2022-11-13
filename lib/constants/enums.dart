@@ -16,7 +16,7 @@ enum OnboardStrategy {
   none,
 }
 
-enum FulfilmentMethod {
+enum FulfilmentMethodType {
   collection,
   delivery,
   none,
@@ -27,6 +27,8 @@ enum OrderAcceptanceStatus {
   accepted,
   declined,
 }
+
+enum RestaurantAcceptedStatus { accepted, rejected, pending }
 
 extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
   static OrderAcceptanceStatus enumValueFromString(String other) {
@@ -104,3 +106,5 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
     }
   }
 }
+
+enum OrderPaidStatus { paid, unpaid, failed }
