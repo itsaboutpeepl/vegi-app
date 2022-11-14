@@ -121,13 +121,27 @@ class _RestoreFromBackupScreenState extends State<RestoreFromBackupScreen> {
                           setState(() {
                             isPreloading = true;
                           });
-                          viewModel.generateWalletFromBackup(
-                              wordsController.text.toLowerCase(), () {
-                            setState(() {
-                              isPreloading = false;
+                          final seedPhrase = wordsController.text
+                              .toLowerCase()
+                              .replaceAll(RegExp(r'[^A-Za-z0-9\s]'), '');
+                          if (viewModel
+                              .validateWalletRecoveryPhrase(seedPhrase)) {
+                            viewModel.generateWalletFromBackup(seedPhrase, () {
+                              setState(() {
+                                isPreloading = false;
+                              });
+                              context.router.push(const SignUpScreen());
+                            }, () {
+                              setState(() {
+                                isPreloading = false;
+                              });
+                              showErrorSnack(
+                                context: context,
+                                message: I10n.of(context).phrase_invaild,
+                                title: I10n.of(context).oops,
+                              );
                             });
-                            context.router.push(const SignUpScreen());
-                          }, () {
+                          } else {
                             setState(() {
                               isPreloading = false;
                             });
@@ -136,7 +150,7 @@ class _RestoreFromBackupScreenState extends State<RestoreFromBackupScreen> {
                               message: I10n.of(context).phrase_invaild,
                               title: I10n.of(context).oops,
                             );
-                          });
+                          }
                         }
                       },
                     ),
