@@ -6,6 +6,7 @@ import 'package:vegan_liverpool/features/onboard/dialogs/mnemonic_info.dart';
 import 'package:vegan_liverpool/features/shared/widgets/copy.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutConfirmationDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 
 class ShowUserMnemonicScreen extends StatefulWidget {
@@ -149,8 +150,13 @@ class _ShowUserMnemonicScreenState extends State<ShowUserMnemonicScreen> {
               ),
               Center(
                 child: PrimaryButton(
-                  onPressed: () =>
-                      context.router.push(const VerifyUserMnemonic()),
+                  onPressed: () => {
+                    // context.router.push(const VerifyUserMnemonic()),
+                    showDialog<Widget>(
+                      context: context,
+                      builder: (context) => const LogoutConfirmationDialog(),
+                    ),
+                  },
                   label: 'Next',
                 ),
               ),
