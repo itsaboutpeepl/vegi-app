@@ -68,7 +68,4 @@ class CreateOrderForCollection extends CreateOrderForFulfilment
   }
 
   CreateOrderForCollection._();
-
-  factory CreateOrderForCollection.fromJson(Map<String, dynamic> json) =>
-      _$CreateOrderForCollectionFromJson(json);
 }

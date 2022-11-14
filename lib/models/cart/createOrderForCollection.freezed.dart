@@ -14,11 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-CreateOrderForCollection _$CreateOrderForCollectionFromJson(
-    Map<String, dynamic> json) {
-  return _CreateOrderForCollection.fromJson(json);
-}
-
 /// @nodoc
 mixin _$CreateOrderForCollection {
   List<CartItem> get items => throw _privateConstructorUsedError;
@@ -33,7 +28,6 @@ mixin _$CreateOrderForCollection {
   String get fulfilmentSlotFrom => throw _privateConstructorUsedError;
   String get fulfilmentSlotTo => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CreateOrderForCollectionCopyWith<CreateOrderForCollection> get copyWith =>
       throw _privateConstructorUsedError;
@@ -261,9 +255,6 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
       required this.fulfilmentSlotTo})
       : super._();
 
-  factory _$_CreateOrderForCollection.fromJson(Map<String, dynamic> json) =>
-      _$$_CreateOrderForCollectionFromJson(json);
-
   @override
   final List<CartItem> items;
   @override
@@ -312,7 +303,6 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
                 other.fulfilmentSlotTo == fulfilmentSlotTo));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -334,13 +324,6 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
   _$$_CreateOrderForCollectionCopyWith<_$_CreateOrderForCollection>
       get copyWith => __$$_CreateOrderForCollectionCopyWithImpl<
           _$_CreateOrderForCollection>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_CreateOrderForCollectionToJson(
-      this,
-    );
-  }
 }
 
 abstract class _CreateOrderForCollection extends CreateOrderForCollection {
@@ -357,9 +340,6 @@ abstract class _CreateOrderForCollection extends CreateOrderForCollection {
       required final String fulfilmentSlotFrom,
       required final String fulfilmentSlotTo}) = _$_CreateOrderForCollection;
   _CreateOrderForCollection._() : super._();
-
-  factory _CreateOrderForCollection.fromJson(Map<String, dynamic> json) =
-      _$_CreateOrderForCollection.fromJson;
 
   @override
   List<CartItem> get items;
