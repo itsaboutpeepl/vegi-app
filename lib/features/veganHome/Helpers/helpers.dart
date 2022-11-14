@@ -1,6 +1,9 @@
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -39,83 +42,15 @@ String formatDateForCalendar(DateTime dateToFormat) {
   return formatter.format(dateToFormat);
 }
 
-List<Map<String, dynamic>> sanitizeOrdersList(Map<String, dynamic> orderObj) {
-  //TODO: Clean this shit up, its so bad.
+List<Order> sanitizeOrdersList(Map<String, dynamic> orderObj) {
   try {
-    final List<Map<String, dynamic>> listOfOrders = [];
-
-    final List<Map<String, dynamic>> ordersListJson = orderObj['orders']
-        as List<Map<String, dynamic>>
-      ..forEach((Map<String, dynamic> singleOrder) {
-        //Order Details
-        final Map<String, dynamic> sanitizedOrderObject = {};
-
-        sanitizedOrderObject['orderID'] = singleOrder['id'];
-        sanitizedOrderObject['total'] = cFPrice(singleOrder['total'] as int);
-        sanitizedOrderObject['orderedDateTime'] = formatDate(
-          DateTime.fromMillisecondsSinceEpoch(
-            singleOrder['orderedDateTime'] as int,
-          ).toLocal(),
-        );
-        sanitizedOrderObject['deliveryName'] = singleOrder['deliveryName'];
-        sanitizedOrderObject['deliveryEmail'] = singleOrder['deliveryEmail'];
-        sanitizedOrderObject['deliveryPhoneNumber'] =
-            singleOrder['deliveryPhoneNumber'];
-        sanitizedOrderObject['deliveryAddressLineOne'] =
-            singleOrder['deliveryAddressLineOne'];
-        sanitizedOrderObject['deliveryAddressLineTwo'] =
-            singleOrder['deliveryAddressLineTwo'];
-        sanitizedOrderObject['deliveryAddressPostCode'] =
-            singleOrder['deliveryAddressPostCode'];
-        sanitizedOrderObject['paymentStatus'] =
-            singleOrder['paymentStatus'].toString()[0].toUpperCase() +
-                singleOrder['paymentStatus'].toString().substring(1);
-        sanitizedOrderObject['rewardsIssued'] = singleOrder['rewardsIssued'];
-        sanitizedOrderObject['restaurantName'] = singleOrder['vendor']['name'];
-        sanitizedOrderObject['restaurantPhoneNumber'] =
-            singleOrder['vendor']['phoneNumber'];
-        sanitizedOrderObject['restaurantAccepted'] =
-            singleOrder['restaurantAccepted'];
-        sanitizedOrderObject['restaurantAcceptanceStatus'] =
-            singleOrder['restaurantAcceptanceStatus'];
-        sanitizedOrderObject['isCollection'] =
-            singleOrder['fulfilmentMethod'] == 2;
-
-        final List<Map<String, dynamic>> listOfProductsOrdered = [];
-
-        //Products in Order
-        final List<Map<String, dynamic>> productsOrderedListJson = singleOrder[
-            'items'] as List<Map<String, dynamic>>
-          ..forEach((productItem) {
-            final Map<String, dynamic> singleProductItem = {};
-            singleProductItem['name'] = productItem['product']['name'];
-            singleProductItem['basePrice'] =
-                cFPrice(productItem['product']['basePrice'] as int);
-
-            //Options in Product
-            if (productItem.containsKey('optionValues')) {
-              final List<Map<String, dynamic>> listOfChosenProductOptions = [];
-
-              final List<Map<String, dynamic>> productsOptionValuesListJson =
-                  productItem['optionValues'] as List<Map<String, dynamic>>
-                    ..forEach((productOption) {
-                      //Add Options in Product to ListOfProductOptions.
-                      listOfChosenProductOptions.add({
-                        'name': productOption['option']['name'],
-                        'chosenOption': productOption['optionValue']['name'],
-                        'priceModifier': productOption['optionValue']
-                            ['priceModifier'],
-                      });
-                    });
-              singleProductItem['options'] = listOfChosenProductOptions;
-            }
-            listOfProductsOrdered.add(singleProductItem);
-          });
-        sanitizedOrderObject['products'] = listOfProductsOrdered;
-        listOfOrders.add(sanitizedOrderObject);
-      });
-    return listOfOrders;
-  } catch (e) {
+    return (orderObj['orders'] as List<dynamic>)
+        .map((order) => Order.fromJson(order as Map<String, dynamic>))
+        .toList();
+  } catch (e, stackTrace) {
+    log.error(
+      'Order parsing threw with stackTrace: $stackTrace & error: $e',
+    );
     throw Exception(e);
   }
 }

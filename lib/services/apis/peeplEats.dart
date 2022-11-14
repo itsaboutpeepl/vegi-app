@@ -4,6 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -66,15 +68,7 @@ class PeeplEatsService {
             category: 'Category',
             costLevel: element['costLevel'] as int? ?? 2,
             rating: element['rating'] as int? ?? 2,
-            address: DeliveryAddresses(
-              internalID:
-                  Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
-              addressLine1: element['pickupAddressLineOne'] as String? ?? '',
-              addressLine2: element['pickupAddressLineTwo'] as String? ?? '',
-              townCity: element['pickupAddressCity'] as String? ?? '',
-              postalCode: element['pickupAddressPostCode'] as String? ?? '',
-              label: DeliveryAddressLabel.home,
-            ),
+            address: DeliveryAddresses.fromVendorJson(element),
             walletAddress: element['walletAddress'] as String? ?? '',
             listOfMenuItems: [],
             isVegan: element['isVegan'] as bool? ?? false,
@@ -141,15 +135,7 @@ class PeeplEatsService {
           List.from(category['values'] as Iterable<dynamic>);
 
       for (final Map<String, dynamic> option in options) {
-        listOfOptions.add(
-          ProductOptions(
-            optionID: option['id'] as int? ?? 0,
-            name: option['name'] as String? ?? '',
-            description: option['description'] as String? ?? '',
-            price: option['priceModifier'] as int? ?? 0,
-            isAvaliable: option['isAvailable'] as bool? ?? false,
-          ),
-        );
+        listOfOptions.add(ProductOptions.fromJson(option));
       }
 
       if (options.isEmpty) continue;
@@ -237,11 +223,11 @@ class PeeplEatsService {
     return {'collectionSlot': collectionSlot, 'deliverySlot': deliverySlot};
   }
 
-  Future<Map<String, dynamic>> createOrder(
-    Map<String, dynamic> orderObject,
+  Future<Map<String, dynamic>> createOrder<T extends CreateOrderForFulfilment>(
+    T orderObject,
   ) async {
-    final Response<dynamic> response =
-        await dio.post('/api/v1/orders/create-order', data: orderObject);
+    final Response<dynamic> response = await dio
+        .post('/api/v1/orders/create-order', data: orderObject.toJson());
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
@@ -257,7 +243,7 @@ class PeeplEatsService {
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getPastOrders(String walletAddress) async {
+  Future<List<Order>> getPastOrders(String walletAddress) async {
     final Response<dynamic> response =
         await dio.get('/api/v1/orders?walletId=$walletAddress');
 

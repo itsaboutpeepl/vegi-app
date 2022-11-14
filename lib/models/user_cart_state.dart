@@ -36,7 +36,8 @@ class UserCartState with _$UserCartState {
     @Default('') String restaurantID,
     @Default(null) DeliveryAddresses? restaurantAddress,
     @Default('') String restaurantWalletAddress,
-    @Default(FulfilmentMethod.delivery) FulfilmentMethod fulfilmentMethod,
+    @Default(FulfilmentMethodType.delivery)
+        FulfilmentMethodType fulfilmentMethod,
     @Default(false) bool isDelivery,
     @Default(0) int restaurantMinimumOrder,
     @Default(0) int restaurantPlatformFee,
@@ -72,7 +73,7 @@ class UserCartState with _$UserCartState {
         restaurantName: '',
         restaurantID: '',
         restaurantWalletAddress: '',
-        fulfilmentMethod: FulfilmentMethod.delivery,
+        fulfilmentMethod: FulfilmentMethodType.delivery,
         isDelivery: false,
         fulfilmentPostalDistricts: [],
         eligibleOrderDates: [],

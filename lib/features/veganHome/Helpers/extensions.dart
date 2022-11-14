@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
 extension CapitalizeString on String {
   String capitalize() {
@@ -21,9 +22,28 @@ extension CapitalizeString on String {
   }
 }
 
+extension EnumHelpers on Enum {
+  static T? enumFromStringPreDart2dot15<T>(Iterable<T> values, String? value) {
+    return value == null
+        ? null
+        : values.firstWhereOrNull(
+            (type) => type.toString().split('.').last == value);
+  }
+
+  static T? enumFromString<T extends Enum>(Iterable<T> values, String? value) {
+    return value == null ? null : values.asNameMap()[value];
+  }
+}
+
 extension NumHelpers on num {
   String get formattedPrice => '£${(this / 100).toStringAsFixed(2)}';
   String get formattedPriceNoDec => '£${(this / 100).toStringAsFixed(0)}';
+}
+
+extension IntHelpers on int {
+  DateTime toTimeStamp() => DateTime.fromMillisecondsSinceEpoch(
+        this,
+      ).toLocal();
 }
 
 extension DateTimeHelpers on DateTime {
@@ -41,11 +61,22 @@ extension DateTimeHelpers on DateTime {
     return formatter.format(this);
   }
 
+  String get formattedForUI {
+    final DateFormat formatter = DateFormat(
+        'HH:mm - E, d MMM'); // ~ https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html
+
+    return formatter.format(this);
+  }
+
   static DateTime get nowDateOnly {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     return DateTime.parse(formatter.format(DateTime.now()));
   }
+
+  static DateTime parseFormat(String value, DateFormat format) =>
+      format.parse(value);
+  static DateTime parseISOFormat(String value) => DateTime.parse(value);
 
   /// Returns a [String] containing the relative day from [other].
   /// Counts in terms of absolute values.

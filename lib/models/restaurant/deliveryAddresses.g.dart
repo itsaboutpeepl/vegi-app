@@ -14,6 +14,12 @@ _$_DeliveryAddresses _$$_DeliveryAddressesFromJson(Map<String, dynamic> json) =>
       townCity: json['townCity'] as String,
       postalCode: json['postalCode'] as String,
       label: $enumDecode(_$DeliveryAddressLabelEnumMap, json['label']),
+      latitude: (json['latitude'] as num).toDouble(),
+      longitude: (json['longitude'] as num).toDouble(),
+      phoneNumber: json['phoneNumber'] as String?,
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      instructions: json['instructions'] as String?,
     );
 
 Map<String, dynamic> _$$_DeliveryAddressesToJson(
@@ -25,6 +31,12 @@ Map<String, dynamic> _$$_DeliveryAddressesToJson(
       'townCity': instance.townCity,
       'postalCode': instance.postalCode,
       'label': _$DeliveryAddressLabelEnumMap[instance.label]!,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'phoneNumber': instance.phoneNumber,
+      'name': instance.name,
+      'email': instance.email,
+      'instructions': instance.instructions,
     };
 
 const _$DeliveryAddressLabelEnumMap = {

@@ -7,11 +7,11 @@ part 'productOptions.g.dart';
 class ProductOptions with _$ProductOptions {
   @JsonSerializable()
   factory ProductOptions({
-    required int optionID,
-    required String name,
-    required String description,
-    required int price,
-    required bool isAvaliable,
+    @JsonKey(defaultValue: 0, name: 'id') required int optionID,
+    @JsonKey(defaultValue: '') required String name,
+    @JsonKey(defaultValue: '') required String description,
+    @JsonKey(defaultValue: 0, name: 'priceModifier') required int price,
+    @JsonKey(defaultValue: false) required bool isAvaliable,
   }) = _ProductOptions;
 
   const ProductOptions._();

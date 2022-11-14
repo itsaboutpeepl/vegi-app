@@ -15,6 +15,9 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/paymentSheet.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForCollection.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
@@ -639,54 +642,9 @@ ThunkAction<AppState> prepareOrderObjectForDelivery({
 }) {
   return (Store<AppState> store) async {
     try {
-      final DeliveryAddresses selectedAddress =
-          store.state.cartState.selectedDeliveryAddress!;
-      final Map<String, dynamic> orderObject = {}
-        ..addAll({
-          'items': store.state.cartState.cartItems
-              .map(
-                (e) => {
-                  'id': int.parse(e.menuItem.menuItemID),
-                  'quantity': e.itemQuantity,
-                  'options': e.selectedProductOptions.map(
-                    (key, value) =>
-                        MapEntry<String, int>(key.toString(), value.optionID),
-                  ),
-                },
-              )
-              .toList(),
-          'total': store.state.cartState.cartTotal,
-          'tipAmount': store.state.cartState.selectedTipAmount,
-          'marketingOptIn': false,
-          'discountCode': store.state.cartState.discountCode,
-          'vendor': store.state.cartState.restaurantID,
-          'walletAddress': store.state.userState.walletAddress,
-        })
-        ..addAll(
-          {
-            'address': {
-              'name': store.state.userState.displayName,
-              'phoneNumber': store.state.userState.phoneNumber,
-              'email': store.state.userState.email.isEmpty
-                  ? 'email@notprovided.com'
-                  : store.state.userState.email,
-              'lineOne': selectedAddress.addressLine1,
-              'lineTwo': selectedAddress.addressLine2,
-              'postCode': selectedAddress.postalCode,
-              'city': selectedAddress.townCity,
-              'deliveryInstructions':
-                  store.state.cartState.deliveryInstructions,
-            },
-            'fulfilmentMethod':
-                store.state.cartState.selectedTimeSlot!.fulfilmentMethodId,
-            'fulfilmentSlotFrom': store
-                .state.cartState.selectedTimeSlot!.startTime.formattedForAPI,
-            'fulfilmentSlotTo':
-                store.state.cartState.selectedTimeSlot!.endTime.formattedForAPI
-          },
-        );
+      final orderObject = CreateOrderForDelivery.fromStore(store);
 
-      log.info(orderObject);
+      log.info(orderObject.toJson());
 
       store.dispatch(
         sendOrderObject(
@@ -710,54 +668,9 @@ ThunkAction<AppState> prepareOrderObjectForCollection({
 }) {
   return (Store<AppState> store) async {
     try {
-      final Map<String, dynamic> orderObject = {}
-        ..addAll({
-          'items': store.state.cartState.cartItems
-              .map(
-                (e) => {
-                  'id': int.parse(e.menuItem.menuItemID),
-                  'quantity': e.itemQuantity,
-                  'options': e.selectedProductOptions.map(
-                    (key, value) =>
-                        MapEntry<String, int>(key.toString(), value.optionID),
-                  ),
-                },
-              )
-              .toList(),
-          'total': store.state.cartState.cartTotal,
-          'tipAmount': store.state.cartState.selectedTipAmount,
-          'marketingOptIn': false,
-          'discountCode': store.state.cartState.discountCode,
-          'vendor': store.state.cartState.restaurantID,
-          'walletAddress': store.state.userState.walletAddress,
-        })
-        ..addAll(
-          {
-            'address': {
-              'name': store.state.userState.displayName,
-              'email': store.state.userState.email == ''
-                  ? 'email@notprovided.com'
-                  : store.state.userState.email,
-              'phoneNumber': store.state.userState.phoneNumber,
-              'lineOne': 'Collection Order',
-              'lineTwo': store.state.cartState.restaurantAddress!.shortAddress,
-              'postCode': store.state.cartState.restaurantAddress!.postalCode,
-              'city': store.state.cartState.restaurantAddress!.townCity.isEmpty
-                  ? 'Liverpool'
-                  : store.state.cartState.restaurantAddress!.townCity,
-              'deliveryInstructions':
-                  store.state.cartState.deliveryInstructions,
-            },
-            'fulfilmentMethod':
-                store.state.cartState.selectedTimeSlot!.fulfilmentMethodId,
-            'fulfilmentSlotFrom': store
-                .state.cartState.selectedTimeSlot!.startTime.formattedForAPI,
-            'fulfilmentSlotTo': store.state.cartState.selectedTimeSlot!.endTime
-                .formattedForAPI //TODO: check
-          },
-        );
+      final orderObject = CreateOrderForCollection.fromStore(store);
 
-      log.info(orderObject);
+      log.info(orderObject.toJson());
       store.dispatch(
         sendOrderObject(orderObject: orderObject, context: context),
       );
@@ -772,8 +685,8 @@ ThunkAction<AppState> prepareOrderObjectForCollection({
   };
 }
 
-ThunkAction<AppState> sendOrderObject({
-  required Map<String, dynamic> orderObject,
+ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
+  required T orderObject,
   required BuildContext context,
 }) {
   return (Store<AppState> store) async {

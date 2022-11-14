@@ -20,10 +20,15 @@ ProductOptions _$ProductOptionsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProductOptions {
+  @JsonKey(defaultValue: 0, name: 'id')
   int get optionID => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: '')
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: '')
   String get description => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: 0, name: 'priceModifier')
   int get price => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: false)
   bool get isAvaliable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,11 +44,11 @@ abstract class $ProductOptionsCopyWith<$Res> {
       _$ProductOptionsCopyWithImpl<$Res, ProductOptions>;
   @useResult
   $Res call(
-      {int optionID,
-      String name,
-      String description,
-      int price,
-      bool isAvaliable});
+      {@JsonKey(defaultValue: 0, name: 'id') int optionID,
+      @JsonKey(defaultValue: '') String name,
+      @JsonKey(defaultValue: '') String description,
+      @JsonKey(defaultValue: 0, name: 'priceModifier') int price,
+      @JsonKey(defaultValue: false) bool isAvaliable});
 }
 
 /// @nodoc
@@ -99,11 +104,11 @@ abstract class _$$_ProductOptionsCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int optionID,
-      String name,
-      String description,
-      int price,
-      bool isAvaliable});
+      {@JsonKey(defaultValue: 0, name: 'id') int optionID,
+      @JsonKey(defaultValue: '') String name,
+      @JsonKey(defaultValue: '') String description,
+      @JsonKey(defaultValue: 0, name: 'priceModifier') int price,
+      @JsonKey(defaultValue: false) bool isAvaliable});
 }
 
 /// @nodoc
@@ -153,25 +158,30 @@ class __$$_ProductOptionsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ProductOptions extends _ProductOptions {
   _$_ProductOptions(
-      {required this.optionID,
-      required this.name,
-      required this.description,
-      required this.price,
-      required this.isAvaliable})
+      {@JsonKey(defaultValue: 0, name: 'id') required this.optionID,
+      @JsonKey(defaultValue: '') required this.name,
+      @JsonKey(defaultValue: '') required this.description,
+      @JsonKey(defaultValue: 0, name: 'priceModifier') required this.price,
+      @JsonKey(defaultValue: false) required this.isAvaliable})
       : super._();
 
   factory _$_ProductOptions.fromJson(Map<String, dynamic> json) =>
       _$$_ProductOptionsFromJson(json);
 
   @override
+  @JsonKey(defaultValue: 0, name: 'id')
   final int optionID;
   @override
+  @JsonKey(defaultValue: '')
   final String name;
   @override
+  @JsonKey(defaultValue: '')
   final String description;
   @override
+  @JsonKey(defaultValue: 0, name: 'priceModifier')
   final int price;
   @override
+  @JsonKey(defaultValue: false)
   final bool isAvaliable;
 
   @override
@@ -215,25 +225,35 @@ class _$_ProductOptions extends _ProductOptions {
 
 abstract class _ProductOptions extends ProductOptions {
   factory _ProductOptions(
-      {required final int optionID,
-      required final String name,
-      required final String description,
-      required final int price,
-      required final bool isAvaliable}) = _$_ProductOptions;
+      {@JsonKey(defaultValue: 0, name: 'id')
+          required final int optionID,
+      @JsonKey(defaultValue: '')
+          required final String name,
+      @JsonKey(defaultValue: '')
+          required final String description,
+      @JsonKey(defaultValue: 0, name: 'priceModifier')
+          required final int price,
+      @JsonKey(defaultValue: false)
+          required final bool isAvaliable}) = _$_ProductOptions;
   _ProductOptions._() : super._();
 
   factory _ProductOptions.fromJson(Map<String, dynamic> json) =
       _$_ProductOptions.fromJson;
 
   @override
+  @JsonKey(defaultValue: 0, name: 'id')
   int get optionID;
   @override
+  @JsonKey(defaultValue: '')
   String get name;
   @override
+  @JsonKey(defaultValue: '')
   String get description;
   @override
+  @JsonKey(defaultValue: 0, name: 'priceModifier')
   int get price;
   @override
+  @JsonKey(defaultValue: false)
   bool get isAvaliable;
   @override
   @JsonKey(ignore: true)

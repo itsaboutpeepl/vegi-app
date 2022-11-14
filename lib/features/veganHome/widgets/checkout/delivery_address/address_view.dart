@@ -285,6 +285,8 @@ class _AddressViewState extends State<AddressView> {
       addressLine2: formValue['addressLine2'] as String? ?? '',
       townCity: formValue['townCity'] as String,
       postalCode: (formValue['postalCode'] as String).toUpperCase(),
+      latitude: 0,
+      longitude: 0,
     );
   }
 }
