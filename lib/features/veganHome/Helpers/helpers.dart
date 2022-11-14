@@ -1,9 +1,6 @@
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
-import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
-import 'package:vegan_liverpool/utils/log/log.dart';
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -40,19 +37,6 @@ String formatDateForCalendar(DateTime dateToFormat) {
   final DateFormat formatter = DateFormat('EEE, dd MMM');
 
   return formatter.format(dateToFormat);
-}
-
-List<Order> sanitizeOrdersList(Map<String, dynamic> orderObj) {
-  try {
-    return (orderObj['orders'] as List<dynamic>)
-        .map((order) => Order.fromJson(order as Map<String, dynamic>))
-        .toList();
-  } catch (e, stackTrace) {
-    log.error(
-      'Order parsing threw with stackTrace: $stackTrace & error: $e',
-    );
-    throw Exception(e);
-  }
 }
 
 bool isScheduledDelivery(TimeSlot selectedSlot) {

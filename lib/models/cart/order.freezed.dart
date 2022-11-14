@@ -54,11 +54,11 @@ mixin _$Order {
       throw _privateConstructorUsedError; // "2022-09-29T10:00:00.000Z"
   String get publicId => throw _privateConstructorUsedError;
   int get tipAmount => throw _privateConstructorUsedError;
-  int get rewardsIssued => throw _privateConstructorUsedError;
+  double get rewardsIssued => throw _privateConstructorUsedError;
   bool get sentToDeliveryPartner => throw _privateConstructorUsedError;
   VendorDTO get vendor => throw _privateConstructorUsedError;
   DeliveryPartnerDTO? get deliveryPartner => throw _privateConstructorUsedError;
-  @JsonKey(readValue: getFulfilmentMethodType)
+  @JsonKey(readValue: getFulfilmentMethodString)
   FulfilmentMethodType get fulfilmentMethod =>
       throw _privateConstructorUsedError;
 
@@ -104,11 +104,11 @@ abstract class $OrderCopyWith<$Res> {
       DateTime fulfilmentSlotTo,
       String publicId,
       int tipAmount,
-      int rewardsIssued,
+      double rewardsIssued,
       bool sentToDeliveryPartner,
       VendorDTO vendor,
       DeliveryPartnerDTO? deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodType)
+      @JsonKey(readValue: getFulfilmentMethodString)
           FulfilmentMethodType fulfilmentMethod});
 
   $VendorDTOCopyWith<$Res> get vendor;
@@ -258,7 +258,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       rewardsIssued: null == rewardsIssued
           ? _value.rewardsIssued
           : rewardsIssued // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       sentToDeliveryPartner: null == sentToDeliveryPartner
           ? _value.sentToDeliveryPartner
           : sentToDeliveryPartner // ignore: cast_nullable_to_non_nullable
@@ -337,11 +337,11 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       DateTime fulfilmentSlotTo,
       String publicId,
       int tipAmount,
-      int rewardsIssued,
+      double rewardsIssued,
       bool sentToDeliveryPartner,
       VendorDTO vendor,
       DeliveryPartnerDTO? deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodType)
+      @JsonKey(readValue: getFulfilmentMethodString)
           FulfilmentMethodType fulfilmentMethod});
 
   @override
@@ -489,7 +489,7 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
       rewardsIssued: null == rewardsIssued
           ? _value.rewardsIssued
           : rewardsIssued // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       sentToDeliveryPartner: null == sentToDeliveryPartner
           ? _value.sentToDeliveryPartner
           : sentToDeliveryPartner // ignore: cast_nullable_to_non_nullable
@@ -550,7 +550,7 @@ class _$_Order extends _Order {
       required this.sentToDeliveryPartner,
       required this.vendor,
       required this.deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodType)
+      @JsonKey(readValue: getFulfilmentMethodString)
           required this.fulfilmentMethod})
       : super._();
 
@@ -615,7 +615,7 @@ class _$_Order extends _Order {
   @override
   final int tipAmount;
   @override
-  final int rewardsIssued;
+  final double rewardsIssued;
   @override
   final bool sentToDeliveryPartner;
   @override
@@ -623,7 +623,7 @@ class _$_Order extends _Order {
   @override
   final DeliveryPartnerDTO? deliveryPartner;
   @override
-  @JsonKey(readValue: getFulfilmentMethodType)
+  @JsonKey(readValue: getFulfilmentMethodString)
   final FulfilmentMethodType fulfilmentMethod;
 
   @override
@@ -777,11 +777,11 @@ abstract class _Order extends Order {
       required final DateTime fulfilmentSlotTo,
       required final String publicId,
       required final int tipAmount,
-      required final int rewardsIssued,
+      required final double rewardsIssued,
       required final bool sentToDeliveryPartner,
       required final VendorDTO vendor,
       required final DeliveryPartnerDTO? deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodType)
+      @JsonKey(readValue: getFulfilmentMethodString)
           required final FulfilmentMethodType fulfilmentMethod}) = _$_Order;
   _Order._() : super._();
 
@@ -843,7 +843,7 @@ abstract class _Order extends Order {
   @override
   int get tipAmount;
   @override
-  int get rewardsIssued;
+  double get rewardsIssued;
   @override
   bool get sentToDeliveryPartner;
   @override
@@ -851,7 +851,7 @@ abstract class _Order extends Order {
   @override
   DeliveryPartnerDTO? get deliveryPartner;
   @override
-  @JsonKey(readValue: getFulfilmentMethodType)
+  @JsonKey(readValue: getFulfilmentMethodString)
   FulfilmentMethodType get fulfilmentMethod;
   @override
   @JsonKey(ignore: true)

@@ -1,13 +1,11 @@
 // ignore_for_file: avoid_dynamic_calls
 // ignore_for_file: argument_type_not_assignable
 //TODO: Fix dynamic stuff here.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -113,25 +111,28 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        TextSpan(
-                          text:
-                              '${widget.order.rewardsIssued.toStringAsFixed(2)} ',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
+                        if (widget.order.rewardsIssued != 0)
+                          TextSpan(
+                            text:
+                                '${widget.order.rewardsIssued.toStringAsFixed(2)} ',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                        WidgetSpan(
-                          child: Image.asset(
-                            'assets/images/avatar-ppl-red.png',
-                            width: 25,
+                        if (widget.order.rewardsIssued != 0)
+                          WidgetSpan(
+                            child: Image.asset(
+                              'assets/images/avatar-ppl-red.png',
+                              width: 25,
+                            ),
                           ),
-                        ),
-                        const TextSpan(
-                          text: ' earned',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
+                        if (widget.order.rewardsIssued != 0)
+                          const TextSpan(
+                            text: ' earned',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     style: const TextStyle(
@@ -172,16 +173,13 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 ),
                 itemCount: widget.order.items.length,
               ),
-              if (widget.order.isCollection)
-                const SizedBox.shrink()
-              else
-                TransparentButton(
-                  label: 'Show Delivery Address',
-                  onPressed: () => setState(() {
-                    _showDelivery = !_showDelivery;
-                  }),
-                  fontSize: 15,
-                ),
+              TransparentButton(
+                label: 'Show delivery address',
+                onPressed: () => setState(() {
+                  _showDelivery = !_showDelivery;
+                }),
+                fontSize: 15,
+              ),
               if (_showDelivery)
                 Card(
                   shape: RoundedRectangleBorder(
@@ -196,7 +194,6 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                     ),
                     child: SizedBox(
                       width: double.infinity,
-                      height: 100,
                       child: Text.rich(
                         TextSpan(
                           children: [
@@ -221,6 +218,11 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                             ),
                             TextSpan(
                               text: widget.order.deliveryAddressPostCode,
+                            ),
+                            const TextSpan(text: '\nTimeslot: '),
+                            TextSpan(
+                              text: widget
+                                  .order.fulfilmentSlotFrom.formattedForUI,
                             )
                           ],
                         ),
@@ -238,79 +240,47 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
   }
 }
 
-class SingleProductOrderItem extends StatefulWidget {
+class SingleProductOrderItem extends StatelessWidget {
   const SingleProductOrderItem({Key? key, required this.orderItem})
       : super(key: key);
 
   final OrderItem orderItem;
 
   @override
-  State<SingleProductOrderItem> createState() => _SingleProductOrderItemState();
-}
-
-class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
-  bool _showOptions = false;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: widget.orderItem.product.name,
-                    children: [
-                      TextSpan(
-                          text:
-                              '\n${widget.orderItem.product.basePrice.formattedPrice}')
-                    ],
-                  ),
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                if (widget.orderItem.product.options.isNotEmpty)
-                  GestureDetector(
-                    onTap: () => setState(() {
-                      _showOptions = !_showOptions;
-                    }),
-                    child: CircleAvatar(
-                      radius: 12,
-                      backgroundColor: Colors.grey[800],
-                      child: Icon(
-                        _showOptions ? Icons.remove : Icons.add,
-                        size: 19,
-                        color: themeShade300,
-                      ),
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+                  Text(
+                    orderItem.product.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
                     ),
-                  )
-                else
-                  const SizedBox.shrink(),
-              ],
+                  ),
+                ] +
+                orderItem.product.options.map<Widget>((element) {
+                  return Text('${element.name} - ${element.chosenOption}');
+                }).toList(),
+          ),
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const SizedBox(
+              height: 10,
             ),
-          ] +
-          widget.orderItem.product.options
-              .map<Widget>(
-                (option) => _showOptions
-                    ? Text.rich(
-                        TextSpan(
-                          text: option.name,
-                          children: [
-                            const TextSpan(text: ': '),
-                            TextSpan(text: option.chosenOption),
-                            const TextSpan(text: ' - '),
-                            TextSpan(text: cFPrice(option.priceModifier))
-                          ],
-                        ),
-                        style: TextStyle(color: Colors.grey[700]),
-                      )
-                    : const SizedBox.shrink(),
-              )
-              .toList(),
+            Text(orderItem.product.totalPrice),
+          ],
+        )
+      ],
     );
   }
 }

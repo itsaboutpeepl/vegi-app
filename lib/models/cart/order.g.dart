@@ -38,14 +38,15 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
       fulfilmentSlotTo: DateTime.parse(json['fulfilmentSlotTo'] as String),
       publicId: json['publicId'] as String,
       tipAmount: json['tipAmount'] as int,
-      rewardsIssued: json['rewardsIssued'] as int,
+      rewardsIssued: (json['rewardsIssued'] as num).toDouble(),
       sentToDeliveryPartner: json['sentToDeliveryPartner'] as bool,
       vendor: VendorDTO.fromJson(json['vendor'] as Map<String, dynamic>),
       deliveryPartner: json['deliveryPartner'] == null
           ? null
           : DeliveryPartnerDTO.fromJson(
               json['deliveryPartner'] as Map<String, dynamic>),
-      fulfilmentMethod: getFulfilmentMethodType(json, 'fulfilmentMethod'),
+      fulfilmentMethod: $enumDecode(_$FulfilmentMethodTypeEnumMap,
+          getFulfilmentMethodString(json, 'fulfilmentMethod')),
     );
 
 Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{

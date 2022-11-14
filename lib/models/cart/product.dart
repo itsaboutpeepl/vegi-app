@@ -20,5 +20,13 @@ class Product with _$Product {
       _$ProductFromJson(json);
 
   //Section Getters
-  String get price => cFPrice(this.basePrice);
+  String get price => cFPrice(basePrice);
+
+  String get totalPrice {
+    int optionTotal = 0;
+    for (final product in options) {
+      optionTotal = optionTotal + product.priceModifier;
+    }
+    return cFPrice(basePrice + optionTotal);
+  }
 }

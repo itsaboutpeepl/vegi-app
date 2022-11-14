@@ -2,8 +2,6 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
-import 'package:vegan_liverpool/constants/enums.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -12,6 +10,7 @@ import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 @lazySingleton
 class PeeplEatsService {
@@ -256,10 +255,18 @@ class PeeplEatsService {
   }
 
   Future<List<Order>> getPastOrders(String walletAddress) async {
-    final Response<dynamic> response =
-        await dio.get('/api/v1/orders?walletId=$walletAddress');
-
-    return sanitizeOrdersList(response.data as Map<String, dynamic>);
+    try {
+      final Response<dynamic> response =
+          await dio.get('/api/v1/orders?walletId=$walletAddress');
+      return (response.data['orders'] as List<dynamic>)
+          .map((order) => Order.fromJson(order as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      log.error(
+        'Order parsing threw with stackTrace: $stackTrace & error: $e',
+      );
+      throw Exception(e);
+    }
   }
 
   Future<List<String>> getPostalCodes() async {

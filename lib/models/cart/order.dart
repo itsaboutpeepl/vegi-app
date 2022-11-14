@@ -8,15 +8,12 @@ import 'package:vegan_liverpool/models/restaurant/vendorDTO.dart';
 part 'order.freezed.dart';
 part 'order.g.dart';
 
-FulfilmentMethodType getFulfilmentMethodType(
+String getFulfilmentMethodString(
   Map<dynamic, dynamic> json,
   String key,
-) =>
-    EnumHelpers.enumFromString(
-      FulfilmentMethodType.values,
-      json[key]['methodType'] as String,
-    ) ??
-    FulfilmentMethodType.none;
+) {
+  return json[key]['methodType'] as String? ?? 'none';
+}
 
 DateTime _toTS(int json) => json.toTimeStamp();
 DateTime? _toTSNullable(int? json) => json?.toTimeStamp();
@@ -62,11 +59,11 @@ class Order with _$Order {
     required DateTime fulfilmentSlotTo, // "2022-09-29T10:00:00.000Z"
     required String publicId,
     required int tipAmount,
-    required int rewardsIssued,
+    required double rewardsIssued,
     required bool sentToDeliveryPartner,
     required VendorDTO vendor,
     required DeliveryPartnerDTO? deliveryPartner,
-    @JsonKey(readValue: getFulfilmentMethodType)
+    @JsonKey(readValue: getFulfilmentMethodString)
         required FulfilmentMethodType fulfilmentMethod,
 
     //ignore following keys:
