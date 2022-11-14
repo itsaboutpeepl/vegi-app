@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -21,17 +20,13 @@ class RestaurantItemViewModel extends Equatable {
       restaurantID: store.state.cartState.restaurantID,
       restaurantName: store.state.cartState.restaurantName,
       restaurantAddress: store.state.cartState.restaurantAddress,
-      updateRestaurantDetails: ({required RestaurantItem restaurantItem}) =>
+      updateRestaurantDetails: ({
+        required RestaurantItem restaurantItem,
+        required bool clearCart,
+      }) =>
           store.dispatch(
         setRestaurantDetails(
-          restaurantID: restaurantItem.restaurantID,
-          restaurantName: restaurantItem.name,
-          restaurantAddress: restaurantItem.address,
-          walletAddress: restaurantItem.walletAddress,
-          minimumOrder: restaurantItem.minimumOrderAmount,
-          platformFee: restaurantItem.platformFee,
-          fulfilmentPostalDistricts: restaurantItem.deliveryRestrictionDetails,
-        ),
+            restaurantItem: restaurantItem, clearCart: clearCart),
       ),
     );
   }
@@ -40,8 +35,10 @@ class RestaurantItemViewModel extends Equatable {
   final String restaurantName;
   final DeliveryAddresses? restaurantAddress;
   final bool needsCartCheckPopup;
-  final void Function({required RestaurantItem restaurantItem})
-      updateRestaurantDetails;
+  final void Function({
+    required RestaurantItem restaurantItem,
+    required bool clearCart,
+  }) updateRestaurantDetails;
 
   @override
   List<Object> get props => [restaurantID];

@@ -92,6 +92,7 @@ class _ConfirmSwitchRestaurantState extends State<ConfirmSwitchRestaurant>
                           onPressed: () {
                             viewmodel.updateRestaurantDetails(
                               restaurantItem: widget.restaurantItem,
+                              clearCart: true,
                             );
                             context.router.pop();
                             context.router.push(

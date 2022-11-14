@@ -22,6 +22,7 @@ import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
@@ -1088,46 +1089,25 @@ ThunkAction<AppState> startPaymentConfirmationCheck() {
 }
 
 ThunkAction<AppState> setRestaurantDetails({
-  required String restaurantID,
-  required String restaurantName,
-  required DeliveryAddresses restaurantAddress,
-  required String walletAddress,
-  required int minimumOrder,
-  required int platformFee,
-  required List<String> fulfilmentPostalDistricts,
+  required RestaurantItem restaurantItem,
+  required bool clearCart,
 }) {
   return (Store<AppState> store) async {
     try {
-      //If cart has existing items -> clear cart, set new restaurant details,
-
-      if (store.state.cartState.restaurantName.isNotEmpty &&
-          store.state.cartState.restaurantID.isNotEmpty) {
-        store
-          ..dispatch(ClearCart())
-          ..dispatch(
-            SetRestaurantDetails(
-              restaurantID,
-              restaurantName,
-              restaurantAddress,
-              walletAddress,
-              minimumOrder,
-              platformFee,
-              fulfilmentPostalDistricts,
-            ),
-          );
-      } else {
-        store.dispatch(
-          SetRestaurantDetails(
-            restaurantID,
-            restaurantName,
-            restaurantAddress,
-            walletAddress,
-            minimumOrder,
-            platformFee,
-            fulfilmentPostalDistricts,
-          ),
-        );
+      if (clearCart) {
+        store.dispatch(ClearCart());
       }
+      store.dispatch(
+        SetRestaurantDetails(
+          restaurantItem.restaurantID,
+          restaurantItem.name,
+          restaurantItem.address,
+          restaurantItem.walletAddress,
+          restaurantItem.minimumOrderAmount,
+          restaurantItem.platformFee,
+          restaurantItem.deliveryRestrictionDetails,
+        ),
+      );
     } catch (e, s) {
       store.dispatch(SetError(flag: true));
       log.error('ERROR - setRestaurantDetails $e');

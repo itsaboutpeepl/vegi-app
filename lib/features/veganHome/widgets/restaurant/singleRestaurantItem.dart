@@ -121,7 +121,8 @@ class SingleRestaurantItem extends StatelessWidget {
                 eventName: AnalyticsEvents.viewRestaurant,
                 properties: {'restaurantName': restaurantItem.name},
               );
-              if (viewmodel.needsCartCheckPopup) {
+              if (viewmodel.needsCartCheckPopup &&
+                  viewmodel.restaurantID != restaurantItem.restaurantID) {
                 showDialog<Widget>(
                   context: context,
                   builder: (_) => ConfirmSwitchRestaurant(
@@ -131,6 +132,7 @@ class SingleRestaurantItem extends StatelessWidget {
               } else {
                 viewmodel.updateRestaurantDetails(
                   restaurantItem: restaurantItem,
+                  clearCart: false,
                 );
                 context.router.push(
                   RestaurantMenuScreen(
