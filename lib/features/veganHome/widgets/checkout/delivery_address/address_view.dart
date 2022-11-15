@@ -30,6 +30,7 @@ class _AddressViewState extends State<AddressView> {
   late PlaceApiProvider _placeApiProvider;
   late GlobalKey<FormBuilderState> _addressFormKey;
   final TextEditingController _typeAheadController = TextEditingController();
+  Coordinates? addressCoordinates;
 
   @override
   void initState() {
@@ -242,8 +243,9 @@ class _AddressViewState extends State<AddressView> {
                     height: 40,
                   ),
                   PrimaryButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_addressFormKey.currentState!.saveAndValidate()) {
+                        await validateAddressService();
                         final address = saveDeliveryAddress();
                         if (_isExistingAddress) {
                           viewmodel.editAddress(
@@ -272,6 +274,30 @@ class _AddressViewState extends State<AddressView> {
     );
   }
 
+  Future<bool> validateAddressService() async {
+    final Map<String, dynamic> formValue = _addressFormKey.currentState!.value;
+    final locations = await _placeApiProvider.fetchLocationByAddress(
+      addressLineOne: (formValue['addressLine1Internal'] as String?) ??
+          formValue['addressLine1'] as String,
+      addressLineTwo: formValue['addressLine2'] as String? ?? '',
+      addressTownCity: formValue['townCity'] as String,
+      addressPostCode: (formValue['postalCode'] as String).toUpperCase(),
+      addressCountryCode: 'UK',
+    );
+    if (locations.isEmpty) {
+      addressCoordinates = null;
+      return false;
+    } else if (locations.length == 1) {
+      final location = locations[0];
+      addressCoordinates = location.coordinates;
+    } else {
+      // Default to first or ask user?
+      final location = locations[0];
+      addressCoordinates = location.coordinates;
+    }
+    return true;
+  }
+
   DeliveryAddresses saveDeliveryAddress() {
     final Map<String, dynamic> formValue = _addressFormKey.currentState!.value;
 
@@ -285,8 +311,8 @@ class _AddressViewState extends State<AddressView> {
       addressLine2: formValue['addressLine2'] as String? ?? '',
       townCity: formValue['townCity'] as String,
       postalCode: (formValue['postalCode'] as String).toUpperCase(),
-      latitude: 0,
-      longitude: 0,
+      latitude: addressCoordinates?.lat ?? 0.0,
+      longitude: addressCoordinates?.lng ?? 0.0,
     );
   }
 }
