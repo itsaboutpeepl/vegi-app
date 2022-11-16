@@ -4,8 +4,8 @@ import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 @lazySingleton
-class PeeplPaySerivce {
-  PeeplPaySerivce(this.dio) {
+class PeeplPayService {
+  PeeplPayService(this.dio) {
     dio.options.baseUrl = dotenv.env['PEEPL_PAY_BACKEND']!;
     dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
