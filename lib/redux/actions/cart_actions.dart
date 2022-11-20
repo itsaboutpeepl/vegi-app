@@ -361,6 +361,10 @@ ThunkAction<AppState> getEligibleOrderDates() {
 
       eligibleDates.sort((first, next) => first.compareTo(next));
 
+      if (eligibleDates.isNotEmpty) {
+        store.dispatch(getTimeSlots(newDate: eligibleDates.first));
+      }
+
       store.dispatch(UpdateEligibleOrderDates(eligibleDates));
     } catch (e, s) {
       log.error('ERROR - getEligibleOrderDates $e');
