@@ -1,4 +1,4 @@
-enum PaymentMethod { stripe, peeplPay, applePay }
+enum PaymentMethod { stripe, peeplPay, applePay, qrPay }
 
 extension PaymentMethodHelpers on PaymentMethod {
   String get formattedName {
@@ -9,6 +9,8 @@ extension PaymentMethodHelpers on PaymentMethod {
         return 'Peepl Pay';
       case PaymentMethod.applePay:
         return 'Apple Pay';
+      case PaymentMethod.qrPay:
+        return 'vegi Pay';
     }
   }
 }

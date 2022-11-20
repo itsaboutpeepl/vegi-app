@@ -11,11 +11,11 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i26;
+import 'package:auto_route/auto_route.dart' as _i28;
 import 'package:auto_route/empty_router_widgets.dart' as _i11;
-import 'package:flutter/foundation.dart' as _i29;
-import 'package:flutter/material.dart' as _i27;
-import 'package:redux_dev_tools/redux_dev_tools.dart' as _i30;
+import 'package:flutter/foundation.dart' as _i31;
+import 'package:flutter/material.dart' as _i29;
+import 'package:redux_dev_tools/redux_dev_tools.dart' as _i32;
 
 import '../../features/account/screens/profile.dart' as _i15;
 import '../../features/onboard/screens/restore_wallet_screen.dart' as _i4;
@@ -25,12 +25,14 @@ import '../../features/onboard/screens/signup_screen.dart' as _i6;
 import '../../features/onboard/screens/username_screen.dart' as _i8;
 import '../../features/onboard/screens/verify_screen.dart' as _i7;
 import '../../features/onboard/screens/verify_user_mnemonic.dart' as _i23;
+import '../../features/pay/screens/generate_QR_from_cart.dart' as _i25;
+import '../../features/pay/screens/scan_payment_recipient_qr.dart' as _i26;
 import '../../features/screens/main_screen.dart' as _i10;
 import '../../features/screens/on_board_screen.dart' as _i5;
 import '../../features/screens/pincode_screen.dart' as _i3;
 import '../../features/screens/splash_screen.dart' as _i1;
 import '../../features/topup/screens/topup.dart' as _i16;
-import '../../features/topup/screens/topup_explained.dart' as _i25;
+import '../../features/topup/screens/topup_explained.dart' as _i27;
 import '../../features/veganHome/screens/aboutScreen.dart' as _i20;
 import '../../features/veganHome/screens/allOrdersPage.dart' as _i17;
 import '../../features/veganHome/screens/checkout_screen_2.dart' as _i24;
@@ -41,25 +43,25 @@ import '../../features/veganHome/screens/restaurantMenuScreen.dart' as _i13;
 import '../../features/veganHome/screens/scheduledOrdersPage.dart' as _i18;
 import '../../features/veganHome/screens/veganHome.dart' as _i12;
 import '../../features/veganHome/widgets/shared/redux_state_viewer.dart' as _i9;
-import '../../models/app_state.dart' as _i31;
-import '../../models/restaurant/orderDetails.dart' as _i33;
-import '../../models/restaurant/restaurantMenuItem.dart' as _i32;
-import 'route_guards.dart' as _i28;
+import '../../models/app_state.dart' as _i33;
+import '../../models/restaurant/orderDetails.dart' as _i35;
+import '../../models/restaurant/restaurantMenuItem.dart' as _i34;
+import 'route_guards.dart' as _i30;
 
-class RootRouter extends _i26.RootStackRouter {
+class RootRouter extends _i28.RootStackRouter {
   RootRouter({
-    _i27.GlobalKey<_i27.NavigatorState>? navigatorKey,
+    _i29.GlobalKey<_i29.NavigatorState>? navigatorKey,
     required this.authGuard,
   }) : super(navigatorKey);
 
-  final _i28.AuthGuard authGuard;
+  final _i30.AuthGuard authGuard;
 
   @override
-  final Map<String, _i26.PageFactory> pagesMap = {
+  final Map<String, _i28.PageFactory> pagesMap = {
     SplashScreen.name: (routeData) {
       final args = routeData.argsAs<SplashScreenArgs>(
           orElse: () => const SplashScreenArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i1.SplashScreen(
           key: args.key,
@@ -68,31 +70,31 @@ class RootRouter extends _i26.RootStackRouter {
       );
     },
     ChooseSecurityOption.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.ChooseSecurityOption(),
       );
     },
     PinCodeScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.PinCodeScreen(),
       );
     },
     RestoreFromBackupScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i4.RestoreFromBackupScreen(),
       );
     },
     OnBoardScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.OnBoardScreen(),
       );
     },
     SignUpScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i6.SignUpScreen(),
       );
@@ -100,7 +102,7 @@ class RootRouter extends _i26.RootStackRouter {
     VerifyPhoneNumber.name: (routeData) {
       final args = routeData.argsAs<VerifyPhoneNumberArgs>(
           orElse: () => const VerifyPhoneNumberArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i7.VerifyPhoneNumber(
           key: args.key,
@@ -111,14 +113,14 @@ class RootRouter extends _i26.RootStackRouter {
     UserNameScreen.name: (routeData) {
       final args = routeData.argsAs<UserNameScreenArgs>(
           orElse: () => const UserNameScreenArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i8.UserNameScreen(key: args.key),
       );
     },
     ReduxStateViewer.name: (routeData) {
       final args = routeData.argsAs<ReduxStateViewerArgs>();
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i9.ReduxStateViewer(
           args.store,
@@ -129,303 +131,327 @@ class RootRouter extends _i26.RootStackRouter {
       );
     },
     MainScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i10.MainScreen(),
       );
     },
     VeganHomeAltTab.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i11.EmptyRouterPage(),
       );
     },
     TopupTab.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i11.EmptyRouterPage(),
       );
     },
     AccountTab.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i11.EmptyRouterPage(),
       );
     },
     VeganHomeScreenAlt.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i12.VeganHomeScreen(),
       );
     },
     RestaurantMenuScreen.name: (routeData) {
       final args = routeData.argsAs<RestaurantMenuScreenArgs>();
-      return _i26.CustomPage<dynamic>(
+      return _i28.CustomPage<dynamic>(
         routeData: routeData,
         child: _i13.RestaurantMenuScreen(
           key: args.key,
           menuList: args.menuList,
         ),
-        transitionsBuilder: _i26.TransitionsBuilders.slideLeftWithFade,
+        transitionsBuilder: _i28.TransitionsBuilders.slideLeftWithFade,
         opaque: true,
         barrierDismissible: false,
       );
     },
     OrderConfirmedScreen.name: (routeData) {
-      return _i26.CustomPage<dynamic>(
+      return _i28.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i14.OrderConfirmedScreen(),
-        transitionsBuilder: _i26.TransitionsBuilders.slideBottom,
+        transitionsBuilder: _i28.TransitionsBuilders.slideBottom,
         opaque: true,
         barrierDismissible: false,
       );
     },
     ProfileScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i15.ProfileScreen(),
       );
     },
     TopUpScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i16.TopupScreen(),
       );
     },
     AllOrdersPage.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i17.AllOrdersPage(),
       );
     },
     ScheduledOrdersPage.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i18.ScheduledOrdersPage(),
       );
     },
     FAQScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i19.FAQScreen(),
       );
     },
     AboutScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i20.AboutScreen(),
       );
     },
     PreparingOrderPage.name: (routeData) {
       final args = routeData.argsAs<PreparingOrderPageArgs>();
-      return _i26.CustomPage<dynamic>(
+      return _i28.CustomPage<dynamic>(
         routeData: routeData,
         child: _i21.PreparingOrderPage(
           key: args.key,
           orderDetails: args.orderDetails,
         ),
-        transitionsBuilder: _i26.TransitionsBuilders.slideBottom,
+        transitionsBuilder: _i28.TransitionsBuilders.slideBottom,
         opaque: true,
         barrierDismissible: false,
       );
     },
     ShowUserMnemonic.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i22.ShowUserMnemonicScreen(),
       );
     },
     VerifyUserMnemonic.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i23.VerifyUserMnemonic(),
       );
     },
     CheckoutScreenPt2.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i24.CheckoutScreenPt2(),
       );
     },
+    GenerateQRFromCart.name: (routeData) {
+      return _i28.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i25.GenerateQRFromCart(),
+      );
+    },
+    ScanPaymentRecipientQR.name: (routeData) {
+      return _i28.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i26.ScanPaymentRecipientQR(),
+      );
+    },
     TopupScreen.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i16.TopupScreen(),
       );
     },
     TopupExplained.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i28.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i25.TopupExplained(),
+        child: const _i27.TopupExplained(),
       );
     },
   };
 
   @override
-  List<_i26.RouteConfig> get routes => [
-        _i26.RouteConfig(
+  List<_i28.RouteConfig> get routes => [
+        _i28.RouteConfig(
           SplashScreen.name,
           path: '/',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           ChooseSecurityOption.name,
           path: '/choose-security-option',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           PinCodeScreen.name,
           path: '/pin-code-screen',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           RestoreFromBackupScreen.name,
           path: '/restore-from-backup-screen',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           OnBoardScreen.name,
           path: '/on-board-screen',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           SignUpScreen.name,
           path: '/sign-up-screen',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           VerifyPhoneNumber.name,
           path: '/verify-phone-number',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           UserNameScreen.name,
           path: '/user-name-screen',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           ReduxStateViewer.name,
           path: '/redux-state-viewer',
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           MainScreen.name,
           path: '/main-screen',
           guards: [authGuard],
           children: [
-            _i26.RouteConfig(
+            _i28.RouteConfig(
               VeganHomeAltTab.name,
               path: 'veganHomeAlt',
               parent: MainScreen.name,
               children: [
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   VeganHomeScreenAlt.name,
                   path: '',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   RestaurantMenuScreen.name,
                   path: 'restaurant-menu-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   OrderConfirmedScreen.name,
                   path: 'order-confirmed-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   ProfileScreen.name,
                   path: 'profile-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   TopUpScreen.name,
                   path: 'topup-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   AllOrdersPage.name,
                   path: 'all-orders-page',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   ScheduledOrdersPage.name,
                   path: 'scheduled-orders-page',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   FAQScreen.name,
                   path: 'f-aq-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   AboutScreen.name,
                   path: 'about-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   PreparingOrderPage.name,
                   path: 'preparing-order-page',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   ShowUserMnemonic.name,
                   path: 'show-user-mnemonic-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   VerifyUserMnemonic.name,
                   path: 'verify-user-mnemonic',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   CheckoutScreenPt2.name,
                   path: 'checkout-screen-pt2',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
+                _i28.RouteConfig(
+                  GenerateQRFromCart.name,
+                  path: 'generate-qr-from-cart',
+                  parent: VeganHomeAltTab.name,
+                  guards: [authGuard],
+                ),
+                _i28.RouteConfig(
+                  ScanPaymentRecipientQR.name,
+                  path: 'scan-payment-recipient-qR',
+                  parent: VeganHomeAltTab.name,
+                  guards: [authGuard],
+                ),
               ],
             ),
-            _i26.RouteConfig(
+            _i28.RouteConfig(
               TopupTab.name,
               path: 'topup',
               parent: MainScreen.name,
               children: [
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   '#redirect',
                   path: '',
                   parent: TopupTab.name,
                   redirectTo: 'topUp',
                   fullMatch: true,
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   TopupScreen.name,
                   path: 'topUp',
                   parent: TopupTab.name,
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   TopupExplained.name,
                   path: 'topup-explained',
                   parent: TopupTab.name,
                 ),
               ],
             ),
-            _i26.RouteConfig(
+            _i28.RouteConfig(
               AccountTab.name,
               path: 'account',
               parent: MainScreen.name,
               guards: [authGuard],
               children: [
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   ProfileScreen.name,
                   path: 'profile-screen',
                   parent: AccountTab.name,
                   guards: [authGuard],
                 ),
-                _i26.RouteConfig(
+                _i28.RouteConfig(
                   TopupScreen.name,
                   path: 'topUp',
                   parent: AccountTab.name,
@@ -435,7 +461,7 @@ class RootRouter extends _i26.RootStackRouter {
             ),
           ],
         ),
-        _i26.RouteConfig(
+        _i28.RouteConfig(
           '*#redirect',
           path: '*',
           redirectTo: '/',
@@ -446,9 +472,9 @@ class RootRouter extends _i26.RootStackRouter {
 
 /// generated route for
 /// [_i1.SplashScreen]
-class SplashScreen extends _i26.PageRouteInfo<SplashScreenArgs> {
+class SplashScreen extends _i28.PageRouteInfo<SplashScreenArgs> {
   SplashScreen({
-    _i29.Key? key,
+    _i31.Key? key,
     void Function(bool)? onLoginResult,
   }) : super(
           SplashScreen.name,
@@ -468,7 +494,7 @@ class SplashScreenArgs {
     this.onLoginResult,
   });
 
-  final _i29.Key? key;
+  final _i31.Key? key;
 
   final void Function(bool)? onLoginResult;
 
@@ -480,7 +506,7 @@ class SplashScreenArgs {
 
 /// generated route for
 /// [_i2.ChooseSecurityOption]
-class ChooseSecurityOption extends _i26.PageRouteInfo<void> {
+class ChooseSecurityOption extends _i28.PageRouteInfo<void> {
   const ChooseSecurityOption()
       : super(
           ChooseSecurityOption.name,
@@ -492,7 +518,7 @@ class ChooseSecurityOption extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.PinCodeScreen]
-class PinCodeScreen extends _i26.PageRouteInfo<void> {
+class PinCodeScreen extends _i28.PageRouteInfo<void> {
   const PinCodeScreen()
       : super(
           PinCodeScreen.name,
@@ -504,7 +530,7 @@ class PinCodeScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.RestoreFromBackupScreen]
-class RestoreFromBackupScreen extends _i26.PageRouteInfo<void> {
+class RestoreFromBackupScreen extends _i28.PageRouteInfo<void> {
   const RestoreFromBackupScreen()
       : super(
           RestoreFromBackupScreen.name,
@@ -516,7 +542,7 @@ class RestoreFromBackupScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.OnBoardScreen]
-class OnBoardScreen extends _i26.PageRouteInfo<void> {
+class OnBoardScreen extends _i28.PageRouteInfo<void> {
   const OnBoardScreen()
       : super(
           OnBoardScreen.name,
@@ -528,7 +554,7 @@ class OnBoardScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.SignUpScreen]
-class SignUpScreen extends _i26.PageRouteInfo<void> {
+class SignUpScreen extends _i28.PageRouteInfo<void> {
   const SignUpScreen()
       : super(
           SignUpScreen.name,
@@ -540,9 +566,9 @@ class SignUpScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.VerifyPhoneNumber]
-class VerifyPhoneNumber extends _i26.PageRouteInfo<VerifyPhoneNumberArgs> {
+class VerifyPhoneNumber extends _i28.PageRouteInfo<VerifyPhoneNumberArgs> {
   VerifyPhoneNumber({
-    _i29.Key? key,
+    _i31.Key? key,
     String? verificationId,
   }) : super(
           VerifyPhoneNumber.name,
@@ -562,7 +588,7 @@ class VerifyPhoneNumberArgs {
     this.verificationId,
   });
 
-  final _i29.Key? key;
+  final _i31.Key? key;
 
   final String? verificationId;
 
@@ -574,8 +600,8 @@ class VerifyPhoneNumberArgs {
 
 /// generated route for
 /// [_i8.UserNameScreen]
-class UserNameScreen extends _i26.PageRouteInfo<UserNameScreenArgs> {
-  UserNameScreen({_i29.Key? key})
+class UserNameScreen extends _i28.PageRouteInfo<UserNameScreenArgs> {
+  UserNameScreen({_i31.Key? key})
       : super(
           UserNameScreen.name,
           path: '/user-name-screen',
@@ -588,7 +614,7 @@ class UserNameScreen extends _i26.PageRouteInfo<UserNameScreenArgs> {
 class UserNameScreenArgs {
   const UserNameScreenArgs({this.key});
 
-  final _i29.Key? key;
+  final _i31.Key? key;
 
   @override
   String toString() {
@@ -598,10 +624,10 @@ class UserNameScreenArgs {
 
 /// generated route for
 /// [_i9.ReduxStateViewer]
-class ReduxStateViewer extends _i26.PageRouteInfo<ReduxStateViewerArgs> {
+class ReduxStateViewer extends _i28.PageRouteInfo<ReduxStateViewerArgs> {
   ReduxStateViewer({
-    required _i30.DevToolsStore<_i31.AppState> store,
-    _i29.Key? key,
+    required _i32.DevToolsStore<_i33.AppState> store,
+    _i31.Key? key,
     int actionMaxLines = 2,
     int stateMaxLines = 5,
   }) : super(
@@ -626,9 +652,9 @@ class ReduxStateViewerArgs {
     this.stateMaxLines = 5,
   });
 
-  final _i30.DevToolsStore<_i31.AppState> store;
+  final _i32.DevToolsStore<_i33.AppState> store;
 
-  final _i29.Key? key;
+  final _i31.Key? key;
 
   final int actionMaxLines;
 
@@ -642,8 +668,8 @@ class ReduxStateViewerArgs {
 
 /// generated route for
 /// [_i10.MainScreen]
-class MainScreen extends _i26.PageRouteInfo<void> {
-  const MainScreen({List<_i26.PageRouteInfo>? children})
+class MainScreen extends _i28.PageRouteInfo<void> {
+  const MainScreen({List<_i28.PageRouteInfo>? children})
       : super(
           MainScreen.name,
           path: '/main-screen',
@@ -655,8 +681,8 @@ class MainScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i11.EmptyRouterPage]
-class VeganHomeAltTab extends _i26.PageRouteInfo<void> {
-  const VeganHomeAltTab({List<_i26.PageRouteInfo>? children})
+class VeganHomeAltTab extends _i28.PageRouteInfo<void> {
+  const VeganHomeAltTab({List<_i28.PageRouteInfo>? children})
       : super(
           VeganHomeAltTab.name,
           path: 'veganHomeAlt',
@@ -668,8 +694,8 @@ class VeganHomeAltTab extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i11.EmptyRouterPage]
-class TopupTab extends _i26.PageRouteInfo<void> {
-  const TopupTab({List<_i26.PageRouteInfo>? children})
+class TopupTab extends _i28.PageRouteInfo<void> {
+  const TopupTab({List<_i28.PageRouteInfo>? children})
       : super(
           TopupTab.name,
           path: 'topup',
@@ -681,8 +707,8 @@ class TopupTab extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i11.EmptyRouterPage]
-class AccountTab extends _i26.PageRouteInfo<void> {
-  const AccountTab({List<_i26.PageRouteInfo>? children})
+class AccountTab extends _i28.PageRouteInfo<void> {
+  const AccountTab({List<_i28.PageRouteInfo>? children})
       : super(
           AccountTab.name,
           path: 'account',
@@ -694,7 +720,7 @@ class AccountTab extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i12.VeganHomeScreen]
-class VeganHomeScreenAlt extends _i26.PageRouteInfo<void> {
+class VeganHomeScreenAlt extends _i28.PageRouteInfo<void> {
   const VeganHomeScreenAlt()
       : super(
           VeganHomeScreenAlt.name,
@@ -707,10 +733,10 @@ class VeganHomeScreenAlt extends _i26.PageRouteInfo<void> {
 /// generated route for
 /// [_i13.RestaurantMenuScreen]
 class RestaurantMenuScreen
-    extends _i26.PageRouteInfo<RestaurantMenuScreenArgs> {
+    extends _i28.PageRouteInfo<RestaurantMenuScreenArgs> {
   RestaurantMenuScreen({
-    _i29.Key? key,
-    required List<_i32.RestaurantMenuItem> menuList,
+    _i31.Key? key,
+    required List<_i34.RestaurantMenuItem> menuList,
   }) : super(
           RestaurantMenuScreen.name,
           path: 'restaurant-menu-screen',
@@ -729,9 +755,9 @@ class RestaurantMenuScreenArgs {
     required this.menuList,
   });
 
-  final _i29.Key? key;
+  final _i31.Key? key;
 
-  final List<_i32.RestaurantMenuItem> menuList;
+  final List<_i34.RestaurantMenuItem> menuList;
 
   @override
   String toString() {
@@ -741,7 +767,7 @@ class RestaurantMenuScreenArgs {
 
 /// generated route for
 /// [_i14.OrderConfirmedScreen]
-class OrderConfirmedScreen extends _i26.PageRouteInfo<void> {
+class OrderConfirmedScreen extends _i28.PageRouteInfo<void> {
   const OrderConfirmedScreen()
       : super(
           OrderConfirmedScreen.name,
@@ -753,7 +779,7 @@ class OrderConfirmedScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i15.ProfileScreen]
-class ProfileScreen extends _i26.PageRouteInfo<void> {
+class ProfileScreen extends _i28.PageRouteInfo<void> {
   const ProfileScreen()
       : super(
           ProfileScreen.name,
@@ -765,7 +791,7 @@ class ProfileScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i16.TopupScreen]
-class TopUpScreen extends _i26.PageRouteInfo<void> {
+class TopUpScreen extends _i28.PageRouteInfo<void> {
   const TopUpScreen()
       : super(
           TopUpScreen.name,
@@ -777,7 +803,7 @@ class TopUpScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i17.AllOrdersPage]
-class AllOrdersPage extends _i26.PageRouteInfo<void> {
+class AllOrdersPage extends _i28.PageRouteInfo<void> {
   const AllOrdersPage()
       : super(
           AllOrdersPage.name,
@@ -789,7 +815,7 @@ class AllOrdersPage extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i18.ScheduledOrdersPage]
-class ScheduledOrdersPage extends _i26.PageRouteInfo<void> {
+class ScheduledOrdersPage extends _i28.PageRouteInfo<void> {
   const ScheduledOrdersPage()
       : super(
           ScheduledOrdersPage.name,
@@ -801,7 +827,7 @@ class ScheduledOrdersPage extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i19.FAQScreen]
-class FAQScreen extends _i26.PageRouteInfo<void> {
+class FAQScreen extends _i28.PageRouteInfo<void> {
   const FAQScreen()
       : super(
           FAQScreen.name,
@@ -813,7 +839,7 @@ class FAQScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i20.AboutScreen]
-class AboutScreen extends _i26.PageRouteInfo<void> {
+class AboutScreen extends _i28.PageRouteInfo<void> {
   const AboutScreen()
       : super(
           AboutScreen.name,
@@ -825,10 +851,10 @@ class AboutScreen extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i21.PreparingOrderPage]
-class PreparingOrderPage extends _i26.PageRouteInfo<PreparingOrderPageArgs> {
+class PreparingOrderPage extends _i28.PageRouteInfo<PreparingOrderPageArgs> {
   PreparingOrderPage({
-    _i29.Key? key,
-    required _i33.OrderDetails orderDetails,
+    _i31.Key? key,
+    required _i35.OrderDetails orderDetails,
   }) : super(
           PreparingOrderPage.name,
           path: 'preparing-order-page',
@@ -847,9 +873,9 @@ class PreparingOrderPageArgs {
     required this.orderDetails,
   });
 
-  final _i29.Key? key;
+  final _i31.Key? key;
 
-  final _i33.OrderDetails orderDetails;
+  final _i35.OrderDetails orderDetails;
 
   @override
   String toString() {
@@ -859,7 +885,7 @@ class PreparingOrderPageArgs {
 
 /// generated route for
 /// [_i22.ShowUserMnemonicScreen]
-class ShowUserMnemonic extends _i26.PageRouteInfo<void> {
+class ShowUserMnemonic extends _i28.PageRouteInfo<void> {
   const ShowUserMnemonic()
       : super(
           ShowUserMnemonic.name,
@@ -871,7 +897,7 @@ class ShowUserMnemonic extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i23.VerifyUserMnemonic]
-class VerifyUserMnemonic extends _i26.PageRouteInfo<void> {
+class VerifyUserMnemonic extends _i28.PageRouteInfo<void> {
   const VerifyUserMnemonic()
       : super(
           VerifyUserMnemonic.name,
@@ -883,7 +909,7 @@ class VerifyUserMnemonic extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i24.CheckoutScreenPt2]
-class CheckoutScreenPt2 extends _i26.PageRouteInfo<void> {
+class CheckoutScreenPt2 extends _i28.PageRouteInfo<void> {
   const CheckoutScreenPt2()
       : super(
           CheckoutScreenPt2.name,
@@ -894,8 +920,32 @@ class CheckoutScreenPt2 extends _i26.PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [_i25.GenerateQRFromCart]
+class GenerateQRFromCart extends _i28.PageRouteInfo<void> {
+  const GenerateQRFromCart()
+      : super(
+          GenerateQRFromCart.name,
+          path: 'generate-qr-from-cart',
+        );
+
+  static const String name = 'GenerateQRFromCart';
+}
+
+/// generated route for
+/// [_i26.ScanPaymentRecipientQR]
+class ScanPaymentRecipientQR extends _i28.PageRouteInfo<void> {
+  const ScanPaymentRecipientQR()
+      : super(
+          ScanPaymentRecipientQR.name,
+          path: 'scan-payment-recipient-qR',
+        );
+
+  static const String name = 'ScanPaymentRecipientQR';
+}
+
+/// generated route for
 /// [_i16.TopupScreen]
-class TopupScreen extends _i26.PageRouteInfo<void> {
+class TopupScreen extends _i28.PageRouteInfo<void> {
   const TopupScreen()
       : super(
           TopupScreen.name,
@@ -906,8 +956,8 @@ class TopupScreen extends _i26.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i25.TopupExplained]
-class TopupExplained extends _i26.PageRouteInfo<void> {
+/// [_i27.TopupExplained]
+class TopupExplained extends _i28.PageRouteInfo<void> {
   const TopupExplained()
       : super(
           TopupExplained.name,

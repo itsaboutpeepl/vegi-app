@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -74,7 +73,7 @@ class PlaceApiProvider {
       host: 'maps.googleapis.com',
       path: 'maps/api/place/findplacefromtext/json',
       queryParameters: {
-        'fields': 'geometry,formatted_address',
+        'fields': 'geometry',
         'input':
             '$addressLineOne, $addressLineTwo, $addressTownCity, $addressPostCode, $addressCountryCode',
         'inputtype': 'textquery',

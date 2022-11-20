@@ -55,6 +55,7 @@ class AnalyticsEvents {
   //Payment
   static const String payStripe = 'pay_stripe';
   static const String payPeepl = 'pay_peepl';
+  static const String payQRVegi = 'pay_QR_vegi';
   static const String payment = 'payment';
   static const String mint = 'mint';
   static const String orderGen = 'order_generated';

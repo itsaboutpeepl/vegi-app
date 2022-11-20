@@ -4,6 +4,8 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/screens/profile.dart';
 import 'package:vegan_liverpool/features/onboard/screens/show_user_mnemonic.dart';
 import 'package:vegan_liverpool/features/onboard/screens/verify_user_mnemonic.dart';
+import 'package:vegan_liverpool/features/pay/screens/generate_QR_from_cart.dart';
+import 'package:vegan_liverpool/features/pay/screens/scan_payment_recipient_qr.dart';
 import 'package:vegan_liverpool/features/topup/screens/topup.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/aboutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/allOrdersPage.dart';
@@ -88,6 +90,16 @@ const veganHomeTab = AutoRoute(
       page: CheckoutScreenPt2,
       name: 'checkoutScreenPt2',
       guards: [AuthGuard],
-    )
+    ),
+    AutoRoute(
+      page: GenerateQRFromCart,
+      name: 'generateQRFromCart',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: ScanPaymentRecipientQR,
+      name: 'scanPaymentRecipientQR',
+      guards: [AuthGuard],
+    ),
   ],
 );

@@ -64,7 +64,11 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   url_launcher: ^6.1.6
   uuid: ^3.0.6
-  wallet_connect: ^1.0.2
+  expandable_sliver_list: ^4.1.1
+  qr_flutter: ^4.0.0
+  qr_code_scanner: ^1.0.1
+  flutter_barcode_scanner: ^2.0.0
+  wallet_connect: ^1.0.4
   ethereum_addresses:
     git:
       url: https://github.com/fuseio/dart-ethereum_address.git
@@ -73,7 +77,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  expandable_sliver_list: ^4.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

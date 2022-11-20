@@ -15,6 +15,7 @@ import 'package:vegan_liverpool/features/topup/dialogs/processing_payment.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/paymentSheet.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/qRFromCartSheet.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForCollection.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
@@ -842,6 +843,26 @@ ThunkAction<AppState> startPaymentProcess({
                 ),
               );
           },
+        );
+      } else if (store.state.cartState.selectedPaymentMethod ==
+          PaymentMethod.qrPay) {
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.payQRVegi,
+          ),
+        );
+
+        await showModalBottomSheet<Widget>(
+          isScrollControlled: true,
+          backgroundColor: Color.fromARGB(255, 44, 42, 39),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+          ),
+          elevation: 5,
+          context: context,
+          builder: (context) => const QRFromCartSheet(),
         );
       } else if (store.state.cartState.selectedPaymentMethod ==
           PaymentMethod.peeplPay) {

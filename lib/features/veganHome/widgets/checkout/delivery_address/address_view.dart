@@ -276,6 +276,7 @@ class _AddressViewState extends State<AddressView> {
 
   Future<bool> validateAddressService() async {
     final Map<String, dynamic> formValue = _addressFormKey.currentState!.value;
+    //todo: consider adding address validation api: https://developers.google.com/maps/documentation/address-validation
     final locations = await _placeApiProvider.fetchLocationByAddress(
       addressLineOne: (formValue['addressLine1Internal'] as String?) ??
           formValue['addressLine1'] as String,
