@@ -30,7 +30,9 @@ class DeliveryTimeCard extends StatelessWidget {
                 ),
               ),
               context: context,
-              builder: (_) => const DeliverySlotSelectorModalSheet(),
+              builder: (_) => DeliverySlotSelectorModalSheet(
+                isDelivery: viewmodel.isDelivery,
+              ),
             );
           },
           child: Card(
@@ -96,7 +98,9 @@ class DeliveryTimeCard extends StatelessWidget {
 }
 
 class DeliverySlotSelectorModalSheet extends StatelessWidget {
-  const DeliverySlotSelectorModalSheet({Key? key}) : super(key: key);
+  const DeliverySlotSelectorModalSheet({Key? key, required this.isDelivery})
+      : super(key: key);
+  final bool isDelivery;
 
   @override
   Widget build(BuildContext context) {
@@ -105,9 +109,11 @@ class DeliverySlotSelectorModalSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Select a delivery slot',
-            style: TextStyle(
+          Text(
+            isDelivery
+                ? 'Select a delivery slot'
+                : 'Select a collection window',
+            style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 18,
             ),
