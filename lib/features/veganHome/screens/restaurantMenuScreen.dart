@@ -28,7 +28,15 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
   final List<RestaurantMenuItem> _featuredList = [];
   final List<RestaurantMenuItem> _regularList = [];
   late final Map<String, List<RestaurantMenuItem>> _groupedList;
-  Iterable<String> get _categories => _groupedList.keys.toList();
+  Iterable<String> get _categories => _groupedList.keys
+      .sorted(
+        (a, b) => a.toLowerCase() == 'general'
+            ? 1
+            : b.toLowerCase() == 'general'
+                ? -1
+                : a.compareTo(b),
+      )
+      .toList();
 
   final ExpandableSliverListController<RestaurantMenuItem>
       featuredListController = ExpandableSliverListController();
@@ -53,7 +61,11 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
         ExpandableSliverListController<RestaurantMenuItem>>.fromIterable(
       _categories,
       key: (cat) => cat.toString(),
-      value: (cat) => ExpandableSliverListController(),
+      value: (cat) => ExpandableSliverListController(
+        initialStatus: cat.toString().toLowerCase() == 'general'
+            ? ExpandableSliverListStatus.collapsed
+            : ExpandableSliverListStatus.expanded,
+      ),
     );
     super.initState();
   }
