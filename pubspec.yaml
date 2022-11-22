@@ -96,6 +96,7 @@ flutter:
     - environment/.env_dev
     - assets/
     - assets/images/
+    - assets/videos/
     - assets/fonts/
   fonts:
     - family: Fat Cheeks

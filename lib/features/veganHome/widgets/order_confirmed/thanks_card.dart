@@ -1,5 +1,6 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/drawStar.dart';
 
@@ -62,8 +63,8 @@ class _ThankYouCardState extends State<ThankYouCard> {
                 children: [
                   Image.asset(
                     widget.isDelivery
-                        ? 'assets/images/order-confirmed.png'
-                        : 'assets/images/order-confirmed-collection.png',
+                        ? 'assets/${DeliveryOrderCreationStatus.confirmed.imageTitle}'
+                        : 'assets/${CollectionOrderCreationStatus.confirmed.imageTitle}',
                     width: MediaQuery.of(context).size.width * 0.6,
                   ),
                   ConfettiWidget(

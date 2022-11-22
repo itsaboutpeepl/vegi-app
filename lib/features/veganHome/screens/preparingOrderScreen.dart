@@ -38,7 +38,7 @@ class PreparingOrderPage extends StatelessWidget {
                     alignment: Alignment.center,
                     children: [
                       Image.asset(
-                        'assets/images/${orderDetails.orderAcceptanceStatus.imageTitle}',
+                        'assets/${orderDetails.orderAcceptanceStatus.imageTitle}',
                         width: MediaQuery.of(context).size.width * 0.7,
                       ),
                     ],
