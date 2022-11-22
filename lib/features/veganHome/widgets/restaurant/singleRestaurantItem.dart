@@ -136,7 +136,11 @@ class SingleRestaurantItem extends StatelessWidget {
                 );
                 context.router.push(
                   RestaurantMenuScreen(
-                    menuList: restaurantItem.listOfMenuItems,
+                    productCategories: restaurantItem.productCategories
+                        .map((e) => e.name)
+                        .toList(),
+                    menuList: restaurantItem
+                        .listOfMenuItems, // TODO: remove this parameter from here and ConfirmSwitchRestaurant Dialog and get from store selectedRestaurant, items are contained within state.home.featuredRestaurants ->
                   ),
                 );
               }

@@ -25,6 +25,9 @@ _$_RestaurantItem _$$_RestaurantItemFromJson(Map<String, dynamic> json) =>
       listOfMenuItems: (json['listOfMenuItems'] as List<dynamic>)
           .map((e) => RestaurantMenuItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      productCategories: (json['productCategories'] as List<dynamic>)
+          .map((e) => ProductCategory.fromJson(e as Map<String, dynamic>))
+          .toList(),
       walletAddress: json['walletAddress'] as String,
       status: json['status'] as String,
       isVegan: json['isVegan'] as bool,
@@ -46,6 +49,8 @@ Map<String, dynamic> _$$_RestaurantItemToJson(_$_RestaurantItem instance) =>
       'address': instance.address.toJson(),
       'listOfMenuItems':
           instance.listOfMenuItems.map((e) => e.toJson()).toList(),
+      'productCategories':
+          instance.productCategories.map((e) => e.toJson()).toList(),
       'walletAddress': instance.walletAddress,
       'status': instance.status,
       'isVegan': instance.isVegan,

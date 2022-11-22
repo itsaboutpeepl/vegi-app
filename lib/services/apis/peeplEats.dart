@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
@@ -70,6 +71,7 @@ class PeeplEatsService {
             address: DeliveryAddresses.fromVendorJson(element),
             walletAddress: element['walletAddress'] as String? ?? '',
             listOfMenuItems: [],
+            productCategories: [],
             isVegan: element['isVegan'] as bool? ?? false,
             minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
             platformFee: element['platformFee'] as int? ?? 0,
@@ -116,6 +118,22 @@ class PeeplEatsService {
     menuItems.sort((a, b) => a.priority.compareTo(b.priority));
 
     return menuItems;
+  }
+
+  Future<List<ProductCategory>> getProductCategoriesForVendor(
+    int vendorId,
+  ) async {
+    final Response<dynamic> response = await dio
+        .get('api/v1/vendors/view-product-categories?vendor=$vendorId');
+
+    final List<dynamic> productCategories =
+        response.data['productCategories'] as List<dynamic>;
+
+    return productCategories
+        .map(
+          (e) => ProductCategory.fromJson(e as Map<String, dynamic>),
+        )
+        .toList();
   }
 
   Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {

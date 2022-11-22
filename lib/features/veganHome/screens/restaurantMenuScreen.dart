@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -9,30 +10,51 @@ import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurant
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
 class RestaurantMenuScreen extends StatefulWidget {
-  const RestaurantMenuScreen({Key? key, required this.menuList})
-      : super(key: key);
+  const RestaurantMenuScreen({
+    Key? key,
+    required this.menuList,
+    required this.productCategories,
+  }) : super(key: key);
 
   @override
   State<RestaurantMenuScreen> createState() => _RestaurantMenuScreenState();
 
   final List<RestaurantMenuItem> menuList;
+
+  final List<String> productCategories;
 }
 
 class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
   final List<RestaurantMenuItem> _featuredList = [];
   final List<RestaurantMenuItem> _regularList = [];
+  late final Map<String, List<RestaurantMenuItem>> _groupedList;
+  Iterable<String> get _categories => _groupedList.keys.toList();
+
   final ExpandableSliverListController<RestaurantMenuItem>
       featuredListController = ExpandableSliverListController();
   final ExpandableSliverListController<RestaurantMenuItem>
       regularListController = ExpandableSliverListController();
+  late final Map<String, ExpandableSliverListController<RestaurantMenuItem>>
+      categoryItemsControllers;
 
   @override
   void initState() {
+    //todo: make _regularList scoped to here and remove from component state
     for (final element in widget.menuList) {
       element.isFeatured
           ? _featuredList.add(element)
           : _regularList.add(element);
     }
+    _groupedList = groupBy(
+      _regularList,
+      (RestaurantMenuItem menuItem) => menuItem.categoryName,
+    );
+    categoryItemsControllers = Map<String,
+        ExpandableSliverListController<RestaurantMenuItem>>.fromIterable(
+      _categories,
+      key: (cat) => cat.toString(),
+      value: (cat) => ExpandableSliverListController(),
+    );
     super.initState();
   }
 
@@ -68,22 +90,40 @@ class _RestaurantMenuScreenState extends State<RestaurantMenuScreen> {
                   ),
                 ),
               ),
-              SliverStickyHeader(
-                header: MenuStickyHeader(
-                  title: 'Regular Items',
-                  controller: regularListController,
-                ),
-                sliver: SliverPadding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 20),
-                  sliver: ExpandableSliverList<RestaurantMenuItem>(
-                    initialItems: _regularList,
-                    builder: (context, item, index) => SingleRegularMenuItem(
-                      menuItem: _regularList[index],
+              ..._categories.map(
+                (categoryName) => SliverStickyHeader(
+                  header: MenuStickyHeader(
+                    title: categoryName,
+                    controller: categoryItemsControllers[categoryName]!,
+                  ),
+                  sliver: SliverPadding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 20),
+                    sliver: ExpandableSliverList<RestaurantMenuItem>(
+                      initialItems: _groupedList[categoryName]!,
+                      builder: (context, item, index) => SingleFeaturedMenuItem(
+                        menuItem: _groupedList[categoryName]![index],
+                      ),
+                      controller: categoryItemsControllers[categoryName]!,
                     ),
-                    controller: regularListController,
                   ),
                 ),
               ),
+              // SliverStickyHeader(
+              //   header: MenuStickyHeader(
+              //     title: 'Regular Items',
+              //     controller: regularListController,
+              //   ),
+              //   sliver: SliverPadding(
+              //     padding: const EdgeInsets.only(top: 10, bottom: 20),
+              //     sliver: ExpandableSliverList<RestaurantMenuItem>(
+              //       initialItems: _regularList,
+              //       builder: (context, item, index) => SingleRegularMenuItem(
+              //         menuItem: _regularList[index],
+              //       ),
+              //       controller: regularListController,
+              //     ),
+              //   ),
+              // ),
               const SliverPadding(padding: EdgeInsets.only(bottom: 100)),
             ],
           ),

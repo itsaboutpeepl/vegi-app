@@ -167,6 +167,7 @@ class RootRouter extends _i28.RootStackRouter {
         child: _i13.RestaurantMenuScreen(
           key: args.key,
           menuList: args.menuList,
+          productCategories: args.productCategories,
         ),
         transitionsBuilder: _i28.TransitionsBuilders.slideLeftWithFade,
         opaque: true,
@@ -737,12 +738,14 @@ class RestaurantMenuScreen
   RestaurantMenuScreen({
     _i31.Key? key,
     required List<_i34.RestaurantMenuItem> menuList,
+    required List<String> productCategories,
   }) : super(
           RestaurantMenuScreen.name,
           path: 'restaurant-menu-screen',
           args: RestaurantMenuScreenArgs(
             key: key,
             menuList: menuList,
+            productCategories: productCategories,
           ),
         );
 
@@ -753,15 +756,18 @@ class RestaurantMenuScreenArgs {
   const RestaurantMenuScreenArgs({
     this.key,
     required this.menuList,
+    required this.productCategories,
   });
 
   final _i31.Key? key;
 
   final List<_i34.RestaurantMenuItem> menuList;
 
+  final List<String> productCategories;
+
   @override
   String toString() {
-    return 'RestaurantMenuScreenArgs{key: $key, menuList: $menuList}';
+    return 'RestaurantMenuScreenArgs{key: $key, menuList: $menuList, productCategories: $productCategories}';
   }
 }
 

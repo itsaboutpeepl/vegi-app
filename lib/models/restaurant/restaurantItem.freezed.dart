@@ -33,6 +33,8 @@ mixin _$RestaurantItem {
   DeliveryAddresses get address => throw _privateConstructorUsedError;
   List<RestaurantMenuItem> get listOfMenuItems =>
       throw _privateConstructorUsedError;
+  List<ProductCategory> get productCategories =>
+      throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   bool get isVegan => throw _privateConstructorUsedError;
@@ -63,6 +65,7 @@ abstract class $RestaurantItemCopyWith<$Res> {
       int rating,
       DeliveryAddresses address,
       List<RestaurantMenuItem> listOfMenuItems,
+      List<ProductCategory> productCategories,
       String walletAddress,
       String status,
       bool isVegan,
@@ -96,6 +99,7 @@ class _$RestaurantItemCopyWithImpl<$Res, $Val extends RestaurantItem>
     Object? rating = null,
     Object? address = null,
     Object? listOfMenuItems = null,
+    Object? productCategories = null,
     Object? walletAddress = null,
     Object? status = null,
     Object? isVegan = null,
@@ -147,6 +151,10 @@ class _$RestaurantItemCopyWithImpl<$Res, $Val extends RestaurantItem>
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
               as List<RestaurantMenuItem>,
+      productCategories: null == productCategories
+          ? _value.productCategories
+          : productCategories // ignore: cast_nullable_to_non_nullable
+              as List<ProductCategory>,
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
@@ -199,6 +207,7 @@ abstract class _$$_RestaurantItemCopyWith<$Res>
       int rating,
       DeliveryAddresses address,
       List<RestaurantMenuItem> listOfMenuItems,
+      List<ProductCategory> productCategories,
       String walletAddress,
       String status,
       bool isVegan,
@@ -231,6 +240,7 @@ class __$$_RestaurantItemCopyWithImpl<$Res>
     Object? rating = null,
     Object? address = null,
     Object? listOfMenuItems = null,
+    Object? productCategories = null,
     Object? walletAddress = null,
     Object? status = null,
     Object? isVegan = null,
@@ -282,6 +292,10 @@ class __$$_RestaurantItemCopyWithImpl<$Res>
           ? _value.listOfMenuItems
           : listOfMenuItems // ignore: cast_nullable_to_non_nullable
               as List<RestaurantMenuItem>,
+      productCategories: null == productCategories
+          ? _value.productCategories
+          : productCategories // ignore: cast_nullable_to_non_nullable
+              as List<ProductCategory>,
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
@@ -322,6 +336,7 @@ class _$_RestaurantItem extends _RestaurantItem {
       required this.rating,
       required this.address,
       required this.listOfMenuItems,
+      required this.productCategories,
       required this.walletAddress,
       required this.status,
       required this.isVegan,
@@ -355,6 +370,8 @@ class _$_RestaurantItem extends _RestaurantItem {
   @override
   final List<RestaurantMenuItem> listOfMenuItems;
   @override
+  final List<ProductCategory> productCategories;
+  @override
   final String walletAddress;
   @override
   final String status;
@@ -367,7 +384,7 @@ class _$_RestaurantItem extends _RestaurantItem {
 
   @override
   String toString() {
-    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, walletAddress: $walletAddress, status: $status, isVegan: $isVegan, minimumOrderAmount: $minimumOrderAmount, platformFee: $platformFee)';
+    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, productCategories: $productCategories, walletAddress: $walletAddress, status: $status, isVegan: $isVegan, minimumOrderAmount: $minimumOrderAmount, platformFee: $platformFee)';
   }
 
   @override
@@ -394,6 +411,8 @@ class _$_RestaurantItem extends _RestaurantItem {
             (identical(other.address, address) || other.address == address) &&
             const DeepCollectionEquality()
                 .equals(other.listOfMenuItems, listOfMenuItems) &&
+            const DeepCollectionEquality()
+                .equals(other.productCategories, productCategories) &&
             (identical(other.walletAddress, walletAddress) ||
                 other.walletAddress == walletAddress) &&
             (identical(other.status, status) || other.status == status) &&
@@ -419,6 +438,7 @@ class _$_RestaurantItem extends _RestaurantItem {
       rating,
       address,
       const DeepCollectionEquality().hash(listOfMenuItems),
+      const DeepCollectionEquality().hash(productCategories),
       walletAddress,
       status,
       isVegan,
@@ -452,6 +472,7 @@ abstract class _RestaurantItem extends RestaurantItem {
       required final int rating,
       required final DeliveryAddresses address,
       required final List<RestaurantMenuItem> listOfMenuItems,
+      required final List<ProductCategory> productCategories,
       required final String walletAddress,
       required final String status,
       required final bool isVegan,
@@ -484,6 +505,8 @@ abstract class _RestaurantItem extends RestaurantItem {
   DeliveryAddresses get address;
   @override
   List<RestaurantMenuItem> get listOfMenuItems;
+  @override
+  List<ProductCategory> get productCategories;
   @override
   String get walletAddress;
   @override

@@ -80,6 +80,10 @@ ThunkAction<AppState> fetchMenuItemsForRestaurant() {
       await Future.forEach(
         currentList,
         (RestaurantItem element) async {
+          element.productCategories.addAll(
+            await peeplEatsService
+                .getProductCategoriesForVendor(int.parse(element.restaurantID)),
+          );
           element.listOfMenuItems.addAll(
             await peeplEatsService.getRestaurantMenuItems(element.restaurantID),
           );

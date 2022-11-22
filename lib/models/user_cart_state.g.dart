@@ -130,4 +130,5 @@ const _$PaymentMethodEnumMap = {
   PaymentMethod.stripe: 'stripe',
   PaymentMethod.peeplPay: 'peeplPay',
   PaymentMethod.applePay: 'applePay',
+  PaymentMethod.qrPay: 'qrPay',
 };

@@ -151,10 +151,10 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
               //       );
               //       context.router.pop();
               //     },
-              //     leading: Icon(FontAwesomeIcons.barcode),
+              //     leading: const Icon(FontAwesomeIcons.barcode),
               //     title: Text(PaymentMethod.qrPay.formattedName),
-              //     subtitle: Text('Coming soon In Store'),
-              //     trailing: Icon(
+              //     subtitle: const Text('Coming soon In Store'),
+              //     trailing: const Icon(
               //       Icons.qr_code,
               //       size: 14,
               //     ),
