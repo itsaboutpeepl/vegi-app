@@ -23,6 +23,10 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
       deliveryAddressLineTwo: json['deliveryAddressLineTwo'] as String,
       deliveryAddressCity: json['deliveryAddressCity'] as String,
       deliveryAddressPostCode: json['deliveryAddressPostCode'] as String,
+      deliveryAddressLatitude:
+          (json['deliveryAddressLatitude'] as num?)?.toDouble(),
+      deliveryAddressLongitude:
+          (json['deliveryAddressLongitude'] as num?)?.toDouble(),
       deliveryAddressInstructions:
           json['deliveryAddressInstructions'] as String,
       deliveryId: json['deliveryId'] as String,
@@ -34,6 +38,10 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
           unknownValue: RestaurantAcceptedStatus.pending),
       deliveryPartnerAccepted: json['deliveryPartnerAccepted'] as bool,
       deliveryPartnerConfirmed: json['deliveryPartnerConfirmed'] as bool,
+      fulfilmentMethodId:
+          getFulfilmentMethodId(json, 'fulfilmentMethodId') as int,
+      fulfilmentMethodPriceModifier: getFulfilmentMethodPriceModifier(
+          json, 'fulfilmentMethodPriceModifier') as num,
       fulfilmentSlotFrom: DateTime.parse(json['fulfilmentSlotFrom'] as String),
       fulfilmentSlotTo: DateTime.parse(json['fulfilmentSlotTo'] as String),
       publicId: json['publicId'] as String,
@@ -64,6 +72,8 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'deliveryAddressLineTwo': instance.deliveryAddressLineTwo,
       'deliveryAddressCity': instance.deliveryAddressCity,
       'deliveryAddressPostCode': instance.deliveryAddressPostCode,
+      'deliveryAddressLatitude': instance.deliveryAddressLatitude,
+      'deliveryAddressLongitude': instance.deliveryAddressLongitude,
       'deliveryAddressInstructions': instance.deliveryAddressInstructions,
       'deliveryId': instance.deliveryId,
       'paymentStatus': _$OrderPaidStatusEnumMap[instance.paymentStatus]!,
@@ -71,6 +81,8 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
           instance.restaurantAcceptanceStatus]!,
       'deliveryPartnerAccepted': instance.deliveryPartnerAccepted,
       'deliveryPartnerConfirmed': instance.deliveryPartnerConfirmed,
+      'fulfilmentMethodId': instance.fulfilmentMethodId,
+      'fulfilmentMethodPriceModifier': instance.fulfilmentMethodPriceModifier,
       'fulfilmentSlotFrom': instance.fulfilmentSlotFrom.toIso8601String(),
       'fulfilmentSlotTo': instance.fulfilmentSlotTo.toIso8601String(),
       'publicId': instance.publicId,

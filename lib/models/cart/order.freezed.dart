@@ -37,6 +37,8 @@ mixin _$Order {
   String get deliveryAddressLineTwo => throw _privateConstructorUsedError;
   String get deliveryAddressCity => throw _privateConstructorUsedError;
   String get deliveryAddressPostCode => throw _privateConstructorUsedError;
+  double? get deliveryAddressLatitude => throw _privateConstructorUsedError;
+  double? get deliveryAddressLongitude => throw _privateConstructorUsedError;
   String get deliveryAddressInstructions => throw _privateConstructorUsedError;
   String get deliveryId => throw _privateConstructorUsedError;
   @JsonEnum()
@@ -48,6 +50,10 @@ mixin _$Order {
       throw _privateConstructorUsedError;
   bool get deliveryPartnerAccepted => throw _privateConstructorUsedError;
   bool get deliveryPartnerConfirmed => throw _privateConstructorUsedError;
+  @JsonKey(readValue: getFulfilmentMethodId)
+  int get fulfilmentMethodId => throw _privateConstructorUsedError;
+  @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+  num get fulfilmentMethodPriceModifier => throw _privateConstructorUsedError;
   DateTime get fulfilmentSlotFrom =>
       throw _privateConstructorUsedError; // "2022-09-29T10:00:00.000Z"
   DateTime get fulfilmentSlotTo =>
@@ -90,6 +96,8 @@ abstract class $OrderCopyWith<$Res> {
       String deliveryAddressLineTwo,
       String deliveryAddressCity,
       String deliveryAddressPostCode,
+      double? deliveryAddressLatitude,
+      double? deliveryAddressLongitude,
       String deliveryAddressInstructions,
       String deliveryId,
       @JsonEnum()
@@ -100,6 +108,10 @@ abstract class $OrderCopyWith<$Res> {
           RestaurantAcceptedStatus restaurantAcceptanceStatus,
       bool deliveryPartnerAccepted,
       bool deliveryPartnerConfirmed,
+      @JsonKey(readValue: getFulfilmentMethodId)
+          int fulfilmentMethodId,
+      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+          num fulfilmentMethodPriceModifier,
       DateTime fulfilmentSlotFrom,
       DateTime fulfilmentSlotTo,
       String publicId,
@@ -142,12 +154,16 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? deliveryAddressLineTwo = null,
     Object? deliveryAddressCity = null,
     Object? deliveryAddressPostCode = null,
+    Object? deliveryAddressLatitude = freezed,
+    Object? deliveryAddressLongitude = freezed,
     Object? deliveryAddressInstructions = null,
     Object? deliveryId = null,
     Object? paymentStatus = null,
     Object? restaurantAcceptanceStatus = null,
     Object? deliveryPartnerAccepted = null,
     Object? deliveryPartnerConfirmed = null,
+    Object? fulfilmentMethodId = null,
+    Object? fulfilmentMethodPriceModifier = null,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
     Object? publicId = null,
@@ -215,6 +231,14 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.deliveryAddressPostCode
           : deliveryAddressPostCode // ignore: cast_nullable_to_non_nullable
               as String,
+      deliveryAddressLatitude: freezed == deliveryAddressLatitude
+          ? _value.deliveryAddressLatitude
+          : deliveryAddressLatitude // ignore: cast_nullable_to_non_nullable
+              as double?,
+      deliveryAddressLongitude: freezed == deliveryAddressLongitude
+          ? _value.deliveryAddressLongitude
+          : deliveryAddressLongitude // ignore: cast_nullable_to_non_nullable
+              as double?,
       deliveryAddressInstructions: null == deliveryAddressInstructions
           ? _value.deliveryAddressInstructions
           : deliveryAddressInstructions // ignore: cast_nullable_to_non_nullable
@@ -239,6 +263,14 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.deliveryPartnerConfirmed
           : deliveryPartnerConfirmed // ignore: cast_nullable_to_non_nullable
               as bool,
+      fulfilmentMethodId: null == fulfilmentMethodId
+          ? _value.fulfilmentMethodId
+          : fulfilmentMethodId // ignore: cast_nullable_to_non_nullable
+              as int,
+      fulfilmentMethodPriceModifier: null == fulfilmentMethodPriceModifier
+          ? _value.fulfilmentMethodPriceModifier
+          : fulfilmentMethodPriceModifier // ignore: cast_nullable_to_non_nullable
+              as num,
       fulfilmentSlotFrom: null == fulfilmentSlotFrom
           ? _value.fulfilmentSlotFrom
           : fulfilmentSlotFrom // ignore: cast_nullable_to_non_nullable
@@ -323,6 +355,8 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       String deliveryAddressLineTwo,
       String deliveryAddressCity,
       String deliveryAddressPostCode,
+      double? deliveryAddressLatitude,
+      double? deliveryAddressLongitude,
       String deliveryAddressInstructions,
       String deliveryId,
       @JsonEnum()
@@ -333,6 +367,10 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
           RestaurantAcceptedStatus restaurantAcceptanceStatus,
       bool deliveryPartnerAccepted,
       bool deliveryPartnerConfirmed,
+      @JsonKey(readValue: getFulfilmentMethodId)
+          int fulfilmentMethodId,
+      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+          num fulfilmentMethodPriceModifier,
       DateTime fulfilmentSlotFrom,
       DateTime fulfilmentSlotTo,
       String publicId,
@@ -373,12 +411,16 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
     Object? deliveryAddressLineTwo = null,
     Object? deliveryAddressCity = null,
     Object? deliveryAddressPostCode = null,
+    Object? deliveryAddressLatitude = freezed,
+    Object? deliveryAddressLongitude = freezed,
     Object? deliveryAddressInstructions = null,
     Object? deliveryId = null,
     Object? paymentStatus = null,
     Object? restaurantAcceptanceStatus = null,
     Object? deliveryPartnerAccepted = null,
     Object? deliveryPartnerConfirmed = null,
+    Object? fulfilmentMethodId = null,
+    Object? fulfilmentMethodPriceModifier = null,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
     Object? publicId = null,
@@ -446,6 +488,14 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.deliveryAddressPostCode
           : deliveryAddressPostCode // ignore: cast_nullable_to_non_nullable
               as String,
+      deliveryAddressLatitude: freezed == deliveryAddressLatitude
+          ? _value.deliveryAddressLatitude
+          : deliveryAddressLatitude // ignore: cast_nullable_to_non_nullable
+              as double?,
+      deliveryAddressLongitude: freezed == deliveryAddressLongitude
+          ? _value.deliveryAddressLongitude
+          : deliveryAddressLongitude // ignore: cast_nullable_to_non_nullable
+              as double?,
       deliveryAddressInstructions: null == deliveryAddressInstructions
           ? _value.deliveryAddressInstructions
           : deliveryAddressInstructions // ignore: cast_nullable_to_non_nullable
@@ -470,6 +520,14 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.deliveryPartnerConfirmed
           : deliveryPartnerConfirmed // ignore: cast_nullable_to_non_nullable
               as bool,
+      fulfilmentMethodId: null == fulfilmentMethodId
+          ? _value.fulfilmentMethodId
+          : fulfilmentMethodId // ignore: cast_nullable_to_non_nullable
+              as int,
+      fulfilmentMethodPriceModifier: null == fulfilmentMethodPriceModifier
+          ? _value.fulfilmentMethodPriceModifier
+          : fulfilmentMethodPriceModifier // ignore: cast_nullable_to_non_nullable
+              as num,
       fulfilmentSlotFrom: null == fulfilmentSlotFrom
           ? _value.fulfilmentSlotFrom
           : fulfilmentSlotFrom // ignore: cast_nullable_to_non_nullable
@@ -532,6 +590,8 @@ class _$_Order extends _Order {
       required this.deliveryAddressLineTwo,
       required this.deliveryAddressCity,
       required this.deliveryAddressPostCode,
+      required this.deliveryAddressLatitude,
+      required this.deliveryAddressLongitude,
       required this.deliveryAddressInstructions,
       required this.deliveryId,
       @JsonEnum()
@@ -542,6 +602,10 @@ class _$_Order extends _Order {
           required this.restaurantAcceptanceStatus,
       required this.deliveryPartnerAccepted,
       required this.deliveryPartnerConfirmed,
+      @JsonKey(readValue: getFulfilmentMethodId)
+          required this.fulfilmentMethodId,
+      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+          required this.fulfilmentMethodPriceModifier,
       required this.fulfilmentSlotFrom,
       required this.fulfilmentSlotTo,
       required this.publicId,
@@ -589,6 +653,10 @@ class _$_Order extends _Order {
   @override
   final String deliveryAddressPostCode;
   @override
+  final double? deliveryAddressLatitude;
+  @override
+  final double? deliveryAddressLongitude;
+  @override
   final String deliveryAddressInstructions;
   @override
   final String deliveryId;
@@ -604,6 +672,12 @@ class _$_Order extends _Order {
   final bool deliveryPartnerAccepted;
   @override
   final bool deliveryPartnerConfirmed;
+  @override
+  @JsonKey(readValue: getFulfilmentMethodId)
+  final int fulfilmentMethodId;
+  @override
+  @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+  final num fulfilmentMethodPriceModifier;
   @override
   final DateTime fulfilmentSlotFrom;
 // "2022-09-29T10:00:00.000Z"
@@ -628,7 +702,7 @@ class _$_Order extends _Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, items: $items, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, paymentStatus: $paymentStatus, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, publicId: $publicId, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, vendor: $vendor, deliveryPartner: $deliveryPartner, fulfilmentMethod: $fulfilmentMethod)';
+    return 'Order(id: $id, items: $items, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressLatitude: $deliveryAddressLatitude, deliveryAddressLongitude: $deliveryAddressLongitude, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, paymentStatus: $paymentStatus, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, fulfilmentMethodId: $fulfilmentMethodId, fulfilmentMethodPriceModifier: $fulfilmentMethodPriceModifier, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, publicId: $publicId, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, vendor: $vendor, deliveryPartner: $deliveryPartner, fulfilmentMethod: $fulfilmentMethod)';
   }
 
   @override
@@ -661,8 +735,11 @@ class _$_Order extends _Order {
                 other.deliveryAddressCity == deliveryAddressCity) &&
             (identical(other.deliveryAddressPostCode, deliveryAddressPostCode) ||
                 other.deliveryAddressPostCode == deliveryAddressPostCode) &&
-            (identical(other.deliveryAddressInstructions,
-                    deliveryAddressInstructions) ||
+            (identical(other.deliveryAddressLatitude, deliveryAddressLatitude) ||
+                other.deliveryAddressLatitude == deliveryAddressLatitude) &&
+            (identical(other.deliveryAddressLongitude, deliveryAddressLongitude) ||
+                other.deliveryAddressLongitude == deliveryAddressLongitude) &&
+            (identical(other.deliveryAddressInstructions, deliveryAddressInstructions) ||
                 other.deliveryAddressInstructions ==
                     deliveryAddressInstructions) &&
             (identical(other.deliveryId, deliveryId) ||
@@ -676,6 +753,11 @@ class _$_Order extends _Order {
                 other.deliveryPartnerAccepted == deliveryPartnerAccepted) &&
             (identical(other.deliveryPartnerConfirmed, deliveryPartnerConfirmed) ||
                 other.deliveryPartnerConfirmed == deliveryPartnerConfirmed) &&
+            (identical(other.fulfilmentMethodId, fulfilmentMethodId) ||
+                other.fulfilmentMethodId == fulfilmentMethodId) &&
+            (identical(other.fulfilmentMethodPriceModifier, fulfilmentMethodPriceModifier) ||
+                other.fulfilmentMethodPriceModifier ==
+                    fulfilmentMethodPriceModifier) &&
             (identical(other.fulfilmentSlotFrom, fulfilmentSlotFrom) ||
                 other.fulfilmentSlotFrom == fulfilmentSlotFrom) &&
             (identical(other.fulfilmentSlotTo, fulfilmentSlotTo) ||
@@ -684,15 +766,11 @@ class _$_Order extends _Order {
                 other.publicId == publicId) &&
             (identical(other.tipAmount, tipAmount) ||
                 other.tipAmount == tipAmount) &&
-            (identical(other.rewardsIssued, rewardsIssued) ||
-                other.rewardsIssued == rewardsIssued) &&
-            (identical(other.sentToDeliveryPartner, sentToDeliveryPartner) ||
-                other.sentToDeliveryPartner == sentToDeliveryPartner) &&
+            (identical(other.rewardsIssued, rewardsIssued) || other.rewardsIssued == rewardsIssued) &&
+            (identical(other.sentToDeliveryPartner, sentToDeliveryPartner) || other.sentToDeliveryPartner == sentToDeliveryPartner) &&
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
-            (identical(other.deliveryPartner, deliveryPartner) ||
-                other.deliveryPartner == deliveryPartner) &&
-            (identical(other.fulfilmentMethod, fulfilmentMethod) ||
-                other.fulfilmentMethod == fulfilmentMethod));
+            (identical(other.deliveryPartner, deliveryPartner) || other.deliveryPartner == deliveryPartner) &&
+            (identical(other.fulfilmentMethod, fulfilmentMethod) || other.fulfilmentMethod == fulfilmentMethod));
   }
 
   @JsonKey(ignore: true)
@@ -713,12 +791,16 @@ class _$_Order extends _Order {
         deliveryAddressLineTwo,
         deliveryAddressCity,
         deliveryAddressPostCode,
+        deliveryAddressLatitude,
+        deliveryAddressLongitude,
         deliveryAddressInstructions,
         deliveryId,
         paymentStatus,
         restaurantAcceptanceStatus,
         deliveryPartnerAccepted,
         deliveryPartnerConfirmed,
+        fulfilmentMethodId,
+        fulfilmentMethodPriceModifier,
         fulfilmentSlotFrom,
         fulfilmentSlotTo,
         publicId,
@@ -763,6 +845,8 @@ abstract class _Order extends Order {
       required final String deliveryAddressLineTwo,
       required final String deliveryAddressCity,
       required final String deliveryAddressPostCode,
+      required final double? deliveryAddressLatitude,
+      required final double? deliveryAddressLongitude,
       required final String deliveryAddressInstructions,
       required final String deliveryId,
       @JsonEnum()
@@ -773,6 +857,10 @@ abstract class _Order extends Order {
           required final RestaurantAcceptedStatus restaurantAcceptanceStatus,
       required final bool deliveryPartnerAccepted,
       required final bool deliveryPartnerConfirmed,
+      @JsonKey(readValue: getFulfilmentMethodId)
+          required final int fulfilmentMethodId,
+      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+          required final num fulfilmentMethodPriceModifier,
       required final DateTime fulfilmentSlotFrom,
       required final DateTime fulfilmentSlotTo,
       required final String publicId,
@@ -819,6 +907,10 @@ abstract class _Order extends Order {
   @override
   String get deliveryAddressPostCode;
   @override
+  double? get deliveryAddressLatitude;
+  @override
+  double? get deliveryAddressLongitude;
+  @override
   String get deliveryAddressInstructions;
   @override
   String get deliveryId;
@@ -834,6 +926,12 @@ abstract class _Order extends Order {
   bool get deliveryPartnerAccepted;
   @override
   bool get deliveryPartnerConfirmed;
+  @override
+  @JsonKey(readValue: getFulfilmentMethodId)
+  int get fulfilmentMethodId;
+  @override
+  @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+  num get fulfilmentMethodPriceModifier;
   @override
   DateTime get fulfilmentSlotFrom;
   @override // "2022-09-29T10:00:00.000Z"

@@ -45,7 +45,10 @@ Map<String, dynamic> _$$_OrderDetailsToJson(_$_OrderDetails instance) =>
     };
 
 const _$OrderAcceptanceStatusEnumMap = {
-  OrderAcceptanceStatus.pending: 'pending',
   OrderAcceptanceStatus.accepted: 'accepted',
   OrderAcceptanceStatus.declined: 'declined',
+  OrderAcceptanceStatus.partiallyFulfilled: 'partiallyFulfilled',
+  OrderAcceptanceStatus.pending: 'pending',
+  OrderAcceptanceStatus.outForDelivery: 'outForDelivery',
+  OrderAcceptanceStatus.delivered: 'delivered',
 };

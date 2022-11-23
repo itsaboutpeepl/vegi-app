@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/models/cart/view_item.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 
 class OrderItemSingle extends StatelessWidget {
   const OrderItemSingle({Key? key, required this.orderItem}) : super(key: key);
 
-  final CartItem orderItem;
+  final ViewItem orderItem;
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +16,14 @@ class OrderItemSingle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  orderItem.menuItem.name,
+                  orderItem.name,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  orderItem.formattedPrice,
+                  orderItem.totalPriceFormatted,
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -33,7 +34,7 @@ class OrderItemSingle extends StatelessWidget {
               height: 5,
             ),
           ] +
-          orderItem.selectedProductOptionsString
+          orderItem.chosenOptions
               .map<Widget>(
                 Text.new,
               )

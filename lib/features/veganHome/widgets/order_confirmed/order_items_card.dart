@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/order_item_single.dart';
+import 'package:vegan_liverpool/models/cart/view_item.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 
 class OrderListCard extends StatelessWidget {
   const OrderListCard({Key? key, required this.orderItems}) : super(key: key);
 
-  final List<CartItem> orderItems;
+  final List<ViewItem> orderItems;
   @override
   Widget build(BuildContext context) {
     return Card(

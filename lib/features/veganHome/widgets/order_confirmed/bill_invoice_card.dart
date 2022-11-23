@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/bill_invoice_vm.dart';
 
 class BillInvoiceCard extends StatelessWidget {
-  const BillInvoiceCard({Key? key}) : super(key: key);
+  const BillInvoiceCard({Key? key, required this.orderDetails})
+      : super(key: key);
+
+  final OrderDetails orderDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +50,15 @@ class BillInvoiceCard extends StatelessWidget {
                         'Amount paid in GBP',
                       ),
                       Text(
-                        viewmodel.gbpxUsed,
+                        (orderDetails.GBPxAmountPaid * 100).formattedPrice,
                       ),
                     ],
                   ),
-                  if (viewmodel.didUsePPL)
+                  if (orderDetails.didUsePPL)
                     const SizedBox(
                       height: 5,
                     ),
-                  if (viewmodel.didUsePPL)
+                  if (orderDetails.didUsePPL)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -61,7 +66,7 @@ class BillInvoiceCard extends StatelessWidget {
                           'Amount paid in PPL rewards',
                         ),
                         Text(
-                          viewmodel.pplUsed,
+                          (orderDetails.PPLAmountPaid * 100).formattedPrice,
                         ),
                       ],
                     ),
@@ -89,14 +94,14 @@ class BillInvoiceCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        '${viewmodel.pplRewardsEarned} ',
+                        '${orderDetails.pplRewardsEarned} ',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        '(${viewmodel.pplRewardsEarnedValue})',
+                        '(${orderDetails.pplRewardsEarnedValue})',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,

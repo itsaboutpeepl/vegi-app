@@ -22,7 +22,7 @@ class Product with _$Product {
   //Section Getters
   String get price => cFPrice(basePrice);
 
-  String get totalPrice {
+  String get totalPriceFormatted {
     int optionTotal = 0;
     for (final product in options) {
       optionTotal = optionTotal + product.priceModifier;

@@ -64,9 +64,11 @@ class DeliveryAddresses with _$DeliveryAddresses {
     );
   }
 
+  String get shortAddressLessPostCode =>
+      addressLine1.capitalizeWords().maxChars(28 - postalCode.length);
+
   String get shortAddress =>
-      '${addressLine1.capitalizeWords()}, ${postalCode.capitalizeWords()}'
-          .maxChars(30);
+      '$shortAddressLessPostCode, ${postalCode.capitalizeWords()}';
 
   String get longAddress {
     if (addressLine2.isEmpty) {

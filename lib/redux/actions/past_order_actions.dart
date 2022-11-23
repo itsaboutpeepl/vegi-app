@@ -112,9 +112,9 @@ void ongoingOrderCheck(Store<AppState> store) {
               //create a new element with status changed, add it to the list, and update the list state.
               element.copyWith(
                 orderAcceptanceStatus:
-                    OrderAcceptanceStatusHelpers.enumValueFromString(
+                    RestaurantAcceptedStatusHelpers.enumValueFromString(
                   orderStatus['restaurantAcceptanceStatus'] as String,
-                ),
+                ).toOrderAcceptanceStatus(),
               ),
             );
           } //if it has passed the timeslot, then its not added to the list and removed by default.

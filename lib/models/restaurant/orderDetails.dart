@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
@@ -29,4 +30,13 @@ class OrderDetails with _$OrderDetails {
 
   factory OrderDetails.fromJson(Map<String, dynamic> json) =>
       _$OrderDetailsFromJson(json);
+
+  String get pplRewardsEarned => getPPLRewardsFromPence(
+        GBPxAmountPaid * 100,
+      ).toStringAsFixed(2);
+
+  String get pplRewardsEarnedValue =>
+      '£${(getPPLRewardsFromPence(GBPxAmountPaid * 100) / 10).toStringAsFixed(2)}';
+
+  bool get didUsePPL => PPLAmountPaid != 0.0;
 }

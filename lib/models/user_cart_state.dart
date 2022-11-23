@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/constants/env.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -34,6 +36,7 @@ class UserCartState with _$UserCartState {
     @Default(false) bool confirmedPayment,
     @Default('') String restaurantName,
     @Default('') String restaurantID,
+    @Default(false) bool restaurantIsLive,
     @Default(null) DeliveryAddresses? restaurantAddress,
     @Default('') String restaurantWalletAddress,
     @Default(FulfilmentMethodType.delivery)
@@ -72,6 +75,7 @@ class UserCartState with _$UserCartState {
         confirmedPayment: false,
         restaurantName: '',
         restaurantID: '',
+        restaurantIsLive: !Env.isProd,
         restaurantWalletAddress: '',
         fulfilmentMethod: FulfilmentMethodType.delivery,
         isDelivery: false,

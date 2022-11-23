@@ -13,6 +13,7 @@ import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/orderItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class AllOrdersPage extends StatefulWidget {
   const AllOrdersPage({Key? key}) : super(key: key);
@@ -174,7 +175,9 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 itemCount: widget.order.items.length,
               ),
               TransparentButton(
-                label: 'Show delivery address',
+                label: widget.order.isCollection
+                    ? 'Show collection address'
+                    : 'Show delivery address',
                 onPressed: () => setState(() {
                   _showDelivery = !_showDelivery;
                 }),
@@ -204,12 +207,16 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                 fontSize: 18,
                               ),
                             ),
-                            TextSpan(
-                              text: '${widget.order.deliveryEmail}\n',
-                            ),
-                            TextSpan(
-                              text: '${widget.order.deliveryPhoneNumber}\n',
-                            ),
+                            if (!widget.order.isCollection &&
+                                widget.order.deliveryEmail !=
+                                    EMAIL_NOT_PROVIDED)
+                              TextSpan(
+                                text: '${widget.order.deliveryEmail}\n',
+                              ),
+                            if (!widget.order.isCollection)
+                              TextSpan(
+                                text: '${widget.order.deliveryPhoneNumber}\n',
+                              ),
                             TextSpan(
                               text: '${widget.order.deliveryAddressLineOne}, ',
                             ),
@@ -277,7 +284,7 @@ class SingleProductOrderItem extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Text(orderItem.product.totalPrice),
+            Text(orderItem.product.totalPriceFormatted),
           ],
         )
       ],

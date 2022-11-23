@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 part 'createOrderForDelivery.freezed.dart';
 part 'createOrderForDelivery.g.dart';
@@ -44,7 +45,7 @@ class CreateOrderForDelivery extends CreateOrderForFulfilment
           name: store.state.userState.displayName,
           phoneNumber: store.state.userState.phoneNumber,
           email: store.state.userState.email.isEmpty
-              ? 'email@notprovided.com'
+              ? EMAIL_NOT_PROVIDED
               : store.state.userState.email,
           instructions: store.state.cartState.deliveryInstructions,
         ),

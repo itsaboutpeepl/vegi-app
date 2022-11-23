@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/order
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/thanks_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/view_item.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/order_confirmed.dart';
 
@@ -40,9 +41,17 @@ class OrderConfirmedScreen extends StatelessWidget {
                     userName: viewmodel.userName,
                     restaurantName: viewmodel.restaurantName,
                   ),
-                  const BillInvoiceCard(),
+                  BillInvoiceCard(orderDetails: viewmodel.orderDetails),
                   OrderListCard(
-                    orderItems: viewmodel.cartItems,
+                    orderItems: viewmodel.cartItems
+                        .map(
+                          (oi) => ViewItem(
+                            name: oi.menuItem.name,
+                            totalPriceFormatted: oi.formattedPrice,
+                            chosenOptions: oi.selectedProductOptionsString,
+                          ),
+                        )
+                        .toList(),
                   ),
                   const SizedBox(
                     height: 20,

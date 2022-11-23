@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurant_not_live_dialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/payment_method_vm.dart';
@@ -47,11 +48,18 @@ class PaymentButton extends StatelessWidget {
               ],
             ),
             buttonAction: () {
-              Analytics.track(
-                eventName: AnalyticsEvents.placeOrder,
-                properties: {'platform': 'vegi_app'},
-              );
-              viewmodel.startPaymentProcess(context: context);
+              if (viewmodel.selectedRestaurantIsLive) {
+                Analytics.track(
+                  eventName: AnalyticsEvents.placeOrder,
+                  properties: {'platform': 'vegi_app'},
+                );
+                viewmodel.startPaymentProcess(context: context);
+              } else {
+                showDialog<Widget>(
+                  context: context,
+                  builder: (context) => const RestaurantNotLiveDialog(),
+                );
+              }
             },
             baseColor: Colors.white,
             highlightColor: Colors.grey.shade200,

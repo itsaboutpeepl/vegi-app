@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 part 'createOrderForCollection.freezed.dart';
 part 'createOrderForCollection.g.dart';
@@ -44,7 +45,8 @@ class CreateOrderForCollection extends CreateOrderForFulfilment
           internalID:
               Random((DateTime.now().millisecondsSinceEpoch)).nextInt(10000),
           addressLine1: 'Collection Order',
-          addressLine2: store.state.cartState.restaurantAddress!.shortAddress,
+          addressLine2:
+              store.state.cartState.restaurantAddress!.shortAddressLessPostCode,
           postalCode: store.state.cartState.restaurantAddress!.postalCode,
           townCity: store.state.cartState.restaurantAddress!.townCity.isEmpty
               ? 'Liverpool'
@@ -52,7 +54,7 @@ class CreateOrderForCollection extends CreateOrderForFulfilment
           instructions: store.state.cartState.deliveryInstructions,
           name: store.state.userState.displayName,
           email: store.state.userState.email == ''
-              ? 'email@notprovided.com'
+              ? EMAIL_NOT_PROVIDED
               : store.state.userState.email,
           phoneNumber: store.state.userState.phoneNumber,
           latitude: 0,

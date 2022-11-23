@@ -3,6 +3,7 @@ import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
@@ -15,11 +16,26 @@ class OrderConfirmedViewModel extends Equatable {
     required this.cartItems,
     required this.cartTotal,
     required this.orderID,
+    required this.orderDetails,
     required this.clearCart,
     required this.userName,
   });
 
   factory OrderConfirmedViewModel.fromStore(Store<AppState> store) {
+    int orderDetailsInd = store.state.pastOrderState.listOfScheduledOrders
+        .indexWhere(
+            (element) => element.orderID == store.state.cartState.orderID);
+    OrderDetails orderDetails;
+    if (orderDetailsInd == -1) {
+      orderDetailsInd = store.state.pastOrderState.listOfOngoingOrders
+          .indexWhere(
+              (element) => element.orderID == store.state.cartState.orderID);
+      orderDetails =
+          store.state.pastOrderState.listOfOngoingOrders[orderDetailsInd];
+    } else {
+      orderDetails =
+          store.state.pastOrderState.listOfScheduledOrders[orderDetailsInd];
+    }
     return OrderConfirmedViewModel(
       selectedSlot: store.state.cartState.selectedTimeSlot,
       isDelivery: store.state.cartState.isDelivery,
@@ -30,6 +46,7 @@ class OrderConfirmedViewModel extends Equatable {
       cartItems: store.state.cartState.cartItems,
       cartTotal: store.state.cartState.cartTotal,
       orderID: store.state.cartState.orderID,
+      orderDetails: orderDetails,
       userName: store.state.userState.displayName,
       clearCart: () {
         store.dispatch(ClearCart());
@@ -44,6 +61,7 @@ class OrderConfirmedViewModel extends Equatable {
   final List<CartItem> cartItems;
   final int cartTotal;
   final String orderID;
+  final OrderDetails orderDetails;
   final void Function() clearCart;
   final String userName;
 

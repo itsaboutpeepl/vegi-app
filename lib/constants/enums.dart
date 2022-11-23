@@ -31,14 +31,56 @@ enum OrderAcceptanceStatus {
   delivered,
 }
 
-enum RestaurantAcceptedStatus { accepted, rejected, pending }
+enum RestaurantAcceptedStatus {
+  accepted,
+  rejected,
+  pending,
+  partiallyFulfilled,
+}
 
 enum DeliveryOrderCreationStatus {
   confirmed,
   failed,
 }
 
-extension OrderCreationStatusHelpers on DeliveryOrderCreationStatus {
+extension RestaurantAcceptedStatusHelpers on RestaurantAcceptedStatus {
+  OrderAcceptanceStatus toOrderAcceptanceStatus() {
+    switch (this) {
+      case RestaurantAcceptedStatus.accepted:
+        return OrderAcceptanceStatus.accepted;
+
+      case RestaurantAcceptedStatus.partiallyFulfilled:
+        return OrderAcceptanceStatus.partiallyFulfilled;
+
+      case RestaurantAcceptedStatus.rejected:
+        return OrderAcceptanceStatus.declined;
+
+      case RestaurantAcceptedStatus.pending:
+        return OrderAcceptanceStatus.pending;
+    }
+  }
+
+  static RestaurantAcceptedStatus enumValueFromString(String other) {
+    switch (other) {
+      case 'accepted':
+        return RestaurantAcceptedStatus.accepted;
+
+      case 'partially fulfilled':
+        return RestaurantAcceptedStatus.partiallyFulfilled;
+
+      case 'rejected':
+        return RestaurantAcceptedStatus.rejected;
+
+      case 'pending':
+        return RestaurantAcceptedStatus.pending;
+
+      default:
+        return RestaurantAcceptedStatus.pending;
+    }
+  }
+}
+
+extension DeliveryOrderCreationStatusHelpers on DeliveryOrderCreationStatus {
   static DeliveryOrderCreationStatus enumValueFromString(String other) {
     switch (other) {
       case 'confirmed':

@@ -1,6 +1,7 @@
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/utils/config.dart' as VEGI_CONFIG;
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -40,7 +41,8 @@ String formatDateForCalendar(DateTime dateToFormat) {
 }
 
 bool isScheduledDelivery(TimeSlot selectedSlot) {
-  if (selectedSlot.startTime.difference(DateTime.now()).inHours > 5) {
+  if (selectedSlot.startTime.difference(DateTime.now()).inHours >
+      VEGI_CONFIG.ONGOING_ORDERS_COUNTDOWN_HOURS) {
     return true;
   } else {
     return false;

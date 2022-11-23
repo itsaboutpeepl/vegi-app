@@ -17,6 +17,7 @@ class PaymentMethodViewModel extends Equatable {
     required this.cartTotal,
     required this.startPaymentProcess,
     required this.isLoading,
+    required this.selectedRestaurantIsLive,
   });
 
   factory PaymentMethodViewModel.fromStore(Store<AppState> store) {
@@ -28,6 +29,7 @@ class PaymentMethodViewModel extends Equatable {
           store.state.cartState.selectedPaymentMethod ?? PaymentMethod.stripe,
       pplBalance: '£${getPoundValueFromPPL(pplBalance)}',
       isLoading: store.state.cartState.payButtonLoading,
+      selectedRestaurantIsLive: store.state.cartState.restaurantIsLive,
       hasPplBalance: pplBalance > 0,
       cartTotal: store.state.cartState.cartTotal.formattedPrice,
       startPaymentProcess: ({required context}) =>
@@ -42,6 +44,7 @@ class PaymentMethodViewModel extends Equatable {
   final String pplBalance;
   final bool hasPplBalance;
   final bool isLoading;
+  final bool selectedRestaurantIsLive;
   final String cartTotal;
   final void Function({required PaymentMethod paymentMethod}) setPaymentMethod;
   final void Function({required BuildContext context}) startPaymentProcess;

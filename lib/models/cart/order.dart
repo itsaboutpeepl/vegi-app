@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/cart/orderItem.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryPartnerDTO.dart';
+import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/models/restaurant/vendorDTO.dart';
 
 part 'order.freezed.dart';
@@ -13,6 +17,20 @@ String getFulfilmentMethodString(
   String key,
 ) {
   return json[key]['methodType'] as String? ?? 'none';
+}
+
+int getFulfilmentMethodId(
+  Map<dynamic, dynamic> json,
+  String key,
+) {
+  return json['fulfilmentMethod']['id']! as int;
+}
+
+num getFulfilmentMethodPriceModifier(
+  Map<dynamic, dynamic> json,
+  String key,
+) {
+  return (json['fulfilmentMethod']['priceModifier'] ?? 0.0) as num;
 }
 
 DateTime _toTS(int json) => json.toTimeStamp();
@@ -43,6 +61,8 @@ class Order with _$Order {
     required String deliveryAddressLineTwo,
     required String deliveryAddressCity,
     required String deliveryAddressPostCode,
+    required double? deliveryAddressLatitude,
+    required double? deliveryAddressLongitude,
     required String deliveryAddressInstructions,
     required String deliveryId,
     @JsonEnum()
@@ -55,6 +75,10 @@ class Order with _$Order {
         required RestaurantAcceptedStatus restaurantAcceptanceStatus,
     required bool deliveryPartnerAccepted,
     required bool deliveryPartnerConfirmed,
+    @JsonKey(readValue: getFulfilmentMethodId)
+        required int fulfilmentMethodId,
+    @JsonKey(readValue: getFulfilmentMethodPriceModifier)
+        required num fulfilmentMethodPriceModifier,
     required DateTime fulfilmentSlotFrom, // "2022-09-29T10:00:00.000Z"
     required DateTime fulfilmentSlotTo, // "2022-09-29T10:00:00.000Z"
     required String publicId,
@@ -94,4 +118,27 @@ class Order with _$Order {
   String? get vendorPhoneNumber => vendor.phoneNumber;
   int? get deliveryPartnerId => deliveryPartner?.id;
   String? get deliveryPartnerName => deliveryPartner?.name;
+
+  TimeSlot get timeSlot => TimeSlot(
+        startTime: fulfilmentSlotFrom,
+        endTime: fulfilmentSlotTo,
+        priceModifier: fulfilmentMethodPriceModifier.round(),
+        fulfilmentMethodId: fulfilmentMethodId,
+      );
+
+  DeliveryAddresses get address => DeliveryAddresses(
+        internalID:
+            Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
+        label: DeliveryAddressLabel.hotel,
+        name: deliveryName,
+        email: deliveryEmail,
+        instructions: deliveryAddressInstructions,
+        phoneNumber: deliveryPhoneNumber,
+        addressLine1: deliveryAddressLineOne,
+        addressLine2: deliveryAddressLineTwo,
+        townCity: deliveryAddressCity,
+        postalCode: deliveryAddressPostCode,
+        latitude: deliveryAddressLatitude ?? 0.0,
+        longitude: deliveryAddressLongitude ?? 0.0,
+      );
 }

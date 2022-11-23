@@ -53,3 +53,5 @@ final Token fuseDollarToken = Token(
   amount: BigInt.zero,
   walletActions: WalletActions.initial(),
 );
+
+const EMAIL_NOT_PROVIDED = 'email@notprovided.com';
