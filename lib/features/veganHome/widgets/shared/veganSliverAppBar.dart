@@ -134,6 +134,31 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                       ],
                     ),
                     const Spacer(),
+                    // TODO: Show Search Box?
+                    // if (viewmodel.globalSearchIsVisible)
+                    //   Positioned(
+                    //     right: 14,
+                    //     child: Container(
+                    //       decoration: const BoxDecoration(
+                    //         color: themeAccent500,
+                    //         shape: BoxShape.circle,
+                    //       ),
+                    //       width: 40,
+                    //       height: 10,
+                    //     ),
+                    //   )
+                    // else
+                    //   const SizedBox.shrink()
+                    if (viewmodel.globalSearchIsVisible)
+                      Text('GlobalSrch Placeholder'),
+                    IconButton(
+                      onPressed: () {
+                        viewmodel.showGlobalSearchBarField(
+                          makeVisible: viewmodel.globalSearchIsVisible,
+                        );
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
                     Material(
                       borderRadius: BorderRadius.circular(50),
                       elevation: 3,
@@ -146,6 +171,17 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         },
                         child: Stack(
                           children: [
+                            Positioned(
+                              right: 0,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: themeAccent500,
+                                  shape: BoxShape.circle,
+                                ),
+                                width: 10,
+                                height: 10,
+                              ),
+                            ),
                             if (viewmodel.avatarUrl == '')
                               const CircleAvatar(
                                 backgroundImage:
@@ -187,7 +223,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                 ),
                               )
                             else
-                              const SizedBox.shrink()
+                              const SizedBox.shrink(),
                           ],
                         ),
                       ),

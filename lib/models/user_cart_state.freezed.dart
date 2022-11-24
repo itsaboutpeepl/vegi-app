@@ -624,7 +624,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable()
-class _$_UserCartState extends _UserCartState {
+class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   _$_UserCartState(
       {this.cartItems = const [],
       this.cartSubTotal = 0,
@@ -773,8 +773,55 @@ class _$_UserCartState extends _UserCartState {
   final TimeSlot? nextDeliverySlot;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UserCartState'))
+      ..add(DiagnosticsProperty('cartItems', cartItems))
+      ..add(DiagnosticsProperty('cartSubTotal', cartSubTotal))
+      ..add(DiagnosticsProperty('cartTax', cartTax))
+      ..add(DiagnosticsProperty('cartTotal', cartTotal))
+      ..add(DiagnosticsProperty('cartDiscountPercent', cartDiscountPercent))
+      ..add(DiagnosticsProperty('cartDiscountComputed', cartDiscountComputed))
+      ..add(DiagnosticsProperty('deliverySlots', deliverySlots))
+      ..add(DiagnosticsProperty('collectionSlots', collectionSlots))
+      ..add(DiagnosticsProperty(
+          'selectedDeliveryAddress', selectedDeliveryAddress))
+      ..add(DiagnosticsProperty('selectedTimeSlot', selectedTimeSlot))
+      ..add(DiagnosticsProperty('selectedTipAmount', selectedTipAmount))
+      ..add(DiagnosticsProperty('discountCode', discountCode))
+      ..add(DiagnosticsProperty('paymentIntentID', paymentIntentID))
+      ..add(DiagnosticsProperty('orderID', orderID))
+      ..add(DiagnosticsProperty('selectedGBPxAmount', selectedGBPxAmount))
+      ..add(DiagnosticsProperty('selectedPPLAmount', selectedPPLAmount))
+      ..add(DiagnosticsProperty('payButtonLoading', payButtonLoading))
+      ..add(DiagnosticsProperty('transferringTokens', transferringTokens))
+      ..add(
+          DiagnosticsProperty('errorCompletingPayment', errorCompletingPayment))
+      ..add(DiagnosticsProperty('confirmedPayment', confirmedPayment))
+      ..add(DiagnosticsProperty('restaurantName', restaurantName))
+      ..add(DiagnosticsProperty('restaurantID', restaurantID))
+      ..add(DiagnosticsProperty('restaurantIsLive', restaurantIsLive))
+      ..add(DiagnosticsProperty('restaurantAddress', restaurantAddress))
+      ..add(DiagnosticsProperty(
+          'restaurantWalletAddress', restaurantWalletAddress))
+      ..add(DiagnosticsProperty('fulfilmentMethod', fulfilmentMethod))
+      ..add(DiagnosticsProperty('isDelivery', isDelivery))
+      ..add(
+          DiagnosticsProperty('restaurantMinimumOrder', restaurantMinimumOrder))
+      ..add(DiagnosticsProperty('restaurantPlatformFee', restaurantPlatformFee))
+      ..add(DiagnosticsProperty('deliveryInstructions', deliveryInstructions))
+      ..add(DiagnosticsProperty('selectedPaymentMethod', selectedPaymentMethod))
+      ..add(DiagnosticsProperty(
+          'fulfilmentPostalDistricts', fulfilmentPostalDistricts))
+      ..add(DiagnosticsProperty('eligibleOrderDates', eligibleOrderDates))
+      ..add(DiagnosticsProperty('nextCollectionSlot', nextCollectionSlot))
+      ..add(DiagnosticsProperty('nextDeliverySlot', nextDeliverySlot));
   }
 
   @override

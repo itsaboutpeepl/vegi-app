@@ -105,6 +105,7 @@ const _$RestaurantAcceptedStatusEnumMap = {
   RestaurantAcceptedStatus.accepted: 'accepted',
   RestaurantAcceptedStatus.rejected: 'rejected',
   RestaurantAcceptedStatus.pending: 'pending',
+  RestaurantAcceptedStatus.partiallyFulfilled: 'partiallyFulfilled',
 };
 
 const _$FulfilmentMethodTypeEnumMap = {

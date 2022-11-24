@@ -18,19 +18,38 @@ class RestaurantMenuAppBar extends StatelessWidget {
           backgroundColor: Colors.white,
           pinned: true,
           titleSpacing: 0,
-          flexibleSpace: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: colorToWhiteGradient,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+          flexibleSpace: FlexibleSpaceBar(
+            titlePadding:
+                const EdgeInsetsDirectional.only(bottom: 16, start: 56),
+            centerTitle: false,
+            title: Text(viewmodel.restaurantName),
+            background: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: colorToWhiteGradient,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
               ),
-            ),
-            child: FlexibleSpaceBar(
-              titlePadding:
-                  const EdgeInsetsDirectional.only(bottom: 16, start: 56),
-              centerTitle: false,
-              title: Text(viewmodel.restaurantName),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (viewmodel.menuSearchIsVisible)
+                      Text('MenuSrch Placeholder'),
+                    IconButton(
+                      onPressed: () {
+                        viewmodel.showMenuSearchBarField(
+                          makeVisible: viewmodel.menuSearchIsVisible,
+                        );
+                      },
+                      icon: const Icon(Icons.search),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         );

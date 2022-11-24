@@ -23,6 +23,16 @@ mixin _$HomePageState {
   @JsonKey(ignore: true)
   List<RestaurantItem> get featuredRestaurants =>
       throw _privateConstructorUsedError;
+  List<RestaurantItem> get filteredRestaurants =>
+      throw _privateConstructorUsedError;
+  String get filterRestaurantsQuery => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  bool get showGlobalSearchBarField => throw _privateConstructorUsedError;
+  List<RestaurantMenuItem> get filteredMenuItems =>
+      throw _privateConstructorUsedError;
+  String get filterMenuQuery => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  bool get showMenuSearchBarField => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   bool get isLoadingHomePage => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,6 +52,12 @@ abstract class $HomePageStateCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(ignore: true) List<RestaurantItem> featuredRestaurants,
+      List<RestaurantItem> filteredRestaurants,
+      String filterRestaurantsQuery,
+      @JsonKey(ignore: true) bool showGlobalSearchBarField,
+      List<RestaurantMenuItem> filteredMenuItems,
+      String filterMenuQuery,
+      @JsonKey(ignore: true) bool showMenuSearchBarField,
       @JsonKey(ignore: true) bool isLoadingHomePage,
       @JsonKey(ignore: true) List<String> postalCodes});
 }
@@ -60,6 +76,12 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
   @override
   $Res call({
     Object? featuredRestaurants = null,
+    Object? filteredRestaurants = null,
+    Object? filterRestaurantsQuery = null,
+    Object? showGlobalSearchBarField = null,
+    Object? filteredMenuItems = null,
+    Object? filterMenuQuery = null,
+    Object? showMenuSearchBarField = null,
     Object? isLoadingHomePage = null,
     Object? postalCodes = null,
   }) {
@@ -68,6 +90,30 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
           ? _value.featuredRestaurants
           : featuredRestaurants // ignore: cast_nullable_to_non_nullable
               as List<RestaurantItem>,
+      filteredRestaurants: null == filteredRestaurants
+          ? _value.filteredRestaurants
+          : filteredRestaurants // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantItem>,
+      filterRestaurantsQuery: null == filterRestaurantsQuery
+          ? _value.filterRestaurantsQuery
+          : filterRestaurantsQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      showGlobalSearchBarField: null == showGlobalSearchBarField
+          ? _value.showGlobalSearchBarField
+          : showGlobalSearchBarField // ignore: cast_nullable_to_non_nullable
+              as bool,
+      filteredMenuItems: null == filteredMenuItems
+          ? _value.filteredMenuItems
+          : filteredMenuItems // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantMenuItem>,
+      filterMenuQuery: null == filterMenuQuery
+          ? _value.filterMenuQuery
+          : filterMenuQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      showMenuSearchBarField: null == showMenuSearchBarField
+          ? _value.showMenuSearchBarField
+          : showMenuSearchBarField // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoadingHomePage: null == isLoadingHomePage
           ? _value.isLoadingHomePage
           : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
@@ -90,6 +136,12 @@ abstract class _$$_HomePageStateCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(ignore: true) List<RestaurantItem> featuredRestaurants,
+      List<RestaurantItem> filteredRestaurants,
+      String filterRestaurantsQuery,
+      @JsonKey(ignore: true) bool showGlobalSearchBarField,
+      List<RestaurantMenuItem> filteredMenuItems,
+      String filterMenuQuery,
+      @JsonKey(ignore: true) bool showMenuSearchBarField,
       @JsonKey(ignore: true) bool isLoadingHomePage,
       @JsonKey(ignore: true) List<String> postalCodes});
 }
@@ -106,6 +158,12 @@ class __$$_HomePageStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? featuredRestaurants = null,
+    Object? filteredRestaurants = null,
+    Object? filterRestaurantsQuery = null,
+    Object? showGlobalSearchBarField = null,
+    Object? filteredMenuItems = null,
+    Object? filterMenuQuery = null,
+    Object? showMenuSearchBarField = null,
     Object? isLoadingHomePage = null,
     Object? postalCodes = null,
   }) {
@@ -114,6 +172,30 @@ class __$$_HomePageStateCopyWithImpl<$Res>
           ? _value.featuredRestaurants
           : featuredRestaurants // ignore: cast_nullable_to_non_nullable
               as List<RestaurantItem>,
+      filteredRestaurants: null == filteredRestaurants
+          ? _value.filteredRestaurants
+          : filteredRestaurants // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantItem>,
+      filterRestaurantsQuery: null == filterRestaurantsQuery
+          ? _value.filterRestaurantsQuery
+          : filterRestaurantsQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      showGlobalSearchBarField: null == showGlobalSearchBarField
+          ? _value.showGlobalSearchBarField
+          : showGlobalSearchBarField // ignore: cast_nullable_to_non_nullable
+              as bool,
+      filteredMenuItems: null == filteredMenuItems
+          ? _value.filteredMenuItems
+          : filteredMenuItems // ignore: cast_nullable_to_non_nullable
+              as List<RestaurantMenuItem>,
+      filterMenuQuery: null == filterMenuQuery
+          ? _value.filterMenuQuery
+          : filterMenuQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      showMenuSearchBarField: null == showMenuSearchBarField
+          ? _value.showMenuSearchBarField
+          : showMenuSearchBarField // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoadingHomePage: null == isLoadingHomePage
           ? _value.isLoadingHomePage
           : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
@@ -132,6 +214,12 @@ class __$$_HomePageStateCopyWithImpl<$Res>
 class _$_HomePageState extends _HomePageState {
   _$_HomePageState(
       {@JsonKey(ignore: true) this.featuredRestaurants = const [],
+      this.filteredRestaurants = const [],
+      this.filterRestaurantsQuery = '',
+      @JsonKey(ignore: true) this.showGlobalSearchBarField = false,
+      this.filteredMenuItems = const [],
+      this.filterMenuQuery = '',
+      @JsonKey(ignore: true) this.showMenuSearchBarField = false,
       @JsonKey(ignore: true) this.isLoadingHomePage = false,
       @JsonKey(ignore: true) this.postalCodes = const []})
       : super._();
@@ -143,6 +231,24 @@ class _$_HomePageState extends _HomePageState {
   @JsonKey(ignore: true)
   final List<RestaurantItem> featuredRestaurants;
   @override
+  @JsonKey()
+  final List<RestaurantItem> filteredRestaurants;
+  @override
+  @JsonKey()
+  final String filterRestaurantsQuery;
+  @override
+  @JsonKey(ignore: true)
+  final bool showGlobalSearchBarField;
+  @override
+  @JsonKey()
+  final List<RestaurantMenuItem> filteredMenuItems;
+  @override
+  @JsonKey()
+  final String filterMenuQuery;
+  @override
+  @JsonKey(ignore: true)
+  final bool showMenuSearchBarField;
+  @override
   @JsonKey(ignore: true)
   final bool isLoadingHomePage;
   @override
@@ -151,7 +257,7 @@ class _$_HomePageState extends _HomePageState {
 
   @override
   String toString() {
-    return 'HomePageState(featuredRestaurants: $featuredRestaurants, isLoadingHomePage: $isLoadingHomePage, postalCodes: $postalCodes)';
+    return 'HomePageState(featuredRestaurants: $featuredRestaurants, filteredRestaurants: $filteredRestaurants, filterRestaurantsQuery: $filterRestaurantsQuery, showGlobalSearchBarField: $showGlobalSearchBarField, filteredMenuItems: $filteredMenuItems, filterMenuQuery: $filterMenuQuery, showMenuSearchBarField: $showMenuSearchBarField, isLoadingHomePage: $isLoadingHomePage, postalCodes: $postalCodes)';
   }
 
   @override
@@ -161,6 +267,19 @@ class _$_HomePageState extends _HomePageState {
             other is _$_HomePageState &&
             const DeepCollectionEquality()
                 .equals(other.featuredRestaurants, featuredRestaurants) &&
+            const DeepCollectionEquality()
+                .equals(other.filteredRestaurants, filteredRestaurants) &&
+            (identical(other.filterRestaurantsQuery, filterRestaurantsQuery) ||
+                other.filterRestaurantsQuery == filterRestaurantsQuery) &&
+            (identical(
+                    other.showGlobalSearchBarField, showGlobalSearchBarField) ||
+                other.showGlobalSearchBarField == showGlobalSearchBarField) &&
+            const DeepCollectionEquality()
+                .equals(other.filteredMenuItems, filteredMenuItems) &&
+            (identical(other.filterMenuQuery, filterMenuQuery) ||
+                other.filterMenuQuery == filterMenuQuery) &&
+            (identical(other.showMenuSearchBarField, showMenuSearchBarField) ||
+                other.showMenuSearchBarField == showMenuSearchBarField) &&
             (identical(other.isLoadingHomePage, isLoadingHomePage) ||
                 other.isLoadingHomePage == isLoadingHomePage) &&
             const DeepCollectionEquality()
@@ -172,6 +291,12 @@ class _$_HomePageState extends _HomePageState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(featuredRestaurants),
+      const DeepCollectionEquality().hash(filteredRestaurants),
+      filterRestaurantsQuery,
+      showGlobalSearchBarField,
+      const DeepCollectionEquality().hash(filteredMenuItems),
+      filterMenuQuery,
+      showMenuSearchBarField,
       isLoadingHomePage,
       const DeepCollectionEquality().hash(postalCodes));
 
@@ -193,6 +318,14 @@ abstract class _HomePageState extends HomePageState {
   factory _HomePageState(
       {@JsonKey(ignore: true)
           final List<RestaurantItem> featuredRestaurants,
+      final List<RestaurantItem> filteredRestaurants,
+      final String filterRestaurantsQuery,
+      @JsonKey(ignore: true)
+          final bool showGlobalSearchBarField,
+      final List<RestaurantMenuItem> filteredMenuItems,
+      final String filterMenuQuery,
+      @JsonKey(ignore: true)
+          final bool showMenuSearchBarField,
       @JsonKey(ignore: true)
           final bool isLoadingHomePage,
       @JsonKey(ignore: true)
@@ -205,6 +338,20 @@ abstract class _HomePageState extends HomePageState {
   @override
   @JsonKey(ignore: true)
   List<RestaurantItem> get featuredRestaurants;
+  @override
+  List<RestaurantItem> get filteredRestaurants;
+  @override
+  String get filterRestaurantsQuery;
+  @override
+  @JsonKey(ignore: true)
+  bool get showGlobalSearchBarField;
+  @override
+  List<RestaurantMenuItem> get filteredMenuItems;
+  @override
+  String get filterMenuQuery;
+  @override
+  @JsonKey(ignore: true)
+  bool get showMenuSearchBarField;
   @override
   @JsonKey(ignore: true)
   bool get isLoadingHomePage;

@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 
 class RestaurantItemViewModel extends Equatable {
   const RestaurantItemViewModel({
@@ -11,6 +12,8 @@ class RestaurantItemViewModel extends Equatable {
     required this.restaurantID,
     required this.restaurantName,
     required this.restaurantAddress,
+    required this.menuSearchIsVisible,
+    required this.showMenuSearchBarField,
     required this.needsCartCheckPopup,
   });
 
@@ -20,6 +23,14 @@ class RestaurantItemViewModel extends Equatable {
       restaurantID: store.state.cartState.restaurantID,
       restaurantName: store.state.cartState.restaurantName,
       restaurantAddress: store.state.cartState.restaurantAddress,
+      menuSearchIsVisible: store.state.homePageState.showMenuSearchBarField,
+      showMenuSearchBarField: ({required bool makeVisible}) {
+        store.dispatch(
+          ShowRestaurantMenuSearchBarField(
+            makeMenuSearchVisible: makeVisible,
+          ),
+        );
+      },
       updateRestaurantDetails: ({
         required RestaurantItem restaurantItem,
         required bool clearCart,
@@ -34,6 +45,8 @@ class RestaurantItemViewModel extends Equatable {
   final String restaurantID;
   final String restaurantName;
   final DeliveryAddresses? restaurantAddress;
+  final bool menuSearchIsVisible;
+  final void Function({required bool makeVisible}) showMenuSearchBarField;
   final bool needsCartCheckPopup;
   final void Function({
     required RestaurantItem restaurantItem,
@@ -41,5 +54,8 @@ class RestaurantItemViewModel extends Equatable {
   }) updateRestaurantDetails;
 
   @override
-  List<Object> get props => [restaurantID];
+  List<Object> get props => [
+        restaurantID,
+        menuSearchIsVisible,
+      ];
 }

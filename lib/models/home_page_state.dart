@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
 part 'home_page_state.freezed.dart';
 part 'home_page_state.g.dart';
@@ -11,6 +12,12 @@ class HomePageState with _$HomePageState {
     @JsonKey(ignore: true)
     @Default([])
         List<RestaurantItem> featuredRestaurants,
+    @Default([]) List<RestaurantItem> filteredRestaurants,
+    @Default('') String filterRestaurantsQuery,
+    @JsonKey(ignore: true) @Default(false) bool showGlobalSearchBarField,
+    @Default([]) List<RestaurantMenuItem> filteredMenuItems,
+    @Default('') String filterMenuQuery,
+    @JsonKey(ignore: true) @Default(false) bool showMenuSearchBarField,
     @JsonKey(ignore: true) @Default(false) bool isLoadingHomePage,
     @JsonKey(ignore: true) @Default([]) List<String> postalCodes,
   }) = _HomePageState;
@@ -19,6 +26,12 @@ class HomePageState with _$HomePageState {
 
   factory HomePageState.initial() => HomePageState(
         featuredRestaurants: [],
+        filteredRestaurants: [],
+        filterRestaurantsQuery: '',
+        showGlobalSearchBarField: false,
+        filteredMenuItems: [],
+        filterMenuQuery: '',
+        showMenuSearchBarField: false,
         isLoadingHomePage: false,
         postalCodes: [],
       );

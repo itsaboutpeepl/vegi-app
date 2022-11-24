@@ -9,6 +9,14 @@ final homePageReducers = combineReducers<HomePageState>(
     ),
     TypedReducer<HomePageState, SetIsLoadingHomePage>(_setIsLoadingHomePage),
     TypedReducer<HomePageState, UpdatePostalCodes>(_updatePostalCodes),
+    TypedReducer<HomePageState, ShowGlobalSearchBarField>(
+      _showGlobalSearchBarField,
+    ),
+    TypedReducer<HomePageState, SetGlobalSearchQuery>(_setGlobalSearchQuery),
+    TypedReducer<HomePageState, SetMenuSearchQuery>(_setMenuSearchQuery),
+    TypedReducer<HomePageState, ShowRestaurantMenuSearchBarField>(
+      _showMenuSearchBarField,
+    ),
   ],
 );
 
@@ -17,6 +25,44 @@ HomePageState _getFeaturedRestaurants(
   UpdateFeaturedRestaurants action,
 ) {
   return state.copyWith(featuredRestaurants: action.listOfFeaturedRestaurants);
+}
+
+HomePageState _showGlobalSearchBarField(
+  HomePageState state,
+  ShowGlobalSearchBarField action,
+) {
+  return state.copyWith(
+    showGlobalSearchBarField: action.makeGlobalSearchVisible,
+  );
+}
+
+HomePageState _setGlobalSearchQuery(
+  HomePageState state,
+  SetGlobalSearchQuery action,
+) {
+  return state.copyWith(
+    filteredRestaurants: action.filteredRestaurants,
+    filterRestaurantsQuery: action.searchQuery,
+  );
+}
+
+HomePageState _showMenuSearchBarField(
+  HomePageState state,
+  ShowRestaurantMenuSearchBarField action,
+) {
+  return state.copyWith(
+    showMenuSearchBarField: action.makeMenuSearchVisible,
+  );
+}
+
+HomePageState _setMenuSearchQuery(
+  HomePageState state,
+  SetMenuSearchQuery action,
+) {
+  return state.copyWith(
+    filteredMenuItems: action.filteredMenuItems,
+    filterMenuQuery: action.searchQuery,
+  );
 }
 
 HomePageState _setIsLoadingHomePage(

@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/services/apis/places.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 @lazySingleton
@@ -25,6 +26,138 @@ class PeeplEatsService {
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
     final Response<dynamic> response =
         await dio.get<dynamic>('api/v1/vendors?outcode=$outCode').timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        return Response(
+          data: {'vendors': List<RestaurantItem>.empty()},
+          requestOptions: RequestOptions(path: ''),
+        );
+      },
+    ).onError(
+      (error, stackTrace) => Response(
+        data: {'vendors': List<RestaurantItem>.empty()},
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
+
+    final List<Map<String, dynamic>> results =
+        List.from(response.data['vendors'] as Iterable<dynamic>);
+
+    final List<RestaurantItem> restaurantsActive = [];
+
+    for (final Map<String, dynamic> element in results) {
+      if (element['status'] == 'active') {
+        final List<Map<String, dynamic>> postalCodes = List.from(
+          element['fulfilmentPostalDistricts'] as Iterable<dynamic>,
+        );
+
+        final List<String> deliversTo = [];
+
+        for (final element in postalCodes) {
+          deliversTo.add((element['outcode'] as String? ?? '').toUpperCase());
+        }
+
+        restaurantsActive.add(
+          RestaurantItem(
+            restaurantID: element['id'].toString(),
+            name: element['name'] as String? ?? '',
+            description: element['description'] as String? ?? '',
+            phoneNumber: element['phoneNumber'] as String? ?? '',
+            status: element['status'] as String? ?? 'draft',
+            deliveryRestrictionDetails: deliversTo,
+            imageURL: element['imageUrl'] as String? ?? '',
+            category: 'Category',
+            costLevel: element['costLevel'] as int? ?? 2,
+            rating: element['rating'] as int? ?? 2,
+            address: DeliveryAddresses.fromVendorJson(element),
+            walletAddress: element['walletAddress'] as String? ?? '',
+            listOfMenuItems: [],
+            productCategories: [],
+            isVegan: element['isVegan'] as bool? ?? false,
+            minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
+            platformFee: element['platformFee'] as int? ?? 0,
+          ),
+        );
+      }
+    }
+
+    return restaurantsActive;
+  }
+
+  Future<List<RestaurantItem>> getRestaurantsByLocation({
+    required Coordinates geoLocation,
+    required num distanceFromLocationAllowedInKm,
+  }) async {
+    final Response<dynamic> response = await dio
+        .get<dynamic>(
+            'api/v1/vendors?location=${geoLocation.lat},${geoLocation.lng}&distance=$distanceFromLocationAllowedInKm')
+        .timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        return Response(
+          data: {'vendors': List<RestaurantItem>.empty()},
+          requestOptions: RequestOptions(path: ''),
+        );
+      },
+    ).onError(
+      (error, stackTrace) => Response(
+        data: {'vendors': List<RestaurantItem>.empty()},
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
+
+    final List<Map<String, dynamic>> results =
+        List.from(response.data['vendors'] as Iterable<dynamic>);
+
+    final List<RestaurantItem> restaurantsActive = [];
+
+    for (final Map<String, dynamic> element in results) {
+      if (element['status'] == 'active') {
+        final List<Map<String, dynamic>> postalCodes = List.from(
+          element['fulfilmentPostalDistricts'] as Iterable<dynamic>,
+        );
+
+        final List<String> deliversTo = [];
+
+        for (final element in postalCodes) {
+          deliversTo.add((element['outcode'] as String? ?? '').toUpperCase());
+        }
+
+        restaurantsActive.add(
+          RestaurantItem(
+            restaurantID: element['id'].toString(),
+            name: element['name'] as String? ?? '',
+            description: element['description'] as String? ?? '',
+            phoneNumber: element['phoneNumber'] as String? ?? '',
+            status: element['status'] as String? ?? 'draft',
+            deliveryRestrictionDetails: deliversTo,
+            imageURL: element['imageUrl'] as String? ?? '',
+            category: 'Category',
+            costLevel: element['costLevel'] as int? ?? 2,
+            rating: element['rating'] as int? ?? 2,
+            address: DeliveryAddresses.fromVendorJson(element),
+            walletAddress: element['walletAddress'] as String? ?? '',
+            listOfMenuItems: [],
+            productCategories: [],
+            isVegan: element['isVegan'] as bool? ?? false,
+            minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
+            platformFee: element['platformFee'] as int? ?? 0,
+          ),
+        );
+      }
+    }
+
+    return restaurantsActive;
+  }
+
+  Future<List<RestaurantItem>> getFilteredRestaurants({
+    required String outCode,
+    required String globalSearchQuery,
+  }) async {
+    final Response<dynamic> response = await dio
+        .get<dynamic>(
+            'api/v1/vendors?outcode=$outCode,search=$globalSearchQuery')
+        .timeout(
       const Duration(seconds: 5),
       onTimeout: () {
         return Response(
@@ -98,7 +231,45 @@ class PeeplEatsService {
       if (element['isAvailable'] as bool) {
         menuItems.add(
           RestaurantMenuItem(
-            isFeatured: element['isFeatured'] as bool? ?? Random().nextBool(),
+            isFeatured: element['isFeatured'] as bool? ?? false,
+            menuItemID: element['id'].toString(),
+            restaurantID: restaurantID,
+            name: element['name'] as String? ?? '',
+            imageURL: element['imageUrl'] as String? ?? '',
+            categoryName: element['category']['name'] as String? ?? '',
+            categoryId: element['category']['id'] as int? ?? 0,
+            price: element['basePrice'] as int? ?? 0,
+            description: element['description'] as String? ?? '',
+            extras: {},
+            listOfProductOptions: [],
+            priority: element['priority'] as int? ?? 0,
+          ),
+        );
+      }
+    }
+
+    menuItems.sort((a, b) => a.priority.compareTo(b.priority));
+
+    return menuItems;
+  }
+
+  Future<List<RestaurantMenuItem>> getFilteredRestaurantMenu({
+    required String restaurantID,
+    required String searchQuery,
+  }) async {
+    final Response<dynamic> response =
+        await dio.get('api/v1/vendors/$restaurantID?search=$searchQuery');
+
+    final List<Map<String, dynamic>> results =
+        List.from(response.data['vendor']['products'] as Iterable<dynamic>);
+
+    final List<RestaurantMenuItem> menuItems = [];
+
+    for (final Map<String, dynamic> element in results) {
+      if (element['isAvailable'] as bool) {
+        menuItems.add(
+          RestaurantMenuItem(
+            isFeatured: element['isFeatured'] as bool? ?? false,
             menuItemID: element['id'].toString(),
             restaurantID: restaurantID,
             name: element['name'] as String? ?? '',
