@@ -80,7 +80,9 @@ class RestaurantItemViewModel extends Equatable {
       }) =>
           store.dispatch(
         setRestaurantDetails(
-            restaurantItem: restaurantItem, clearCart: clearCart),
+          restaurantItem: restaurantItem,
+          clearCart: clearCart,
+        ),
       ),
     );
   }
