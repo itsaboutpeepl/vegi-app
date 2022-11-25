@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +45,37 @@ class _ProcessingPaymentState extends State<ProcessingPayment>
   late Animation<double> scaleAnimation;
   int _valueKey = 0;
 
+  Duration theDuration = const Duration(seconds: 3);
+  bool _paymentTakingTooLong = false;
+  late Timer countdownTimer;
+  late DateTime timerFrom;
+  DateTime get timerTo => timerFrom.add(theDuration);
+
+  void startTimer(Store<AppState> store) {
+    timerFrom = DateTime.now();
+    countdownTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => setCountDown(store),
+    );
+  }
+
+  int get paymentTookTooLongInNSeconds =>
+      timerTo.difference(DateTime.now()).inSeconds;
+
+  void setCountDown(Store<AppState> store) {
+    setState(() {
+      final seconds = timerTo.difference(DateTime.now()).inSeconds;
+      if (seconds < 0) {
+        _paymentTakingTooLong = true;
+        countdownTimer.cancel();
+      }
+    });
+  }
+
   @override
   void dispose() {
     controller.dispose();
+    countdownTimer.cancel();
     super.dispose();
   }
 
@@ -71,6 +102,7 @@ class _ProcessingPaymentState extends State<ProcessingPayment>
     return StoreConnector<AppState, _ProcessingPaymentViewModel>(
       distinct: true,
       converter: _ProcessingPaymentViewModel.fromStore,
+      onInit: startTimer,
       onWillChange: (prevVM, nextVM) {
         if (nextVM.isError) {
           setState(() {
@@ -168,7 +200,9 @@ class _ProcessingPaymentState extends State<ProcessingPayment>
                   duration: const Duration(milliseconds: 500),
                   child: Text(
                     viewmodel.isLoading
-                        ? 'Sorry if this is taking too long'
+                        ? _paymentTakingTooLong
+                            ? 'Sorry if this is taking too long'
+                            : ''
                         : viewmodel.isError
                             ? 'Please contact us at help@vegi.co.uk'
                             : 'Thank you for your order!',
