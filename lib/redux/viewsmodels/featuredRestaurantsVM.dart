@@ -22,38 +22,45 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.setIsDelivery,
     required this.globalSearchIsVisible,
     required this.showGlobalSearchBarField,
+    required this.filterVendors,
     required this.listOfScheduledOrders,
   });
 
   factory FeaturedRestaurantsVM.fromStore(Store<AppState> store) {
     return FeaturedRestaurantsVM(
-      isLoadingHomePage: store.state.homePageState.isLoadingHomePage,
-      featuredRestaurants: store.state.homePageState.featuredRestaurants,
-      filterRestaurantsQuery: store.state.homePageState.filterRestaurantsQuery,
-      filteredRestaurants: store.state.homePageState.filteredRestaurants,
-      filterMenuQuery: store.state.homePageState.filterMenuQuery,
-      filteredMenuItems: store.state.homePageState.filteredMenuItems,
-      globalSearchIsVisible: store.state.homePageState.showGlobalSearchBarField,
-      avatarUrl: store.state.userState.avatarUrl,
-      isDelivery: store.state.cartState.isDelivery,
-      postalCodes: store.state.homePageState.postalCodes,
-      listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
-      changeOutCode: (outCode) {
-        store.dispatch(fetchFeaturedRestaurants(outCode: outCode));
-      },
-      setIsDelivery: (isDelivery) {
-        store
-          ..dispatch(SetIsDelivery(isDelivery: isDelivery))
-          ..dispatch(computeCartTotals());
-      },
-      showGlobalSearchBarField: ({required bool makeVisible}) {
-        store.dispatch(
-          ShowGlobalSearchBarField(
-            makeGlobalSearchVisible: makeVisible,
-          ),
-        );
-      },
-    );
+        isLoadingHomePage: store.state.homePageState.isLoadingHomePage,
+        featuredRestaurants: store.state.homePageState.featuredRestaurants,
+        filterRestaurantsQuery:
+            store.state.homePageState.filterRestaurantsQuery,
+        filteredRestaurants: store.state.homePageState.filteredRestaurants,
+        filterMenuQuery: store.state.homePageState.filterMenuQuery,
+        filteredMenuItems: store.state.homePageState.filteredMenuItems,
+        globalSearchIsVisible:
+            store.state.homePageState.showGlobalSearchBarField,
+        avatarUrl: store.state.userState.avatarUrl,
+        isDelivery: store.state.cartState.isDelivery,
+        postalCodes: store.state.homePageState.postalCodes,
+        listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
+        changeOutCode: (outCode) {
+          store.dispatch(fetchFeaturedRestaurants(outCode: outCode));
+        },
+        setIsDelivery: (isDelivery) {
+          store
+            ..dispatch(SetIsDelivery(isDelivery: isDelivery))
+            ..dispatch(computeCartTotals());
+        },
+        showGlobalSearchBarField: ({required bool makeVisible}) {
+          store.dispatch(
+            ShowGlobalSearchBarField(
+              makeGlobalSearchVisible: makeVisible,
+            ),
+          );
+        },
+        filterVendors: ({required String query, required String outCode}) {
+          store.dispatch(
+            setGlobalSearchQuery(globalSearchQuery: query, outCode: outCode),
+          );
+        });
   }
   final bool isLoadingHomePage;
   final List<RestaurantItem> featuredRestaurants;
@@ -68,6 +75,8 @@ class FeaturedRestaurantsVM extends Equatable {
   final bool isDelivery;
   final void Function(bool isDelivery) setIsDelivery;
   final void Function({required bool makeVisible}) showGlobalSearchBarField;
+  final void Function({required String query, required String outCode})
+      filterVendors;
   final List<OrderDetails> listOfScheduledOrders;
 
   @override

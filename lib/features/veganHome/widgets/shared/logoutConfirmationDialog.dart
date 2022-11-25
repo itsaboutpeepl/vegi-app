@@ -26,7 +26,6 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog>
   late Animation<double> scaleAnimation;
   Duration theDuration = const Duration(seconds: 30);
   late Timer countdownTimer;
-  // late Duration myDuration;
   late DateTime timerFrom;
   DateTime get timerTo => timerFrom.add(theDuration);
 

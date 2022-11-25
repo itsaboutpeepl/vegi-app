@@ -49,8 +49,20 @@ class ShowGlobalSearchBarField {
   }
 }
 
-class SetGlobalSearchQuery {
-  SetGlobalSearchQuery({
+// class SetGlobalSearchQuery {
+//   SetGlobalSearchQuery({
+//     required this.searchQuery,
+//   });
+//   final String searchQuery;
+
+//   @override
+//   String toString() {
+//     return 'SetGlobalSearchQuery: searchQuery: $searchQuery';
+//   }
+// }
+
+class SetGlobalSearchQuerySuccess {
+  SetGlobalSearchQuerySuccess({
     required this.searchQuery,
     required this.filteredRestaurants,
   });
@@ -59,7 +71,7 @@ class SetGlobalSearchQuery {
 
   @override
   String toString() {
-    return 'SetGlobalSearchQuery: searchQuery: $searchQuery, filteredRestaurants[${filteredRestaurants.length}]';
+    return 'SetGlobalSearchQuerySuccess: searchQuery: $searchQuery, filteredRestaurants[${filteredRestaurants.length}]';
   }
 }
 
@@ -73,8 +85,19 @@ class ShowRestaurantMenuSearchBarField {
   }
 }
 
-class SetMenuSearchQuery {
-  SetMenuSearchQuery({
+// class SetMenuSearchQuery {
+//   SetMenuSearchQuery({
+//     required this.searchQuery,
+//   });
+//   final String searchQuery;
+
+//   @override
+//   String toString() {
+//     return 'SetMenuSearchQuery: searchQuery: $searchQuery';
+//   }
+// }
+class SetMenuSearchQuerySuccess {
+  SetMenuSearchQuerySuccess({
     required this.searchQuery,
     required this.filteredMenuItems,
   });
@@ -83,7 +106,19 @@ class SetMenuSearchQuery {
 
   @override
   String toString() {
-    return 'SetMenuSearchQuery: searchQuery: $searchQuery, filteredMenuItems[${filteredMenuItems.length}]';
+    return 'SetMenuSearchQuerySuccess: searchQuery: $searchQuery, filteredMenuItems[${filteredMenuItems.length}]';
+  }
+}
+
+class SetSelectedVendor {
+  SetSelectedVendor({
+    required this.vendor,
+  });
+  final RestaurantItem vendor;
+
+  @override
+  String toString() {
+    return 'SetMenuSearchQuerySuccess: vendor: ${vendor.name}';
   }
 }
 
@@ -160,6 +195,15 @@ ThunkAction<AppState> setGlobalSearchQuery(
   return (Store<AppState> store) async {
     try {
       final featuredRestaurants = store.state.homePageState.featuredRestaurants;
+      if (globalSearchQuery.isEmpty) {
+        store.dispatch(
+          SetGlobalSearchQuerySuccess(
+            searchQuery: '',
+            filteredRestaurants: featuredRestaurants,
+          ),
+        );
+        return;
+      }
       final matchingNamedRestaurants = featuredRestaurants.where(
         (element) {
           return element.name
@@ -172,22 +216,25 @@ ThunkAction<AppState> setGlobalSearchQuery(
       ).toList();
 
       store.dispatch(
-        SetGlobalSearchQuery(
+        SetGlobalSearchQuerySuccess(
           searchQuery: globalSearchQuery,
           filteredRestaurants: matchingNamedRestaurants,
         ),
       );
 
-      final List<RestaurantItem> filteredRestaurants =
-          await peeplEatsService.getFilteredRestaurants(
-        outCode: outCode,
-        globalSearchQuery: globalSearchQuery,
-      );
+      //TODO: Implement
+      // final List<RestaurantItem> filteredRestaurants =
+      //     await peeplEatsService.getFilteredRestaurants(
+      //   outCode: outCode,
+      //   globalSearchQuery: globalSearchQuery,
+      // );
 
-      store.dispatch(SetGlobalSearchQuery(
-        searchQuery: globalSearchQuery,
-        filteredRestaurants: filteredRestaurants,
-      ));
+      // store.dispatch(
+      //   SetGlobalSearchQuerySuccess(
+      //     searchQuery: globalSearchQuery,
+      //     filteredRestaurants: filteredRestaurants,
+      //   ),
+      // );
     } catch (e, s) {
       log.error('ERROR - setGlobalSearchQuery $e');
       await Sentry.captureException(
@@ -199,13 +246,32 @@ ThunkAction<AppState> setGlobalSearchQuery(
   };
 }
 
+ThunkAction<AppState> setSelectedVendor({required RestaurantItem vendor}) {
+  return (Store<AppState> store) async {
+    store.dispatch(SetSelectedVendor(vendor: vendor));
+  };
+}
+
 ThunkAction<AppState> setMenuSearchQuery({required String searchQuery}) {
   return (Store<AppState> store) async {
     try {
       final restaurantMenuItems = store.state.homePageState.featuredRestaurants
-          .singleWhere((element) =>
-              element.restaurantID == store.state.cartState.restaurantID)
+          .singleWhere(
+            (element) =>
+                element.restaurantID == store.state.cartState.restaurantID,
+          )
           .listOfMenuItems;
+
+      if (searchQuery.isEmpty) {
+        store.dispatch(
+          SetMenuSearchQuerySuccess(
+            searchQuery: '',
+            filteredMenuItems: restaurantMenuItems,
+          ),
+        );
+        return;
+      }
+
       final matchingNamedItems = restaurantMenuItems.where(
         (element) {
           return element.name
@@ -237,7 +303,7 @@ ThunkAction<AppState> setMenuSearchQuery({required String searchQuery}) {
       ).toList();
 
       store.dispatch(
-        SetMenuSearchQuery(
+        SetMenuSearchQuerySuccess(
           searchQuery: searchQuery,
           filteredMenuItems: [
             ...matchingNamedItems,
@@ -246,16 +312,17 @@ ThunkAction<AppState> setMenuSearchQuery({required String searchQuery}) {
         ),
       );
 
-      final List<RestaurantMenuItem> filteredCartItems =
-          await peeplEatsService.getFilteredRestaurantMenu(
-        restaurantID: store.state.cartState.restaurantID,
-        searchQuery: searchQuery,
-      );
+      //TODO: Add
+      // final List<RestaurantMenuItem> filteredCartItems =
+      //     await peeplEatsService.getFilteredRestaurantMenu(
+      //   restaurantID: store.state.cartState.restaurantID,
+      //   searchQuery: searchQuery,
+      // );
 
-      store.dispatch(SetMenuSearchQuery(
-        searchQuery: searchQuery,
-        filteredMenuItems: filteredCartItems,
-      ));
+      // store.dispatch(SetMenuSearchQuerySuccess(
+      //   searchQuery: searchQuery,
+      //   filteredMenuItems: filteredCartItems,
+      // ));
     } catch (e, s) {
       log.error('ERROR - setGlobalSearchQuery $e');
       await Sentry.captureException(

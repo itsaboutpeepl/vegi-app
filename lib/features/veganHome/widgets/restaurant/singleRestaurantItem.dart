@@ -8,22 +8,25 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/confirm_switch_restaurant_dialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 
 class SingleRestaurantItem extends StatelessWidget {
   const SingleRestaurantItem({
     Key? key,
-    required this.restaurantItem,
+    required this.vendorItem,
   }) : super(key: key);
 
-  final RestaurantItem restaurantItem;
+  final RestaurantItem vendorItem;
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, RestaurantItemViewModel>(
       converter: RestaurantItemViewModel.fromStore,
       builder: (_, viewmodel) {
+        // final restaurantItem = viewmodel.selectedVendor ?? vendorItem;
+        final restaurantItem = vendorItem;
         return Opacity(
           opacity: restaurantItem.status == 'active' ? 1.0 : 0.5,
           child: GestureDetector(
@@ -135,13 +138,7 @@ class SingleRestaurantItem extends StatelessWidget {
                   clearCart: false,
                 );
                 context.router.push(
-                  RestaurantMenuScreen(
-                    productCategories: restaurantItem.productCategories
-                        .map((e) => e.name)
-                        .toList(),
-                    menuList: restaurantItem
-                        .listOfMenuItems, // TODO: remove this parameter from here and ConfirmSwitchRestaurant Dialog and get from store selectedRestaurant, items are contained within state.home.featuredRestaurants ->
-                  ),
+                  RestaurantMenuScreen(),
                 );
               }
             },

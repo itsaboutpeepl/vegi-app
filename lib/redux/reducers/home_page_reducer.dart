@@ -12,8 +12,9 @@ final homePageReducers = combineReducers<HomePageState>(
     TypedReducer<HomePageState, ShowGlobalSearchBarField>(
       _showGlobalSearchBarField,
     ),
-    TypedReducer<HomePageState, SetGlobalSearchQuery>(_setGlobalSearchQuery),
-    TypedReducer<HomePageState, SetMenuSearchQuery>(_setMenuSearchQuery),
+    TypedReducer<HomePageState, SetGlobalSearchQuerySuccess>(
+        _setGlobalSearchQuery),
+    TypedReducer<HomePageState, SetMenuSearchQuerySuccess>(_setMenuSearchQuery),
     TypedReducer<HomePageState, ShowRestaurantMenuSearchBarField>(
       _showMenuSearchBarField,
     ),
@@ -38,7 +39,7 @@ HomePageState _showGlobalSearchBarField(
 
 HomePageState _setGlobalSearchQuery(
   HomePageState state,
-  SetGlobalSearchQuery action,
+  SetGlobalSearchQuerySuccess action,
 ) {
   return state.copyWith(
     filteredRestaurants: action.filteredRestaurants,
@@ -57,7 +58,7 @@ HomePageState _showMenuSearchBarField(
 
 HomePageState _setMenuSearchQuery(
   HomePageState state,
-  SetMenuSearchQuery action,
+  SetMenuSearchQuerySuccess action,
 ) {
   return state.copyWith(
     filteredMenuItems: action.filteredMenuItems,

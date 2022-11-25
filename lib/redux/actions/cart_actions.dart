@@ -26,6 +26,7 @@ import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -1123,6 +1124,9 @@ ThunkAction<AppState> setRestaurantDetails({
       if (clearCart) {
         store.dispatch(ClearCart());
       }
+      store.dispatch(
+        setMenuSearchQuery(searchQuery: ''),
+      );
       store.dispatch(
         SetRestaurantDetails(
           restaurantItem.restaurantID,

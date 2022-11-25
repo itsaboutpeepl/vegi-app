@@ -96,13 +96,7 @@ class _ConfirmSwitchRestaurantState extends State<ConfirmSwitchRestaurant>
                             );
                             context.router.pop();
                             context.router.push(
-                              RestaurantMenuScreen(
-                                productCategories: widget
-                                    .restaurantItem.productCategories
-                                    .map((e) => e.name)
-                                    .toList(),
-                                menuList: widget.restaurantItem.listOfMenuItems,
-                              ),
+                              RestaurantMenuScreen(),
                             );
                           },
                           label: 'Yes',

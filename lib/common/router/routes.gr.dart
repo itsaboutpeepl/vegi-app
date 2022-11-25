@@ -44,8 +44,7 @@ import '../../features/veganHome/screens/scheduledOrdersPage.dart' as _i18;
 import '../../features/veganHome/screens/veganHome.dart' as _i12;
 import '../../features/veganHome/widgets/shared/redux_state_viewer.dart' as _i9;
 import '../../models/app_state.dart' as _i33;
-import '../../models/restaurant/orderDetails.dart' as _i35;
-import '../../models/restaurant/restaurantMenuItem.dart' as _i34;
+import '../../models/restaurant/orderDetails.dart' as _i34;
 import 'route_guards.dart' as _i30;
 
 class RootRouter extends _i28.RootStackRouter {
@@ -161,14 +160,9 @@ class RootRouter extends _i28.RootStackRouter {
       );
     },
     RestaurantMenuScreen.name: (routeData) {
-      final args = routeData.argsAs<RestaurantMenuScreenArgs>();
       return _i28.CustomPage<dynamic>(
         routeData: routeData,
-        child: _i13.RestaurantMenuScreen(
-          key: args.key,
-          menuList: args.menuList,
-          productCategories: args.productCategories,
-        ),
+        child: const _i13.RestaurantMenuScreen(),
         transitionsBuilder: _i28.TransitionsBuilders.slideLeftWithFade,
         opaque: true,
         barrierDismissible: false,
@@ -733,42 +727,14 @@ class VeganHomeScreenAlt extends _i28.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i13.RestaurantMenuScreen]
-class RestaurantMenuScreen
-    extends _i28.PageRouteInfo<RestaurantMenuScreenArgs> {
-  RestaurantMenuScreen({
-    _i31.Key? key,
-    required List<_i34.RestaurantMenuItem> menuList,
-    required List<String> productCategories,
-  }) : super(
+class RestaurantMenuScreen extends _i28.PageRouteInfo<void> {
+  const RestaurantMenuScreen()
+      : super(
           RestaurantMenuScreen.name,
           path: 'restaurant-menu-screen',
-          args: RestaurantMenuScreenArgs(
-            key: key,
-            menuList: menuList,
-            productCategories: productCategories,
-          ),
         );
 
   static const String name = 'RestaurantMenuScreen';
-}
-
-class RestaurantMenuScreenArgs {
-  const RestaurantMenuScreenArgs({
-    this.key,
-    required this.menuList,
-    required this.productCategories,
-  });
-
-  final _i31.Key? key;
-
-  final List<_i34.RestaurantMenuItem> menuList;
-
-  final List<String> productCategories;
-
-  @override
-  String toString() {
-    return 'RestaurantMenuScreenArgs{key: $key, menuList: $menuList, productCategories: $productCategories}';
-  }
 }
 
 /// generated route for
@@ -860,7 +826,7 @@ class AboutScreen extends _i28.PageRouteInfo<void> {
 class PreparingOrderPage extends _i28.PageRouteInfo<PreparingOrderPageArgs> {
   PreparingOrderPage({
     _i31.Key? key,
-    required _i35.OrderDetails orderDetails,
+    required _i34.OrderDetails orderDetails,
   }) : super(
           PreparingOrderPage.name,
           path: 'preparing-order-page',
@@ -881,7 +847,7 @@ class PreparingOrderPageArgs {
 
   final _i31.Key? key;
 
-  final _i35.OrderDetails orderDetails;
+  final _i34.OrderDetails orderDetails;
 
   @override
   String toString() {

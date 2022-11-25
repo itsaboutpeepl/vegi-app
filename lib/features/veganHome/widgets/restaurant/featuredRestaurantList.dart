@@ -23,11 +23,14 @@ class FeaturedRestaurantList extends StatelessWidget {
           ..dispatch(startOngoingOrderCheck());
       },
       builder: (_, viewmodel) {
+        final restaurants = viewmodel.filterRestaurantsQuery.isEmpty
+            ? viewmodel.featuredRestaurants
+            : viewmodel.filteredRestaurants;
         return viewmodel.isLoadingHomePage
             ? const Center(
                 child: CircularProgressIndicator(color: themeShade400),
               )
-            : viewmodel.featuredRestaurants.isEmpty
+            : restaurants.isEmpty
                 ? const EmptyStatePage(
                     emoji: '😐',
                     title: "Pretty empty here, isn't it?",
@@ -44,9 +47,9 @@ class FeaturedRestaurantList extends StatelessWidget {
                       top: 20,
                       bottom: 50,
                     ),
-                    itemCount: viewmodel.featuredRestaurants.length,
+                    itemCount: restaurants.length,
                     itemBuilder: (context, index) => SingleRestaurantItem(
-                      restaurantItem: viewmodel.featuredRestaurants[index],
+                      vendorItem: restaurants[index],
                     ),
                     separatorBuilder: (_, __) => const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
