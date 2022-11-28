@@ -49,6 +49,7 @@ class PaymentButton extends StatelessWidget {
             buttonAction: () {
               Analytics.track(
                 eventName: AnalyticsEvents.placeOrder,
+                properties: {'platform': 'vegi_app'},
               );
               viewmodel.startPaymentProcess(context: context);
             },
