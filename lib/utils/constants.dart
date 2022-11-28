@@ -63,6 +63,8 @@ class Messages {
   static const String enterEmail =
       'Please enter your email to be first to receive an update when we launch.';
 
+  static const String createNewAccount = 'New Account';
+
   static const String invalidEmail = 'Invalid Email';
   static const String thanksForRegisteringEmailWaitList =
       'Thank you for registering your interest with vegi 💚';

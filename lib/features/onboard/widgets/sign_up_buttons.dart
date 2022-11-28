@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class SignUpButtons extends StatefulWidget {
   const SignUpButtons({Key? key}) : super(key: key);
@@ -163,7 +164,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                     TransparentButton(
                                       fontSize: 14,
                                       textColor: Colors.grey[100]!,
-                                      label: I10n.of(context).create__wallet,
+                                      label: Messages.createNewAccount,
                                       preload: isTransparentPreloading,
                                       onPressed: () async {
                                         final bool? result =
