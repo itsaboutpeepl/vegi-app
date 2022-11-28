@@ -32,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final fullNameController = TextEditingController(text: '');
   final phoneController = TextEditingController(text: '');
   final _formKey = GlobalKey<FormState>();
-  CountryCode countryCode = CountryCode(dialCode: '+1', code: 'US');
+  CountryCode countryCode = CountryCode(dialCode: '+44', code: 'GB');
   bool isPreloading = false;
 
   @override
