@@ -26,7 +26,7 @@ class VeganHomeScreen extends StatelessWidget {
                   const VeganSliverAppBar(),
                   const BackupWalletAppBar(),
                 ] +
-                viewmodel.listOfOngoingOrders
+                viewmodel.listOfScheduledOrders
                     .map(
                       (e) => PreparingOrderAppBar(
                         orderDetails: e,
