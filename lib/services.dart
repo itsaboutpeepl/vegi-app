@@ -5,6 +5,7 @@ import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/services/apis/peeplEats.dart';
+import 'package:vegan_liverpool/services/apis/locationService.dart';
 import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/stripePay.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
@@ -13,6 +14,8 @@ import 'package:vegan_liverpool/utils/stripe.dart';
 final RootRouter rootRouter = getIt<RootRouter>();
 
 final ChargeApi chargeApi = getIt<ChargeApi>();
+
+final LocationService locationService = getIt<LocationService>();
 
 final PeeplEatsService peeplEatsService = getIt<PeeplEatsService>();
 

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
@@ -17,6 +18,7 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.filteredMenuItems,
     required this.avatarUrl,
     required this.changeOutCode,
+    required this.refreshLocation,
     required this.postalCodes,
     required this.isDelivery,
     required this.setIsDelivery,
@@ -28,39 +30,41 @@ class FeaturedRestaurantsVM extends Equatable {
 
   factory FeaturedRestaurantsVM.fromStore(Store<AppState> store) {
     return FeaturedRestaurantsVM(
-        isLoadingHomePage: store.state.homePageState.isLoadingHomePage,
-        featuredRestaurants: store.state.homePageState.featuredRestaurants,
-        filterRestaurantsQuery:
-            store.state.homePageState.filterRestaurantsQuery,
-        filteredRestaurants: store.state.homePageState.filteredRestaurants,
-        filterMenuQuery: store.state.homePageState.filterMenuQuery,
-        filteredMenuItems: store.state.homePageState.filteredMenuItems,
-        globalSearchIsVisible:
-            store.state.homePageState.showGlobalSearchBarField,
-        avatarUrl: store.state.userState.avatarUrl,
-        isDelivery: store.state.cartState.isDelivery,
-        postalCodes: store.state.homePageState.postalCodes,
-        listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
-        changeOutCode: (outCode) {
-          store.dispatch(fetchFeaturedRestaurants(outCode: outCode));
-        },
-        setIsDelivery: (isDelivery) {
-          store
-            ..dispatch(SetIsDelivery(isDelivery: isDelivery))
-            ..dispatch(computeCartTotals());
-        },
-        showGlobalSearchBarField: ({required bool makeVisible}) {
-          store.dispatch(
-            ShowGlobalSearchBarField(
-              makeGlobalSearchVisible: makeVisible,
-            ),
-          );
-        },
-        filterVendors: ({required String query, required String outCode}) {
-          store.dispatch(
-            setGlobalSearchQuery(globalSearchQuery: query, outCode: outCode),
-          );
-        });
+      isLoadingHomePage: store.state.homePageState.isLoadingHomePage,
+      featuredRestaurants: store.state.homePageState.featuredRestaurants,
+      filterRestaurantsQuery: store.state.homePageState.filterRestaurantsQuery,
+      filteredRestaurants: store.state.homePageState.filteredRestaurants,
+      filterMenuQuery: store.state.homePageState.filterMenuQuery,
+      filteredMenuItems: store.state.homePageState.filteredMenuItems,
+      globalSearchIsVisible: store.state.homePageState.showGlobalSearchBarField,
+      avatarUrl: store.state.userState.avatarUrl,
+      isDelivery: store.state.cartState.isDelivery,
+      postalCodes: store.state.homePageState.postalCodes,
+      listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
+      changeOutCode: (outCode) {
+        store.dispatch(fetchFeaturedRestaurantsByPostCode(outCode: outCode));
+      },
+      refreshLocation: (BuildContext context) {
+        store.dispatch(fetchFeaturedRestaurantsByUserLocation());
+      },
+      setIsDelivery: (isDelivery) {
+        store
+          ..dispatch(SetIsDelivery(isDelivery: isDelivery))
+          ..dispatch(computeCartTotals());
+      },
+      showGlobalSearchBarField: ({required bool makeVisible}) {
+        store.dispatch(
+          ShowGlobalSearchBarField(
+            makeGlobalSearchVisible: makeVisible,
+          ),
+        );
+      },
+      filterVendors: ({required String query, required String outCode}) {
+        store.dispatch(
+          setGlobalSearchQuery(globalSearchQuery: query, outCode: outCode),
+        );
+      },
+    );
   }
   final bool isLoadingHomePage;
   final List<RestaurantItem> featuredRestaurants;
@@ -70,6 +74,7 @@ class FeaturedRestaurantsVM extends Equatable {
   final List<RestaurantMenuItem> filteredMenuItems;
   final bool globalSearchIsVisible;
   final void Function(String outCode) changeOutCode;
+  final void Function(BuildContext context) refreshLocation;
   final String avatarUrl;
   final List<String> postalCodes;
   final bool isDelivery;

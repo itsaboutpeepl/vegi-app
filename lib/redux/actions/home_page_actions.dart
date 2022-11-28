@@ -1,12 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/services/apis/places.dart';
+import 'package:vegan_liverpool/utils/config.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class UpdateRestaurantCategories {
@@ -132,7 +136,9 @@ class UpdatePostalCodes {
   }
 }
 
-ThunkAction<AppState> fetchFeaturedRestaurants({String outCode = 'L1'}) {
+ThunkAction<AppState> fetchFeaturedRestaurantsByPostCode({
+  String outCode = 'L1',
+}) {
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetIsLoadingHomePage(isLoading: true));
@@ -145,11 +151,46 @@ ThunkAction<AppState> fetchFeaturedRestaurants({String outCode = 'L1'}) {
         )
         ..dispatch(fetchMenuItemsForRestaurant());
     } catch (e, s) {
-      log.error('ERROR - fetchFeaturedRestaurants $e');
+      log.error('ERROR - fetchFeaturedRestaurantsByPostCode $e');
       await Sentry.captureException(
         e,
         stackTrace: s,
-        hint: 'ERROR - fetchFeaturedRestaurants $e',
+        hint: 'ERROR - fetchFeaturedRestaurantsByPostCode $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetIsLoadingHomePage(isLoading: true));
+      final locationEnabled =
+          await locationService.locationEnabled(store: store);
+      // if (!locationEnabled) {
+      //   showErrorSnack(
+      //       context: context,
+      //       title:
+      //           'Location is not enabled. Enable in settings to see vendors.');
+      // }
+      final userLocation = await locationService.getUserCurrentLocation();
+      final List<RestaurantItem> restaurants =
+          await peeplEatsService.getRestaurantsByLocation(
+        geoLocation: Coordinates(userLocation.latitude, userLocation.longitude),
+        distanceFromLocationAllowedInKm: NEARBY_VENDORS_DISTANCE_KM,
+      );
+
+      store
+        ..dispatch(
+          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
+        )
+        ..dispatch(fetchMenuItemsForRestaurant());
+    } catch (e, s) {
+      log.error('ERROR - fetchFeaturedRestaurantsByUserLocation $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchFeaturedRestaurantsByUserLocation $e',
       );
     }
   };
@@ -354,8 +395,14 @@ ThunkAction<AppState> fetchPostalCodes() {
 ThunkAction<AppState> fetchHomePageData() {
   return (Store<AppState> store) async {
     try {
+      final locationEnabled =
+          await locationService.locationEnabled(store: store);
       store
-        ..dispatch(fetchFeaturedRestaurants())
+        ..dispatch(
+          locationEnabled
+              ? fetchFeaturedRestaurantsByUserLocation()
+              : fetchFeaturedRestaurantsByPostCode(),
+        )
         ..dispatch(fetchPostalCodes())
         ..dispatch(checkForSavedSeedPhrase());
     } catch (e, s) {

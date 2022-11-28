@@ -13,6 +13,7 @@ class DeliveryAddressViewModel extends Equatable {
     required this.setDeliveryAddress,
     required this.editAddress,
     required this.isDelivery,
+    required this.useLiveLocation,
     required this.selectedAddress,
     required this.restaurantAddress,
     required this.restaurantName,
@@ -24,6 +25,7 @@ class DeliveryAddressViewModel extends Equatable {
     return DeliveryAddressViewModel(
       savedAddresses: store.state.userState.listOfDeliveryAddresses,
       isDelivery: store.state.cartState.isDelivery,
+      useLiveLocation: store.state.userState.useLiveLocation,
       selectedAddress: store.state.cartState.selectedDeliveryAddress,
       restaurantAddress: store.state.cartState.restaurantAddress,
       restaurantName: store.state.cartState.restaurantName,
@@ -75,6 +77,7 @@ class DeliveryAddressViewModel extends Equatable {
     required int id,
   }) setDeliveryAddress;
   final bool isDelivery;
+  final bool useLiveLocation;
   final DeliveryAddresses? selectedAddress;
   final DeliveryAddresses? restaurantAddress;
   final String restaurantName;
@@ -86,5 +89,6 @@ class DeliveryAddressViewModel extends Equatable {
         savedAddresses,
         isDelivery,
         fulfilmentPostalDistricts,
+        useLiveLocation,
       ];
 }

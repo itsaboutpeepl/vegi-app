@@ -58,6 +58,7 @@ mixin _$UserState {
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
       throw _privateConstructorUsedError;
   bool get hasSavedSeedPhrase => throw _privateConstructorUsedError;
+  bool get useLiveLocation => throw _privateConstructorUsedError;
   String get initialLoginDateTime => throw _privateConstructorUsedError;
   bool get showSeedPhraseBanner => throw _privateConstructorUsedError;
 
@@ -106,6 +107,7 @@ abstract class $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true) PhoneAuthCredential? credentials,
       List<DeliveryAddresses> listOfDeliveryAddresses,
       bool hasSavedSeedPhrase,
+      bool useLiveLocation,
       String initialLoginDateTime,
       bool showSeedPhraseBanner});
 
@@ -158,6 +160,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? credentials = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
+    Object? useLiveLocation = null,
     Object? initialLoginDateTime = null,
     Object? showSeedPhraseBanner = null,
   }) {
@@ -294,6 +297,10 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.hasSavedSeedPhrase
           : hasSavedSeedPhrase // ignore: cast_nullable_to_non_nullable
               as bool,
+      useLiveLocation: null == useLiveLocation
+          ? _value.useLiveLocation
+          : useLiveLocation // ignore: cast_nullable_to_non_nullable
+              as bool,
       initialLoginDateTime: null == initialLoginDateTime
           ? _value.initialLoginDateTime
           : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
@@ -359,6 +366,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true) PhoneAuthCredential? credentials,
       List<DeliveryAddresses> listOfDeliveryAddresses,
       bool hasSavedSeedPhrase,
+      bool useLiveLocation,
       String initialLoginDateTime,
       bool showSeedPhraseBanner});
 
@@ -410,6 +418,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? credentials = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
+    Object? useLiveLocation = null,
     Object? initialLoginDateTime = null,
     Object? showSeedPhraseBanner = null,
   }) {
@@ -546,6 +555,10 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.hasSavedSeedPhrase
           : hasSavedSeedPhrase // ignore: cast_nullable_to_non_nullable
               as bool,
+      useLiveLocation: null == useLiveLocation
+          ? _value.useLiveLocation
+          : useLiveLocation // ignore: cast_nullable_to_non_nullable
+              as bool,
       initialLoginDateTime: null == initialLoginDateTime
           ? _value.initialLoginDateTime
           : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
@@ -596,6 +609,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       @JsonKey(ignore: true) this.credentials,
       this.listOfDeliveryAddresses = const [],
       this.hasSavedSeedPhrase = false,
+      this.useLiveLocation = false,
       this.initialLoginDateTime = '',
       this.showSeedPhraseBanner = false})
       : super._();
@@ -699,6 +713,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final bool hasSavedSeedPhrase;
   @override
   @JsonKey()
+  final bool useLiveLocation;
+  @override
+  @JsonKey()
   final String initialLoginDateTime;
   @override
   @JsonKey()
@@ -706,7 +723,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner)';
+    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner)';
   }
 
   @override
@@ -748,6 +765,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty(
           'listOfDeliveryAddresses', listOfDeliveryAddresses))
       ..add(DiagnosticsProperty('hasSavedSeedPhrase', hasSavedSeedPhrase))
+      ..add(DiagnosticsProperty('useLiveLocation', useLiveLocation))
       ..add(DiagnosticsProperty('initialLoginDateTime', initialLoginDateTime))
       ..add(DiagnosticsProperty('showSeedPhraseBanner', showSeedPhraseBanner));
   }
@@ -815,6 +833,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.listOfDeliveryAddresses, listOfDeliveryAddresses) &&
             (identical(other.hasSavedSeedPhrase, hasSavedSeedPhrase) ||
                 other.hasSavedSeedPhrase == hasSavedSeedPhrase) &&
+            (identical(other.useLiveLocation, useLiveLocation) ||
+                other.useLiveLocation == useLiveLocation) &&
             (identical(other.initialLoginDateTime, initialLoginDateTime) ||
                 other.initialLoginDateTime == initialLoginDateTime) &&
             (identical(other.showSeedPhraseBanner, showSeedPhraseBanner) ||
@@ -858,6 +878,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         credentials,
         const DeepCollectionEquality().hash(listOfDeliveryAddresses),
         hasSavedSeedPhrase,
+        useLiveLocation,
         initialLoginDateTime,
         showSeedPhraseBanner
       ]);
@@ -915,6 +936,7 @@ abstract class _UserState extends UserState {
           final PhoneAuthCredential? credentials,
       final List<DeliveryAddresses> listOfDeliveryAddresses,
       final bool hasSavedSeedPhrase,
+      final bool useLiveLocation,
       final String initialLoginDateTime,
       final bool showSeedPhraseBanner}) = _$_UserState;
   _UserState._() : super._();
@@ -992,6 +1014,8 @@ abstract class _UserState extends UserState {
   List<DeliveryAddresses> get listOfDeliveryAddresses;
   @override
   bool get hasSavedSeedPhrase;
+  @override
+  bool get useLiveLocation;
   @override
   String get initialLoginDateTime;
   @override

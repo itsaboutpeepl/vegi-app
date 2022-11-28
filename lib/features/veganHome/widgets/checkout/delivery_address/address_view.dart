@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -259,6 +260,14 @@ class _AddressViewState extends State<AddressView> {
                             .deliversTo(viewmodel.fulfilmentPostalDistricts)) {
                           viewmodel.setDeliveryAddress(id: address.internalID);
                           Navigator.pop(context);
+                        } else {
+                          if (!viewmodel.useLiveLocation) {
+                            showErrorSnack(
+                              context: context,
+                              title:
+                                  'Enable location in settings to see vendors that deliver to you.',
+                            );
+                          }
                         }
                         Navigator.pop(context);
                       }

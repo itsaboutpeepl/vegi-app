@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -195,6 +196,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Icons.edit,
                               color: Colors.grey,
                             ),
+                          ),
+                        ),
+                      ),
+                      const Divider(),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 16,
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Location',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: CupertinoTheme.of(context).barBackgroundColor,
+                        child: CupertinoFormRow(
+                          prefix: Row(
+                            children: <Widget>[
+                              Icon(
+                                // Wifi icon is updated based on switch value.
+                                viewmodel.useLiveLocation
+                                    ? Icons.location_on
+                                    : Icons.location_off,
+                                color: viewmodel.useLiveLocation
+                                    ? CupertinoColors.systemBlue
+                                    : CupertinoColors.systemRed,
+                              ),
+                              const SizedBox(width: 10),
+                              const Text('Location')
+                            ],
+                          ),
+                          child: CupertinoSwitch(
+                            // This bool value toggles the switch.
+                            value: viewmodel.useLiveLocation,
+                            thumbColor: CupertinoColors.systemBlue,
+                            trackColor:
+                                CupertinoColors.systemGreen.withOpacity(0.14),
+                            activeColor:
+                                CupertinoColors.systemGreen.withOpacity(0.64),
+                            onChanged: (bool? value) {
+                              // This is called when the user toggles the switch.
+                              setState(() {
+                                viewmodel.useLocationServices(value!);
+                                viewmodel.refreshVendors();
+                              });
+                            },
                           ),
                         ),
                       ),

@@ -40,6 +40,7 @@ dependencies:
   form_builder_extra_fields: ^8.3.0
   form_builder_validators: ^8.3.0
   freezed_annotation: ^2.2.0
+  geolocator: ^9.0.2
   get_it: ^7.2.0
   google_api_headers: ^1.4.0
   html: ^0.15.0

@@ -8,6 +8,7 @@ class AccountViewModel extends Equatable {
     required this.avatarUrl,
     required this.displayName,
     required this.isBackup,
+    required this.useLiveLocation,
     required this.firstName,
     required this.mnemonic,
   });
@@ -15,6 +16,7 @@ class AccountViewModel extends Equatable {
   factory AccountViewModel.fromStore(Store<AppState> store) {
     return AccountViewModel(
       isBackup: store.state.userState.backup,
+      useLiveLocation: store.state.userState.useLiveLocation,
       displayName: store.state.userState.displayName,
       avatarUrl: store.state.userState.avatarUrl,
       walletAddress: store.state.userState.walletAddress.replaceFirst('x', 'f'),
@@ -27,6 +29,7 @@ class AccountViewModel extends Equatable {
   final String avatarUrl;
   final String displayName;
   final bool isBackup;
+  final bool useLiveLocation;
   final String firstName;
   final List<String> mnemonic;
 
@@ -36,5 +39,6 @@ class AccountViewModel extends Equatable {
         avatarUrl,
         displayName,
         isBackup,
+        useLiveLocation,
       ];
 }

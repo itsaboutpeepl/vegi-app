@@ -29,6 +29,7 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, UpdateListOfDeliveryAddresses>(_addDeliveryAddress),
   TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner),
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
+  TypedReducer<UserState, EnableLocationServices>(_setLocationServicesEnabled),
 ]);
 
 UserState _setWalletConnectURI(
@@ -229,4 +230,11 @@ UserState _setHasSavedSeedPhrase(
   SetHasSavedSeedPhrase action,
 ) {
   return state.copyWith(hasSavedSeedPhrase: action.hasSavedSeedPhrase);
+}
+
+UserState _setLocationServicesEnabled(
+  UserState state,
+  EnableLocationServices action,
+) {
+  return state.copyWith(useLiveLocation: action.enabled);
 }

@@ -156,7 +156,7 @@ class PeeplEatsService {
   }) async {
     final Response<dynamic> response = await dio
         .get<dynamic>(
-            'api/v1/vendors?outcode=$outCode,search=$globalSearchQuery')
+            'api/v1/vendors?outcode=$outCode&search=$globalSearchQuery')
         .timeout(
       const Duration(seconds: 5),
       onTimeout: () {

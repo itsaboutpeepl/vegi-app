@@ -60,6 +60,7 @@ class UserState with _$UserState {
     @JsonKey(ignore: true) PhoneAuthCredential? credentials,
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
     @Default(false) bool hasSavedSeedPhrase,
+    @Default(false) bool useLiveLocation,
     @Default('') String initialLoginDateTime,
     @Default(false) bool showSeedPhraseBanner,
   }) = _UserState;
@@ -75,6 +76,7 @@ class UserState with _$UserState {
         backup: false,
         authType: BiometricAuth.none,
         currency: 'usd',
+        useLiveLocation: false,
         listOfDeliveryAddresses: [],
       );
 

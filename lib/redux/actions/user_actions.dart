@@ -54,6 +54,16 @@ class ToggleUpgrade {
   String toString() => 'ToggleUpgrade : value: $value';
 }
 
+class EnableLocationServices {
+  EnableLocationServices({
+    required this.enabled,
+  });
+  final bool enabled;
+
+  @override
+  String toString() => 'EnableLocationServices : enabled: $enabled';
+}
+
 class UpdateCurrency {
   UpdateCurrency({required this.currency});
   final String currency;

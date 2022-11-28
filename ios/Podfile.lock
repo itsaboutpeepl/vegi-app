@@ -102,6 +102,8 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - geolocator_apple (1.2.0):
+    - Flutter
   - GoogleAppMeasurement (9.6.0):
     - GoogleAppMeasurement/AdIdSupport (= 9.6.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -221,6 +223,7 @@ DEPENDENCIES:
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_udid (from `.symlinks/plugins/flutter_udid/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
@@ -288,6 +291,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   flutter_udid:
     :path: ".symlinks/plugins/flutter_udid/ios"
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   local_auth_ios:
@@ -334,6 +339,7 @@ SPEC CHECKSUMS:
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   flutter_udid: 0848809dbed4c055175747ae6a45a8b4f6771e1c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   GoogleAppMeasurement: 6de2b1a69e4326eb82ee05d138f6a5cb7311bcb1
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: bad72cb363809015b1f7f19beb1f1cd23c589f95

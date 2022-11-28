@@ -60,6 +60,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
               .toList() ??
           const [],
       hasSavedSeedPhrase: json['hasSavedSeedPhrase'] as bool? ?? false,
+      useLiveLocation: json['useLiveLocation'] as bool? ?? false,
       initialLoginDateTime: json['initialLoginDateTime'] as String? ?? '',
       showSeedPhraseBanner: json['showSeedPhraseBanner'] as bool? ?? false,
     );
@@ -97,6 +98,7 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'listOfDeliveryAddresses':
           instance.listOfDeliveryAddresses.map((e) => e.toJson()).toList(),
       'hasSavedSeedPhrase': instance.hasSavedSeedPhrase,
+      'useLiveLocation': instance.useLiveLocation,
       'initialLoginDateTime': instance.initialLoginDateTime,
       'showSeedPhraseBanner': instance.showSeedPhraseBanner,
     };
