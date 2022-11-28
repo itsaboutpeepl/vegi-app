@@ -63,6 +63,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       useLiveLocation: json['useLiveLocation'] as bool? ?? false,
       initialLoginDateTime: json['initialLoginDateTime'] as String? ?? '',
       showSeedPhraseBanner: json['showSeedPhraseBanner'] as bool? ?? false,
+      surveyCompleted: json['surveyCompleted'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
@@ -101,6 +102,7 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'useLiveLocation': instance.useLiveLocation,
       'initialLoginDateTime': instance.initialLoginDateTime,
       'showSeedPhraseBanner': instance.showSeedPhraseBanner,
+      'surveyCompleted': instance.surveyCompleted,
     };
 
 const _$BiometricAuthEnumMap = {

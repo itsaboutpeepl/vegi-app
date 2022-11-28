@@ -6,9 +6,12 @@ import 'package:vegan_liverpool/utils/onboard/simple.dart';
 import 'package:vegan_liverpool/utils/onboard/sms.dart';
 
 abstract class IOnBoardStrategy {
+  // IOnBoardStrategy(this.strategy, this.authLayer);
   IOnBoardStrategy(this.strategy);
 
   final OnboardStrategy strategy;
+
+  // final OnboardingAuthChain authLayer;
 
   Future<dynamic> login(
     Store<AppState> store,
@@ -29,6 +32,8 @@ class OnBoardStrategyFactory {
       return FirebaseStrategy();
     } else if (strategy == 'sms') {
       return SmsStrategy();
+      // } else if (strategy == 'vegi') {
+      //   return VegiOnboardStrategy();
     } else {
       return SimpleStrategy();
     }

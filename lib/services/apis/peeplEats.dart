@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
@@ -421,6 +422,63 @@ class PeeplEatsService {
     }
 
     return nextSlots;
+  }
+
+  Future<void> registerEmailToWaitingList(
+    String email,
+    void Function() onSuccess,
+    void Function(String error) onError,
+  ) async {
+    final Response<dynamic> response = await dio.post(
+      '/api/v1/admin/register-email-to-waiting-list',
+      data: {
+        'emailAddress': email,
+        'origin': kIsWeb ? 'guide' : 'mobile',
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
+    } else {
+      onSuccess();
+    }
+
+    return;
+  }
+
+  Future<void> submitSurveyResponse(
+    String email,
+    String question,
+    String answer,
+    void Function() onSuccess,
+    void Function(String error) onError,
+  ) async {
+    final Response<dynamic> response = await dio.post(
+      '/api/v1/admin/submit-survey-response',
+      data: {
+        'emailAddress': email,
+        'question': question,
+        'answer': answer,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
+    } else {
+      onSuccess();
+    }
+
+    return;
+  }
+
+  Future<List<String>> getSurveyQuestions() async {
+    final Response<dynamic> response = await dio.get(
+      '/api/v1/admin/get-survey-questions',
+    );
+
+    return (response.data as List<dynamic>)
+        .map((question) => question['question'] as String)
+        .toList();
   }
 
   Future<Map<String, dynamic>> createOrder<T extends CreateOrderForFulfilment>(

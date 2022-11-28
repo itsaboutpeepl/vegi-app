@@ -65,6 +65,8 @@ void main() async {
     middleware: wms,
   );
 
+  // await reauthenticateServices(store, initialState);
+
   await runZonedGuarded(() async {
     await SentryFlutter.init(
       (options) {

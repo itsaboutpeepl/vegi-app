@@ -15,6 +15,12 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
   TypedReducer<UserState, SetDisplayName>(_setDisplayName),
   TypedReducer<UserState, SetEmail>(_setEmail),
+  TypedReducer<UserState, EmailWLRegistrationSuccess>(
+    _setUserEmailForRegistrationToWaitingList,
+  ),
+  TypedReducer<UserState, SetSurveyQuestionsSuccess>(
+    _setSurveyQuestions,
+  ),
   TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
   TypedReducer<UserState, ReLogin>(_reLoginUser),
   TypedReducer<UserState, BackupSuccess>(_backupSuccess),
@@ -238,3 +244,26 @@ UserState _setLocationServicesEnabled(
 ) {
   return state.copyWith(useLiveLocation: action.enabled);
 }
+
+UserState _setUserEmailForRegistrationToWaitingList(
+  UserState state,
+  EmailWLRegistrationSuccess action,
+) {
+  return state.copyWith(email: action.email);
+}
+
+UserState _setSurveyQuestions(
+  UserState state,
+  SetSurveyQuestionsSuccess action,
+) {
+  return state.copyWith(
+    surveyQuestions: action.questions,
+  );
+}
+
+// UserState _setSurveyResponse(
+//   UserState state,
+//   SurveyResponseSuccess action,
+// ) {
+//   return state.copyWith(email: action.email, questionNumberResponded: action.questionNumber,);
+// }

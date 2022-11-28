@@ -21,6 +21,8 @@ import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
 
+import 'common/di/env.dart';
+
 // The Dev version of your app. It will build a DevToolsStore instead of a
 // normal Store. In addition, it will provide a DevDrawer for the app, which
 // will contain the ReduxDevTools themselves.
@@ -35,7 +37,9 @@ Future<void> main() async {
 
   StripeService().init();
 
-  await configureDependencies();
+  const env = Env.activeEnv;
+
+  await configureDependencies(environment: env);
 
   final Persistor<AppState> persistor = Persistor<AppState>(
     storage: SecureStorage(const FlutterSecureStorage()),
@@ -61,6 +65,8 @@ Future<void> main() async {
   );
 
   getIt.registerSingleton<DevToolsStore<AppState>>(store);
+
+  // await reauthenticateServices(store, initialState);
 
   await runZonedGuarded(() async {
     await SentryFlutter.init(

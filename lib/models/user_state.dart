@@ -63,6 +63,8 @@ class UserState with _$UserState {
     @Default(false) bool useLiveLocation,
     @Default('') String initialLoginDateTime,
     @Default(false) bool showSeedPhraseBanner,
+    @Default([]) @JsonKey(ignore: true) List<String> surveyQuestions,
+    @Default(false) bool surveyCompleted,
   }) = _UserState;
 
   const UserState._();
@@ -78,6 +80,8 @@ class UserState with _$UserState {
         currency: 'usd',
         useLiveLocation: false,
         listOfDeliveryAddresses: [],
+        surveyQuestions: [],
+        surveyCompleted: false,
       );
 
   factory UserState.fromJson(Map<String, dynamic> json) =>

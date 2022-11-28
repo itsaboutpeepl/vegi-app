@@ -55,3 +55,25 @@ final Token fuseDollarToken = Token(
 );
 
 const EMAIL_NOT_PROVIDED = 'email@notprovided.com';
+
+const VEGI_PRIVACY_URL = 'https://vegiapp.co.uk/privacy';
+
+class Messages {
+  static const String email = 'Email Address';
+  static const String enterEmail =
+      'Please enter your email to be first to receive an update when we launch.';
+
+  static const String invalidEmail = 'Invalid Email';
+  static const String thanksForRegisteringEmailWaitList =
+      'Thank you for registering your interest with vegi 💚';
+  static const String thanksForRegisteringEmailWaitListDesc =
+      'You will be first to know as soon as your are able to buy on vegi!';
+  static const String byRegisteringEmailWaitListReason =
+      "By registering, you'll be the first to know when we launch.";
+  static const String unsubscribeAtAnyTime =
+      'You can unsubscribe any time, no funny business.';
+}
+
+const ENV = String.fromEnvironment('ENV', defaultValue: 'production');
+const USE_FIREBASE_EMULATOR =
+    String.fromEnvironment('USE_FIREBASE_EMULATOR', defaultValue: 'false');

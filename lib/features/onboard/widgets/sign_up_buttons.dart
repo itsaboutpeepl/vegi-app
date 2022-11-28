@@ -6,6 +6,7 @@ import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.da
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
 
 class SignUpButtons extends StatefulWidget {
@@ -24,6 +25,9 @@ class _SignUpButtonsState extends State<SignUpButtons> {
     return StoreConnector<AppState, SplashViewModel>(
       distinct: true,
       converter: SplashViewModel.fromStore,
+      onInit: (store) {
+        store.dispatch(fetchSurveyQuestions());
+      },
       builder: (_, viewmodel) {
         return Stack(
           children: [
@@ -91,6 +95,49 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                             }
                           },
                         ),
+                        if (viewmodel.isLoggedOut)
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: BorderSide(
+                                color: Colors.grey[100]!,
+                                width: 2,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text(
+                              I10n.of(context).sign_up,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.grey[100],
+                              ),
+                            ),
+                            onPressed: () {
+                              if (viewmodel.surveyCompleted) {
+                                if (context.router.canPop()) {
+                                  context.router.popUntilRoot();
+                                }
+                                context.router.replace(
+                                  WaitingListFunnelScreen(
+                                    surveyCompleted: true,
+                                  ),
+                                );
+                              } else {
+                                context.router.replace(
+                                  WaitingListFunnelScreen(
+                                    surveyCompleted: false,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: viewmodel.isLoggedOut

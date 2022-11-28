@@ -11,6 +11,7 @@ class SplashViewModel extends Equatable {
     required this.isLoggedOut,
     required this.createLocalAccount,
     required this.loginAgain,
+    required this.surveyCompleted,
   });
 
   factory SplashViewModel.fromStore(Store<AppState> store) {
@@ -30,6 +31,7 @@ class SplashViewModel extends Equatable {
       loginAgain: () {
         store.dispatch(reLoginCall());
       },
+      surveyCompleted: store.state.userState.surveyCompleted,
     );
   }
 
@@ -37,6 +39,7 @@ class SplashViewModel extends Equatable {
   final String jwtToken;
   final bool isLoggedOut;
   final void Function() loginAgain;
+  final bool surveyCompleted;
 
   final void Function(
     VoidCallback successCallback,
@@ -47,5 +50,6 @@ class SplashViewModel extends Equatable {
         privateKey,
         jwtToken,
         isLoggedOut,
+        surveyCompleted,
       ];
 }

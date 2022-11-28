@@ -5,4 +5,5 @@ import 'package:vegan_liverpool/common/di/di.config.dart';
 final GetIt getIt = GetIt.instance;
 
 @InjectableInit()
-Future<void> configureDependencies() async => $initGetIt(getIt);
+Future<void> configureDependencies({String? environment}) async =>
+    $initGetIt(getIt, environment: environment);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:country_code_picker/country_code.dart';
@@ -118,6 +119,43 @@ class ReLogin {
 
   @override
   String toString() => 'ReLogin';
+}
+
+class EmailWLRegistrationSuccess {
+  EmailWLRegistrationSuccess({
+    required this.email,
+  });
+  final String email;
+
+  @override
+  String toString() => 'EmailWLRegistrationSuccess : email: $email';
+}
+
+// class SurveyResponseSuccess {
+//   SurveyResponseSuccess({
+//     required this.email,
+//     required this.questionNumber,
+//     required this.question,
+//     required this.answer,
+//   });
+//   final String email;
+//   final int questionNumber;
+//   final String question;
+//   final String answer;
+
+//   @override
+//   String toString() =>
+//       'SurveyResponseSuccess : email: $email, questionNumber: $questionNumber, question: $question, answer: $answer';
+// }
+
+class SetSurveyQuestionsSuccess {
+  SetSurveyQuestionsSuccess({
+    required this.questions,
+  });
+  final List<String> questions;
+
+  @override
+  String toString() => 'SetSurveyQuestionsSuccess : email[${questions.length}]';
 }
 
 class LoginRequestSuccess {
@@ -255,6 +293,152 @@ class SetHasSavedSeedPhrase {
   @override
   String toString() =>
       'SetHasSavedSeedPhrase : hasSavedSeedPhrase: $hasSavedSeedPhrase';
+}
+
+ThunkAction<AppState> registerEmailWaitingListHandler(
+  String email,
+  void Function() onSuccess,
+  void Function(String error) onError,
+) {
+  return (Store<AppState> store) async {
+    try {
+      await peeplEatsService.registerEmailToWaitingList(
+        email,
+        () {
+          Analytics.track(
+            eventName: AnalyticsEvents.emailWLRegistration,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.success,
+            },
+          );
+          store.dispatch(
+            EmailWLRegistrationSuccess(
+              email: email,
+            ),
+          );
+          onSuccess();
+        },
+        (eStr) {
+          Analytics.track(
+            eventName: AnalyticsEvents.emailWLRegistration,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.failed,
+              'error': eStr,
+            },
+          );
+          onError(eStr);
+        },
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - Email WaitingList Registration Request',
+        error: e,
+        stackTrace: s,
+      );
+      onError(e.toString());
+      await Analytics.track(
+        eventName: AnalyticsEvents.emailWLRegistration,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception('Error in Email Registration: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR in Email Registration',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchSurveyQuestions() {
+  return (Store<AppState> store) async {
+    try {
+      final questions = await peeplEatsService.getSurveyQuestions();
+      store.dispatch(SetSurveyQuestionsSuccess(questions: questions));
+    } catch (e, s) {
+      log.error(
+        'ERROR - fetchSurveyQuestions Request',
+        error: e,
+        stackTrace: s,
+      );
+      await Analytics.track(
+        eventName: AnalyticsEvents.submitSurveyResponse,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception('Error in fetchSurveyQuestions: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR in fetchSurveyQuestions',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> submitSurveyResponse(
+  String question,
+  String response,
+  void Function() onSuccess,
+  void Function(String error) onError,
+) {
+  return (Store<AppState> store) async {
+    try {
+      await peeplEatsService.submitSurveyResponse(
+        store.state.userState.email,
+        question,
+        response,
+        () {
+          Analytics.track(
+            eventName: AnalyticsEvents.submitSurveyResponse,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.success,
+            },
+          );
+          // store.dispatch(
+          //   SurveyResponseSuccess(
+          //     email: store.state.userState.email,
+          //     questionNumber: store.state.userState.,
+          //     answer: response,
+          //   ),
+          // );
+          onSuccess();
+        },
+        (eStr) {
+          Analytics.track(
+            eventName: AnalyticsEvents.submitSurveyResponse,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.failed,
+              'error': eStr,
+            },
+          );
+          onError(eStr);
+        },
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - submitSurveyResponse Request',
+        error: e,
+        stackTrace: s,
+      );
+      onError(e.toString());
+      await Analytics.track(
+        eventName: AnalyticsEvents.submitSurveyResponse,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception('Error in submitSurveyResponse: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR in submitSurveyResponse',
+      );
+    }
+  };
 }
 
 ThunkAction<AppState> loginHandler(

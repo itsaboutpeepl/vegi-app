@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:vegan_liverpool/constants/env.dart';
+import 'package:vegan_liverpool/constants/envService.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
@@ -78,7 +78,7 @@ UserCartState _clearCart(
     payButtonLoading: false,
     restaurantName: '',
     restaurantID: '',
-    restaurantIsLive: !Env.isProd,
+    restaurantIsLive: !EnvService.isUsingProdServices,
     restaurantAddress: null,
   );
 }
@@ -171,7 +171,7 @@ UserCartState _setRestaurantDetails(
 ) {
   return state.copyWith(
     restaurantID: action.restaurantID,
-    restaurantIsLive: !Env.isProd,
+    restaurantIsLive: !EnvService.isUsingProdServices,
     restaurantName: action.restaurantName,
     restaurantAddress: action.restaurantAddress,
     restaurantWalletAddress: action.walletAddress,

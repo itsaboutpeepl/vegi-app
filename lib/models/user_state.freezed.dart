@@ -61,6 +61,9 @@ mixin _$UserState {
   bool get useLiveLocation => throw _privateConstructorUsedError;
   String get initialLoginDateTime => throw _privateConstructorUsedError;
   bool get showSeedPhraseBanner => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  List<String> get surveyQuestions => throw _privateConstructorUsedError;
+  bool get surveyCompleted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -109,7 +112,9 @@ abstract class $UserStateCopyWith<$Res> {
       bool hasSavedSeedPhrase,
       bool useLiveLocation,
       String initialLoginDateTime,
-      bool showSeedPhraseBanner});
+      bool showSeedPhraseBanner,
+      @JsonKey(ignore: true) List<String> surveyQuestions,
+      bool surveyCompleted});
 
   $WalletModulesCopyWith<$Res>? get walletModules;
 }
@@ -163,6 +168,8 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? useLiveLocation = null,
     Object? initialLoginDateTime = null,
     Object? showSeedPhraseBanner = null,
+    Object? surveyQuestions = null,
+    Object? surveyCompleted = null,
   }) {
     return _then(_value.copyWith(
       wcURI: freezed == wcURI
@@ -309,6 +316,14 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.showSeedPhraseBanner
           : showSeedPhraseBanner // ignore: cast_nullable_to_non_nullable
               as bool,
+      surveyQuestions: null == surveyQuestions
+          ? _value.surveyQuestions
+          : surveyQuestions // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      surveyCompleted: null == surveyCompleted
+          ? _value.surveyCompleted
+          : surveyCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -368,7 +383,9 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       bool hasSavedSeedPhrase,
       bool useLiveLocation,
       String initialLoginDateTime,
-      bool showSeedPhraseBanner});
+      bool showSeedPhraseBanner,
+      @JsonKey(ignore: true) List<String> surveyQuestions,
+      bool surveyCompleted});
 
   @override
   $WalletModulesCopyWith<$Res>? get walletModules;
@@ -421,6 +438,8 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? useLiveLocation = null,
     Object? initialLoginDateTime = null,
     Object? showSeedPhraseBanner = null,
+    Object? surveyQuestions = null,
+    Object? surveyCompleted = null,
   }) {
     return _then(_$_UserState(
       wcURI: freezed == wcURI
@@ -567,6 +586,14 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.showSeedPhraseBanner
           : showSeedPhraseBanner // ignore: cast_nullable_to_non_nullable
               as bool,
+      surveyQuestions: null == surveyQuestions
+          ? _value.surveyQuestions
+          : surveyQuestions // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      surveyCompleted: null == surveyCompleted
+          ? _value.surveyCompleted
+          : surveyCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -611,7 +638,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.hasSavedSeedPhrase = false,
       this.useLiveLocation = false,
       this.initialLoginDateTime = '',
-      this.showSeedPhraseBanner = false})
+      this.showSeedPhraseBanner = false,
+      @JsonKey(ignore: true) this.surveyQuestions = const [],
+      this.surveyCompleted = false})
       : super._();
 
   factory _$_UserState.fromJson(Map<String, dynamic> json) =>
@@ -720,10 +749,16 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final bool showSeedPhraseBanner;
+  @override
+  @JsonKey(ignore: true)
+  final List<String> surveyQuestions;
+  @override
+  @JsonKey()
+  final bool surveyCompleted;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner)';
+    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted)';
   }
 
   @override
@@ -767,7 +802,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('hasSavedSeedPhrase', hasSavedSeedPhrase))
       ..add(DiagnosticsProperty('useLiveLocation', useLiveLocation))
       ..add(DiagnosticsProperty('initialLoginDateTime', initialLoginDateTime))
-      ..add(DiagnosticsProperty('showSeedPhraseBanner', showSeedPhraseBanner));
+      ..add(DiagnosticsProperty('showSeedPhraseBanner', showSeedPhraseBanner))
+      ..add(DiagnosticsProperty('surveyQuestions', surveyQuestions))
+      ..add(DiagnosticsProperty('surveyCompleted', surveyCompleted));
   }
 
   @override
@@ -838,7 +875,11 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             (identical(other.initialLoginDateTime, initialLoginDateTime) ||
                 other.initialLoginDateTime == initialLoginDateTime) &&
             (identical(other.showSeedPhraseBanner, showSeedPhraseBanner) ||
-                other.showSeedPhraseBanner == showSeedPhraseBanner));
+                other.showSeedPhraseBanner == showSeedPhraseBanner) &&
+            const DeepCollectionEquality()
+                .equals(other.surveyQuestions, surveyQuestions) &&
+            (identical(other.surveyCompleted, surveyCompleted) ||
+                other.surveyCompleted == surveyCompleted));
   }
 
   @JsonKey(ignore: true)
@@ -880,7 +921,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         hasSavedSeedPhrase,
         useLiveLocation,
         initialLoginDateTime,
-        showSeedPhraseBanner
+        showSeedPhraseBanner,
+        const DeepCollectionEquality().hash(surveyQuestions),
+        surveyCompleted
       ]);
 
   @JsonKey(ignore: true)
@@ -938,7 +981,10 @@ abstract class _UserState extends UserState {
       final bool hasSavedSeedPhrase,
       final bool useLiveLocation,
       final String initialLoginDateTime,
-      final bool showSeedPhraseBanner}) = _$_UserState;
+      final bool showSeedPhraseBanner,
+      @JsonKey(ignore: true)
+          final List<String> surveyQuestions,
+      final bool surveyCompleted}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
@@ -1020,6 +1066,11 @@ abstract class _UserState extends UserState {
   String get initialLoginDateTime;
   @override
   bool get showSeedPhraseBanner;
+  @override
+  @JsonKey(ignore: true)
+  List<String> get surveyQuestions;
+  @override
+  bool get surveyCompleted;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

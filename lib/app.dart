@@ -72,6 +72,9 @@ class _MyAppState extends State<MyApp> {
               title: Strings.appName,
               routeInformationParser: rootRouter.defaultRouteParser(),
               theme: flexColorSchemeLight.toTheme,
+	      // themeMode: ThemeMode.system,
+	      // theme: getColorScheme(useFlex: true, isDark: false),
+              // darkTheme: getColorScheme(useFlex: true, isDark: true),
               routerDelegate: rootRouter.delegate(
                 navigatorObservers: () => [
                   AutoRouteObserver(),
