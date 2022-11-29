@@ -73,159 +73,165 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              Text(
-                widget.question,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: 30,
+        top: MediaQuery.of(context).size.height * 0.08,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  widget.question,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
           ),
-        ),
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                left: 30,
-                right: 30,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: 280,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      child: ScaleTransition(
-                        scale: scaleAnimation,
-                        child: TextFormField(
-                          controller: textController,
-                          keyboardType: TextInputType.multiline,
-                          autofocus: true,
-                          // validator: (String? value) => value!.isEmpty
-                          //     ? 'Please enter your email'
-                          //     : null,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 10,
-                            ),
-                            hintText: 'Answer',
-                            border: InputBorder.none,
-                            fillColor: Theme.of(context).backgroundColor,
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    StoreConnector<AppState, SubmitSurveyResponse>(
-                      distinct: true,
-                      converter: (store) => (
-                        String response,
-                        void Function() onSuccess,
-                        dynamic Function(dynamic) onError,
-                      ) =>
-                          store.dispatch(
-                            submitSurveyResponse(
-                              widget.question,
-                              response,
-                              onSuccess,
-                              onError,
-                            ),
-                          ),
-                      builder: (_, submit) => PrimaryButton(
-                        label: I10n.of(context).next_button,
-                        preload: isPreloading,
-                        disabled: isPreloading,
-                        onPressed: () async {
-                          final String email = textController.text;
-                          setState(() {
-                            isPreloading = true;
-                          });
-                          try {
-                            submit(
-                              textController.text,
-                              () {
-                                setState(() {
-                                  isPreloading = false;
-                                });
-                                widget.nextPage();
-                              },
-                              (error) {
-                                setState(() {
-                                  isPreloading = false;
-                                });
-                                widget.nextPage();
-                              },
-                            );
-                          } catch (e) {
-                            setState(() {
-                              isPreloading = false;
-                            });
-                            showErrorSnack(
-                              message: Messages.invalidEmail,
-                              title: I10n.of(context).something_went_wrong,
-                              context: context,
-                              margin: const EdgeInsets.only(
-                                top: 8,
-                                right: 8,
-                                left: 8,
-                                bottom: 120,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () => launchUrl(VEGI_PRIVACY_URL),
-                      child: Text(
-                        Messages.byRegisteringEmailWaitListReason +
-                            Messages.unsubscribeAtAnyTime,
-                        style: TextStyle(
-                          color: Colors.grey[500],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 30,
+                  right: 30,
                 ),
-              ),
-            )
-          ],
-        )
-      ],
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 280,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                        child: ScaleTransition(
+                          scale: scaleAnimation,
+                          child: TextFormField(
+                            controller: textController,
+                            keyboardType: TextInputType.multiline,
+                            autofocus: true,
+                            // validator: (String? value) => value!.isEmpty
+                            //     ? 'Please enter your email'
+                            //     : null,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                                horizontal: 10,
+                              ),
+                              hintText: 'Answer',
+                              border: InputBorder.none,
+                              fillColor: Theme.of(context).backgroundColor,
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      StoreConnector<AppState, SubmitSurveyResponse>(
+                        distinct: true,
+                        converter: (store) => (
+                          String response,
+                          void Function() onSuccess,
+                          dynamic Function(dynamic) onError,
+                        ) =>
+                            store.dispatch(
+                              submitSurveyResponse(
+                                widget.question,
+                                response,
+                                onSuccess,
+                                onError,
+                              ),
+                            ),
+                        builder: (_, submit) => PrimaryButton(
+                          label: I10n.of(context).next_button,
+                          preload: isPreloading,
+                          disabled: isPreloading,
+                          onPressed: () async {
+                            final String email = textController.text;
+                            setState(() {
+                              isPreloading = true;
+                            });
+                            try {
+                              submit(
+                                textController.text,
+                                () {
+                                  setState(() {
+                                    isPreloading = false;
+                                  });
+                                  widget.nextPage();
+                                },
+                                (error) {
+                                  setState(() {
+                                    isPreloading = false;
+                                  });
+                                  widget.nextPage();
+                                },
+                              );
+                            } catch (e) {
+                              setState(() {
+                                isPreloading = false;
+                              });
+                              showErrorSnack(
+                                message: Messages.invalidEmail,
+                                title: I10n.of(context).something_went_wrong,
+                                context: context,
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  right: 8,
+                                  left: 8,
+                                  bottom: 120,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () => launchUrl(VEGI_PRIVACY_URL),
+                        child: Text(
+                          Messages.byRegisteringEmailWaitListReason +
+                              Messages.unsubscribeAtAnyTime,
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

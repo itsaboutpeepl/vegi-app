@@ -295,8 +295,8 @@ class PeeplEatsService {
   Future<List<ProductCategory>> getProductCategoriesForVendor(
     int vendorId,
   ) async {
-    final Response<dynamic> response = await dio
-        .get('api/v1/vendors/view-product-categories?vendor=$vendorId');
+    final Response<dynamic> response =
+        await dio.get('api/v1/vendors/product-categories?vendor=$vendorId');
 
     final List<dynamic> productCategories =
         response.data['productCategories'] as List<dynamic>;

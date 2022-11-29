@@ -97,47 +97,51 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                           },
                         ),
                         if (viewmodel.isLoggedOut)
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              side: BorderSide(
-                                color: Colors.grey[100]!,
-                                width: 2,
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 24.0, bottom: 0.0),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                side: BorderSide(
+                                  color: Colors.grey[100]!,
+                                  width: 2,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 15,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15,
+                              child: Text(
+                                I10n.of(context).sign_up,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.grey[100],
+                                ),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              I10n.of(context).sign_up,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.grey[100],
-                              ),
-                            ),
-                            onPressed: () {
-                              if (viewmodel.surveyCompleted) {
-                                if (context.router.canPop()) {
-                                  context.router.popUntilRoot();
+                              onPressed: () {
+                                if (viewmodel.surveyCompleted) {
+                                  if (context.router.canPop()) {
+                                    context.router.popUntilRoot();
+                                  }
+                                  context.router.replace(
+                                    WaitingListFunnelScreen(
+                                      surveyCompleted: true,
+                                    ),
+                                  );
+                                } else {
+                                  context.router.replace(
+                                    WaitingListFunnelScreen(
+                                      surveyCompleted: false,
+                                    ),
+                                  );
                                 }
-                                context.router.replace(
-                                  WaitingListFunnelScreen(
-                                    surveyCompleted: true,
-                                  ),
-                                );
-                              } else {
-                                context.router.replace(
-                                  WaitingListFunnelScreen(
-                                    surveyCompleted: false,
-                                  ),
-                                );
-                              }
-                            },
+                              },
+                            ),
                           ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),

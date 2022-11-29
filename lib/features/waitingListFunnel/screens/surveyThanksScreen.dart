@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/address_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/bill_invoice_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/order_items_card.dart';
@@ -23,6 +24,7 @@ class SurveyThanksScreen extends StatelessWidget {
       converter: SurveyThanksViewModel.fromStore,
       builder: (_, viewmodel) {
         return Scaffold(
+          backgroundColor: themeShade1100,
           body: Padding(
             padding: EdgeInsets.only(
               bottom: 30,

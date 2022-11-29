@@ -5,13 +5,11 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/customButton1.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/customButton2.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/onboard/widgets/firstOnboardingPage.dart';
-import 'package:vegan_liverpool/features/onboard/widgets/on_boarding_page.dart';
-import 'package:vegan_liverpool/features/onboard/widgets/sign_up_buttons.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/registerEmailWaitingList.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/surveyQuestionScreen.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/surveyThanksScreen.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/waitingListFunnelViewModel.dart';
 
 class WaitingListFunnelScreen extends StatefulWidget {
@@ -57,24 +55,29 @@ class _WaitingListFunnelScreenState extends State<WaitingListFunnelScreen>
     );
   }
 
-  void nextPage() {
-    if (_pageController.page!.toInt() >= pageCount) {
-      return;
-    }
-    _pageController.nextPage(
-      duration: const Duration(seconds: 1),
-      curve: Curves.fastLinearToSlowEaseIn,
-    );
+  void Function() nextPage(int surveyQuestionCount) {
+    final pageCount = surveyQuestionCount + 2;
+    return () {
+      if (_pageController.page!.toInt() >= pageCount) {
+        return;
+      }
+      _pageController.nextPage(
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastLinearToSlowEaseIn,
+      );
+    };
   }
 
-  void previousPage() {
-    if (_pageController.page!.toInt() <= 0) {
-      return;
-    }
-    _pageController.previousPage(
-      duration: const Duration(seconds: 1),
-      curve: Curves.fastLinearToSlowEaseIn,
-    );
+  void Function() previousPage(int surveyQuestionCount) {
+    return () {
+      if (_pageController.page!.toInt() <= 0) {
+        return;
+      }
+      _pageController.previousPage(
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastLinearToSlowEaseIn,
+      );
+    };
   }
 
   final tween = MovieTween();
@@ -85,14 +88,14 @@ class _WaitingListFunnelScreenState extends State<WaitingListFunnelScreen>
   ) {
     return [
       RegisterEmailWaitingListScreen(
-        nextPage: nextPage,
-        previousPage: previousPage,
+        nextPage: nextPage(viewmodel.surveyQuestions.length),
+        previousPage: previousPage(viewmodel.surveyQuestions.length),
       ),
       ...viewmodel.surveyQuestions.map(
         (question) => SurveyQuestionScreen(
           question: question,
-          nextPage: nextPage,
-          previousPage: previousPage,
+          nextPage: nextPage(viewmodel.surveyQuestions.length),
+          previousPage: previousPage(viewmodel.surveyQuestions.length),
         ),
       ),
       const SurveyThanksScreen(),
@@ -138,14 +141,12 @@ class _WaitingListFunnelScreenState extends State<WaitingListFunnelScreen>
                             WaitingListFunnelViewModel>(
                           distinct: true,
                           converter: WaitingListFunnelViewModel.fromStore,
-                          onInitialBuild: (viewModel) {
-                            setState(() {
-                              pageCount = viewModel.surveyQuestions.length + 2;
-                            });
-                          },
+                          onInit: (store) =>
+                              store.dispatch(fetchSurveyQuestions()),
                           builder: (context, vm) {
                             final welcomeScreens =
                                 getWelcomeScreens(context, vm);
+
                             return Stack(
                               children: <Widget>[
                                 PageView.builder(
@@ -168,91 +169,91 @@ class _WaitingListFunnelScreenState extends State<WaitingListFunnelScreen>
                                           welcomeScreens[
                                               index % welcomeScreens.length],
                                 ),
-                                Positioned(
-                                  bottom: 25,
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  child: AnimatedOpacity(
-                                    duration: const Duration(seconds: 1),
-                                    opacity: _bottomRowOpacity,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: previousPage,
-                                          child: CustomPaint(
-                                            painter: CustomButton1(),
-                                            child: const SizedBox(
-                                              width: 70,
-                                              height: 70 * 0.7746031746031746,
-                                              child: Center(
-                                                child: Text(
-                                                  'Back',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Fat Cheeks',
-                                                    fontSize: 22,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.075,
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.all(20),
-                                          child: Center(
-                                            child: SmoothPageIndicator(
-                                              controller: _pageController,
-                                              count: welcomeScreens.length,
-                                              effect: const JumpingDotEffect(
-                                                dotWidth: 9,
-                                                dotHeight: 9,
-                                                activeDotColor:
-                                                    Color(0xFF696B6D),
-                                              ),
-                                              onDotClicked: gotoPage,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.075,
-                                        ),
-                                        GestureDetector(
-                                          onTap: nextPage,
-                                          child: CustomPaint(
-                                            painter: CustomButton2(),
-                                            child: const SizedBox(
-                                              width: 75,
-                                              height: 75 * 0.6551102204408818,
-                                              child: Center(
-                                                child: Text(
-                                                  'Next',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Fat Cheeks',
-                                                    fontSize: 22,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                // Positioned(
+                                //   bottom: 25,
+                                //   left:
+                                //       MediaQuery.of(context).size.width * 0.05,
+                                //   right:
+                                //       MediaQuery.of(context).size.width * 0.05,
+                                //   child: AnimatedOpacity(
+                                //     duration: const Duration(seconds: 1),
+                                //     opacity: _bottomRowOpacity,
+                                //     child: Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.center,
+                                //       children: [
+                                //         GestureDetector(
+                                //           onTap: previousPage,
+                                //           child: CustomPaint(
+                                //             painter: CustomButton1(),
+                                //             child: const SizedBox(
+                                //               width: 70,
+                                //               height: 70 * 0.7746031746031746,
+                                //               child: Center(
+                                //                 child: Text(
+                                //                   'Back',
+                                //                   style: TextStyle(
+                                //                     color: Colors.black,
+                                //                     fontFamily: 'Fat Cheeks',
+                                //                     fontSize: 22,
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //         SizedBox(
+                                //           width: MediaQuery.of(context)
+                                //                   .size
+                                //                   .width *
+                                //               0.075,
+                                //         ),
+                                //         Container(
+                                //           padding: const EdgeInsets.all(20),
+                                //           child: Center(
+                                //             child: SmoothPageIndicator(
+                                //               controller: _pageController,
+                                //               count: welcomeScreens.length,
+                                //               effect: const JumpingDotEffect(
+                                //                 dotWidth: 9,
+                                //                 dotHeight: 9,
+                                //                 activeDotColor:
+                                //                     Color(0xFF696B6D),
+                                //               ),
+                                //               onDotClicked: gotoPage,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //         SizedBox(
+                                //           width: MediaQuery.of(context)
+                                //                   .size
+                                //                   .width *
+                                //               0.075,
+                                //         ),
+                                //         GestureDetector(
+                                //           onTap: nextPage,
+                                //           child: CustomPaint(
+                                //             painter: CustomButton2(),
+                                //             child: const SizedBox(
+                                //               width: 75,
+                                //               height: 75 * 0.6551102204408818,
+                                //               child: Center(
+                                //                 child: Text(
+                                //                   'Next',
+                                //                   style: TextStyle(
+                                //                     color: Colors.white,
+                                //                     fontFamily: 'Fat Cheeks',
+                                //                     fontSize: 22,
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             );
                           },

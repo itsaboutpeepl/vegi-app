@@ -29,6 +29,7 @@ class WaitingListFunnelViewModel extends Equatable {
   @override
   List<Object> get props => [
         email,
+        surveyQuestions.length,
         surveyQuestions,
         surveyCompleted,
       ];
