@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
@@ -19,6 +20,7 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.avatarUrl,
     required this.changeOutCode,
     required this.refreshLocation,
+    required this.userLocationEnabled,
     required this.postalCodes,
     required this.isDelivery,
     required this.setIsDelivery,
@@ -47,6 +49,7 @@ class FeaturedRestaurantsVM extends Equatable {
       refreshLocation: (BuildContext context) {
         store.dispatch(fetchFeaturedRestaurantsByUserLocation());
       },
+      userLocationEnabled: store.state.userState.useLiveLocation,
       setIsDelivery: (isDelivery) {
         store
           ..dispatch(SetIsDelivery(isDelivery: isDelivery))
@@ -80,6 +83,8 @@ class FeaturedRestaurantsVM extends Equatable {
   final bool isDelivery;
   final void Function(bool isDelivery) setIsDelivery;
   final void Function({required bool makeVisible}) showGlobalSearchBarField;
+  final bool userLocationEnabled;
+
   final void Function({required String query, required String outCode})
       filterVendors;
   final List<OrderDetails> listOfScheduledOrders;
@@ -94,5 +99,6 @@ class FeaturedRestaurantsVM extends Equatable {
         globalSearchIsVisible,
         filterRestaurantsQuery,
         filterMenuQuery,
+        userLocationEnabled,
       ];
 }

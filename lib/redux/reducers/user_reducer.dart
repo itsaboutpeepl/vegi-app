@@ -245,6 +245,13 @@ UserState _setLocationServicesEnabled(
   return state.copyWith(useLiveLocation: action.enabled);
 }
 
+UserState _setUserLocation(
+  UserState state,
+  UpdateUserLocation action,
+) {
+  return state.copyWith(userLocation: action.newLocation);
+}
+
 UserState _setUserEmailForRegistrationToWaitingList(
   UserState state,
   EmailWLRegistrationSuccess action,

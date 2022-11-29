@@ -8,6 +8,7 @@ import 'package:firebase_auth_platform_interface/firebase_auth_platform_interfac
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_udid/flutter_udid.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:redux/redux.dart';
@@ -23,6 +24,7 @@ import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/services/apis/locationService.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/json_helpers.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -63,6 +65,16 @@ class EnableLocationServices {
 
   @override
   String toString() => 'EnableLocationServices : enabled: $enabled';
+}
+
+class UpdateUserLocation {
+  UpdateUserLocation({
+    required this.newLocation,
+  });
+  final Position newLocation;
+
+  @override
+  String toString() => 'UpdateUserLocation : newLocation: $newLocation';
 }
 
 class UpdateCurrency {
@@ -1134,5 +1146,18 @@ ThunkAction<AppState> checkForSavedSeedPhrase() {
       //show the banner
       store.dispatch(SetShowSeedPhraseBanner(showSeedPhraseBanner: true));
     }
+  };
+}
+
+ThunkAction<AppState> fetchUserLocation({
+  void Function() callbackIfDenied = ToNull,
+}) {
+  return (Store<AppState> store) async {
+    if (!store.state.userState.useLiveLocation) return;
+
+    final Position newPosition = await locationService.getUserCurrentLocation(
+      callbackIfDenied: callbackIfDenied,
+    );
+    store.dispatch(UpdateUserLocation(newLocation: newPosition));
   };
 }

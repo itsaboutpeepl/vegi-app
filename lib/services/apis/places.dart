@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:http/http.dart';
+import 'package:injectable/injectable.dart';
 
 class Place {
   Place({

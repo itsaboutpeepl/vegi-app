@@ -6,6 +6,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
 
 class FeaturedRestaurantList extends StatelessWidget {
@@ -20,9 +21,13 @@ class FeaturedRestaurantList extends StatelessWidget {
         store
           ..dispatch(startFetchTokensBalances())
           ..dispatch(startScheduleCheckCall())
+          ..dispatch(fetchUserLocation())
           ..dispatch(startOngoingOrderCheck());
       },
       builder: (_, viewmodel) {
+        final location = viewmodel.userLocationEnabled
+            ? 'your current location'
+            : 'your area';
         final restaurants = viewmodel.filterRestaurantsQuery.isEmpty
             ? viewmodel.featuredRestaurants
             : viewmodel.filteredRestaurants;
@@ -31,11 +36,11 @@ class FeaturedRestaurantList extends StatelessWidget {
                 child: CircularProgressIndicator(color: themeShade400),
               )
             : restaurants.isEmpty
-                ? const EmptyStatePage(
+                ? EmptyStatePage(
                     emoji: '😐',
                     title: "Pretty empty here, isn't it?",
                     subtitle:
-                        "We aren't currently delivering to your area, but "
+                        "We aren't currently delivering to $location, but "
                         'we will in the future, so check back later!',
                   )
                 : ListView.separated(

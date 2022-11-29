@@ -25,7 +25,7 @@ class EmptyStatePage extends StatelessWidget {
             emoji,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 150,
+              fontSize: 75,
               fontWeight: FontWeight.w900,
             ),
           ),

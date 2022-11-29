@@ -69,14 +69,17 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                             children: [
                               Text(
                                 viewmodel.isDelivery
-                                    ? 'Delivering To '
+                                    ? viewmodel.userLocationEnabled
+                                        ? 'Delivery'
+                                        : 'Delivering To '
                                     : 'Collection',
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              if (viewmodel.isDelivery)
+                              if (viewmodel.isDelivery &&
+                                  !viewmodel.userLocationEnabled)
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 1.5),
                                   child: DropdownButton<String>(

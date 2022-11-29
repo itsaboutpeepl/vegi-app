@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
-class MenuStickyHeader extends StatelessWidget {
+class MenuStickyHeader extends StatefulWidget {
   const MenuStickyHeader({
     Key? key,
     required this.title,
@@ -14,13 +14,30 @@ class MenuStickyHeader extends StatelessWidget {
   final ExpandableSliverListController<RestaurantMenuItem> controller;
 
   @override
+  State<MenuStickyHeader> createState() => _MenuStickyHeaderState();
+}
+
+class _MenuStickyHeaderState extends State<MenuStickyHeader> {
+  bool expanded = false;
+  @override
+  void initState() {
+    super.initState();
+    expanded = widget.controller.isCollapsed();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ColoredBox(
       color: Colors.white,
       child: GestureDetector(
-        onTap: () => controller.isCollapsed()
-            ? controller.expand()
-            : controller.collapse(),
+        onTap: () {
+          setState(() {
+            expanded = !widget.controller.isCollapsed();
+          });
+          widget.controller.isCollapsed()
+              ? widget.controller.expand()
+              : widget.controller.collapse();
+        },
         child: Container(
           margin: const EdgeInsets.only(
             left: 20,
@@ -45,15 +62,15 @@ class MenuStickyHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title,
+                widget.title,
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const Icon(
-                Icons.arrow_drop_down,
+              Icon(
+                expanded ? Icons.arrow_left : Icons.arrow_drop_down,
               ),
             ],
           ),

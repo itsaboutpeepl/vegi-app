@@ -4,6 +4,7 @@ import 'package:firebase_auth_platform_interface/firebase_auth_platform_interfac
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 
@@ -61,6 +62,7 @@ class UserState with _$UserState {
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
     @Default(false) bool hasSavedSeedPhrase,
     @Default(false) bool useLiveLocation,
+    @Default(null) @JsonKey(ignore: true) Position? userLocation,
     @Default('') String initialLoginDateTime,
     @Default(false) bool showSeedPhraseBanner,
     @Default([]) @JsonKey(ignore: true) List<String> surveyQuestions,
