@@ -19,6 +19,7 @@ import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/analytics_props.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
@@ -164,7 +165,7 @@ class SetSurveyQuestionsSuccess {
   SetSurveyQuestionsSuccess({
     required this.questions,
   });
-  final List<String> questions;
+  final List<SurveyQuestion> questions;
 
   @override
   String toString() => 'SetSurveyQuestionsSuccess : email[${questions.length}]';

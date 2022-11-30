@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -23,7 +24,7 @@ class WaitingListFunnelViewModel extends Equatable {
   }
 
   final String email;
-  final List<String> surveyQuestions;
+  final List<SurveyQuestion> surveyQuestions;
   final bool surveyCompleted;
 
   @override

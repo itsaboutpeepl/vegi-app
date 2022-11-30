@@ -64,7 +64,8 @@ mixin _$UserState {
   String get initialLoginDateTime => throw _privateConstructorUsedError;
   bool get showSeedPhraseBanner => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  List<String> get surveyQuestions => throw _privateConstructorUsedError;
+  List<SurveyQuestion> get surveyQuestions =>
+      throw _privateConstructorUsedError;
   bool get surveyCompleted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -116,7 +117,7 @@ abstract class $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true) Position? userLocation,
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
-      @JsonKey(ignore: true) List<String> surveyQuestions,
+      @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
       bool surveyCompleted});
 
   $WalletModulesCopyWith<$Res>? get walletModules;
@@ -327,7 +328,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
       surveyQuestions: null == surveyQuestions
           ? _value.surveyQuestions
           : surveyQuestions // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<SurveyQuestion>,
       surveyCompleted: null == surveyCompleted
           ? _value.surveyCompleted
           : surveyCompleted // ignore: cast_nullable_to_non_nullable
@@ -393,7 +394,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true) Position? userLocation,
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
-      @JsonKey(ignore: true) List<String> surveyQuestions,
+      @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
       bool surveyCompleted});
 
   @override
@@ -603,7 +604,7 @@ class __$$_UserStateCopyWithImpl<$Res>
       surveyQuestions: null == surveyQuestions
           ? _value.surveyQuestions
           : surveyQuestions // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<SurveyQuestion>,
       surveyCompleted: null == surveyCompleted
           ? _value.surveyCompleted
           : surveyCompleted // ignore: cast_nullable_to_non_nullable
@@ -769,7 +770,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final bool showSeedPhraseBanner;
   @override
   @JsonKey(ignore: true)
-  final List<String> surveyQuestions;
+  final List<SurveyQuestion> surveyQuestions;
   @override
   @JsonKey()
   final bool surveyCompleted;
@@ -1007,7 +1008,7 @@ abstract class _UserState extends UserState {
       final String initialLoginDateTime,
       final bool showSeedPhraseBanner,
       @JsonKey(ignore: true)
-          final List<String> surveyQuestions,
+          final List<SurveyQuestion> surveyQuestions,
       final bool surveyCompleted}) = _$_UserState;
   _UserState._() : super._();
 
@@ -1095,7 +1096,7 @@ abstract class _UserState extends UserState {
   bool get showSeedPhraseBanner;
   @override
   @JsonKey(ignore: true)
-  List<String> get surveyQuestions;
+  List<SurveyQuestion> get surveyQuestions;
   @override
   bool get surveyCompleted;
   @override

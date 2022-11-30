@@ -131,6 +131,7 @@ class _RegisterEmailWaitingListScreenState
                             child: TextFormField(
                               controller: emailController,
                               keyboardType: TextInputType.emailAddress,
+                              autocorrect: false,
                               autofocus: true,
                               validator: (String? value) => value!.isEmpty
                                   ? 'Please enter your email'

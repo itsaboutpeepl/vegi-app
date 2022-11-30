@@ -255,3 +255,5 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
 }
 
 enum OrderPaidStatus { paid, unpaid, failed }
+
+enum SurveyResponseType { boolean, string, multiline, number }

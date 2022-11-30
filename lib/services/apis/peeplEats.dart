@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
+import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -471,13 +472,17 @@ class PeeplEatsService {
     return;
   }
 
-  Future<List<String>> getSurveyQuestions() async {
+  Future<List<SurveyQuestion>> getSurveyQuestions() async {
     final Response<dynamic> response = await dio.get(
       '/api/v1/admin/get-survey-questions',
     );
 
     return (response.data as List<dynamic>)
-        .map((question) => question['question'] as String)
+        .map(
+          (question) => SurveyQuestion.fromJson(
+            question as Map<String, dynamic>,
+          ),
+        )
         .toList();
   }
 
@@ -505,9 +510,17 @@ class PeeplEatsService {
     try {
       final Response<dynamic> response =
           await dio.get('/api/v1/orders?walletId=$walletAddress');
-      return (response.data['orders'] as List<dynamic>)
+      final scheduledOrders =
+          (response.data['scheduledOrders'] as List<dynamic>)
+              .map((order) => Order.fromJson(order as Map<String, dynamic>))
+              .toList();
+      final ongoingOrders = (response.data['ongoingOrders'] as List<dynamic>)
           .map((order) => Order.fromJson(order as Map<String, dynamic>))
           .toList();
+      return [
+        ...ongoingOrders,
+        ...scheduledOrders,
+      ];
     } catch (e, stackTrace) {
       log.error(
         'Order parsing threw with stackTrace: $stackTrace & error: $e',
