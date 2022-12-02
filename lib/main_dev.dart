@@ -14,14 +14,13 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/app.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/redux_state_viewer.dart';
-import 'package:vegan_liverpool/main.dart';
+import 'package:vegan_liverpool/loadAppState.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
-
-import 'common/di/env.dart';
+import 'package:vegan_liverpool/common/di/env.dart';
 
 // The Dev version of your app. It will build a DevToolsStore instead of a
 // normal Store. In addition, it will provide a DevDrawer for the app, which
@@ -33,11 +32,11 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  await dotenv.load(fileName: 'environment/.env_dev');
+  const env = Env.activeEnv;
+
+  await dotenv.load(fileName: Env.envFile);
 
   StripeService().init();
-
-  const env = Env.activeEnv;
 
   await configureDependencies(environment: env);
 
@@ -46,8 +45,6 @@ Future<void> main() async {
     serializer: JsonSerializer<AppState>(AppState.fromJson),
     debug: kDebugMode,
   );
-
-  //final AppState initialState = await loadState(persistor);
 
   final List<Middleware<AppState>> wms = [
     thunkMiddleware,

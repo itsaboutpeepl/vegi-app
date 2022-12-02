@@ -7,11 +7,13 @@ import 'package:vegan_liverpool/features/veganHome/widgets/menu/floating_cart_ba
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleFeaturedMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/singleRegularMenuItem.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/restaurantMenuAppBar.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/searchProductsAppBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/restaurantMenu.dart';
 
 class RestaurantMenuList extends StatefulWidget {
   const RestaurantMenuList({
@@ -25,7 +27,7 @@ class RestaurantMenuList extends StatefulWidget {
   State<RestaurantMenuList> createState() => _RestaurantMenuListState();
 
   final List<RestaurantMenuItem> featuredList;
-  final Map<String, List<RestaurantMenuItem>> groupedList;
+  final Map<String, Map<String, RestaurantMenuItem>> groupedList;
   final Iterable<String> categories;
 }
 
@@ -69,55 +71,101 @@ class _RestaurantMenuListState extends State<RestaurantMenuList> {
     return Scaffold(
       body: Stack(
         children: [
-          CustomScrollView(
-            slivers: [
-              const RestaurantMenuAppBar(),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 10)),
-              SliverStickyHeader(
-                header: MenuStickyHeader(
-                  title: 'Featured Items',
-                  controller: featuredListController,
-                ),
-                sliver: SliverPadding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 20),
-                  sliver: ExpandableSliverList<RestaurantMenuItem>(
-                    initialItems: widget.featuredList,
-                    builder: (context, item, index) => SingleFeaturedMenuItem(
-                      menuItem: widget.featuredList[index],
+          StoreConnector<AppState, RestaurantMenuViewModel>(
+            converter: RestaurantMenuViewModel.fromStore,
+            distinct: true,
+            builder: (context, viewmodel) {
+              return CustomScrollView(
+                slivers: [
+                  const RestaurantMenuAppBar(),
+                  // if (viewmodel.menuSearchIsVisible) ...[
+                  //   const SearchProductsAppBar(),
+                  // ],
+                  const SliverPadding(padding: EdgeInsets.only(bottom: 10)),
+                  SliverStickyHeader(
+                    header: MenuStickyHeader(
+                      title: 'Featured Items',
+                      controller: featuredListController,
                     ),
-                    controller: featuredListController,
-                  ),
-                ),
-              ),
-              ...widget.categories
-                  .where(
-                    (categoryName) =>
-                        categoryItemsControllers[categoryName] != null,
-                  )
-                  .map(
-                    (categoryName) => SliverStickyHeader(
-                      header: MenuStickyHeader(
-                        title: categoryName,
-                        controller: categoryItemsControllers[categoryName]!,
+                    sliver: SliverPadding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 20),
+                      sliver: ExpandableSliverList<RestaurantMenuItem>(
+                        initialItems: widget.featuredList,
+                        builder: (context, item, index) =>
+                            SingleFeaturedMenuItem(
+                          menuItem: widget.featuredList[index],
+                        ),
+                        controller: featuredListController,
                       ),
-                      sliver: SliverPadding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 20),
-                        sliver: ExpandableSliverList<RestaurantMenuItem>(
-                          initialItems: widget.groupedList[categoryName]!,
-                          builder: (context, item, index) =>
-                              SingleFeaturedMenuItem(
-                            menuItem: widget.groupedList[categoryName]![index],
+                    ),
+                  ),
+                  ...widget.categories
+                      .where(
+                        (categoryName) =>
+                            categoryItemsControllers[categoryName] != null,
+                      )
+                      .map(
+                        (categoryName) => SliverStickyHeader(
+                          header: MenuStickyHeader(
+                            title: categoryName,
+                            controller: categoryItemsControllers[categoryName]!,
                           ),
-                          controller: categoryItemsControllers[categoryName]!,
+                          sliver: SliverPadding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 20),
+                            sliver: ExpandableSliverList<RestaurantMenuItem>(
+                              initialItems:
+                                  widget.groupedList[categoryName]!.values,
+                              builder: (context, item, index) => widget
+                                      .groupedList[categoryName]!
+                                      .containsKey(item.menuItemID)
+                                  ? SingleFeaturedMenuItem(
+                                      menuItem: item,
+                                    )
+                                  : Container(),
+                              controller:
+                                  categoryItemsControllers[categoryName]!,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 100)),
-            ],
+                  const SliverPadding(padding: EdgeInsets.only(bottom: 100)),
+                ],
+              );
+            },
           ),
           const FloatingCartBar(),
         ],
+      ),
+    );
+  }
+}
+
+class ExpandableContainer extends StatelessWidget {
+  final bool expanded;
+  final double collapsedHeight;
+  final double expandedHeight;
+  final Widget child;
+
+  ExpandableContainer({
+    Key? key,
+    required this.child,
+    this.collapsedHeight = 0.0,
+    this.expandedHeight = 300.0,
+    this.expanded = true,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return new AnimatedContainer(
+      duration: new Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      width: screenWidth,
+      height: expanded ? expandedHeight : collapsedHeight,
+      child: new Container(
+        child: child,
+        decoration: new BoxDecoration(
+            border: new Border.all(width: 1.0, color: Colors.blue)),
       ),
     );
   }

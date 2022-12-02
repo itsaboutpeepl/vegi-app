@@ -23,6 +23,16 @@ class UpdateRestaurantCategories {
   }
 }
 
+class UpdateSelectedSearchPostCode {
+  UpdateSelectedSearchPostCode({required this.selectedSearchPostCode});
+  final String selectedSearchPostCode;
+
+  @override
+  String toString() {
+    return 'UpdateSelectedSearchPostCode : $selectedSearchPostCode';
+  }
+}
+
 class UpdateFeaturedRestaurants {
   UpdateFeaturedRestaurants({required this.listOfFeaturedRestaurants});
   final List<RestaurantItem> listOfFeaturedRestaurants;

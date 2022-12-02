@@ -9,6 +9,8 @@ final homePageReducers = combineReducers<HomePageState>(
     ),
     TypedReducer<HomePageState, SetIsLoadingHomePage>(_setIsLoadingHomePage),
     TypedReducer<HomePageState, UpdatePostalCodes>(_updatePostalCodes),
+    TypedReducer<HomePageState, UpdateSelectedSearchPostCode>(
+        _updateSelectedSearchPostCode),
     TypedReducer<HomePageState, ShowGlobalSearchBarField>(
       _showGlobalSearchBarField,
     ),
@@ -78,4 +80,11 @@ HomePageState _updatePostalCodes(
   UpdatePostalCodes action,
 ) {
   return state.copyWith(postalCodes: action.postalCodes);
+}
+
+HomePageState _updateSelectedSearchPostCode(
+  HomePageState state,
+  UpdateSelectedSearchPostCode action,
+) {
+  return state.copyWith(selectedSearchPostCode: action.selectedSearchPostCode);
 }

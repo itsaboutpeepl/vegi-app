@@ -20,6 +20,7 @@ class HomePageState with _$HomePageState {
     @JsonKey(ignore: true) @Default(false) bool showMenuSearchBarField,
     @JsonKey(ignore: true) @Default(false) bool isLoadingHomePage,
     @JsonKey(ignore: true) @Default([]) List<String> postalCodes,
+    @JsonKey(ignore: true) @Default('L1') String selectedSearchPostCode,
   }) = _HomePageState;
 
   const HomePageState._();
@@ -34,6 +35,7 @@ class HomePageState with _$HomePageState {
         showMenuSearchBarField: false,
         isLoadingHomePage: false,
         postalCodes: [],
+        selectedSearchPostCode: 'L1',
       );
 
   factory HomePageState.fromJson(Map<String, dynamic> json) =>

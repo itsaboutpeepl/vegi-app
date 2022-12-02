@@ -218,7 +218,7 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                       icon: viewmodel.menuSearchIsVisible
                           ? const Icon(Icons.cancel)
                           : const Icon(Icons.search),
-                    )
+                    ),
                   ],
                 ),
               ),

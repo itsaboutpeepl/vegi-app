@@ -126,11 +126,12 @@ class RestaurantItemViewModel extends Equatable {
         .toList();
   }
 
-  Map<String, List<RestaurantMenuItem>> get groupedList {
+  Map<String, Map<String, RestaurantMenuItem>> get groupedList {
     return groupBy(
       regularList,
       (RestaurantMenuItem menuItem) => menuItem.categoryName,
-    );
+    ).map((category, list) => MapEntry(category,
+        Map.fromEntries(list.map((item) => MapEntry(item.menuItemID, item)))));
   }
 
   Iterable<String> get categories => groupedList.keys

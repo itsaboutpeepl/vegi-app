@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/featuredRe
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/backupWalletAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/navDrawer.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/preparingOrderAppBar.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/searchVendorsAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/veganSliverAppBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/pastOrders.dart';
@@ -25,6 +26,8 @@ class VeganHomeScreen extends StatelessWidget {
                 [
                   const VeganSliverAppBar(),
                   const BackupWalletAppBar(),
+                  if (viewmodel.globalSearchIsVisible)
+                    const SearchVendorsAppBar(),
                 ] +
                 viewmodel.listOfScheduledOrders
                     .map(

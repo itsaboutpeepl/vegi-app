@@ -23,7 +23,6 @@ class VeganSliverAppBar extends StatefulWidget {
 }
 
 class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
-  String _dropdownValue = 'L1';
   Icon customIcon = const Icon(Icons.search);
   final TextEditingController _searchTextController = TextEditingController();
 
@@ -58,236 +57,113 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 25),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    if (!viewmodel.globalSearchIsVisible) ...[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                viewmodel.isDelivery
-                                    ? viewmodel.userLocationEnabled
-                                        ? 'Delivery'
-                                        : 'Delivering To '
-                                    : 'Collection',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              viewmodel.isDelivery
+                                  ? viewmodel.userLocationEnabled
+                                      ? 'Delivery'
+                                      : 'Delivering To '
+                                  : 'Collection',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
                               ),
-                              if (viewmodel.isDelivery &&
-                                  !viewmodel.userLocationEnabled)
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 1.5),
-                                  child: DropdownButton<String>(
-                                    menuMaxHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.3,
-                                    alignment: Alignment.centerLeft,
-                                    isDense: true,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black,
-                                      fontFamily: 'Europa',
-                                    ),
-                                    value: _dropdownValue,
-                                    borderRadius: BorderRadius.circular(10),
-                                    underline: const SizedBox.shrink(),
-                                    items: viewmodel.postalCodes
-                                        .map(
-                                          (value) => DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style:
-                                                  const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _dropdownValue = value!;
-                                        viewmodel.changeOutCode(value);
-                                        Analytics.track(
-                                          eventName:
-                                              AnalyticsEvents.changeOutcode,
-                                          properties: {'screen': 'home'},
-                                        );
-                                      });
-                                    },
+                            ),
+                            if (viewmodel.isDelivery &&
+                                !viewmodel.userLocationEnabled)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 1.5),
+                                child: DropdownButton<String>(
+                                  menuMaxHeight:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  alignment: Alignment.centerLeft,
+                                  isDense: true,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
+                                    fontFamily: 'Europa',
                                   ),
-                                )
-                              else
-                                const SizedBox.shrink(),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Analytics.track(
-                                eventName:
-                                    AnalyticsEvents.switchFulfilmentMethod,
-                                properties: {'screen': 'home'},
-                              );
-                              viewmodel.setIsDelivery(!viewmodel.isDelivery);
-                            },
-                            child: DecoratedBox(
-                              decoration: const BoxDecoration(
-                                border: Border(bottom: BorderSide()),
-                              ),
-                              child: Text(
-                                viewmodel.isDelivery
-                                    ? 'Switch to collection'
-                                    : 'Switch to delivery',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
+                                  value: viewmodel.selectedSearchPostCode,
+                                  borderRadius: BorderRadius.circular(10),
+                                  underline: const SizedBox.shrink(),
+                                  items: viewmodel.postalCodes
+                                      .map(
+                                        (value) => DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style:
+                                                const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      viewmodel.updateSelectedSearchPostalCode(
+                                          value!);
+                                      viewmodel.changeOutCode(value);
+                                      Analytics.track(
+                                        eventName:
+                                            AnalyticsEvents.changeOutcode,
+                                        properties: {'screen': 'home'},
+                                      );
+                                    });
+                                  },
                                 ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                    ] else
-                      Expanded(
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.search,
-                            color: Colors.teal.shade900,
-                            size: 28,
-                          ),
-                          title: TypeAheadField<String>(
-                            keepSuggestionsOnLoading: true,
-                            hideOnEmpty: true,
-                            textFieldConfiguration: TextFieldConfiguration(
-                              autocorrect: true,
-                              controller: _searchTextController,
-                              onSubmitted: (value) {
-                                viewmodel.filterVendors(
-                                  query: value,
-                                  outCode: _dropdownValue,
-                                );
-                              },
-                              decoration: const InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: themeShade300, width: 3),
-                                ),
-                                fillColor: Colors.transparent,
-                                hintText: 'Search vegi...',
-                              ),
-                              style: DefaultTextStyle.of(context)
-                                  .style
-                                  .copyWith(fontStyle: FontStyle.italic),
-                            ),
-                            onSuggestionSelected: (String suggestion) {
-                              _searchTextController.text = suggestion;
-                              viewmodel.filterVendors(
-                                query: suggestion,
-                                outCode: _dropdownValue,
-                              );
-                            },
-                            itemBuilder: (context, String suggestion) {
-                              return ListTile(title: Text(suggestion));
-                            },
-                            noItemsFoundBuilder: (context) {
-                              return const ListTile(
-                                title: Text('No items found!'),
-                              );
-                            },
-                            loadingBuilder: (_) =>
-                                const CircularProgressIndicator(
-                              color: themeShade600,
-                            ),
-                            debounceDuration: const Duration(
-                              milliseconds: 300,
-                            ),
-                            suggestionsCallback: (globalSearchQuery) async {
-                              if (globalSearchQuery.isNotEmpty) {
-                                final result = <String>[];
-                                try {
-                                  final featuredRestaurants =
-                                      viewmodel.featuredRestaurants;
-                                  final matchingNamedRestaurants =
-                                      featuredRestaurants.where(
-                                    (element) {
-                                      return element.name
-                                              .toLowerCase()
-                                              .contains(
-                                                globalSearchQuery.toLowerCase(),
-                                              ) ||
-                                          element.category
-                                              .toLowerCase()
-                                              .contains(
-                                                globalSearchQuery.toLowerCase(),
-                                              );
-                                    },
-                                  ).toList();
-
-                                  result.addAll(
-                                    matchingNamedRestaurants.map(
-                                      (e) => e.name,
-                                    ),
-                                  );
-
-                                  // final List<RestaurantItem>
-                                  //     filteredRestaurants =
-                                  //     await peeplEatsService
-                                  //         .getFilteredRestaurants(
-                                  //   outCode: _dropdownValue,
-                                  //   globalSearchQuery: globalSearchQuery,
-                                  // );
-
-                                  // result.addAll(
-                                  //   filteredRestaurants.map(
-                                  //     (e) => e.name,
-                                  //   ),
-                                  // );
-                                  return result;
-                                } catch (e, s) {
-                                  log.error(
-                                      'ERROR - query vendors items from search bar: $e');
-                                  await Sentry.captureException(
-                                    e,
-                                    stackTrace: s,
-                                    hint:
-                                        'ERROR - query vendors items from search bar: $e',
-                                  );
-                                  return [];
-                                }
-                              } else {
-                                return [];
-                              }
-                            },
-                          ),
+                              )
+                            else
+                              const SizedBox.shrink(),
+                          ],
                         ),
-                      ),
-                    IconButton(
-                      onPressed: () {
-                        _searchTextController.clear();
-                        viewmodel.filterVendors(
-                          query: '',
-                          outCode: _dropdownValue,
-                        );
-                        viewmodel.showGlobalSearchBarField(
-                          makeVisible: !viewmodel.globalSearchIsVisible,
-                        );
-                      },
-                      icon: viewmodel.globalSearchIsVisible
-                          ? const Icon(Icons.cancel)
-                          : const Icon(Icons.search),
+                        GestureDetector(
+                          onTap: () {
+                            Analytics.track(
+                              eventName: AnalyticsEvents.switchFulfilmentMethod,
+                              properties: {'screen': 'home'},
+                            );
+                            viewmodel.setIsDelivery(!viewmodel.isDelivery);
+                          },
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              border: Border(bottom: BorderSide()),
+                            ),
+                            child: Text(
+                              viewmodel.isDelivery
+                                  ? 'Switch to collection'
+                                  : 'Switch to delivery',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
+                    const Spacer(),
+                    if (!viewmodel.globalSearchIsVisible)
+                      IconButton(
+                        onPressed: () {
+                          _searchTextController.clear();
+                          viewmodel.filterVendors(
+                            query: '',
+                            outCode: viewmodel.selectedSearchPostCode,
+                          );
+                          viewmodel.showGlobalSearchBarField(
+                            makeVisible: true,
+                          );
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
                     Material(
                       borderRadius: BorderRadius.circular(50),
                       elevation: 3,

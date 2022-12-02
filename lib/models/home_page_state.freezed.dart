@@ -37,6 +37,8 @@ mixin _$HomePageState {
   bool get isLoadingHomePage => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   List<String> get postalCodes => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  String get selectedSearchPostCode => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -59,7 +61,8 @@ abstract class $HomePageStateCopyWith<$Res> {
       String filterMenuQuery,
       @JsonKey(ignore: true) bool showMenuSearchBarField,
       @JsonKey(ignore: true) bool isLoadingHomePage,
-      @JsonKey(ignore: true) List<String> postalCodes});
+      @JsonKey(ignore: true) List<String> postalCodes,
+      @JsonKey(ignore: true) String selectedSearchPostCode});
 }
 
 /// @nodoc
@@ -84,6 +87,7 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
     Object? showMenuSearchBarField = null,
     Object? isLoadingHomePage = null,
     Object? postalCodes = null,
+    Object? selectedSearchPostCode = null,
   }) {
     return _then(_value.copyWith(
       featuredRestaurants: null == featuredRestaurants
@@ -122,6 +126,10 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      selectedSearchPostCode: null == selectedSearchPostCode
+          ? _value.selectedSearchPostCode
+          : selectedSearchPostCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -143,7 +151,8 @@ abstract class _$$_HomePageStateCopyWith<$Res>
       String filterMenuQuery,
       @JsonKey(ignore: true) bool showMenuSearchBarField,
       @JsonKey(ignore: true) bool isLoadingHomePage,
-      @JsonKey(ignore: true) List<String> postalCodes});
+      @JsonKey(ignore: true) List<String> postalCodes,
+      @JsonKey(ignore: true) String selectedSearchPostCode});
 }
 
 /// @nodoc
@@ -166,6 +175,7 @@ class __$$_HomePageStateCopyWithImpl<$Res>
     Object? showMenuSearchBarField = null,
     Object? isLoadingHomePage = null,
     Object? postalCodes = null,
+    Object? selectedSearchPostCode = null,
   }) {
     return _then(_$_HomePageState(
       featuredRestaurants: null == featuredRestaurants
@@ -204,6 +214,10 @@ class __$$_HomePageStateCopyWithImpl<$Res>
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      selectedSearchPostCode: null == selectedSearchPostCode
+          ? _value.selectedSearchPostCode
+          : selectedSearchPostCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -221,7 +235,8 @@ class _$_HomePageState extends _HomePageState {
       this.filterMenuQuery = '',
       @JsonKey(ignore: true) this.showMenuSearchBarField = false,
       @JsonKey(ignore: true) this.isLoadingHomePage = false,
-      @JsonKey(ignore: true) this.postalCodes = const []})
+      @JsonKey(ignore: true) this.postalCodes = const [],
+      @JsonKey(ignore: true) this.selectedSearchPostCode = 'L1'})
       : super._();
 
   factory _$_HomePageState.fromJson(Map<String, dynamic> json) =>
@@ -254,10 +269,13 @@ class _$_HomePageState extends _HomePageState {
   @override
   @JsonKey(ignore: true)
   final List<String> postalCodes;
+  @override
+  @JsonKey(ignore: true)
+  final String selectedSearchPostCode;
 
   @override
   String toString() {
-    return 'HomePageState(featuredRestaurants: $featuredRestaurants, filteredRestaurants: $filteredRestaurants, filterRestaurantsQuery: $filterRestaurantsQuery, showGlobalSearchBarField: $showGlobalSearchBarField, filteredMenuItems: $filteredMenuItems, filterMenuQuery: $filterMenuQuery, showMenuSearchBarField: $showMenuSearchBarField, isLoadingHomePage: $isLoadingHomePage, postalCodes: $postalCodes)';
+    return 'HomePageState(featuredRestaurants: $featuredRestaurants, filteredRestaurants: $filteredRestaurants, filterRestaurantsQuery: $filterRestaurantsQuery, showGlobalSearchBarField: $showGlobalSearchBarField, filteredMenuItems: $filteredMenuItems, filterMenuQuery: $filterMenuQuery, showMenuSearchBarField: $showMenuSearchBarField, isLoadingHomePage: $isLoadingHomePage, postalCodes: $postalCodes, selectedSearchPostCode: $selectedSearchPostCode)';
   }
 
   @override
@@ -283,7 +301,9 @@ class _$_HomePageState extends _HomePageState {
             (identical(other.isLoadingHomePage, isLoadingHomePage) ||
                 other.isLoadingHomePage == isLoadingHomePage) &&
             const DeepCollectionEquality()
-                .equals(other.postalCodes, postalCodes));
+                .equals(other.postalCodes, postalCodes) &&
+            (identical(other.selectedSearchPostCode, selectedSearchPostCode) ||
+                other.selectedSearchPostCode == selectedSearchPostCode));
   }
 
   @JsonKey(ignore: true)
@@ -298,7 +318,8 @@ class _$_HomePageState extends _HomePageState {
       filterMenuQuery,
       showMenuSearchBarField,
       isLoadingHomePage,
-      const DeepCollectionEquality().hash(postalCodes));
+      const DeepCollectionEquality().hash(postalCodes),
+      selectedSearchPostCode);
 
   @JsonKey(ignore: true)
   @override
@@ -329,7 +350,9 @@ abstract class _HomePageState extends HomePageState {
       @JsonKey(ignore: true)
           final bool isLoadingHomePage,
       @JsonKey(ignore: true)
-          final List<String> postalCodes}) = _$_HomePageState;
+          final List<String> postalCodes,
+      @JsonKey(ignore: true)
+          final String selectedSearchPostCode}) = _$_HomePageState;
   _HomePageState._() : super._();
 
   factory _HomePageState.fromJson(Map<String, dynamic> json) =
@@ -358,6 +381,9 @@ abstract class _HomePageState extends HomePageState {
   @override
   @JsonKey(ignore: true)
   List<String> get postalCodes;
+  @override
+  @JsonKey(ignore: true)
+  String get selectedSearchPostCode;
   @override
   @JsonKey(ignore: true)
   _$$_HomePageStateCopyWith<_$_HomePageState> get copyWith =>

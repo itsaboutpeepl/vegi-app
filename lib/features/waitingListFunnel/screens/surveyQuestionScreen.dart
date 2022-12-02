@@ -230,7 +230,7 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen>
               ),
           child: ScaleTransition(
             scale: scaleAnimation,
-            child: _buildAnswerNumberField(context, submit),
+            child: _buildAnswerBooleanField(context, submit),
             // child: _buildAnswerBooleanField(context, submit),
           ),
         );
@@ -255,7 +255,7 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen>
     }
   }
 
-  Widget _buildAnswerNumberField(
+  Widget _buildAnswerBooleanField(
     BuildContext context,
     dynamic Function(
       String response,
@@ -391,41 +391,6 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen>
           ),
         ),
         // child: _buildAnswerBooleanField(context),
-      ),
-    );
-  }
-
-  Widget _buildAnswerBooleanField(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FractionallySizedBox(
-            widthFactor: 0.3,
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              child: ElevatedButton(
-                onPressed: () {
-                  textController.text = 'Yes';
-                },
-                child: const Text('Yes'),
-              ),
-            ),
-          ),
-          FractionallySizedBox(
-            widthFactor: 0.3,
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              child: ElevatedButton(
-                onPressed: () {
-                  textController.text = 'No';
-                },
-                child: const Text('No'),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

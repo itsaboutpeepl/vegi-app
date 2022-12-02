@@ -26,8 +26,10 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.setIsDelivery,
     required this.globalSearchIsVisible,
     required this.showGlobalSearchBarField,
+    required this.updateSelectedSearchPostalCode,
     required this.filterVendors,
     required this.listOfScheduledOrders,
+    required this.selectedSearchPostCode,
   });
 
   factory FeaturedRestaurantsVM.fromStore(Store<AppState> store) {
@@ -39,6 +41,7 @@ class FeaturedRestaurantsVM extends Equatable {
       filterMenuQuery: store.state.homePageState.filterMenuQuery,
       filteredMenuItems: store.state.homePageState.filteredMenuItems,
       globalSearchIsVisible: store.state.homePageState.showGlobalSearchBarField,
+      selectedSearchPostCode: store.state.homePageState.selectedSearchPostCode,
       avatarUrl: store.state.userState.avatarUrl,
       isDelivery: store.state.cartState.isDelivery,
       postalCodes: store.state.homePageState.postalCodes,
@@ -62,6 +65,13 @@ class FeaturedRestaurantsVM extends Equatable {
           ),
         );
       },
+      updateSelectedSearchPostalCode: (String newPostalCode) {
+        store.dispatch(
+          UpdateSelectedSearchPostCode(
+            selectedSearchPostCode: newPostalCode,
+          ),
+        );
+      },
       filterVendors: ({required String query, required String outCode}) {
         store.dispatch(
           setGlobalSearchQuery(globalSearchQuery: query, outCode: outCode),
@@ -76,6 +86,7 @@ class FeaturedRestaurantsVM extends Equatable {
   final String filterMenuQuery;
   final List<RestaurantMenuItem> filteredMenuItems;
   final bool globalSearchIsVisible;
+  final String selectedSearchPostCode;
   final void Function(String outCode) changeOutCode;
   final void Function(BuildContext context) refreshLocation;
   final String avatarUrl;
@@ -83,6 +94,7 @@ class FeaturedRestaurantsVM extends Equatable {
   final bool isDelivery;
   final void Function(bool isDelivery) setIsDelivery;
   final void Function({required bool makeVisible}) showGlobalSearchBarField;
+  final void Function(String newPostalCode) updateSelectedSearchPostalCode;
   final bool userLocationEnabled;
 
   final void Function({required String query, required String outCode})
@@ -97,6 +109,7 @@ class FeaturedRestaurantsVM extends Equatable {
         postalCodes,
         isDelivery,
         globalSearchIsVisible,
+        selectedSearchPostCode,
         filterRestaurantsQuery,
         filterMenuQuery,
         userLocationEnabled,

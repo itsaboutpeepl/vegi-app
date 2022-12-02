@@ -4,7 +4,11 @@ abstract class Env {
   static const dev = 'dev';
   static const test = 'test';
   static const qa = 'qa';
-  static const prod = 'prod';
+  static const prod = 'production';
+  static bool get isDev => Env.activeEnv == Env.dev;
+  static bool get isProd => Env.activeEnv == Env.prod;
+  static bool get isTest => Env.activeEnv == Env.test;
+  static bool get isQA => Env.activeEnv == Env.qa;
   static const activeEnv = ENV == 'development'
       ? dev
       : ENV == 'qa'
@@ -12,4 +16,12 @@ abstract class Env {
           : ENV == 'test'
               ? test
               : prod;
+  static const _envFile = activeEnv == dev
+      ? '.env_dev'
+      : activeEnv == qa
+          ? '.env_qa'
+          : activeEnv == test
+              ? '.env_dev'
+              : '.env';
+  static const envFile = 'environment/$_envFile';
 }
