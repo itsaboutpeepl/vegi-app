@@ -39,8 +39,8 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AccountViewModel>(
-      converter: AccountViewModel.fromStore,
+    return StoreConnector<AppState, void>(
+      converter: (store) {},
       onInit: (store) => fetchOrdersList(store.state.userState.walletAddress),
       builder: (_, viewmodel) {
         return Scaffold(

@@ -925,7 +925,7 @@ ThunkAction<AppState> startPeeplPayProcess({
         await stripeService
             .handleStripe(
           walletAddress: store.state.userState.walletAddress,
-          amount: selectedGBPXAmount.toInt(),
+          amount: (selectedGBPXAmount * 100).toInt(),
           context: context,
           shouldPushToHome: false,
         )
