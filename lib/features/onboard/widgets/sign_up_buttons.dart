@@ -74,134 +74,159 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                             ),
                           ),
                           onPressed: () {
-                            //TODO: make this readable PLEASE
-                            if (viewmodel.isLoggedOut) {
-                              viewmodel.loginAgain();
-                              if (context.router.canPop()) {
-                                context.router.popUntilRoot();
-                              }
-                              context.router.replace(const MainScreen());
-                            } else {
-                              setState(() {
-                                isPrimaryPreloading = true;
-                              });
-                              viewmodel.createLocalAccount(
-                                () {
-                                  setState(() {
-                                    isPrimaryPreloading = false;
-                                  });
-                                  context.router.push(const SignUpScreen());
-                                },
-                              );
-                            }
+                            // ! after beta, uncomment ->
+                            // //TODO: make this readable PLEASE
+                            // if (viewmodel.isLoggedOut) {
+                            //   viewmodel.loginAgain();
+                            //   if (context.router.canPop()) {
+                            //     context.router.popUntilRoot();
+                            //   }
+                            //   context.router.replace(const MainScreen());
+                            // } else {
+                            //   setState(() {
+                            //     isPrimaryPreloading = true;
+                            //   });
+                            //   viewmodel.createLocalAccount(
+                            //     () {
+                            //       setState(() {
+                            //         isPrimaryPreloading = false;
+                            //       });
+                            //       context.router.push(const SignUpScreen());
+                            //     },
+                            //   );
+                            // }
+                            context.router
+                                .push(const RestoreFromBackupScreen());
                           },
                         ),
-                        if (viewmodel.isLoggedOut)
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 24.0, bottom: 0.0),
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                side: BorderSide(
-                                  color: Colors.grey[100]!,
-                                  width: 2,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 15,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              child: Text(
-                                I10n.of(context).sign_up,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.grey[100],
-                                ),
-                              ),
-                              onPressed: () {
-                                if (viewmodel.surveyCompleted) {
-                                  if (context.router.canPop()) {
-                                    context.router.popUntilRoot();
-                                  }
-                                  context.router.replace(
-                                    WaitingListFunnelScreen(
-                                      surveyCompleted: true,
-                                    ),
-                                  );
-                                } else {
-                                  context.router.replace(
-                                    WaitingListFunnelScreen(
-                                      surveyCompleted: false,
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
+                        // if (viewmodel.isLoggedOut)
                         Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: viewmodel.isLoggedOut
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    TransparentButton(
-                                      fontSize: 14,
-                                      label: I10n.of(context).restore_backup,
-                                      onPressed: () {
-                                        context.router.push(
-                                          const RestoreFromBackupScreen(),
-                                        );
-                                      },
-                                      textColor: Colors.grey[100]!,
-                                    ),
-                                    Text(
-                                      I10n.of(context).or,
-                                      style: TextStyle(
-                                        color: Colors.grey[100],
-                                      ),
-                                    ),
-                                    TransparentButton(
-                                      fontSize: 14,
-                                      textColor: Colors.grey[100]!,
-                                      label: Messages.createNewAccount,
-                                      preload: isTransparentPreloading,
-                                      onPressed: () async {
-                                        final bool? result =
-                                            await showDialog<bool>(
-                                          context: context,
-                                          builder: (context) =>
-                                              const WarnBeforeReCreation(),
-                                        );
-                                        if (result!) {
-                                          setState(() {
-                                            isTransparentPreloading = true;
-                                          });
-                                          viewmodel.createLocalAccount(
-                                            () {
-                                              context.router
-                                                  .push(const SignUpScreen());
-                                            },
-                                          );
-                                        }
-                                      },
-                                    )
-                                  ],
-                                )
-                              : TransparentButton(
-                                  fontSize: 20,
-                                  label: I10n.of(context).restore_from_backup,
-                                  textColor: Colors.grey[100]!,
-                                  onPressed: () {
-                                    context.router
-                                        .push(const RestoreFromBackupScreen());
-                                  },
-                                ),
-                        )
+                          padding:
+                              const EdgeInsets.only(top: 24.0, bottom: 0.0),
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: BorderSide(
+                                color: Colors.grey[100]!,
+                                width: 2,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text(
+                              I10n.of(context).sign_up,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.grey[100],
+                              ),
+                            ),
+                            onPressed: () {
+                              // ! after beta, uncomment -> convert this back to the new_account button code:
+                              // final bool? result =
+                              //     await showDialog<bool>(
+                              //   context: context,
+                              //   builder: (context) =>
+                              //       const WarnBeforeReCreation(),
+                              // );
+                              // if (result!) {
+                              //   setState(() {
+                              //     isTransparentPreloading = true;
+                              //   });
+                              //   viewmodel.createLocalAccount(
+                              //     () {
+                              //       context.router
+                              //           .push(const SignUpScreen());
+                              //     },
+                              //   );
+                              // }
+                              if (viewmodel.surveyCompleted) {
+                                if (context.router.canPop()) {
+                                  context.router.popUntilRoot();
+                                }
+                                context.router.replace(
+                                  WaitingListFunnelScreen(
+                                    surveyCompleted: true,
+                                  ),
+                                );
+                              } else {
+                                context.router.replace(
+                                  WaitingListFunnelScreen(
+                                    surveyCompleted: false,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        // ! after beta, uncomment ->
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 20),
+                        //   child:
+                        //       // ! newAccount button should be a part of the signup button process.
+                        //       // viewmodel.isLoggedOut
+                        //       //   ? Row(
+                        //       //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       //       children: <Widget>[
+                        //       //         TransparentButton(
+                        //       //           fontSize: 14,
+                        //       //           label: I10n.of(context).restore_backup,
+                        //       //           onPressed: () {
+                        //       //             context.router.push(
+                        //       //               const RestoreFromBackupScreen(),
+                        //       //             );
+                        //       //           },
+                        //       //           textColor: Colors.grey[100]!,
+                        //       //         ),
+                        //       //         Text(
+                        //       //           I10n.of(context).or,
+                        //       //           style: TextStyle(
+                        //       //             color: Colors.grey[100],
+                        //       //           ),
+                        //       //         ),
+                        //       //         TransparentButton(
+                        //       //           fontSize: 14,
+                        //       //           textColor: Colors.grey[100]!,
+                        //       //           label: Messages.createNewAccount,
+                        //       //           preload: isTransparentPreloading,
+                        //       //           onPressed: () async {
+                        //       //             final bool? result =
+                        //       //                 await showDialog<bool>(
+                        //       //               context: context,
+                        //       //               builder: (context) =>
+                        //       //                   const WarnBeforeReCreation(),
+                        //       //             );
+                        //       //             if (result!) {
+                        //       //               setState(() {
+                        //       //                 isTransparentPreloading = true;
+                        //       //               });
+                        //       //               viewmodel.createLocalAccount(
+                        //       //                 () {
+                        //       //                   context.router
+                        //       //                       .push(const SignUpScreen());
+                        //       //                 },
+                        //       //               );
+                        //       //             }
+                        //       //           },
+                        //       //         )
+                        //       //       ],
+                        //       //     )
+                        //       //   :
+                        //       TransparentButton(
+                        //     fontSize: 20,
+                        //     label: I10n.of(context).restore_from_backup,
+                        //     textColor: Colors.grey[100]!,
+                        //     onPressed: () {
+                        //       context.router
+                        //           .push(const RestoreFromBackupScreen());
+                        //     },
+                        //   ),
+                        // )
                       ],
                     ),
                   ),

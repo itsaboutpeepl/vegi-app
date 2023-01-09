@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
@@ -58,6 +62,15 @@ const EMAIL_NOT_PROVIDED = 'email@notprovided.com';
 
 const VEGI_PRIVACY_URL = 'https://vegiapp.co.uk/privacy';
 
+const THE_GUIDE_LIVERPOOL_IOS_LINK = 'https://apps.apple.com/app/id1600049497';
+const THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK =
+    'https://play.google.com/store/apps/details?id=com.theguideliverpool.theguideapp';
+String getGuideLiverpoolLink() {
+  return Platform.isIOS
+      ? THE_GUIDE_LIVERPOOL_IOS_LINK
+      : THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK;
+}
+
 class Messages {
   static const String email = 'Email Address';
   static const String enterEmail =
@@ -67,9 +80,9 @@ class Messages {
 
   static const String invalidEmail = 'Invalid Email';
   static const String thanksForRegisteringEmailWaitList =
-      'Thank you for registering your interest with vegi 💚';
-  static const String thanksForRegisteringEmailWaitListDesc =
-      'You will be first to know as soon as your are able to buy on vegi!';
+      'Thank you for registering with vegi 💚';
+  static const String signUpForTheGuideToAccessTheBeta =
+      'Sign up to the pre-release version of vegi via The Guide Liverpool';
   static const String byRegisteringEmailWaitListReason =
       "By registering, you'll be the first to know when we launch.";
   static const String unsubscribeAtAnyTime =

@@ -235,6 +235,15 @@ class SetUserAvatar {
   String toString() => 'SetUserAvatar : avatarUrl: $avatarUrl';
 }
 
+class SetUserVerifiedStatusSuccess {
+  SetUserVerifiedStatusSuccess(this.userIsVerified);
+  bool userIsVerified;
+
+  @override
+  String toString() =>
+      'SetUserVerifiedStatusSuccess : userIsVerified: $userIsVerified';
+}
+
 class BackupRequest {
   BackupRequest();
 
@@ -438,6 +447,53 @@ ThunkAction<AppState> submitSurveyResponse(
         stackTrace: s,
       );
       onError(e.toString());
+      await Analytics.track(
+        eventName: AnalyticsEvents.submitSurveyResponse,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception('Error in submitSurveyResponse: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR in submitSurveyResponse',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> isBetaWhitelistedAddress() {
+  return (Store<AppState> store) async {
+    try {
+      await peeplEatsService.getUserForWalletAddress(
+        store.state.userState.accountAddress,
+        (userIsVerified) {
+          Analytics.track(
+            eventName: AnalyticsEvents.getUserForWalletAddress,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.success,
+            },
+          );
+          store.dispatch(SetUserVerifiedStatusSuccess(userIsVerified));
+        },
+        (eStr) {
+          Analytics.track(
+            eventName: AnalyticsEvents.getUserForWalletAddress,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.failed,
+              'error': eStr,
+            },
+          );
+        },
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - submitSurveyResponse Request',
+        error: e,
+        stackTrace: s,
+      );
+      // onError(e.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.submitSurveyResponse,
         properties: {

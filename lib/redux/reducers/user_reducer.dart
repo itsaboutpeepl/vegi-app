@@ -36,6 +36,8 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner),
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
   TypedReducer<UserState, EnableLocationServices>(_setLocationServicesEnabled),
+  TypedReducer<UserState, SetUserVerifiedStatusSuccess>(
+      _setUserVerifiedStatusSuccessResponse),
 ]);
 
 UserState _setWalletConnectURI(
@@ -265,6 +267,15 @@ UserState _setSurveyQuestions(
 ) {
   return state.copyWith(
     surveyQuestions: action.questions,
+  );
+}
+
+UserState _setUserVerifiedStatusSuccessResponse(
+  UserState state,
+  SetUserVerifiedStatusSuccess action,
+) {
+  return state.copyWith(
+    userIsVerified: action.userIsVerified,
   );
 }
 

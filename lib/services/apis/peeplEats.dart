@@ -425,6 +425,25 @@ class PeeplEatsService {
     return nextSlots;
   }
 
+  Future<void> getUserForWalletAddress(
+    String walletAddress,
+    void Function(bool userIsVerified) onSuccess,
+    void Function(String error) onError,
+  ) async {
+    final Response<dynamic> response = await dio.get(
+      '/api/v1/admin/user-for-wallet-address',
+      queryParameters: {
+        'walletAddress': walletAddress,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
+    } else {
+      onSuccess((response.data as Map<String, dynamic>)['verified'] as bool);
+    }
+  }
+
   Future<void> registerEmailToWaitingList(
     String email,
     void Function() onSuccess,

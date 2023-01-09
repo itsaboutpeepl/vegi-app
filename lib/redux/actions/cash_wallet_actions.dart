@@ -348,14 +348,14 @@ ThunkAction<AppState> createAccountWalletCall() {
       }
     } catch (e, s) {
       log.error(
-        'ERROR - createAccountWalletCal',
+        'ERROR - createAccountWalletCall',
         error: e,
         stackTrace: s,
       );
       await Sentry.captureException(
-        Exception('ERROR - createAccountWalletCal - $e'),
+        Exception('ERROR - createAccountWalletCall - $e'),
         stackTrace: s,
-        hint: 'ERROR - createAccountWalletCal',
+        hint: 'ERROR - createAccountWalletCall',
       );
     }
   };

@@ -1,9 +1,11 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/drawStar.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/url.dart';
 
 class SurveyCompletedCard extends StatefulWidget {
   const SurveyCompletedCard({
@@ -84,11 +86,18 @@ class _SurveyCompletedCardState extends State<SurveyCompletedCard> {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              Messages.thanksForRegisteringEmailWaitListDesc,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
+            GestureDetector(
+              onTap: () => launchUrl(
+                getGuideLiverpoolLink(),
+                mode: LaunchMode.externalApplication
+              ),
+              child: Text(
+                Messages.signUpForTheGuideToAccessTheBeta,
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 16,
+                ),
+                // textAlign: TextAlign.center,
               ),
             ),
           ],

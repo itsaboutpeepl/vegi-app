@@ -63,6 +63,7 @@ class UserState with _$UserState {
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
     @Default(false) bool hasSavedSeedPhrase,
     @Default(false) bool useLiveLocation,
+    @Default(false) @JsonKey(ignore: true) bool userIsVerified,
     @Default(null) @JsonKey(ignore: true) Position? userLocation,
     @Default('') String initialLoginDateTime,
     @Default(false) bool showSeedPhraseBanner,

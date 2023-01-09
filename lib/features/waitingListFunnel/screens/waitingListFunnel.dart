@@ -86,7 +86,9 @@ class _WaitingListFunnelScreenState extends State<WaitingListFunnelScreen>
     BuildContext context,
     WaitingListFunnelViewModel viewmodel,
   ) {
-    return [
+    return widget.surveyCompleted ? [
+      const SurveyThanksScreen(),
+    ] : [
       RegisterEmailWaitingListScreen(
         nextPage: nextPage(viewmodel.surveyQuestions.length),
         previousPage: previousPage(viewmodel.surveyQuestions.length),

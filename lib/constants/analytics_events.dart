@@ -13,6 +13,7 @@ class AnalyticsEvents {
   static const String loginWithPhone = 'login_with_phone'; //
   static const String emailWLRegistration = 'email_waiting_list_registration';
   static const String submitSurveyResponse = 'submit_survey_response';
+  static const String getUserForWalletAddress = 'get_user_for_wallet_address_response';
   static const String verify = 'verify_phone'; //
   static const String securityScreen = 'security_screen'; //
   static const String pincodeScreen = 'pincode_screen'; //
