@@ -60,15 +60,28 @@ final Token fuseDollarToken = Token(
 
 const EMAIL_NOT_PROVIDED = 'email@notprovided.com';
 
-const VEGI_PRIVACY_URL = 'https://vegiapp.co.uk/privacy';
+const VEGI_BASE_URL = 'https://vegiapp.co.uk';
+const VEGI_PRIVACY_URL = '$VEGI_BASE_URL/privacy';
+const VEGI_CONTACT_US_URL = '$VEGI_BASE_URL/contact';
+const VEGI_TIKTOK_HANDLE = '@vegi_app';
+const VEGI_TIKTOK_PROFILE_URL = 'https://vm.tiktok.com/ZMNF3ekHX/';
+const VEGI_INSTA_HANDLE = 'wearevegi';
+const VEGI_INSTA_PROFILE_URL = 'https://www.instagram.com/wearevegi/';
 
-const THE_GUIDE_LIVERPOOL_IOS_LINK = 'https://apps.apple.com/app/id1600049497';
-const THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK =
-    'https://play.google.com/store/apps/details?id=com.theguideliverpool.theguideapp';
+// const THE_GUIDE_LIVERPOOL_IOS_LINK = 'https://apps.apple.com/app/id1600049497';
+// const THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK =
+//     'https://play.google.com/store/apps/details?id=com.theguideliverpool.theguideapp';
+const THE_GUIDE_LIVERPOOL_LINKTREE = 'https://qrco.de/bdNuyp';
+const THE_GUIDE_LIVERPOOL_IOS_LINK = THE_GUIDE_LIVERPOOL_LINKTREE;
+const THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK = THE_GUIDE_LIVERPOOL_LINKTREE;
+const VEGI_SUPPORT_PHONE_NUMBER = '+447917787967';
+const VEGI_SUPPORT_EMAIL = 'support@vegi.co.uk';
+
 String getGuideLiverpoolLink() {
-  return Platform.isIOS
-      ? THE_GUIDE_LIVERPOOL_IOS_LINK
-      : THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK;
+  return 'https://qrco.de/bdNuyp';
+  // return Platform.isIOS
+  //     ? THE_GUIDE_LIVERPOOL_IOS_LINK
+  //     : THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK;
 }
 
 class Messages {
@@ -79,6 +92,7 @@ class Messages {
   static const String createNewAccount = 'New Account';
 
   static const String invalidEmail = 'Invalid Email';
+  static const String newSupportRequestSubjectHeader = 'New Support Request';
   static const String thanksForRegisteringEmailWaitList =
       'Thank you for registering with vegi 💚';
   static const String signUpForTheGuideToAccessTheBeta =

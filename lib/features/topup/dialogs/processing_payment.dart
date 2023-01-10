@@ -8,6 +8,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class _ProcessingPaymentViewModel extends Equatable {
   const _ProcessingPaymentViewModel({
@@ -204,7 +205,7 @@ class _ProcessingPaymentState extends State<ProcessingPayment>
                             ? 'Sorry if this is taking too long'
                             : ''
                         : viewmodel.isError
-                            ? 'Please contact us at help@vegi.co.uk'
+                            ? 'Please contact us at $VEGI_SUPPORT_EMAIL'
                             : 'Thank you for your order!',
                     key: ValueKey(_valueKey),
                     textAlign: TextAlign.center,

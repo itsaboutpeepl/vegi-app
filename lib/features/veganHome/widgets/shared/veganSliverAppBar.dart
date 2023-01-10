@@ -6,6 +6,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/helpDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
@@ -163,7 +164,18 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                           );
                         },
                         icon: const Icon(Icons.search),
+                        padding: const EdgeInsets.all(4),
                       ),
+                    IconButton(
+                      onPressed: () => showDialog<Widget>(
+                        context: context,
+                        builder: (context) => const HelpDialog(),
+                      ),
+                      icon: const Icon(Icons.help_center_outlined),
+                      padding: const EdgeInsets.all(4),
+                      // icon: const Icon(Icons.contact_support),
+                      // icon: const Icon(Icons.live_help),
+                    ),
                     Material(
                       borderRadius: BorderRadius.circular(50),
                       elevation: 3,

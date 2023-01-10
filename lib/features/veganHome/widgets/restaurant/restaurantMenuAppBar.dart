@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/helpDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -218,6 +219,16 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                       icon: viewmodel.menuSearchIsVisible
                           ? const Icon(Icons.cancel)
                           : const Icon(Icons.search),
+                    ),
+                    IconButton(
+                      onPressed: () => showDialog<Widget>(
+                        context: context,
+                        builder: (context) => const HelpDialog(),
+                      ),
+                      icon: const Icon(Icons.help_center_outlined),
+                      padding: const EdgeInsets.all(4),
+                      // icon: const Icon(Icons.contact_support),
+                      // icon: const Icon(Icons.live_help),
                     ),
                   ],
                 ),

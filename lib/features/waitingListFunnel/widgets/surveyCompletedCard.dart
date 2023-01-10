@@ -87,17 +87,15 @@ class _SurveyCompletedCardState extends State<SurveyCompletedCard> {
               height: 20,
             ),
             GestureDetector(
-              onTap: () => launchUrl(
-                getGuideLiverpoolLink(),
-                mode: LaunchMode.externalApplication
-              ),
+              onTap: () => launchUrl(getGuideLiverpoolLink(),
+                  mode: LaunchMode.externalApplication),
               child: Text(
                 Messages.signUpForTheGuideToAccessTheBeta,
                 style: TextStyle(
                   color: Colors.grey[500],
                   fontSize: 16,
                 ),
-                // textAlign: TextAlign.center,
+                textAlign: TextAlign.center,
               ),
             ),
           ],

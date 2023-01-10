@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/common/di/package_info.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -52,8 +53,8 @@ class AboutScreen extends StatelessWidget {
                         height: 20,
                       ),
                       const Text(
-                        'Follow our journey on our website www.vegiapp.co.uk'
-                        ' or on our Instagram or Tiktok @vegi_app',
+                        'Follow our journey on our website $VEGI_BASE_URL'
+                        ' or on our Instagram ($VEGI_INSTA_HANDLE) or Tiktok ($VEGI_TIKTOK_HANDLE)',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
@@ -71,7 +72,7 @@ class AboutScreen extends StatelessWidget {
                           children: [
                             IconButton(
                               onPressed: () => launchUrl(
-                                'https://www.instagram.com/vegi_liverpool/',
+                                VEGI_INSTA_PROFILE_URL,
                               ),
                               icon: Icon(
                                 FontAwesomeIcons.instagram,
@@ -81,7 +82,7 @@ class AboutScreen extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () => launchUrl(
-                                'https://vm.tiktok.com/ZMNF3ekHX/',
+                                VEGI_TIKTOK_PROFILE_URL,
                               ),
                               icon: Icon(
                                 FontAwesomeIcons.tiktok,
@@ -91,7 +92,7 @@ class AboutScreen extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () =>
-                                  launchUrl('https://vegiapp.co.uk'),
+                                  launchUrl(VEGI_BASE_URL),
                               icon: Icon(
                                 Icons.launch,
                                 color: Colors.grey[400],
