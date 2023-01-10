@@ -23,11 +23,29 @@ String whatsappAutofillNewMessage(String phoneNumber, String message) {
   return 'whatsapp://send?phone=$phoneNumber&text=${Uri.encodeComponent(body)}';
 }
 
-const whatsappContactVegiSupportUrlButtonLabel = 'Chat';
 const instaDMContactVegiSupportUrlButtonLabel = 'DM';
+
+int _convert24HourTo12Hour(int hour) {
+  // if (hour > 11) {
+  //   return hour - 12;
+  // }
+  return hour % 12;
+}
+
+// todo: Populate from vegi backend
+const whatsappContactVegiSupportOpens24HourClock = 7;
+const whatsappContactVegiSupportCloses24HourClock = 21;
+final whatsappContactVegiSupportUrlButtonLabel =
+    'Chat ${_convert24HourTo12Hour(whatsappContactVegiSupportOpens24HourClock)}-${_convert24HourTo12Hour(whatsappContactVegiSupportCloses24HourClock)}';
 
 final whatsappContactVegiSupportUrl =
     whatsappAutofillNewMessage(VEGI_SUPPORT_PHONE_NUMBER, '');
+
+bool whatsappChatIsOutOfHours() {
+  final now = DateTime.now();
+  return now.hour < whatsappContactVegiSupportOpens24HourClock ||
+      now.hour >= whatsappContactVegiSupportCloses24HourClock;
+}
 
 String mailAutofillNewMessage(String to, String subject, String message) {
   final emailTo = Uri.encodeComponent(to);

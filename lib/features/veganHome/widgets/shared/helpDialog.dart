@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/vegiDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -17,17 +18,32 @@ class HelpDialog extends StatelessWidget {
   const HelpDialog({Key? key}) : super(key: key);
 
   Widget _dialogButton({
+    required BuildContext context,
     required String label,
     required IconData icon,
     required void Function() onPressed,
+    bool disabled = false,
+    bool dangerButton = false,
   }) {
-    const _buttonLabelColour = Colors.white;
+    // final _buttonLabelColour = dangerButton ? themeShade1200 : Colors.white;
+    final _buttonLabelColour =
+        disabled ? const Color(0xFF797979) : Colors.white;
     const _buttonLabelFontSize = 30.0;
+    final _buttonBackgroundColor = dangerButton
+        ? disabled
+            ? themeShade800
+            : themeAccent600
+        : disabled
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).colorScheme.primary;
     return Container(
       width: 255,
       padding: const EdgeInsets.all(16),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: disabled ? () {} : onPressed,
+        style: dangerButton
+            ? ElevatedButton.styleFrom(backgroundColor: themeAccent600)
+            : ElevatedButton.styleFrom(backgroundColor: themeShade600),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -36,7 +52,7 @@ class HelpDialog extends StatelessWidget {
               child: Center(
                 child: Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: _buttonLabelColour,
                     fontSize: _buttonLabelFontSize * 0.75,
                     fontWeight: FontWeight.normal,
@@ -77,23 +93,29 @@ class HelpDialog extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           _dialogButton(
+            context: context,
             label: 'Website',
             icon: Icons.open_in_new,
             onPressed: () => launchUrl(VEGI_CONTACT_US_URL),
           ),
           // const SizedBox(height: 15),
           _dialogButton(
+            context: context,
             label: 'Email',
             icon: Icons.send,
             onPressed: () => launchUrl(mailContactVegiSupport),
           ),
           // const SizedBox(height: 15),
           _dialogButton(
+            context: context,
             label: whatsappContactVegiSupportUrlButtonLabel,
             icon: FontAwesomeIcons.whatsapp,
+            dangerButton: true,
+            disabled: whatsappChatIsOutOfHours(),
             onPressed: () => launchUrl(whatsappContactVegiSupportUrl),
           ),
           _dialogButton(
+            context: context,
             label: instaDMContactVegiSupportUrlButtonLabel,
             icon: FontAwesomeIcons.instagram,
             onPressed: () => launchUrl(VEGI_INSTA_PROFILE_URL),

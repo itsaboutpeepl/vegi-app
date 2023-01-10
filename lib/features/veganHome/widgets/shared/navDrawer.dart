@@ -9,6 +9,7 @@ import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/helpDialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/drawer.dart';
@@ -172,6 +173,14 @@ class _NavDrawerState extends State<NavDrawer> {
                   Analytics.track(eventName: AnalyticsEvents.viewAbout);
                   context.router.push(const AboutScreen());
                 },
+              ),
+              ListTile(
+                leading: const Icon(Icons.help_sharp),
+                title: const Text('Contact Us'),
+                onTap: () => showDialog<Widget>(
+                  context: context,
+                  builder: (context) => const HelpDialog(),
+                ),
               ),
               ListTile(
                 leading: const Icon(Icons.exit_to_app),
