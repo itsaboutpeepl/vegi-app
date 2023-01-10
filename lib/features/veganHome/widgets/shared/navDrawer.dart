@@ -167,20 +167,20 @@ class _NavDrawerState extends State<NavDrawer> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.help_sharp),
-                title: const Text('About Us'),
-                onTap: () {
-                  Analytics.track(eventName: AnalyticsEvents.viewAbout);
-                  context.router.push(const AboutScreen());
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.help_sharp),
+                leading: const Icon(Icons.send),
                 title: const Text('Contact Us'),
                 onTap: () => showDialog<Widget>(
                   context: context,
                   builder: (context) => const HelpDialog(),
                 ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.help_sharp),
+                title: const Text('About vegi'),
+                onTap: () {
+                  Analytics.track(eventName: AnalyticsEvents.viewAbout);
+                  context.router.push(const AboutScreen());
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.exit_to_app),

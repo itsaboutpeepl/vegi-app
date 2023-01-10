@@ -34,7 +34,7 @@ class HelpDialog extends StatelessWidget {
             ? themeShade800
             : themeAccent600
         : disabled
-            ? Theme.of(context).colorScheme.secondary
+            ? themeShade900
             : Theme.of(context).colorScheme.primary;
     return Container(
       width: 255,
@@ -42,7 +42,7 @@ class HelpDialog extends StatelessWidget {
       child: ElevatedButton(
         onPressed: disabled ? () {} : onPressed,
         style: dangerButton
-            ? ElevatedButton.styleFrom(backgroundColor: themeAccent600)
+            ? ElevatedButton.styleFrom(backgroundColor: themeShade1100)
             : ElevatedButton.styleFrom(backgroundColor: themeShade600),
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -94,11 +94,12 @@ class HelpDialog extends StatelessWidget {
           const SizedBox(height: 15),
           _dialogButton(
             context: context,
-            label: 'Website',
-            icon: Icons.open_in_new,
-            onPressed: () => launchUrl(VEGI_CONTACT_US_URL),
+            label: whatsappContactVegiSupportUrlButtonLabel(),
+            icon: FontAwesomeIcons.whatsapp,
+            dangerButton: true,
+            disabled: whatsappChatIsOutOfHours(),
+            onPressed: () => launchUrl(whatsappContactVegiSupportUrl),
           ),
-          // const SizedBox(height: 15),
           _dialogButton(
             context: context,
             label: 'Email',
@@ -108,18 +109,16 @@ class HelpDialog extends StatelessWidget {
           // const SizedBox(height: 15),
           _dialogButton(
             context: context,
-            label: whatsappContactVegiSupportUrlButtonLabel,
-            icon: FontAwesomeIcons.whatsapp,
-            dangerButton: true,
-            disabled: whatsappChatIsOutOfHours(),
-            onPressed: () => launchUrl(whatsappContactVegiSupportUrl),
+            label: 'Website',
+            icon: Icons.open_in_new,
+            onPressed: () => launchUrl(VEGI_CONTACT_US_URL),
           ),
-          _dialogButton(
-            context: context,
-            label: instaDMContactVegiSupportUrlButtonLabel,
-            icon: FontAwesomeIcons.instagram,
-            onPressed: () => launchUrl(VEGI_INSTA_PROFILE_URL),
-          ),
+          // _dialogButton(
+          //   context: context,
+          //   label: instaDMContactVegiSupportUrlButtonLabel,
+          //   icon: FontAwesomeIcons.instagram,
+          //   onPressed: () => launchUrl(VEGI_INSTA_PROFILE_URL),
+          // ),
         ],
       ),
     );

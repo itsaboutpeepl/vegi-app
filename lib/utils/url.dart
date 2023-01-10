@@ -33,10 +33,11 @@ int _convert24HourTo12Hour(int hour) {
 }
 
 // todo: Populate from vegi backend
-const whatsappContactVegiSupportOpens24HourClock = 7;
+const whatsappContactVegiSupportOpens24HourClock = 17;
 const whatsappContactVegiSupportCloses24HourClock = 21;
-final whatsappContactVegiSupportUrlButtonLabel =
-    'Chat ${_convert24HourTo12Hour(whatsappContactVegiSupportOpens24HourClock)}-${_convert24HourTo12Hour(whatsappContactVegiSupportCloses24HourClock)}';
+String whatsappContactVegiSupportUrlButtonLabel() {
+  return 'Chat ' + (whatsappChatIsOutOfHours() ? 'offline' : 'now');
+}
 
 final whatsappContactVegiSupportUrl =
     whatsappAutofillNewMessage(VEGI_SUPPORT_PHONE_NUMBER, '');
