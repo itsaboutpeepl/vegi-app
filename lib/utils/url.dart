@@ -20,6 +20,7 @@ String whatsappAutofillNewMessage(String phoneNumber, String message) {
   final body = '$message'
       ' Version ${packageInfo.version},'
       ' Build ${packageInfo.buildNumber}';
+  // ~ https://stackoverflow.com/a/60950933
   return 'whatsapp://send?phone=$phoneNumber&text=${Uri.encodeComponent(body)}';
 }
 
@@ -33,7 +34,7 @@ int _convert24HourTo12Hour(int hour) {
 }
 
 // todo: Populate from vegi backend
-const whatsappContactVegiSupportOpens24HourClock = 17;
+const whatsappContactVegiSupportOpens24HourClock = 7;
 const whatsappContactVegiSupportCloses24HourClock = 21;
 String whatsappContactVegiSupportUrlButtonLabel() {
   return 'Chat ' + (whatsappChatIsOutOfHours() ? 'offline' : 'now');
