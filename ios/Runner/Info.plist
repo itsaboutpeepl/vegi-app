@@ -93,6 +93,8 @@
 	<string>Allow location when using app to show your local vendors.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow location when using app to show your local vendors.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow location when using app to show your local vendors.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app requires microphone access for KYC Onboarding and 3D Face Matching for Ongoing Authentication.</string>
 	<key>NSMotionUsageDescription</key>
