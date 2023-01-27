@@ -66,7 +66,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                           child: Text(
                             viewmodel.isLoggedOut
                                 ? I10n.of(context).login
-                                : I10n.of(context).create_new_wallet,
+                                : (I10n.of(context).restore_from_backup),
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
