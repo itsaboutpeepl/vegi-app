@@ -225,7 +225,7 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                         context: context,
                         builder: (context) => const HelpDialog(),
                       ),
-                      icon: const Icon(Icons.help_center_outlined),
+                      icon: const Icon(Icons.headset_mic),
                       padding: const EdgeInsets.all(4),
                       // icon: const Icon(Icons.contact_support),
                       // icon: const Icon(Icons.live_help),
