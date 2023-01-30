@@ -46,9 +46,6 @@ class FeaturedRestaurantsVM extends Equatable {
       isDelivery: store.state.cartState.isDelivery,
       postalCodes: store.state.homePageState.postalCodes,
       listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
-      changeOutCode: (outCode) {
-        store.dispatch(fetchFeaturedRestaurantsByPostCode(outCode: outCode));
-      },
       refreshLocation: (BuildContext context) {
         store.dispatch(fetchFeaturedRestaurantsByUserLocation());
       },
@@ -64,6 +61,9 @@ class FeaturedRestaurantsVM extends Equatable {
             makeGlobalSearchVisible: makeVisible,
           ),
         );
+      },
+      changeOutCode: (outCode) {
+        store.dispatch(fetchFeaturedRestaurantsByPostCode(outCode: outCode));
       },
       updateSelectedSearchPostalCode: (String newPostalCode) {
         store.dispatch(

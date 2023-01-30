@@ -25,6 +25,8 @@ class AnalyticsEvents {
   static const String switchFulfilmentMethod = 'switch_fulfilment_method'; //
   static const String openDrawer = 'open_drawer'; //
   static const String changeOutcode = 'change_outcode'; //
+  static const String enableLocationServices = 'enable_location_services'; //
+  static const String disableLocationServices = 'disable_location_services'; //
 
   //Drawer
   static const String viewAllOrders = 'view_all_orders'; //

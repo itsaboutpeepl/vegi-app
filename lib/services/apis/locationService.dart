@@ -6,12 +6,21 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/location/postCodeDetail.dart';
 import 'package:vegan_liverpool/services/apis/places.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 void ToNull() => null;
 
 @lazySingleton
 class LocationService {
+  LocationService(this.dio) {
+    dio.options.baseUrl = postcodeIoBaseUrl;
+    dio.options.headers = Map.from({'Content-Type': 'application/json'});
+  }
+
+  final Dio dio;
+
   // created method for getting user current location
   Future<Position> getUserCurrentLocation({
     void Function() callbackIfDenied = ToNull,
@@ -28,6 +37,40 @@ class LocationService {
     final currentPosition = await Geolocator.getCurrentPosition();
     return currentPosition;
     // return Coordinates(currentPosition.latitude, currentPosition.longitude);
+  }
+
+  Future<List<PostCodeDetail>> getPostalCodeDetailFromLocation({
+    required Coordinates location,
+  }) async {
+    final qryParams = 'lon=${location.lng}&lat=${location.lat}';
+    final Response<dynamic> response = await dio
+        .get<dynamic>(
+      '$postcodeIoGetPostcodeDetailRelUrl?$qryParams',
+    )
+        .timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        return Response(
+          data: {'result': List<PostCodeDetail>.empty()},
+          requestOptions: RequestOptions(path: ''),
+        );
+      },
+    ).onError(
+      (error, stackTrace) => Response(
+        data: {'result': List<PostCodeDetail>.empty()},
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
+
+    if (response.data['status'] != 200) {
+      return List<PostCodeDetail>.empty();
+    }
+
+    final results = List.from(response.data['result'] as Iterable<dynamic>)
+        .map((e) => PostCodeDetail.fromJson((e as Map<String, dynamic>)))
+        .toList();
+
+    return results;
   }
 
   Future<bool> locationEnabled({required Store<AppState> store}) {

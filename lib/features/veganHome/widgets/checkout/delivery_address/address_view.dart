@@ -268,7 +268,7 @@ class _AddressViewState extends State<AddressView> {
                             );
                           }
                         }
-                        Navigator.pop(context);
+                        Navigator.pop(context); // Needs to come from dialog like delivery_address_selector
                       }
                     },
                     label: 'Save Address',

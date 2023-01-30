@@ -167,7 +167,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.send),
+                leading: const Icon(Icons.headset_mic),
                 title: const Text('Contact Us'),
                 onTap: () => showDialog<Widget>(
                   context: context,

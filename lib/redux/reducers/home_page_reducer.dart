@@ -86,5 +86,11 @@ HomePageState _updateSelectedSearchPostCode(
   HomePageState state,
   UpdateSelectedSearchPostCode action,
 ) {
+  if (!state.postalCodes.contains(action.selectedSearchPostCode)) {
+    return state.copyWith(
+      postalCodes: state.postalCodes..add(action.selectedSearchPostCode),
+      selectedSearchPostCode: action.selectedSearchPostCode,
+    );
+  }
   return state.copyWith(selectedSearchPostCode: action.selectedSearchPostCode);
 }

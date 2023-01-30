@@ -106,3 +106,8 @@ class Messages {
 const ENV = String.fromEnvironment('ENV', defaultValue: 'production');
 const USE_FIREBASE_EMULATOR =
     String.fromEnvironment('USE_FIREBASE_EMULATOR', defaultValue: 'false');
+
+const postcodeIoBaseUrl = 'https://api.postcodes.io/';
+const postcodeIoGetPostcodeDetailRelUrl = '/postcodes'; // ~ https://postcodes.io/#:~:text=Get%20nearest%20postcodes%20for%20a%20given%20longitude%20%26%20latitude
+
+

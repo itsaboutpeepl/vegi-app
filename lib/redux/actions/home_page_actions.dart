@@ -159,7 +159,12 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByPostCode({
         ..dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
         )
-        ..dispatch(fetchMenuItemsForRestaurant());
+        ..dispatch(fetchMenuItemsForRestaurant())
+        ..dispatch(
+          UpdateSelectedSearchPostCode(
+            selectedSearchPostCode: outCode,
+          ),
+        );
     } catch (e, s) {
       log.error('ERROR - fetchFeaturedRestaurantsByPostCode $e');
       await Sentry.captureException(
@@ -169,6 +174,23 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByPostCode({
       );
     }
   };
+}
+
+Future<Coordinates> fetchUserDeliverToCoordinates(Store<AppState> store) async {
+  final deliverTo = store.state.cartState.selectedDeliveryAddress;
+  if (deliverTo != null) {
+    final coordinate = Coordinates(deliverTo.latitude, deliverTo.longitude);
+    if (deliverTo.latitude == 0 || deliverTo.longitude == 0) {
+      log.warn(
+          'WARN - fetchUserDeliverToCoordinates has a deliverTo location with coordinates: $coordinate');
+      await Sentry.captureMessage(
+          'WARN - fetchUserDeliverToCoordinates has a deliverTo location with coordinates: $coordinate');
+    }
+    return Future.value(coordinate);
+  } else {
+    final userLocation = await locationService.getUserCurrentLocation();
+    return Coordinates(userLocation.latitude, userLocation.longitude);
+  }
 }
 
 ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
@@ -183,18 +205,35 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
       //       title:
       //           'Location is not enabled. Enable in settings to see vendors.');
       // }
-      final userLocation = await locationService.getUserCurrentLocation();
+      final userDeliverTo = await fetchUserDeliverToCoordinates(store);
+
+      final postcodeDetails = await locationService
+          .getPostalCodeDetailFromLocation(location: userDeliverTo);
+
       final List<RestaurantItem> restaurants =
           await peeplEatsService.getRestaurantsByLocation(
-        geoLocation: Coordinates(userLocation.latitude, userLocation.longitude),
-        distanceFromLocationAllowedInKm: NEARBY_VENDORS_DISTANCE_KM,
+        geoLocation: userDeliverTo,
+        distanceFromLocationAllowedInKm: store.state.cartState.isDelivery
+            ? NEARBY_VENDORS_DISTANCE_KM
+            : null,
       );
+
+      final outCode = postcodeDetails.isNotEmpty
+          ? postcodeDetails.first.outcode
+          : restaurants.isNotEmpty
+              ? restaurants.first.address.outcode
+              : store.state.homePageState.selectedSearchPostCode;
 
       store
         ..dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
         )
-        ..dispatch(fetchMenuItemsForRestaurant());
+        ..dispatch(fetchMenuItemsForRestaurant())
+        ..dispatch(
+          UpdateSelectedSearchPostCode(
+            selectedSearchPostCode: outCode,
+          ),
+        );
     } catch (e, s) {
       log.error('ERROR - fetchFeaturedRestaurantsByUserLocation $e');
       await Sentry.captureException(

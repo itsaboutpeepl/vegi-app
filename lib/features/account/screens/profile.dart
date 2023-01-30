@@ -6,11 +6,15 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_address/delivery_address_selector_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/profile.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/format.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -237,21 +241,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: CupertinoSwitch(
                             // This bool value toggles the switch.
                             value: viewmodel.useLiveLocation,
-                            thumbColor: CupertinoColors.systemBlue,
+                            thumbColor: viewmodel.useLiveLocation
+                                ? themeShade600
+                                : themeShade600.withOpacity(0.5),
                             trackColor:
-                                CupertinoColors.systemGreen.withOpacity(0.14),
-                            activeColor:
-                                CupertinoColors.systemGreen.withOpacity(0.64),
+                                CupertinoColors.systemGrey.withOpacity(0.14),
+                            activeColor: themeShade300.withOpacity(0.10),
                             onChanged: (bool? value) {
-                              // This is called when the user toggles the switch.
+                              // This is called when the user toggles the switch
+                              if (value == null) {
+                                return;
+                              }
                               setState(() {
-                                viewmodel.useLocationServices(value!);
+                                viewmodel.useLocationServices(value);
                                 viewmodel.refreshVendors();
+                              });
+                              setState(() {
+                                Analytics.track(
+                                  eventName: value
+                                      ? AnalyticsEvents.enableLocationServices
+                                      : AnalyticsEvents.disableLocationServices,
+                                  properties: {'screen': 'home'},
+                                );
                               });
                             },
                           ),
                         ),
                       ),
+                      // const Divider(),
+                      // const DeliveryAddressSelectorButton(), //TODO: Check that this works...
                       const Divider(),
                       _buildGroup(
                         I10n.of(context).wallet_address,

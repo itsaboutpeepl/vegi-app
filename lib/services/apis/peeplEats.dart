@@ -88,11 +88,15 @@ class PeeplEatsService {
 
   Future<List<RestaurantItem>> getRestaurantsByLocation({
     required Coordinates geoLocation,
-    required num distanceFromLocationAllowedInKm,
+    required num? distanceFromLocationAllowedInKm,
   }) async {
+    final distanceFromQueryParam = distanceFromLocationAllowedInKm == null
+        ? ''
+        : '&distance=$distanceFromLocationAllowedInKm';
     final Response<dynamic> response = await dio
         .get<dynamic>(
-            'api/v1/vendors?location=${geoLocation.lat},${geoLocation.lng}&distance=$distanceFromLocationAllowedInKm')
+      'api/v1/vendors?location=${geoLocation.lat},${geoLocation.lng}$distanceFromQueryParam',
+    )
         .timeout(
       const Duration(seconds: 5),
       onTimeout: () {

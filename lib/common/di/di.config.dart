@@ -74,7 +74,8 @@ Future<_i1.GetIt> $initGetIt(
   gh.lazySingleton<_i9.IOnBoardStrategy>(() => onBoardStrategy.onBoardStrategy);
   gh.lazySingleton<_i10.InternetConnectionChecker>(
       () => networkInfoDi.dataConnectionChecker);
-  gh.lazySingleton<_i11.LocationService>(() => _i11.LocationService());
+  gh.lazySingleton<_i11.LocationService>(
+      () => _i11.LocationService(get<_i4.Dio>()));
   gh.lazySingleton<_i12.Logger>(() => loggerDi.logger);
   gh.lazySingleton<_i13.NetworkInfo>(
       () => _i13.NetworkInfo(get<_i10.InternetConnectionChecker>()));

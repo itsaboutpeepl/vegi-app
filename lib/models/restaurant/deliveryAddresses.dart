@@ -69,6 +69,11 @@ class DeliveryAddresses with _$DeliveryAddresses {
 
   String get shortAddress =>
       '$shortAddressLessPostCode, ${postalCode.capitalizeWords()}';
+  
+  String get incode =>
+      postalCode.capitalize().substring(postalCode.length-3);
+  String get outcode =>
+      postalCode.capitalize().replaceRange(postalCode.length - 3, null, '');
 
   String get longAddress {
     if (addressLine2.isEmpty) {
