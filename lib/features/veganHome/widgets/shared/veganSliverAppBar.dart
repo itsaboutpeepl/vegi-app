@@ -188,17 +188,6 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         },
                         child: Stack(
                           children: [
-                            Positioned(
-                              right: 0,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: themeAccent500,
-                                  shape: BoxShape.circle,
-                                ),
-                                width: 10,
-                                height: 10,
-                              ),
-                            ),
                             if (viewmodel.avatarUrl == '')
                               const CircleAvatar(
                                 backgroundImage:
