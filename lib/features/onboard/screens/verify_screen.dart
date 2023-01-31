@@ -121,6 +121,9 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                               currentText = value;
                             });
                           },
+                          onCompleted: ((value) {
+                            _verifyCode(viewModel);
+                          }),
                         ),
                       ),
                     ),
@@ -132,26 +135,7 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                         preload: isPreloading,
                         disabled: isPreloading,
                         onPressed: () {
-                          formKey.currentState!.validate();
-                          if (currentText.length != 6) {
-                          } else {
-                            setState(() {
-                              isPreloading = true;
-                            });
-                            viewModel.verify(
-                              codeController.text,
-                              () {
-                                setState(() {
-                                  isPreloading = false;
-                                });
-                              },
-                              (dynamic error) {
-                                setState(() {
-                                  isPreloading = false;
-                                });
-                              },
-                            );
-                          }
+                          _verifyCode(viewModel);
                         },
                       ),
                     ),
@@ -188,5 +172,27 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
         },
       ),
     );
+  }
+
+  void _verifyCode(VerifyOnboardViewModel viewModel) {
+    formKey.currentState!.validate();
+    if (currentText.length == 6) {
+      setState(() {
+        isPreloading = true;
+      });
+      viewModel.verify(
+        codeController.text,
+        () {
+          setState(() {
+            isPreloading = false;
+          });
+        },
+        (dynamic error) {
+          setState(() {
+            isPreloading = false;
+          });
+        },
+      );
+    }
   }
 }
