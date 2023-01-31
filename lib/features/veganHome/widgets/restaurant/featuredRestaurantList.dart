@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class FeaturedRestaurantList extends StatelessWidget {
   const FeaturedRestaurantList({Key? key}) : super(key: key);
@@ -26,8 +27,8 @@ class FeaturedRestaurantList extends StatelessWidget {
       },
       builder: (_, viewmodel) {
         final location = viewmodel.userLocationEnabled
-            ? 'your current location'
-            : 'your area';
+            ? '${viewmodel.selectedSearchPostCode}'
+            : 'your area (${viewmodel.selectedSearchPostCode})';
         final restaurants = viewmodel.filterRestaurantsQuery.isEmpty
             ? viewmodel.featuredRestaurants
             : viewmodel.filteredRestaurants;
@@ -37,11 +38,9 @@ class FeaturedRestaurantList extends StatelessWidget {
               )
             : restaurants.isEmpty
                 ? EmptyStatePage(
-                    emoji: '😐',
-                    title: "Pretty empty here, isn't it?",
-                    subtitle:
-                        "We aren't currently delivering to $location, but "
-                        'we will in the future, so check back later!',
+                    emoji: noVendorsFoundCopyEmoji,
+                    title: noVendorsFoundCopyTitle,
+                    subtitle: noVendorsFoundCopyMessage(location),
                   )
                 : ListView.separated(
                     shrinkWrap: true,

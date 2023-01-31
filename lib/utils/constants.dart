@@ -108,6 +108,11 @@ const USE_FIREBASE_EMULATOR =
     String.fromEnvironment('USE_FIREBASE_EMULATOR', defaultValue: 'false');
 
 const postcodeIoBaseUrl = 'https://api.postcodes.io/';
-const postcodeIoGetPostcodeDetailRelUrl = '/postcodes'; // ~ https://postcodes.io/#:~:text=Get%20nearest%20postcodes%20for%20a%20given%20longitude%20%26%20latitude
+const postcodeIoGetPostcodeDetailRelUrl =
+    '/postcodes'; // ~ https://postcodes.io/#:~:text=Get%20nearest%20postcodes%20for%20a%20given%20longitude%20%26%20latitude
 
-
+const noVendorsFoundCopyTitle = "Pretty empty here, isn't it?";
+const noVendorsFoundCopyEmoji = '😐';
+final noVendorsFoundCopyMessage = (String location) =>
+    "We aren't currently delivering to $location, but "
+    'we will in the future, so check back later!';

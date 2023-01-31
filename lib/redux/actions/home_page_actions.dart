@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
@@ -214,8 +215,12 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
           await peeplEatsService.getRestaurantsByLocation(
         geoLocation: userDeliverTo,
         distanceFromLocationAllowedInKm: store.state.cartState.isDelivery
-            ? NEARBY_VENDORS_DISTANCE_KM
+            // ? NEARBY_VENDORS_DISTANCE_KM
+            ? null
             : null,
+        fulfilmentMethodTypeName: store.state.cartState.isDelivery
+            ? FulfilmentMethodType.delivery
+            : FulfilmentMethodType.collection,
       );
 
       final outCode = postcodeDetails.isNotEmpty

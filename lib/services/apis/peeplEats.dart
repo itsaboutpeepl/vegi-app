@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
@@ -89,13 +90,18 @@ class PeeplEatsService {
   Future<List<RestaurantItem>> getRestaurantsByLocation({
     required Coordinates geoLocation,
     required num? distanceFromLocationAllowedInKm,
+    required FulfilmentMethodType fulfilmentMethodTypeName,
   }) async {
     final distanceFromQueryParam = distanceFromLocationAllowedInKm == null
         ? ''
         : '&distance=$distanceFromLocationAllowedInKm';
+    final fulfilmentMethodType =
+        fulfilmentMethodTypeName != FulfilmentMethodType.none
+            ? fulfilmentMethodTypeName.name
+            : FulfilmentMethodType.collection.name;
     final Response<dynamic> response = await dio
         .get<dynamic>(
-      'api/v1/vendors?location=${geoLocation.lat},${geoLocation.lng}$distanceFromQueryParam',
+      'api/v1/home/nearest-vendors?location=${geoLocation.lat},${geoLocation.lng}&fulfilmentMethodType=$fulfilmentMethodType$distanceFromQueryParam',
     )
         .timeout(
       const Duration(seconds: 5),

@@ -235,17 +235,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     : CupertinoColors.systemRed,
                               ),
                               const SizedBox(width: 10),
-                              const Text('Location')
+                              if (viewmodel.useLiveLocation)
+                                const Text('Location enabled')
+                              else
+                                const Text('Location disabled')
                             ],
                           ),
+                          helper: viewmodel.useLiveLocation
+                              ? Text(
+                                  'Using location to see nearest vendors to you!',
+                                  style: Theme.of(context).textTheme.caption,
+                                )
+                              : Text(
+                                  'Enable location to see nearest vendors to you!',
+                                  style: Theme.of(context).textTheme.caption,
+                                ),
                           child: CupertinoSwitch(
                             // This bool value toggles the switch.
                             value: viewmodel.useLiveLocation,
                             thumbColor: viewmodel.useLiveLocation
                                 ? themeShade600
                                 : themeShade600.withOpacity(0.5),
-                            trackColor:
-                                CupertinoColors.systemGrey.withOpacity(0.14),
+                            trackColor: viewmodel.useLiveLocation
+                                ? CupertinoColors.systemGrey.withOpacity(0.95)
+                                : CupertinoColors.systemGrey.withOpacity(0.15),
                             activeColor: themeShade300.withOpacity(0.10),
                             onChanged: (bool? value) {
                               // This is called when the user toggles the switch

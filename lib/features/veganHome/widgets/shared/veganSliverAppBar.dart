@@ -161,7 +161,12 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                           );
                         },
                         icon: const Icon(Icons.search),
-                        padding: const EdgeInsets.all(4),
+                        padding: const EdgeInsets.fromLTRB(
+                          4.0,
+                          0.0,
+                          0.0,
+                          0.0,
+                        ),
                       ),
                     IconButton(
                       onPressed: () => showDialog<Widget>(
@@ -169,65 +174,78 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                         builder: (context) => const HelpDialog(),
                       ),
                       icon: const Icon(Icons.headset_mic),
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.fromLTRB(
+                        0.0,
+                        0.0,
+                        4.0,
+                        0.0,
+                      ),
                       // icon: const Icon(Icons.contact_support),
                       // icon: const Icon(Icons.live_help),
                     ),
-                    Material(
-                      borderRadius: BorderRadius.circular(50),
-                      elevation: 3,
-                      child: GestureDetector(
-                        onTap: () {
-                          Analytics.track(
-                            eventName: AnalyticsEvents.openDrawer,
-                          );
-                          Scaffold.of(context).openDrawer();
-                        },
-                        child: Stack(
-                          children: [
-                            if (viewmodel.avatarUrl == '')
-                              const CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/images/anom.png'),
-                                radius: 23,
-                              )
-                            else
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: CachedNetworkImage(
-                                  width: 40,
-                                  height: 40,
-                                  imageUrl: viewmodel.avatarUrl,
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('assets/images/anom.png'),
-                                    radius: 30,
-                                  ),
-                                  imageBuilder: (context, imageProvider) =>
-                                      Image(
-                                    image: imageProvider,
-                                    fit: BoxFit.fill,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        8.0,
+                        0.0,
+                        4.0,
+                        0.0,
+                      ),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(50),
+                        elevation: 3,
+                        child: GestureDetector(
+                          onTap: () {
+                            Analytics.track(
+                              eventName: AnalyticsEvents.openDrawer,
+                            );
+                            Scaffold.of(context).openDrawer();
+                          },
+                          child: Stack(
+                            children: [
+                              if (viewmodel.avatarUrl == '')
+                                const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/images/anom.png'),
+                                  radius: 23,
+                                )
+                              else
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: CachedNetworkImage(
+                                    width: 40,
+                                    height: 40,
+                                    imageUrl: viewmodel.avatarUrl,
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage('assets/images/anom.png'),
+                                      radius: 30,
+                                    ),
+                                    imageBuilder: (context, imageProvider) =>
+                                        Image(
+                                      image: imageProvider,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            if (viewmodel.listOfScheduledOrders.isNotEmpty)
-                              Positioned(
-                                right: 0,
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: themeAccent500,
-                                    shape: BoxShape.circle,
+                              if (viewmodel.listOfScheduledOrders.isNotEmpty)
+                                Positioned(
+                                  right: 0,
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      color: themeAccent500,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    width: 10,
+                                    height: 10,
                                   ),
-                                  width: 10,
-                                  height: 10,
-                                ),
-                              )
-                            else
-                              const SizedBox.shrink(),
-                          ],
+                                )
+                              else
+                                const SizedBox.shrink(),
+                            ],
+                          ),
                         ),
                       ),
                     ),

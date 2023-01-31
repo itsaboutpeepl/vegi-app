@@ -54,6 +54,9 @@ class FeaturedRestaurantsVM extends Equatable {
         store
           ..dispatch(SetIsDelivery(isDelivery: isDelivery))
           ..dispatch(computeCartTotals());
+        // todo: dont fetch if he have already loaded delivery vendors for this outcode
+        if (store.state.userState.useLiveLocation)
+          store..dispatch(fetchFeaturedRestaurantsByUserLocation());
       },
       showGlobalSearchBarField: ({required bool makeVisible}) {
         store.dispatch(
@@ -88,13 +91,13 @@ class FeaturedRestaurantsVM extends Equatable {
   final bool globalSearchIsVisible;
   final String selectedSearchPostCode;
   final void Function(String outCode) changeOutCode;
+  final void Function(String newPostalCode) updateSelectedSearchPostalCode;
   final void Function(BuildContext context) refreshLocation;
   final String avatarUrl;
   final List<String> postalCodes;
   final bool isDelivery;
   final void Function(bool isDelivery) setIsDelivery;
   final void Function({required bool makeVisible}) showGlobalSearchBarField;
-  final void Function(String newPostalCode) updateSelectedSearchPostalCode;
   final bool userLocationEnabled;
 
   final void Function({required String query, required String outCode})
