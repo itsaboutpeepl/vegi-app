@@ -13,6 +13,7 @@ _$_ProductOptions _$$_ProductOptionsFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String? ?? '',
       price: json['priceModifier'] as int? ?? 0,
       isAvaliable: json['isAvaliable'] as bool? ?? false,
+      productBarCode: json['productBarCode'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$_ProductOptionsToJson(_$_ProductOptions instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$_ProductOptionsToJson(_$_ProductOptions instance) =>
       'description': instance.description,
       'priceModifier': instance.price,
       'isAvaliable': instance.isAvaliable,
+      'productBarCode': instance.productBarCode,
     };

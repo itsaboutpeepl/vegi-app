@@ -1,9 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/helpDialog.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/qRFromCartSheet.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -71,8 +74,11 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                           leading: Icon(
                             Icons.search,
                             color: Colors.teal.shade900,
-                            size: 28,
+                            size: 24,
                           ),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 16.0),
+                          visualDensity: VisualDensity.compact,
                           title: TypeAheadField<String>(
                             hideOnEmpty: true,
                             textFieldConfiguration: TextFieldConfiguration(
@@ -219,6 +225,30 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                       icon: viewmodel.menuSearchIsVisible
                           ? const Icon(Icons.cancel)
                           : const Icon(Icons.search),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        // await context.router
+                        //     .push(const ScanPaymentRecipientQR());
+                        await context.router
+                            .push(const ScanProductQRCode());
+                        // await showModalBottomSheet<Widget>(
+                        //   isScrollControlled: true,
+                        //   backgroundColor: Color.fromARGB(255, 44, 42, 39),
+                        //   shape: const RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.vertical(
+                        //       top: Radius.circular(20),
+                        //     ),
+                        //   ),
+                        //   elevation: 5,
+                        //   context: context,
+                        //   builder: (context) => const QRFromCartSheet(),
+                        // );
+                      },
+                      icon: const Icon(Icons.qr_code_scanner),
+                      padding: const EdgeInsets.all(4),
+                      // icon: const Icon(Icons.contact_support),
+                      // icon: const Icon(Icons.live_help),
                     ),
                     IconButton(
                       onPressed: () => showDialog<Widget>(

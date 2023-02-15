@@ -1,12 +1,12 @@
-import 'dart:io';
+// ignore_for_file: prefer_function_declarations_over_variables
 
-import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, TargetPlatform;
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:vegan_liverpool/constants/addresses.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
-
-//TODO: Move to constants
 
 const String wethTokenAddress = '0xa722c13135930332eb3d749b2f0906559d2c5b99';
 const String wbtcTokenAddress = '0x33284f95ccb7b948d9d352e1439561cf83d8d00d';
@@ -113,6 +113,65 @@ const postcodeIoGetPostcodeDetailRelUrl =
 
 const noVendorsFoundCopyTitle = "Pretty empty here, isn't it?";
 const noVendorsFoundCopyEmoji = '😐';
-final noVendorsFoundCopyMessage = (String location) =>
-    "We aren't currently delivering to $location, but "
-    'we will in the future, so check back later!';
+final noVendorsFoundCopyMessage =
+    (String location) => "We aren't currently delivering to $location, but "
+        'we will in the future, so check back later!';
+
+final scanQRCodeProductNotFoundPleaseSendUsDetails = (String nextButtonLabel) =>
+    'This product was not found in our data. '
+    'Please help us improve our service to you by sending us the product information so that we can tell you all about it. '
+    'Click $nextButtonLabel to continue.';
+
+final suggestProductPhotoDirector =
+    (String photoLabel) => 'Please take a photo of the $photoLabel';
+final suggestProductPhotoDirectorConfirm =
+    (String photoLabel) => 'Please confirm your photo of the $photoLabel';
+
+const suggestProductPhotoDirectorLabel1 = 'barcode';
+const suggestProductPhotoDirectorLabel2 = 'front of the product';
+const suggestProductPhotoDirectorLabel3 = 'nutritional info label';
+const suggestProductPhotoDirectorLabel4 = 'ingredients list';
+// const suggestProductPhotoDirectorLabelMap =
+//     <String, ProductSuggestionImageType>{
+//   suggestProductPhotoDirectorLabel1: ProductSuggestionImageType.barCode,
+//   suggestProductPhotoDirectorLabel2: ProductSuggestionImageType.frontOfPackage,
+//   suggestProductPhotoDirectorLabel3: ProductSuggestionImageType.nutritionalInfo,
+//   suggestProductPhotoDirectorLabel4: ProductSuggestionImageType.ingredientInfo,
+// };
+const suggestProductPhotoDirectorLabelMap =
+    <ProductSuggestionImageType, String>{
+  ProductSuggestionImageType.barCode: suggestProductPhotoDirectorLabel1,
+  ProductSuggestionImageType.frontOfPackage: suggestProductPhotoDirectorLabel2,
+  ProductSuggestionImageType.nutritionalInfo: suggestProductPhotoDirectorLabel3,
+  ProductSuggestionImageType.ingredientInfo: suggestProductPhotoDirectorLabel4,
+  ProductSuggestionImageType.teachUsMore: 'Teach us more',
+};
+
+const productSuggestionAdditionalInfoRequestText =
+    'Any additional information about the product to help us rate it';
+const photoPickImageFromGalleryText = 'Pick Image from Gallery';
+const photoTakePhotoWithCameraText = 'Take Photo with Camera';
+const imageFromCameraText = 'Image from Camera';
+const imageFromLibraryText = 'Image from Gallery';
+const cameraPreferredImageQuality =
+    25; // % of image quality retained from original
+const fileUploadVegiMaxSizeBytes = 30000000;
+
+Future<bool> deviceIsSimulator() async {
+  final deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS) {
+    final iosInfo = await deviceInfo.iosInfo;
+    if (!iosInfo.isPhysicalDevice) {
+      return true;
+    }
+  } else if (Platform.isAndroid) {
+    final androidInfo = await deviceInfo.androidInfo;
+    if (!androidInfo.isPhysicalDevice) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Future<bool> deviceIsIosSimulator() async =>
+    Platform.isIOS && (await deviceIsSimulator());

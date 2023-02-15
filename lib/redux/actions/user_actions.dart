@@ -27,6 +27,7 @@ import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/services/apis/locationService.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/json_helpers.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -92,6 +93,21 @@ class UpdateLocale {
 
   @override
   String toString() => 'UpdateLocale : locale: $locale';
+}
+
+class SetDeviceIsSimulatorRTO {
+  SetDeviceIsSimulatorRTO({
+    required this.isSimulator,
+    required this.isIosSimulator,
+  });
+
+  final bool isSimulator;
+  final bool isIosSimulator;
+
+  @override
+  String toString() {
+    return 'SetDeviceIsSimulatorRTO : Simulator=$isSimulator; ios=$isIosSimulator';
+  }
 }
 
 class WarnSendDialogShowed {
@@ -369,6 +385,28 @@ ThunkAction<AppState> registerEmailWaitingListHandler(
         Exception('Error in Email Registration: ${e.toString()}'),
         stackTrace: s,
         hint: 'ERROR in Email Registration',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchDeviceType() {
+  return (Store<AppState> store) async {
+    try {
+      final isSimulator = await deviceIsSimulator();
+      final isIosSimulator = await deviceIsIosSimulator();
+      store.dispatch(
+        SetDeviceIsSimulatorRTO(
+          isSimulator: isSimulator,
+          isIosSimulator: isIosSimulator,
+        ),
+      );
+    } catch (e, s) {
+      log.error('ERROR - fetchDeviceType e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchDeviceType e',
       );
     }
   };

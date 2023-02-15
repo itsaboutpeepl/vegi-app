@@ -10,7 +10,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/view_item.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/order_confirmed.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/orderConfirmed.dart';
 
 class OrderConfirmedScreen extends StatelessWidget {
   const OrderConfirmedScreen({Key? key}) : super(key: key);

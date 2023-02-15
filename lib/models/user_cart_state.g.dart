@@ -77,6 +77,10 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       nextDeliverySlot: json['nextDeliverySlot'] == null
           ? null
           : TimeSlot.fromJson(json['nextDeliverySlot'] as Map<String, dynamic>),
+      productSuggestion: json['productSuggestion'] == null
+          ? null
+          : ProductSuggestion.fromJson(
+              json['productSuggestion'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
@@ -120,6 +124,7 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
           instance.eligibleOrderDates.map((e) => e.toIso8601String()).toList(),
       'nextCollectionSlot': instance.nextCollectionSlot?.toJson(),
       'nextDeliverySlot': instance.nextDeliverySlot?.toJson(),
+      'productSuggestion': instance.productSuggestion?.toJson(),
     };
 
 const _$FulfilmentMethodTypeEnumMap = {

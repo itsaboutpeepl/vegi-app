@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/envService.dart';
+import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -50,6 +51,7 @@ class UserCartState with _$UserCartState {
     @Default([]) List<DateTime> eligibleOrderDates,
     @Default(null) TimeSlot? nextCollectionSlot,
     @Default(null) TimeSlot? nextDeliverySlot,
+    @Default(null) ProductSuggestion? productSuggestion,
   }) = _UserCartState;
 
   const UserCartState._();

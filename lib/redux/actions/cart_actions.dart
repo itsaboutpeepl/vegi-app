@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
@@ -10,16 +11,19 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/processing_payment.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/paymentSheet.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/qRFromCartSheet.dart';
+import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForCollection.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -39,6 +43,75 @@ class UpdateCartItems {
   @override
   String toString() {
     return 'UpdateCartItems : $cartItems';
+  }
+}
+
+class CreateProductSuggestion {
+  CreateProductSuggestion();
+
+  final productSuggestion = ProductSuggestion.newUid();
+
+  @override
+  String toString() {
+    return 'CreateProductSuggestion()';
+  }
+}
+
+class AddImageToProductSuggestionRTO {
+  AddImageToProductSuggestionRTO({
+    required this.imageType,
+    required this.image,
+  });
+
+  final ProductSuggestionImageType imageType;
+  // final String imageUrl;
+  // final String imageUid;
+  final UploadProductSuggestionImageResponse image;
+
+  @override
+  String toString() {
+    return 'AddImageToProductSuggestionRTO : [${imageType.name}, ${image.url}]';
+  }
+}
+
+class AddQRCodeToProductSuggestionRTO {
+  AddQRCodeToProductSuggestionRTO({
+    required this.qrCode,
+  });
+
+  final String qrCode;
+
+  @override
+  String toString() {
+    return 'AddQRCodeToProductSuggestionRTO : ${qrCode}';
+  }
+}
+
+class AddAdditionalInformationToProductSuggestionRTO {
+  AddAdditionalInformationToProductSuggestionRTO({
+    required this.additionalInfo,
+  });
+
+  final String additionalInfo;
+
+  @override
+  String toString() {
+    return 'AddAdditinalInformationToProductSuggestionRTO : $additionalInfo';
+  }
+}
+
+class AddProductNameToProductSuggestionRTO {
+  AddProductNameToProductSuggestionRTO({
+    required this.productName,
+    required this.retailerName,
+  });
+
+  final String productName;
+  final String retailerName;
+
+  @override
+  String toString() {
+    return 'AddProductNameToProductSuggestionRTO : $productName ; $retailerName';
   }
 }
 
@@ -483,6 +556,341 @@ ThunkAction<AppState> updateCartItems(List<CartItem> itemsToAdd) {
         e,
         stackTrace: s,
         hint: 'ERROR - updateCartItems $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> scanRestaurantMenuItemQRCode(
+  String itemQRCode,
+  void Function() successHandler,
+  void Function(String, QRCodeScanErrCode) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    try {
+      final selectedRestaurantId = store.state.cartState.restaurantID;
+
+      final menuItem = await peeplEatsService.getRestaurantMenuItemByQrCode(
+        barCode: itemQRCode,
+        restaurantID: selectedRestaurantId,
+      );
+
+      if (menuItem == null) {
+        const warning =
+            'WARNING - scanRestaurantMenuItemQRCode - No Barcode matches the scanned QR Code';
+        log.warn(warning);
+        await Sentry.captureMessage(
+          warning,
+        );
+        errorHandler(warning, QRCodeScanErrCode.productNotFound);
+        return;
+      }
+      final selectedProductOption =
+          menuItem.listOfProductOptions[0].listOfOptions[0];
+      final cartItem = CartItem(
+        internalID: Random(
+          DateTime.now().millisecondsSinceEpoch,
+        ).nextInt(100000),
+        menuItem: menuItem,
+        totalItemPrice: calculateMenuItemPrice(
+          menuItem: menuItem,
+          quantity: 1,
+          productOptions: menuItem.listOfProductOptions[0].listOfOptions,
+        ).totalPrice,
+        // lib/redux/actions/menu_item_actions.dart:119
+        //
+        itemQuantity: 1,
+        //this quantity always needs to be 1 to work
+        //with the api. the actual quantity of the
+        //object is calculated using the viewmodel
+        //quantity field. Then the object is just
+        //duplicated and added to the cart items.
+        selectedProductOptions: {
+          selectedProductOption.optionID: selectedProductOption,
+        },
+      );
+
+      // final restaurant =
+      //     store.state.homePageState.featuredRestaurants.firstWhere(
+      //   (element) => element.restaurantID == selectedRestaurantId,
+      // );
+
+      // final items = <CartItem>[];
+      // for (final menuItem in restaurant.listOfMenuItems) {
+      //   for (final productOptionCategory in menuItem.listOfProductOptions) {
+      //     for (final productOption in productOptionCategory.listOfOptions) {
+      //       if (productOption.productBarCode == itemQRCode) {
+      //         items.add(
+      //           CartItem(
+      //             internalID: Random(
+      //               DateTime.now().millisecondsSinceEpoch,
+      //             ).nextInt(100000),
+      //             menuItem: menuItem,
+      //             totalItemPrice: calculateMenuItemPrice(
+      //               menuItem: menuItem,
+      //               quantity: 1,
+      //               productOptions: [productOption],
+      //             ).totalPrice,
+      //             // lib/redux/actions/menu_item_actions.dart:119
+      //             //
+      //             itemQuantity: 1,
+      //             //this quantity always needs to be 1 to work
+      //             //with the api. the actual quantity of the
+      //             //object is calculated using the viewmodel
+      //             //quantity field. Then the object is just
+      //             //duplicated and added to the cart items.
+      //             selectedProductOptions: {
+      //               productOption.optionID: productOption
+      //             },
+      //           ),
+      //         );
+      //       }
+      //     }
+      //   }
+      // }
+
+      // if (items.isEmpty) {
+      //   const warning =
+      //       'WARNING - scanRestaurantMenuItemQRCode - No Barcode matches the scanned QR Code';
+      //   log.warn(warning);
+      //   await Sentry.captureMessage(
+      //     warning,
+      //   );
+      //   errorHandler(warning, QRCodeScanErrCode.productNotFound);
+      // }
+
+      final List<CartItem> cartItems =
+          List.from(store.state.cartState.cartItems)..add(cartItem);
+
+      store
+        ..dispatch(UpdateCartItems(cartItems: cartItems))
+        ..dispatch(computeCartTotals());
+
+      successHandler();
+
+    } catch (e, s) {
+      log.error('ERROR - scanRestaurantMenuItemQRCode $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - scanRestaurantMenuItemQRCode $e',
+      );
+      errorHandler(
+        'ERROR - scanRestaurantMenuItemQRCode $e',
+        QRCodeScanErrCode.connectionIssue,
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> addAdditionalInformationToProductSuggestion(
+  String additionalInfo,
+  void Function() successHandler,
+  void Function(String) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(
+        AddAdditionalInformationToProductSuggestionRTO(
+          additionalInfo: additionalInfo,
+        ),
+      );
+
+      successHandler();
+    } catch (e, s) {
+      log.error('ERROR - addAdditionalInformationToProductSuggestion e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - addAdditionalInformationToProductSuggestion e',
+      );
+      errorHandler(
+        'ERROR - addAdditionalInformationToProductSuggestion e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> addProductQRCodeToProductSuggestion(
+  String itemQRCode,
+  void Function() successHandler,
+  void Function(String, QRCodeScanErrCode) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    try {
+      var currentProductSuggestion = store.state.cartState.productSuggestion;
+      if (currentProductSuggestion == null) {
+        final ps = CreateProductSuggestion();
+        await store.dispatch(
+          ps,
+        );
+        currentProductSuggestion =
+            store.state.cartState.productSuggestion ?? ps.productSuggestion;
+      }
+      store.dispatch(AddQRCodeToProductSuggestionRTO(qrCode: itemQRCode));
+
+      successHandler();
+    } catch (e, s) {
+      log.error('ERROR - addProductQRCodeToProductSuggestion e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - addProductQRCodeToProductSuggestion e',
+      );
+      errorHandler(
+        'ERROR - addProductQRCodeToProductSuggestion e',
+        QRCodeScanErrCode.couldntScan,
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> addProductNameToProductSuggestion(
+  String productName,
+  String retailerName,
+  void Function() successHandler,
+  void Function(String) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    try {
+      var currentProductSuggestion = store.state.cartState.productSuggestion;
+      if (currentProductSuggestion == null) {
+        final ps = CreateProductSuggestion();
+        await store.dispatch(
+          ps,
+        );
+        currentProductSuggestion =
+            store.state.cartState.productSuggestion ?? ps.productSuggestion;
+      }
+      store.dispatch(
+        AddProductNameToProductSuggestionRTO(
+          productName: productName,
+          retailerName: retailerName,
+        ),
+      );
+
+      successHandler();
+    } catch (e, s) {
+      log.error('ERROR - addProductNameToProductSuggestion e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - addProductNameToProductSuggestion e',
+      );
+      errorHandler(
+        'ERROR - addProductNameToProductSuggestion e',
+      );
+    }
+  };
+}
+
+// ThunkAction<AppState> createNewProductSuggestion(
+//   void Function() successHandler,
+//   void Function(String) errorHandler,
+// ) {
+//   return (Store<AppState> store) async {
+//     try {
+//       store.dispatch(CreateProductSuggestion());
+//       successHandler();
+//     } catch (e, s) {
+//       log.error('ERROR - createNewProductSuggestion e');
+//       await Sentry.captureException(
+//         e,
+//         stackTrace: s,
+//         hint: 'ERROR - createNewProductSuggestion e',
+//       );
+//       errorHandler(
+//         'ERROR - createNewProductSuggestion e',
+//       );
+//     }
+//   };
+// }
+
+ThunkAction<AppState> addImageToProductSuggestion(
+  ProductSuggestionImageType imageType,
+  File image,
+  void Function() successHandler,
+  void Function(String) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    var currentProductSuggestion = store.state.cartState.productSuggestion;
+    if (currentProductSuggestion == null) {
+      final ps = CreateProductSuggestion();
+      await store.dispatch(
+        ps,
+      );
+      currentProductSuggestion =
+          store.state.cartState.productSuggestion ?? ps.productSuggestion;
+    }
+    try {
+      final response = await peeplEatsService.uploadImageForProductSuggestion(
+        deviceSuggestionUID: currentProductSuggestion.uid,
+        image: image,
+        onError: (error, errCode) => errorHandler(error),
+        onReceiveProgress: (count, total) {},
+        onSuccess: (p0) {},
+      );
+      if (response != null) {
+        store.dispatch(
+          AddImageToProductSuggestionRTO(
+            image: response,
+            imageType: imageType,
+          ),
+        );
+        successHandler();
+      } else {
+        log.error('ERROR - addImageToProductSuggestion failed to upload image');
+        await Sentry.captureException(
+          e,
+          hint: 'ERROR - addImageToProductSuggestion failed to upload image',
+        );
+        errorHandler(
+          'ERROR - addImageToProductSuggestion e',
+        );
+      }
+    } catch (e, s) {
+      log.error('ERROR - addImageToProductSuggestion $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - addImageToProductSuggestion $e',
+      );
+      errorHandler(
+        'ERROR - addImageToProductSuggestion $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> uploadProductSuggestion(
+  void Function() successHandler,
+  void Function(String, ProductSuggestionUploadErrCode) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    try {
+      final productSuggestion = store.state.cartState.productSuggestion;
+      if (productSuggestion == null) {
+        return errorHandler(
+          'No product suggestion in application state',
+          ProductSuggestionUploadErrCode.unknownError,
+        );
+      }
+      await peeplEatsService.uploadProductSuggestion(
+        productSuggestion,
+        successHandler,
+        errorHandler,
+      );
+      store.dispatch(CreateProductSuggestion());
+    } catch (e, s) {
+      log.error('ERROR - uploadProductSuggestion e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - uploadProductSuggestion e',
+      );
+      errorHandler(
+        'ERROR - uploadProductSuggestion e',
+        ProductSuggestionUploadErrCode.unknownError,
       );
     }
   };

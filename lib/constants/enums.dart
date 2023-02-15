@@ -3,6 +3,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+enum ImageSourceType { gallery, camera }
+
 enum BiometricAuth {
   faceID,
   touchID,
@@ -257,3 +259,28 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
 enum OrderPaidStatus { paid, unpaid, failed }
 
 enum SurveyResponseType { boolean, string, multiline, number }
+
+enum QRCodeScanErrCode {
+  productNotFound,
+  multipleMatchesFound,
+  connectionIssue,
+  couldntScan,
+}
+
+enum ProductSuggestionUploadErrCode {
+  productNotFound,
+  wrongVendor,
+  multipleMatchesFound,
+  connectionIssue,
+  imageTooLarge,
+  imageEncodingError,
+  unknownError,
+}
+
+enum ProductSuggestionImageType {
+  barCode,
+  frontOfPackage,
+  ingredientInfo,
+  nutritionalInfo,
+  teachUsMore,
+}

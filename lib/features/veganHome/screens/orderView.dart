@@ -15,7 +15,7 @@ import 'package:vegan_liverpool/models/cart/view_item.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/order_confirmed.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/orderConfirmed.dart';
 
 class OrderViewScreen extends StatelessWidget {
   const OrderViewScreen({

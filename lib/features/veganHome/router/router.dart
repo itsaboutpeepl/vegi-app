@@ -14,6 +14,7 @@ import 'package:vegan_liverpool/features/veganHome/screens/faqScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/preparingOrderScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/scan_listed_product_qrcode.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/scheduledOrdersPage.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
 
@@ -99,6 +100,11 @@ const veganHomeTab = AutoRoute(
     AutoRoute(
       page: ScanPaymentRecipientQR,
       name: 'scanPaymentRecipientQR',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: ScanListedProductQRCode,
+      name: 'scanProductQRCode',
       guards: [AuthGuard],
     ),
   ],

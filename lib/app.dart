@@ -15,6 +15,7 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -54,7 +55,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     setJwtToken(widget.store);
-    widget.store.dispatch(fetchHomePageData());
+    widget.store
+      ..dispatch(fetchHomePageData())
+      ..dispatch(fetchDeviceType());
     _locale = widget.store.state.userState.locale;
   }
 

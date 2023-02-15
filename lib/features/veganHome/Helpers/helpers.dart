@@ -1,6 +1,9 @@
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/utils/config.dart' as VEGI_CONFIG;
 
 String cFPrice(int price) {
@@ -67,6 +70,23 @@ double getPPLRewardsFromPence(num penceAmount) {
 
 String getPoundValueFromPPL(num pplAmount) {
   return (pplAmount / 10).toStringAsFixed(2);
+}
+
+UpdateTotalPrice calculateMenuItemPrice({
+  required RestaurantMenuItem menuItem,
+  required int quantity,
+  Iterable<ProductOptions> productOptions = const [],
+}) {
+  var total = quantity * menuItem.price;
+
+  productOptions.forEach((element) {
+    total += element.price;
+  });
+
+  return UpdateTotalPrice(
+    totalPrice: total,
+    totalRewards: total * 5 ~/ 100,
+  );
 }
 
 // Conversion

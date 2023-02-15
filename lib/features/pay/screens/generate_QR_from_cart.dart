@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/generate_QR_from_cart_vm.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/generateQRFromCartViewModel.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/paymentSheet.dart';
 
 class GenerateQRFromCart extends StatefulWidget {

@@ -30,6 +30,8 @@ mixin _$ProductOptions {
   int get price => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: false)
   bool get isAvaliable => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: '')
+  String get productBarCode => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +50,8 @@ abstract class $ProductOptionsCopyWith<$Res> {
       @JsonKey(defaultValue: '') String name,
       @JsonKey(defaultValue: '') String description,
       @JsonKey(defaultValue: 0, name: 'priceModifier') int price,
-      @JsonKey(defaultValue: false) bool isAvaliable});
+      @JsonKey(defaultValue: false) bool isAvaliable,
+      @JsonKey(defaultValue: '') String productBarCode});
 }
 
 /// @nodoc
@@ -69,6 +72,7 @@ class _$ProductOptionsCopyWithImpl<$Res, $Val extends ProductOptions>
     Object? description = null,
     Object? price = null,
     Object? isAvaliable = null,
+    Object? productBarCode = null,
   }) {
     return _then(_value.copyWith(
       optionID: null == optionID
@@ -91,6 +95,10 @@ class _$ProductOptionsCopyWithImpl<$Res, $Val extends ProductOptions>
           ? _value.isAvaliable
           : isAvaliable // ignore: cast_nullable_to_non_nullable
               as bool,
+      productBarCode: null == productBarCode
+          ? _value.productBarCode
+          : productBarCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -108,7 +116,8 @@ abstract class _$$_ProductOptionsCopyWith<$Res>
       @JsonKey(defaultValue: '') String name,
       @JsonKey(defaultValue: '') String description,
       @JsonKey(defaultValue: 0, name: 'priceModifier') int price,
-      @JsonKey(defaultValue: false) bool isAvaliable});
+      @JsonKey(defaultValue: false) bool isAvaliable,
+      @JsonKey(defaultValue: '') String productBarCode});
 }
 
 /// @nodoc
@@ -127,6 +136,7 @@ class __$$_ProductOptionsCopyWithImpl<$Res>
     Object? description = null,
     Object? price = null,
     Object? isAvaliable = null,
+    Object? productBarCode = null,
   }) {
     return _then(_$_ProductOptions(
       optionID: null == optionID
@@ -149,6 +159,10 @@ class __$$_ProductOptionsCopyWithImpl<$Res>
           ? _value.isAvaliable
           : isAvaliable // ignore: cast_nullable_to_non_nullable
               as bool,
+      productBarCode: null == productBarCode
+          ? _value.productBarCode
+          : productBarCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -162,7 +176,8 @@ class _$_ProductOptions extends _ProductOptions {
       @JsonKey(defaultValue: '') required this.name,
       @JsonKey(defaultValue: '') required this.description,
       @JsonKey(defaultValue: 0, name: 'priceModifier') required this.price,
-      @JsonKey(defaultValue: false) required this.isAvaliable})
+      @JsonKey(defaultValue: false) required this.isAvaliable,
+      @JsonKey(defaultValue: '') required this.productBarCode})
       : super._();
 
   factory _$_ProductOptions.fromJson(Map<String, dynamic> json) =>
@@ -183,10 +198,13 @@ class _$_ProductOptions extends _ProductOptions {
   @override
   @JsonKey(defaultValue: false)
   final bool isAvaliable;
+  @override
+  @JsonKey(defaultValue: '')
+  final String productBarCode;
 
   @override
   String toString() {
-    return 'ProductOptions(optionID: $optionID, name: $name, description: $description, price: $price, isAvaliable: $isAvaliable)';
+    return 'ProductOptions(optionID: $optionID, name: $name, description: $description, price: $price, isAvaliable: $isAvaliable, productBarCode: $productBarCode)';
   }
 
   @override
@@ -201,13 +219,15 @@ class _$_ProductOptions extends _ProductOptions {
                 other.description == description) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.isAvaliable, isAvaliable) ||
-                other.isAvaliable == isAvaliable));
+                other.isAvaliable == isAvaliable) &&
+            (identical(other.productBarCode, productBarCode) ||
+                other.productBarCode == productBarCode));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, optionID, name, description, price, isAvaliable);
+  int get hashCode => Object.hash(runtimeType, optionID, name, description,
+      price, isAvaliable, productBarCode);
 
   @JsonKey(ignore: true)
   @override
@@ -234,7 +254,9 @@ abstract class _ProductOptions extends ProductOptions {
       @JsonKey(defaultValue: 0, name: 'priceModifier')
           required final int price,
       @JsonKey(defaultValue: false)
-          required final bool isAvaliable}) = _$_ProductOptions;
+          required final bool isAvaliable,
+      @JsonKey(defaultValue: '')
+          required final String productBarCode}) = _$_ProductOptions;
   _ProductOptions._() : super._();
 
   factory _ProductOptions.fromJson(Map<String, dynamic> json) =
@@ -255,6 +277,9 @@ abstract class _ProductOptions extends ProductOptions {
   @override
   @JsonKey(defaultValue: false)
   bool get isAvaliable;
+  @override
+  @JsonKey(defaultValue: '')
+  String get productBarCode;
   @override
   @JsonKey(ignore: true)
   _$$_ProductOptionsCopyWith<_$_ProductOptions> get copyWith =>

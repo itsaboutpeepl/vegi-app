@@ -12,6 +12,7 @@ class ProductOptions with _$ProductOptions {
     @JsonKey(defaultValue: '') required String description,
     @JsonKey(defaultValue: 0, name: 'priceModifier') required int price,
     @JsonKey(defaultValue: false) required bool isAvaliable,
+    @JsonKey(defaultValue: '') required String productBarCode,
   }) = _ProductOptions;
 
   const ProductOptions._();

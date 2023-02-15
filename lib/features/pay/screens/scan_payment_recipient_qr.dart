@@ -110,35 +110,37 @@ class _ScanPaymentRecipientQRState extends State<ScanPaymentRecipientQR> {
                 Container(
                   margin: const EdgeInsets.all(8),
                   child: ElevatedButton(
-                      onPressed: () async {
-                        await controller?.toggleFlash();
-                        setState(() {});
+                    onPressed: () async {
+                      await controller?.toggleFlash();
+                      setState(() {});
+                    },
+                    child: FutureBuilder(
+                      future: controller?.getFlashStatus(),
+                      builder: (context, snapshot) {
+                        return Text('Flash: ${snapshot.data}');
                       },
-                      child: FutureBuilder(
-                        future: controller?.getFlashStatus(),
-                        builder: (context, snapshot) {
-                          return Text('Flash: ${snapshot.data}');
-                        },
-                      )),
+                    ),
+                  ),
                 ),
                 Container(
                   margin: const EdgeInsets.all(8),
                   child: ElevatedButton(
-                      onPressed: () async {
-                        await controller?.flipCamera();
-                        setState(() {});
+                    onPressed: () async {
+                      await controller?.flipCamera();
+                      setState(() {});
+                    },
+                    child: FutureBuilder(
+                      future: controller?.getCameraInfo(),
+                      builder: (context, snapshot) {
+                        if (snapshot.data != null) {
+                          return Text(
+                              'Camera facing ${describeEnum(snapshot.data!)}');
+                        } else {
+                          return const Text('loading');
+                        }
                       },
-                      child: FutureBuilder(
-                        future: controller?.getCameraInfo(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data != null) {
-                            return Text(
-                                'Camera facing ${describeEnum(snapshot.data!)}');
-                          } else {
-                            return const Text('loading');
-                          }
-                        },
-                      )),
+                    ),
+                  ),
                 )
               ],
             ),

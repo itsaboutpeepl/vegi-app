@@ -38,6 +38,9 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, EnableLocationServices>(_setLocationServicesEnabled),
   TypedReducer<UserState, SetUserVerifiedStatusSuccess>(
       _setUserVerifiedStatusSuccessResponse),
+  TypedReducer<UserState, SetDeviceIsSimulatorRTO>(
+    _setDeviceIsSimulator,
+  ),
 ]);
 
 UserState _setWalletConnectURI(
@@ -75,6 +78,17 @@ UserState _updateCurrency(
   UpdateCurrency action,
 ) {
   return state.copyWith(currency: action.currency);
+}
+
+
+UserState _setDeviceIsSimulator(
+  UserState state,
+  SetDeviceIsSimulatorRTO action,
+) {
+  return state.copyWith(
+    isUsingSimulator: action.isSimulator,
+    isUsingIosSimulator: action.isIosSimulator,
+  );
 }
 
 UserState _warnSendDialogShowed(

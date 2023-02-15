@@ -60,6 +60,8 @@ mixin _$UserCartState {
   List<DateTime> get eligibleOrderDates => throw _privateConstructorUsedError;
   TimeSlot? get nextCollectionSlot => throw _privateConstructorUsedError;
   TimeSlot? get nextDeliverySlot => throw _privateConstructorUsedError;
+  ProductSuggestion? get productSuggestion =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -108,13 +110,15 @@ abstract class $UserCartStateCopyWith<$Res> {
       List<String> fulfilmentPostalDistricts,
       List<DateTime> eligibleOrderDates,
       TimeSlot? nextCollectionSlot,
-      TimeSlot? nextDeliverySlot});
+      TimeSlot? nextDeliverySlot,
+      ProductSuggestion? productSuggestion});
 
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   $TimeSlotCopyWith<$Res>? get selectedTimeSlot;
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress;
   $TimeSlotCopyWith<$Res>? get nextCollectionSlot;
   $TimeSlotCopyWith<$Res>? get nextDeliverySlot;
+  $ProductSuggestionCopyWith<$Res>? get productSuggestion;
 }
 
 /// @nodoc
@@ -165,6 +169,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? eligibleOrderDates = null,
     Object? nextCollectionSlot = freezed,
     Object? nextDeliverySlot = freezed,
+    Object? productSuggestion = freezed,
   }) {
     return _then(_value.copyWith(
       cartItems: null == cartItems
@@ -307,6 +312,10 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
           ? _value.nextDeliverySlot
           : nextDeliverySlot // ignore: cast_nullable_to_non_nullable
               as TimeSlot?,
+      productSuggestion: freezed == productSuggestion
+          ? _value.productSuggestion
+          : productSuggestion // ignore: cast_nullable_to_non_nullable
+              as ProductSuggestion?,
     ) as $Val);
   }
 
@@ -370,6 +379,18 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       return _then(_value.copyWith(nextDeliverySlot: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductSuggestionCopyWith<$Res>? get productSuggestion {
+    if (_value.productSuggestion == null) {
+      return null;
+    }
+
+    return $ProductSuggestionCopyWith<$Res>(_value.productSuggestion!, (value) {
+      return _then(_value.copyWith(productSuggestion: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -415,7 +436,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       List<String> fulfilmentPostalDistricts,
       List<DateTime> eligibleOrderDates,
       TimeSlot? nextCollectionSlot,
-      TimeSlot? nextDeliverySlot});
+      TimeSlot? nextDeliverySlot,
+      ProductSuggestion? productSuggestion});
 
   @override
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
@@ -427,6 +449,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
   $TimeSlotCopyWith<$Res>? get nextCollectionSlot;
   @override
   $TimeSlotCopyWith<$Res>? get nextDeliverySlot;
+  @override
+  $ProductSuggestionCopyWith<$Res>? get productSuggestion;
 }
 
 /// @nodoc
@@ -475,6 +499,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? eligibleOrderDates = null,
     Object? nextCollectionSlot = freezed,
     Object? nextDeliverySlot = freezed,
+    Object? productSuggestion = freezed,
   }) {
     return _then(_$_UserCartState(
       cartItems: null == cartItems
@@ -617,6 +642,10 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.nextDeliverySlot
           : nextDeliverySlot // ignore: cast_nullable_to_non_nullable
               as TimeSlot?,
+      productSuggestion: freezed == productSuggestion
+          ? _value.productSuggestion
+          : productSuggestion // ignore: cast_nullable_to_non_nullable
+              as ProductSuggestion?,
     ));
   }
 }
@@ -660,7 +689,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       this.fulfilmentPostalDistricts = const [],
       this.eligibleOrderDates = const [],
       this.nextCollectionSlot = null,
-      this.nextDeliverySlot = null})
+      this.nextDeliverySlot = null,
+      this.productSuggestion = null})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>
@@ -771,10 +801,13 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final TimeSlot? nextDeliverySlot;
+  @override
+  @JsonKey()
+  final ProductSuggestion? productSuggestion;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion)';
   }
 
   @override
@@ -821,7 +854,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
           'fulfilmentPostalDistricts', fulfilmentPostalDistricts))
       ..add(DiagnosticsProperty('eligibleOrderDates', eligibleOrderDates))
       ..add(DiagnosticsProperty('nextCollectionSlot', nextCollectionSlot))
-      ..add(DiagnosticsProperty('nextDeliverySlot', nextDeliverySlot));
+      ..add(DiagnosticsProperty('nextDeliverySlot', nextDeliverySlot))
+      ..add(DiagnosticsProperty('productSuggestion', productSuggestion));
   }
 
   @override
@@ -895,7 +929,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
             (identical(other.nextCollectionSlot, nextCollectionSlot) ||
                 other.nextCollectionSlot == nextCollectionSlot) &&
             (identical(other.nextDeliverySlot, nextDeliverySlot) ||
-                other.nextDeliverySlot == nextDeliverySlot));
+                other.nextDeliverySlot == nextDeliverySlot) &&
+            (identical(other.productSuggestion, productSuggestion) || other.productSuggestion == productSuggestion));
   }
 
   @JsonKey(ignore: true)
@@ -936,7 +971,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
         const DeepCollectionEquality().hash(fulfilmentPostalDistricts),
         const DeepCollectionEquality().hash(eligibleOrderDates),
         nextCollectionSlot,
-        nextDeliverySlot
+        nextDeliverySlot,
+        productSuggestion
       ]);
 
   @JsonKey(ignore: true)
@@ -989,7 +1025,8 @@ abstract class _UserCartState extends UserCartState {
       final List<String> fulfilmentPostalDistricts,
       final List<DateTime> eligibleOrderDates,
       final TimeSlot? nextCollectionSlot,
-      final TimeSlot? nextDeliverySlot}) = _$_UserCartState;
+      final TimeSlot? nextDeliverySlot,
+      final ProductSuggestion? productSuggestion}) = _$_UserCartState;
   _UserCartState._() : super._();
 
   factory _UserCartState.fromJson(Map<String, dynamic> json) =
@@ -1065,6 +1102,8 @@ abstract class _UserCartState extends UserCartState {
   TimeSlot? get nextCollectionSlot;
   @override
   TimeSlot? get nextDeliverySlot;
+  @override
+  ProductSuggestion? get productSuggestion;
   @override
   @JsonKey(ignore: true)
   _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>

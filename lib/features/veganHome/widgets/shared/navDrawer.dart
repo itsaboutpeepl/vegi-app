@@ -9,6 +9,7 @@ import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/suggestProductDialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/helpDialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutDialog.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -198,6 +199,17 @@ class _NavDrawerState extends State<NavDrawer> {
                     ReduxStateViewer(
                       store: getIt<DevToolsStore<AppState>>(),
                     ),
+                  ),
+                ),
+
+              if (kDebugMode)
+                ListTile(
+                  leading: const Icon(Icons.qr_code_scanner),
+                  title: const Text('QR scan (DEV)'),
+                  onTap: () => showDialog<Widget>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => const SuggestProductDialog(),
                   ),
                 ),
               const Spacer(),

@@ -12,7 +12,7 @@ import 'package:vegan_liverpool/features/waitingListFunnel/widgets/surveyComplet
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/view_item.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/order_confirmed.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/orderConfirmed.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/survey_thanks.dart';
 
 class SurveyThanksScreen extends StatelessWidget {

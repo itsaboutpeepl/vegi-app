@@ -73,6 +73,36 @@ void showCopiedFlushbar(BuildContext context) {
   ).show(context);
 }
 
+void showInfoSnack(
+  BuildContext context, {
+  required String title,
+  Color? backgroundColor,
+}) {
+  Flushbar<void>(
+    duration: const Duration(seconds: 1),
+    boxShadows: const [
+      BoxShadow(
+        offset: Offset(0.5, 0.5),
+        blurRadius: 5,
+      ),
+    ],
+    messageText: Text(
+      title,
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: backgroundColor ?? Theme.of(context).bottomAppBarColor,
+    margin: const EdgeInsets.only(
+      top: 25,
+      right: 25,
+      left: 25,
+      bottom: 25,
+    ),
+    borderRadius: const BorderRadius.all(
+      Radius.circular(8),
+    ),
+  ).show(context);
+}
+
 void showPlayBackCompletedFlushBar(BuildContext context) {
   Flushbar<void>(
     duration: const Duration(seconds: 4),

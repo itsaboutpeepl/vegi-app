@@ -12,6 +12,7 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/services/apis/places.dart';
 import 'package:vegan_liverpool/utils/config.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class UpdateRestaurantCategories {

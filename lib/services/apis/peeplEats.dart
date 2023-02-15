@@ -1,12 +1,17 @@
-import 'dart:math';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
+import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
+import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
@@ -15,13 +20,15 @@ import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/services/apis/places.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 @lazySingleton
 class PeeplEatsService {
   PeeplEatsService(this.dio) {
     dio.options.baseUrl = dotenv.env['VEGI_EATS_BACKEND']!;
-    dio.options.headers = Map.from({'Content-Type': 'application/json'});
+    dio.options.headers =
+        Map.from({'Content-Type': 'application/json', 'Origin': ''});
   }
 
   final Dio dio;
@@ -36,12 +43,20 @@ class PeeplEatsService {
           requestOptions: RequestOptions(path: ''),
         );
       },
-    ).onError(
-      (error, stackTrace) => Response(
+    ).onError((error, stackTrace) {
+      log.error(error, stackTrace: stackTrace);
+      if ((error as Map<String, dynamic>)['message']
+              .toString()
+              .startsWith('SocketException:') &&
+          dio.options.baseUrl.startsWith('http://localhost')) {
+        log.warn(
+            'If running from real_device, cant connect to localhost on running machine...');
+      }
+      return Response(
         data: {'vendors': List<RestaurantItem>.empty()},
         requestOptions: RequestOptions(path: ''),
-      ),
-    );
+      );
+    });
 
     final List<Map<String, dynamic>> results =
         List.from(response.data['vendors'] as Iterable<dynamic>);
@@ -265,6 +280,51 @@ class PeeplEatsService {
     return menuItems;
   }
 
+  Future<RestaurantMenuItem?> getRestaurantMenuItemByQrCode({
+    required String restaurantID,
+    required String barCode,
+  }) async {
+    final Response<Map<String, dynamic>> response = await dio.get(
+      'api/v1/products/get-product-by-qrcode',
+      queryParameters: <String, dynamic>{
+        'qrCode': barCode,
+        'vendor': restaurantID
+      },
+    );
+    final element = response.data;
+    if (element == null) {
+      return null;
+    }
+    final pos = await getProductOptions(element['id'].toString());
+    List<ProductOptionsCategory> selectProductOptionsCategories =
+        <ProductOptionsCategory>[];
+    for (final prodOptCat in pos) {
+      for (final pov in prodOptCat.listOfOptions) {
+        if (pov.productBarCode == barCode) {
+          selectProductOptionsCategories.add(
+            prodOptCat.copyWith(
+              listOfOptions: <ProductOptions>[pov],
+            ),
+          );
+        }
+      }
+    }
+    return RestaurantMenuItem(
+      isFeatured: element['isFeatured'] as bool? ?? false,
+      menuItemID: element['id'].toString(),
+      restaurantID: restaurantID,
+      name: element['name'] as String? ?? '',
+      imageURL: element['imageUrl'] as String? ?? '',
+      categoryName: element['category']['name'] as String? ?? '',
+      categoryId: element['category']['id'] as int? ?? 0,
+      price: element['basePrice'] as int? ?? 0,
+      description: element['description'] as String? ?? '',
+      extras: {},
+      listOfProductOptions: selectProductOptionsCategories,
+      priority: element['priority'] as int? ?? 0,
+    );
+  }
+
   Future<List<RestaurantMenuItem>> getFilteredRestaurantMenu({
     required String restaurantID,
     required String searchQuery,
@@ -350,6 +410,163 @@ class PeeplEatsService {
     }
 
     return listOfProductOptions;
+  }
+
+  Future<UploadProductSuggestionImageResponse?>
+      uploadImageForProductSuggestion({
+    required String deviceSuggestionUID,
+    required File image,
+    required void Function(UploadProductSuggestionImageResponse) onSuccess,
+    required void Function(String error, ProductSuggestionUploadErrCode errCode)
+        onError,
+    required ProgressCallback onReceiveProgress,
+  }) async {
+    MultipartFile imgByteStream;
+    String mimeType;
+    String mimeSubType;
+    try {
+      final mimeTypeData =
+          lookupMimeType(image.path, headerBytes: [0xFF, 0xD8])?.split('/');
+      if (mimeTypeData == null || mimeTypeData.length < 2) {
+        const wm = 'Unable to get Mime Encoding of Image upload.';
+        // throw Exception(wm);
+        onError(
+          wm,
+          ProductSuggestionUploadErrCode.imageEncodingError,
+        );
+        return null;
+      }
+      mimeType = mimeTypeData[0];
+      mimeSubType = mimeTypeData[1];
+      // imgByteStream = MultipartFile.fromBytes(image.readAsBytesSync());
+      imgByteStream = await MultipartFile.fromFile(
+        image.path,
+        contentType: MediaType(
+          mimeType,
+          mimeSubType,
+        ),
+      );
+      if (imgByteStream.length > fileUploadVegiMaxSizeBytes) {
+        final wm =
+            'Image upload (${imgByteStream.length * 0.00000095367432}MB) is too large, must be under ${fileUploadVegiMaxSizeBytes * 0.00000095367432}MB';
+        // throw Exception(wm);
+        onError(
+          wm,
+          ProductSuggestionUploadErrCode.imageTooLarge,
+        );
+        return null;
+      }
+    } catch (err, stack) {
+      log.error(err, stackTrace: stack);
+      onError(
+        'Unable to encode image for sending to vegi',
+        ProductSuggestionUploadErrCode.imageEncodingError,
+      );
+      return null;
+    }
+    try {
+      final Response<dynamic> response = await dio
+          .post(
+        'api/v1/products/upload-product-suggestion-image',
+        data: FormData.fromMap({
+          'uid': deviceSuggestionUID,
+          'image': imgByteStream,
+        }),
+        // options: Options? ,
+        // cancelToken: CancelToken?,
+        // onSendProgress: ProgressCallback?,
+        onReceiveProgress: (count, total) => onReceiveProgress(count, total),
+      )
+          .onError((error, stackTrace) {
+        log.error(error, stackTrace: stackTrace);
+        if (error is Map<String, dynamic> &&
+            error['message'].toString().startsWith('SocketException:') &&
+            dio.options.baseUrl.startsWith('http://localhost')) {
+          log.warn(
+            'If running from real_device, cant connect to localhost on running machine...',
+          );
+        }
+        return Response(
+          data: {'image': ''},
+          statusCode: 500,
+          requestOptions: RequestOptions(path: ''),
+        );
+      });
+
+      if (response.statusCode != null && response.statusCode! >= 400) {
+        var errCode = ProductSuggestionUploadErrCode.unknownError;
+        if (response.statusCode == 404) {
+          errCode = ProductSuggestionUploadErrCode.productNotFound;
+        } else if (response.statusCode == 500) {
+          errCode = ProductSuggestionUploadErrCode.connectionIssue;
+        }
+        onError(
+          response.statusMessage ?? 'Unknown Error',
+          errCode,
+        );
+        return null;
+      } else {
+        final answer = UploadProductSuggestionImageResponse.fromJson(
+          response.data as Map<String, dynamic>,
+        );
+
+        onSuccess(answer);
+
+        return answer;
+      }
+    } catch (err, st) {
+      log.error(err, stackTrace: st);
+    }
+  }
+
+  Future<void> uploadProductSuggestion(
+    ProductSuggestion suggestion,
+    void Function() onSuccess,
+    void Function(String error, ProductSuggestionUploadErrCode errCode) onError,
+  ) async {
+    final Response<dynamic> response = await dio
+        .post(
+      'api/v1/products/upload-product-suggestion',
+      data: suggestion.toJsonUpload(),
+    )
+        .onError((error, stackTrace) {
+      log.error(error, stackTrace: stackTrace);
+      if (error is Map<String, dynamic> && error.containsKey('response')) {
+        if (error['response'] is Response) {
+          Response resp = (error as Map<String, Response>)['response']!;
+          final wm = resp.toString();
+          return resp;
+        } else {
+          log.error((error as Map<String, Response>)['response']!.toString());
+        }
+      } else if (error is DioError) {
+        log.error((error as Map<String, Response>)['response']!.toString());
+      }
+      return Response(
+        data: {},
+        statusCode: 500,
+        requestOptions: RequestOptions(path: ''),
+      );
+    });
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      var errCode = ProductSuggestionUploadErrCode.unknownError;
+      if (response.statusCode == 404) {
+        errCode = ProductSuggestionUploadErrCode.productNotFound;
+      } else if (response.statusCode == 400) {
+        errCode = ProductSuggestionUploadErrCode.wrongVendor;
+      } else if (response.statusCode == 500) {
+        errCode = ProductSuggestionUploadErrCode.connectionIssue;
+      }
+      onError(
+        response.statusMessage ?? 'Unknown Error',
+        errCode,
+      );
+    } else {
+      onSuccess();
+    }
+
+    return;
   }
 
   Future<int> checkDiscountCode(String discountCode) async {

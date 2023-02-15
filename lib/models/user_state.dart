@@ -65,6 +65,8 @@ class UserState with _$UserState {
     @Default(false) bool useLiveLocation,
     @Default(false) @JsonKey(ignore: true) bool userIsVerified,
     @Default(null) @JsonKey(ignore: true) Position? userLocation,
+    @Default(false) @JsonKey(ignore: true) bool isUsingSimulator,
+    @Default(false) @JsonKey(ignore: true) bool isUsingIosSimulator,
     @Default('') String initialLoginDateTime,
     @Default(false) bool showSeedPhraseBanner,
     @Default([]) @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
@@ -86,6 +88,8 @@ class UserState with _$UserState {
         listOfDeliveryAddresses: [],
         surveyQuestions: [],
         surveyCompleted: false,
+        isUsingSimulator: false,
+        isUsingIosSimulator: false,
       );
 
   factory UserState.fromJson(Map<String, dynamic> json) =>

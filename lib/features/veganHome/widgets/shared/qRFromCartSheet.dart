@@ -87,6 +87,10 @@ class QRFromCartSheet extends StatelessWidget {
 
               //First Button
               ElevatedButton(
+                child: Text(
+                  'Scan QR Code',
+                  style: TextStyle(color: Colors.indigo[900]),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors
                       .white, // ~ The backgroundColor and foregroundColor properties were introduced in Flutter 3.3. Prior to that, they were called primary and onPrimary.
@@ -101,14 +105,14 @@ class QRFromCartSheet extends StatelessWidget {
                 onPressed: () {
                   context.router.push(const ScanPaymentRecipientQR());
                 },
-                child: Text(
-                  'Scan QR Code',
-                  style: TextStyle(color: Colors.indigo[900]),
-                ),
               ),
               const SizedBox(height: 10),
               //Second Button
               ElevatedButton(
+                child: Text(
+                  "Generate QR Code",
+                  style: TextStyle(color: Colors.indigo[900]),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
@@ -122,10 +126,6 @@ class QRFromCartSheet extends StatelessWidget {
                 onPressed: () {
                   context.router.push(const GenerateQRFromCart());
                 },
-                child: Text(
-                  "Generate QR Code",
-                  style: TextStyle(color: Colors.indigo[900]),
-                ),
               ),
               const Spacer()
             ],

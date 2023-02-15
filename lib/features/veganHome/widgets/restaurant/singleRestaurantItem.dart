@@ -38,6 +38,7 @@ class SingleRestaurantItem extends StatelessWidget {
                     border: Border.all(
                       color: Colors.black12,
                       strokeAlign: StrokeAlign.outside,
+                      // strokeAlign: BorderSide.strokeAlignOutside,
                     ),
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: const [

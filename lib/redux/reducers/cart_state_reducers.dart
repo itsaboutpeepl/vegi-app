@@ -1,5 +1,7 @@
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/envService.dart';
+import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
@@ -31,6 +33,21 @@ final cartStateReducers = combineReducers<UserCartState>([
   ),
   TypedReducer<UserCartState, UpdateNextAvaliableTimeSlots>(
     _updateNextAvaliableSlots,
+  ),
+  TypedReducer<UserCartState, AddImageToProductSuggestionRTO>(
+    _addImageToProductSuggestion,
+  ),
+  TypedReducer<UserCartState, AddQRCodeToProductSuggestionRTO>(
+    _addQRCodeToProductSuggestion,
+  ),
+  TypedReducer<UserCartState, AddAdditionalInformationToProductSuggestionRTO>(
+    _addAdditionalInfoToProductSuggestion,
+  ),
+  TypedReducer<UserCartState, AddProductNameToProductSuggestionRTO>(
+    _addProductNameToProductSuggestion,
+  ),
+  TypedReducer<UserCartState, CreateProductSuggestion>(
+    _createProductSuggestion,
   ),
 ]);
 
@@ -217,5 +234,61 @@ UserCartState _updateNextAvaliableSlots(
   return state.copyWith(
     nextDeliverySlot: action.deliverySlot,
     nextCollectionSlot: action.collectionSlot,
+  );
+}
+
+UserCartState _createProductSuggestion(
+  UserCartState state,
+  CreateProductSuggestion action,
+) {
+  return state.copyWith(
+    productSuggestion: action.productSuggestion,
+  );
+}
+
+UserCartState _addImageToProductSuggestion(
+  UserCartState state,
+  AddImageToProductSuggestionRTO action,
+) {
+  return state.copyWith(
+    productSuggestion: state.productSuggestion?.copyWith(
+      images: Map.fromEntries(<MapEntry<ProductSuggestionImageType, UploadProductSuggestionImageResponse>>[
+        ...state.productSuggestion!.images.entries,
+        MapEntry(action.imageType, action.image),
+      ]),
+    ),
+  );
+}
+
+UserCartState _addQRCodeToProductSuggestion(
+  UserCartState state,
+  AddQRCodeToProductSuggestionRTO action,
+) {
+  return state.copyWith(
+    productSuggestion: state.productSuggestion?.copyWith(
+      qrCode: action.qrCode,
+    ),
+  );
+}
+
+UserCartState _addAdditionalInfoToProductSuggestion(
+  UserCartState state,
+  AddAdditionalInformationToProductSuggestionRTO action,
+) {
+  return state.copyWith(
+    productSuggestion: state.productSuggestion
+        ?.copyWith(additionalInformation: action.additionalInfo),
+  );
+}
+
+UserCartState _addProductNameToProductSuggestion(
+  UserCartState state,
+  AddProductNameToProductSuggestionRTO action,
+) {
+  return state.copyWith(
+    productSuggestion: state.productSuggestion?.copyWith(
+      name: action.productName,
+      store: action.retailerName,
+    ),
   );
 }

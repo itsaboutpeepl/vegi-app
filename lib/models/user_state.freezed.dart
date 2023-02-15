@@ -63,6 +63,10 @@ mixin _$UserState {
   bool get userIsVerified => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   Position? get userLocation => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  bool get isUsingSimulator => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  bool get isUsingIosSimulator => throw _privateConstructorUsedError;
   String get initialLoginDateTime => throw _privateConstructorUsedError;
   bool get showSeedPhraseBanner => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -118,6 +122,8 @@ abstract class $UserStateCopyWith<$Res> {
       bool useLiveLocation,
       @JsonKey(ignore: true) bool userIsVerified,
       @JsonKey(ignore: true) Position? userLocation,
+      @JsonKey(ignore: true) bool isUsingSimulator,
+      @JsonKey(ignore: true) bool isUsingIosSimulator,
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
       @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
@@ -175,6 +181,8 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? useLiveLocation = null,
     Object? userIsVerified = null,
     Object? userLocation = freezed,
+    Object? isUsingSimulator = null,
+    Object? isUsingIosSimulator = null,
     Object? initialLoginDateTime = null,
     Object? showSeedPhraseBanner = null,
     Object? surveyQuestions = null,
@@ -325,6 +333,14 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.userLocation
           : userLocation // ignore: cast_nullable_to_non_nullable
               as Position?,
+      isUsingSimulator: null == isUsingSimulator
+          ? _value.isUsingSimulator
+          : isUsingSimulator // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUsingIosSimulator: null == isUsingIosSimulator
+          ? _value.isUsingIosSimulator
+          : isUsingIosSimulator // ignore: cast_nullable_to_non_nullable
+              as bool,
       initialLoginDateTime: null == initialLoginDateTime
           ? _value.initialLoginDateTime
           : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
@@ -401,6 +417,8 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       bool useLiveLocation,
       @JsonKey(ignore: true) bool userIsVerified,
       @JsonKey(ignore: true) Position? userLocation,
+      @JsonKey(ignore: true) bool isUsingSimulator,
+      @JsonKey(ignore: true) bool isUsingIosSimulator,
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
       @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
@@ -457,6 +475,8 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? useLiveLocation = null,
     Object? userIsVerified = null,
     Object? userLocation = freezed,
+    Object? isUsingSimulator = null,
+    Object? isUsingIosSimulator = null,
     Object? initialLoginDateTime = null,
     Object? showSeedPhraseBanner = null,
     Object? surveyQuestions = null,
@@ -607,6 +627,14 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.userLocation
           : userLocation // ignore: cast_nullable_to_non_nullable
               as Position?,
+      isUsingSimulator: null == isUsingSimulator
+          ? _value.isUsingSimulator
+          : isUsingSimulator // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUsingIosSimulator: null == isUsingIosSimulator
+          ? _value.isUsingIosSimulator
+          : isUsingIosSimulator // ignore: cast_nullable_to_non_nullable
+              as bool,
       initialLoginDateTime: null == initialLoginDateTime
           ? _value.initialLoginDateTime
           : initialLoginDateTime // ignore: cast_nullable_to_non_nullable
@@ -668,6 +696,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.useLiveLocation = false,
       @JsonKey(ignore: true) this.userIsVerified = false,
       @JsonKey(ignore: true) this.userLocation = null,
+      @JsonKey(ignore: true) this.isUsingSimulator = false,
+      @JsonKey(ignore: true) this.isUsingIosSimulator = false,
       this.initialLoginDateTime = '',
       this.showSeedPhraseBanner = false,
       @JsonKey(ignore: true) this.surveyQuestions = const [],
@@ -781,6 +811,12 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   final Position? userLocation;
   @override
+  @JsonKey(ignore: true)
+  final bool isUsingSimulator;
+  @override
+  @JsonKey(ignore: true)
+  final bool isUsingIosSimulator;
+  @override
   @JsonKey()
   final String initialLoginDateTime;
   @override
@@ -795,7 +831,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted)';
+    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted)';
   }
 
   @override
@@ -840,6 +876,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('useLiveLocation', useLiveLocation))
       ..add(DiagnosticsProperty('userIsVerified', userIsVerified))
       ..add(DiagnosticsProperty('userLocation', userLocation))
+      ..add(DiagnosticsProperty('isUsingSimulator', isUsingSimulator))
+      ..add(DiagnosticsProperty('isUsingIosSimulator', isUsingIosSimulator))
       ..add(DiagnosticsProperty('initialLoginDateTime', initialLoginDateTime))
       ..add(DiagnosticsProperty('showSeedPhraseBanner', showSeedPhraseBanner))
       ..add(DiagnosticsProperty('surveyQuestions', surveyQuestions))
@@ -915,6 +953,10 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.userIsVerified == userIsVerified) &&
             (identical(other.userLocation, userLocation) ||
                 other.userLocation == userLocation) &&
+            (identical(other.isUsingSimulator, isUsingSimulator) ||
+                other.isUsingSimulator == isUsingSimulator) &&
+            (identical(other.isUsingIosSimulator, isUsingIosSimulator) ||
+                other.isUsingIosSimulator == isUsingIosSimulator) &&
             (identical(other.initialLoginDateTime, initialLoginDateTime) ||
                 other.initialLoginDateTime == initialLoginDateTime) &&
             (identical(other.showSeedPhraseBanner, showSeedPhraseBanner) ||
@@ -965,6 +1007,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         useLiveLocation,
         userIsVerified,
         userLocation,
+        isUsingSimulator,
+        isUsingIosSimulator,
         initialLoginDateTime,
         showSeedPhraseBanner,
         const DeepCollectionEquality().hash(surveyQuestions),
@@ -1029,6 +1073,10 @@ abstract class _UserState extends UserState {
           final bool userIsVerified,
       @JsonKey(ignore: true)
           final Position? userLocation,
+      @JsonKey(ignore: true)
+          final bool isUsingSimulator,
+      @JsonKey(ignore: true)
+          final bool isUsingIosSimulator,
       final String initialLoginDateTime,
       final bool showSeedPhraseBanner,
       @JsonKey(ignore: true)
@@ -1117,6 +1165,12 @@ abstract class _UserState extends UserState {
   @override
   @JsonKey(ignore: true)
   Position? get userLocation;
+  @override
+  @JsonKey(ignore: true)
+  bool get isUsingSimulator;
+  @override
+  @JsonKey(ignore: true)
+  bool get isUsingIosSimulator;
   @override
   String get initialLoginDateTime;
   @override
