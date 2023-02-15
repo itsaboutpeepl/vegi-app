@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -130,36 +132,39 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                   size: 14,
                 ),
               ),
-              const Opacity(
-                opacity: 0.5,
-                child: ListTile(
-                  leading: Icon(FontAwesomeIcons.applePay),
-                  title: Text('Apple Pay'),
-                  subtitle: Text('Coming soon'),
-                  trailing: Icon(
+              if (Platform.isIOS)
+                ListTile(
+                  onTap: () {
+                    viewmodel.setPaymentMethod(
+                      paymentMethod: PaymentMethod.applePay,
+                    );
+                    context.router.pop();
+                  },
+                  leading: const Icon(FontAwesomeIcons.applePay),
+                  title: const Text('Apple Pay'),
+                  trailing: const Icon(
                     Icons.arrow_forward_ios,
                     size: 14,
                   ),
                 ),
-              ),
-              Opacity(
-                opacity: 0.5,
-                child: ListTile(
-                  onTap: () {
-                    viewmodel.setPaymentMethod(
-                      paymentMethod: PaymentMethod.qrPay,
-                    );
-                    context.router.pop();
-                  },
-                  leading: const Icon(FontAwesomeIcons.barcode),
-                  title: Text(PaymentMethod.qrPay.formattedName),
-                  subtitle: const Text('Coming soon In Store'),
-                  trailing: const Icon(
-                    Icons.qr_code,
-                    size: 14,
-                  ),
-                ),
-              ),
+              // Opacity(
+              //   opacity: 0.5,
+              //   child: ListTile(
+              //     onTap: () {
+              //       viewmodel.setPaymentMethod(
+              //         paymentMethod: PaymentMethod.qrPay,
+              //       );
+              //       context.router.pop();
+              //     },
+              //     leading: const Icon(FontAwesomeIcons.barcode),
+              //     title: Text(PaymentMethod.qrPay.formattedName),
+              //     subtitle: const Text('Coming soon In Store'),
+              //     trailing: const Icon(
+              //       Icons.qr_code,
+              //       size: 14,
+              //     ),
+              //   ),
+              // ),
             ],
           );
         },

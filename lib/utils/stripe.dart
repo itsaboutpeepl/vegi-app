@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -13,7 +14,6 @@ import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
-//TODO: Move class
 class StripeCustomResponse {
   StripeCustomResponse({
     required this.ok,
@@ -28,8 +28,10 @@ class StripeService {
   final Stripe instance = Stripe.instance;
 
   void init() {
-    Stripe.publishableKey =
-        dotenv.env['STRIPE_API_KEY']!; //TODO: Add kDebugMode check
+    Stripe.publishableKey = kDebugMode
+        ? dotenv.env['STRIPE_API_KEY_TEST']!
+        : dotenv.env['STRIPE_API_KEY_LIVE']!;
+    Stripe.merchantIdentifier = 'merchant.com.vegiapp';
   }
 
   Future<bool> handleStripe({
@@ -108,6 +110,41 @@ class StripeService {
         );
         return false;
       }
+    }
+  }
+
+  Future<bool> handleApplePay({
+    required String walletAddress,
+    required int amount,
+    required BuildContext context,
+    required bool shouldPushToHome,
+  }) async {
+    try {
+      final paymentIntentClientSecret =
+          await stripePayService.createStripePaymentIntent(
+        amount: amount,
+        currency: 'gbp',
+        walletAddress: walletAddress,
+      );
+
+      await instance.presentApplePay(
+        const ApplePayPresentParams(
+          cartItems: [
+            ApplePayCartSummaryItem.immediate(
+              label: 'Product Test',
+              amount: '25.0',
+            ),
+          ],
+          country: 'GB',
+          currency: 'GBP',
+        ),
+      );
+
+      await Stripe.instance.confirmApplePayPayment(paymentIntentClientSecret);
+      return true;
+    } catch (e) {
+      print(e);
+      throw Exception(e);
     }
   }
 }

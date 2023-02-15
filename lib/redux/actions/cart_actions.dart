@@ -1166,7 +1166,7 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           await Sentry.captureException(
             e,
             hint: 'DioError - sendOrderObject - '
-                "Internal Server Error",
+                'Internal Server Error',
           );
           showErrorSnack(
             context: context,
@@ -1264,7 +1264,7 @@ ThunkAction<AppState> startPaymentProcess({
 
         await showModalBottomSheet<Widget>(
           isScrollControlled: true,
-          backgroundColor: Color.fromARGB(255, 44, 42, 39),
+          backgroundColor: const Color.fromARGB(255, 44, 42, 39),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(20),
@@ -1274,6 +1274,50 @@ ThunkAction<AppState> startPaymentProcess({
           context: context,
           builder: (context) => const QRFromCartSheet(),
         );
+      } else if (store.state.cartState.selectedPaymentMethod ==
+          PaymentMethod.applePay) {
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.mint,
+          ),
+        );
+        await stripeService
+            .handleApplePay(
+          walletAddress: store.state.userState.walletAddress,
+          amount: store.state.cartState.cartTotal,
+          context: context,
+          shouldPushToHome: false,
+        )
+            .then(
+          (value) {
+            if (!value) {
+              store.dispatch(SetTransferringPayment(flag: value));
+              return;
+            }
+            unawaited(
+              Analytics.track(
+                eventName: AnalyticsEvents.mint,
+                properties: {
+                  'status': 'success',
+                },
+              ),
+            );
+            store
+              ..dispatch(
+                UpdateSelectedAmounts(
+                  gbpxAmount: (store.state.cartState.cartTotal) / 100,
+                  pplAmount: 0,
+                ),
+              )
+              ..dispatch(
+                startTokenPaymentToRestaurant(
+                  context: context,
+                ),
+              );
+          },
+        ).catchError((error) {
+          throw Exception('Apple Pay Failed - $error');
+        });
       } else if (store.state.cartState.selectedPaymentMethod ==
           PaymentMethod.peeplPay) {
         unawaited(
