@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
@@ -62,6 +63,37 @@ class _ReduxStateViewerState extends State<ReduxStateViewer> {
                   padding: const EdgeInsets.only(
                     left: 12,
                     top: 20,
+                    bottom: 10,
+                  ),
+                  child: const Text(
+                    'Connection Info',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: FractionalOffset.topLeft,
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    top: 4,
+                    bottom: 10,
+                  ),
+                  child: Text(
+                    dotenv.env['VEGI_EATS_BACKEND']!,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.blueGrey,
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: FractionalOffset.topLeft,
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    top: 2,
                     bottom: 20,
                   ),
                   child: const Text(

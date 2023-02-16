@@ -1,15 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/vegiDialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/vegiDialogButton.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
-import 'package:vegan_liverpool/common/router/routes.gr.dart';
 
 class SuggestProductDialog extends StatelessWidget {
-  const SuggestProductDialog({Key? key}) : super(key: key);
+  const SuggestProductDialog({
+    Key? key,
+    this.scannedQRCode,
+  }) : super(key: key);
+
+  final String? scannedQRCode;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +45,25 @@ class SuggestProductDialog extends StatelessWidget {
             label: nextButtonLabel,
             icon: Icons.send,
             onPressed: () {
-              context.router.popAndPush(
-                const SuggestProductFunnelScreen(),
+              // context.router
+              //   ..popUntilRoot()
+              //   ..pushNamed('veganHomeScreenAlt');
+              // print(context.router);
+              context.router.navigate(const VeganHomeScreenAlt());
+              // context.router.replaceAll([const VeganHomeScreenAlt(), SuggestProductFunnelScreen(
+              //     scannedQRCode: scannedQRCode,
+              //   ),
+              // ]);
+              // context.router.replaceAll([
+              //   const MainScreen(),
+              //   SuggestProductFunnelScreen(
+              //     scannedQRCode: scannedQRCode,
+              //   ),
+              // ]);
+              context.router.push(
+                SuggestProductFunnelScreen(
+                  scannedQRCode: scannedQRCode,
+                ),
               );
             },
           ),

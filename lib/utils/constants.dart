@@ -154,8 +154,8 @@ const photoTakePhotoWithCameraText = 'Take Photo with Camera';
 const imageFromCameraText = 'Image from Camera';
 const imageFromLibraryText = 'Image from Gallery';
 const cameraPreferredImageQuality =
-    25; // % of image quality retained from original
-const fileUploadVegiMaxSizeBytes = 30000000;
+    5; // % of image quality retained from original
+const fileUploadVegiMaxSizeMB = 10; // 10MB
 
 Future<bool> deviceIsSimulator() async {
   final deviceInfo = DeviceInfoPlugin();

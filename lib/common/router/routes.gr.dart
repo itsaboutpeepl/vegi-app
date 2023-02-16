@@ -137,9 +137,14 @@ class RootRouter extends _i32.RootStackRouter {
       );
     },
     SuggestProductFunnelScreen.name: (routeData) {
+      final args = routeData.argsAs<SuggestProductFunnelScreenArgs>(
+          orElse: () => const SuggestProductFunnelScreenArgs());
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i10.SuggestProductFunnelScreen(),
+        child: _i10.SuggestProductFunnelScreen(
+          key: args.key,
+          scannedQRCode: args.scannedQRCode,
+        ),
       );
     },
     ImageFromGalleryEx.name: (routeData) {
@@ -714,14 +719,37 @@ class WaitingListFunnelScreenArgs {
 
 /// generated route for
 /// [_i10.SuggestProductFunnelScreen]
-class SuggestProductFunnelScreen extends _i32.PageRouteInfo<void> {
-  const SuggestProductFunnelScreen()
-      : super(
+class SuggestProductFunnelScreen
+    extends _i32.PageRouteInfo<SuggestProductFunnelScreenArgs> {
+  SuggestProductFunnelScreen({
+    _i35.Key? key,
+    String? scannedQRCode,
+  }) : super(
           SuggestProductFunnelScreen.name,
           path: '/suggest-product-funnel-screen',
+          args: SuggestProductFunnelScreenArgs(
+            key: key,
+            scannedQRCode: scannedQRCode,
+          ),
         );
 
   static const String name = 'SuggestProductFunnelScreen';
+}
+
+class SuggestProductFunnelScreenArgs {
+  const SuggestProductFunnelScreenArgs({
+    this.key,
+    this.scannedQRCode,
+  });
+
+  final _i35.Key? key;
+
+  final String? scannedQRCode;
+
+  @override
+  String toString() {
+    return 'SuggestProductFunnelScreenArgs{key: $key, scannedQRCode: $scannedQRCode}';
+  }
 }
 
 /// generated route for

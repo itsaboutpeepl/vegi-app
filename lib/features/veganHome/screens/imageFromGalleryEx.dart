@@ -37,6 +37,8 @@ class _ImageFromGalleryExState extends State<ImageFromGalleryEx> {
     final image = await imagePicker.pickImage(
       source: source,
       imageQuality: cameraPreferredImageQuality,
+      maxHeight: 400,
+      maxWidth: 400,
       preferredCameraDevice: CameraDevice.front,
     );
     setState(() {

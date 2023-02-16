@@ -19,19 +19,17 @@ import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/services/abstract_apis/httpService.dart';
 import 'package:vegan_liverpool/services/apis/places.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 @lazySingleton
-class PeeplEatsService {
-  PeeplEatsService(this.dio) {
+class PeeplEatsService extends HttpService {
+  PeeplEatsService(Dio dio) : super(dio, dotenv.env['VEGI_EATS_BACKEND']!) {
     dio.options.baseUrl = dotenv.env['VEGI_EATS_BACKEND']!;
-    dio.options.headers =
-        Map.from({'Content-Type': 'application/json', 'Origin': ''});
+    dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
-
-  final Dio dio;
 
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
     final Response<dynamic> response =
@@ -284,13 +282,21 @@ class PeeplEatsService {
     required String restaurantID,
     required String barCode,
   }) async {
-    final Response<Map<String, dynamic>> response = await dio.get(
-      'api/v1/products/get-product-by-qrcode',
-      queryParameters: <String, dynamic>{
-        'qrCode': barCode,
-        'vendor': restaurantID
-      },
-    );
+    Response<Map<String, dynamic>?> response;
+    try {
+      // final Response<Map<String, dynamic>?> response =
+      response = await dioGet<Map<String, dynamic>>(
+        'api/v1/products/get-product-by-qrcode',
+        queryParameters: <String, dynamic>{
+          'qrCode': barCode,
+          'vendor': restaurantID
+        },
+      );
+    } catch (e, s) {
+      log.error(e);
+      rethrow;
+    }
+
     final element = response.data;
     if (element == null) {
       return null;
@@ -446,9 +452,9 @@ class PeeplEatsService {
           mimeSubType,
         ),
       );
-      if (imgByteStream.length > fileUploadVegiMaxSizeBytes) {
+      if ((imgByteStream.length * 0.00000095367432) > fileUploadVegiMaxSizeMB) {
         final wm =
-            'Image upload (${imgByteStream.length * 0.00000095367432}MB) is too large, must be under ${fileUploadVegiMaxSizeBytes * 0.00000095367432}MB';
+            'Image upload (${imgByteStream.length}MB) is too large, must be under ${fileUploadVegiMaxSizeMB}MB';
         // throw Exception(wm);
         onError(
           wm,

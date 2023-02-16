@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -27,6 +28,28 @@ class ScanListedProductQRCode extends StatelessWidget {
         builder: (_, viewModel) {
           return ScanQRCode(
             scanQRCodeHandler: viewModel.scanQRCode,
+            handleError: (scannedQRCode, errMessage, errCode) {
+              if (errCode == QRCodeScanErrCode.productNotFound) {
+                // showErrorSnack(
+                //   context: context,
+                //   title: errCode == QRCodeScanErrCode.productNotFound
+                //       ? 'Product not found'
+                //       : 'Unable to scan barcode',
+                // );
+                showDialog<Widget>(
+                    context: context,
+                    builder: (context) {
+                      return SuggestProductDialog(
+                        scannedQRCode: scannedQRCode,
+                      );
+                    },);
+              } else {
+                showErrorSnack(
+                  context: context,
+                  title: 'Unable to scan barcode',
+                );
+              }
+            },
           );
         },
       ),

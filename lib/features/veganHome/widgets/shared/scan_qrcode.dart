@@ -3,16 +3,13 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/suggestProductDialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/suggestionQRCodeManualInputCard.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/scanProductQRCodeViewModel.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/suggestProductViewModel.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -20,15 +17,19 @@ class ScanQRCode extends StatefulWidget {
   const ScanQRCode({
     Key? key,
     required this.scanQRCodeHandler,
+    required this.handleError,
   }) : super(key: key);
 
+  final void Function(String, String, QRCodeScanErrCode) handleError;
+
   final void Function(
-      String,
-      void Function(),
-      void Function(
     String,
-    QRCodeScanErrCode,
-  )) scanQRCodeHandler;
+    void Function(),
+    void Function(
+      String,
+      QRCodeScanErrCode,
+    ),
+  ) scanQRCodeHandler;
 
   @override
   _ScanQRCodeState createState() => _ScanQRCodeState();
@@ -65,66 +66,23 @@ class _ScanQRCodeState extends State<ScanQRCode> {
               widget.scanQRCodeHandler(
                 qrCode,
                 () {
-                  context.router.pop();
                   success();
                 },
                 errorHandler,
               );
             },
+            handleError: (scannedQRCode, errMessage, errCode) {
+              log.error(errMessage);
+              widget.handleError(scannedQRCode, errMessage, errCode);
+            },
           );
         }
         return Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              //Message displayed over here
-              // Text(
-              //   "Result",
-              //   style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              //   textAlign: TextAlign.center,
-              // ),
-              // Text(
-              //   qrCodeResult,
-              //   style: TextStyle(
-              //     fontSize: 8.0,
-              //   ),
-              //   textAlign: TextAlign.center,
-              // ),
-              // SizedBox(
-              //   height: 20.0,
-              // ),
-
-              // //Button to scan QR code
-              // ElevatedButton(
-              //   style: ElevatedButton.styleFrom(
-              //     backgroundColor: Colors.white,
-              //     foregroundColor: Colors.black,
-              //     fixedSize: const Size(120, 40),
-              //     textStyle: const TextStyle(fontWeight: FontWeight.w900),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     padding: const EdgeInsets.all(15),
-              //   ),
-              //   onPressed: () async {
-              //     String codeSanner =
-              //         // await BarcodeScanner.scan(); //barcode scanner
-              //         await FlutterBarcodeScanner.scanBarcode(
-              //             COLOR_CODE,
-              //             CANCEL_BUTTON_TEXT,
-              //             isShowFlashIcon,
-              //             scanMode);
-              //     setState(() {
-              //       qrCodeResult = codeSanner;
-              //     });
-              //   },
-              //   child: Text(
-              //     "Open Scanner",
-              //     style: TextStyle(color: Colors.indigo[900]),
-              //   ),
-              // ),
               Expanded(
                 flex: 5,
                 child: QRView(
@@ -235,23 +193,7 @@ class _ScanQRCodeState extends State<ScanQRCode> {
           },
           (errMessage, errCode) {
             log.error(errMessage);
-            if (errCode == QRCodeScanErrCode.productNotFound) {
-              showErrorSnack(
-                context: context,
-                title: errCode == QRCodeScanErrCode.productNotFound
-                    ? 'Product not found'
-                    : 'Unable to scan barcode',
-              );
-              showDialog<Widget>(
-                context: context,
-                builder: (context) => const SuggestProductDialog(),
-              );
-            } else {
-              showErrorSnack(
-                context: context,
-                title: 'Unable to scan barcode',
-              );
-            }
+            widget.handleError(scanData.code!, errMessage, errCode);
           },
         );
       }

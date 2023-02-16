@@ -4,12 +4,15 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/suggestProductDialog.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SuggestionQRCodeManualInputCard extends StatefulWidget {
   const SuggestionQRCodeManualInputCard({
     Key? key,
     required this.scanQRCodeHandler,
+    required this.handleError,
   }) : super(key: key);
 
   final void Function(
@@ -19,6 +22,12 @@ class SuggestionQRCodeManualInputCard extends StatefulWidget {
     String,
     QRCodeScanErrCode,
   )) scanQRCodeHandler;
+
+  final void Function(
+    String,
+    String,
+    QRCodeScanErrCode,
+  ) handleError;
 
   @override
   State<SuggestionQRCodeManualInputCard> createState() =>
@@ -140,15 +149,11 @@ class _SuggestionQRCodeManualInputCardState
                             });
                             final warning =
                                 'Error adding barcode to product suggestion: $errMessage';
-                            await Sentry.captureMessage(
-                              warning,
-                            );
-                            showErrorSnack(
-                              context: context,
-                              // ignore: use_build_context_synchronously
-                              message: I10n.of(context).error,
-                              // ignore: use_build_context_synchronously
-                              title: I10n.of(context).oops,
+
+                            widget.handleError(
+                              qrCodeStr,
+                              errMessage,
+                              errCode,
                             );
                           },
                         );
@@ -156,6 +161,7 @@ class _SuggestionQRCodeManualInputCardState
                         setState(() {
                           isPreloading = false;
                         });
+
                         showErrorSnack(
                           context: context,
                           message: I10n.of(context).error,

@@ -667,7 +667,6 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
         ..dispatch(computeCartTotals());
 
       successHandler();
-
     } catch (e, s) {
       log.error('ERROR - scanRestaurantMenuItemQRCode $e');
       await Sentry.captureException(
@@ -675,6 +674,14 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
         stackTrace: s,
         hint: 'ERROR - scanRestaurantMenuItemQRCode $e',
       );
+      if (e is DioError && e.response != null) {
+        if (e.response!.statusCode == 404) {
+          return errorHandler(
+            'ERROR - scanRestaurantMenuItemQRCode $e',
+            QRCodeScanErrCode.productNotFound,
+          );
+        }
+      }
       errorHandler(
         'ERROR - scanRestaurantMenuItemQRCode $e',
         QRCodeScanErrCode.connectionIssue,

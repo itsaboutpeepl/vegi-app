@@ -98,6 +98,9 @@ class _SuggestionPhotoScreenState extends State<SuggestionPhotoScreen>
         type: type,
         handleImagePicked: (File? f) {
           context.router.popUntilRouteWithName(currentRouteName);
+          setState(() {
+            isPreloading = true;
+          });
           return _handleImageFileCb(viewModel, success, error)(f);
         },
       ),
@@ -112,103 +115,119 @@ class _SuggestionPhotoScreenState extends State<SuggestionPhotoScreen>
     return StoreConnector<AppState, SuggestProductViewModel>(
         converter: SuggestProductViewModel.fromStore,
         builder: (_, viewmodel) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: 30,
-              top: MediaQuery.of(context).size.height * 0.08,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        suggestProductPhotoDirector(suggestProductPhotoDirectorLabelMap[widget.suggestion]!),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      MaterialButton(
-                        color: themeShade600,
-                        child: const Text(
-                          photoPickImageFromGalleryText,
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onPressed: () {
-                          _handleURLButtonPress(
-                            context,
-                            ImageSourceType.gallery,
-                            viewmodel,
-                            () {
-                              widget.nextPage();
-                            },
-                            (errMessage) async {
-                              showErrorSnack(
-                                context: context,
-                                title: I10n.of(context).oops,
-                                message:
-                                    'An error occurred uploading your image to the cloud.',
-                              );
-                              await Sentry.captureException(
-                                Exception(errMessage),
-                                // stackTrace: s, // from catch (e, s)
-                                hint:
-                                    'ERROR (upload Image from Gallery) - $errMessage',
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      MaterialButton(
-                        color: themeShade600,
-                        child: const Text(
-                          photoTakePhotoWithCameraText,
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onPressed: () {
-                          _handleURLButtonPress(
-                            context,
-                            ImageSourceType.camera,
-                            viewmodel,
-                            () {
-                              widget.nextPage();
-                            },
-                            (errMessage) async {
-                              showErrorSnack(
-                                context: context,
-                                title: I10n.of(context).oops,
-                                message:
-                                    'An error occurred uploading your image to the cloud.',
-                              );
-                              await Sentry.captureException(
-                                Exception(errMessage),
-                                // stackTrace: s, // from catch (e, s)
-                                hint:
-                                    'ERROR (upload Image from Camera) - $errMessage',
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+          return Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: 30,
+                  top: MediaQuery.of(context).size.height * 0.08,
                 ),
-              ],
-            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            suggestProductPhotoDirector(
+                                suggestProductPhotoDirectorLabelMap[
+                                    widget.suggestion]!),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          MaterialButton(
+                            color: themeShade600,
+                            child: const Text(
+                              photoPickImageFromGalleryText,
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onPressed: () {
+                              _handleURLButtonPress(
+                                context,
+                                ImageSourceType.gallery,
+                                viewmodel,
+                                () {
+                                  setState(() {
+                                    isPreloading = false;
+                                  });
+                                  widget.nextPage();
+                                },
+                                (errMessage) async {
+                                  setState(() {
+                                    isPreloading = false;
+                                  });
+                                  showErrorSnack(
+                                    context: context,
+                                    title: I10n.of(context).oops,
+                                    message:
+                                        'An error occurred uploading your image to the cloud.',
+                                  );
+                                  await Sentry.captureException(
+                                    Exception(errMessage),
+                                    // stackTrace: s, // from catch (e, s)
+                                    hint:
+                                        'ERROR (upload Image from Gallery) - $errMessage',
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          MaterialButton(
+                            color: themeShade600,
+                            child: const Text(
+                              photoTakePhotoWithCameraText,
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onPressed: () {
+                              _handleURLButtonPress(
+                                context,
+                                ImageSourceType.camera,
+                                viewmodel,
+                                () {
+                                  widget.nextPage();
+                                },
+                                (errMessage) async {
+                                  showErrorSnack(
+                                    context: context,
+                                    title: I10n.of(context).oops,
+                                    message:
+                                        'An error occurred uploading your image to the cloud.',
+                                  );
+                                  await Sentry.captureException(
+                                    Exception(errMessage),
+                                    // stackTrace: s, // from catch (e, s)
+                                    hint:
+                                        'ERROR (upload Image from Camera) - $errMessage',
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (isPreloading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+            ],
           );
         });
   }
