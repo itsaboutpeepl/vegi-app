@@ -27,6 +27,8 @@ import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
@@ -585,8 +587,40 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
         errorHandler(warning, QRCodeScanErrCode.productNotFound);
         return;
       }
-      final selectedProductOption =
-          menuItem.listOfProductOptions[0].listOfOptions[0];
+
+      Map<int, ProductOptions> selectProductOptionsCategories = {};
+      final pos = menuItem?.listOfProductOptions ?? <ProductOptionsCategory>[];
+      for (final prodOptCat in pos) {
+        for (final pov in prodOptCat.listOfOptions) {
+          if (pov.productBarCode == itemQRCode) {
+            selectProductOptionsCategories =
+                Map<int, ProductOptions>.fromEntries(
+              pos
+                  .where(
+                    (element) => element.name != prodOptCat.name,
+                  )
+                  .map(
+                    (element) => MapEntry(
+                      element.categoryID,
+                      // element.copyWith(
+                      //   listOfOptions: [element.listOfOptions[0]],
+                      // ),
+                      element.listOfOptions[0],
+                    ),
+                  )
+                  .toList()
+                ..add(
+                  MapEntry(
+                    prodOptCat.categoryID,
+                    // prodOptCat.copyWith(listOfOptions: [pov]),
+                    pov,
+                  ),
+                ),
+            );
+          }
+        }
+      }
+
       final cartItem = CartItem(
         internalID: Random(
           DateTime.now().millisecondsSinceEpoch,
@@ -605,9 +639,7 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
         //object is calculated using the viewmodel
         //quantity field. Then the object is just
         //duplicated and added to the cart items.
-        selectedProductOptions: {
-          selectedProductOption.optionID: selectedProductOption,
-        },
+        selectedProductOptions: selectProductOptionsCategories,
       );
 
       // final restaurant =
@@ -1186,10 +1218,17 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           hint: 'DioError - sendOrderObject - '
               "${e.response!.data['cause']['code']}",
         );
+        final responseContainsData = (e.response!.data['cause'] is Map &&
+            (e.response!.data['cause'] as Map).containsKey('data'));
         showErrorSnack(
           context: context,
           title: getErrorMessageForOrder(
-            e.response!.data['cause']['code'] as String,
+            (e.response!.data['cause']['code'] as String) +
+                ': ' +
+                (responseContainsData
+                    ? ((e.response!.data['cause']['raw']['data'] ?? '')
+                        as String)
+                    : ''),
           ),
         );
       }

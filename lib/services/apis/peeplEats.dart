@@ -302,19 +302,37 @@ class PeeplEatsService extends HttpService {
       return null;
     }
     final pos = await getProductOptions(element['id'].toString());
-    List<ProductOptionsCategory> selectProductOptionsCategories =
-        <ProductOptionsCategory>[];
-    for (final prodOptCat in pos) {
-      for (final pov in prodOptCat.listOfOptions) {
-        if (pov.productBarCode == barCode) {
-          selectProductOptionsCategories.add(
-            prodOptCat.copyWith(
-              listOfOptions: <ProductOptions>[pov],
-            ),
-          );
-        }
-      }
-    }
+    // List<ProductOptionsCategory> selectProductOptionsCategories =
+    //     <ProductOptionsCategory>[];
+    // for (final prodOptCat in pos) {
+    //   for (final pov in prodOptCat.listOfOptions) {
+    //     if (pov.productBarCode == barCode) {
+    //       selectProductOptionsCategories = pos
+    //           .where(
+    //             (element) => element.name != prodOptCat.name,
+    //           )
+    //           .map(
+    //             (element) => element.copyWith(
+    //               listOfOptions: [element.listOfOptions[0]],
+    //             ),
+    //           )
+    //           .toList()
+    //         ..add(prodOptCat.copyWith(listOfOptions: [pov]));
+    //       // selectProductOptionsCategories.add(
+    //       //   prodOptCat.copyWith(
+    //       //     listOfOptions: pos
+    //       //         .where(
+    //       //           (element) => element.name != prodOptCat.name,
+    //       //         )
+    //       //         .map((element) =>
+    //       //             element.copyWith(listOfOptions: element.listOfOptions[0]))
+    //       //         .toList()
+    //       //       ..add(pov),
+    //       //   ),
+    //       // );
+    //     }
+    //   }
+    // }
     return RestaurantMenuItem(
       isFeatured: element['isFeatured'] as bool? ?? false,
       menuItemID: element['id'].toString(),
@@ -326,7 +344,8 @@ class PeeplEatsService extends HttpService {
       price: element['basePrice'] as int? ?? 0,
       description: element['description'] as String? ?? '',
       extras: {},
-      listOfProductOptions: selectProductOptionsCategories,
+      listOfProductOptions: pos,
+      // listOfProductOptions: selectProductOptionsCategories,
       priority: element['priority'] as int? ?? 0,
     );
   }

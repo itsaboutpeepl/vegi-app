@@ -11,7 +11,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/menu/suggestionAdditi
 // }
 
 class SuggestionAdditionalInfoScreen extends StatelessWidget {
-  const SuggestionAdditionalInfoScreen({
+  SuggestionAdditionalInfoScreen({
     Key? key,
     required this.title,
     required this.nextPage,
@@ -21,21 +21,35 @@ class SuggestionAdditionalInfoScreen extends StatelessWidget {
   final String title;
   final void Function() nextPage;
   final void Function() previousPage;
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: themeShade1100,
-      body: Padding(
-        padding: EdgeInsets.only(
-          bottom: 30,
-          top: MediaQuery.of(context).size.height * 0.08,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            SuggestionAdditionalInfoCard(),
-          ],
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        behavior: HitTestBehavior.translucent,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            bottom: 30,
+            // top: MediaQuery.of(context).size.height * 0.02,
+            top: 30,
+          ),
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SuggestionAdditionalInfoCard(
+                    // scrollController: scrollController,
+                    ),
+                Container(
+                  height: MediaQuery.of(context).viewInsets.bottom,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

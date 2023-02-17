@@ -5,7 +5,7 @@ class EnvService {
   static bool isUsingProdServices = !kDebugMode &&
       dotenv.env['VEGI_EATS_BACKEND'] != null &&
       (dotenv.env['VEGI_EATS_BACKEND']!.toLowerCase().contains(
-          'localhost') /*||
+          'localhost',) /*||
           dotenv.env['VEGI_EATS_BACKEND']!.toLowerCase().contains('qa-vegi')*/
       );
 }

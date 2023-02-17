@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/suggestProductDialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/scan_qrcode.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/scan_qrcode_container.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/scanProductQRCodeViewModel.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -26,7 +27,7 @@ class ScanListedProductQRCode extends StatelessWidget {
         distinct: true,
         converter: ScanProductQRCodeViewModel.fromStore,
         builder: (_, viewModel) {
-          return ScanQRCode(
+          return ScanQRCodeContainer(
             scanQRCodeHandler: viewModel.scanQRCode,
             handleError: (scannedQRCode, errMessage, errCode) {
               if (errCode == QRCodeScanErrCode.productNotFound) {

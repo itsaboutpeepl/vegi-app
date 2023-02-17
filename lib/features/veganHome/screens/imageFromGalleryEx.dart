@@ -27,10 +27,14 @@ class ImageFromGalleryEx extends StatefulWidget {
 class _ImageFromGalleryExState extends State<ImageFromGalleryEx> {
   final imagePicker = ImagePicker();
   File? _image;
+  bool isPreloading = false;
 
   double _bottomRowOpacity = 1;
 
   Future<void> _addImage() async {
+    setState(() {
+      isPreloading = true;
+    });
     final source = widget.type == ImageSourceType.camera
         ? ImageSource.camera
         : ImageSource.gallery;
@@ -39,9 +43,10 @@ class _ImageFromGalleryExState extends State<ImageFromGalleryEx> {
       imageQuality: cameraPreferredImageQuality,
       maxHeight: 400,
       maxWidth: 400,
-      preferredCameraDevice: CameraDevice.front,
+      preferredCameraDevice: CameraDevice.rear,
     );
     setState(() {
+      isPreloading = false;
       _image = image != null
           ? File(image.path)
           : null; // used to populate image on screen
@@ -54,6 +59,12 @@ class _ImageFromGalleryExState extends State<ImageFromGalleryEx> {
     }
     // context.router.pop();
     widget.handleImagePicked(_image);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _addImage();
   }
 
   @override
@@ -72,27 +83,29 @@ class _ImageFromGalleryExState extends State<ImageFromGalleryEx> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            const SizedBox(
-              height: 52,
-            ),
+            // const SizedBox(
+            //   height: 52,
+            // ),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(color: themeShade1200),
                 child: Stack(
+                  alignment: Alignment.center,
+                  fit: StackFit.expand,
                   children: [
                     Container(
-                      alignment: Alignment.center,
                       child: GestureDetector(
                         onTap: _addImage,
-                        child: Container(
-                          // decoration:
-                          //     const BoxDecoration(color: themeShade1100),
-                          child: _image != null
-                              ? Image.file(
-                                  _image!,
-                                  fit: BoxFit.fill,
-                                )
-                              : Column(
+                        child: _image != null
+                            ? Image.file(
+                                _image!,
+                                fit: BoxFit.fill,
+                              )
+                            // ignore: use_decorated_box
+                            : Container(
+                                decoration:
+                                    const BoxDecoration(color: themeShade1200),
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -115,7 +128,7 @@ class _ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                                     )
                                   ],
                                 ),
-                        ),
+                              ),
                       ),
                     ),
                     Positioned(
@@ -187,10 +200,14 @@ class _ImageFromGalleryExState extends State<ImageFromGalleryEx> {
                         ),
                       ),
                     ),
+                    if (isPreloading)
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      )
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
