@@ -18,7 +18,8 @@ _$_RestaurantMenuItem _$$_RestaurantMenuItemFromJson(
       price: json['price'] as int,
       description: json['description'] as String,
       extras: Map<String, int>.from(json['extras'] as Map),
-      listOfProductOptions: (json['listOfProductOptions'] as List<dynamic>)
+      listOfProductOptionCategories: (json['listOfProductOptionCategories']
+              as List<dynamic>)
           .map(
               (e) => ProductOptionsCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -38,8 +39,9 @@ Map<String, dynamic> _$$_RestaurantMenuItemToJson(
       'price': instance.price,
       'description': instance.description,
       'extras': instance.extras,
-      'listOfProductOptions':
-          instance.listOfProductOptions.map((e) => e.toJson()).toList(),
+      'listOfProductOptionCategories': instance.listOfProductOptionCategories
+          .map((e) => e.toJson())
+          .toList(),
       'isFeatured': instance.isFeatured,
       'priority': instance.priority,
     };

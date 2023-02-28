@@ -161,7 +161,8 @@ class _SuggestProductAppBarState extends State<SuggestProductAppBar> {
                                                       element.menuItemID ==
                                                       already.menuItemID) ==
                                               -1 &&
-                                          (element.listOfProductOptions.any(
+                                          (element.listOfProductOptionCategories
+                                              .any(
                                             (productOptionCategory) =>
                                                 productOptionCategory.name
                                                     .toLowerCase()

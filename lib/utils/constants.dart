@@ -7,6 +7,7 @@ import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 const String wethTokenAddress = '0xa722c13135930332eb3d749b2f0906559d2c5b99';
 const String wbtcTokenAddress = '0x33284f95ccb7b948d9d352e1439561cf83d8d00d';
@@ -57,6 +58,37 @@ final Token fuseDollarToken = Token(
   amount: BigInt.zero,
   walletActions: WalletActions.initial(),
 );
+
+/// Static class of DotEnv Secrets
+class Secrets {
+  // Make Constructor Private to force Static Intellisense use
+  const Secrets._();
+
+  static String get SENTRY_DSN => dotenv.env['SENTRY_DSN']!;
+
+  static String get ON_BOARDING_STRATEGY => dotenv.env['ON_BOARDING_STRATEGY']!;
+
+  static String get PEEPL_PAY_BACKEND => dotenv.env['PEEPL_PAY_BACKEND']!;
+  static String get VEGI_EATS_BACKEND => dotenv.env['VEGI_EATS_BACKEND']!;
+
+  static String get CHARGE_API_KEY => dotenv.env['CHARGE_API_KEY']!;
+  static String get FOREIGN_NETWORK_ID => dotenv.env['FOREIGN_NETWORK_ID']!;
+
+  static String get MAP_API_KEY_IOS => dotenv.env['MAP_API_KEY_IOS']!;
+  static String get MAP_API_KEY_ANDROID => dotenv.env['MAP_API_KEY_ANDROID']!;
+
+  static String get STRIPE_PAY_URL => dotenv.env['STRIPE_PAY_URL']!;
+  static String get STRIPE_API_KEY_LIVE => dotenv.env['STRIPE_API_KEY_LIVE']!;
+  static String get STRIPE_API_KEY_TEST => dotenv.env['STRIPE_API_KEY_TEST']!;
+
+  static String get mode => dotenv.env['mode']!;
+
+  static String get amazonS3BucketUrl => dotenv.env['amazonS3BucketUrl']!;
+  static String get amazonS3Region => dotenv.env['amazonS3Region']!;
+  static String get amazonS3Bucket => dotenv.env['amazonS3Bucket']!;
+  static String get amazonS3Secret => dotenv.env['amazonS3Secret']!;
+  static String get amazonS3AccessKey => dotenv.env['amazonS3AccessKey']!;
+}
 
 const EMAIL_NOT_PROVIDED = 'email@notprovided.com';
 
@@ -153,9 +185,9 @@ const photoPickImageFromGalleryText = 'Pick Image from Gallery';
 const photoTakePhotoWithCameraText = 'Take Photo with Camera';
 const imageFromCameraText = 'Image from Camera';
 const imageFromLibraryText = 'Image from Gallery';
-const cameraPreferredImageQuality =
-    5; // % of image quality retained from original
-const fileUploadVegiMaxSizeMB = 10; // 10MB
+const int cameraPreferredImageQuality =
+    100; // % of image quality retained from original
+const fileUploadVegiMaxSizeMB = 1; // 1MB
 
 Future<bool> deviceIsSimulator() async {
   final deviceInfo = DeviceInfoPlugin();

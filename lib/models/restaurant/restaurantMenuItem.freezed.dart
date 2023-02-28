@@ -29,7 +29,7 @@ mixin _$RestaurantMenuItem {
   int get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Map<String, int> get extras => throw _privateConstructorUsedError;
-  List<ProductOptionsCategory> get listOfProductOptions =>
+  List<ProductOptionsCategory> get listOfProductOptionCategories =>
       throw _privateConstructorUsedError;
   bool get isFeatured => throw _privateConstructorUsedError;
   int get priority => throw _privateConstructorUsedError;
@@ -56,7 +56,7 @@ abstract class $RestaurantMenuItemCopyWith<$Res> {
       int price,
       String description,
       Map<String, int> extras,
-      List<ProductOptionsCategory> listOfProductOptions,
+      List<ProductOptionsCategory> listOfProductOptionCategories,
       bool isFeatured,
       int priority});
 }
@@ -83,7 +83,7 @@ class _$RestaurantMenuItemCopyWithImpl<$Res, $Val extends RestaurantMenuItem>
     Object? price = null,
     Object? description = null,
     Object? extras = null,
-    Object? listOfProductOptions = null,
+    Object? listOfProductOptionCategories = null,
     Object? isFeatured = null,
     Object? priority = null,
   }) {
@@ -124,9 +124,9 @@ class _$RestaurantMenuItemCopyWithImpl<$Res, $Val extends RestaurantMenuItem>
           ? _value.extras
           : extras // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      listOfProductOptions: null == listOfProductOptions
-          ? _value.listOfProductOptions
-          : listOfProductOptions // ignore: cast_nullable_to_non_nullable
+      listOfProductOptionCategories: null == listOfProductOptionCategories
+          ? _value.listOfProductOptionCategories
+          : listOfProductOptionCategories // ignore: cast_nullable_to_non_nullable
               as List<ProductOptionsCategory>,
       isFeatured: null == isFeatured
           ? _value.isFeatured
@@ -158,7 +158,7 @@ abstract class _$$_RestaurantMenuItemCopyWith<$Res>
       int price,
       String description,
       Map<String, int> extras,
-      List<ProductOptionsCategory> listOfProductOptions,
+      List<ProductOptionsCategory> listOfProductOptionCategories,
       bool isFeatured,
       int priority});
 }
@@ -183,7 +183,7 @@ class __$$_RestaurantMenuItemCopyWithImpl<$Res>
     Object? price = null,
     Object? description = null,
     Object? extras = null,
-    Object? listOfProductOptions = null,
+    Object? listOfProductOptionCategories = null,
     Object? isFeatured = null,
     Object? priority = null,
   }) {
@@ -224,9 +224,9 @@ class __$$_RestaurantMenuItemCopyWithImpl<$Res>
           ? _value.extras
           : extras // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      listOfProductOptions: null == listOfProductOptions
-          ? _value.listOfProductOptions
-          : listOfProductOptions // ignore: cast_nullable_to_non_nullable
+      listOfProductOptionCategories: null == listOfProductOptionCategories
+          ? _value.listOfProductOptionCategories
+          : listOfProductOptionCategories // ignore: cast_nullable_to_non_nullable
               as List<ProductOptionsCategory>,
       isFeatured: null == isFeatured
           ? _value.isFeatured
@@ -254,7 +254,7 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
       required this.price,
       required this.description,
       required this.extras,
-      required this.listOfProductOptions,
+      required this.listOfProductOptionCategories,
       required this.isFeatured,
       required this.priority})
       : super._();
@@ -281,7 +281,7 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
   @override
   final Map<String, int> extras;
   @override
-  final List<ProductOptionsCategory> listOfProductOptions;
+  final List<ProductOptionsCategory> listOfProductOptionCategories;
   @override
   final bool isFeatured;
   @override
@@ -289,7 +289,7 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
 
   @override
   String toString() {
-    return 'RestaurantMenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURL: $imageURL, categoryName: $categoryName, categoryId: $categoryId, price: $price, description: $description, extras: $extras, listOfProductOptions: $listOfProductOptions, isFeatured: $isFeatured, priority: $priority)';
+    return 'RestaurantMenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURL: $imageURL, categoryName: $categoryName, categoryId: $categoryId, price: $price, description: $description, extras: $extras, listOfProductOptionCategories: $listOfProductOptionCategories, isFeatured: $isFeatured, priority: $priority)';
   }
 
   @override
@@ -312,8 +312,9 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality().equals(other.extras, extras) &&
-            const DeepCollectionEquality()
-                .equals(other.listOfProductOptions, listOfProductOptions) &&
+            const DeepCollectionEquality().equals(
+                other.listOfProductOptionCategories,
+                listOfProductOptionCategories) &&
             (identical(other.isFeatured, isFeatured) ||
                 other.isFeatured == isFeatured) &&
             (identical(other.priority, priority) ||
@@ -333,7 +334,7 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
       price,
       description,
       const DeepCollectionEquality().hash(extras),
-      const DeepCollectionEquality().hash(listOfProductOptions),
+      const DeepCollectionEquality().hash(listOfProductOptionCategories),
       isFeatured,
       priority);
 
@@ -363,7 +364,7 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
       required final int price,
       required final String description,
       required final Map<String, int> extras,
-      required final List<ProductOptionsCategory> listOfProductOptions,
+      required final List<ProductOptionsCategory> listOfProductOptionCategories,
       required final bool isFeatured,
       required final int priority}) = _$_RestaurantMenuItem;
   _RestaurantMenuItem._() : super._();
@@ -390,7 +391,7 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
   @override
   Map<String, int> get extras;
   @override
-  List<ProductOptionsCategory> get listOfProductOptions;
+  List<ProductOptionsCategory> get listOfProductOptionCategories;
   @override
   bool get isFeatured;
   @override

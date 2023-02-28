@@ -53,6 +53,13 @@ class DetailMenuItem extends Equatable {
   final int itemReward;
   final int quantity;
   final Map<int, ProductOptions> selectedOptions;
+  void selectProductOption({
+    required int selectedOptionCategoryId,
+    required ProductOptions selectedProductOption,
+  }) {
+    selectedOptions[selectedOptionCategoryId] = selectedProductOption;
+  }
+
   final bool loadingProductOptions;
   final void Function(List<CartItem> itemsToAdd) addOrderItems;
   final void Function(RestaurantMenuItem? menuItem) setMenuItem;

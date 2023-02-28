@@ -1,4 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart' as mime;
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 abstract class HttpService {
@@ -26,7 +33,7 @@ abstract class HttpService {
           queryParameters: queryParameters,
           options: options,
           cancelToken: cancelToken,
-          onReceiveProgress: onReceiveProgress);
+          onReceiveProgress: onReceiveProgress,);
     } on DioError catch (dioErr) {
       log.error(
           'ERROR [vegi service [${dioErr.response?.statusCode}]] - dioGet -> $dioErr');
@@ -46,6 +53,7 @@ abstract class HttpService {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
+    T? errorResponseData,
     Options? options,
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
@@ -58,6 +66,254 @@ abstract class HttpService {
         options: options,
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress);
+        onReceiveProgress: onReceiveProgress)
+      ..onError((error, stackTrace) {
+        log.error(error, stackTrace: stackTrace);
+        if (error is Map<String, dynamic> &&
+            error['message'].toString().startsWith('SocketException:') &&
+            dio.options.baseUrl.startsWith('http://localhost')) {
+          log.warn(
+            'If running from real_device, cant connect to localhost on running machine...',
+          );
+        } else if (error is DioError) {
+          return Response(
+            data: errorResponseData,
+            extra: {
+              'error': error.error,
+              'message': error.message,
+              'dioResponse': error.response,
+              'dioErrorType': error.type,
+              'data': error.response?.data,
+            },
+            isRedirect: error.response?.isRedirect ?? false,
+            redirects: error.response?.redirects ?? [],
+            headers: error.response?.headers,
+            statusCode: error.response?.statusCode ?? 500,
+            requestOptions: error.requestOptions,
+          );
+        }
+        return Response(
+          data: errorResponseData,
+          extra: {
+            'error': null,
+            'message': '',
+          },
+          statusCode: 500,
+          requestOptions: RequestOptions(path: ''),
+        );
+      });
+  }
+
+  Future<Response<T>> dioPutFile<T>(
+    String path, {
+    required File file,
+    Map<String, dynamic>? queryParameters,
+    T? errorResponseData,
+    Options? options,
+    CancelToken? cancelToken,
+    void Function(int, int)? onSendProgress,
+    void Function(int, int)? onReceiveProgress,
+  }) {
+    final image = file.readAsBytesSync();
+
+    final options = Options(
+      contentType: mime.lookupMimeType(file.path),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Length': image.length,
+        'Connection': 'keep-alive',
+        'User-Agent': 'ClinicPlush'
+      },
+    );
+
+    if (!path.startsWith('/')) {
+      path = '/$path';
+    }
+    return dio.put<T>(
+      path,
+      data: Stream.fromIterable(image.map((e) => [e])),
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    )..onError((error, stackTrace) {
+        log.error(error, stackTrace: stackTrace);
+        if (error is Map<String, dynamic> &&
+            error['message'].toString().startsWith('SocketException:') &&
+            dio.options.baseUrl.startsWith('http://localhost')) {
+          log.warn(
+            'If running from real_device, cant connect to localhost on running machine...',
+          );
+        } else if (error is DioError) {
+          return Response(
+            data: errorResponseData,
+            extra: {
+              'error': error.error,
+              'message': error.message,
+              'dioResponse': error.response,
+              'dioErrorType': error.type,
+              'data': error.response?.data,
+            },
+            isRedirect: error.response?.isRedirect ?? false,
+            redirects: error.response?.redirects ?? [],
+            headers: error.response?.headers,
+            statusCode: error.response?.statusCode ?? 500,
+            requestOptions: error.requestOptions,
+          );
+        }
+        return Response(
+          data: errorResponseData,
+          extra: {
+            'error': null,
+            'message': '',
+          },
+          statusCode: 500,
+          requestOptions: RequestOptions(path: ''),
+        );
+      });
+  }
+
+  Future<Response<T>> dioPostFile<T>(
+    String path, {
+    required File file,
+    required FormData Function({required MultipartFile file}) formDataCreator,
+    required void Function(String error, FileUploadErrCode errCode) onError,
+    Map<String, dynamic>? queryParameters,
+    T? errorResponseData,
+    Options? options,
+    CancelToken? cancelToken,
+    void Function(int, int)? onSendProgress,
+    void Function(int, int)? onReceiveProgress,
+  }) {
+    final image = file.readAsBytesSync();
+
+    MultipartFile imgByteStream;
+    String mimeType;
+    String mimeSubType;
+    try {
+      final mimeTypeData = mime.lookupMimeType(file.path)?.split('/');
+
+      if (mimeTypeData == null || mimeTypeData.length < 2) {
+        const wm = 'Unable to get Mime Encoding of Image upload.';
+        // throw Exception(wm);
+        onError(
+          wm,
+          FileUploadErrCode.imageEncodingError,
+        );
+        return Future.value(
+          Response(
+            data: errorResponseData,
+            statusCode: 500,
+            requestOptions: RequestOptions(path: path),
+          ),
+        );
+      }
+      mimeType = mimeTypeData[0];
+      mimeSubType = mimeTypeData[1];
+      imgByteStream = MultipartFile.fromFileSync(
+        file.path,
+        contentType: MediaType(
+          mimeType,
+          mimeSubType,
+        ),
+      );
+      if ((imgByteStream.length * 0.00000095367432) > fileUploadVegiMaxSizeMB) {
+        final wm =
+            'Image upload (${imgByteStream.length}MB) is too large, must be under ${fileUploadVegiMaxSizeMB}MB';
+        onError(
+          wm,
+          FileUploadErrCode.imageTooLarge,
+        );
+        return Future.value(
+          Response(
+            data: errorResponseData,
+            statusCode: 500,
+            requestOptions: RequestOptions(path: path),
+          ),
+        );
+      }
+    } catch (err, stack) {
+      final wm = 'Unable to encode image for sending to vegi: $err';
+      log.error(err, stackTrace: stack);
+      onError(
+        wm,
+        FileUploadErrCode.unknownError,
+      );
+      return Future.value(
+        Response(
+          data: errorResponseData,
+          statusCode: 500,
+          requestOptions: RequestOptions(path: path),
+        ),
+      );
+    }
+
+    final options = Options(
+      contentType: mime.lookupMimeType(file.path),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Length': image.length,
+        'Connection': 'keep-alive',
+        'User-Agent': 'ClinicPlush'
+      },
+    );
+
+    if (!path.startsWith('/')) {
+      path = '/$path';
+    }
+    return dio.post<T>(
+      path,
+      data: formDataCreator(file: imgByteStream),
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    )..onError((error, stackTrace) {
+        log.error(error, stackTrace: stackTrace);
+        if (error is Map<String, dynamic> &&
+            error['message'].toString().startsWith('SocketException:') &&
+            dio.options.baseUrl.startsWith('http://localhost')) {
+          log.warn(
+            'If running from real_device, cant connect to localhost on running machine...',
+          );
+          onError(
+            'Simulator specific Error',
+            FileUploadErrCode.unknownError,
+          );
+        } else if (error is DioError) {
+          onError(
+            error.message,
+            FileUploadErrCode.unknownError,
+          );
+          return Response(
+            data: errorResponseData,
+            extra: {
+              'error': error.error,
+              'message': error.message,
+              'dioResponse': error.response,
+              'dioErrorType': error.type,
+              'data': error.response?.data,
+            },
+            isRedirect: error.response?.isRedirect ?? false,
+            redirects: error.response?.redirects ?? [],
+            headers: error.response?.headers,
+            statusCode: error.response?.statusCode ?? 500,
+            requestOptions: error.requestOptions,
+          );
+        }
+        onError(
+          'Unknown error!',
+          FileUploadErrCode.unknownError,
+        );
+        return Response(
+          data: errorResponseData,
+          extra: {
+            'error': null,
+            'message': '',
+          },
+          statusCode: 500,
+          requestOptions: RequestOptions(path: path),
+        );
+      });
   }
 }

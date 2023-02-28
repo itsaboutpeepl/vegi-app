@@ -4,6 +4,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
@@ -42,6 +43,16 @@ class UpdateFeaturedRestaurants {
   @override
   String toString() {
     return 'UpdateFeaturedRestaurants : $listOfFeaturedRestaurants';
+  }
+}
+
+class UpdateRestaurant {
+  UpdateRestaurant({required this.restaurant});
+  final RestaurantItem restaurant;
+
+  @override
+  String toString() {
+    return 'UpdateRestaurant : $restaurant';
   }
 }
 
@@ -161,7 +172,7 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByPostCode({
         ..dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
         )
-        ..dispatch(fetchMenuItemsForRestaurant())
+        ..dispatch(fetchMenuItemsForFeaturedRestaurants())
         ..dispatch(
           UpdateSelectedSearchPostCode(
             selectedSearchPostCode: outCode,
@@ -174,6 +185,118 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByPostCode({
         stackTrace: s,
         hint: 'ERROR - fetchFeaturedRestaurantsByPostCode $e',
       );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchRestaurantById({
+  required String restaurantID,
+  void Function()? success,
+  void Function(String)? error,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetIsLoadingHomePage(isLoading: true));
+      final restaurant = await peeplEatsService.fetchSingleRestaurant(
+        restaurantID: int.parse(restaurantID),
+      );
+      if (restaurant == null) {
+        log.error(
+            'ERROR - fetchRestaurantById unable to fetch restaurant with ID: $restaurantID');
+        await Sentry.captureMessage(
+          'ERROR - fetchRestaurantById unable to fetch restaurant with ID: $restaurantID',
+        );
+        return;
+      }
+      store
+        ..dispatch(
+          UpdateRestaurant(restaurant: restaurant),
+        )
+        ..dispatch(
+          fetchMenuItemsForRestaurant(
+            restaurantID: restaurantID,
+          ),
+        )
+        ..dispatch(SetIsLoadingHomePage(isLoading: false));
+      if (success != null) {
+        success();
+      }
+    } catch (e, s) {
+      log.error('ERROR - fetchRestaurantById $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchRestaurantById $e',
+      );
+      if (error != null) {
+        error('ERROR - fetchRestaurantById $e');
+      }
+    }
+  };
+}
+
+ThunkAction<AppState> fetchRestaurantMenuItemProductDetailsForItems({
+  required List<RestaurantMenuItem> menuItems,
+  void Function(List<RestaurantMenuItem> updatedMenuItems)? success,
+  void Function(String)? error,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      if (menuItems.isEmpty) {
+        return; //todo: Add a warning to logs here...
+      }
+      final restaurant =
+          store.state.homePageState.featuredRestaurants.firstWhere(
+        (element) => element.restaurantID == menuItems.first.restaurantID,
+      );
+      store.dispatch(SetIsLoadingHomePage(isLoading: true));
+
+      final updatedMenuItems = <RestaurantMenuItem>[];
+
+      await Future.forEach(
+        menuItems,
+        (RestaurantMenuItem element) async {
+          updatedMenuItems.add(
+            element.copyWith(
+              listOfProductOptionCategories:
+                  await peeplEatsService.getProductOptions(element.menuItemID),
+            ),
+          );
+        },
+      );
+
+      final updatedIds = updatedMenuItems
+          .map(
+            (e) => e.menuItemID,
+          )
+          .toList();
+
+      final updatedRestaurant = restaurant.copyWith(
+        listOfMenuItems: restaurant.listOfMenuItems
+            .where((element) => !updatedIds.contains(element.menuItemID))
+            .toList()
+          ..addAll(updatedMenuItems),
+      );
+
+      store
+        ..dispatch(
+          UpdateRestaurant(restaurant: updatedRestaurant),
+        )
+        ..dispatch(SetIsLoadingHomePage(isLoading: false));
+      if (success != null) {
+        return success(updatedMenuItems);
+      }
+    } catch (e, s) {
+      log.error('ERROR - fetchRestaurantMenuItemProductDetailsForItems $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchRestaurantMenuItemProductDetailsForItems $e',
+      );
+      if (error != null) {
+        return error(
+            'ERROR - fetchRestaurantMenuItemProductDetailsForItems $e');
+      }
     }
   };
 }
@@ -234,7 +357,7 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
         ..dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
         )
-        ..dispatch(fetchMenuItemsForRestaurant())
+        ..dispatch(fetchMenuItemsForFeaturedRestaurants())
         ..dispatch(
           UpdateSelectedSearchPostCode(
             selectedSearchPostCode: outCode,
@@ -251,7 +374,78 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
   };
 }
 
-ThunkAction<AppState> fetchMenuItemsForRestaurant() {
+ThunkAction<AppState> fetchMenuItemsForFeaturedRestaurants() {
+  return (Store<AppState> store) async {
+    try {
+      final List<RestaurantItem> currentList =
+          store.state.homePageState.featuredRestaurants;
+
+      await Future.forEach(
+        currentList,
+        (RestaurantItem element) async {
+          element.productCategories.addAll(
+            await peeplEatsService
+                .getProductCategoriesForVendor(int.parse(element.restaurantID)),
+          );
+          element.listOfMenuItems.addAll(
+            await peeplEatsService.getRestaurantMenuItems(element.restaurantID),
+          );
+        },
+      );
+
+      store
+        ..dispatch(
+          UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList),
+        )
+        ..dispatch(SetIsLoadingHomePage(isLoading: false));
+    } catch (e, s) {
+      log.error('ERROR - fetchMenuItemsForFeaturedRestaurants $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchMenuItemsForFeaturedRestaurants $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchMenuItemsForRestaurant({
+  required String restaurantID,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      final productCategories = await peeplEatsService
+          .getProductCategoriesForVendor(int.parse(restaurantID));
+      final products =
+          await peeplEatsService.getRestaurantMenuItems(restaurantID);
+
+      final restaurant =
+          store.state.homePageState.featuredRestaurants.firstWhere(
+        (element) => element.restaurantID == restaurantID,
+      );
+
+      final newRestaurant = restaurant.copyWith(
+        productCategories: productCategories,
+        listOfMenuItems: products,
+      );
+
+      store.dispatch(
+        UpdateRestaurant(
+          restaurant: newRestaurant,
+        ),
+      );
+    } catch (e, s) {
+      log.error('ERROR - fetchMenuItemsForRestaurant $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchMenuItemsForRestaurant $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchMenuItemProductOptionsForRestaurant() {
   return (Store<AppState> store) async {
     try {
       final List<RestaurantItem> currentList =
@@ -384,7 +578,7 @@ ThunkAction<AppState> setMenuSearchQuery({required String searchQuery}) {
           return matchingNamedItems.indexWhere(
                       (already) => element.menuItemID == already.menuItemID) ==
                   -1 &&
-              (element.listOfProductOptions.any(
+              (element.listOfProductOptionCategories.any(
                 (productOptionCategory) =>
                     productOptionCategory.name
                         .toLowerCase()

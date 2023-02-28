@@ -126,7 +126,7 @@ class _SuggestProductFunnelScreenState extends State<SuggestProductFunnelScreen>
     BuildContext context,
   ) {
     return [
-      ScanProductSuggestionQRCode(
+      ScanProductSuggestionQRCodeScreen(
         scannedQRCode: widget.scannedQRCode,
         nextPage: nextPage(screenTypes.length),
         previousPage: previousPage(screenTypes.length),

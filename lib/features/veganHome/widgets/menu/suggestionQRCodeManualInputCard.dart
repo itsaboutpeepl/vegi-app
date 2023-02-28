@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
@@ -13,21 +15,25 @@ class SuggestionQRCodeManualInputCard extends StatefulWidget {
     Key? key,
     required this.scanQRCodeHandler,
     required this.handleError,
+    required this.isNumericBarCode,
   }) : super(key: key);
 
   final void Function(
-      String,
-      void Function(),
-      void Function(
     String,
-    QRCodeScanErrCode,
-  )) scanQRCodeHandler;
+    void Function(),
+    void Function(
+      String,
+      QRCodeScanErrCode,
+    ),
+  ) scanQRCodeHandler;
 
   final void Function(
     String,
     String,
     QRCodeScanErrCode,
   ) handleError;
+
+  final bool isNumericBarCode;
 
   @override
   State<SuggestionQRCodeManualInputCard> createState() =>
@@ -75,45 +81,87 @@ class _SuggestionQRCodeManualInputCardState
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        TextFormField(
-                          controller: barcodeController,
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            backgroundColor: Theme.of(context).canvasColor,
-                          ),
-                          validator: (value) {
-                            final RegExp regex = RegExp(
-                              r'^[0-9]+$',
-                            );
+                        if (widget.isNumericBarCode)
+                          TextFormField(
+                            controller: barcodeController,
+                            autofocus: true,
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              backgroundColor: Theme.of(context).canvasColor,
+                            ),
+                            validator: (value) {
+                              final RegExp regex = RegExp(
+                                r'^[0-9]+$',
+                              );
 
-                            if (value == null ||
-                                value.isEmpty ||
-                                !regex.hasMatch(value)) {
-                              return 'Barcode must be a text of digits.';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            // fillColor: Colors.transparent,
-                            contentPadding: const EdgeInsets.only(
-                                left: 12, top: 12, right: 12),
-                            labelText: 'Barcode',
-                            // border: InputBorder.none,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 2,
-                                color: Theme.of(context).colorScheme.onSurface,
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !regex.hasMatch(value)) {
+                                return 'Barcode must be a text of digits.';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              // fillColor: Colors.transparent,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 12, top: 12, right: 12),
+                              labelText: 'Barcode',
+                              // border: InputBorder.none,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
                               ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 2,
-                                color: Theme.of(context).colorScheme.onSurface,
+                          )
+                        else
+                          TextFormField(
+                            controller: barcodeController,
+                            autofocus: true,
+                            keyboardType: TextInputType.multiline,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              backgroundColor: Theme.of(context).canvasColor,
+                            ),
+                            validator: (value) {
+                              if (value is String && value != null) {
+                                return null;
+                              }
+                              return 'Barcode must be non-empty text';
+                            },
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              // fillColor: Colors.transparent,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 12, top: 12, right: 12),
+                              labelText: 'Barcode',
+                              // border: InputBorder.none,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -139,6 +187,13 @@ class _SuggestionQRCodeManualInputCardState
                         widget.scanQRCodeHandler(
                           qrCodeStr,
                           () {
+                            context.router.replaceAll([
+                              const RestaurantMenuScreen()
+                            ]); // push the restaurantMenuList to the stack
+                            showInfoSnack(
+                              context,
+                              title: 'Barcode scanned.',
+                            );
                             setState(() {
                               isPreloading = false;
                             });

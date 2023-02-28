@@ -294,13 +294,13 @@ class RootRouter extends _i32.RootStackRouter {
     ScanPaymentRecipientQR.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i29.ScanPaymentRecipientQR(),
+        child: const _i29.ScanPaymentRecipientQR(),
       );
     },
     ScanProductQRCode.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i30.ScanListedProductQRCode(),
+        child: const _i30.ScanListedProductQRCodeScreen(),
       );
     },
     TopupScreen.name: (routeData) {
@@ -469,7 +469,7 @@ class RootRouter extends _i32.RootStackRouter {
                 ),
                 _i32.RouteConfig(
                   ScanProductQRCode.name,
-                  path: 'scan-listed-product-qr-code',
+                  path: 'scan-listed-product-qr-code-screen',
                   parent: VeganHomeAltTab.name,
                   guards: [authGuard],
                 ),
@@ -1090,12 +1090,12 @@ class ScanPaymentRecipientQR extends _i32.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i30.ScanListedProductQRCode]
+/// [_i30.ScanListedProductQRCodeScreen]
 class ScanProductQRCode extends _i32.PageRouteInfo<void> {
   const ScanProductQRCode()
       : super(
           ScanProductQRCode.name,
-          path: 'scan-listed-product-qr-code',
+          path: 'scan-listed-product-qr-code-screen',
         );
 
   static const String name = 'ScanProductQRCode';

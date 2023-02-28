@@ -73,6 +73,7 @@ mixin _$UserState {
   List<SurveyQuestion> get surveyQuestions =>
       throw _privateConstructorUsedError;
   bool get surveyCompleted => throw _privateConstructorUsedError;
+  bool get isVendor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -127,7 +128,8 @@ abstract class $UserStateCopyWith<$Res> {
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
       @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
-      bool surveyCompleted});
+      bool surveyCompleted,
+      bool isVendor});
 
   $WalletModulesCopyWith<$Res>? get walletModules;
 }
@@ -187,6 +189,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? showSeedPhraseBanner = null,
     Object? surveyQuestions = null,
     Object? surveyCompleted = null,
+    Object? isVendor = null,
   }) {
     return _then(_value.copyWith(
       wcURI: freezed == wcURI
@@ -357,6 +360,10 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.surveyCompleted
           : surveyCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      isVendor: null == isVendor
+          ? _value.isVendor
+          : isVendor // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -422,7 +429,8 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
       @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
-      bool surveyCompleted});
+      bool surveyCompleted,
+      bool isVendor});
 
   @override
   $WalletModulesCopyWith<$Res>? get walletModules;
@@ -481,6 +489,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? showSeedPhraseBanner = null,
     Object? surveyQuestions = null,
     Object? surveyCompleted = null,
+    Object? isVendor = null,
   }) {
     return _then(_$_UserState(
       wcURI: freezed == wcURI
@@ -651,6 +660,10 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.surveyCompleted
           : surveyCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      isVendor: null == isVendor
+          ? _value.isVendor
+          : isVendor // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -701,7 +714,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.initialLoginDateTime = '',
       this.showSeedPhraseBanner = false,
       @JsonKey(ignore: true) this.surveyQuestions = const [],
-      this.surveyCompleted = false})
+      this.surveyCompleted = false,
+      this.isVendor = false})
       : super._();
 
   factory _$_UserState.fromJson(Map<String, dynamic> json) =>
@@ -828,10 +842,13 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final bool surveyCompleted;
+  @override
+  @JsonKey()
+  final bool isVendor;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted)';
+    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, isVendor: $isVendor)';
   }
 
   @override
@@ -881,7 +898,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('initialLoginDateTime', initialLoginDateTime))
       ..add(DiagnosticsProperty('showSeedPhraseBanner', showSeedPhraseBanner))
       ..add(DiagnosticsProperty('surveyQuestions', surveyQuestions))
-      ..add(DiagnosticsProperty('surveyCompleted', surveyCompleted));
+      ..add(DiagnosticsProperty('surveyCompleted', surveyCompleted))
+      ..add(DiagnosticsProperty('isVendor', isVendor));
   }
 
   @override
@@ -964,7 +982,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             const DeepCollectionEquality()
                 .equals(other.surveyQuestions, surveyQuestions) &&
             (identical(other.surveyCompleted, surveyCompleted) ||
-                other.surveyCompleted == surveyCompleted));
+                other.surveyCompleted == surveyCompleted) &&
+            (identical(other.isVendor, isVendor) ||
+                other.isVendor == isVendor));
   }
 
   @JsonKey(ignore: true)
@@ -1012,7 +1032,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         initialLoginDateTime,
         showSeedPhraseBanner,
         const DeepCollectionEquality().hash(surveyQuestions),
-        surveyCompleted
+        surveyCompleted,
+        isVendor
       ]);
 
   @JsonKey(ignore: true)
@@ -1081,7 +1102,8 @@ abstract class _UserState extends UserState {
       final bool showSeedPhraseBanner,
       @JsonKey(ignore: true)
           final List<SurveyQuestion> surveyQuestions,
-      final bool surveyCompleted}) = _$_UserState;
+      final bool surveyCompleted,
+      final bool isVendor}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
@@ -1180,6 +1202,8 @@ abstract class _UserState extends UserState {
   List<SurveyQuestion> get surveyQuestions;
   @override
   bool get surveyCompleted;
+  @override
+  bool get isVendor;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

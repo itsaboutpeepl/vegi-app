@@ -23,6 +23,7 @@ _$_CreateOrderForDelivery _$$_CreateOrderForDeliveryFromJson(
       fulfilmentMethod: json['fulfilmentMethod'] as int,
       fulfilmentSlotFrom: json['fulfilmentSlotFrom'] as String,
       fulfilmentSlotTo: json['fulfilmentSlotTo'] as String,
+      isDelivery: json['isDelivery'] as bool,
     );
 
 Map<String, dynamic> _$$_CreateOrderForDeliveryToJson(
@@ -39,4 +40,5 @@ Map<String, dynamic> _$$_CreateOrderForDeliveryToJson(
       'fulfilmentMethod': instance.fulfilmentMethod,
       'fulfilmentSlotFrom': instance.fulfilmentSlotFrom,
       'fulfilmentSlotTo': instance.fulfilmentSlotTo,
+      'isDelivery': instance.isDelivery,
     };

@@ -71,7 +71,7 @@ ThunkAction<AppState> fetchProductOptions(String itemID) {
             store.state.menuItemState.menuItem!;
 
         final RestaurantMenuItem newItem = currentItem.copyWith(
-          listOfProductOptions: listOfProductOptionCategories,
+          listOfProductOptionCategories: listOfProductOptionCategories,
         );
 
         store
@@ -124,17 +124,16 @@ ThunkAction<AppState> calculateItemTotalPrice() {
       final RestaurantMenuItem? menuItem = store.state.menuItemState.menuItem;
 
       if (menuItem != null) {
-        total = store.state.menuItemState.quantity * menuItem.price;
-
-        store.state.menuItemState.selectedProductOptionsForCategory
-            .forEach((int optionID, ProductOptions productOptions) {
-          total += productOptions.price;
-        });
+        final totalPrice = menuItem.totalPrice(
+          quantity: store.state.menuItemState.quantity,
+          selectedProductOptions:
+              store.state.menuItemState.selectedProductOptionsForCategory,
+        );
 
         store.dispatch(
           UpdateTotalPrice(
-            totalPrice: total,
-            totalRewards: total * 5 ~/ 100,
+            totalPrice: totalPrice.totalPrice,
+            totalRewards: totalPrice.totalRewards,
           ),
         );
       }

@@ -46,7 +46,7 @@ class QRFromCartSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Peepl Pay InStore',
+                      'vegi Pay InStore',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 32,
@@ -95,7 +95,7 @@ class QRFromCartSheet extends StatelessWidget {
                   backgroundColor: Colors
                       .white, // ~ The backgroundColor and foregroundColor properties were introduced in Flutter 3.3. Prior to that, they were called primary and onPrimary.
                   foregroundColor: Colors.black,
-                  fixedSize: const Size(120, 40),
+                  fixedSize: const Size(200, 50),
                   textStyle: const TextStyle(fontWeight: FontWeight.w900),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -116,7 +116,7 @@ class QRFromCartSheet extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
-                  fixedSize: const Size(120, 40),
+                  fixedSize: const Size(200, 50),
                   textStyle: const TextStyle(fontWeight: FontWeight.w900),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

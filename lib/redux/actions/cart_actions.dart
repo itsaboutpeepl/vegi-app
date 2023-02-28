@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
@@ -45,6 +46,16 @@ class UpdateCartItems {
   @override
   String toString() {
     return 'UpdateCartItems : $cartItems';
+  }
+}
+
+class UpdateCartItem {
+  UpdateCartItem({required this.cartItem});
+  final CartItem cartItem;
+
+  @override
+  String toString() {
+    return 'UpdateCartItem : $cartItem';
   }
 }
 
@@ -114,6 +125,19 @@ class AddProductNameToProductSuggestionRTO {
   @override
   String toString() {
     return 'AddProductNameToProductSuggestionRTO : $productName ; $retailerName';
+  }
+}
+
+class ReplaceCart {
+  ReplaceCart({
+    required this.newCart,
+  });
+
+  final CreateOrderForFulfilment newCart;
+
+  @override
+  String toString() {
+    return 'ReplaceCart : ${newCart}';
   }
 }
 
@@ -563,6 +587,87 @@ ThunkAction<AppState> updateCartItems(List<CartItem> itemsToAdd) {
   };
 }
 
+ThunkAction<AppState> selectProductOptionForCartItem({
+  required CartItem item,
+  required ProductOptionsCategory productOptionCategory,
+  required ProductOptions selectedProductOption,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      item.selectedProductOptions.addAll({
+        productOptionCategory.categoryID: selectedProductOption
+      });
+
+      store.dispatch(UpdateCartItem(cartItem: item));
+    } catch (e, s) {
+      log.error('ERROR - selectProductOptionForCartItem $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - selectProductOptionForCartItem $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> loadBasketToCart(
+  CreateOrderForFulfilment basket,
+  void Function() successHandler,
+  void Function(String) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(ReplaceCart(newCart: basket));
+      successHandler();
+    } catch (e, s) {
+      log.error('ERROR - loadBasketToCart $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - loadBasketToCart $e',
+      );
+      errorHandler(
+        'ERROR - loadBasketToCart $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> loadBasketUriToCart(
+  String basketUri,
+  void Function() successHandler,
+  void Function(String) errorHandler,
+) {
+  return (Store<AppState> store) async {
+    try {
+      final basket = await peeplEatsService.getOrderFromUri(
+        vegiRelUri: basketUri,
+      );
+      if (basket == null) {
+        return errorHandler(
+            'Unable to fetch order for relative uri: $basketUri');
+      }
+      store.dispatch(
+        ReplaceCart(
+          newCart: basket,
+        ),
+      );
+
+      successHandler();
+    } catch (e, s) {
+      log.error('ERROR - loadBasketUriToCart $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - loadBasketUriToCart $e',
+      );
+      errorHandler(
+        'ERROR - loadBasketUriToCart $e',
+      );
+    }
+  };
+}
+
 ThunkAction<AppState> scanRestaurantMenuItemQRCode(
   String itemQRCode,
   void Function() successHandler,
@@ -589,13 +694,16 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
       }
 
       Map<int, ProductOptions> selectProductOptionsCategories = {};
-      final pos = menuItem?.listOfProductOptions ?? <ProductOptionsCategory>[];
-      for (final prodOptCat in pos) {
+      final pocs = menuItem.listOfProductOptionCategories;
+      for (final prodOptCat in pocs) {
         for (final pov in prodOptCat.listOfOptions) {
           if (pov.productBarCode == itemQRCode) {
+            //! This is a hack to set the remaining product options to default
+            //! first product option value when barcode maps to one
+            //! selected product option value...
             selectProductOptionsCategories =
                 Map<int, ProductOptions>.fromEntries(
-              pos
+              pocs
                   .where(
                     (element) => element.name != prodOptCat.name,
                   )
@@ -629,7 +737,8 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
         totalItemPrice: calculateMenuItemPrice(
           menuItem: menuItem,
           quantity: 1,
-          productOptions: menuItem.listOfProductOptions[0].listOfOptions,
+          productOptions:
+              menuItem.listOfProductOptionCategories[0].listOfOptions,
         ).totalPrice,
         // lib/redux/actions/menu_item_actions.dart:119
         //
@@ -649,7 +758,7 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
 
       // final items = <CartItem>[];
       // for (final menuItem in restaurant.listOfMenuItems) {
-      //   for (final productOptionCategory in menuItem.listOfProductOptions) {
+      //   for (final productOptionCategory in menuItem.listOfProductOptionCategories) {
       //     for (final productOption in productOptionCategory.listOfOptions) {
       //       if (productOption.productBarCode == itemQRCode) {
       //         items.add(
@@ -1213,24 +1322,31 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           );
         }
         log.error(e.response!.data);
-        await Sentry.captureException(
-          e,
-          hint: 'DioError - sendOrderObject - '
-              "${e.response!.data['cause']['code']}",
-        );
-        final responseContainsData = (e.response!.data['cause'] is Map &&
-            (e.response!.data['cause'] as Map).containsKey('data'));
-        showErrorSnack(
-          context: context,
-          title: getErrorMessageForOrder(
-            (e.response!.data['cause']['code'] as String) +
-                ': ' +
-                (responseContainsData
-                    ? ((e.response!.data['cause']['raw']['data'] ?? '')
-                        as String)
-                    : ''),
-          ),
-        );
+        if (e.response!.data is Map<String, dynamic>) {
+          await Sentry.captureException(
+            e,
+            hint: 'DioError - sendOrderObject - '
+                "${e.response!.data['cause']['code']}",
+          );
+          final responseContainsData = (e.response!.data['cause'] is Map &&
+              (e.response!.data['cause'] as Map).containsKey('data'));
+          showErrorSnack(
+            context: context,
+            title: getErrorMessageForOrder(
+              (e.response!.data['cause']['code'] as String) +
+                  ': ' +
+                  (responseContainsData
+                      ? ((e.response!.data['cause']['raw']['data'] ?? '')
+                          as String)
+                      : ''),
+            ),
+          );
+        } else {
+          showErrorSnack(
+            context: context,
+            title: 'Unable to create Order!',
+          );
+        }
       }
     } catch (e, s) {
       unawaited(

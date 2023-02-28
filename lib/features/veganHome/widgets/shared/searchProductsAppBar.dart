@@ -154,7 +154,8 @@ class _SearchProductsAppBarState extends State<SearchProductsAppBar> {
                                                             already
                                                                 .menuItemID) ==
                                                     -1 &&
-                                                (element.listOfProductOptions
+                                                (element
+                                                    .listOfProductOptionCategories
                                                     .any(
                                                   (productOptionCategory) =>
                                                       productOptionCategory.name

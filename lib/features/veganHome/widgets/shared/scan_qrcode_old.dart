@@ -38,6 +38,27 @@
 // }
 
 // class _ScanQRCodeState extends State<ScanQRCode> {
+//   String qrCodeResult = 'Not Yet Scanned';
+
+//   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+//   Barcode? result;
+//   bool isProcessing = false;
+
+//   final manualQRCodeInputController = TextEditingController();
+
+//   // In order to get hot reload to work we need to pause the camera if the platform
+//   // is android, or resume the camera if the platform is iOS.
+//   @override
+//   void reassemble() {
+//     super.reassemble();
+//     if (Platform.isAndroid) {
+//       cameraController!.pauseCamera();
+//     } else if (Platform.isIOS) {
+//       cameraController!.resumeCamera();
+//     }
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return Container(

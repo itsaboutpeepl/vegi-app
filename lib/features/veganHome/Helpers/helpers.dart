@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:math' as Math;
+
+import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
@@ -119,3 +123,31 @@ String getErrorMessageForOrder(String errorCode) {
       return 'Something went wrong: $errorCode';
   }
 }
+
+Future<String> getFileSizeDescriptor(File file, int decimals) async {
+  final bytes = await file.length();
+  if (bytes <= 0) return '0 B';
+  const suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  final i = (Math.log(bytes) / Math.log(1024)).floor();
+  return '${(bytes / Math.pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
+}
+
+double getFileSizeMB(File? file) => (file?.lengthSync() ?? 0) / (1024 * 1024);
+
+double triangleArea(
+  Offset p1,
+  Offset p2,
+  Offset p3,
+) =>
+    0.5 *
+    ((p1.dx * (p2.dy - p3.dy)) +
+        (p2.dx * (p3.dy - p1.dy)) +
+        (p3.dx * (p1.dy - p2.dy)));
+
+double rectArea(
+  Offset p1,
+  Offset p2,
+  Offset p3,
+  Offset p4,
+) =>
+    triangleArea(p1, p2, p3) + triangleArea(p2, p3, p4);

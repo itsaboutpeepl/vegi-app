@@ -103,7 +103,7 @@ const veganHomeTab = AutoRoute(
       guards: [AuthGuard],
     ),
     AutoRoute(
-      page: ScanListedProductQRCode,
+      page: ScanListedProductQRCodeScreen,
       name: 'scanProductQRCode',
       guards: [AuthGuard],
     ),

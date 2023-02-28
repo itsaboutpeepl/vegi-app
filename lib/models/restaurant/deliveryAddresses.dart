@@ -30,17 +30,38 @@ class DeliveryAddresses with _$DeliveryAddresses {
   factory DeliveryAddresses.fromJson(Map<String, dynamic> json) =>
       _$DeliveryAddressesFromJson(json);
 
+  factory DeliveryAddresses.fromCartJson(Map<String, dynamic> json) {
+    return DeliveryAddresses(
+      internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+      addressLine1: json['lineOne'] as String? ?? '',
+      addressLine2: json['lineTwo'] as String? ?? '',
+      townCity: json['city'] as String? ?? '',
+      postalCode: json['postCode'] as String? ?? '',
+      instructions: json['deliveryInstructions'] as String?,
+      latitude: json['latitude'] as double? ?? 0.0,
+      longitude: json['longitude'] as double? ?? 0.0,
+      label: EnumHelpers.enumFromString<DeliveryAddressLabel>(
+            DeliveryAddressLabel.values,
+            json['label'] as String? ?? 'home',
+          ) ??
+          DeliveryAddressLabel.home,
+    );
+  }
+
   factory DeliveryAddresses.fromVendorJson(Map<String, dynamic> json) {
     return DeliveryAddresses(
-        internalID:
-            Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
-        addressLine1: json['pickupAddressLineOne'] as String? ?? '',
-        addressLine2: json['pickupAddressLineTwo'] as String? ?? '',
-        townCity: json['pickupAddressCity'] as String? ?? '',
-        postalCode: json['pickupAddressPostCode'] as String? ?? '',
-        latitude: json['pickupAddressLatitude'] as double? ?? 0.0,
-        longitude: json['pickupAddressLongitude'] as double? ?? 0.0,
-        label: DeliveryAddressLabel.home);
+      internalID: Random(DateTime.now().millisecondsSinceEpoch).nextInt(10000),
+      addressLine1: json['pickupAddressLineOne'] as String? ?? '',
+      addressLine2: json['pickupAddressLineTwo'] as String? ?? '',
+      townCity: json['pickupAddressCity'] as String? ?? '',
+      postalCode: json['pickupAddressPostCode'] as String? ?? '',
+      latitude: json['pickupAddressLatitude'] as double? ?? 0.0,
+      longitude: json['pickupAddressLongitude'] as double? ?? 0.0,
+      label: DeliveryAddressLabel.home,
+    );
   }
 
   factory DeliveryAddresses.fromOrderJson(Map<String, dynamic> json) {
@@ -69,9 +90,8 @@ class DeliveryAddresses with _$DeliveryAddresses {
 
   String get shortAddress =>
       '$shortAddressLessPostCode, ${postalCode.capitalizeWords()}';
-  
-  String get incode =>
-      postalCode.capitalize().substring(postalCode.length-3);
+
+  String get incode => postalCode.capitalize().substring(postalCode.length - 3);
   String get outcode =>
       postalCode.capitalize().replaceRange(postalCode.length - 3, null, '');
 

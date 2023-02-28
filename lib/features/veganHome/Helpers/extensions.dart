@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 extension CapitalizeString on String {
   String capitalize() {
@@ -122,6 +123,96 @@ extension DateTimeHelpers on DateTime {
         return '${day}rd';
       default:
         return '${day}th';
+    }
+  }
+}
+
+extension NumIterableHelpers<T> on Iterable<T> {
+  /// Reduces a collection to a maximum value by iteratively comparing elements
+  /// of the collection using the provided function.
+  ///
+  /// Provided maxComparitor(a,b) returns true if a > b else false
+  ///
+  /// Example of calculating the sum of an iterable:
+  /// ```dart
+  /// final numbers = <double>[10, 2, 5, 0.5];
+  /// final result = numbers.min((a, b) => a > b);
+  /// print(result); // 10
+  /// ```
+  T max({
+    bool Function(T, T)? maxComparitor,
+  }) {
+    if (maxComparitor != null) {
+      return reduce(
+        (value, element) => maxComparitor(value, element) ? value : element,
+      );
+    } else if (length > 0 && [0] is num && this is Iterable<num>) {
+      return (this as Iterable<num>).reduce(
+        (value, element) => value > element ? value : element,
+      ) as T;
+    } else {
+      log.error(
+          'Type of array vals must either extend a num or have a comparitor defined!');
+      throw TypeError();
+    }
+  }
+
+  /// Reduces a collection to a minimum value by iteratively comparing elements
+  /// of the collection using the provided function.
+  ///
+  /// Provided minComparitor(a,b) returns true if a < b else false
+  ///
+  /// Example of calculating the sum of an iterable:
+  /// ```dart
+  /// final numbers = <double>[10, 2, 5, 0.5];
+  /// final result = numbers.min((a, b) => a < b);
+  /// print(result); // 0.5
+  /// ```
+  T min({
+    bool Function(T, T)? minComparitor,
+  }) {
+    if (minComparitor != null) {
+      return reduce(
+        (value, element) => minComparitor(value, element) ? value : element,
+      );
+    } else if (length > 0 && [0] is num && this is Iterable<num>) {
+      return (this as Iterable<num>).reduce(
+        (value, element) => value < element ? value : element,
+      ) as T;
+    } else {
+      log.error(
+          'Type of array vals must either extend a num or have a comparitor defined!');
+      throw TypeError();
+    }
+  }
+
+  /// Returns the first element that satisfies the given predicate [test].
+  ///
+  /// Iterates through elements and returns the first to satisfy [test].
+  ///
+  /// Example:
+  /// ```dart
+  /// final numbers = <int>[1, 2, 3, 5, 6, 7];
+  /// var result = numbers.firstWhereExists((element) => element < 5); // 1
+  /// result = numbers.firstWhereExists((element) => element > 5); // 6
+  /// result =
+  ///     numbers.firstWhereExists((element) => element > 10, orElse: () => -1); // -1
+  /// ```
+  ///
+  /// If no element satisfies [test], the result of invoking the [orElse]
+  /// function is returned.
+  /// If [orElse] is omitted, it defaults to null.
+  T? firstWhereExists(
+    bool Function(T element) test, {
+    T Function()? orElse,
+  }) {
+    for (final T element in this) {
+      if (test(element)) return element;
+    }
+    if (orElse != null) {
+      return orElse();
+    } else {
+      return null;
     }
   }
 }

@@ -3,15 +3,18 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:injectable/injectable.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
@@ -29,6 +32,38 @@ class PeeplEatsService extends HttpService {
   PeeplEatsService(Dio dio) : super(dio, dotenv.env['VEGI_EATS_BACKEND']!) {
     dio.options.baseUrl = dotenv.env['VEGI_EATS_BACKEND']!;
     dio.options.headers = Map.from({'Content-Type': 'application/json'});
+  }
+
+  RestaurantItem _vendorJsonToRestaurantItem(Map<String, dynamic> element) {
+    final List<Map<String, dynamic>> postalCodes = List.from(
+      element['fulfilmentPostalDistricts'] as Iterable<dynamic>,
+    );
+
+    final List<String> deliversTo = [];
+
+    for (final element in postalCodes) {
+      deliversTo.add((element['outcode'] as String? ?? '').toUpperCase());
+    }
+
+    return RestaurantItem(
+      restaurantID: element['id'].toString(),
+      name: element['name'] as String? ?? '',
+      description: element['description'] as String? ?? '',
+      phoneNumber: element['phoneNumber'] as String? ?? '',
+      status: element['status'] as String? ?? 'draft',
+      deliveryRestrictionDetails: deliversTo,
+      imageURL: element['imageUrl'] as String? ?? '',
+      category: 'Category',
+      costLevel: element['costLevel'] as int? ?? 2,
+      rating: element['rating'] as int? ?? 2,
+      address: DeliveryAddresses.fromVendorJson(element),
+      walletAddress: element['walletAddress'] as String? ?? '',
+      listOfMenuItems: [],
+      productCategories: [],
+      isVegan: element['isVegan'] as bool? ?? false,
+      minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
+      platformFee: element['platformFee'] as int? ?? 0,
+    );
   }
 
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
@@ -63,41 +98,35 @@ class PeeplEatsService extends HttpService {
 
     for (final Map<String, dynamic> element in results) {
       if (element['status'] == 'active') {
-        final List<Map<String, dynamic>> postalCodes = List.from(
-          element['fulfilmentPostalDistricts'] as Iterable<dynamic>,
-        );
-
-        final List<String> deliversTo = [];
-
-        for (final element in postalCodes) {
-          deliversTo.add((element['outcode'] as String? ?? '').toUpperCase());
-        }
-
         restaurantsActive.add(
-          RestaurantItem(
-            restaurantID: element['id'].toString(),
-            name: element['name'] as String? ?? '',
-            description: element['description'] as String? ?? '',
-            phoneNumber: element['phoneNumber'] as String? ?? '',
-            status: element['status'] as String? ?? 'draft',
-            deliveryRestrictionDetails: deliversTo,
-            imageURL: element['imageUrl'] as String? ?? '',
-            category: 'Category',
-            costLevel: element['costLevel'] as int? ?? 2,
-            rating: element['rating'] as int? ?? 2,
-            address: DeliveryAddresses.fromVendorJson(element),
-            walletAddress: element['walletAddress'] as String? ?? '',
-            listOfMenuItems: [],
-            productCategories: [],
-            isVegan: element['isVegan'] as bool? ?? false,
-            minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
-            platformFee: element['platformFee'] as int? ?? 0,
-          ),
+          _vendorJsonToRestaurantItem(element),
         );
       }
     }
 
     return restaurantsActive;
+  }
+
+  Future<RestaurantItem?> fetchSingleRestaurant({
+    required int restaurantID,
+  }) async {
+    final Response<dynamic> response = await dioGet<dynamic>(
+      'api/v1/vendors/$restaurantID',
+    ).onError((error, stackTrace) {
+      log.error(error, stackTrace: stackTrace);
+      return Response(
+        data: {'vendor': null},
+        requestOptions: RequestOptions(path: ''),
+      );
+    });
+
+    final element = response.data['vendor'] as Map<String, dynamic>?;
+
+    if (element != null) {
+      return _vendorJsonToRestaurantItem(element);
+    } else {
+      return null;
+    }
   }
 
   Future<List<RestaurantItem>> getRestaurantsByLocation({
@@ -266,7 +295,7 @@ class PeeplEatsService extends HttpService {
             price: element['basePrice'] as int? ?? 0,
             description: element['description'] as String? ?? '',
             extras: {},
-            listOfProductOptions: [],
+            listOfProductOptionCategories: [],
             priority: element['priority'] as int? ?? 0,
           ),
         );
@@ -344,8 +373,8 @@ class PeeplEatsService extends HttpService {
       price: element['basePrice'] as int? ?? 0,
       description: element['description'] as String? ?? '',
       extras: {},
-      listOfProductOptions: pos,
-      // listOfProductOptions: selectProductOptionsCategories,
+      listOfProductOptionCategories: pos,
+      // listOfProductOptionCategories: selectProductOptionsCategories,
       priority: element['priority'] as int? ?? 0,
     );
   }
@@ -376,7 +405,7 @@ class PeeplEatsService extends HttpService {
             price: element['basePrice'] as int? ?? 0,
             description: element['description'] as String? ?? '',
             extras: {},
-            listOfProductOptions: [],
+            listOfProductOptionCategories: [],
             priority: element['priority'] as int? ?? 0,
           ),
         );
@@ -386,6 +415,22 @@ class PeeplEatsService extends HttpService {
     menuItems.sort((a, b) => a.priority.compareTo(b.priority));
 
     return menuItems;
+  }
+
+  /// vegiRelUri is the relative uri in the orders sub directory (i.e. currently just the id of the order)
+  Future<CreateOrderForFulfilment?> getOrderFromUri({
+    required String vegiRelUri,
+  }) async {
+    final response =
+        await dioGet<Map<String, dynamic>>('api/v1/orders/$vegiRelUri');
+
+    if (response != null &&
+        response.data != null &&
+        response.data is Map<String, dynamic>) {
+      return CreateOrderForDelivery.fromJson(response.data!);
+    } else {
+      return null;
+    }
   }
 
   Future<List<ProductCategory>> getProductCategoriesForVendor(
@@ -411,7 +456,7 @@ class PeeplEatsService extends HttpService {
     final List<Map<String, dynamic>> results =
         List.from(response.data as Iterable<dynamic>);
 
-    final List<ProductOptionsCategory> listOfProductOptions = [];
+    final List<ProductOptionsCategory> listOfProductOptionCategories = [];
 
     for (final Map<String, dynamic> category in results) {
       final List<ProductOptions> listOfOptions = [];
@@ -425,7 +470,7 @@ class PeeplEatsService extends HttpService {
 
       if (options.isEmpty) continue;
 
-      listOfProductOptions.add(
+      listOfProductOptionCategories.add(
         ProductOptionsCategory(
           categoryID: category['id'] as int? ?? 0,
           name: category['name'] as String? ?? '',
@@ -434,7 +479,7 @@ class PeeplEatsService extends HttpService {
       );
     }
 
-    return listOfProductOptions;
+    return listOfProductOptionCategories;
   }
 
   Future<UploadProductSuggestionImageResponse?>
@@ -446,77 +491,108 @@ class PeeplEatsService extends HttpService {
         onError,
     required ProgressCallback onReceiveProgress,
   }) async {
-    MultipartFile imgByteStream;
-    String mimeType;
-    String mimeSubType;
     try {
-      final mimeTypeData =
-          lookupMimeType(image.path, headerBytes: [0xFF, 0xD8])?.split('/');
-      if (mimeTypeData == null || mimeTypeData.length < 2) {
-        const wm = 'Unable to get Mime Encoding of Image upload.';
-        // throw Exception(wm);
-        onError(
-          wm,
-          ProductSuggestionUploadErrCode.imageEncodingError,
-        );
-        return null;
-      }
-      mimeType = mimeTypeData[0];
-      mimeSubType = mimeTypeData[1];
-      // imgByteStream = MultipartFile.fromBytes(image.readAsBytesSync());
-      imgByteStream = await MultipartFile.fromFile(
-        image.path,
-        contentType: MediaType(
-          mimeType,
-          mimeSubType,
-        ),
-      );
-      if ((imgByteStream.length * 0.00000095367432) > fileUploadVegiMaxSizeMB) {
-        final wm =
-            'Image upload (${imgByteStream.length}MB) is too large, must be under ${fileUploadVegiMaxSizeMB}MB';
-        // throw Exception(wm);
-        onError(
-          wm,
-          ProductSuggestionUploadErrCode.imageTooLarge,
-        );
-        return null;
-      }
-    } catch (err, stack) {
-      log.error(err, stackTrace: stack);
-      onError(
-        'Unable to encode image for sending to vegi',
-        ProductSuggestionUploadErrCode.imageEncodingError,
-      );
-      return null;
-    }
-    try {
-      final Response<dynamic> response = await dio
-          .post(
+      final Response<Map<String, dynamic>> response = await dioPostFile(
         'api/v1/products/upload-product-suggestion-image',
-        data: FormData.fromMap({
-          'uid': deviceSuggestionUID,
-          'image': imgByteStream,
+        file: image,
+        formDataCreator: ({required MultipartFile file}) => FormData.fromMap({
+          'uid': const Uuid().v4(),
+          'image': file,
         }),
+        errorResponseData: {'image': ''},
+        onError: (error, errCode) {
+          switch (errCode) {
+            case FileUploadErrCode.imageTooLarge:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.imageTooLarge,
+              );
+            case FileUploadErrCode.imageEncodingError:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.imageEncodingError,
+              );
+            case FileUploadErrCode.unknownError:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.unknownError,
+              );
+          }
+        },
         // options: Options? ,
         // cancelToken: CancelToken?,
         // onSendProgress: ProgressCallback?,
-        onReceiveProgress: (count, total) => onReceiveProgress(count, total),
-      )
-          .onError((error, stackTrace) {
-        log.error(error, stackTrace: stackTrace);
-        if (error is Map<String, dynamic> &&
-            error['message'].toString().startsWith('SocketException:') &&
-            dio.options.baseUrl.startsWith('http://localhost')) {
-          log.warn(
-            'If running from real_device, cant connect to localhost on running machine...',
-          );
+        onReceiveProgress: (count, total) =>
+            onReceiveProgress != null ? onReceiveProgress(count, total) : null,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 400) {
+        var errCode = ProductSuggestionUploadErrCode.unknownError;
+        if (response.statusCode == 404) {
+          errCode = ProductSuggestionUploadErrCode.productNotFound;
+        } else if (response.statusCode == 500) {
+          errCode = ProductSuggestionUploadErrCode.connectionIssue;
         }
-        return Response(
-          data: {'image': ''},
-          statusCode: 500,
-          requestOptions: RequestOptions(path: ''),
+        onError(
+          response.statusMessage ?? 'Unknown Error',
+          errCode,
         );
-      });
+        return null;
+      } else {
+        final answer = UploadProductSuggestionImageResponse.fromJson(
+          response.data as Map<String, dynamic>,
+        );
+
+        onSuccess(answer);
+
+        return answer;
+      }
+    } catch (err, st) {
+      log.error(err, stackTrace: st);
+    }
+  }
+
+  Future<UploadProductSuggestionImageResponse?> tryUploadImage({
+    required File image,
+    required void Function(UploadProductSuggestionImageResponse) onSuccess,
+    required void Function(String error, ProductSuggestionUploadErrCode errCode)
+        onError,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      final Response<Map<String, dynamic>> response = await dioPostFile(
+        'api/v1/products/upload-product-suggestion-image',
+        file: image,
+        formDataCreator: ({required MultipartFile file}) => FormData.fromMap({
+          'uid': const Uuid().v4(),
+          'image': file,
+        }),
+        errorResponseData: {'image': ''},
+        onError: (error, errCode) {
+          switch (errCode) {
+            case FileUploadErrCode.imageTooLarge:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.imageTooLarge,
+              );
+            case FileUploadErrCode.imageEncodingError:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.imageEncodingError,
+              );
+            case FileUploadErrCode.unknownError:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.unknownError,
+              );
+          }
+        },
+        // options: Options? ,
+        // cancelToken: CancelToken?,
+        // onSendProgress: ProgressCallback?,
+        onReceiveProgress: (count, total) =>
+            onReceiveProgress != null ? onReceiveProgress(count, total) : null,
+      );
 
       if (response.statusCode != null && response.statusCode! >= 400) {
         var errCode = ProductSuggestionUploadErrCode.unknownError;
@@ -761,12 +837,15 @@ class PeeplEatsService extends HttpService {
     T orderObject,
   ) async {
     final Response<dynamic> response = await dio
-        .post('/api/v1/orders/create-order', data: orderObject.toJson());
+        .post('/api/v1/orders/create-order', data: orderObject.toUploadJson());
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
     return result;
   }
+
+  String getOrderUri(String orderID) =>
+      '$baseUrl/api/v1/orders/get-order-details?orderId=$orderID';
 
   Future<Map<dynamic, dynamic>> checkOrderStatus(String orderID) async {
     final Response<dynamic> response =

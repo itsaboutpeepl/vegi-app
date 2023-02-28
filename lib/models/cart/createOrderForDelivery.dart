@@ -26,14 +26,19 @@ class CreateOrderForDelivery extends CreateOrderForFulfilment
     required int fulfilmentMethod,
     required String fulfilmentSlotFrom,
     required String fulfilmentSlotTo,
+    required bool isDelivery,
   }) = _CreateOrderForDelivery;
 
   CreateOrderForDelivery._();
+
+  factory CreateOrderForDelivery.fromJson(Map<String, dynamic> json) =>
+      _$$_CreateOrderForDeliveryFromJson(json);
 
   factory CreateOrderForDelivery.fromStore(Store<AppState> store) {
     final DeliveryAddresses selectedAddress =
         store.state.cartState.selectedDeliveryAddress!;
     return CreateOrderForDelivery(
+        isDelivery: true,
         items: store.state.cartState.cartItems,
         total: store.state.cartState.cartTotal,
         tipAmount: store.state.cartState.selectedTipAmount,
@@ -54,7 +59,7 @@ class CreateOrderForDelivery extends CreateOrderForFulfilment
         fulfilmentSlotFrom:
             store.state.cartState.selectedTimeSlot!.startTime.formattedForAPI,
         fulfilmentSlotTo: store.state.cartState.selectedTimeSlot!.endTime
-            .formattedForAPI //TODO: check
+            .formattedForAPI,
         );
   }
 }

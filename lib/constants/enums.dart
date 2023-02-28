@@ -265,6 +265,13 @@ enum QRCodeScanErrCode {
   multipleMatchesFound,
   connectionIssue,
   couldntScan,
+  unknown,
+}
+
+enum FileUploadErrCode {
+  imageTooLarge,
+  imageEncodingError,
+  unknownError,
 }
 
 enum ProductSuggestionUploadErrCode {

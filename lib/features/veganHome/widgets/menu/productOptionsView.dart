@@ -16,7 +16,7 @@ class ProductOptionsView extends StatelessWidget {
       converter: DetailMenuItem.fromStore,
       builder: (_, viewmodel) {
         return Column(
-          children: viewmodel.menuItem!.listOfProductOptions
+          children: viewmodel.menuItem!.listOfProductOptionCategories
               .map(
                 (e) => ProductOptionsCategoryView(
                   productOptionsCategory: e,
@@ -75,10 +75,15 @@ class _ProductOptionsCategoryViewState
               itemBuilder: (_, index) => ListTile(
                 onTap: () => setState(() {
                   _selectedIndex = index;
-                  viewmodel.selectedOptions[
-                          widget.productOptionsCategory.categoryID] =
-                      widget.productOptionsCategory.listOfOptions[index];
-
+                  // viewmodel.selectedOptions[
+                  //         widget.productOptionsCategory.categoryID] =
+                  //     widget.productOptionsCategory.listOfOptions[index];
+                  viewmodel.selectProductOption(
+                    selectedOptionCategoryId:
+                        widget.productOptionsCategory.categoryID,
+                    selectedProductOption:
+                        widget.productOptionsCategory.listOfOptions[index],
+                  );
                   viewmodel.reCalcTotals();
                 }),
                 selected: _selectedIndex == index,
@@ -93,9 +98,15 @@ class _ProductOptionsCategoryViewState
                   onChanged: (value) {
                     setState(() {
                       _selectedIndex = index;
-                      viewmodel.selectedOptions[
-                              widget.productOptionsCategory.categoryID] =
-                          widget.productOptionsCategory.listOfOptions[index];
+                      // viewmodel.selectedOptions[
+                      //         widget.productOptionsCategory.categoryID] =
+                      //     widget.productOptionsCategory.listOfOptions[index];
+                      viewmodel.selectProductOption(
+                        selectedOptionCategoryId:
+                            widget.productOptionsCategory.categoryID,
+                        selectedProductOption:
+                            widget.productOptionsCategory.listOfOptions[index],
+                      );
 
                       viewmodel.reCalcTotals();
                     });

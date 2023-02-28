@@ -14,6 +14,11 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CreateOrderForCollection _$CreateOrderForCollectionFromJson(
+    Map<String, dynamic> json) {
+  return _CreateOrderForCollection.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CreateOrderForCollection {
   List<CartItem> get items => throw _privateConstructorUsedError;
@@ -27,7 +32,9 @@ mixin _$CreateOrderForCollection {
   int get fulfilmentMethod => throw _privateConstructorUsedError;
   String get fulfilmentSlotFrom => throw _privateConstructorUsedError;
   String get fulfilmentSlotTo => throw _privateConstructorUsedError;
+  bool get isDelivery => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CreateOrderForCollectionCopyWith<CreateOrderForCollection> get copyWith =>
       throw _privateConstructorUsedError;
@@ -50,7 +57,8 @@ abstract class $CreateOrderForCollectionCopyWith<$Res> {
       DeliveryAddresses address,
       int fulfilmentMethod,
       String fulfilmentSlotFrom,
-      String fulfilmentSlotTo});
+      String fulfilmentSlotTo,
+      bool isDelivery});
 
   $DeliveryAddressesCopyWith<$Res> get address;
 }
@@ -80,6 +88,7 @@ class _$CreateOrderForCollectionCopyWithImpl<$Res,
     Object? fulfilmentMethod = null,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
+    Object? isDelivery = null,
   }) {
     return _then(_value.copyWith(
       items: null == items
@@ -126,6 +135,10 @@ class _$CreateOrderForCollectionCopyWithImpl<$Res,
           ? _value.fulfilmentSlotTo
           : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
               as String,
+      isDelivery: null == isDelivery
+          ? _value.isDelivery
+          : isDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -158,7 +171,8 @@ abstract class _$$_CreateOrderForCollectionCopyWith<$Res>
       DeliveryAddresses address,
       int fulfilmentMethod,
       String fulfilmentSlotFrom,
-      String fulfilmentSlotTo});
+      String fulfilmentSlotTo,
+      bool isDelivery});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get address;
@@ -187,6 +201,7 @@ class __$$_CreateOrderForCollectionCopyWithImpl<$Res>
     Object? fulfilmentMethod = null,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
+    Object? isDelivery = null,
   }) {
     return _then(_$_CreateOrderForCollection(
       items: null == items
@@ -233,6 +248,10 @@ class __$$_CreateOrderForCollectionCopyWithImpl<$Res>
           ? _value.fulfilmentSlotTo
           : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
               as String,
+      isDelivery: null == isDelivery
+          ? _value.isDelivery
+          : isDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -252,8 +271,12 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
       required this.address,
       required this.fulfilmentMethod,
       required this.fulfilmentSlotFrom,
-      required this.fulfilmentSlotTo})
+      required this.fulfilmentSlotTo,
+      required this.isDelivery})
       : super._();
+
+  factory _$_CreateOrderForCollection.fromJson(Map<String, dynamic> json) =>
+      _$$_CreateOrderForCollectionFromJson(json);
 
   @override
   final List<CartItem> items;
@@ -277,6 +300,8 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
   final String fulfilmentSlotFrom;
   @override
   final String fulfilmentSlotTo;
+  @override
+  final bool isDelivery;
 
   @override
   bool operator ==(dynamic other) {
@@ -300,9 +325,12 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
             (identical(other.fulfilmentSlotFrom, fulfilmentSlotFrom) ||
                 other.fulfilmentSlotFrom == fulfilmentSlotFrom) &&
             (identical(other.fulfilmentSlotTo, fulfilmentSlotTo) ||
-                other.fulfilmentSlotTo == fulfilmentSlotTo));
+                other.fulfilmentSlotTo == fulfilmentSlotTo) &&
+            (identical(other.isDelivery, isDelivery) ||
+                other.isDelivery == isDelivery));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -316,7 +344,8 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
       address,
       fulfilmentMethod,
       fulfilmentSlotFrom,
-      fulfilmentSlotTo);
+      fulfilmentSlotTo,
+      isDelivery);
 
   @JsonKey(ignore: true)
   @override
@@ -324,6 +353,13 @@ class _$_CreateOrderForCollection extends _CreateOrderForCollection {
   _$$_CreateOrderForCollectionCopyWith<_$_CreateOrderForCollection>
       get copyWith => __$$_CreateOrderForCollectionCopyWithImpl<
           _$_CreateOrderForCollection>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CreateOrderForCollectionToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CreateOrderForCollection extends CreateOrderForCollection {
@@ -338,8 +374,12 @@ abstract class _CreateOrderForCollection extends CreateOrderForCollection {
       required final DeliveryAddresses address,
       required final int fulfilmentMethod,
       required final String fulfilmentSlotFrom,
-      required final String fulfilmentSlotTo}) = _$_CreateOrderForCollection;
+      required final String fulfilmentSlotTo,
+      required final bool isDelivery}) = _$_CreateOrderForCollection;
   _CreateOrderForCollection._() : super._();
+
+  factory _CreateOrderForCollection.fromJson(Map<String, dynamic> json) =
+      _$_CreateOrderForCollection.fromJson;
 
   @override
   List<CartItem> get items;
@@ -363,6 +403,8 @@ abstract class _CreateOrderForCollection extends CreateOrderForCollection {
   String get fulfilmentSlotFrom;
   @override
   String get fulfilmentSlotTo;
+  @override
+  bool get isDelivery;
   @override
   @JsonKey(ignore: true)
   _$$_CreateOrderForCollectionCopyWith<_$_CreateOrderForCollection>

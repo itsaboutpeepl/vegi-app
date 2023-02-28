@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 
 part 'restaurantMenuItem.freezed.dart';
@@ -17,7 +18,7 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
     required int price,
     required String description,
     required Map<String, int> extras,
-    required List<ProductOptionsCategory> listOfProductOptions,
+    required List<ProductOptionsCategory> listOfProductOptionCategories,
     required bool isFeatured,
     required int priority,
   }) = _RestaurantMenuItem;
@@ -28,4 +29,31 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
       _$RestaurantMenuItemFromJson(json);
 
   String get formattedPrice => '£${(price * 0.01).toStringAsFixed(2)}';
+
+  TotalPrice totalPrice({
+    required int quantity,
+    required Map<int,ProductOptions> selectedProductOptions,
+    }) {
+    var total = quantity * price;
+
+    selectedProductOptions
+        .forEach((int optionID, ProductOptions productOptions) {
+      total += productOptions.price;
+    });
+
+    
+    return TotalPrice(
+      totalPrice: total,
+      totalRewards: total * 5 ~/ 100,
+    );
+  }
+}
+
+class TotalPrice {
+  const TotalPrice({
+    required this.totalPrice,
+    required this.totalRewards,
+  });
+  final int totalPrice;
+  final int totalRewards;
 }

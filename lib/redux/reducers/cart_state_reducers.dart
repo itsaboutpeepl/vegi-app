@@ -7,6 +7,7 @@ import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 final cartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartItems>(_updateCartItems),
+  TypedReducer<UserCartState, UpdateCartItem>(_updateCartItem),
   TypedReducer<UserCartState, UpdateComputedCartValues>(_computeCartTotals),
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
   TypedReducer<UserCartState, ClearCart>(_clearCart),
@@ -56,6 +57,20 @@ UserCartState _updateCartItems(
   UpdateCartItems action,
 ) {
   return state.copyWith(cartItems: action.cartItems);
+}
+
+UserCartState _updateCartItem(
+  UserCartState state,
+  UpdateCartItem action,
+) {
+  return state.copyWith(
+    cartItems: state.cartItems
+        .where(
+          (element) => element.internalID != action.cartItem.internalID,
+        )
+        .toList()
+      ..add(action.cartItem),
+  );
 }
 
 UserCartState _computeCartTotals(
@@ -252,7 +267,9 @@ UserCartState _addImageToProductSuggestion(
 ) {
   return state.copyWith(
     productSuggestion: state.productSuggestion?.copyWith(
-      images: Map.fromEntries(<MapEntry<ProductSuggestionImageType, UploadProductSuggestionImageResponse>>[
+      images: Map.fromEntries(<
+          MapEntry<ProductSuggestionImageType,
+              UploadProductSuggestionImageResponse>>[
         ...state.productSuggestion!.images.entries,
         MapEntry(action.imageType, action.image),
       ]),

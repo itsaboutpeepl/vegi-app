@@ -77,12 +77,14 @@ class _SuggestionPhotoScreenState extends State<SuggestionPhotoScreen>
     void Function(String) error,
   ) =>
       (File? image) {
-        viewModel.addProductImageForProductSuggestion(
-          widget.suggestion,
-          image,
-          success,
-          error,
-        );
+        if (image != null) {
+          viewModel.addProductImageForProductSuggestion(
+            widget.suggestion,
+            image,
+            success,
+            error,
+          );
+        }
       };
 
   void _handleURLButtonPress(
@@ -131,8 +133,9 @@ class _SuggestionPhotoScreenState extends State<SuggestionPhotoScreen>
                         children: <Widget>[
                           Text(
                             suggestProductPhotoDirector(
-                                suggestProductPhotoDirectorLabelMap[
-                                    widget.suggestion]!),
+                              suggestProductPhotoDirectorLabelMap[
+                                  widget.suggestion]!,
+                            ),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 20,

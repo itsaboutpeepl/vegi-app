@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -85,7 +86,7 @@ class SuggestProductViewModel extends Equatable {
 
   final void Function(
     ProductSuggestionImageType imageType,
-    File? image,
+    File image,
     void Function() success,
     void Function(String) error,
   ) addProductImageForProductSuggestion;

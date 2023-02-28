@@ -71,6 +71,7 @@ class UserState with _$UserState {
     @Default(false) bool showSeedPhraseBanner,
     @Default([]) @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
     @Default(false) bool surveyCompleted,
+    @Default(false) bool isVendor,
   }) = _UserState;
 
   const UserState._();
@@ -88,6 +89,7 @@ class UserState with _$UserState {
         listOfDeliveryAddresses: [],
         surveyQuestions: [],
         surveyCompleted: false,
+        isVendor: false,
         isUsingSimulator: false,
         isUsingIosSimulator: false,
       );

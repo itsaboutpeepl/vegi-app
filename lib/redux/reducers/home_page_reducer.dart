@@ -8,6 +8,9 @@ final homePageReducers = combineReducers<HomePageState>(
     TypedReducer<HomePageState, UpdateFeaturedRestaurants>(
       _getFeaturedRestaurants,
     ),
+    TypedReducer<HomePageState, UpdateRestaurant>(
+      _updateRestaurant,
+    ),
     TypedReducer<HomePageState, SetIsLoadingHomePage>(_setIsLoadingHomePage),
     TypedReducer<HomePageState, UpdatePostalCodes>(_updatePostalCodes),
     TypedReducer<HomePageState, UpdateSelectedSearchPostCode>(
@@ -29,6 +32,20 @@ HomePageState _getFeaturedRestaurants(
   UpdateFeaturedRestaurants action,
 ) {
   return state.copyWith(featuredRestaurants: action.listOfFeaturedRestaurants);
+}
+
+HomePageState _updateRestaurant(
+  HomePageState state,
+  UpdateRestaurant action,
+) {
+  return state.copyWith(
+    featuredRestaurants: state.featuredRestaurants
+        .where(
+          (element) => element.restaurantID != action.restaurant.restaurantID,
+        )
+        .toList()
+      ..add(action.restaurant),
+  );
 }
 
 HomePageState _showGlobalSearchBarField(

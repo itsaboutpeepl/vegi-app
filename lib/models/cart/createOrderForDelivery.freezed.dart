@@ -14,6 +14,11 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CreateOrderForDelivery _$CreateOrderForDeliveryFromJson(
+    Map<String, dynamic> json) {
+  return _CreateOrderForDelivery.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CreateOrderForDelivery {
   List<CartItem> get items => throw _privateConstructorUsedError;
@@ -27,7 +32,9 @@ mixin _$CreateOrderForDelivery {
   int get fulfilmentMethod => throw _privateConstructorUsedError;
   String get fulfilmentSlotFrom => throw _privateConstructorUsedError;
   String get fulfilmentSlotTo => throw _privateConstructorUsedError;
+  bool get isDelivery => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CreateOrderForDeliveryCopyWith<CreateOrderForDelivery> get copyWith =>
       throw _privateConstructorUsedError;
@@ -50,7 +57,8 @@ abstract class $CreateOrderForDeliveryCopyWith<$Res> {
       DeliveryAddresses address,
       int fulfilmentMethod,
       String fulfilmentSlotFrom,
-      String fulfilmentSlotTo});
+      String fulfilmentSlotTo,
+      bool isDelivery});
 
   $DeliveryAddressesCopyWith<$Res> get address;
 }
@@ -80,6 +88,7 @@ class _$CreateOrderForDeliveryCopyWithImpl<$Res,
     Object? fulfilmentMethod = null,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
+    Object? isDelivery = null,
   }) {
     return _then(_value.copyWith(
       items: null == items
@@ -126,6 +135,10 @@ class _$CreateOrderForDeliveryCopyWithImpl<$Res,
           ? _value.fulfilmentSlotTo
           : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
               as String,
+      isDelivery: null == isDelivery
+          ? _value.isDelivery
+          : isDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -157,7 +170,8 @@ abstract class _$$_CreateOrderForDeliveryCopyWith<$Res>
       DeliveryAddresses address,
       int fulfilmentMethod,
       String fulfilmentSlotFrom,
-      String fulfilmentSlotTo});
+      String fulfilmentSlotTo,
+      bool isDelivery});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get address;
@@ -186,6 +200,7 @@ class __$$_CreateOrderForDeliveryCopyWithImpl<$Res>
     Object? fulfilmentMethod = null,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
+    Object? isDelivery = null,
   }) {
     return _then(_$_CreateOrderForDelivery(
       items: null == items
@@ -232,6 +247,10 @@ class __$$_CreateOrderForDeliveryCopyWithImpl<$Res>
           ? _value.fulfilmentSlotTo
           : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
               as String,
+      isDelivery: null == isDelivery
+          ? _value.isDelivery
+          : isDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -251,8 +270,12 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
       required this.address,
       required this.fulfilmentMethod,
       required this.fulfilmentSlotFrom,
-      required this.fulfilmentSlotTo})
+      required this.fulfilmentSlotTo,
+      required this.isDelivery})
       : super._();
+
+  factory _$_CreateOrderForDelivery.fromJson(Map<String, dynamic> json) =>
+      _$$_CreateOrderForDeliveryFromJson(json);
 
   @override
   final List<CartItem> items;
@@ -276,6 +299,8 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
   final String fulfilmentSlotFrom;
   @override
   final String fulfilmentSlotTo;
+  @override
+  final bool isDelivery;
 
   @override
   bool operator ==(dynamic other) {
@@ -299,9 +324,12 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
             (identical(other.fulfilmentSlotFrom, fulfilmentSlotFrom) ||
                 other.fulfilmentSlotFrom == fulfilmentSlotFrom) &&
             (identical(other.fulfilmentSlotTo, fulfilmentSlotTo) ||
-                other.fulfilmentSlotTo == fulfilmentSlotTo));
+                other.fulfilmentSlotTo == fulfilmentSlotTo) &&
+            (identical(other.isDelivery, isDelivery) ||
+                other.isDelivery == isDelivery));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -315,7 +343,8 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
       address,
       fulfilmentMethod,
       fulfilmentSlotFrom,
-      fulfilmentSlotTo);
+      fulfilmentSlotTo,
+      isDelivery);
 
   @JsonKey(ignore: true)
   @override
@@ -323,6 +352,13 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
   _$$_CreateOrderForDeliveryCopyWith<_$_CreateOrderForDelivery> get copyWith =>
       __$$_CreateOrderForDeliveryCopyWithImpl<_$_CreateOrderForDelivery>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CreateOrderForDeliveryToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CreateOrderForDelivery extends CreateOrderForDelivery {
@@ -337,8 +373,12 @@ abstract class _CreateOrderForDelivery extends CreateOrderForDelivery {
       required final DeliveryAddresses address,
       required final int fulfilmentMethod,
       required final String fulfilmentSlotFrom,
-      required final String fulfilmentSlotTo}) = _$_CreateOrderForDelivery;
+      required final String fulfilmentSlotTo,
+      required final bool isDelivery}) = _$_CreateOrderForDelivery;
   _CreateOrderForDelivery._() : super._();
+
+  factory _CreateOrderForDelivery.fromJson(Map<String, dynamic> json) =
+      _$_CreateOrderForDelivery.fromJson;
 
   @override
   List<CartItem> get items;
@@ -362,6 +402,8 @@ abstract class _CreateOrderForDelivery extends CreateOrderForDelivery {
   String get fulfilmentSlotFrom;
   @override
   String get fulfilmentSlotTo;
+  @override
+  bool get isDelivery;
   @override
   @JsonKey(ignore: true)
   _$$_CreateOrderForDeliveryCopyWith<_$_CreateOrderForDelivery> get copyWith =>

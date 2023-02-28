@@ -161,7 +161,8 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                                                       element.menuItemID ==
                                                       already.menuItemID) ==
                                               -1 &&
-                                          (element.listOfProductOptions.any(
+                                          (element.listOfProductOptionCategories
+                                              .any(
                                             (productOptionCategory) =>
                                                 productOptionCategory.name
                                                     .toLowerCase()
@@ -230,8 +231,7 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                       onPressed: () async {
                         // await context.router
                         //     .push(const ScanPaymentRecipientQR());
-                        await context.router
-                            .push(const ScanProductQRCode());
+                        await context.router.push(const ScanProductQRCode());
                         // await showModalBottomSheet<Widget>(
                         //   isScrollControlled: true,
                         //   backgroundColor: Color.fromARGB(255, 44, 42, 39),

@@ -147,24 +147,24 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                     size: 14,
                   ),
                 ),
-              // Opacity(
-              //   opacity: 0.5,
-              //   child: ListTile(
-              //     onTap: () {
-              //       viewmodel.setPaymentMethod(
-              //         paymentMethod: PaymentMethod.qrPay,
-              //       );
-              //       context.router.pop();
-              //     },
-              //     leading: const Icon(FontAwesomeIcons.barcode),
-              //     title: Text(PaymentMethod.qrPay.formattedName),
-              //     subtitle: const Text('Coming soon In Store'),
-              //     trailing: const Icon(
-              //       Icons.qr_code,
-              //       size: 14,
-              //     ),
-              //   ),
-              // ),
+              Opacity(
+                opacity: 0.5,
+                child: ListTile(
+                  onTap: () {
+                    viewmodel.setPaymentMethod(
+                      paymentMethod: PaymentMethod.qrPay,
+                    );
+                    context.router.pop();
+                  },
+                  leading: const Icon(FontAwesomeIcons.barcode),
+                  title: Text(PaymentMethod.qrPay.formattedName),
+                  subtitle: const Text('Coming soon In Store'),
+                  trailing: const Icon(
+                    Icons.qr_code,
+                    size: 14,
+                  ),
+                ),
+              ),
             ],
           );
         },
