@@ -60,10 +60,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           children: [
                             GestureDetector(
-                              onTap: () => _showSourceImagePicker(
-                                context,
-                                (source) => viewmodel.editAvatar(source),
-                              ),
+                              onTap: () => viewmodel.isLoggedIn &&
+                                      viewmodel.phone.isNotEmpty
+                                  ? _showSourceImagePicker(
+                                      context,
+                                      (source) => viewmodel.editAvatar(source),
+                                    )
+                                  : null,
                               child: SizedBox(
                                 height: 70,
                                 width: 70,
@@ -104,29 +107,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ),
                                             ),
                                           ),
-                                        Positioned.directional(
-                                          textDirection: TextDirection.ltr,
-                                          bottom: 0,
-                                          start: 0,
-                                          end: 0,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 3,
-                                            ),
-                                            alignment: Alignment.center,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                            child: Text(
-                                              I10n.of(context).edit,
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .canvasColor,
-                                                fontSize: 9,
+                                        if (viewmodel.isLoggedIn &&
+                                            viewmodel.phone.isNotEmpty)
+                                          Positioned.directional(
+                                            textDirection: TextDirection.ltr,
+                                            bottom: 0,
+                                            start: 0,
+                                            end: 0,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 3,
+                                              ),
+                                              alignment: Alignment.center,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                              child: Text(
+                                                I10n.of(context).edit,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .canvasColor,
+                                                  fontSize: 9,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        )
+                                          )
                                       ],
                                     ),
                                   ),
@@ -144,145 +150,161 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                       ),
-                      const Divider(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            I10n.of(context).name,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
+                      if (viewmodel.isLoggedIn &&
+                          viewmodel.phone.isNotEmpty) ...[
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16,
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              I10n.of(context).name,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.zero,
-                        child: TextFormField(
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          initialValue: viewmodel.displayName,
-                          keyboardType: TextInputType.text,
-                          cursorColor: const Color(0xFFC6C6C6),
-                          onChanged: (value) => displayName = value,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            border: const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            fillColor: Theme.of(context).canvasColor,
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            suffixIcon: const Icon(
-                              Icons.edit,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Divider(),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Location',
+                        Padding(
+                          padding: EdgeInsets.zero,
+                          child: TextFormField(
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 20,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            initialValue: viewmodel.displayName,
+                            keyboardType: TextInputType.text,
+                            cursorColor: const Color(0xFFC6C6C6),
+                            onChanged: (value) => displayName = value,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              border: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 2,
+                                ),
+                              ),
+                              fillColor: Theme.of(context).canvasColor,
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 2,
+                                ),
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 2,
+                                ),
+                              ),
+                              suffixIcon: const Icon(
+                                Icons.edit,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (viewmodel.isVerified) ...[
+                          const Divider(),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Location',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        Container(
+                          color: CupertinoTheme.of(context).barBackgroundColor,
+                          child: CupertinoFormRow(
+                            prefix: Row(
+                              children: <Widget>[
+                                Icon(
+                                  // Wifi icon is updated based on switch value.
+                                  viewmodel.useLiveLocation
+                                      ? Icons.location_on
+                                      : Icons.location_off,
+                                  color: viewmodel.useLiveLocation
+                                      ? CupertinoColors.systemBlue
+                                      : CupertinoColors.systemRed,
+                                ),
+                                const SizedBox(width: 10),
+                                if (viewmodel.useLiveLocation)
+                                  const Text('Location enabled')
+                                else
+                                  const Text('Location disabled')
+                              ],
+                            ),
+                            helper: viewmodel.useLiveLocation
+                                ? Text(
+                                    'Using location to see nearest vendors to you!',
+                                    style: Theme.of(context).textTheme.caption,
+                                  )
+                                : Text(
+                                    'Enable location to see nearest vendors to you!',
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                            child: CupertinoSwitch(
+                              // This bool value toggles the switch.
+                              value: viewmodel.useLiveLocation,
+                              thumbColor: viewmodel.useLiveLocation
+                                  ? themeShade600
+                                  : themeShade600.withOpacity(0.5),
+                              trackColor: viewmodel.useLiveLocation
+                                  ? CupertinoColors.systemGrey.withOpacity(0.95)
+                                  : CupertinoColors.systemGrey
+                                      .withOpacity(0.15),
+                              activeColor: themeShade300.withOpacity(0.10),
+                              onChanged: (bool? value) {
+                                // This is called when the user toggles the switch
+                                if (value == null) {
+                                  return;
+                                }
+                                setState(() {
+                                  viewmodel.useLocationServices(value);
+                                  viewmodel.refreshVendors();
+                                });
+                                setState(() {
+                                  Analytics.track(
+                                    eventName: value
+                                        ? AnalyticsEvents.enableLocationServices
+                                        : AnalyticsEvents
+                                            .disableLocationServices,
+                                    properties: {'screen': 'home'},
+                                  );
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        const Divider(),
+                        _buildGroup(
+                          I10n.of(context).phoneNumber,
+                          Text(
+                            viewmodel.phone,
+                            style: const TextStyle(
+                              fontSize: 18,
                               color: Colors.grey,
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        color: CupertinoTheme.of(context).barBackgroundColor,
-                        child: CupertinoFormRow(
-                          prefix: Row(
-                            children: <Widget>[
-                              Icon(
-                                // Wifi icon is updated based on switch value.
-                                viewmodel.useLiveLocation
-                                    ? Icons.location_on
-                                    : Icons.location_off,
-                                color: viewmodel.useLiveLocation
-                                    ? CupertinoColors.systemBlue
-                                    : CupertinoColors.systemRed,
-                              ),
-                              const SizedBox(width: 10),
-                              if (viewmodel.useLiveLocation)
-                                const Text('Location enabled')
-                              else
-                                const Text('Location disabled')
-                            ],
-                          ),
-                          helper: viewmodel.useLiveLocation
-                              ? Text(
-                                  'Using location to see nearest vendors to you!',
-                                  style: Theme.of(context).textTheme.caption,
-                                )
-                              : Text(
-                                  'Enable location to see nearest vendors to you!',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                          child: CupertinoSwitch(
-                            // This bool value toggles the switch.
-                            value: viewmodel.useLiveLocation,
-                            thumbColor: viewmodel.useLiveLocation
-                                ? themeShade600
-                                : themeShade600.withOpacity(0.5),
-                            trackColor: viewmodel.useLiveLocation
-                                ? CupertinoColors.systemGrey.withOpacity(0.95)
-                                : CupertinoColors.systemGrey.withOpacity(0.15),
-                            activeColor: themeShade300.withOpacity(0.10),
-                            onChanged: (bool? value) {
-                              // This is called when the user toggles the switch
-                              if (value == null) {
-                                return;
-                              }
-                              setState(() {
-                                viewmodel.useLocationServices(value);
-                                viewmodel.refreshVendors();
-                              });
-                              setState(() {
-                                Analytics.track(
-                                  eventName: value
-                                      ? AnalyticsEvents.enableLocationServices
-                                      : AnalyticsEvents.disableLocationServices,
-                                  properties: {'screen': 'home'},
-                                );
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      // const Divider(),
-                      // const DeliveryAddressSelectorButton(), //TODO: Check that this works...
+                      ],
                       const Divider(),
                       _buildGroup(
                         I10n.of(context).wallet_address,
@@ -318,17 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                       ),
-                      const Divider(),
-                      _buildGroup(
-                        I10n.of(context).phoneNumber,
-                        Text(
-                          viewmodel.phone,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
+
                       const Divider(),
                       _buildGroup(
                         'Seed Phrase',

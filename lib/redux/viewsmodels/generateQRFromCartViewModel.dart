@@ -13,6 +13,7 @@ class GenerateQRFromCartViewModel extends Equatable {
     required this.orderId,
     required this.customerWalletAddress,
     required this.vendorWalletAddress,
+    required this.generatorWalletAddress,
   });
 
   factory GenerateQRFromCartViewModel.fromStore(Store<AppState> store) {
@@ -26,11 +27,13 @@ class GenerateQRFromCartViewModel extends Equatable {
       vendorWalletAddress: store.state.userState.isVendor
           ? store.state.userState.accountAddress
           : store.state.cartState.restaurantWalletAddress,
+      generatorWalletAddress: store.state.userState.accountAddress,
     );
   }
 
   final String? customerWalletAddress;
   final String vendorWalletAddress;
+  final String generatorWalletAddress;
   final CreateOrderForFulfilment? basket;
   final String orderId;
   final bool isSimulator;
@@ -40,6 +43,7 @@ class GenerateQRFromCartViewModel extends Equatable {
       'uri': peeplEatsService.getOrderUri(orderId),
       'customerWalletAddress': customerWalletAddress ?? '',
       'vendorWalletAddress': vendorWalletAddress,
+      'generatorWalletAddress': generatorWalletAddress,
     });
 
   String get encodedBasket => json.encode(basketJson);
@@ -50,6 +54,7 @@ class GenerateQRFromCartViewModel extends Equatable {
         isSimulator,
         customerWalletAddress,
         vendorWalletAddress,
+        generatorWalletAddress,
         encodedBasket,
       ];
 }

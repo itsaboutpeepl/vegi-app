@@ -4,11 +4,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/common/router/routes.dart'
+    hide WaitingListFunnelScreen;
 import 'package:vegan_liverpool/constants/firebase_options.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
 
 class MainScreen extends StatefulWidget {
@@ -30,16 +34,24 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, void>(
+    return StoreConnector<AppState, MainScreenViewModel>(
       onInit: (store) {
         store
           ..dispatch(web3Init())
           ..dispatch(
             enablePushNotifications(store.state.userState.walletAddress),
-          );
+          )
+          ..dispatch(isBetaWhitelistedAddress());
       },
-      converter: (store) {},
-      builder: (_, vm) {
+      converter: MainScreenViewModel.fromStore,
+      builder: (context, vm) {
+        if (vm.loggedIn && !vm.userIsVerified) {
+          // showInfoSnack(
+          //   context,
+          //   title: "You're on the waitlist. We'll be in touch soon",
+          // );
+          return const WaitingListFunnelScreen(surveyCompleted: true);
+        }
         return WillPopScope(
           onWillPop: () {
             if (_tabsRouter.canPop()) {
@@ -51,7 +63,7 @@ class _MainScreenState extends State<MainScreen> {
           child: const AutoTabsScaffold(
             animationDuration: Duration.zero,
             routes: [
-              VeganHomeAltTab(),
+              VeganHomeTab(),
             ],
           ),
         );

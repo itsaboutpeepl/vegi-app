@@ -9,6 +9,7 @@ class PastOrdersViewmodel extends Equatable {
     required this.listOfOngoingOrders,
     required this.hasOngoingOrder,
     required this.globalSearchIsVisible,
+    required this.isVendor,
   });
 
   factory PastOrdersViewmodel.fromStore(Store<AppState> store) {
@@ -18,6 +19,7 @@ class PastOrdersViewmodel extends Equatable {
       hasOngoingOrder:
           store.state.pastOrderState.listOfOngoingOrders.isNotEmpty,
       globalSearchIsVisible: store.state.homePageState.showGlobalSearchBarField,
+      isVendor: store.state.userState.isVendor,
     );
   }
 
@@ -25,6 +27,7 @@ class PastOrdersViewmodel extends Equatable {
   final List<OrderDetails> listOfOngoingOrders;
   final bool hasOngoingOrder;
   final bool globalSearchIsVisible;
+  final bool isVendor;
 
   @override
   List<Object> get props => [
@@ -32,5 +35,6 @@ class PastOrdersViewmodel extends Equatable {
         listOfOngoingOrders,
         hasOngoingOrder,
         globalSearchIsVisible,
+        isVendor,
       ];
 }

@@ -2,12 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
+import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
 class SignUpButtons extends StatefulWidget {
@@ -45,7 +48,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                     ),
                   ),
                   Flexible(
-                    flex: 2,
+                    flex: 3,
                     child: Column(
                       children: [
                         OutlinedButton(
@@ -64,39 +67,35 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                             ),
                           ),
                           child: Text(
-                            viewmodel.isLoggedOut
-                                ? I10n.of(context).login
-                                : (I10n.of(context).restore_from_backup),
+                            'View account',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
                               color: Colors.grey[100],
                             ),
                           ),
-                          onPressed: () {
-                            // ! after beta, uncomment ->
-                            // //TODO: make this readable PLEASE
-                            // if (viewmodel.isLoggedOut) {
-                            //   viewmodel.loginAgain();
-                            //   if (context.router.canPop()) {
-                            //     context.router.popUntilRoot();
-                            //   }
-                            //   context.router.replace(const MainScreen());
-                            // } else {
-                            //   setState(() {
-                            //     isPrimaryPreloading = true;
-                            //   });
-                            //   viewmodel.createLocalAccount(
-                            //     () {
-                            //       setState(() {
-                            //         isPrimaryPreloading = false;
-                            //       });
-                            //       context.router.push(const SignUpScreen());
+                          onPressed: () async {
+                            Analytics.track(
+                              eventName: AnalyticsEvents.viewAccount,
+                            );
+                            final router = AutoRouter.of(context);
+                            // await router
+                            //   // ..pushNamed('account')
+                            //   ..pushNamed(
+                            //     'accountScreen',
+                            //     onFailure: (failure) async {
+                            //       showErrorSnack(
+                            //         context: context,
+                            //         title: 'Navigation Failure',
+                            //         message: failure.toString(),
+                            //       );
+                            //       await router.pushNamed(
+                            //         '/on-board-screen',
+                            //       );
                             //     },
                             //   );
-                            // }
-                            context.router
-                                .push(const RestoreFromBackupScreen());
+                            context.router.push(const ProfileScreen());
+                            showInfoSnack(context, title: 'Navigation Success',);
                           },
                         ),
                         // if (viewmodel.isLoggedOut)
@@ -161,6 +160,61 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                                   ),
                                 );
                               }
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 24.0, bottom: 0.0),
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: BorderSide(
+                                color: Colors.grey[100]!,
+                                width: 2,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text(
+                              viewmodel.isLoggedOut
+                                  ? I10n.of(context).login
+                                  : (I10n.of(context).restore_wallet),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.grey[100],
+                              ),
+                            ),
+                            onPressed: () {
+                              // ! after beta, uncomment ->
+                              // //TODO: make this readable PLEASE
+                              // if (viewmodel.isLoggedOut) {
+                              //   viewmodel.loginAgain();
+                              //   if (context.router.canPop()) {
+                              //     context.router.popUntilRoot();
+                              //   }
+                              //   context.router.replace(const MainScreen());
+                              // } else {
+                              //   setState(() {
+                              //     isPrimaryPreloading = true;
+                              //   });
+                              //   viewmodel.createLocalAccount(
+                              //     () {
+                              //       setState(() {
+                              //         isPrimaryPreloading = false;
+                              //       });
+                              //       context.router.push(const SignUpScreen());
+                              //     },
+                              //   );
+                              // }
+                              context.router
+                                  .push(const RestoreFromBackupScreen());
                             },
                           ),
                         ),

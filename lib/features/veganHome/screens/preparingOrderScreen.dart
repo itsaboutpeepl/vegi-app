@@ -24,7 +24,7 @@ class PreparingOrderPage extends StatelessWidget {
       orderDetails: orderDetails,
       isNewOrder: false,
       homeAction: () {
-        context.router.replaceAll([const VeganHomeScreenAlt()]);
+        context.router.replaceAll([const VeganHomeScreen()]);
       },
     );
   }

@@ -14,23 +14,23 @@
 import 'dart:io' as _i37;
 
 import 'package:auto_route/auto_route.dart' as _i32;
-import 'package:auto_route/empty_router_widgets.dart' as _i14;
+import 'package:auto_route/empty_router_widgets.dart' as _i15;
 import 'package:flutter/foundation.dart' as _i35;
 import 'package:flutter/material.dart' as _i33;
 import 'package:redux_dev_tools/redux_dev_tools.dart' as _i38;
 
 import '../../constants/enums.dart' as _i36;
-import '../../features/account/screens/profile.dart' as _i18;
+import '../../features/account/screens/profile.dart' as _i6;
 import '../../features/onboard/screens/restore_wallet_screen.dart' as _i4;
 import '../../features/onboard/screens/security_screen.dart' as _i2;
 import '../../features/onboard/screens/show_user_mnemonic.dart' as _i25;
-import '../../features/onboard/screens/signup_screen.dart' as _i6;
-import '../../features/onboard/screens/username_screen.dart' as _i8;
-import '../../features/onboard/screens/verify_screen.dart' as _i7;
+import '../../features/onboard/screens/signup_screen.dart' as _i7;
+import '../../features/onboard/screens/username_screen.dart' as _i9;
+import '../../features/onboard/screens/verify_screen.dart' as _i8;
 import '../../features/onboard/screens/verify_user_mnemonic.dart' as _i26;
-import '../../features/pay/screens/generate_QR_from_cart.dart' as _i28;
+import '../../features/pay/screens/generate_QR_from_cart_screen.dart' as _i28;
 import '../../features/pay/screens/scan_payment_recipient_qr.dart' as _i29;
-import '../../features/screens/main_screen.dart' as _i13;
+import '../../features/screens/main_screen.dart' as _i14;
 import '../../features/screens/on_board_screen.dart' as _i5;
 import '../../features/screens/pincode_screen.dart' as _i3;
 import '../../features/screens/splash_screen.dart' as _i1;
@@ -40,18 +40,19 @@ import '../../features/veganHome/screens/aboutScreen.dart' as _i23;
 import '../../features/veganHome/screens/allOrdersPage.dart' as _i20;
 import '../../features/veganHome/screens/checkout_screen_2.dart' as _i27;
 import '../../features/veganHome/screens/faqScreen.dart' as _i22;
-import '../../features/veganHome/screens/imageFromGalleryEx.dart' as _i11;
-import '../../features/veganHome/screens/orderConfirmed.dart' as _i17;
+import '../../features/veganHome/screens/imageFromGalleryEx.dart' as _i12;
+import '../../features/veganHome/screens/orderConfirmed.dart' as _i18;
 import '../../features/veganHome/screens/preparingOrderScreen.dart' as _i24;
-import '../../features/veganHome/screens/restaurantMenuScreen.dart' as _i16;
+import '../../features/veganHome/screens/restaurantMenuScreen.dart' as _i17;
 import '../../features/veganHome/screens/scan_listed_product_qrcode.dart'
     as _i30;
 import '../../features/veganHome/screens/scheduledOrdersPage.dart' as _i21;
-import '../../features/veganHome/screens/suggestProductFunnel.dart' as _i10;
-import '../../features/veganHome/screens/veganHome.dart' as _i15;
+import '../../features/veganHome/screens/suggestProductFunnel.dart' as _i11;
+import '../../features/veganHome/screens/veganHome.dart' as _i16;
 import '../../features/veganHome/widgets/shared/redux_state_viewer.dart'
-    as _i12;
-import '../../features/waitingListFunnel/screens/waitingListFunnel.dart' as _i9;
+    as _i13;
+import '../../features/waitingListFunnel/screens/waitingListFunnel.dart'
+    as _i10;
 import '../../models/app_state.dart' as _i39;
 import '../../models/restaurant/orderDetails.dart' as _i40;
 import 'route_guards.dart' as _i34;
@@ -101,10 +102,16 @@ class RootRouter extends _i32.RootStackRouter {
         child: const _i5.OnBoardScreen(),
       );
     },
+    ProfileScreen.name: (routeData) {
+      return _i32.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i6.ProfileScreen(),
+      );
+    },
     SignUpScreen.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i6.SignUpScreen(),
+        child: const _i7.SignUpScreen(),
       );
     },
     VerifyPhoneNumber.name: (routeData) {
@@ -112,7 +119,7 @@ class RootRouter extends _i32.RootStackRouter {
           orElse: () => const VerifyPhoneNumberArgs());
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.VerifyPhoneNumber(
+        child: _i8.VerifyPhoneNumber(
           key: args.key,
           verificationId: args.verificationId,
         ),
@@ -123,14 +130,14 @@ class RootRouter extends _i32.RootStackRouter {
           orElse: () => const UserNameScreenArgs());
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i8.UserNameScreen(key: args.key),
+        child: _i9.UserNameScreen(key: args.key),
       );
     },
     WaitingListFunnelScreen.name: (routeData) {
       final args = routeData.argsAs<WaitingListFunnelScreenArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i9.WaitingListFunnelScreen(
+        child: _i10.WaitingListFunnelScreen(
           key: args.key,
           surveyCompleted: args.surveyCompleted,
         ),
@@ -141,7 +148,7 @@ class RootRouter extends _i32.RootStackRouter {
           orElse: () => const SuggestProductFunnelScreenArgs());
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i10.SuggestProductFunnelScreen(
+        child: _i11.SuggestProductFunnelScreen(
           key: args.key,
           scannedQRCode: args.scannedQRCode,
         ),
@@ -151,7 +158,7 @@ class RootRouter extends _i32.RootStackRouter {
       final args = routeData.argsAs<ImageFromGalleryExArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i11.ImageFromGalleryEx(
+        child: _i12.ImageFromGalleryEx(
           args.type,
           key: args.key,
           handleImagePicked: args.handleImagePicked,
@@ -162,7 +169,7 @@ class RootRouter extends _i32.RootStackRouter {
       final args = routeData.argsAs<ReduxStateViewerArgs>();
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i12.ReduxStateViewer(
+        child: _i13.ReduxStateViewer(
           args.store,
           key: args.key,
           actionMaxLines: args.actionMaxLines,
@@ -173,37 +180,37 @@ class RootRouter extends _i32.RootStackRouter {
     MainScreen.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i13.MainScreen(),
-      );
-    },
-    VeganHomeAltTab.name: (routeData) {
-      return _i32.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i14.EmptyRouterPage(),
-      );
-    },
-    TopupTab.name: (routeData) {
-      return _i32.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i14.EmptyRouterPage(),
+        child: const _i14.MainScreen(),
       );
     },
     AccountTab.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i14.EmptyRouterPage(),
+        child: const _i15.EmptyRouterPage(),
       );
     },
-    VeganHomeScreenAlt.name: (routeData) {
+    VeganHomeTab.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i15.VeganHomeScreen(),
+        child: const _i15.EmptyRouterPage(),
+      );
+    },
+    TopupTab.name: (routeData) {
+      return _i32.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i15.EmptyRouterPage(),
+      );
+    },
+    VeganHomeScreen.name: (routeData) {
+      return _i32.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i16.VeganHomeScreen(),
       );
     },
     RestaurantMenuScreen.name: (routeData) {
       return _i32.CustomPage<dynamic>(
         routeData: routeData,
-        child: const _i16.RestaurantMenuScreen(),
+        child: const _i17.RestaurantMenuScreen(),
         transitionsBuilder: _i32.TransitionsBuilders.slideLeftWithFade,
         opaque: true,
         barrierDismissible: false,
@@ -212,16 +219,10 @@ class RootRouter extends _i32.RootStackRouter {
     OrderConfirmedScreen.name: (routeData) {
       return _i32.CustomPage<dynamic>(
         routeData: routeData,
-        child: const _i17.OrderConfirmedScreen(),
+        child: const _i18.OrderConfirmedScreen(),
         transitionsBuilder: _i32.TransitionsBuilders.slideBottom,
         opaque: true,
         barrierDismissible: false,
-      );
-    },
-    ProfileScreen.name: (routeData) {
-      return _i32.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i18.ProfileScreen(),
       );
     },
     TopUpScreen.name: (routeData) {
@@ -285,10 +286,10 @@ class RootRouter extends _i32.RootStackRouter {
         child: const _i27.CheckoutScreenPt2(),
       );
     },
-    GenerateQRFromCart.name: (routeData) {
+    GenerateQRFromCartScreen.name: (routeData) {
       return _i32.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i28.GenerateQRFromCart(),
+        child: _i28.GenerateQRFromCartScreen(),
       );
     },
     ScanPaymentRecipientQR.name: (routeData) {
@@ -333,15 +334,61 @@ class RootRouter extends _i32.RootStackRouter {
         ),
         _i32.RouteConfig(
           RestoreFromBackupScreen.name,
-          path: '/restore-from-backup-screen',
+          path: 'recover-wallet',
         ),
         _i32.RouteConfig(
           OnBoardScreen.name,
           path: '/on-board-screen',
+          children: [
+            _i32.RouteConfig(
+              AccountTab.name,
+              path: 'account',
+              parent: OnBoardScreen.name,
+              children: [
+                _i32.RouteConfig(
+                  '#redirect',
+                  path: '',
+                  parent: AccountTab.name,
+                  redirectTo: 'profile',
+                  fullMatch: true,
+                ),
+                _i32.RouteConfig(
+                  ProfileScreen.name,
+                  path: 'profile',
+                  parent: AccountTab.name,
+                ),
+              ],
+            )
+          ],
+        ),
+        _i32.RouteConfig(
+          ProfileScreen.name,
+          path: 'profile',
         ),
         _i32.RouteConfig(
           SignUpScreen.name,
-          path: '/sign-up-screen',
+          path: 'sign-up',
+          children: [
+            _i32.RouteConfig(
+              AccountTab.name,
+              path: 'account',
+              parent: SignUpScreen.name,
+              children: [
+                _i32.RouteConfig(
+                  '#redirect',
+                  path: '',
+                  parent: AccountTab.name,
+                  redirectTo: 'profile',
+                  fullMatch: true,
+                ),
+                _i32.RouteConfig(
+                  ProfileScreen.name,
+                  path: 'profile',
+                  parent: AccountTab.name,
+                ),
+              ],
+            )
+          ],
         ),
         _i32.RouteConfig(
           VerifyPhoneNumber.name,
@@ -354,6 +401,27 @@ class RootRouter extends _i32.RootStackRouter {
         _i32.RouteConfig(
           WaitingListFunnelScreen.name,
           path: '/waiting-list-funnel-screen',
+          children: [
+            _i32.RouteConfig(
+              AccountTab.name,
+              path: 'account',
+              parent: WaitingListFunnelScreen.name,
+              children: [
+                _i32.RouteConfig(
+                  '#redirect',
+                  path: '',
+                  parent: AccountTab.name,
+                  redirectTo: 'profile',
+                  fullMatch: true,
+                ),
+                _i32.RouteConfig(
+                  ProfileScreen.name,
+                  path: 'profile',
+                  parent: AccountTab.name,
+                ),
+              ],
+            )
+          ],
         ),
         _i32.RouteConfig(
           SuggestProductFunnelScreen.name,
@@ -373,104 +441,105 @@ class RootRouter extends _i32.RootStackRouter {
           guards: [authGuard],
           children: [
             _i32.RouteConfig(
-              VeganHomeAltTab.name,
-              path: 'veganHomeAlt',
+              VeganHomeTab.name,
+              path: 'veganHome',
               parent: MainScreen.name,
               children: [
                 _i32.RouteConfig(
-                  VeganHomeScreenAlt.name,
+                  '#redirect',
                   path: '',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
+                  redirectTo: 'home',
+                  fullMatch: true,
+                ),
+                _i32.RouteConfig(
+                  VeganHomeScreen.name,
+                  path: 'home',
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   RestaurantMenuScreen.name,
                   path: 'restaurant-menu-screen',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   OrderConfirmedScreen.name,
                   path: 'order-confirmed-screen',
-                  parent: VeganHomeAltTab.name,
-                  guards: [authGuard],
-                ),
-                _i32.RouteConfig(
-                  ProfileScreen.name,
-                  path: 'profile-screen',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   TopUpScreen.name,
                   path: 'topup-screen',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   AllOrdersPage.name,
                   path: 'all-orders-page',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   ScheduledOrdersPage.name,
                   path: 'scheduled-orders-page',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   FAQScreen.name,
                   path: 'f-aq-screen',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   AboutScreen.name,
                   path: 'about-screen',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   PreparingOrderPage.name,
                   path: 'preparing-order-page',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   ShowUserMnemonic.name,
                   path: 'show-user-mnemonic-screen',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   VerifyUserMnemonic.name,
                   path: 'verify-user-mnemonic',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   CheckoutScreenPt2.name,
                   path: 'checkout-screen-pt2',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
-                  GenerateQRFromCart.name,
-                  path: 'generate-qr-from-cart',
-                  parent: VeganHomeAltTab.name,
+                  GenerateQRFromCartScreen.name,
+                  path: 'generate-qr-from-cart-screen',
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   ScanPaymentRecipientQR.name,
                   path: 'scan-payment-recipient-qR',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
                 _i32.RouteConfig(
                   ScanProductQRCode.name,
                   path: 'scan-listed-product-qr-code-screen',
-                  parent: VeganHomeAltTab.name,
+                  parent: VeganHomeTab.name,
                   guards: [authGuard],
                 ),
               ],
@@ -496,26 +565,6 @@ class RootRouter extends _i32.RootStackRouter {
                   TopupExplained.name,
                   path: 'topup-explained',
                   parent: TopupTab.name,
-                ),
-              ],
-            ),
-            _i32.RouteConfig(
-              AccountTab.name,
-              path: 'account',
-              parent: MainScreen.name,
-              guards: [authGuard],
-              children: [
-                _i32.RouteConfig(
-                  ProfileScreen.name,
-                  path: 'profile-screen',
-                  parent: AccountTab.name,
-                  guards: [authGuard],
-                ),
-                _i32.RouteConfig(
-                  TopupScreen.name,
-                  path: 'topUp',
-                  parent: AccountTab.name,
-                  guards: [authGuard],
                 ),
               ],
             ),
@@ -594,7 +643,7 @@ class RestoreFromBackupScreen extends _i32.PageRouteInfo<void> {
   const RestoreFromBackupScreen()
       : super(
           RestoreFromBackupScreen.name,
-          path: '/restore-from-backup-screen',
+          path: 'recover-wallet',
         );
 
   static const String name = 'RestoreFromBackupScreen';
@@ -603,29 +652,43 @@ class RestoreFromBackupScreen extends _i32.PageRouteInfo<void> {
 /// generated route for
 /// [_i5.OnBoardScreen]
 class OnBoardScreen extends _i32.PageRouteInfo<void> {
-  const OnBoardScreen()
+  const OnBoardScreen({List<_i32.PageRouteInfo>? children})
       : super(
           OnBoardScreen.name,
           path: '/on-board-screen',
+          initialChildren: children,
         );
 
   static const String name = 'OnBoardScreen';
 }
 
 /// generated route for
-/// [_i6.SignUpScreen]
+/// [_i6.ProfileScreen]
+class ProfileScreen extends _i32.PageRouteInfo<void> {
+  const ProfileScreen()
+      : super(
+          ProfileScreen.name,
+          path: 'profile',
+        );
+
+  static const String name = 'ProfileScreen';
+}
+
+/// generated route for
+/// [_i7.SignUpScreen]
 class SignUpScreen extends _i32.PageRouteInfo<void> {
-  const SignUpScreen()
+  const SignUpScreen({List<_i32.PageRouteInfo>? children})
       : super(
           SignUpScreen.name,
-          path: '/sign-up-screen',
+          path: 'sign-up',
+          initialChildren: children,
         );
 
   static const String name = 'SignUpScreen';
 }
 
 /// generated route for
-/// [_i7.VerifyPhoneNumber]
+/// [_i8.VerifyPhoneNumber]
 class VerifyPhoneNumber extends _i32.PageRouteInfo<VerifyPhoneNumberArgs> {
   VerifyPhoneNumber({
     _i35.Key? key,
@@ -659,7 +722,7 @@ class VerifyPhoneNumberArgs {
 }
 
 /// generated route for
-/// [_i8.UserNameScreen]
+/// [_i9.UserNameScreen]
 class UserNameScreen extends _i32.PageRouteInfo<UserNameScreenArgs> {
   UserNameScreen({_i35.Key? key})
       : super(
@@ -683,12 +746,13 @@ class UserNameScreenArgs {
 }
 
 /// generated route for
-/// [_i9.WaitingListFunnelScreen]
+/// [_i10.WaitingListFunnelScreen]
 class WaitingListFunnelScreen
     extends _i32.PageRouteInfo<WaitingListFunnelScreenArgs> {
   WaitingListFunnelScreen({
     _i35.Key? key,
     required bool surveyCompleted,
+    List<_i32.PageRouteInfo>? children,
   }) : super(
           WaitingListFunnelScreen.name,
           path: '/waiting-list-funnel-screen',
@@ -696,6 +760,7 @@ class WaitingListFunnelScreen
             key: key,
             surveyCompleted: surveyCompleted,
           ),
+          initialChildren: children,
         );
 
   static const String name = 'WaitingListFunnelScreen';
@@ -718,7 +783,7 @@ class WaitingListFunnelScreenArgs {
 }
 
 /// generated route for
-/// [_i10.SuggestProductFunnelScreen]
+/// [_i11.SuggestProductFunnelScreen]
 class SuggestProductFunnelScreen
     extends _i32.PageRouteInfo<SuggestProductFunnelScreenArgs> {
   SuggestProductFunnelScreen({
@@ -753,7 +818,7 @@ class SuggestProductFunnelScreenArgs {
 }
 
 /// generated route for
-/// [_i11.ImageFromGalleryEx]
+/// [_i12.ImageFromGalleryEx]
 class ImageFromGalleryEx extends _i32.PageRouteInfo<ImageFromGalleryExArgs> {
   ImageFromGalleryEx({
     required _i36.ImageSourceType type,
@@ -792,7 +857,7 @@ class ImageFromGalleryExArgs {
 }
 
 /// generated route for
-/// [_i12.ReduxStateViewer]
+/// [_i13.ReduxStateViewer]
 class ReduxStateViewer extends _i32.PageRouteInfo<ReduxStateViewerArgs> {
   ReduxStateViewer({
     required _i38.DevToolsStore<_i39.AppState> store,
@@ -836,7 +901,7 @@ class ReduxStateViewerArgs {
 }
 
 /// generated route for
-/// [_i13.MainScreen]
+/// [_i14.MainScreen]
 class MainScreen extends _i32.PageRouteInfo<void> {
   const MainScreen({List<_i32.PageRouteInfo>? children})
       : super(
@@ -849,33 +914,7 @@ class MainScreen extends _i32.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.EmptyRouterPage]
-class VeganHomeAltTab extends _i32.PageRouteInfo<void> {
-  const VeganHomeAltTab({List<_i32.PageRouteInfo>? children})
-      : super(
-          VeganHomeAltTab.name,
-          path: 'veganHomeAlt',
-          initialChildren: children,
-        );
-
-  static const String name = 'VeganHomeAltTab';
-}
-
-/// generated route for
-/// [_i14.EmptyRouterPage]
-class TopupTab extends _i32.PageRouteInfo<void> {
-  const TopupTab({List<_i32.PageRouteInfo>? children})
-      : super(
-          TopupTab.name,
-          path: 'topup',
-          initialChildren: children,
-        );
-
-  static const String name = 'TopupTab';
-}
-
-/// generated route for
-/// [_i14.EmptyRouterPage]
+/// [_i15.EmptyRouterPage]
 class AccountTab extends _i32.PageRouteInfo<void> {
   const AccountTab({List<_i32.PageRouteInfo>? children})
       : super(
@@ -888,19 +927,45 @@ class AccountTab extends _i32.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i15.VeganHomeScreen]
-class VeganHomeScreenAlt extends _i32.PageRouteInfo<void> {
-  const VeganHomeScreenAlt()
+/// [_i15.EmptyRouterPage]
+class VeganHomeTab extends _i32.PageRouteInfo<void> {
+  const VeganHomeTab({List<_i32.PageRouteInfo>? children})
       : super(
-          VeganHomeScreenAlt.name,
-          path: '',
+          VeganHomeTab.name,
+          path: 'veganHome',
+          initialChildren: children,
         );
 
-  static const String name = 'VeganHomeScreenAlt';
+  static const String name = 'VeganHomeTab';
 }
 
 /// generated route for
-/// [_i16.RestaurantMenuScreen]
+/// [_i15.EmptyRouterPage]
+class TopupTab extends _i32.PageRouteInfo<void> {
+  const TopupTab({List<_i32.PageRouteInfo>? children})
+      : super(
+          TopupTab.name,
+          path: 'topup',
+          initialChildren: children,
+        );
+
+  static const String name = 'TopupTab';
+}
+
+/// generated route for
+/// [_i16.VeganHomeScreen]
+class VeganHomeScreen extends _i32.PageRouteInfo<void> {
+  const VeganHomeScreen()
+      : super(
+          VeganHomeScreen.name,
+          path: 'home',
+        );
+
+  static const String name = 'VeganHomeScreen';
+}
+
+/// generated route for
+/// [_i17.RestaurantMenuScreen]
 class RestaurantMenuScreen extends _i32.PageRouteInfo<void> {
   const RestaurantMenuScreen()
       : super(
@@ -912,7 +977,7 @@ class RestaurantMenuScreen extends _i32.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i17.OrderConfirmedScreen]
+/// [_i18.OrderConfirmedScreen]
 class OrderConfirmedScreen extends _i32.PageRouteInfo<void> {
   const OrderConfirmedScreen()
       : super(
@@ -921,18 +986,6 @@ class OrderConfirmedScreen extends _i32.PageRouteInfo<void> {
         );
 
   static const String name = 'OrderConfirmedScreen';
-}
-
-/// generated route for
-/// [_i18.ProfileScreen]
-class ProfileScreen extends _i32.PageRouteInfo<void> {
-  const ProfileScreen()
-      : super(
-          ProfileScreen.name,
-          path: 'profile-screen',
-        );
-
-  static const String name = 'ProfileScreen';
 }
 
 /// generated route for
@@ -1066,15 +1119,15 @@ class CheckoutScreenPt2 extends _i32.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i28.GenerateQRFromCart]
-class GenerateQRFromCart extends _i32.PageRouteInfo<void> {
-  const GenerateQRFromCart()
+/// [_i28.GenerateQRFromCartScreen]
+class GenerateQRFromCartScreen extends _i32.PageRouteInfo<void> {
+  const GenerateQRFromCartScreen()
       : super(
-          GenerateQRFromCart.name,
-          path: 'generate-qr-from-cart',
+          GenerateQRFromCartScreen.name,
+          path: 'generate-qr-from-cart-screen',
         );
 
-  static const String name = 'GenerateQRFromCart';
+  static const String name = 'GenerateQRFromCartScreen';
 }
 
 /// generated route for

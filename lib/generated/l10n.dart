@@ -2390,6 +2390,15 @@ class I10n {
     );
   }
 
+  String get restore_wallet {
+    return Intl.message(
+      'Restore wallet',
+      name: 'restore_wallet',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `This is a 12 word phrase you were given when you created your previous wallet`
   String get restore_words {
     return Intl.message(

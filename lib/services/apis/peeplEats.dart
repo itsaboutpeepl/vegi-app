@@ -758,7 +758,7 @@ class PeeplEatsService extends HttpService {
     void Function(bool userIsVerified) onSuccess,
     void Function(String error) onError,
   ) async {
-    final Response<dynamic> response = await dio.get(
+    final Response<dynamic> response = await dioGet(
       '/api/v1/admin/user-for-wallet-address',
       queryParameters: {
         'walletAddress': walletAddress,
@@ -769,6 +769,32 @@ class PeeplEatsService extends HttpService {
       onError(response.statusMessage ?? 'Unknown Error');
     } else {
       onSuccess((response.data as Map<String, dynamic>)['verified'] as bool);
+    }
+  }
+
+  Future<void> getAccountIsVendor(
+    String walletAddress,
+    void Function(bool isVendor, int? vendorId) onSuccess,
+    void Function(String error) onError,
+  ) async {
+    if (walletAddress.isEmpty ||
+        !RegExp(r'^0x[a-fA-F0-9]{40}$').hasMatch(walletAddress)) {
+      return onError(
+        'Invalid Wallet Address passed to check if vendor. "$walletAddress"',
+      );
+    }
+    final Response<dynamic> response = await dioGet(
+      '/api/v1/admin/account-is-vendor',
+      queryParameters: {
+        'walletAddress': walletAddress,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
+    } else {
+      final data = response.data as Map<String, dynamic>;
+      onSuccess(data['isVendor'] as bool, data['vendorId'] as int?);
     }
   }
 

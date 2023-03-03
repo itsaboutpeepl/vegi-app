@@ -47,10 +47,10 @@ class SuggestProductDialog extends StatelessWidget {
             onPressed: () {
               // context.router
               //   ..popUntilRoot()
-              //   ..pushNamed('veganHomeScreenAlt');
+              //   ..pushNamed('VeganHomeScreen');
               // print(context.router);
-              context.router.navigate(const VeganHomeScreenAlt());
-              // context.router.replaceAll([const VeganHomeScreenAlt(), SuggestProductFunnelScreen(
+              context.router.navigate(const VeganHomeScreen());
+              // context.router.replaceAll([const VeganHomeScreen(), SuggestProductFunnelScreen(
               //     scannedQRCode: scannedQRCode,
               //   ),
               // ]);

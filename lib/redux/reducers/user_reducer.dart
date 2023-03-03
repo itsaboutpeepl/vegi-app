@@ -37,7 +37,11 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
   TypedReducer<UserState, EnableLocationServices>(_setLocationServicesEnabled),
   TypedReducer<UserState, SetUserVerifiedStatusSuccess>(
-      _setUserVerifiedStatusSuccessResponse),
+    _setUserVerifiedStatusSuccessResponse,
+  ),
+  TypedReducer<UserState, SetUserIsVendorStatusSuccess>(
+    _setUserIsVendorSuccessResponse,
+  ),
   TypedReducer<UserState, SetDeviceIsSimulatorRTO>(
     _setDeviceIsSimulator,
   ),
@@ -79,7 +83,6 @@ UserState _updateCurrency(
 ) {
   return state.copyWith(currency: action.currency);
 }
-
 
 UserState _setDeviceIsSimulator(
   UserState state,
@@ -145,6 +148,7 @@ UserState _createNewWalletSuccess(
     mnemonic: action.mnemonic,
     privateKey: action.privateKey,
     accountAddress: action.accountAddress,
+    walletAddress: action.accountAddress,
   );
 }
 
@@ -181,7 +185,12 @@ UserState _logoutSuccess(
   UserState state,
   LogoutRequestSuccess action,
 ) {
-  return state.copyWith(isLoggedOut: true);
+  return state.copyWith(
+    isLoggedOut: true,
+    walletAddress: '',
+    accountAddress: '',
+    displayName: '',
+  );
 }
 
 UserState _setDisplayName(
@@ -290,6 +299,15 @@ UserState _setUserVerifiedStatusSuccessResponse(
 ) {
   return state.copyWith(
     userIsVerified: action.userIsVerified,
+  );
+}
+
+UserState _setUserIsVendorSuccessResponse(
+  UserState state,
+  SetUserIsVendorStatusSuccess action,
+) {
+  return state.copyWith(
+    isVendor: action.isVendor,
   );
 }
 

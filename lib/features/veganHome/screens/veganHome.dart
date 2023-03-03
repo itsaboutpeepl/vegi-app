@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/VendorHomeView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/backupWalletAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/navDrawer.dart';
@@ -7,6 +8,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/preparingOrder
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/searchVendorsAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/veganSliverAppBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/pastOrders.dart';
 
 class VeganHomeScreen extends StatelessWidget {
@@ -18,6 +20,9 @@ class VeganHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PastOrdersViewmodel>(
       converter: PastOrdersViewmodel.fromStore,
+      onInit: (store) async {
+        store.dispatch(isUserWalletAddressAVendorAddress());
+      },
       builder: (_, viewmodel) {
         return Scaffold(
           drawer: NavDrawer(),
@@ -26,17 +31,21 @@ class VeganHomeScreen extends StatelessWidget {
                 [
                   const VeganSliverAppBar(),
                   const BackupWalletAppBar(),
-                  if (viewmodel.globalSearchIsVisible)
+                  if (viewmodel.globalSearchIsVisible && !viewmodel.isVendor)
                     const SearchVendorsAppBar(),
                 ] +
-                viewmodel.listOfScheduledOrders
-                    .map(
-                      (e) => PreparingOrderAppBar(
-                        orderDetails: e,
-                      ),
-                    )
-                    .toList(),
-            body: const FeaturedRestaurantList(),
+                (viewmodel.isVendor
+                    ? []
+                    : viewmodel.listOfScheduledOrders
+                        .map(
+                          (e) => PreparingOrderAppBar(
+                            orderDetails: e,
+                          ),
+                        )
+                        .toList()),
+            body: viewmodel.isVendor
+                ? const VendorHomeView() // todo: Make this screen into 2 tiles... -> take payment and new customer
+                : const FeaturedRestaurantList(),
           ),
         );
       },

@@ -70,7 +70,7 @@ class OrderConfirmedScreen extends StatelessWidget {
                         ),
                       ),
                       buttonAction: () {
-                        context.router.replaceAll([const VeganHomeScreenAlt()]);
+                        context.router.replaceAll([const VeganHomeScreen()]);
                         Future.delayed(
                           const Duration(seconds: 2),
                           () => viewmodel.clearCart(),

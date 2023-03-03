@@ -23,7 +23,9 @@ import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/services/apis/locationService.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
@@ -258,6 +260,14 @@ class SetUserVerifiedStatusSuccess {
   @override
   String toString() =>
       'SetUserVerifiedStatusSuccess : userIsVerified: $userIsVerified';
+}
+
+class SetUserIsVendorStatusSuccess {
+  SetUserIsVendorStatusSuccess(this.isVendor);
+  bool isVendor;
+
+  @override
+  String toString() => 'SetUserIsVendorStatusSuccess : isVendor: $isVendor';
 }
 
 class BackupRequest {
@@ -504,8 +514,18 @@ ThunkAction<AppState> submitSurveyResponse(
 ThunkAction<AppState> isBetaWhitelistedAddress() {
   return (Store<AppState> store) async {
     try {
+      if (store.state.userState.walletAddress.isEmpty) {
+        const warning =
+            "User wallet not initialised! Can't check the whitelist";
+        log.warn(warning);
+        await Sentry.captureMessage(
+          warning,
+        );
+        return;
+      }
       await peeplEatsService.getUserForWalletAddress(
-        store.state.userState.accountAddress,
+        // ! We are using account address not wallet address here, any idea what the difference is...
+        store.state.userState.walletAddress,
         (userIsVerified) {
           Analytics.track(
             eventName: AnalyticsEvents.getUserForWalletAddress,
@@ -527,7 +547,7 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
       );
     } catch (e, s) {
       log.error(
-        'ERROR - submitSurveyResponse Request',
+        'ERROR - isBetaWhitelistedAddress Request',
         error: e,
         stackTrace: s,
       );
@@ -540,9 +560,79 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
         },
       );
       await Sentry.captureException(
-        Exception('Error in submitSurveyResponse: ${e.toString()}'),
+        Exception('Error in isBetaWhitelistedAddress: ${e.toString()}'),
         stackTrace: s,
-        hint: 'ERROR in submitSurveyResponse',
+        hint: 'ERROR in isBetaWhitelistedAddress',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> isUserWalletAddressAVendorAddress({
+  void Function()? success,
+  void Function(String)? error,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      await peeplEatsService.getAccountIsVendor(
+        store.state.userState.walletAddress,
+        (isVendor, vendorId) {
+          Analytics.track(
+            eventName: AnalyticsEvents.getUserForWalletAddress,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.success,
+            },
+          );
+          store.dispatch(SetUserIsVendorStatusSuccess(isVendor));
+          if (isVendor && vendorId != null) {
+            store
+              ..dispatch(
+                fetchRestaurantById(
+                  restaurantID: vendorId.toString(),
+                  success: success,
+                  error: error,
+                ),
+              )
+              ..dispatch(
+                setRestaurantDetails(
+                  restaurantItem:
+                      store.state.homePageState.featuredRestaurants.firstWhere(
+                    (element) => element.restaurantID == vendorId.toString(),
+                  ),
+                  clearCart: true,
+                ),
+              );
+          }
+        },
+        (eStr) {
+          Analytics.track(
+            eventName: AnalyticsEvents.getUserForWalletAddress,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.failed,
+              'error': eStr,
+            },
+          );
+        },
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - isUserWalletAddressAVendorAddress Request',
+        error: e,
+        stackTrace: s,
+      );
+      // onError(e.toString());
+      await Analytics.track(
+        eventName: AnalyticsEvents.submitSurveyResponse,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception(
+            'Error in isUserWalletAddressAVendorAddress: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR in isUserWalletAddressAVendorAddress',
       );
     }
   };

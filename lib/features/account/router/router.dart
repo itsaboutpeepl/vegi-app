@@ -8,7 +8,7 @@ const accountTab = AutoRoute(
   path: 'account',
   name: 'accountTab',
   page: EmptyRouterPage,
-  guards: [AuthGuard],
+  // guards: [AuthGuard],
   children: [
     // AutoRoute(
     //   page: AccountScreen,
@@ -25,13 +25,16 @@ const accountTab = AutoRoute(
     //   guards: [AuthGuard],
     // ),
     AutoRoute(
+      initial: true,
       page: ProfileScreen,
-      guards: [AuthGuard],
+      name: 'profileScreen',
+      path: 'profile',
+      // guards: [AuthGuard],
     ),
-    AutoRoute(
-      path: 'topUp',
-      page: TopupScreen,
-      guards: [AuthGuard],
-    ),
+    // AutoRoute(
+    //   path: 'topUp',
+    //   page: TopupScreen,
+    //   guards: [AuthGuard],
+    // ),
   ],
 );

@@ -2,22 +2,25 @@ import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 
-class SignUpViewModel extends Equatable {
-  const SignUpViewModel({
+class MainScreenViewModel extends Equatable {
+  const MainScreenViewModel({
     required this.walletAddress,
     required this.userIsVerified,
+    required this.loggedIn,
   });
 
-  factory SignUpViewModel.fromStore(Store<AppState> store) {
-    return SignUpViewModel(
+  factory MainScreenViewModel.fromStore(Store<AppState> store) {
+    return MainScreenViewModel(
       walletAddress:
           store.state.userState.walletAddress, //.replaceFirst('x', 'f'),
       userIsVerified: store.state.userState.userIsVerified,
+      loggedIn: !store.state.userState.isLoggedOut,
     );
   }
 
   final String walletAddress;
   final bool userIsVerified;
+  final bool loggedIn;
 
   @override
   List<Object> get props => [

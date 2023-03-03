@@ -21,6 +21,7 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.changeOutCode,
     required this.refreshLocation,
     required this.userLocationEnabled,
+    required this.userInVendorMode,
     required this.postalCodes,
     required this.isDelivery,
     required this.setIsDelivery,
@@ -50,13 +51,15 @@ class FeaturedRestaurantsVM extends Equatable {
         store.dispatch(fetchFeaturedRestaurantsByUserLocation());
       },
       userLocationEnabled: store.state.userState.useLiveLocation,
+      userInVendorMode: store.state.userState.isVendor,
       setIsDelivery: (isDelivery) {
         store
           ..dispatch(SetIsDelivery(isDelivery: isDelivery))
           ..dispatch(computeCartTotals());
         // todo: dont fetch if he have already loaded delivery vendors for this outcode
-        if (store.state.userState.useLiveLocation)
-          store..dispatch(fetchFeaturedRestaurantsByUserLocation());
+        if (store.state.userState.useLiveLocation) {
+          store.dispatch(fetchFeaturedRestaurantsByUserLocation());
+        }
       },
       showGlobalSearchBarField: ({required bool makeVisible}) {
         store.dispatch(
@@ -99,6 +102,7 @@ class FeaturedRestaurantsVM extends Equatable {
   final void Function(bool isDelivery) setIsDelivery;
   final void Function({required bool makeVisible}) showGlobalSearchBarField;
   final bool userLocationEnabled;
+  final bool userInVendorMode;
 
   final void Function({required String query, required String outCode})
       filterVendors;

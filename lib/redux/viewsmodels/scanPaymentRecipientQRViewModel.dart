@@ -90,7 +90,7 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
                     final menuItemId = menuItemJson['id'] as int;
                     final menuItem = updatedMenuItems.firstWhere(
                       (element) => element.menuItemID == menuItemId.toString(),
-                    ); // ! listOfProductCategoryOptions is not set!
+                    );
                     final menuItemQuantity = menuItemJson['quantity'] as int;
                     final menuItemSelectedProductOptions =
                         (menuItemJson['options'] as Map<String, dynamic>)
@@ -137,11 +137,9 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
                 },
               ),
             );
-          // final restaurant =
-          //     store.state.homePageState.featuredRestaurants.firstWhere(
-          //   (element) => element.restaurantID == basketRestaurantId,
-          // );
-
+          final generatorsWalletAddress =
+              basketJson['generatorWalletAddress'] as String;
+          // 
         } on Exception catch (e, s) {
           // TODO
           log.error(e);

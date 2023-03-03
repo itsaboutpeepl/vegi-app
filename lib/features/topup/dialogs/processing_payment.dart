@@ -114,7 +114,7 @@ class _ProcessingPaymentState extends State<ProcessingPayment>
             () {
               context.router
                 ..pop()
-                ..navigate(const VeganHomeAltTab());
+                ..navigate(const VeganHomeTab());
             },
           );
         }

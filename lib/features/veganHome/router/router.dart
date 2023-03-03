@@ -4,7 +4,7 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/screens/profile.dart';
 import 'package:vegan_liverpool/features/onboard/screens/show_user_mnemonic.dart';
 import 'package:vegan_liverpool/features/onboard/screens/verify_user_mnemonic.dart';
-import 'package:vegan_liverpool/features/pay/screens/generate_QR_from_cart.dart';
+import 'package:vegan_liverpool/features/pay/screens/generate_QR_from_cart_screen.dart';
 import 'package:vegan_liverpool/features/pay/screens/scan_payment_recipient_qr.dart';
 import 'package:vegan_liverpool/features/topup/screens/topup.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/aboutScreen.dart';
@@ -19,14 +19,15 @@ import 'package:vegan_liverpool/features/veganHome/screens/scheduledOrdersPage.d
 import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
 
 const veganHomeTab = AutoRoute(
-  path: 'veganHomeAlt',
-  name: 'veganHomeAltTab',
+  path: 'veganHome',
+  name: 'veganHomeTab',
   page: EmptyRouterPage,
   children: [
     AutoRoute(
       initial: true,
       page: VeganHomeScreen,
-      name: 'veganHomeScreenAlt',
+      name: 'veganHomeScreen',
+      path: 'home',
       guards: [AuthGuard],
     ),
     CustomRoute(
@@ -41,11 +42,11 @@ const veganHomeTab = AutoRoute(
       guards: [AuthGuard],
       transitionsBuilder: TransitionsBuilders.slideBottom,
     ),
-    AutoRoute(
-      page: ProfileScreen,
-      name: 'ProfileScreen',
-      guards: [AuthGuard],
-    ),
+    // AutoRoute(
+    //   page: ProfileScreen,
+    //   name: 'profileScreen',
+    //   guards: [AuthGuard],
+    // ),
     AutoRoute(
       page: TopupScreen,
       name: 'TopUpScreen',
@@ -93,8 +94,8 @@ const veganHomeTab = AutoRoute(
       guards: [AuthGuard],
     ),
     AutoRoute(
-      page: GenerateQRFromCart,
-      name: 'generateQRFromCart',
+      page: GenerateQRFromCartScreen,
+      name: 'generateQRFromCartScreen',
       guards: [AuthGuard],
     ),
     AutoRoute(

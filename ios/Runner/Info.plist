@@ -52,6 +52,16 @@
 				<string>com.googleusercontent.apps.526129377-bm990b988blrv79qkrmc2m964frnlin4</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>vegiApp.dev</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>vegi</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>

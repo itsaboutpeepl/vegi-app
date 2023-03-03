@@ -17,16 +17,20 @@ class ProfileViewModel extends Equatable {
     required this.useLocationServices,
     required this.refreshVendors,
     required this.useLiveLocation,
+    required this.isLoggedIn,
+    required this.isVerified,
   });
 
   factory ProfileViewModel.fromStore(Store<AppState> store) {
     return ProfileViewModel(
       displayName: store.state.userState.displayName,
       useLiveLocation: store.state.userState.useLiveLocation,
+      isLoggedIn: !store.state.userState.isLoggedOut,
       phone: store.state.userState.phoneNumber,
       avatarUrl: store.state.userState.avatarUrl,
       seedPhrase: store.state.userState.mnemonic,
       walletAddress: store.state.userState.walletAddress,
+      isVerified: store.state.userState.userIsVerified,
       editAvatar: (source) {
         store.dispatch(updateUserAvatarCall(source));
       },
@@ -51,6 +55,8 @@ class ProfileViewModel extends Equatable {
   final String avatarUrl;
   final String displayName;
   final bool useLiveLocation;
+  final bool isLoggedIn;
+  final bool isVerified;
   final List<String> seedPhrase;
   final void Function(String displayName) updateDisplayName;
   final void Function(bool enabled) useLocationServices;
@@ -64,5 +70,6 @@ class ProfileViewModel extends Equatable {
         displayName,
         avatarUrl,
         useLiveLocation,
+        isLoggedIn,
       ];
 }

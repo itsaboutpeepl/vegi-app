@@ -14,7 +14,7 @@ import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFu
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/signup.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
@@ -85,15 +85,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, SignUpViewModel>(
-      converter: SignUpViewModel.fromStore,
+    return StoreConnector<AppState, MainScreenViewModel>(
+      converter: MainScreenViewModel.fromStore,
       onInit: (store) async {
         store.dispatch(isBetaWhitelistedAddress());
       },
-      builder: (context, signupViewModel) {
-        if (!signupViewModel.userIsVerified) {
-          return const WaitingListFunnelScreen(surveyCompleted: true);
-        }
+      builder: (context, vm) {
         return MyScaffold(
           resizeToAvoidBottomInset: false,
           title: I10n.of(context).sign_up,

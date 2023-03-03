@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/peaman.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/shape1.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
 
 class FirstOnboardingPage extends StatefulWidget {
   const FirstOnboardingPage({
@@ -31,45 +37,57 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          left: -30,
-          top: 0,
-          child: CustomPaint(
-            size: const Size(
-              200,
-              200 * 0.9019230769230769,
-            ),
-            painter: Shape1(),
-          ),
-        ),
-        AnimatedPositioned(
-          curve: Curves.fastLinearToSlowEaseIn,
-          left: _left ?? MediaQuery.of(context).size.width * 0.2,
-          top: _top ?? MediaQuery.of(context).size.height * 0.3,
-          duration: const Duration(seconds: 2),
-          onEnd: () {
-            setState(() {
-              _opacity = 1;
-            });
-          },
-          child: CustomPaint(
-            size: Size(_width, _width * 1.1484641638225255),
-            painter: PeamanPainter(),
-          ),
-        ),
-        AnimatedOpacity(
-          duration: const Duration(seconds: 1),
-          opacity: _opacity ?? 0,
-          child: Align(
-            child: Image.asset(
-              'assets/images/Vegi-Logo-horizontal.png',
-              width: MediaQuery.of(context).size.width * 0.7,
+    return StoreConnector<AppState, SplashViewModel>(
+      converter: SplashViewModel.fromStore,
+      onInit: (store) => store.state.userState.isLoggedOut
+          ? null
+          : store.dispatch(getWalletAddressesCall()), // ! Cannot call unless the JWT Token has been initialised...
+      builder: (context, viewModel) => Stack(
+        children: [
+          Positioned(
+            left: -30,
+            top: 0,
+            child: CustomPaint(
+              size: const Size(
+                200,
+                200 * 0.9019230769230769,
+              ),
+              painter: Shape1(),
             ),
           ),
-        )
-      ],
+          AnimatedPositioned(
+            curve: Curves.fastLinearToSlowEaseIn,
+            left: _left ?? MediaQuery.of(context).size.width * 0.2,
+            top: _top ?? MediaQuery.of(context).size.height * 0.3,
+            duration: const Duration(seconds: 2),
+            onEnd: () {
+              setState(() {
+                _opacity = 1;
+              });
+              if (!viewModel.isLoggedOut) {
+                showInfoSnack(
+                  context,
+                  title: '${I10n.of(context).login} success!',
+                );
+              }
+            },
+            child: CustomPaint(
+              size: Size(_width, _width * 1.1484641638225255),
+              painter: PeamanPainter(),
+            ),
+          ),
+          AnimatedOpacity(
+            duration: const Duration(seconds: 1),
+            opacity: _opacity ?? 0,
+            child: Align(
+              child: Image.asset(
+                'assets/images/Vegi-Logo-horizontal.png',
+                width: MediaQuery.of(context).size.width * 0.7,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

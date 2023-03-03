@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/router/router.dart';
+import 'package:vegan_liverpool/features/account/screens/profile.dart';
 import 'package:vegan_liverpool/features/onboard/screens/restore_wallet_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/signup_screen.dart';
@@ -28,12 +29,36 @@ export 'routes.gr.dart';
     AutoRoute(page: SplashScreen, initial: true),
     AutoRoute(page: ChooseSecurityOption),
     AutoRoute(page: PinCodeScreen),
-    AutoRoute(page: RestoreFromBackupScreen),
-    AutoRoute(page: OnBoardScreen),
-    AutoRoute(page: SignUpScreen),
+    AutoRoute(
+      page: RestoreFromBackupScreen,
+      path: 'recover-wallet',
+    ),
+    AutoRoute(
+      page: OnBoardScreen,
+      children: [
+        accountTab,
+      ],
+    ),
+    AutoRoute(
+      page: ProfileScreen,
+      name: 'profileScreen',
+      path: 'profile',
+    ),
+    AutoRoute(
+      page: SignUpScreen,
+      path: 'sign-up',
+      children: [
+        accountTab,
+      ],
+    ),
     AutoRoute(page: VerifyPhoneNumber),
     AutoRoute(page: UserNameScreen),
-    AutoRoute(page: WaitingListFunnelScreen),
+    AutoRoute(
+      page: WaitingListFunnelScreen,
+      children: [
+        accountTab,
+      ],
+    ),
     AutoRoute(page: SuggestProductFunnelScreen),
     AutoRoute(page: ImageFromGalleryEx),
     if (kDebugMode) AutoRoute(page: ReduxStateViewer),
@@ -43,7 +68,7 @@ export 'routes.gr.dart';
       children: [
         veganHomeTab,
         topupTab,
-        accountTab,
+        // accountTab,
       ],
     ),
     RedirectRoute(path: '*', redirectTo: '/'),

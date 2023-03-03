@@ -31,7 +31,7 @@ class CheckoutAppBar extends StatelessWidget {
                     eventName: AnalyticsEvents.clearCart,
                   );
                   viewmodel.clearCart();
-                  context.router.navigate(const VeganHomeScreenAlt());
+                  context.router.navigate(const VeganHomeScreen());
                 },
                 icon: const ImageIcon(
                   AssetImage('assets/images/clear-shopping-tote.png'),
