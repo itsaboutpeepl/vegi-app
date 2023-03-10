@@ -223,6 +223,8 @@ PODS:
     - StripeUICore (= 22.8.4)
   - StripeUICore (22.8.4):
     - StripeCore (= 22.8.4)
+  - uni_links (0.0.1):
+    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -254,6 +256,7 @@ DEPENDENCIES:
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
+  - uni_links (from `.symlinks/plugins/uni_links/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -340,6 +343,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   stripe_ios:
     :path: ".symlinks/plugins/stripe_ios/ios"
+  uni_links:
+    :path: ".symlinks/plugins/uni_links/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -398,6 +403,7 @@ SPEC CHECKSUMS:
   StripeCore: 193f27552fb98108ebfe0df11651fe5f38948305
   StripeFinancialConnections: 955c345ada7d0dff1a9bd15c4ebc97eacce4ac75
   StripeUICore: 6a5bbea0164d63bd91000f001903e7901859e1a4
+  uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
   url_launcher_ios: fb12c43172927bb5cf75aeebd073f883801f1993
 
 PODFILE CHECKSUM: 69c1ea94db7f48d267b38523787bef8fe89aeaed

@@ -96,6 +96,8 @@ class UserState with _$UserState {
 
   factory UserState.fromJson(Map<String, dynamic> json) =>
       _$UserStateFromJson(json);
+
+  bool get accountDetailsExist => accountAddress.isNotEmpty;
 }
 
 class UserStateConverter

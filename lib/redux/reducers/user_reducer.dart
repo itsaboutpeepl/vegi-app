@@ -144,11 +144,9 @@ UserState _createNewWalletSuccess(
   CreateLocalAccountSuccess action,
 ) {
   return UserState(
-    isLoggedOut: false,
     mnemonic: action.mnemonic,
     privateKey: action.privateKey,
     accountAddress: action.accountAddress,
-    walletAddress: action.accountAddress,
   );
 }
 
@@ -177,6 +175,7 @@ UserState _loginVerifySuccess(
   LoginVerifySuccess action,
 ) {
   return state.copyWith(
+    isLoggedOut: false,
     jwtToken: action.jwtToken,
   );
 }
@@ -190,6 +189,21 @@ UserState _logoutSuccess(
     walletAddress: '',
     accountAddress: '',
     displayName: '',
+    hasSavedSeedPhrase: false,
+    mnemonic: [
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+    ],
   );
 }
 

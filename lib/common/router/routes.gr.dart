@@ -334,7 +334,7 @@ class RootRouter extends _i32.RootStackRouter {
         ),
         _i32.RouteConfig(
           RestoreFromBackupScreen.name,
-          path: 'recover-wallet',
+          path: '/restore-from-backup-screen',
         ),
         _i32.RouteConfig(
           OnBoardScreen.name,
@@ -344,49 +344,21 @@ class RootRouter extends _i32.RootStackRouter {
               AccountTab.name,
               path: 'account',
               parent: OnBoardScreen.name,
-              children: [
-                _i32.RouteConfig(
-                  '#redirect',
-                  path: '',
-                  parent: AccountTab.name,
-                  redirectTo: 'profile',
-                  fullMatch: true,
-                ),
-                _i32.RouteConfig(
-                  ProfileScreen.name,
-                  path: 'profile',
-                  parent: AccountTab.name,
-                ),
-              ],
             )
           ],
         ),
         _i32.RouteConfig(
           ProfileScreen.name,
-          path: 'profile',
+          path: '/profile-screen',
         ),
         _i32.RouteConfig(
           SignUpScreen.name,
-          path: 'sign-up',
+          path: '/sign-up-screen',
           children: [
             _i32.RouteConfig(
               AccountTab.name,
               path: 'account',
               parent: SignUpScreen.name,
-              children: [
-                _i32.RouteConfig(
-                  '#redirect',
-                  path: '',
-                  parent: AccountTab.name,
-                  redirectTo: 'profile',
-                  fullMatch: true,
-                ),
-                _i32.RouteConfig(
-                  ProfileScreen.name,
-                  path: 'profile',
-                  parent: AccountTab.name,
-                ),
-              ],
             )
           ],
         ),
@@ -406,20 +378,6 @@ class RootRouter extends _i32.RootStackRouter {
               AccountTab.name,
               path: 'account',
               parent: WaitingListFunnelScreen.name,
-              children: [
-                _i32.RouteConfig(
-                  '#redirect',
-                  path: '',
-                  parent: AccountTab.name,
-                  redirectTo: 'profile',
-                  fullMatch: true,
-                ),
-                _i32.RouteConfig(
-                  ProfileScreen.name,
-                  path: 'profile',
-                  parent: AccountTab.name,
-                ),
-              ],
             )
           ],
         ),
@@ -442,7 +400,7 @@ class RootRouter extends _i32.RootStackRouter {
           children: [
             _i32.RouteConfig(
               VeganHomeTab.name,
-              path: 'veganHome',
+              path: 'vegi-home',
               parent: MainScreen.name,
               children: [
                 _i32.RouteConfig(
@@ -643,7 +601,7 @@ class RestoreFromBackupScreen extends _i32.PageRouteInfo<void> {
   const RestoreFromBackupScreen()
       : super(
           RestoreFromBackupScreen.name,
-          path: 'recover-wallet',
+          path: '/restore-from-backup-screen',
         );
 
   static const String name = 'RestoreFromBackupScreen';
@@ -668,7 +626,7 @@ class ProfileScreen extends _i32.PageRouteInfo<void> {
   const ProfileScreen()
       : super(
           ProfileScreen.name,
-          path: 'profile',
+          path: '/profile-screen',
         );
 
   static const String name = 'ProfileScreen';
@@ -680,7 +638,7 @@ class SignUpScreen extends _i32.PageRouteInfo<void> {
   const SignUpScreen({List<_i32.PageRouteInfo>? children})
       : super(
           SignUpScreen.name,
-          path: 'sign-up',
+          path: '/sign-up-screen',
           initialChildren: children,
         );
 
@@ -916,11 +874,10 @@ class MainScreen extends _i32.PageRouteInfo<void> {
 /// generated route for
 /// [_i15.EmptyRouterPage]
 class AccountTab extends _i32.PageRouteInfo<void> {
-  const AccountTab({List<_i32.PageRouteInfo>? children})
+  const AccountTab()
       : super(
           AccountTab.name,
           path: 'account',
-          initialChildren: children,
         );
 
   static const String name = 'AccountTab';
@@ -932,7 +889,7 @@ class VeganHomeTab extends _i32.PageRouteInfo<void> {
   const VeganHomeTab({List<_i32.PageRouteInfo>? children})
       : super(
           VeganHomeTab.name,
-          path: 'veganHome',
+          path: 'vegi-home',
           initialChildren: children,
         );
 

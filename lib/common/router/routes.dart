@@ -31,7 +31,6 @@ export 'routes.gr.dart';
     AutoRoute(page: PinCodeScreen),
     AutoRoute(
       page: RestoreFromBackupScreen,
-      path: 'recover-wallet',
     ),
     AutoRoute(
       page: OnBoardScreen,
@@ -41,12 +40,9 @@ export 'routes.gr.dart';
     ),
     AutoRoute(
       page: ProfileScreen,
-      name: 'profileScreen',
-      path: 'profile',
     ),
     AutoRoute(
       page: SignUpScreen,
-      path: 'sign-up',
       children: [
         accountTab,
       ],
@@ -63,7 +59,7 @@ export 'routes.gr.dart';
     AutoRoute(page: ImageFromGalleryEx),
     if (kDebugMode) AutoRoute(page: ReduxStateViewer),
     AutoRoute(
-      page: MainScreen,
+      page: MainScreen, //path: main-screen/
       guards: [AuthGuard],
       children: [
         veganHomeTab,

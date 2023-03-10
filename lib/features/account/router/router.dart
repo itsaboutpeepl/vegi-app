@@ -24,13 +24,12 @@ const accountTab = AutoRoute(
     //   page: ProtectYourWallet,
     //   guards: [AuthGuard],
     // ),
-    AutoRoute(
-      initial: true,
-      page: ProfileScreen,
-      name: 'profileScreen',
-      path: 'profile',
-      // guards: [AuthGuard],
-    ),
+    // AutoRoute(
+    //   initial: true,
+    //   page: ProfileScreen,
+
+    //   // guards: [AuthGuard],
+    // ),
     // AutoRoute(
     //   path: 'topUp',
     //   page: TopupScreen,

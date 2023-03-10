@@ -19,7 +19,7 @@ import 'package:vegan_liverpool/features/veganHome/screens/scheduledOrdersPage.d
 import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
 
 const veganHomeTab = AutoRoute(
-  path: 'veganHome',
+  path: 'vegi-home',
   name: 'veganHomeTab',
   page: EmptyRouterPage,
   children: [

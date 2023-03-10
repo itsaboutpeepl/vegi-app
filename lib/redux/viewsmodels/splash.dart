@@ -9,6 +9,7 @@ class SplashViewModel extends Equatable {
     required this.privateKey,
     required this.jwtToken,
     required this.isLoggedOut,
+    required this.accountDetailsExist,
     required this.createLocalAccount,
     required this.loginAgain,
     required this.surveyCompleted,
@@ -19,6 +20,7 @@ class SplashViewModel extends Equatable {
       privateKey: store.state.userState.privateKey,
       jwtToken: store.state.userState.jwtToken,
       isLoggedOut: store.state.userState.isLoggedOut,
+      accountDetailsExist: store.state.userState.accountDetailsExist,
       createLocalAccount: (
         VoidCallback successCallback,
       ) {
@@ -38,6 +40,7 @@ class SplashViewModel extends Equatable {
   final String privateKey;
   final String jwtToken;
   final bool isLoggedOut;
+  final bool accountDetailsExist;
   final void Function() loginAgain;
   final bool surveyCompleted;
 
@@ -50,6 +53,7 @@ class SplashViewModel extends Equatable {
         privateKey,
         jwtToken,
         isLoggedOut,
+        accountDetailsExist,
         surveyCompleted,
       ];
 }
