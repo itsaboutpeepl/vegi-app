@@ -58,7 +58,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>vegiApp.dev</string>
+			<string>vegiapp.co.uk</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>vegi</string>

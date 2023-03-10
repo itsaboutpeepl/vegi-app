@@ -40,6 +40,16 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
+            <!-- Deep linking -->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="vegiApp.co.uk" />
+                <data android:scheme="https" />
+            </intent-filter>
+
         </activity>
         <meta-data android:name="com.claimsforce.segment.WRITE_KEY" android:value="fDFwEIoPI6rbKilk7kw4ypHCNTTvioqT" />
         <meta-data android:name="com.claimsforce.segment.TRACK_APPLICATION_LIFECYCLE_EVENTS" android:value="true" />
