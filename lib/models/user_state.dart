@@ -37,12 +37,27 @@ class UserState with _$UserState {
     @Default(false) bool isLoggedOut,
     @Default(false) bool backup,
     @Default(false) bool scrollToTop,
+
+    /// * The wallet address is a smart contract wallet which actually conducts payments, holds balances, etc.
+    /// * So basically, there are 3 types of stake folder in the fuse network technically speaking,
+    /// there are wallet addresses which are opinionless dapps or smart contracts or classes that only
+    /// act when given a request and either succeed or fail to perform an action.
+    /// Then you have account addresses, these are the accounts that simply own wallets and are allowed to
+    /// direct wallet dapps to perform transfers or any other action.
+    /// Then finally there is the community manager address that also has power
+    /// to direct wallet addresses that it does not necessarily own to perform functions such as transfers.
     @Default('') String walletAddress,
+
+    /// * the account address simply signs transactions 'on behalf' of the smart contract wallet.
+    /// This is so only people who verify their phone numbers can create wallets or something.
+    /// Fuse would be able to give you more information
+    ///
+    /// The account address is a 'real' wallet generated on the device which is only stored on the device.
+    @Default('') String accountAddress,
+    @Default('') String privateKey,
     @Default([]) List<String> networks,
     @Default([]) List<String> mnemonic,
-    @Default('') String privateKey,
     @Default('') String pincode,
-    @Default('') String accountAddress,
     @Default('') String countryCode,
     @Default('') String phoneNumber,
     @Default(false) bool warnSendDialogShowed,
