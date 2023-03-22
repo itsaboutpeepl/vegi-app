@@ -21,6 +21,8 @@ class SingleFeaturedMenuItem extends StatelessWidget {
       converter: DetailMenuItem.fromStore,
       builder: (_, viewmodel) {
         final size = MediaQuery.of(context).size;
+        final escColor =
+            colorForESCRating(viewmodel.menuItem?.rating?.rating ?? 0);
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: GestureDetector(
@@ -53,37 +55,47 @@ class SingleFeaturedMenuItem extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              menuItem.name.capitalizeWords(),
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                menuItem.name.capitalizeWords(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Spacer(),
-                      if (menuItem.price != 0)
-                        Text(
-                          menuItem.formattedPrice,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 15,
+                            ],
                           ),
-                        )
-                    ],
+                        ),
+                        const Spacer(),
+                        if (menuItem.price != 0)
+                          Text(
+                            menuItem.formattedPrice,
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
+                            ),
+                          ),
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.circle,
+                      color: escColor,
+                    ),
                   ),
                 ),
                 const SizedBox(

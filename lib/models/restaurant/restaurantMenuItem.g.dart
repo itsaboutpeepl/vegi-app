@@ -23,8 +23,23 @@ _$_RestaurantMenuItem _$$_RestaurantMenuItemFromJson(
           .map(
               (e) => ProductOptionsCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
-      isFeatured: json['isFeatured'] as bool,
+      isAvailable: json['isAvailable'] as bool,
       priority: json['priority'] as int,
+      isFeatured: json['isFeatured'] as bool,
+      status: $enumDecode(_$ProductDiscontinuedStatusEnumMap, json['status']),
+      ingredients: json['ingredients'] as String?,
+      vendorInternalId: json['vendorInternalId'] as String? ?? '',
+      stockCount: json['stockCount'] as int? ?? 0,
+      stockUnitsPerProduct: json['stockUnitsPerProduct'] as num? ?? 1,
+      sizeInnerUnitValue: json['sizeInnerUnitValue'] as num? ?? 1,
+      sizeInnerUnitType: json['sizeInnerUnitType'] as String? ?? '',
+      productBarCode: json['productBarCode'] as String,
+      supplier: json['supplier'] as String? ?? '',
+      brandName: json['brandName'] as String? ?? '',
+      taxGroup: json['taxGroup'] as String? ?? '',
+      rating: json['rating'] == null
+          ? null
+          : ESCRating.fromJson(json['rating'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_RestaurantMenuItemToJson(
@@ -42,6 +57,24 @@ Map<String, dynamic> _$$_RestaurantMenuItemToJson(
       'listOfProductOptionCategories': instance.listOfProductOptionCategories
           .map((e) => e.toJson())
           .toList(),
-      'isFeatured': instance.isFeatured,
+      'isAvailable': instance.isAvailable,
       'priority': instance.priority,
+      'isFeatured': instance.isFeatured,
+      'status': _$ProductDiscontinuedStatusEnumMap[instance.status]!,
+      'ingredients': instance.ingredients,
+      'vendorInternalId': instance.vendorInternalId,
+      'stockCount': instance.stockCount,
+      'stockUnitsPerProduct': instance.stockUnitsPerProduct,
+      'sizeInnerUnitValue': instance.sizeInnerUnitValue,
+      'sizeInnerUnitType': instance.sizeInnerUnitType,
+      'productBarCode': instance.productBarCode,
+      'supplier': instance.supplier,
+      'brandName': instance.brandName,
+      'taxGroup': instance.taxGroup,
+      'rating': instance.rating?.toJson(),
     };
+
+const _$ProductDiscontinuedStatusEnumMap = {
+  ProductDiscontinuedStatus.active: 'active',
+  ProductDiscontinuedStatus.inactive: 'inactive',
+};

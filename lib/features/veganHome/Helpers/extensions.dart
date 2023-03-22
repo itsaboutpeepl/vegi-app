@@ -21,6 +21,17 @@ extension CapitalizeString on String {
         .map((str) => str.capitalize())
         .join(' ');
   }
+
+  String capitalizeWordsFromLowerCamelCase() {
+    return replaceAll(RegExp('(a-z)([A-Z])'), r'$1'.toUpperCase() + r'_$2')
+        .split('_')
+        .map((str) => str.capitalize())
+        .join(' ');
+  }
+
+  String capitalizeWordsFromLowerSnakeCase() {
+    return split('_').map((str) => str.capitalize()).join(' ');
+  }
 }
 
 extension EnumHelpers on Enum {
@@ -123,6 +134,15 @@ extension DateTimeHelpers on DateTime {
         return '${day}rd';
       default:
         return '${day}th';
+    }
+  }
+}
+
+extension IterableHelpers<T> on Iterable<T> {
+  Iterable<R> mapIndexed<R>(R Function(int index, T element) convert) sync* {
+    var index = 0;
+    for (final element in this) {
+      yield convert(index++, element);
     }
   }
 }

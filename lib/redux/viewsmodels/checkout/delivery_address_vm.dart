@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart' as cartActions;
@@ -56,7 +57,9 @@ class DeliveryAddressViewModel extends Equatable {
       },
       setDelivery: ({required bool isDelivery}) {
         store
-          ..dispatch(cartActions.SetIsDelivery(isDelivery: isDelivery))
+          ..dispatch(cartActions.SetFulfilmentMethod(
+            fulfilmentMethodType: FulfilmentMethodType.delivery,
+          ),)
           ..dispatch(cartActions.computeCartTotals());
       },
     );

@@ -80,13 +80,16 @@ class UserCartState with _$UserCartState {
         restaurantIsLive: !EnvService.isUsingProdServices,
         restaurantWalletAddress: '',
         fulfilmentMethod: FulfilmentMethodType.delivery,
-        isDelivery: false,
         fulfilmentPostalDistricts: [],
         eligibleOrderDates: [],
       );
 
   factory UserCartState.fromJson(Map<String, dynamic> json) =>
       _$UserCartStateFromJson(json);
+
+  bool get isDelivery => fulfilmentMethod == FulfilmentMethodType.delivery;
+  bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;
+  bool get isInStore => fulfilmentMethod == FulfilmentMethodType.inStore;
 }
 
 class UserCartStateConverter

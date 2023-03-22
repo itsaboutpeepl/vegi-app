@@ -31,8 +31,21 @@ mixin _$RestaurantMenuItem {
   Map<String, int> get extras => throw _privateConstructorUsedError;
   List<ProductOptionsCategory> get listOfProductOptionCategories =>
       throw _privateConstructorUsedError;
-  bool get isFeatured => throw _privateConstructorUsedError;
+  bool get isAvailable => throw _privateConstructorUsedError;
   int get priority => throw _privateConstructorUsedError;
+  bool get isFeatured => throw _privateConstructorUsedError;
+  ProductDiscontinuedStatus get status => throw _privateConstructorUsedError;
+  String? get ingredients => throw _privateConstructorUsedError;
+  String get vendorInternalId => throw _privateConstructorUsedError;
+  int get stockCount => throw _privateConstructorUsedError;
+  num get stockUnitsPerProduct => throw _privateConstructorUsedError;
+  num get sizeInnerUnitValue => throw _privateConstructorUsedError;
+  String get sizeInnerUnitType => throw _privateConstructorUsedError;
+  String get productBarCode => throw _privateConstructorUsedError;
+  String get supplier => throw _privateConstructorUsedError;
+  String get brandName => throw _privateConstructorUsedError;
+  String get taxGroup => throw _privateConstructorUsedError;
+  ESCRating? get rating => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,8 +70,23 @@ abstract class $RestaurantMenuItemCopyWith<$Res> {
       String description,
       Map<String, int> extras,
       List<ProductOptionsCategory> listOfProductOptionCategories,
+      bool isAvailable,
+      int priority,
       bool isFeatured,
-      int priority});
+      ProductDiscontinuedStatus status,
+      String? ingredients,
+      String vendorInternalId,
+      int stockCount,
+      num stockUnitsPerProduct,
+      num sizeInnerUnitValue,
+      String sizeInnerUnitType,
+      String productBarCode,
+      String supplier,
+      String brandName,
+      String taxGroup,
+      ESCRating? rating});
+
+  $ESCRatingCopyWith<$Res>? get rating;
 }
 
 /// @nodoc
@@ -84,8 +112,21 @@ class _$RestaurantMenuItemCopyWithImpl<$Res, $Val extends RestaurantMenuItem>
     Object? description = null,
     Object? extras = null,
     Object? listOfProductOptionCategories = null,
-    Object? isFeatured = null,
+    Object? isAvailable = null,
     Object? priority = null,
+    Object? isFeatured = null,
+    Object? status = null,
+    Object? ingredients = freezed,
+    Object? vendorInternalId = null,
+    Object? stockCount = null,
+    Object? stockUnitsPerProduct = null,
+    Object? sizeInnerUnitValue = null,
+    Object? sizeInnerUnitType = null,
+    Object? productBarCode = null,
+    Object? supplier = null,
+    Object? brandName = null,
+    Object? taxGroup = null,
+    Object? rating = freezed,
   }) {
     return _then(_value.copyWith(
       menuItemID: null == menuItemID
@@ -128,15 +169,79 @@ class _$RestaurantMenuItemCopyWithImpl<$Res, $Val extends RestaurantMenuItem>
           ? _value.listOfProductOptionCategories
           : listOfProductOptionCategories // ignore: cast_nullable_to_non_nullable
               as List<ProductOptionsCategory>,
-      isFeatured: null == isFeatured
-          ? _value.isFeatured
-          : isFeatured // ignore: cast_nullable_to_non_nullable
+      isAvailable: null == isAvailable
+          ? _value.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
               as bool,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as int,
+      isFeatured: null == isFeatured
+          ? _value.isFeatured
+          : isFeatured // ignore: cast_nullable_to_non_nullable
+              as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ProductDiscontinuedStatus,
+      ingredients: freezed == ingredients
+          ? _value.ingredients
+          : ingredients // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vendorInternalId: null == vendorInternalId
+          ? _value.vendorInternalId
+          : vendorInternalId // ignore: cast_nullable_to_non_nullable
+              as String,
+      stockCount: null == stockCount
+          ? _value.stockCount
+          : stockCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      stockUnitsPerProduct: null == stockUnitsPerProduct
+          ? _value.stockUnitsPerProduct
+          : stockUnitsPerProduct // ignore: cast_nullable_to_non_nullable
+              as num,
+      sizeInnerUnitValue: null == sizeInnerUnitValue
+          ? _value.sizeInnerUnitValue
+          : sizeInnerUnitValue // ignore: cast_nullable_to_non_nullable
+              as num,
+      sizeInnerUnitType: null == sizeInnerUnitType
+          ? _value.sizeInnerUnitType
+          : sizeInnerUnitType // ignore: cast_nullable_to_non_nullable
+              as String,
+      productBarCode: null == productBarCode
+          ? _value.productBarCode
+          : productBarCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      supplier: null == supplier
+          ? _value.supplier
+          : supplier // ignore: cast_nullable_to_non_nullable
+              as String,
+      brandName: null == brandName
+          ? _value.brandName
+          : brandName // ignore: cast_nullable_to_non_nullable
+              as String,
+      taxGroup: null == taxGroup
+          ? _value.taxGroup
+          : taxGroup // ignore: cast_nullable_to_non_nullable
+              as String,
+      rating: freezed == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as ESCRating?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ESCRatingCopyWith<$Res>? get rating {
+    if (_value.rating == null) {
+      return null;
+    }
+
+    return $ESCRatingCopyWith<$Res>(_value.rating!, (value) {
+      return _then(_value.copyWith(rating: value) as $Val);
+    });
   }
 }
 
@@ -159,8 +264,24 @@ abstract class _$$_RestaurantMenuItemCopyWith<$Res>
       String description,
       Map<String, int> extras,
       List<ProductOptionsCategory> listOfProductOptionCategories,
+      bool isAvailable,
+      int priority,
       bool isFeatured,
-      int priority});
+      ProductDiscontinuedStatus status,
+      String? ingredients,
+      String vendorInternalId,
+      int stockCount,
+      num stockUnitsPerProduct,
+      num sizeInnerUnitValue,
+      String sizeInnerUnitType,
+      String productBarCode,
+      String supplier,
+      String brandName,
+      String taxGroup,
+      ESCRating? rating});
+
+  @override
+  $ESCRatingCopyWith<$Res>? get rating;
 }
 
 /// @nodoc
@@ -184,8 +305,21 @@ class __$$_RestaurantMenuItemCopyWithImpl<$Res>
     Object? description = null,
     Object? extras = null,
     Object? listOfProductOptionCategories = null,
-    Object? isFeatured = null,
+    Object? isAvailable = null,
     Object? priority = null,
+    Object? isFeatured = null,
+    Object? status = null,
+    Object? ingredients = freezed,
+    Object? vendorInternalId = null,
+    Object? stockCount = null,
+    Object? stockUnitsPerProduct = null,
+    Object? sizeInnerUnitValue = null,
+    Object? sizeInnerUnitType = null,
+    Object? productBarCode = null,
+    Object? supplier = null,
+    Object? brandName = null,
+    Object? taxGroup = null,
+    Object? rating = freezed,
   }) {
     return _then(_$_RestaurantMenuItem(
       menuItemID: null == menuItemID
@@ -228,14 +362,66 @@ class __$$_RestaurantMenuItemCopyWithImpl<$Res>
           ? _value.listOfProductOptionCategories
           : listOfProductOptionCategories // ignore: cast_nullable_to_non_nullable
               as List<ProductOptionsCategory>,
-      isFeatured: null == isFeatured
-          ? _value.isFeatured
-          : isFeatured // ignore: cast_nullable_to_non_nullable
+      isAvailable: null == isAvailable
+          ? _value.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
               as bool,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as int,
+      isFeatured: null == isFeatured
+          ? _value.isFeatured
+          : isFeatured // ignore: cast_nullable_to_non_nullable
+              as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ProductDiscontinuedStatus,
+      ingredients: freezed == ingredients
+          ? _value.ingredients
+          : ingredients // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vendorInternalId: null == vendorInternalId
+          ? _value.vendorInternalId
+          : vendorInternalId // ignore: cast_nullable_to_non_nullable
+              as String,
+      stockCount: null == stockCount
+          ? _value.stockCount
+          : stockCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      stockUnitsPerProduct: null == stockUnitsPerProduct
+          ? _value.stockUnitsPerProduct
+          : stockUnitsPerProduct // ignore: cast_nullable_to_non_nullable
+              as num,
+      sizeInnerUnitValue: null == sizeInnerUnitValue
+          ? _value.sizeInnerUnitValue
+          : sizeInnerUnitValue // ignore: cast_nullable_to_non_nullable
+              as num,
+      sizeInnerUnitType: null == sizeInnerUnitType
+          ? _value.sizeInnerUnitType
+          : sizeInnerUnitType // ignore: cast_nullable_to_non_nullable
+              as String,
+      productBarCode: null == productBarCode
+          ? _value.productBarCode
+          : productBarCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      supplier: null == supplier
+          ? _value.supplier
+          : supplier // ignore: cast_nullable_to_non_nullable
+              as String,
+      brandName: null == brandName
+          ? _value.brandName
+          : brandName // ignore: cast_nullable_to_non_nullable
+              as String,
+      taxGroup: null == taxGroup
+          ? _value.taxGroup
+          : taxGroup // ignore: cast_nullable_to_non_nullable
+              as String,
+      rating: freezed == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as ESCRating?,
     ));
   }
 }
@@ -255,8 +441,21 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
       required this.description,
       required this.extras,
       required this.listOfProductOptionCategories,
+      required this.isAvailable,
+      required this.priority,
       required this.isFeatured,
-      required this.priority})
+      required this.status,
+      this.ingredients,
+      this.vendorInternalId = '',
+      this.stockCount = 0,
+      this.stockUnitsPerProduct = 1,
+      this.sizeInnerUnitValue = 1,
+      this.sizeInnerUnitType = '',
+      required this.productBarCode,
+      this.supplier = '',
+      this.brandName = '',
+      this.taxGroup = '',
+      this.rating})
       : super._();
 
   factory _$_RestaurantMenuItem.fromJson(Map<String, dynamic> json) =>
@@ -283,13 +482,47 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
   @override
   final List<ProductOptionsCategory> listOfProductOptionCategories;
   @override
-  final bool isFeatured;
+  final bool isAvailable;
   @override
   final int priority;
+  @override
+  final bool isFeatured;
+  @override
+  final ProductDiscontinuedStatus status;
+  @override
+  final String? ingredients;
+  @override
+  @JsonKey()
+  final String vendorInternalId;
+  @override
+  @JsonKey()
+  final int stockCount;
+  @override
+  @JsonKey()
+  final num stockUnitsPerProduct;
+  @override
+  @JsonKey()
+  final num sizeInnerUnitValue;
+  @override
+  @JsonKey()
+  final String sizeInnerUnitType;
+  @override
+  final String productBarCode;
+  @override
+  @JsonKey()
+  final String supplier;
+  @override
+  @JsonKey()
+  final String brandName;
+  @override
+  @JsonKey()
+  final String taxGroup;
+  @override
+  final ESCRating? rating;
 
   @override
   String toString() {
-    return 'RestaurantMenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURL: $imageURL, categoryName: $categoryName, categoryId: $categoryId, price: $price, description: $description, extras: $extras, listOfProductOptionCategories: $listOfProductOptionCategories, isFeatured: $isFeatured, priority: $priority)';
+    return 'RestaurantMenuItem(menuItemID: $menuItemID, restaurantID: $restaurantID, name: $name, imageURL: $imageURL, categoryName: $categoryName, categoryId: $categoryId, price: $price, description: $description, extras: $extras, listOfProductOptionCategories: $listOfProductOptionCategories, isAvailable: $isAvailable, priority: $priority, isFeatured: $isFeatured, status: $status, ingredients: $ingredients, vendorInternalId: $vendorInternalId, stockCount: $stockCount, stockUnitsPerProduct: $stockUnitsPerProduct, sizeInnerUnitValue: $sizeInnerUnitValue, sizeInnerUnitType: $sizeInnerUnitType, productBarCode: $productBarCode, supplier: $supplier, brandName: $brandName, taxGroup: $taxGroup, rating: $rating)';
   }
 
   @override
@@ -315,28 +548,66 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
             const DeepCollectionEquality().equals(
                 other.listOfProductOptionCategories,
                 listOfProductOptionCategories) &&
+            (identical(other.isAvailable, isAvailable) ||
+                other.isAvailable == isAvailable) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
             (identical(other.isFeatured, isFeatured) ||
                 other.isFeatured == isFeatured) &&
-            (identical(other.priority, priority) ||
-                other.priority == priority));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.ingredients, ingredients) ||
+                other.ingredients == ingredients) &&
+            (identical(other.vendorInternalId, vendorInternalId) ||
+                other.vendorInternalId == vendorInternalId) &&
+            (identical(other.stockCount, stockCount) ||
+                other.stockCount == stockCount) &&
+            (identical(other.stockUnitsPerProduct, stockUnitsPerProduct) ||
+                other.stockUnitsPerProduct == stockUnitsPerProduct) &&
+            (identical(other.sizeInnerUnitValue, sizeInnerUnitValue) ||
+                other.sizeInnerUnitValue == sizeInnerUnitValue) &&
+            (identical(other.sizeInnerUnitType, sizeInnerUnitType) ||
+                other.sizeInnerUnitType == sizeInnerUnitType) &&
+            (identical(other.productBarCode, productBarCode) ||
+                other.productBarCode == productBarCode) &&
+            (identical(other.supplier, supplier) ||
+                other.supplier == supplier) &&
+            (identical(other.brandName, brandName) ||
+                other.brandName == brandName) &&
+            (identical(other.taxGroup, taxGroup) ||
+                other.taxGroup == taxGroup) &&
+            (identical(other.rating, rating) || other.rating == rating));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      menuItemID,
-      restaurantID,
-      name,
-      imageURL,
-      categoryName,
-      categoryId,
-      price,
-      description,
-      const DeepCollectionEquality().hash(extras),
-      const DeepCollectionEquality().hash(listOfProductOptionCategories),
-      isFeatured,
-      priority);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        menuItemID,
+        restaurantID,
+        name,
+        imageURL,
+        categoryName,
+        categoryId,
+        price,
+        description,
+        const DeepCollectionEquality().hash(extras),
+        const DeepCollectionEquality().hash(listOfProductOptionCategories),
+        isAvailable,
+        priority,
+        isFeatured,
+        status,
+        ingredients,
+        vendorInternalId,
+        stockCount,
+        stockUnitsPerProduct,
+        sizeInnerUnitValue,
+        sizeInnerUnitType,
+        productBarCode,
+        supplier,
+        brandName,
+        taxGroup,
+        rating
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -365,8 +636,21 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
       required final String description,
       required final Map<String, int> extras,
       required final List<ProductOptionsCategory> listOfProductOptionCategories,
+      required final bool isAvailable,
+      required final int priority,
       required final bool isFeatured,
-      required final int priority}) = _$_RestaurantMenuItem;
+      required final ProductDiscontinuedStatus status,
+      final String? ingredients,
+      final String vendorInternalId,
+      final int stockCount,
+      final num stockUnitsPerProduct,
+      final num sizeInnerUnitValue,
+      final String sizeInnerUnitType,
+      required final String productBarCode,
+      final String supplier,
+      final String brandName,
+      final String taxGroup,
+      final ESCRating? rating}) = _$_RestaurantMenuItem;
   _RestaurantMenuItem._() : super._();
 
   factory _RestaurantMenuItem.fromJson(Map<String, dynamic> json) =
@@ -393,9 +677,35 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
   @override
   List<ProductOptionsCategory> get listOfProductOptionCategories;
   @override
-  bool get isFeatured;
+  bool get isAvailable;
   @override
   int get priority;
+  @override
+  bool get isFeatured;
+  @override
+  ProductDiscontinuedStatus get status;
+  @override
+  String? get ingredients;
+  @override
+  String get vendorInternalId;
+  @override
+  int get stockCount;
+  @override
+  num get stockUnitsPerProduct;
+  @override
+  num get sizeInnerUnitValue;
+  @override
+  String get sizeInnerUnitType;
+  @override
+  String get productBarCode;
+  @override
+  String get supplier;
+  @override
+  String get brandName;
+  @override
+  String get taxGroup;
+  @override
+  ESCRating? get rating;
   @override
   @JsonKey(ignore: true)
   _$$_RestaurantMenuItemCopyWith<_$_RestaurantMenuItem> get copyWith =>

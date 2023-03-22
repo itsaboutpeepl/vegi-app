@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/services/apis/blueBeaconService.dart';
 import 'package:vegan_liverpool/services/apis/peeplEats.dart';
 import 'package:vegan_liverpool/services/apis/locationService.dart';
 import 'package:vegan_liverpool/services/apis/peeplPay.dart';
@@ -22,6 +23,8 @@ final PeeplEatsService peeplEatsService = getIt<PeeplEatsService>();
 final StripePayService stripePayService = getIt<StripePayService>();
 
 final PeeplPayService peeplPayService = getIt<PeeplPayService>();
+
+final BlueBeaconService beaconService = getIt<BlueBeaconService>();
 
 final Graph graph = getIt<Graph>();
 

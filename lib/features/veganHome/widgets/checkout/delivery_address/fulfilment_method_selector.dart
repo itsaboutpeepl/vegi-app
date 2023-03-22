@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
@@ -18,9 +20,15 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  late final List<String> _tabs;
+
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    // _tabs = [
+    //   'Delivery',
+
+    // ];
+    // _tabController = TabController(length: _tabs.length, vsync: this);
     super.initState();
   }
 
@@ -34,11 +42,24 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
   Widget build(BuildContext context) {
     return StoreConnector<AppState, void>(
       onInit: (store) {
+        _tabs = [
+          FulfilmentMethodType.delivery.name.capitalize(),
+          FulfilmentMethodType.collection.name.capitalize(),
+          FulfilmentMethodType.inStore.name.capitalizeWordsFromLowerCamelCase(),
+          // ...(store.state.userState.isVendor || store.state.cartState. ? ['In Store'] : []),
+        ];
+        _tabController = TabController(length: _tabs.length, vsync: this);
         _tabController.addListener(
           () {
             if (_tabController.indexIsChanging) {
               store.dispatch(
-                SetIsDelivery(isDelivery: _tabController.index == 0),
+                SetFulfilmentMethod(
+                  fulfilmentMethodType: _tabController.index == 0
+                      ? FulfilmentMethodType.delivery
+                      : _tabController.index == 1
+                          ? FulfilmentMethodType.collection
+                          : FulfilmentMethodType.inStore,
+                ),
               );
               if (_tabController.index == 0) {
                 store.dispatch(
@@ -64,7 +85,13 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
         );
       },
       converter: (store) {
-        _tabController.index = store.state.cartState.isDelivery ? 0 : 1;
+        _tabController.index = store.state.cartState.fulfilmentMethod ==
+                FulfilmentMethodType.delivery
+            ? 0
+            : store.state.cartState.fulfilmentMethod ==
+                    FulfilmentMethodType.collection
+                ? 1
+                : 2;
       },
       builder: (context, viewmodel) {
         return Card(
@@ -86,26 +113,19 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
                   ),
                   color: themeShade400,
                 ),
-                tabs: [
-                  Text(
-                    'Delivery',
-                    style: TextStyle(
-                      fontWeight: _tabController.index == 0
-                          ? FontWeight.w700
-                          : FontWeight.w500,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Text(
-                    'Collection',
-                    style: TextStyle(
-                      fontWeight: _tabController.index == 1
-                          ? FontWeight.w700
-                          : FontWeight.w500,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
+                tabs: _tabs
+                    .mapIndexed(
+                      (index, tabName) => Text(
+                        tabName,
+                        style: TextStyle(
+                          fontWeight: _tabController.index == index
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
             ),
           ),

@@ -20,6 +20,8 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       backup: json['backup'] as bool? ?? false,
       scrollToTop: json['scrollToTop'] as bool? ?? false,
       walletAddress: json['walletAddress'] as String? ?? '',
+      accountAddress: json['accountAddress'] as String? ?? '',
+      privateKey: json['privateKey'] as String? ?? '',
       networks: (json['networks'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -28,9 +30,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      privateKey: json['privateKey'] as String? ?? '',
       pincode: json['pincode'] as String? ?? '',
-      accountAddress: json['accountAddress'] as String? ?? '',
       countryCode: json['countryCode'] as String? ?? '',
       phoneNumber: json['phoneNumber'] as String? ?? '',
       warnSendDialogShowed: json['warnSendDialogShowed'] as bool? ?? false,
@@ -77,11 +77,11 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'backup': instance.backup,
       'scrollToTop': instance.scrollToTop,
       'walletAddress': instance.walletAddress,
+      'accountAddress': instance.accountAddress,
+      'privateKey': instance.privateKey,
       'networks': instance.networks,
       'mnemonic': instance.mnemonic,
-      'privateKey': instance.privateKey,
       'pincode': instance.pincode,
-      'accountAddress': instance.accountAddress,
       'countryCode': instance.countryCode,
       'phoneNumber': instance.phoneNumber,
       'warnSendDialogShowed': instance.warnSendDialogShowed,

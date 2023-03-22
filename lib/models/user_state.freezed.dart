@@ -29,12 +29,27 @@ mixin _$UserState {
   bool get isLoggedOut => throw _privateConstructorUsedError;
   bool get backup => throw _privateConstructorUsedError;
   bool get scrollToTop => throw _privateConstructorUsedError;
+
+  /// * The wallet address is a smart contract wallet which actually conducts payments, holds balances, etc.
+  /// * So basically, there are 3 types of stake folder in the fuse network technically speaking,
+  /// there are wallet addresses which are opinionless dapps or smart contracts or classes that only
+  /// act when given a request and either succeed or fail to perform an action.
+  /// Then you have account addresses, these are the accounts that simply own wallets and are allowed to
+  /// direct wallet dapps to perform transfers or any other action.
+  /// Then finally there is the community manager address that also has power
+  /// to direct wallet addresses that it does not necessarily own to perform functions such as transfers.
   String get walletAddress => throw _privateConstructorUsedError;
+
+  /// * the account address simply signs transactions 'on behalf' of the smart contract wallet.
+  /// This is so only people who verify their phone numbers can create wallets or something.
+  /// Fuse would be able to give you more information
+  ///
+  /// The account address is a 'real' wallet generated on the device which is only stored on the device.
+  String get accountAddress => throw _privateConstructorUsedError;
+  String get privateKey => throw _privateConstructorUsedError;
   List<String> get networks => throw _privateConstructorUsedError;
   List<String> get mnemonic => throw _privateConstructorUsedError;
-  String get privateKey => throw _privateConstructorUsedError;
   String get pincode => throw _privateConstructorUsedError;
-  String get accountAddress => throw _privateConstructorUsedError;
   String get countryCode => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
   bool get warnSendDialogShowed => throw _privateConstructorUsedError;
@@ -96,11 +111,11 @@ abstract class $UserStateCopyWith<$Res> {
       bool backup,
       bool scrollToTop,
       String walletAddress,
+      String accountAddress,
+      String privateKey,
       List<String> networks,
       List<String> mnemonic,
-      String privateKey,
       String pincode,
-      String accountAddress,
       String countryCode,
       String phoneNumber,
       bool warnSendDialogShowed,
@@ -156,11 +171,11 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? backup = null,
     Object? scrollToTop = null,
     Object? walletAddress = null,
+    Object? accountAddress = null,
+    Object? privateKey = null,
     Object? networks = null,
     Object? mnemonic = null,
-    Object? privateKey = null,
     Object? pincode = null,
-    Object? accountAddress = null,
     Object? countryCode = null,
     Object? phoneNumber = null,
     Object? warnSendDialogShowed = null,
@@ -228,6 +243,14 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      accountAddress: null == accountAddress
+          ? _value.accountAddress
+          : accountAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      privateKey: null == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String,
       networks: null == networks
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
@@ -236,17 +259,9 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.mnemonic
           : mnemonic // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      privateKey: null == privateKey
-          ? _value.privateKey
-          : privateKey // ignore: cast_nullable_to_non_nullable
-              as String,
       pincode: null == pincode
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
-              as String,
-      accountAddress: null == accountAddress
-          ? _value.accountAddress
-          : accountAddress // ignore: cast_nullable_to_non_nullable
               as String,
       countryCode: null == countryCode
           ? _value.countryCode
@@ -397,11 +412,11 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       bool backup,
       bool scrollToTop,
       String walletAddress,
+      String accountAddress,
+      String privateKey,
       List<String> networks,
       List<String> mnemonic,
-      String privateKey,
       String pincode,
-      String accountAddress,
       String countryCode,
       String phoneNumber,
       bool warnSendDialogShowed,
@@ -456,11 +471,11 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? backup = null,
     Object? scrollToTop = null,
     Object? walletAddress = null,
+    Object? accountAddress = null,
+    Object? privateKey = null,
     Object? networks = null,
     Object? mnemonic = null,
-    Object? privateKey = null,
     Object? pincode = null,
-    Object? accountAddress = null,
     Object? countryCode = null,
     Object? phoneNumber = null,
     Object? warnSendDialogShowed = null,
@@ -528,6 +543,14 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      accountAddress: null == accountAddress
+          ? _value.accountAddress
+          : accountAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      privateKey: null == privateKey
+          ? _value.privateKey
+          : privateKey // ignore: cast_nullable_to_non_nullable
+              as String,
       networks: null == networks
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
@@ -536,17 +559,9 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.mnemonic
           : mnemonic // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      privateKey: null == privateKey
-          ? _value.privateKey
-          : privateKey // ignore: cast_nullable_to_non_nullable
-              as String,
       pincode: null == pincode
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
-              as String,
-      accountAddress: null == accountAddress
-          ? _value.accountAddress
-          : accountAddress // ignore: cast_nullable_to_non_nullable
               as String,
       countryCode: null == countryCode
           ? _value.countryCode
@@ -682,11 +697,11 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.backup = false,
       this.scrollToTop = false,
       this.walletAddress = '',
+      this.accountAddress = '',
+      this.privateKey = '',
       this.networks = const [],
       this.mnemonic = const [],
-      this.privateKey = '',
       this.pincode = '',
-      this.accountAddress = '',
       this.countryCode = '',
       this.phoneNumber = '',
       this.warnSendDialogShowed = false,
@@ -741,9 +756,30 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final bool scrollToTop;
+
+  /// * The wallet address is a smart contract wallet which actually conducts payments, holds balances, etc.
+  /// * So basically, there are 3 types of stake folder in the fuse network technically speaking,
+  /// there are wallet addresses which are opinionless dapps or smart contracts or classes that only
+  /// act when given a request and either succeed or fail to perform an action.
+  /// Then you have account addresses, these are the accounts that simply own wallets and are allowed to
+  /// direct wallet dapps to perform transfers or any other action.
+  /// Then finally there is the community manager address that also has power
+  /// to direct wallet addresses that it does not necessarily own to perform functions such as transfers.
   @override
   @JsonKey()
   final String walletAddress;
+
+  /// * the account address simply signs transactions 'on behalf' of the smart contract wallet.
+  /// This is so only people who verify their phone numbers can create wallets or something.
+  /// Fuse would be able to give you more information
+  ///
+  /// The account address is a 'real' wallet generated on the device which is only stored on the device.
+  @override
+  @JsonKey()
+  final String accountAddress;
+  @override
+  @JsonKey()
+  final String privateKey;
   @override
   @JsonKey()
   final List<String> networks;
@@ -752,13 +788,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final List<String> mnemonic;
   @override
   @JsonKey()
-  final String privateKey;
-  @override
-  @JsonKey()
   final String pincode;
-  @override
-  @JsonKey()
-  final String accountAddress;
   @override
   @JsonKey()
   final String countryCode;
@@ -848,7 +878,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, networks: $networks, mnemonic: $mnemonic, privateKey: $privateKey, pincode: $pincode, accountAddress: $accountAddress, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, isVendor: $isVendor)';
+    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, accountAddress: $accountAddress, privateKey: $privateKey, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, isVendor: $isVendor)';
   }
 
   @override
@@ -865,11 +895,11 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('backup', backup))
       ..add(DiagnosticsProperty('scrollToTop', scrollToTop))
       ..add(DiagnosticsProperty('walletAddress', walletAddress))
+      ..add(DiagnosticsProperty('accountAddress', accountAddress))
+      ..add(DiagnosticsProperty('privateKey', privateKey))
       ..add(DiagnosticsProperty('networks', networks))
       ..add(DiagnosticsProperty('mnemonic', mnemonic))
-      ..add(DiagnosticsProperty('privateKey', privateKey))
       ..add(DiagnosticsProperty('pincode', pincode))
-      ..add(DiagnosticsProperty('accountAddress', accountAddress))
       ..add(DiagnosticsProperty('countryCode', countryCode))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('warnSendDialogShowed', warnSendDialogShowed))
@@ -923,13 +953,13 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.scrollToTop == scrollToTop) &&
             (identical(other.walletAddress, walletAddress) ||
                 other.walletAddress == walletAddress) &&
-            const DeepCollectionEquality().equals(other.networks, networks) &&
-            const DeepCollectionEquality().equals(other.mnemonic, mnemonic) &&
-            (identical(other.privateKey, privateKey) ||
-                other.privateKey == privateKey) &&
-            (identical(other.pincode, pincode) || other.pincode == pincode) &&
             (identical(other.accountAddress, accountAddress) ||
                 other.accountAddress == accountAddress) &&
+            (identical(other.privateKey, privateKey) ||
+                other.privateKey == privateKey) &&
+            const DeepCollectionEquality().equals(other.networks, networks) &&
+            const DeepCollectionEquality().equals(other.mnemonic, mnemonic) &&
+            (identical(other.pincode, pincode) || other.pincode == pincode) &&
             (identical(other.countryCode, countryCode) ||
                 other.countryCode == countryCode) &&
             (identical(other.phoneNumber, phoneNumber) ||
@@ -1000,11 +1030,11 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         backup,
         scrollToTop,
         walletAddress,
+        accountAddress,
+        privateKey,
         const DeepCollectionEquality().hash(networks),
         const DeepCollectionEquality().hash(mnemonic),
-        privateKey,
         pincode,
-        accountAddress,
         countryCode,
         phoneNumber,
         warnSendDialogShowed,
@@ -1062,11 +1092,11 @@ abstract class _UserState extends UserState {
       final bool backup,
       final bool scrollToTop,
       final String walletAddress,
+      final String accountAddress,
+      final String privateKey,
       final List<String> networks,
       final List<String> mnemonic,
-      final String privateKey,
       final String pincode,
-      final String accountAddress,
       final String countryCode,
       final String phoneNumber,
       final bool warnSendDialogShowed,
@@ -1127,17 +1157,32 @@ abstract class _UserState extends UserState {
   @override
   bool get scrollToTop;
   @override
+
+  /// * The wallet address is a smart contract wallet which actually conducts payments, holds balances, etc.
+  /// * So basically, there are 3 types of stake folder in the fuse network technically speaking,
+  /// there are wallet addresses which are opinionless dapps or smart contracts or classes that only
+  /// act when given a request and either succeed or fail to perform an action.
+  /// Then you have account addresses, these are the accounts that simply own wallets and are allowed to
+  /// direct wallet dapps to perform transfers or any other action.
+  /// Then finally there is the community manager address that also has power
+  /// to direct wallet addresses that it does not necessarily own to perform functions such as transfers.
   String get walletAddress;
+  @override
+
+  /// * the account address simply signs transactions 'on behalf' of the smart contract wallet.
+  /// This is so only people who verify their phone numbers can create wallets or something.
+  /// Fuse would be able to give you more information
+  ///
+  /// The account address is a 'real' wallet generated on the device which is only stored on the device.
+  String get accountAddress;
+  @override
+  String get privateKey;
   @override
   List<String> get networks;
   @override
   List<String> get mnemonic;
   @override
-  String get privateKey;
-  @override
   String get pincode;
-  @override
-  String get accountAddress;
   @override
   String get countryCode;
   @override

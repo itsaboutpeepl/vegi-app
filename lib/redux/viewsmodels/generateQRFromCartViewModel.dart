@@ -11,9 +11,9 @@ class GenerateQRFromCartViewModel extends Equatable {
     required this.basket,
     required this.isSimulator,
     required this.orderId,
-    required this.customerWalletAddress,
-    required this.vendorWalletAddress,
     required this.generatorWalletAddress,
+    // required this.customerWalletAddress,
+    // required this.vendorWalletAddress,
   });
 
   factory GenerateQRFromCartViewModel.fromStore(Store<AppState> store) {
@@ -21,18 +21,18 @@ class GenerateQRFromCartViewModel extends Equatable {
       isSimulator: store.state.userState.isUsingSimulator,
       basket: CreateOrderForFulfilment.fromStore(store),
       orderId: store.state.cartState.orderID,
-      customerWalletAddress: store.state.userState.isVendor
-          ? store.state.userState.accountAddress
-          : null,
-      vendorWalletAddress: store.state.userState.isVendor
-          ? store.state.userState.accountAddress
-          : store.state.cartState.restaurantWalletAddress,
       generatorWalletAddress: store.state.userState.accountAddress,
+      // customerWalletAddress: store.state.userState.isVendor
+      //     ? store.state.userState.accountAddress
+      //     : null,
+      // vendorWalletAddress: store.state.userState.isVendor
+      //     ? store.state.userState.accountAddress
+      //     : store.state.cartState.restaurantWalletAddress,
     );
   }
 
-  final String? customerWalletAddress;
-  final String vendorWalletAddress;
+  // final String? customerWalletAddress;
+  // final String vendorWalletAddress;
   final String generatorWalletAddress;
   final CreateOrderForFulfilment? basket;
   final String orderId;
@@ -41,9 +41,9 @@ class GenerateQRFromCartViewModel extends Equatable {
   Map<String, dynamic> get basketJson => (basket?.toUploadJson() ?? {})
     ..addAll({
       'uri': peeplEatsService.getOrderUri(orderId),
-      'customerWalletAddress': customerWalletAddress ?? '',
-      'vendorWalletAddress': vendorWalletAddress,
       'generatorWalletAddress': generatorWalletAddress,
+      // 'customerWalletAddress': customerWalletAddress ?? '',
+      // 'vendorWalletAddress': vendorWalletAddress,
     });
 
   String get encodedBasket => json.encode(basketJson);
@@ -52,9 +52,9 @@ class GenerateQRFromCartViewModel extends Equatable {
   List<Object?> get props => [
         orderId,
         isSimulator,
-        customerWalletAddress,
-        vendorWalletAddress,
         generatorWalletAddress,
+        // customerWalletAddress,
+        // vendorWalletAddress,
         encodedBasket,
       ];
 }

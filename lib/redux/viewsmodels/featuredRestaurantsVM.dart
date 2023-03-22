@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
@@ -54,7 +55,7 @@ class FeaturedRestaurantsVM extends Equatable {
       userInVendorMode: store.state.userState.isVendor,
       setIsDelivery: (isDelivery) {
         store
-          ..dispatch(SetIsDelivery(isDelivery: isDelivery))
+          ..dispatch(SetFulfilmentMethod(fulfilmentMethodType: FulfilmentMethodType.delivery,))
           ..dispatch(computeCartTotals());
         // todo: dont fetch if he have already loaded delivery vendors for this outcode
         if (store.state.userState.useLiveLocation) {

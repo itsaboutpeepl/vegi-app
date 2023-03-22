@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
@@ -82,6 +83,7 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: StoreConnector<AppState, PaymentMethodViewModel>(
+        distinct: true,
         converter: PaymentMethodViewModel.fromStore,
         builder: (context, viewmodel) {
           return Wrap(
@@ -96,75 +98,96 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              ListTile(
-                onTap: () {
-                  viewmodel.setPaymentMethod(
-                    paymentMethod: PaymentMethod.peeplPay,
-                  );
-                  context.router.pop();
-                },
-                leading: Image.asset(
-                  'assets/images/avatar-ppl-red.png',
-                  width: 35,
-                ),
-                title: const Text('Peepl Pay'),
-                subtitle: viewmodel.hasPplBalance
-                    ? Text('Use your rewards and save ${viewmodel.pplBalance}')
-                    : null,
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                ),
-              ),
-              ListTile(
-                onTap: () {
-                  viewmodel.setPaymentMethod(
-                    paymentMethod: PaymentMethod.stripe,
-                  );
-                  context.router.pop();
-                },
-                leading: const Icon(
-                  FontAwesomeIcons.creditCard,
-                ),
-                title: const Text('Credit & Debit Cards'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                ),
-              ),
-              if (Platform.isIOS)
+              if (viewmodel.selectedFulfilmentMethod !=
+                      FulfilmentMethodType.inStore ||
+                  !viewmodel.showvegiPay) ...[
                 ListTile(
                   onTap: () {
                     viewmodel.setPaymentMethod(
-                      paymentMethod: PaymentMethod.applePay,
+                      paymentMethod: PaymentMethod.peeplPay,
                     );
                     context.router.pop();
                   },
-                  leading: const Icon(FontAwesomeIcons.applePay),
-                  title: const Text('Apple Pay'),
+                  leading: Image.asset(
+                    'assets/images/avatar-ppl-red.png',
+                    width: 35,
+                  ),
+                  title: const Text('Peepl Pay'),
+                  subtitle: viewmodel.hasPplBalance
+                      ? Text(
+                          'Use your rewards and save ${viewmodel.pplBalance}')
+                      : null,
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                     size: 14,
                   ),
                 ),
-              Opacity(
-                opacity: 0.5,
-                child: ListTile(
+                ListTile(
                   onTap: () {
                     viewmodel.setPaymentMethod(
-                      paymentMethod: PaymentMethod.qrPay,
+                      paymentMethod: PaymentMethod.stripe,
                     );
                     context.router.pop();
                   },
-                  leading: const Icon(FontAwesomeIcons.barcode),
-                  title: Text(PaymentMethod.qrPay.formattedName),
-                  subtitle: const Text('Coming soon In Store'),
+                  leading: const Icon(
+                    FontAwesomeIcons.creditCard,
+                  ),
+                  title: const Text('Credit & Debit Cards'),
                   trailing: const Icon(
-                    Icons.qr_code,
+                    Icons.arrow_forward_ios,
                     size: 14,
                   ),
                 ),
-              ),
+                if (Platform.isIOS)
+                  ListTile(
+                    onTap: () {
+                      viewmodel.setPaymentMethod(
+                        paymentMethod: PaymentMethod.applePay,
+                      );
+                      context.router.pop();
+                    },
+                    leading: const Icon(FontAwesomeIcons.applePay),
+                    title: const Text('Apple Pay'),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                  )
+                else
+                  Opacity(
+                    opacity: 0.5,
+                    child: ListTile(
+                      onTap: () {},
+                      enabled: false,
+                      leading: const Icon(FontAwesomeIcons.googlePay),
+                      title: Text('Google Pay'),
+                      subtitle: const Text('Coming soon'),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                      ),
+                    ),
+                  ),
+              ],
+              if (viewmodel.showvegiPay)
+                Opacity(
+                  opacity: 0.5,
+                  child: ListTile(
+                    onTap: () {
+                      viewmodel.setPaymentMethod(
+                        paymentMethod: PaymentMethod.qrPay,
+                      );
+                      context.router.pop();
+                    },
+                    leading: const Icon(FontAwesomeIcons.barcode),
+                    title: Text(PaymentMethod.qrPay.formattedName),
+                    subtitle: const Text('Coming soon In Store'),
+                    trailing: const Icon(
+                      Icons.qr_code,
+                      size: 14,
+                    ),
+                  ),
+                ),
             ],
           );
         },

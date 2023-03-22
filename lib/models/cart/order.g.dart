@@ -111,5 +111,6 @@ const _$RestaurantAcceptedStatusEnumMap = {
 const _$FulfilmentMethodTypeEnumMap = {
   FulfilmentMethodType.collection: 'collection',
   FulfilmentMethodType.delivery: 'delivery',
+  FulfilmentMethodType.inStore: 'inStore',
   FulfilmentMethodType.none: 'none',
 };

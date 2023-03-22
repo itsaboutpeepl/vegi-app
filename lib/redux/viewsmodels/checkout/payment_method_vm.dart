@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -18,6 +19,8 @@ class PaymentMethodViewModel extends Equatable {
     required this.startPaymentProcess,
     required this.isLoading,
     required this.selectedRestaurantIsLive,
+    required this.selectedFulfilmentMethod,
+    required this.showvegiPay,
   });
 
   factory PaymentMethodViewModel.fromStore(Store<AppState> store) {
@@ -30,6 +33,10 @@ class PaymentMethodViewModel extends Equatable {
       pplBalance: '£${getPoundValueFromPPL(pplBalance)}',
       isLoading: store.state.cartState.payButtonLoading,
       selectedRestaurantIsLive: store.state.cartState.restaurantIsLive,
+      selectedFulfilmentMethod: store.state.cartState.fulfilmentMethod,
+      showvegiPay: store.state.userState.isVendor ||
+          store.state.cartState.fulfilmentMethod ==
+              FulfilmentMethodType.inStore,
       hasPplBalance: pplBalance > 0,
       cartTotal: store.state.cartState.cartTotal.formattedPrice,
       startPaymentProcess: ({required context}) =>
@@ -44,11 +51,19 @@ class PaymentMethodViewModel extends Equatable {
   final String pplBalance;
   final bool hasPplBalance;
   final bool isLoading;
+  final bool showvegiPay;
   final bool selectedRestaurantIsLive;
+  final FulfilmentMethodType selectedFulfilmentMethod;
   final String cartTotal;
   final void Function({required PaymentMethod paymentMethod}) setPaymentMethod;
   final void Function({required BuildContext context}) startPaymentProcess;
 
   @override
-  List<Object?> get props => [selectedPaymentMethod, pplBalance, isLoading];
+  List<Object?> get props => [
+        selectedPaymentMethod,
+        pplBalance,
+        isLoading,
+        selectedFulfilmentMethod,
+        showvegiPay,
+      ];
 }

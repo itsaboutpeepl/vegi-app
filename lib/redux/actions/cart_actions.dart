@@ -315,13 +315,13 @@ class SetFulfilmentCharge {
   }
 }
 
-class SetIsDelivery {
-  SetIsDelivery({required this.isDelivery});
-  final bool isDelivery;
+class SetFulfilmentMethod {
+  SetFulfilmentMethod({required this.fulfilmentMethodType});
+  final FulfilmentMethodType fulfilmentMethodType;
 
   @override
   String toString() {
-    return 'SetIsDelivery : isDelivery: $isDelivery';
+    return 'SetFulfilmentMethod : ${fulfilmentMethodType.name}';
   }
 }
 
@@ -594,9 +594,8 @@ ThunkAction<AppState> selectProductOptionForCartItem({
 }) {
   return (Store<AppState> store) async {
     try {
-      item.selectedProductOptions.addAll({
-        productOptionCategory.categoryID: selectedProductOption
-      });
+      item.selectedProductOptions
+          .addAll({productOptionCategory.categoryID: selectedProductOption});
 
       store.dispatch(UpdateCartItem(cartItem: item));
     } catch (e, s) {
@@ -677,10 +676,15 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
     try {
       final selectedRestaurantId = store.state.cartState.restaurantID;
 
-      final menuItem = await peeplEatsService.getRestaurantMenuItemByQrCode(
-        barCode: itemQRCode,
-        restaurantID: selectedRestaurantId,
-      );
+      final menuItem = store.state.homePageState.featuredRestaurants
+          .firstWhere((v) => v.restaurantID == selectedRestaurantId)
+          .listOfMenuItems
+          .firstWhere((item) => item.productBarCode == itemQRCode);
+
+      // final menuItem = await peeplEatsService.getRestaurantMenuItemByQrCode(
+      //   barCode: itemQRCode,
+      //   restaurantID: selectedRestaurantId,
+      // );
 
       if (menuItem == null) {
         const warning =
@@ -693,41 +697,41 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
         return;
       }
 
-      Map<int, ProductOptions> selectProductOptionsCategories = {};
-      final pocs = menuItem.listOfProductOptionCategories;
-      for (final prodOptCat in pocs) {
-        for (final pov in prodOptCat.listOfOptions) {
-          if (pov.productBarCode == itemQRCode) {
-            //! This is a hack to set the remaining product options to default
-            //! first product option value when barcode maps to one
-            //! selected product option value...
-            selectProductOptionsCategories =
-                Map<int, ProductOptions>.fromEntries(
-              pocs
-                  .where(
-                    (element) => element.name != prodOptCat.name,
-                  )
-                  .map(
-                    (element) => MapEntry(
-                      element.categoryID,
-                      // element.copyWith(
-                      //   listOfOptions: [element.listOfOptions[0]],
-                      // ),
-                      element.listOfOptions[0],
-                    ),
-                  )
-                  .toList()
-                ..add(
-                  MapEntry(
-                    prodOptCat.categoryID,
-                    // prodOptCat.copyWith(listOfOptions: [pov]),
-                    pov,
-                  ),
-                ),
-            );
-          }
-        }
-      }
+      // Map<int, ProductOptions> selectProductOptionsCategories = {};
+      // final pocs = menuItem.listOfProductOptionCategories;
+      // for (final prodOptCat in pocs) {
+      //   for (final pov in prodOptCat.listOfOptions) {
+      //     if (pov.productBarcode == itemQRCode) {
+      //       //! This is a hack to set the remaining product options to default
+      //       //! first product option value when barcode maps to one
+      //       //! selected product option value...
+      //       selectProductOptionsCategories =
+      //           Map<int, ProductOptions>.fromEntries(
+      //         pocs
+      //             .where(
+      //               (element) => element.name != prodOptCat.name,
+      //             )
+      //             .map(
+      //               (element) => MapEntry(
+      //                 element.categoryID,
+      //                 // element.copyWith(
+      //                 //   listOfOptions: [element.listOfOptions[0]],
+      //                 // ),
+      //                 element.listOfOptions[0],
+      //               ),
+      //             )
+      //             .toList()
+      //           ..add(
+      //             MapEntry(
+      //               prodOptCat.categoryID,
+      //               // prodOptCat.copyWith(listOfOptions: [pov]),
+      //               pov,
+      //             ),
+      //           ),
+      //       );
+      //     }
+      //   }
+      // }
 
       final cartItem = CartItem(
         internalID: Random(
@@ -748,7 +752,7 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
         //object is calculated using the viewmodel
         //quantity field. Then the object is just
         //duplicated and added to the cart items.
-        selectedProductOptions: selectProductOptionsCategories,
+        selectedProductOptions: {},
       );
 
       // final restaurant =

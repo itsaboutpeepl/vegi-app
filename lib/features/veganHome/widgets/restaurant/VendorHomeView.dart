@@ -44,7 +44,7 @@ class VendorHomeView extends StatelessWidget {
                         //   clearCart: false,
                         // );
                         // ! This should already set on cart state when we checked if the user was a vendor and set the vendor if it was.
-                        final router = context.router;
+                        // final router = context.router;
                         context.router.push(
                           const RestaurantMenuScreen(),
                         );

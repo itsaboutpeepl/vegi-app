@@ -20,6 +20,22 @@ String cFPriceNoDec(int price) {
   return '£${(price / 100).toStringAsFixed(0)}';
 }
 
+Color? colorForESCRating(num rating) {
+  if (rating > 4) {
+    return Colors.greenAccent[500];
+  } else if (rating > 3) {
+    return Colors.greenAccent[300];
+  } else if (rating > 2) {
+    return Colors.greenAccent[100];
+  } else if (rating > 1) {
+    return Colors.amberAccent[100];
+  } else if (rating > 0) {
+    return Colors.amberAccent[200];
+  } else {
+    return Colors.orangeAccent[400];
+  }
+}
+
 String parseHtmlString(String htmlString) {
   final document = parse(htmlString);
   final String parsedString = parse(document.body!.text).documentElement!.text;

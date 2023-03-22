@@ -21,6 +21,7 @@ enum OnboardStrategy {
 enum FulfilmentMethodType {
   collection,
   delivery,
+  inStore,
   none,
 }
 
@@ -43,6 +44,11 @@ enum RestaurantAcceptedStatus {
 enum DeliveryOrderCreationStatus {
   confirmed,
   failed,
+}
+
+enum ProductDiscontinuedStatus {
+  active,
+  inactive,
 }
 
 extension RestaurantAcceptedStatusHelpers on RestaurantAcceptedStatus {

@@ -31,7 +31,8 @@ class RecoveryViewModel {
           ),
         );
       },
-      validateWalletRecoveryPhrase: (mnemonic) {
+      validateWalletRecoveryPhrase: (mnemonicUntrimmed) {
+        final mnemonic = mnemonicUntrimmed.trimRight();
         final validMnemonicRE =
             RegExp(r'[^A-Za-z0-9\s]').allMatches(mnemonic).isEmpty;
         final validMnemonicWeb3 = Web3.validateMnemonic(mnemonic);

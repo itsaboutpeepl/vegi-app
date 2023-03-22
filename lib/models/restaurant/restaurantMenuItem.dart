@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 
@@ -19,8 +21,21 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
     required String description,
     required Map<String, int> extras,
     required List<ProductOptionsCategory> listOfProductOptionCategories,
-    required bool isFeatured,
+    required bool isAvailable,
     required int priority,
+    required bool isFeatured,
+    required ProductDiscontinuedStatus status,
+    String? ingredients,
+    @Default('') String vendorInternalId,
+    @Default(0) int stockCount,
+    @Default(1) num stockUnitsPerProduct,
+    @Default(1) num sizeInnerUnitValue,
+    @Default('') String sizeInnerUnitType,
+    required String productBarCode,
+    @Default('') String supplier,
+    @Default('') String brandName,
+    @Default('') String taxGroup,
+    ESCRating? rating,
   }) = _RestaurantMenuItem;
 
   const RestaurantMenuItem._();
@@ -32,8 +47,8 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
 
   TotalPrice totalPrice({
     required int quantity,
-    required Map<int,ProductOptions> selectedProductOptions,
-    }) {
+    required Map<int, ProductOptions> selectedProductOptions,
+  }) {
     var total = quantity * price;
 
     selectedProductOptions
@@ -41,7 +56,6 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
       total += productOptions.price;
     });
 
-    
     return TotalPrice(
       totalPrice: total,
       totalRewards: total * 5 ~/ 100,

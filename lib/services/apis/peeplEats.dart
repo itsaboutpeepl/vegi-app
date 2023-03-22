@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
@@ -19,6 +20,7 @@ import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
+import 'package:vegan_liverpool/models/restaurant/productRating.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
@@ -274,7 +276,7 @@ class PeeplEatsService extends HttpService {
     String restaurantID,
   ) async {
     final Response<dynamic> response =
-        await dio.get('api/v1/vendors/$restaurantID?');
+        await dioGet('api/v1/vendors/$restaurantID?'); // BUG Taking too long
 
     final List<Map<String, dynamic>> results =
         List.from(response.data['vendor']['products'] as Iterable<dynamic>);
@@ -297,6 +299,20 @@ class PeeplEatsService extends HttpService {
             extras: {},
             listOfProductOptionCategories: [],
             priority: element['priority'] as int? ?? 0,
+            isAvailable: element['isAvailable'] as bool? ?? false,
+            vendorInternalId: element['vendorInternalId'] as String? ?? '',
+            ingredients: element['ingredients'] as String? ?? '',
+            productBarCode: element['productBarCode'] as String? ?? '',
+            status: EnumHelpers.enumFromString(ProductDiscontinuedStatus.values,
+                    element['status'] as String) ??
+                ProductDiscontinuedStatus.inactive,
+            stockCount: element['stockCount'] as int? ?? 0,
+            sizeInnerUnitValue: element['sizeInnerUnitValue'] as num? ?? 1,
+            sizeInnerUnitType: element['sizeInnerUnitType'] as String? ?? 'g',
+            stockUnitsPerProduct: element['stockUnitsPerProduct'] as num? ?? 1,
+            brandName: element['brandName'] as String? ?? '',
+            supplier: element['supplier'] as String? ?? '',
+            taxGroup: element['taxGroup'] as String? ?? '',
           ),
         );
       }
@@ -307,77 +323,77 @@ class PeeplEatsService extends HttpService {
     return menuItems;
   }
 
-  Future<RestaurantMenuItem?> getRestaurantMenuItemByQrCode({
-    required String restaurantID,
-    required String barCode,
-  }) async {
-    Response<Map<String, dynamic>?> response;
-    try {
-      // final Response<Map<String, dynamic>?> response =
-      response = await dioGet<Map<String, dynamic>>(
-        'api/v1/products/get-product-by-qrcode',
-        queryParameters: <String, dynamic>{
-          'qrCode': barCode,
-          'vendor': restaurantID
-        },
-      );
-    } catch (e, s) {
-      log.error(e);
-      rethrow;
-    }
+  // Future<RestaurantMenuItem?> getRestaurantMenuItemByQrCode({
+  //   required String restaurantID,
+  //   required String barCode,
+  // }) async {
+  //   Response<Map<String, dynamic>?> response;
+  //   try {
+  //     // final Response<Map<String, dynamic>?> response =
+  //     response = await dioGet<Map<String, dynamic>>(
+  //       'api/v1/products/get-product-by-qrcode',
+  //       queryParameters: <String, dynamic>{
+  //         'qrCode': barCode,
+  //         'vendor': restaurantID
+  //       },
+  //     );
+  //   } catch (e, s) {
+  //     log.error(e);
+  //     rethrow;
+  //   }
 
-    final element = response.data;
-    if (element == null) {
-      return null;
-    }
-    final pos = await getProductOptions(element['id'].toString());
-    // List<ProductOptionsCategory> selectProductOptionsCategories =
-    //     <ProductOptionsCategory>[];
-    // for (final prodOptCat in pos) {
-    //   for (final pov in prodOptCat.listOfOptions) {
-    //     if (pov.productBarCode == barCode) {
-    //       selectProductOptionsCategories = pos
-    //           .where(
-    //             (element) => element.name != prodOptCat.name,
-    //           )
-    //           .map(
-    //             (element) => element.copyWith(
-    //               listOfOptions: [element.listOfOptions[0]],
-    //             ),
-    //           )
-    //           .toList()
-    //         ..add(prodOptCat.copyWith(listOfOptions: [pov]));
-    //       // selectProductOptionsCategories.add(
-    //       //   prodOptCat.copyWith(
-    //       //     listOfOptions: pos
-    //       //         .where(
-    //       //           (element) => element.name != prodOptCat.name,
-    //       //         )
-    //       //         .map((element) =>
-    //       //             element.copyWith(listOfOptions: element.listOfOptions[0]))
-    //       //         .toList()
-    //       //       ..add(pov),
-    //       //   ),
-    //       // );
-    //     }
-    //   }
-    // }
-    return RestaurantMenuItem(
-      isFeatured: element['isFeatured'] as bool? ?? false,
-      menuItemID: element['id'].toString(),
-      restaurantID: restaurantID,
-      name: element['name'] as String? ?? '',
-      imageURL: element['imageUrl'] as String? ?? '',
-      categoryName: element['category']['name'] as String? ?? '',
-      categoryId: element['category']['id'] as int? ?? 0,
-      price: element['basePrice'] as int? ?? 0,
-      description: element['description'] as String? ?? '',
-      extras: {},
-      listOfProductOptionCategories: pos,
-      // listOfProductOptionCategories: selectProductOptionsCategories,
-      priority: element['priority'] as int? ?? 0,
-    );
-  }
+  //   final element = response.data;
+  //   if (element == null) {
+  //     return null;
+  //   }
+  //   final pos = await getProductOptions(element['id'].toString());
+  //   // List<ProductOptionsCategory> selectProductOptionsCategories =
+  //   //     <ProductOptionsCategory>[];
+  //   // for (final prodOptCat in pos) {
+  //   //   for (final pov in prodOptCat.listOfOptions) {
+  //   //     if (pov.productBarCode == barCode) {
+  //   //       selectProductOptionsCategories = pos
+  //   //           .where(
+  //   //             (element) => element.name != prodOptCat.name,
+  //   //           )
+  //   //           .map(
+  //   //             (element) => element.copyWith(
+  //   //               listOfOptions: [element.listOfOptions[0]],
+  //   //             ),
+  //   //           )
+  //   //           .toList()
+  //   //         ..add(prodOptCat.copyWith(listOfOptions: [pov]));
+  //   //       // selectProductOptionsCategories.add(
+  //   //       //   prodOptCat.copyWith(
+  //   //       //     listOfOptions: pos
+  //   //       //         .where(
+  //   //       //           (element) => element.name != prodOptCat.name,
+  //   //       //         )
+  //   //       //         .map((element) =>
+  //   //       //             element.copyWith(listOfOptions: element.listOfOptions[0]))
+  //   //       //         .toList()
+  //   //       //       ..add(pov),
+  //   //       //   ),
+  //   //       // );
+  //   //     }
+  //   //   }
+  //   // }
+  //   return RestaurantMenuItem(
+  //     isFeatured: element['isFeatured'] as bool? ?? false,
+  //     menuItemID: element['id'].toString(),
+  //     restaurantID: restaurantID,
+  //     name: element['name'] as String? ?? '',
+  //     imageURL: element['imageUrl'] as String? ?? '',
+  //     categoryName: element['category']['name'] as String? ?? '',
+  //     categoryId: element['category']['id'] as int? ?? 0,
+  //     price: element['basePrice'] as int? ?? 0,
+  //     description: element['description'] as String? ?? '',
+  //     extras: {},
+  //     listOfProductOptionCategories: pos,
+  //     // listOfProductOptionCategories: selectProductOptionsCategories,
+  //     priority: element['priority'] as int? ?? 0,
+  //   );
+  // }
 
   Future<List<RestaurantMenuItem>> getFilteredRestaurantMenu({
     required String restaurantID,
@@ -407,6 +423,20 @@ class PeeplEatsService extends HttpService {
             extras: {},
             listOfProductOptionCategories: [],
             priority: element['priority'] as int? ?? 0,
+            isAvailable: element['isAvailable'] as bool? ?? false,
+            vendorInternalId: element['vendorInternalId'] as String? ?? '',
+            ingredients: element['ingredients'] as String? ?? '',
+            productBarCode: element['productBarCode'] as String? ?? '',
+            status: EnumHelpers.enumFromString(ProductDiscontinuedStatus.values,
+                    element['status'] as String) ??
+                ProductDiscontinuedStatus.inactive,
+            stockCount: element['stockCount'] as int? ?? 0,
+            sizeInnerUnitValue: element['sizeInnerUnitValue'] as num? ?? 1,
+            sizeInnerUnitType: element['sizeInnerUnitType'] as String? ?? 'g',
+            stockUnitsPerProduct: element['stockUnitsPerProduct'] as num? ?? 1,
+            brandName: element['brandName'] as String? ?? '',
+            supplier: element['supplier'] as String? ?? '',
+            taxGroup: element['taxGroup'] as String? ?? '',
           ),
         );
       }
@@ -480,6 +510,31 @@ class PeeplEatsService extends HttpService {
     }
 
     return listOfProductOptionCategories;
+  }
+
+  Future<Map<String, ProductRating>> getProductRatings({
+    required List<String> productBarcodes,
+  }) async {
+    final Response<dynamic> response = await dioGet(
+      'api/v1/products/get-product-rating',
+      queryParameters: {
+        'productBarcodes': productBarcodes,
+      },
+    );
+
+    final responseDataMap = response.data as Map<String, dynamic>;
+    final ratingsByBarcode = Map.fromEntries(
+      responseDataMap.entries.map(
+        (e) => MapEntry(
+          e.key,
+          ProductRating.fromJson(
+            e.value as Map<String, dynamic>,
+          ),
+        ),
+      ),
+    );
+
+    return ratingsByBarcode;
   }
 
   Future<UploadProductSuggestionImageResponse?>
