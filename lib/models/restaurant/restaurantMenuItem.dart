@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -17,6 +18,7 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
     required String imageURL,
     required String categoryName,
     required int categoryId,
+    /// this is the price in pence of the restaurant item without any product options applied
     required int price,
     required String description,
     required Map<String, int> extras,
@@ -48,6 +50,7 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
   TotalPrice totalPrice({
     required int quantity,
     required Map<int, ProductOptions> selectedProductOptions,
+    required FulfilmentMethodType fulfilmentMethod,
   }) {
     var total = quantity * price;
 
@@ -58,7 +61,10 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
 
     return TotalPrice(
       totalPrice: total,
-      totalRewards: total * 5 ~/ 100,
+      totalRewards: calculateRewardsForPrice(
+        penceAmount: total,
+        fulfilmentMethod: fulfilmentMethod,
+      ),
     );
   }
 }

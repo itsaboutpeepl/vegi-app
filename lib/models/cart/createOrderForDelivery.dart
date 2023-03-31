@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
@@ -28,6 +29,9 @@ class CreateOrderForDelivery extends CreateOrderForFulfilment
     required String fulfilmentSlotTo,
     required bool isDelivery,
   }) = _CreateOrderForDelivery;
+  
+  @JsonEnum()
+  final FulfilmentMethodType fulfilmentTypeString = FulfilmentMethodType.delivery;
 
   CreateOrderForDelivery._();
 

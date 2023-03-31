@@ -128,6 +128,7 @@ ThunkAction<AppState> calculateItemTotalPrice() {
           quantity: store.state.menuItemState.quantity,
           selectedProductOptions:
               store.state.menuItemState.selectedProductOptionsForCategory,
+          fulfilmentMethod: store.state.cartState.fulfilmentMethod,
         );
 
         store.dispatch(

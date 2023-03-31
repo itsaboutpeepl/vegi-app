@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForCollection.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForInStorePayment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:redux/redux.dart';
@@ -19,8 +22,14 @@ abstract class CreateOrderForFulfilment {
     try {
       if (store.state.cartState.isDelivery) {
         return CreateOrderForDelivery.fromStore(store) as T;
-      } else {
+      } else if (store.state.cartState.isCollection) {
         return CreateOrderForCollection.fromStore(store) as T;
+      } else if (store.state.cartState.isCollection) {
+        return CreateOrderForInStorePayment.fromStore(store) as T;
+      } else {
+        throw Exception(
+          'Unknown order fulfilment type passed to CreateOrderForFulfilment.fromStore',
+        );
       }
     } on Exception catch (e, s) {
       log.error(e);
@@ -33,14 +42,32 @@ abstract class CreateOrderForFulfilment {
     }
   }
 
+  abstract final FulfilmentMethodType fulfilmentTypeString;
+
   static T? fromJson<T extends CreateOrderForFulfilment>(
     Map<String, dynamic> json,
   ) {
     try {
       if (json.containsKey('isDelivery') && json['isDelivery'] == true) {
         return CreateOrderForDelivery.fromJson(json) as T;
-      } else {
-        return CreateOrderForCollection.fromJson(json) as T;
+      } else if (json.containsKey('fulfilmentTypeString')) {
+        final fmType = EnumHelpers.enumFromString(
+          FulfilmentMethodType.values,
+          json['fulfilmentTypeString'] as String,
+        );
+        switch (fmType) {
+          case FulfilmentMethodType.collection:
+            return CreateOrderForCollection.fromJson(json) as T;
+          case FulfilmentMethodType.delivery:
+            return CreateOrderForDelivery.fromJson(json) as T;
+          case FulfilmentMethodType.inStore:
+            return CreateOrderForInStorePayment.fromJson(json) as T;
+          case FulfilmentMethodType.none:
+          case null:
+            throw Exception(
+              'Unknown order fulfilment type (`FulfilmentMethodType.none`) received in json passed to CreateOrderForFulfilment.fromJson',
+            );
+        }
       }
     } on Exception catch (e, s) {
       log.error(e);

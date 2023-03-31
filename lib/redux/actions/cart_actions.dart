@@ -1183,9 +1183,17 @@ ThunkAction<AppState> startOrderCreationProcess({
           store.dispatch(
             prepareOrderObjectForDelivery(context: context),
           );
-        } else {
+        } else if (cartState.isCollection) {
           store.dispatch(
             prepareOrderObjectForCollection(context: context),
+          );
+        } else if (cartState.isInStore) {
+          store.dispatch(
+            prepareOrderObjectForInStorePayment(context: context),
+          );
+        } else {
+          throw Exception(
+            'Unknown fulfilment method type passed to startOrderCreationProcess',
           );
         }
       }
@@ -1206,8 +1214,6 @@ ThunkAction<AppState> prepareOrderObjectForDelivery({
   return (Store<AppState> store) async {
     try {
       final orderObject = CreateOrderForDelivery.fromStore(store);
-
-      log.info(orderObject.toJson());
 
       store.dispatch(
         sendOrderObject(
@@ -1233,7 +1239,6 @@ ThunkAction<AppState> prepareOrderObjectForCollection({
     try {
       final orderObject = CreateOrderForCollection.fromStore(store);
 
-      log.info(orderObject.toJson());
       store.dispatch(
         sendOrderObject(orderObject: orderObject, context: context),
       );
@@ -1243,6 +1248,26 @@ ThunkAction<AppState> prepareOrderObjectForCollection({
         e,
         stackTrace: s,
         hint: 'ERROR - prepareOrderObjectForCollection $e',
+      );
+    }
+  };
+}
+ThunkAction<AppState> prepareOrderObjectForInStorePayment({
+  required BuildContext context,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      final orderObject = CreateOrderForCollection.fromStore(store);
+
+      store.dispatch(
+        sendOrderObject(orderObject: orderObject, context: context),
+      );
+    } catch (e, s) {
+      log.error('ERROR - prepareOrderObjectForInStorePayment $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - prepareOrderObjectForInStorePayment $e',
       );
     }
   };

@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       _latestLink = latestLink ?? 'Unknown';
       _latestUri = null;
       try {
-        if (_latestLink != null) _latestUri = Uri.parse(_latestLink!);
+        if (_latestLink != null) _latestUri = Uri.parse(_latestLink);
       } on FormatException {}
       // Parse the link and warn the user, if it is not correct,
       // but keep in mind it could be `null`.

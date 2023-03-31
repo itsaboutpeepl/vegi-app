@@ -276,7 +276,7 @@ class PeeplEatsService extends HttpService {
     String restaurantID,
   ) async {
     final Response<dynamic> response =
-        await dioGet('api/v1/vendors/$restaurantID?'); // BUG Taking too long
+        await dioGet('api/v1/vendors/$restaurantID'); // BUG Taking too long
 
     final List<Map<String, dynamic>> results =
         List.from(response.data['vendor']['products'] as Iterable<dynamic>);

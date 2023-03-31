@@ -4,9 +4,14 @@ import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/models/restaurant/userCart.dart';
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/utils/config.dart' as VEGI_CONFIG;
 
@@ -86,6 +91,33 @@ double getPPLValueFromPence(num penceAmount) {
 
 double getPPLRewardsFromPence(num penceAmount) {
   return getPPLValueFromPence((penceAmount * 5) / 100);
+}
+
+int calculateRewardsForPrice({required num penceAmount,
+  required FulfilmentMethodType fulfilmentMethod,}) {
+  return penceAmount * (fulfilmentMethod == FulfilmentMethodType.inStore ? 1 : 5) ~/ 100;
+}
+
+double calculateCartRewardsForPrice({
+  required Iterable<CartItem> items,
+  required FulfilmentMethodType fulfilmentMethod,
+}) {
+  final x = items.map(
+    (item) {
+      return (Math.max(Math.min(item.menuItem.rating?.rating ?? 0, 5.0), 0.0) /
+              5.0) *
+          item.totalItemPrice *
+          (fulfilmentMethod == FulfilmentMethodType.inStore ? 0.01 : 0.05);
+    },
+  ).reduce((value, element) => value + element);
+  return x;
+}
+
+double calculateRewardsForOrder(CreateOrderForFulfilment order) {
+  return calculateCartRewardsForPrice(
+    items: order.items,
+    fulfilmentMethod: order.fulfilmentTypeString,
+  );
 }
 
 String getPoundValueFromPPL(num pplAmount) {

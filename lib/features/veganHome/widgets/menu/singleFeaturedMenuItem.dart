@@ -33,8 +33,7 @@ class SingleFeaturedMenuItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.black12,
-                      strokeAlign: StrokeAlign.outside,
-                      // strokeAlign: BorderSide.strokeAlignOutside,
+                      strokeAlign: BorderSide.strokeAlignOutside,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),

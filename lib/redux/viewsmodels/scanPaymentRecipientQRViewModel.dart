@@ -121,6 +121,7 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
                           .totalPrice(
                             quantity: menuItemQuantity,
                             selectedProductOptions: selectedProductOptions,
+                            fulfilmentMethod: store.state.cartState.fulfilmentMethod,
                           )
                           .totalPrice,
                       itemQuantity: menuItemQuantity,
