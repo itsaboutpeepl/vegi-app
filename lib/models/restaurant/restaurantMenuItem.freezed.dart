@@ -26,6 +26,8 @@ mixin _$RestaurantMenuItem {
   String get imageURL => throw _privateConstructorUsedError;
   String get categoryName => throw _privateConstructorUsedError;
   int get categoryId => throw _privateConstructorUsedError;
+
+  /// this is the price in pence of the restaurant item without any product options applied
   int get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Map<String, int> get extras => throw _privateConstructorUsedError;
@@ -473,6 +475,8 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
   final String categoryName;
   @override
   final int categoryId;
+
+  /// this is the price in pence of the restaurant item without any product options applied
   @override
   final int price;
   @override
@@ -669,6 +673,8 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
   @override
   int get categoryId;
   @override
+
+  /// this is the price in pence of the restaurant item without any product options applied
   int get price;
   @override
   String get description;

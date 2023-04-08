@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as mbs;
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuItemView.dart';
@@ -108,7 +107,7 @@ class SingleFeaturedMenuItem extends StatelessWidget {
             ),
             onTap: () {
               viewmodel.setMenuItem(menuItem);
-              mbs.showBarModalBottomSheet<Widget>(
+              showModalBottomSheet<Widget>(
                 context: context,
                 builder: (context) => const DetailMenuItemView(),
               );

@@ -13,7 +13,7 @@ import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
-import 'package:vegan_liverpool/models/cart/order.dart';
+import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -937,16 +937,18 @@ class PeeplEatsService extends HttpService {
     return result;
   }
 
-  Future<List<Order>> getPastOrders(String walletAddress) async {
+  Future<List<OrderModel.Order>> getPastOrders(String walletAddress) async {
     try {
       final Response<dynamic> response =
           await dio.get('/api/v1/orders?walletId=$walletAddress');
       final scheduledOrders =
           (response.data['scheduledOrders'] as List<dynamic>)
-              .map((order) => Order.fromJson(order as Map<String, dynamic>))
+              .map((order) =>
+                  OrderModel.Order.fromJson(order as Map<String, dynamic>))
               .toList();
       final ongoingOrders = (response.data['ongoingOrders'] as List<dynamic>)
-          .map((order) => Order.fromJson(order as Map<String, dynamic>))
+          .map((order) =>
+              OrderModel.Order.fromJson(order as Map<String, dynamic>))
           .toList();
       return [
         ...ongoingOrders,

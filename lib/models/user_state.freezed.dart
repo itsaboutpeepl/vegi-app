@@ -191,7 +191,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? currency = null,
     Object? hasUpgrade = null,
     Object? authType = null,
-    Object? locale = freezed,
+    Object? locale = null,
     Object? credentials = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
@@ -323,7 +323,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.authType
           : authType // ignore: cast_nullable_to_non_nullable
               as BiometricAuth,
-      locale: freezed == locale
+      locale: null == locale
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
@@ -491,7 +491,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? currency = null,
     Object? hasUpgrade = null,
     Object? authType = null,
-    Object? locale = freezed,
+    Object? locale = null,
     Object? credentials = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
@@ -623,7 +623,7 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.authType
           : authType // ignore: cast_nullable_to_non_nullable
               as BiometricAuth,
-      locale: freezed == locale
+      locale: null == locale
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
@@ -988,7 +988,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.hasUpgrade == hasUpgrade) &&
             (identical(other.authType, authType) ||
                 other.authType == authType) &&
-            (identical(other.locale, locale) || other.locale == locale) &&
+            const DeepCollectionEquality().equals(other.locale, locale) &&
             (identical(other.credentials, credentials) ||
                 other.credentials == credentials) &&
             const DeepCollectionEquality().equals(
@@ -1050,7 +1050,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         currency,
         hasUpgrade,
         authType,
-        locale,
+        const DeepCollectionEquality().hash(locale),
         credentials,
         const DeepCollectionEquality().hash(listOfDeliveryAddresses),
         hasSavedSeedPhrase,
