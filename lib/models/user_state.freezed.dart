@@ -693,7 +693,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.walletModules,
       this.installedAt,
       this.isContactsSynced,
-      this.isLoggedOut = false,
+      this.isLoggedOut = true,
       this.backup = false,
       this.scrollToTop = false,
       this.walletAddress = '',

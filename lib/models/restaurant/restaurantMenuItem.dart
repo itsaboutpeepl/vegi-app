@@ -62,6 +62,7 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
     return TotalPrice(
       totalPrice: total,
       totalRewards: calculateRewardsForPrice(
+        rating: rating,
         penceAmount: total,
         fulfilmentMethod: fulfilmentMethod,
       ),

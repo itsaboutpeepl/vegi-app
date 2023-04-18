@@ -61,4 +61,12 @@ class StripePayService {
       return e.toString();
     }
   }
+
+  Future<void> makePayment({
+    required int paymentType,
+    required int amount,
+    required String currency,
+  }) async {
+    throw UnimplementedError();
+  }
 }

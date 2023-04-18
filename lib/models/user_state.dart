@@ -34,7 +34,7 @@ class UserState with _$UserState {
     WalletModules? walletModules,
     DateTime? installedAt,
     bool? isContactsSynced,
-    @Default(false) bool isLoggedOut,
+    @Default(true) bool isLoggedOut,
     @Default(false) bool backup,
     @Default(false) bool scrollToTop,
 
@@ -97,6 +97,7 @@ class UserState with _$UserState {
         syncedContacts: [],
         reverseContacts: <String, String>{},
         displayName: 'Anom',
+        isLoggedOut: true,
         backup: false,
         authType: BiometricAuth.none,
         currency: 'usd',

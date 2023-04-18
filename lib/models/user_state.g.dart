@@ -16,7 +16,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
           ? null
           : DateTime.parse(json['installedAt'] as String),
       isContactsSynced: json['isContactsSynced'] as bool?,
-      isLoggedOut: json['isLoggedOut'] as bool? ?? false,
+      isLoggedOut: json['isLoggedOut'] as bool? ?? true,
       backup: json['backup'] as bool? ?? false,
       scrollToTop: json['scrollToTop'] as bool? ?? false,
       walletAddress: json['walletAddress'] as String? ?? '',

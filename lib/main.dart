@@ -22,6 +22,7 @@ import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,13 +39,24 @@ void main() async {
 
   await configureDependencies(environment: envStr);
 
+  final prefs = await SharedPreferences.getInstance();
+
+  bool firstLogin = true;
+  if (false) {
+    // if (prefs.containsKey('hasLoggedIn')) {
+    firstLogin = false;
+  } else {
+    firstLogin = true;
+    await prefs.setInt('hasLoggedIn', 1);
+  }
+
   final Persistor<AppState> persistor = Persistor<AppState>(
     storage: SecureStorage(const FlutterSecureStorage()),
     serializer: JsonSerializer<AppState>(AppState.fromJsonForPersistor),
     debug: kDebugMode,
   );
 
-  final AppState initialState = await loadState(persistor);
+  final AppState initialState = await loadState(persistor, firstLogin);
 
   final List<Middleware<AppState>> wms = [
     thunkMiddleware,
@@ -60,7 +72,7 @@ void main() async {
   if (Env.isDev) {
     final devStore = DevToolsStore<AppState>(
       appReducer,
-      initialState: await loadState(persistor),
+      initialState: await loadState(persistor, firstLogin),
       middleware: wms,
     );
 

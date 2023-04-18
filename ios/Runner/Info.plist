@@ -117,6 +117,10 @@
 	<string>Not in use right now</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>This identifier will be used to track errors occur to you and for our internal analytics.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Allow vegi to connect to vendors wirelessly when in store.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Allow vegi to find and connect with nearby vendors.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

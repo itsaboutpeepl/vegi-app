@@ -66,6 +66,7 @@ dependencies:
   redux_thunk: ^0.4.0
   responsive_framework: ^0.2.0
   sentry_flutter: ^6.12.2
+  shared_preferences: ^2.1.0
   shimmer: ^2.0.0
   simple_animations: ^5.0.0+2
   smooth_page_indicator: ^1.0.0+2
@@ -85,7 +86,14 @@ dependencies:
   qr_flutter: ^4.0.0
   uni_links: ^0.5.1
 dependency_overrides:
+    # flutter_chips_input: # ~ https://github.com/danvick/flutter_chips_input/issues/136
+    #    git: https://github.com/bradintheusa/flutter_chips_input
   web_socket_channel: 2.2.0
+  modal_bottom_sheet:
+    git:
+      url: https://github.com/CoolDude53/modal_bottom_sheet.git
+      ref: main
+      path: modal_bottom_sheet
 dev_dependencies:
   flutter_test:
     sdk: flutter

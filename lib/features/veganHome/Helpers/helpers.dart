@@ -6,6 +6,7 @@ import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
@@ -93,9 +94,16 @@ double getPPLRewardsFromPence(num penceAmount) {
   return getPPLValueFromPence((penceAmount * 5) / 100);
 }
 
-int calculateRewardsForPrice({required num penceAmount,
-  required FulfilmentMethodType fulfilmentMethod,}) {
-  return penceAmount * (fulfilmentMethod == FulfilmentMethodType.inStore ? 1 : 5) ~/ 100;
+int calculateRewardsForPrice({
+  required num penceAmount,
+  required ESCRating? rating,
+  required FulfilmentMethodType fulfilmentMethod,
+}) {
+  return ((Math.max(Math.min(rating?.rating ?? 0, 5.0), 0.0) / 5.0) *
+          penceAmount *
+          (fulfilmentMethod == FulfilmentMethodType.inStore ? 0.01 : 0.05))
+      .floor();
+  // return penceAmount * (fulfilmentMethod == FulfilmentMethodType.inStore ? 1 : 5) ~/ 100;
 }
 
 double calculateCartRewardsForPrice({

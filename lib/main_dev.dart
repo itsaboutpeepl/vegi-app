@@ -11,6 +11,7 @@ import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegan_liverpool/app.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/redux_state_viewer.dart';
@@ -40,6 +41,16 @@ Future<void> main() async {
 
   await configureDependencies(environment: env);
 
+  final prefs = await SharedPreferences.getInstance();
+
+  bool firstLogin = true;
+  if (prefs.containsKey('hasLoggedIn')) {
+    firstLogin = false;
+  } else {
+    firstLogin = true;
+    await prefs.setInt('hasLoggedIn', 1);
+  }
+
   final Persistor<AppState> persistor = Persistor<AppState>(
     storage: SecureStorage(const FlutterSecureStorage()),
     serializer: JsonSerializer<AppState>(AppState.fromJson),
@@ -57,7 +68,7 @@ Future<void> main() async {
 
   final DevToolsStore<AppState> store = DevToolsStore<AppState>(
     appReducer,
-    initialState: await loadState(persistor),
+    initialState: await loadState(persistor, firstLogin),
     middleware: wms,
   );
 
