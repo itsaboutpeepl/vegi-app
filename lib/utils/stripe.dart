@@ -128,7 +128,7 @@ class StripeService {
       );
 
       await instance.presentApplePay(
-        const ApplePayPresentParams(
+        params: const ApplePayPresentParams(
           cartItems: [
             ApplePayCartSummaryItem.immediate(
               label: 'Product Test',
