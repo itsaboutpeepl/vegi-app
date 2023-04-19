@@ -35,9 +35,9 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
         distinct: true,
         converter: VerifyOnboardViewModel.fromStore,
         onInitialBuild: (viewModel) {
-          if (viewModel.credentials != null &&
+          if (viewModel.firebaseCredentials != null &&
               viewModel.verificationId != null) {
-            autoCode = viewModel.credentials?.smsCode ?? '';
+            autoCode = viewModel.firebaseCredentials?.smsCode ?? '';
             setState(() {
               isPreloading = true;
             });

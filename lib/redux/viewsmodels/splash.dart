@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class SplashViewModel extends Equatable {
   const SplashViewModel({
@@ -30,8 +32,35 @@ class SplashViewModel extends Equatable {
           ),
         );
       },
-      loginAgain: () {
-        store.dispatch(reLoginCall());
+      loginAgain: (BuildContext context) {
+        store.dispatch(reLoginCall(
+          onSuccess: () {
+            showInfoSnack(
+              context,
+              title: Messages.walletLoadedSnackbarMessage,
+            );
+          },
+          onFailure: () {
+            showInfoSnack(
+              context,
+              title: Messages.walletSignedOutSnackbarMessage,
+            );
+          },
+          onError: (error) {
+            if (inDebugMode) {
+              showErrorSnack(
+                context: context,
+                title: Messages.walletSignedOutSnackbarMessage,
+                message: 'Error fetching smart wallet: $error',
+              );
+            } else {
+              showInfoSnack(
+                context,
+                title: Messages.walletSignedOutSnackbarMessage,
+              );
+            }
+          },
+        ));
       },
       surveyCompleted: store.state.userState.surveyCompleted,
     );
@@ -41,7 +70,7 @@ class SplashViewModel extends Equatable {
   final String jwtToken;
   final bool isLoggedOut;
   final bool accountDetailsExist;
-  final void Function() loginAgain;
+  final void Function(BuildContext context) loginAgain;
   final bool surveyCompleted;
 
   final void Function(

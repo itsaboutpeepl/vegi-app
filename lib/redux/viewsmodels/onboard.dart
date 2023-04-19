@@ -10,7 +10,7 @@ class VerifyOnboardViewModel extends Equatable {
     required this.countryCode,
     required this.phoneNumber,
     required this.verificationId,
-    required this.credentials,
+    required this.firebaseCredentials,
     required this.verify,
   });
 
@@ -20,7 +20,7 @@ class VerifyOnboardViewModel extends Equatable {
       countryCode: store.state.userState.countryCode,
       phoneNumber: store.state.userState.phoneNumber,
       verificationId: store.state.userState.verificationId,
-      credentials: userState.credentials,
+      firebaseCredentials: userState.firebaseCredentials,
       verify: (
         String verificationCode,
         Function onSuccess,
@@ -40,7 +40,7 @@ class VerifyOnboardViewModel extends Equatable {
   final String countryCode;
   final String phoneNumber;
   final String? verificationId;
-  final PhoneAuthCredential? credentials;
+  final PhoneAuthCredential? firebaseCredentials;
   final Function(
     String code,
     Function onSuccess,

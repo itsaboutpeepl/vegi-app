@@ -1,7 +1,7 @@
 import 'dart:core';
 
-import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:flutter/material.dart';
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -35,7 +35,7 @@ class RecoveryViewModel {
         final mnemonic = mnemonicUntrimmed.trimRight();
         final validMnemonicRE =
             RegExp(r'[^A-Za-z0-9\s]').allMatches(mnemonic).isEmpty;
-        final validMnemonicWeb3 = Web3.validateMnemonic(mnemonic);
+        final validMnemonicWeb3 = Mnemonic.isValid(mnemonic);
         return validMnemonicRE && validMnemonicWeb3;
       },
     );

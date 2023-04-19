@@ -24,7 +24,9 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
   TypedReducer<UserState, ReLogin>(_reLoginUser),
   TypedReducer<UserState, BackupSuccess>(_backupSuccess),
-  TypedReducer<UserState, SetCredentials>(_setCredentials),
+  TypedReducer<UserState, StoreBackupStatus>(_storeBackupStatus),
+  TypedReducer<UserState, SetFirebaseCredentials>(_setFirebaseCredentials),
+  TypedReducer<UserState, SetFuseWalletCredentials>(_setFuseWalletCredentials),
   TypedReducer<UserState, SetVerificationId>(_setVerificationId),
   TypedReducer<UserState, JustInstalled>(_justInstalled),
   TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess),
@@ -117,11 +119,9 @@ UserState _getWalletDataSuccess(
   GetWalletDataSuccess action,
 ) {
   return state.copyWith(
-    backup: action.backup,
     networks: action.networks,
     walletAddress: action.walletAddress,
     walletModules: action.walletModules,
-    contractVersion: action.contractVersion,
   );
 }
 
@@ -130,6 +130,13 @@ UserState _backupSuccess(
   BackupSuccess action,
 ) {
   return state.copyWith(backup: true);
+}
+
+UserState _storeBackupStatus(
+  UserState state,
+  StoreBackupStatus action,
+) {
+  return state.copyWith(backup: action.isSmartWalletBackedUp);
 }
 
 UserState _reLoginUser(
@@ -146,6 +153,7 @@ UserState _createNewWalletSuccess(
   return UserState(
     mnemonic: action.mnemonic,
     privateKey: action.privateKey,
+    fuseWalletCredentials: action.fuseWalletCredentials,
     accountAddress: action.accountAddress,
   );
 }
@@ -235,11 +243,18 @@ UserState _setPincode(
   return state.copyWith(pincode: action.pincode);
 }
 
-UserState _setCredentials(
+UserState _setFirebaseCredentials(
   UserState state,
-  SetCredentials action,
+  SetFirebaseCredentials action,
 ) {
-  return state.copyWith(credentials: action.credentials);
+  return state.copyWith(firebaseCredentials: action.firebaseCredentials);
+}
+
+UserState _setFuseWalletCredentials(
+  UserState state,
+  SetFuseWalletCredentials action,
+) {
+  return state.copyWith(fuseWalletCredentials: action.fuseWalletCredentials);
 }
 
 UserState _justInstalled(

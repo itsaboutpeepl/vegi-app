@@ -80,6 +80,7 @@
 .env_dev
 .env_qa
 .env
+environment
 start_qa.sh
 /lib/main_qa.dart
 

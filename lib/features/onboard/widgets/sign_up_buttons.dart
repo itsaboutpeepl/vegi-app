@@ -179,6 +179,62 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                             ),
                           ),
                         ],
+                        // Padding(
+                        //   padding:
+                        //       const EdgeInsets.only(top: 24.0, bottom: 0.0),
+                        //   child: OutlinedButton(
+                        //     style: OutlinedButton.styleFrom(
+                        //       foregroundColor: Colors.white,
+                        //       side: BorderSide(
+                        //         color: Colors.grey[100]!,
+                        //         width: 2,
+                        //       ),
+                        //       padding: const EdgeInsets.symmetric(
+                        //         horizontal: 20,
+                        //         vertical: 15,
+                        //       ),
+                        //       shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(10),
+                        //       ),
+                        //     ),
+                        //     child: Text(
+                        //       viewmodel.isLoggedOut
+                        //           ? I10n.of(context).login
+                        //           // : (I10n.of(context).restore_wallet),
+                        //           : 'Switch account',
+                        //       style: TextStyle(
+                        //         fontSize: 20,
+                        //         fontWeight: FontWeight.w800,
+                        //         color: Colors.grey[100],
+                        //       ),
+                        //     ),
+                        //     onPressed: () {
+                        //       // ! after beta, uncomment ->
+                        //       // //TODO: make this readable PLEASE
+                        //       // if (viewmodel.isLoggedOut) {
+                        //       //   viewmodel.loginAgain();
+                        //       //   if (context.router.canPop()) {
+                        //       //     context.router.popUntilRoot();
+                        //       //   }
+                        //       //   context.router.replace(const MainScreen());
+                        //       // } else {
+                        //       //   setState(() {
+                        //       //     isPrimaryPreloading = true;
+                        //       //   });
+                        //       //   viewmodel.createLocalAccount(
+                        //       //     () {
+                        //       //       setState(() {
+                        //       //         isPrimaryPreloading = false;
+                        //       //       });
+                        //       //       context.router.push(const SignUpScreen());
+                        //       //     },
+                        //       //   );
+                        //       // }
+                        //       context.router
+                        //           .push(const RestoreFromBackupScreen());
+                        //     },
+                        //   ),
+                        // ),
                         Padding(
                           padding:
                               const EdgeInsets.only(top: 24.0, bottom: 0.0),
@@ -201,7 +257,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                               viewmodel.isLoggedOut
                                   ? I10n.of(context).login
                                   // : (I10n.of(context).restore_wallet),
-                                  : 'Switch account',
+                                  : 'Re-authenticate',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
@@ -209,29 +265,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                               ),
                             ),
                             onPressed: () {
-                              // ! after beta, uncomment ->
-                              // //TODO: make this readable PLEASE
-                              // if (viewmodel.isLoggedOut) {
-                              //   viewmodel.loginAgain();
-                              //   if (context.router.canPop()) {
-                              //     context.router.popUntilRoot();
-                              //   }
-                              //   context.router.replace(const MainScreen());
-                              // } else {
-                              //   setState(() {
-                              //     isPrimaryPreloading = true;
-                              //   });
-                              //   viewmodel.createLocalAccount(
-                              //     () {
-                              //       setState(() {
-                              //         isPrimaryPreloading = false;
-                              //       });
-                              //       context.router.push(const SignUpScreen());
-                              //     },
-                              //   );
-                              // }
-                              context.router
-                                  .push(const RestoreFromBackupScreen());
+                              viewmodel.loginAgain(context);
                             },
                           ),
                         ),

@@ -1,9 +1,9 @@
-import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/tokens/price.dart';
 import 'package:vegan_liverpool/utils/format.dart';

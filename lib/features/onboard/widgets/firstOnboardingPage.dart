@@ -7,6 +7,7 @@ import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class FirstOnboardingPage extends StatefulWidget {
   const FirstOnboardingPage({
@@ -41,7 +42,36 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
       converter: SplashViewModel.fromStore,
       onInit: (store) => store.state.userState.isLoggedOut
           ? null
-          : store.dispatch(getWalletAddressesCall()), // ! Cannot call unless the JWT Token has been initialised...
+          : store.dispatch(
+              fetchFuseSmartWallet(
+                onSuccess: () {
+                  showInfoSnack(
+                    context,
+                    title: Messages.walletLoadedSnackbarMessage,
+                  );
+                },
+                onFailure: () {
+                  showInfoSnack(
+                    context,
+                    title: Messages.walletSignedOutSnackbarMessage,
+                  );
+                },
+                onError: (error) {
+                  if (inDebugMode) {
+                    showErrorSnack(
+                      context: context,
+                      title: Messages.walletSignedOutSnackbarMessage,
+                      message: 'Error fetching smart wallet: $error',
+                    );
+                  } else {
+                    showInfoSnack(
+                      context,
+                      title: Messages.walletSignedOutSnackbarMessage,
+                    );
+                  }
+                },
+              ),
+            ),
       builder: (context, viewModel) => Stack(
         children: [
           Positioned(

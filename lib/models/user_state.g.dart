@@ -7,7 +7,6 @@ part of 'user_state.dart';
 // **************************************************************************
 
 _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
-      contractVersion: json['contractVersion'] as String?,
       walletModules: json['walletModules'] == null
           ? null
           : WalletModules.fromJson(
@@ -17,11 +16,14 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
           : DateTime.parse(json['installedAt'] as String),
       isContactsSynced: json['isContactsSynced'] as bool?,
       isLoggedOut: json['isLoggedOut'] as bool? ?? true,
-      backup: json['backup'] as bool? ?? false,
       scrollToTop: json['scrollToTop'] as bool? ?? false,
       walletAddress: json['walletAddress'] as String? ?? '',
       accountAddress: json['accountAddress'] as String? ?? '',
       privateKey: json['privateKey'] as String? ?? '',
+      fuseWalletCredentials: json['fuseWalletCredentials'] == null
+          ? null
+          : ethPrivateKeyFromJson(json['fuseWalletCredentials']),
+      backup: json['backup'] as bool? ?? false,
       networks: (json['networks'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -69,16 +71,17 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
     <String, dynamic>{
-      'contractVersion': instance.contractVersion,
       'walletModules': instance.walletModules?.toJson(),
       'installedAt': instance.installedAt?.toIso8601String(),
       'isContactsSynced': instance.isContactsSynced,
       'isLoggedOut': instance.isLoggedOut,
-      'backup': instance.backup,
       'scrollToTop': instance.scrollToTop,
       'walletAddress': instance.walletAddress,
       'accountAddress': instance.accountAddress,
       'privateKey': instance.privateKey,
+      'fuseWalletCredentials':
+          ethPrivateKeyToJson(instance.fuseWalletCredentials),
+      'backup': instance.backup,
       'networks': instance.networks,
       'mnemonic': instance.mnemonic,
       'pincode': instance.pincode,

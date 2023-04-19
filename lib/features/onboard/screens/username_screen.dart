@@ -32,7 +32,12 @@ class UserNameScreen extends StatelessWidget {
           isAuthenticated = true;
           store
             ..dispatch(SetDisplayName(displayName))
-            ..dispatch(createAccountWalletCall());
+            ..dispatch(
+              createLocalAccountCall(
+                // todo confirm that this flow still works to initialise the new smartWallet
+                () {},
+              ),
+            );
           unawaited(Analytics.track(eventName: AnalyticsEvents.fillUserName));
         },
         builder: (_, setDisplayName) {

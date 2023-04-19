@@ -14,6 +14,7 @@ import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -37,11 +38,40 @@ class _MainScreenState extends State<MainScreen> {
     return StoreConnector<AppState, MainScreenViewModel>(
       onInit: (store) {
         store
-          ..dispatch(web3Init())
-          ..dispatch(
-            enablePushNotifications(store.state.userState.walletAddress),
-          )
-          ..dispatch(isBetaWhitelistedAddress());
+          ..dispatch(authenticateFuseWalletSDK())
+          ..dispatch(fetchFuseSmartWallet(
+            onSuccess: () {
+              showInfoSnack(
+                context,
+                title: Messages.walletLoadedSnackbarMessage,
+              );
+            },
+            onFailure: () {
+              showInfoSnack(
+                context,
+                title: Messages.walletSignedOutSnackbarMessage,
+              );
+            },
+            onError: (error) {
+              if (inDebugMode) {
+                showErrorSnack(
+                  context: context,
+                  title: Messages.walletSignedOutSnackbarMessage,
+                  message: 'Error fetching smart wallet: $error',
+                );
+              } else {
+                showInfoSnack(
+                  context,
+                  title: Messages.walletSignedOutSnackbarMessage,
+                );
+              }
+            },
+          ))
+          // ..dispatch(
+          //   enablePushNotifications(store.state.userState.walletAddress),
+          // )
+          ..dispatch(isBetaWhitelistedAddress())
+          ..dispatch(identifyCall(wallet: store.state.userState.walletAddress));
       },
       converter: MainScreenViewModel.fromStore,
       builder: (context, vm) {

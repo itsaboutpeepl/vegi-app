@@ -25,7 +25,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
     Future<void> verificationCompleted(
       PhoneAuthCredential credentials,
     ) async {
-      store.dispatch(SetCredentials(credentials));
+      store.dispatch(SetFirebaseCredentials(credentials));
       final UserCredential userCredential =
           await firebaseAuth.signInWithCredential(
         credentials,
@@ -33,18 +33,14 @@ class FirebaseStrategy implements IOnBoardStrategy {
       final User? user = userCredential.user;
       final User currentUser = firebaseAuth.currentUser!;
       assert(user?.uid == currentUser.uid, 'User IDs not same.');
-      final String accountAddress = store.state.userState.accountAddress;
-      final String identifier = store.state.userState.identifier;
-      final String token = await user!.getIdToken();
+      // final String accountAddress = store.state.userState.accountAddress;
+      // final String identifier = store.state.userState.identifier;
+      // final String token = await user!.getIdToken();
+
       try {
-        final String jwtToken = await chargeApi.loginWithFirebase(
-          token,
-          accountAddress,
-          identifier,
-          appName: Strings.appName,
-        );
+        store.dispatch(
+            authenticateFuseWalletSDK()); // this does jwt storing and loginSuccess
         onSuccess();
-        store.dispatch(LoginVerifySuccess(jwtToken));
         await rootRouter.push(UserNameScreen());
       } catch (e) {
         onError(e.toString());
@@ -66,7 +62,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
       log.info('PhoneCodeSent verificationId: $verificationId');
       onSuccess();
       store
-        ..dispatch(SetCredentials(null))
+        ..dispatch(SetFirebaseCredentials(null))
         ..dispatch(SetVerificationId(verificationId));
       rootRouter.push(VerifyPhoneNumber(verificationId: verificationId));
       onSuccess();
@@ -85,38 +81,13 @@ class FirebaseStrategy implements IOnBoardStrategy {
   Future<void> verify(
     Store<AppState> store,
     String verificationCode,
-    void Function(String jwtToken) onSuccess,
+    void Function() onSuccess,
   ) async {
-    PhoneAuthCredential? credential = store.state.userState.credentials;
+    PhoneAuthCredential? credential = store.state.userState.firebaseCredentials;
     final String verificationId = store.state.userState.verificationId ?? '';
     credential ??= PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: verificationCode,
     );
-    try {
-      final UserCredential userCredential =
-          await firebaseAuth.signInWithCredential(
-        credential,
-      );
-      final User? currentUser = firebaseAuth.currentUser;
-      assert(
-        userCredential.user?.uid == currentUser?.uid,
-        'User does not match',
-      );
-      final String accountAddress = store.state.userState.accountAddress;
-      final String identifier = store.state.userState.identifier;
-      final String token = await userCredential.user!.getIdToken();
-      final String jwtToken = await chargeApi.loginWithFirebase(
-        token,
-        accountAddress,
-        identifier,
-        appName: Strings.appName,
-      );
-      onSuccess(jwtToken);
-    } on FirebaseAuthException catch (e) {
-      print('ERROR ${e.code} MESSAGE ${e.message}');
-    } catch (e) {
-      print(e);
-    }
   }
 }

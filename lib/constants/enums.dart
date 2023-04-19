@@ -274,6 +274,11 @@ enum QRCodeScanErrCode {
   unknown,
 }
 
+enum VegiBackendResponseErrCode {
+  connectionIssue,
+  unknownError,
+}
+
 enum FileUploadErrCode {
   imageTooLarge,
   imageEncodingError,

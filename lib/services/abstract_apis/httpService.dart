@@ -25,15 +25,18 @@ abstract class HttpService {
     Options? options,
     CancelToken? cancelToken,
     void Function(int, int)? onReceiveProgress,
+    bool sendWithAuthCreds = false,
   }) {
     if (!path.startsWith('/')) path = '/' + path;
 
     try {
-      return dio.get<T>(path,
-          queryParameters: queryParameters,
-          options: options,
-          cancelToken: cancelToken,
-          onReceiveProgress: onReceiveProgress,);
+      return dio.get<T>(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
     } on DioError catch (dioErr) {
       log.error(
           'ERROR [vegi service [${dioErr.response?.statusCode}]] - dioGet -> $dioErr');
@@ -58,6 +61,7 @@ abstract class HttpService {
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
     void Function(int, int)? onReceiveProgress,
+    bool sendWithAuthCreds = false,
   }) {
     if (!path.startsWith('/')) path = '/' + path;
     return dio.post<T>(path,
@@ -113,6 +117,7 @@ abstract class HttpService {
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
     void Function(int, int)? onReceiveProgress,
+    bool sendWithAuthCreds = false,
   }) {
     final image = file.readAsBytesSync();
 
@@ -184,6 +189,7 @@ abstract class HttpService {
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
     void Function(int, int)? onReceiveProgress,
+    bool sendWithAuthCreds = false,
   }) {
     final image = file.readAsBytesSync();
 
@@ -282,7 +288,7 @@ abstract class HttpService {
           );
         } else if (error is DioError) {
           onError(
-            error.message,
+            error.message ?? '',
             FileUploadErrCode.unknownError,
           );
           return Response(

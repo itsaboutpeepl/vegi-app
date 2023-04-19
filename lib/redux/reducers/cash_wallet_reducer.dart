@@ -24,6 +24,9 @@ final cashWalletReducers = combineReducers<CashWalletState>([
   TypedReducer<CashWalletState, GetTokenWalletActionsSuccess>(
     _getTokenWalletActionsSuccess,
   ),
+  TypedReducer<CashWalletState, GetTokensListSuccess>(
+    _getTokenListSuccess,
+  ),
   TypedReducer<CashWalletState, AddCashTokens>(_addCashTokens),
   TypedReducer<CashWalletState, AddCashToken>(_addCashToken),
   TypedReducer<CashWalletState, GetTokenBalanceSuccess>(
@@ -47,8 +50,18 @@ CashWalletState _getTokenIntervalStatsSuccess(
     intervalStats: action.intervalStats,
     timeFrame: action.timeFrame,
     priceChange: action.priceChange,
+    
   );
   return state.copyWith(tokens: newOne);
+}
+
+CashWalletState _getTokenListSuccess(
+  CashWalletState state,
+  GetTokensListSuccess action,
+) {
+  final Map<String, Token> existing = state.tokens;
+  final Map<String, Token> newOne = action.tokensByAddress;
+  return state.copyWith(tokens: existing..addAll(newOne));
 }
 
 CashWalletState _addSession(

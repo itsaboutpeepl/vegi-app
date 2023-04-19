@@ -1,5 +1,6 @@
-import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
@@ -14,7 +15,7 @@ import 'package:vegan_liverpool/utils/stripe.dart';
 
 final RootRouter rootRouter = getIt<RootRouter>();
 
-final ChargeApi chargeApi = getIt<ChargeApi>();
+final FuseWalletSDK fuseWalletSDK = getIt<FuseWalletSDK>();
 
 final LocationService locationService = getIt<LocationService>();
 
@@ -25,8 +26,6 @@ final StripePayService stripePayService = getIt<StripePayService>();
 final PeeplPayService peeplPayService = getIt<PeeplPayService>();
 
 final BlueBeaconService beaconService = getIt<BlueBeaconService>();
-
-final Graph graph = getIt<Graph>();
 
 final FirebaseAuth firebaseAuth = getIt<FirebaseAuth>();
 

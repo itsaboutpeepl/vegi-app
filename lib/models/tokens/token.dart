@@ -1,7 +1,7 @@
-import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
@@ -65,70 +65,100 @@ class Token with _$Token implements Comparable<Token> {
   Future<dynamic> fetchBalance(
     String accountAddress, {
     required void Function(BigInt) onDone,
-    Function? onError,
+    required dynamic Function(Object, StackTrace) onError,
   }) async {
     if ([null, ''].contains(accountAddress) || [null, ''].contains(address)) {
       return;
     }
     try {
-      final dynamic balance = isNative
-          ? await getIt<Web3>().getBalance(address: address)
-          : await getIt<Web3>().getTokenBalance(
-              address,
-              address: accountAddress,
-            );
-
-      final BigInt value =
-          balance is EtherAmount ? balance.getInWei : balance as BigInt;
-
-      onDone(value);
+      final tokenBalanceData =
+          await fuseWalletSDK.explorerModule.getTokenBalance(
+        address,
+        accountAddress,
+      );
+      return tokenBalanceData.pick(
+        onData: (BigInt value) {
+          onDone(value);
+        },
+        onError: (err) {
+          throw err;
+        },
+      );
     } catch (e, s) {
       log.error(
         'Error - fetch token balance $name',
         error: e,
         stackTrace: s,
       );
-      onError?.call(e, s);
+      onError.call(e, s);
       rethrow;
     }
   }
 
   Future<dynamic> fetchLatestPrice({
-    String currency = 'usd',
     required void Function(Price) onDone,
-    required Function onError,
+    required dynamic Function(Object, StackTrace) onError,
+    String currency = 'usd',
   }) async {
     try {
-      final String price = await chargeApi.price(address);
-      onDone(Price(currency: currency, quote: Decimal.parse(price).toString()));
-    } catch (e, s) {
-      onError(e, s);
-    }
-  }
-
-  Future<dynamic> fetchPriceChange({
-    required void Function(num) onDone,
-    required Function onError,
-  }) async {
-    try {
-      final String priceChange = await chargeApi.priceChange(address);
-      onDone(num.parse(Decimal.parse(priceChange).toString()));
-    } catch (e, s) {
-      onError(e, s);
-    }
-  }
-
-  Future<dynamic> fetchIntervalStats({
-    required void Function(List<IntervalStats>) onDone,
-    required Function onError,
-    required TimeFrame timeFrame,
-  }) async {
-    try {
-      final List<IntervalStats> intervalStats = await chargeApi.interval(
-        address,
-        timeFrame,
+      final priceData = await fuseWalletSDK.tradeModule.price(address);
+      return priceData.pick(
+        onData: (String tokenPrice) {
+          // Do you magic here
+          onDone(
+            Price(
+              currency: currency,
+              quote: Decimal.parse(tokenPrice).toString(),
+            ),
+          );
+        },
+        onError: (err) {
+          // Handle errors
+          onError(err, StackTrace.current);
+        },
       );
-      onDone(intervalStats);
+    } catch (e, s) {
+      onError(e, s);
+    }
+  }
+
+  Future<dynamic> fetchPriceChangeInLast24Hours({
+    required void Function(num) onDone,
+    required dynamic Function(Object, StackTrace) onError,
+  }) async {
+    try {
+      final priceChangeData =
+          await fuseWalletSDK.tradeModule.priceChange(address);
+      priceChangeData.pick(
+        onData: (String priceChange) {
+          onDone(num.parse(Decimal.parse(priceChange).toString()));
+        },
+        onError: (err) {
+          // Handle errors
+          onError(err, StackTrace.current);
+        },
+      );
+    } catch (e, s) {
+      onError(e, s);
+    }
+  }
+
+  Future<dynamic> fetchPriceChangeInLastNHours({
+    required void Function(List<IntervalStats>) onDone,
+    required dynamic Function(Object, StackTrace) onError,
+    TimeFrame timeFrame = TimeFrame.day,
+  }) async {
+    try {
+      final intervalData =
+          await fuseWalletSDK.tradeModule.interval(address, timeFrame);
+      return intervalData.pick(
+        onData: (List<IntervalStats> stats) {
+          onDone(stats);
+        },
+        onError: (err) {
+          onError(err, StackTrace.current);
+        },
+      );
     } catch (e, s) {
       onError(e, s);
     }

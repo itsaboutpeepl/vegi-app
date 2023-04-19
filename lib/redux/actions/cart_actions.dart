@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-
-import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -1252,6 +1251,7 @@ ThunkAction<AppState> prepareOrderObjectForCollection({
     }
   };
 }
+
 ThunkAction<AppState> prepareOrderObjectForInStorePayment({
   required BuildContext context,
 }) {
@@ -1634,27 +1634,101 @@ ThunkAction<AppState> startTokenPaymentToRestaurant({
 
       if (isGBPXSelected) {
         if (currentGBPXAmount.compareTo(selectedGBPXAmount) > 0) {
-          gbpxResponse = await chargeApi.tokenTransfer(
-            getIt<Web3>(),
-            store.state.userState.walletAddress,
+          // Sending a gasless transaction
+          final exceptionOrSmartWalletEventStream =
+              await fuseWalletSDK.transferToken(
+            store.state.userState.fuseWalletCredentialsNotNull,
             gbpxToken.address,
             store.state.cartState.restaurantWalletAddress,
-            tokensAmount: store.state.cartState.selectedGBPxAmount.toString(),
-            externalId: store.state.cartState.paymentIntentID,
-          ) as Map<String, dynamic>;
+            store.state.cartState.selectedGBPxAmount.toString(),
+          );
+
+          // gbpxResponse = await chargeApi.tokenTransfer(
+          //   getIt<Web3>(),
+          //   store.state.userState.walletAddress,
+          //   gbpxToken.address,
+          //   store.state.cartState.restaurantWalletAddress,
+          //   tokensAmount: store.state.cartState.selectedGBPxAmount.toString(),
+          //   externalId: store.state.cartState.paymentIntentID,
+          // ) as Map<String, dynamic>;
+          if (exceptionOrSmartWalletEventStream.hasError) {
+            print(exceptionOrSmartWalletEventStream.error.toString());
+          } else {
+            gbpxResponse = {};
+            //todo: refactor this part to include success, failure and error handlers visible from the build context called from
+            exceptionOrSmartWalletEventStream.data!.listen(
+              (SmartWalletEvent event) {
+                switch (event.name) {
+                  case 'transactionStarted':
+                    log.info('transactionStarted ${event.data.toString()}');
+                    break;
+                  case 'transactionHash':
+                    log.info('transactionHash ${event.data.toString()}');
+                    break;
+                  case 'transactionSucceeded':
+                    log.info('transactionSucceeded ${event.data.toString()}');
+                    gbpxResponse = event.data;
+                    break;
+                  case 'transactionFailed':
+                    log.warn('transactionFailed ${event.data.toString()}');
+                    break;
+                }
+              },
+              onError: (error) {
+                log.error('Error occurred: ${error.toString()}');
+              },
+            );
+          }
         }
       }
 
       if (isPPLSelected) {
         if (currentPPLAmount.compareTo(selectedPPLAmount) > 0) {
-          pplResponse = await chargeApi.tokenTransfer(
-            getIt<Web3>(),
-            store.state.userState.walletAddress,
+          // Sending a gasless transaction
+          final exceptionOrSmartWalletEventStream =
+              await fuseWalletSDK.transferToken(
+            store.state.userState.fuseWalletCredentialsNotNull,
             pplToken.address,
             store.state.cartState.restaurantWalletAddress,
-            tokensAmount: store.state.cartState.selectedPPLAmount.toString(),
-            externalId: store.state.cartState.paymentIntentID,
-          ) as Map<String, dynamic>;
+            store.state.cartState.selectedPPLAmount.toString(),
+          );
+
+          // pplResponse = await chargeApi.tokenTransfer(
+          //   getIt<Web3>(),
+          //   store.state.userState.walletAddress,
+          //   pplToken.address,
+          //   store.state.cartState.restaurantWalletAddress,
+          //   tokensAmount: store.state.cartState.selectedPPLAmount.toString(),
+          //   externalId: store.state.cartState.paymentIntentID,
+          // ) as Map<String, dynamic>;
+          if (exceptionOrSmartWalletEventStream.hasError) {
+            print(exceptionOrSmartWalletEventStream.error.toString());
+          } else {
+            gbpxResponse = {};
+            //todo: refactor this part to include success, failure and error handlers visible from the build context called from
+            exceptionOrSmartWalletEventStream.data!.listen(
+              (SmartWalletEvent event) {
+                switch (event.name) {
+                  case 'transactionStarted':
+                    log.info('transactionStarted ${event.data.toString()}');
+                    break;
+                  case 'transactionHash':
+                    log.info('transactionHash ${event.data.toString()}');
+                    break;
+                  case 'transactionSucceeded':
+                    log.info('transactionSucceeded ${event.data.toString()}');
+                    gbpxResponse = event.data;
+                    break;
+                  case 'transactionFailed':
+                    log.warn('transactionFailed ${event.data.toString()}');
+                    break;
+                }
+              },
+              onError: (error) {
+                log.error('Error occurred: ${error.toString()}');
+              },
+            );
+          }
         }
       }
 

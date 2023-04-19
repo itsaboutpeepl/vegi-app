@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
-import 'package:charge_wallet_sdk/charge_wallet_sdk.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_udid/flutter_udid.dart';
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_number/phone_number.dart';
@@ -20,6 +21,7 @@ import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/analytics_props.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
+import 'package:vegan_liverpool/models/admin/postVegiResponse.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
@@ -134,15 +136,17 @@ class CreateLocalAccountSuccess {
   CreateLocalAccountSuccess(
     this.mnemonic,
     this.privateKey,
+    this.fuseWalletCredentials,
     this.accountAddress,
   );
   final List<String> mnemonic;
   final String privateKey;
+  final EthPrivateKey fuseWalletCredentials;
   final String accountAddress;
 
   @override
-  String toString() => 'CreateLocalAccountSuccess : mnemonic: $mnemonic, '
-      'privateKey: $privateKey, accountAddress: $accountAddress';
+  String toString() => 'CreateLocalAccountSuccess:'
+      ' accountAddress: $accountAddress';
 }
 
 class ReLogin {
@@ -284,12 +288,33 @@ class BackupSuccess {
   String toString() => 'BackupSuccess';
 }
 
-class SetCredentials {
-  SetCredentials(this.credentials);
-  PhoneAuthCredential? credentials;
+class StoreBackupStatus {
+  StoreBackupStatus({
+    required this.isSmartWalletBackedUp,
+  });
+
+  final bool isSmartWalletBackedUp;
 
   @override
-  String toString() => 'SetCredentials : credentials: $credentials';
+  String toString() => 'StoreBackupStatus: $isSmartWalletBackedUp';
+}
+
+class SetFirebaseCredentials {
+  SetFirebaseCredentials(this.firebaseCredentials);
+  PhoneAuthCredential? firebaseCredentials;
+
+  @override
+  String toString() =>
+      'SetFirebaseCredentials : credentials: $firebaseCredentials';
+}
+
+class SetFuseWalletCredentials {
+  SetFuseWalletCredentials(this.fuseWalletCredentials);
+  EthPrivateKey? fuseWalletCredentials;
+
+  @override
+  String toString() =>
+      'SetFuseWalletCredentials : fuseWalletCredentials: $fuseWalletCredentials';
 }
 
 class SetVerificationId {
@@ -417,6 +442,29 @@ ThunkAction<AppState> fetchDeviceType() {
         e,
         stackTrace: s,
         hint: 'ERROR - fetchDeviceType e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> checkIfSmartWalletIsBackedUpToVegi(
+  {required void Function(String, VegiBackendResponseErrCode) errorHandler,}
+) {
+  return (Store<AppState> store) async {
+    try {
+      final isBackedUp = await peeplEatsService.isUserSKBackedUp(
+          smartWalletAddress: store.state.userState.walletAddress);
+      store.dispatch(StoreBackupStatus(isSmartWalletBackedUp: isBackedUp));
+    } catch (e, s) {
+      log.error('ERROR - checkIfSmartWalletIsBackedUpToVegi $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - checkIfSmartWalletIsBackedUpToVegi $e',
+      );
+      errorHandler(
+        'ERROR - checkIfSmartWalletIsBackedUpToVegi $e',
+        VegiBackendResponseErrCode.connectionIssue,
       );
     }
   };
@@ -710,15 +758,14 @@ ThunkAction<AppState> verifyHandler(
       await onBoardStrategy.verify(
         store,
         verificationCode,
-        (String jwtToken) {
+        () {
           Analytics.track(
             eventName: AnalyticsEvents.verify,
             properties: {
               AnalyticsProps.status: AnalyticsProps.success,
             },
           );
-          store.dispatch(LoginVerifySuccess(jwtToken));
-          chargeApi.setJwtToken(jwtToken);
+
           onSuccess();
           rootRouter.push(UserNameScreen());
         },
@@ -742,7 +789,8 @@ ThunkAction<AppState> verifyHandler(
 }
 
 ThunkAction<AppState> restoreWalletCall(
-  List<String> mnemonic,
+  // only allow to call this from a custom route link that allows myself and verity to add our mnemonics to createa our smart wallets and remove all other recoveries locations
+  List<String> mnemonicWords,
   VoidCallback successCallback,
   VoidCallback failureCallback,
 ) {
@@ -751,26 +799,25 @@ ThunkAction<AppState> restoreWalletCall(
       await Analytics.track(
         eventName: AnalyticsEvents.restoreWallet,
       );
+      final mnemonic = mnemonicWords.join(' ');
       log
         ..info('restore wallet')
-        ..info('mnemonic: $mnemonic')
         ..info('compute pk');
-      final String privateKey = await compute(
-        Web3.privateKeyFromMnemonic,
-        mnemonic.join(' '),
-      );
-      final Credentials credentials = EthPrivateKey.fromHex(privateKey);
-      final EthereumAddress accountAddress = await credentials.extractAddress();
-      log
-        ..info('privateKey: $privateKey')
-        ..info('accountAddress: ${accountAddress.toString()}');
-      store.dispatch(
-        CreateLocalAccountSuccess(
-          mnemonic,
-          privateKey,
-          accountAddress.toString(),
-        ),
-      );
+      final String privateKey = Mnemonic.privateKeyFromMnemonic(mnemonic);
+      await peeplEatsService.backupUserSK(privateKey);
+      final EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
+      final EthereumAddress accountAddress = credentials.address;
+      log.info('accountAddress: $accountAddress');
+      store
+        ..dispatch(
+          CreateLocalAccountSuccess(
+            mnemonicWords,
+            privateKey,
+            credentials,
+            accountAddress.toString(),
+          ),
+        )
+        ..dispatch(authenticateFuseWalletSDK());
       successCallback();
     } catch (e, s) {
       log.error(
@@ -797,29 +844,25 @@ ThunkAction<AppState> setDeviceId(String phoneNumber) {
   };
 }
 
+/// Function to create the single External Owner Account that can have at most
+/// ONE smart wallet linked with it.
 ThunkAction<AppState> createLocalAccountCall(
   VoidCallback successCallback,
 ) {
   return (Store<AppState> store) async {
     try {
-      log.info('create wallet');
-      final String mnemonic = Web3.generateMnemonic();
-      log
-        ..info('mnemonic: $mnemonic')
-        ..info('compute pk');
-      final String privateKey = await compute(
-        Web3.privateKeyFromMnemonic,
-        mnemonic,
-      );
-      final Credentials credentials = EthPrivateKey.fromHex(privateKey);
-      final EthereumAddress accountAddress = await credentials.extractAddress();
-      log
-        ..info('privateKey: $privateKey')
-        ..info('accountAddress: ${accountAddress.toString()}');
+      // Generate a random Ethereum private key
+      final String mnemonic = Mnemonic.generate();
+      final String privateKey = Mnemonic.privateKeyFromMnemonic(mnemonic);
+      await peeplEatsService.backupUserSK(privateKey);
+      final EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
+      final EthereumAddress accountAddress = credentials.address;
+      log.info('accountAddress: $accountAddress');
       store.dispatch(
         CreateLocalAccountSuccess(
           mnemonic.split(' '),
           privateKey,
+          credentials,
           accountAddress.toString(),
         ),
       );
@@ -842,11 +885,153 @@ ThunkAction<AppState> createLocalAccountCall(
   };
 }
 
-ThunkAction<AppState> reLoginCall() {
+ThunkAction<AppState> authenticateFuseWalletSDK() {
+  return (Store<AppState> store) async {
+    try {
+      if (store.state.userState.privateKey.isEmpty) {
+        throw Exception(
+            'User details missing from reauthentication in authenticateFuseWalletSDK');
+      }
+      final EthPrivateKey credentials =
+          EthPrivateKey.fromHex(store.state.userState.privateKey);
+      final DC<Exception, String> authRes = await fuseWalletSDK.authenticate(
+        credentials,
+      );
+      if (authRes.hasError) {
+        print('Error occurred in authenticate');
+        print(authRes.error);
+      } else if (authRes.hasData) {
+        final jwt = authRes.data!;
+        store.dispatch(LoginVerifySuccess(jwt));
+        // * Use the JWT token to make authenticated API requests
+      } else {
+        throw Exception(
+            'Bad AuthRes from Fuse Authentication did not contain either data or an error: $authRes');
+      }
+    } catch (e, s) {
+      log.error(
+        'ERROR - authenticateFuseWalletSDK',
+        error: e,
+        stackTrace: s,
+      );
+      await Sentry.captureException(
+        Exception('Error in authenticateFuseWalletSDK: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR - authenticateFuseWalletSDK',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchFuseSmartWallet({
+  required void Function() onSuccess,
+  required void Function() onFailure,
+  required void Function(Exception error) onError,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      // Try to fetch a wallet for the EOA, if it doesn't exist create one
+      final walletData = await fuseWalletSDK.fetchWallet();
+
+      walletData.pick(
+        onData: (SmartWallet smartWallet) async {
+          log.info(
+              'Successfully refetched smart wallet address ${smartWallet.smartWalletAddress}');
+          onSuccess();
+        },
+        onError: (Exception exception) async {
+          log.info('Failed to fetch wallet.');
+          log.info('Trying to create...');
+          final exceptionOrStream = await fuseWalletSDK.createWallet();
+          if (exceptionOrStream.hasError) {
+            log.error(exceptionOrStream.error.toString());
+          } else if (exceptionOrStream.hasData) {
+            exceptionOrStream.data!.listen(
+              (SmartWalletEvent event) {
+                if (event.name == 'smartWalletCreationStarted') {
+                  log.info('smartWalletCreationStarted ${event.data}');
+                } else if (event.name == 'transactionHash') {
+                  log.info('transactionHash ${event.data}');
+                } else if (event.name == 'smartWalletCreationSucceeded') {
+                  log.info('smartWalletCreationSucceeded ${event.data}');
+                  onSuccess();
+                } else if (event.name == 'smartWalletCreationFailed') {
+                  log.error('smartWalletCreationFailed ${event.data}');
+                  onFailure();
+                } else {
+                  log.info(
+                      'No event handler for fuseWalletSDK.fetchWallet event: '
+                      '"${event.name}"');
+                }
+              },
+              cancelOnError: true,
+              onError: (error) {
+                log.error('Error occurred: $error');
+                onError(error as Exception);
+              },
+            );
+          }
+        },
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - fetchFuseSmartWallet',
+        error: e,
+        stackTrace: s,
+      );
+      onFailure();
+      await Sentry.captureException(
+        Exception('Error in setup wallet call: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR - fetchFuseSmartWallet',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> saveSmartWallet({
+  required SmartWallet smartWallet,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(
+        GetWalletDataSuccess(
+          walletAddress: smartWallet.smartWalletAddress,
+          networks: smartWallet.networks,
+          walletModules: smartWallet.walletModules,
+        ),
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - setupWalletCall',
+        error: e,
+        stackTrace: s,
+      );
+      await Sentry.captureException(
+        Exception('Error in setup wallet call: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR - setupWalletCall',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> reLoginCall({
+  required void Function() onSuccess,
+  required void Function() onFailure,
+  required void Function(Exception error) onError,
+}) {
   return (Store<AppState> store) async {
     store
       ..dispatch(ReLogin())
-      ..dispatch(getWalletAddressesCall());
+      ..dispatch(authenticateFuseWalletSDK())
+      ..dispatch(
+        fetchFuseSmartWallet(
+          onSuccess: onSuccess,
+          onFailure: onFailure,
+          onError: onError,
+        ),
+      );
   };
 }
 
@@ -879,152 +1064,35 @@ ThunkAction<AppState> identifyCall({String? wallet}) {
   };
 }
 
-ThunkAction<AppState> saveUserProfile(String walletAddress) {
-  return (Store<AppState> store) async {
-    final String displayName = store.state.userState.displayName;
-    store.dispatch(storeUserContext());
-    try {
-      final Map<String, dynamic> userProfile =
-          await chargeApi.getUserProfile(walletAddress);
-      if (userProfile.isNotEmpty) {
-        if (userProfile.containsKey('avatarHash')) {
-          store.dispatch(SetUserAvatar(userProfile['imageUri'] as String));
-        }
-      }
-    } catch (e) {
-      final Map<String, dynamic> user = {
-        'accountAddress': walletAddress,
-        'email': 'wallet-user@fuse.io',
-        'provider': 'HDWallet',
-        'subscribe': false,
-        'source': 'wallet-v2',
-        'displayName': displayName
-      };
-      await chargeApi.saveUserProfile(user);
-    }
-  };
-}
-
-ThunkAction<AppState> storeUserContext() {
-  return (Store<AppState> store) async {
-    try {
-      await chargeApi.addUserContext({
-        'os': Platform.isAndroid
-            ? 'android'
-            : Platform.isIOS
-                ? 'ios'
-                : 'other',
-      });
-    } catch (e, s) {
-      log.error(
-        'Error in api.addUserContext',
-        error: e,
-        stackTrace: s,
-      );
-    }
-  };
-}
-
-ThunkAction<AppState> web3Init({
-  WalletModules? modules,
-}) {
-  return (Store<AppState> store) async {
-    try {
-      final UserState userState = store.state.userState;
-      final String privateKey = userState.privateKey;
-      final WalletModules? walletModules = modules ?? userState.walletModules;
-      if (walletModules != null) {
-        if (getIt.isRegistered<Web3>()) {
-          await getIt.unregister(instance: getIt<Web3>());
-        }
-        getIt.registerSingleton<Web3>(Web3());
-        await getIt<Web3>().setCredentials(privateKey);
-        getIt<Web3>().setModules(walletModules);
-      }
-    } catch (e, s) {
-      log.error(
-        'ERROR - web3Init',
-        error: e,
-        stackTrace: s,
-      );
-      await Sentry.captureException(
-        Exception('Error in initiate Web3: ${e.toString()}'),
-        stackTrace: s,
-        hint: 'ERROR - web3Init',
-      );
-    }
-  };
-}
-
-ThunkAction<AppState> setupWalletCall(Map<String, dynamic> walletData) {
-  return (Store<AppState> store) async {
-    try {
-      final List<String> networks =
-          List<String>.from(walletData['networks'] as Iterable);
-      final String? contractVersion = walletData['version'] as String?;
-      final String walletAddress = walletData['walletAddress'] as String;
-      final bool backup = walletData['backup'] as bool? ?? false;
-      final WalletModules walletModules = WalletModules.fromJson(
-        walletData['walletModules'] as Map<String, dynamic>,
-      );
-      store
-        ..dispatch(
-          GetWalletDataSuccess(
-            backup: backup,
-            walletAddress: walletAddress,
-            networks: networks,
-            contractVersion: contractVersion,
-            walletModules: walletModules,
-          ),
-        )
-        ..dispatch(web3Init(modules: walletModules));
-    } catch (e, s) {
-      log.error(
-        'ERROR - setupWalletCall',
-        error: e,
-        stackTrace: s,
-      );
-      await Sentry.captureException(
-        Exception('Error in setup wallet call: ${e.toString()}'),
-        stackTrace: s,
-        hint: 'ERROR - setupWalletCall',
-      );
-    }
-  };
-}
-
-ThunkAction<AppState> getWalletAddressesCall() {
-  return (Store<AppState> store) async {
-    try {
-      final Map<String, dynamic> walletData =
-          await chargeApi.getWallet() as Map<String, dynamic>;
-      final Map<String, dynamic> data = Map<String, dynamic>.from({
-        ...walletData,
-      });
-      store.dispatch(setupWalletCall(data));
-    } catch (e, s) {
-      log.error(
-        'ERROR - getWalletAddressCall',
-        error: e,
-        stackTrace: s,
-      );
-      await Sentry.captureException(
-        Exception('Error in get wallet info: ${e.toString()}'),
-        stackTrace: s,
-        hint: 'ERROR - getWalletAddressCall',
-      );
-    }
-  };
+void updateFirebaseCurrentUser(
+  void Function({
+    required User firebaseUser,
+  })
+      userUpdateCallback,
+) async {
+  if (FirebaseAuth.instance.currentUser != null) {
+    userUpdateCallback(
+      firebaseUser: FirebaseAuth.instance.currentUser!,
+    );
+  } else {
+    log.warn(
+      'WARNING - updateFirebaseCurrentUser called when no user signed in...',
+      stackTrace: StackTrace.current,
+    );
+    await Sentry.captureMessage(
+      'WARNING - updateFirebaseCurrentUser called when no user signed in...'
+      'with stackTrace: ${StackTrace.current}',
+    );
+  }
 }
 
 ThunkAction<AppState> updateDisplayNameCall(String displayName) {
   return (Store<AppState> store) async {
     try {
-      final String walletAddress = store.state.userState.walletAddress;
-      if (walletAddress.isNotEmpty) {
-        await chargeApi.updateDisplayName(walletAddress, displayName);
+      updateFirebaseCurrentUser(({required User firebaseUser}) async {
+        await firebaseUser.updateDisplayName(displayName);
         store.dispatch(SetDisplayName(displayName));
-      }
+      });
     } catch (e, s) {
       log.error(
         'ERROR - updateDisplayNameCall',
@@ -1040,21 +1108,37 @@ ThunkAction<AppState> updateDisplayNameCall(String displayName) {
   };
 }
 
-ThunkAction<AppState> updateUserAvatarCall(ImageSource source) {
+ThunkAction<AppState> updateUserAvatarCall(
+  ImageSource source, {
+  required ProgressCallback progressCallback,
+  required void Function() onSuccess,
+}) {
   return (Store<AppState> store) async {
     final file = await ImagePicker().pickImage(source: source);
     if (file != null) {
       try {
-        final Map<String, dynamic> uploadResponse = await chargeApi
-            .uploadImage(File(file.path)) as Map<String, dynamic>;
-        final String walletAddress = store.state.userState.walletAddress;
-        if (walletAddress.isNotEmpty) {
-          await chargeApi.updateAvatar(
-            walletAddress,
-            uploadResponse['hash'] as String,
+        updateFirebaseCurrentUser(({required User firebaseUser}) async {
+          await peeplEatsService.uploadImageForUserAvatar(
+            image: File(file.path),
+            onSuccess: (PostVegiResponse response) async {
+              await firebaseUser.updatePhotoURL(response.url);
+              store.dispatch(SetUserAvatar(response.url));
+              onSuccess();
+            },
+            onError: (error, errCode) async {
+              log.error(
+                'ERROR - peeplEatsService.uploadImageForUserAvatar',
+                error: error,
+                stackTrace: StackTrace.current,
+              );
+              await Sentry.captureException(
+                Exception('ERROR - peeplEatsService.uploadImageForUserAvatar'),
+                stackTrace: StackTrace.current,
+              );
+            },
+            onReceiveProgress: progressCallback,
           );
-          store.dispatch(SetUserAvatar(uploadResponse['uri'] as String));
-        }
+        });
       } catch (e, s) {
         log.error(
           'ERROR - updateUserAvatarCall',
@@ -1068,168 +1152,6 @@ ThunkAction<AppState> updateUserAvatarCall(ImageSource source) {
         );
       }
     }
-  };
-}
-
-ThunkAction<AppState> checkWalletUpgrades() {
-  return (Store<AppState> store) async {
-    try {
-      final String walletAddress = store.state.userState.walletAddress;
-      if (walletAddress.isNotEmpty) {
-        final List<dynamic> response = await chargeApi.getAvailableUpgrades(
-          walletAddress,
-        );
-        final List<WalletUpgrade> walletUpgrades =
-            WalletUpgrade.walletUpgradesFromJson(
-          response,
-        );
-        if (walletUpgrades.isNotEmpty) {
-          store.dispatch(ToggleUpgrade(value: true));
-        }
-      }
-    } catch (e, s) {
-      log.error(
-        'ERROR - checkWalletUpgrades',
-        error: e,
-        stackTrace: s,
-      );
-      await Sentry.captureException(
-        Exception('Error in check for new wallet upgrades: ${e.toString()}'),
-        stackTrace: s,
-        hint: 'Error in check for new wallet upgrades',
-      );
-    }
-  };
-}
-
-ThunkAction<AppState> installWalletUpgrades(
-  VoidCallback onSuccess,
-  VoidCallback onError,
-) {
-  return (Store<AppState> store) async {
-    try {
-      final String walletAddress = store.state.userState.walletAddress;
-      final List<WalletUpgrade> walletUpgrades =
-          await chargeApi.getAvailableUpgrades(walletAddress);
-
-      if (walletUpgrades.isNotEmpty) {
-        final WalletUpgrade walletUpgrade = walletUpgrades.first;
-        if (store.state.userState.walletModules != null) {
-          final Map<String, dynamic> installUpgradeJob =
-              await chargeApi.installUpgrades(
-            getIt<Web3>(),
-            walletAddress,
-            store.state.userState.walletModules!.transferManager,
-            walletUpgrade.contractAddress,
-            walletUpgrade.id,
-          ) as Map<String, dynamic>;
-          store.dispatch(
-            fetchJobCall(
-              installUpgradeJob['_id'] as String,
-              (Map<String, dynamic> jobData) {
-                log.info('txHash ${jobData['data']['txHash']}');
-                store.dispatch(getWalletAddressesCall());
-                onSuccess();
-                store
-                  ..dispatch(ToggleUpgrade(value: false))
-                  ..dispatch(checkWalletUpgrades());
-              },
-              (dynamic error) {
-                store.dispatch(ToggleUpgrade(value: false));
-                onError();
-              },
-            ),
-          );
-        }
-      }
-    } catch (e, s) {
-      store.dispatch(ToggleUpgrade(value: false));
-      onError();
-      log.error(
-        'ERROR - installWalletUpgrades',
-        error: e,
-        stackTrace: s,
-      );
-      await Sentry.captureException(
-        Exception('Error in install wallet upgrades: ${e.toString()}'),
-        stackTrace: s,
-        hint: 'Error in install wallet upgrades',
-      );
-    }
-  };
-}
-
-ThunkAction<AppState> fetchJobCall(
-  String jobId,
-  void Function(Map<String, dynamic> jobData) successCallback,
-  void Function(dynamic jobData) failureCallback, {
-  bool untilDone = true,
-  int seconds = 5,
-  void Function(String txHash)? onTxCallback,
-}) {
-  //TODO: clean this shit up idk wtf is this
-  return (Store<AppState> store) {
-    Timer.periodic(Duration(seconds: seconds), (Timer timer) async {
-      try {
-        log.info('jobId $jobId');
-        final Map<String, dynamic> response =
-            await chargeApi.getJob(jobId) as Map<String, dynamic>;
-        if (untilDone) {
-          if (isJsonValEmpty(response, 'lastFinishedAt')) {
-            log.info('job not done');
-            return;
-          }
-        }
-        final Map<String, dynamic> jobData =
-            response['data'] as Map<String, dynamic>;
-        if (jobData.containsKey('transactionBody')) {
-          if ((jobData['transactionBody']['status'] != null &&
-                  jobData['transactionBody']['status'] == 'failed') ||
-              response['failReason'] != null) {
-            final String failReason = response['failReason'] as String? ??
-                jobData['transactionBody']['status'] as String;
-
-            log.info('JobId  $jobId failed, failReason: $failReason');
-            if (jobData['txHash'] == null) {
-              log.info('fetched job with txHash null');
-              return;
-            } else {
-              if (onTxCallback != null) {
-                onTxCallback(jobData['txHash'] as String);
-              }
-            }
-            failureCallback(failReason);
-            timer.cancel();
-          } else {
-            if (jobData['txHash'] == null) {
-              log.info('fetched job with txHash null');
-              return;
-            } else {
-              if (onTxCallback != null) {
-                onTxCallback(jobData['txHash'] as String);
-              }
-            }
-            successCallback(response);
-            timer.cancel();
-          }
-        } else {
-          if (jobData['txHash'] == null) {
-            log.info('fetched job with txHash null');
-            return;
-          } else {
-            if (onTxCallback != null) {
-              onTxCallback(jobData['txHash'] as String);
-            }
-          }
-          successCallback(response);
-          timer.cancel();
-        }
-      } catch (e) {
-        log.error('ERROR - fetchJobCall $e');
-        failureCallback(e.toString());
-        timer.cancel();
-      }
-    });
   };
 }
 

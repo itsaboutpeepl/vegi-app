@@ -22,12 +22,10 @@ UserState _$UserStateFromJson(Map<String, dynamic> json) {
 mixin _$UserState {
   @JsonKey(ignore: true)
   String? get wcURI => throw _privateConstructorUsedError;
-  String? get contractVersion => throw _privateConstructorUsedError;
   WalletModules? get walletModules => throw _privateConstructorUsedError;
   DateTime? get installedAt => throw _privateConstructorUsedError;
   bool? get isContactsSynced => throw _privateConstructorUsedError;
   bool get isLoggedOut => throw _privateConstructorUsedError;
-  bool get backup => throw _privateConstructorUsedError;
   bool get scrollToTop => throw _privateConstructorUsedError;
 
   /// * The wallet address is a smart contract wallet which actually conducts payments, holds balances, etc.
@@ -47,6 +45,10 @@ mixin _$UserState {
   /// The account address is a 'real' wallet generated on the device which is only stored on the device.
   String get accountAddress => throw _privateConstructorUsedError;
   String get privateKey => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+  EthPrivateKey? get fuseWalletCredentials =>
+      throw _privateConstructorUsedError;
+  bool get backup => throw _privateConstructorUsedError;
   List<String> get networks => throw _privateConstructorUsedError;
   List<String> get mnemonic => throw _privateConstructorUsedError;
   String get pincode => throw _privateConstructorUsedError;
@@ -69,7 +71,8 @@ mixin _$UserState {
   @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
   Locale? get locale => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  PhoneAuthCredential? get credentials => throw _privateConstructorUsedError;
+  PhoneAuthCredential? get firebaseCredentials =>
+      throw _privateConstructorUsedError;
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
       throw _privateConstructorUsedError;
   bool get hasSavedSeedPhrase => throw _privateConstructorUsedError;
@@ -102,17 +105,19 @@ abstract class $UserStateCopyWith<$Res> {
       _$UserStateCopyWithImpl<$Res, UserState>;
   @useResult
   $Res call(
-      {@JsonKey(ignore: true) String? wcURI,
-      String? contractVersion,
+      {@JsonKey(ignore: true)
+          String? wcURI,
       WalletModules? walletModules,
       DateTime? installedAt,
       bool? isContactsSynced,
       bool isLoggedOut,
-      bool backup,
       bool scrollToTop,
       String walletAddress,
       String accountAddress,
       String privateKey,
+      @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+          EthPrivateKey? fuseWalletCredentials,
+      bool backup,
       List<String> networks,
       List<String> mnemonic,
       String pincode,
@@ -129,20 +134,28 @@ abstract class $UserStateCopyWith<$Res> {
       List<String> syncedContacts,
       Map<String, String> reverseContacts,
       String currency,
-      @JsonKey(ignore: true) bool hasUpgrade,
+      @JsonKey(ignore: true)
+          bool hasUpgrade,
       BiometricAuth authType,
-      @JsonKey(fromJson: localeFromJson, toJson: localeToJson) Locale? locale,
-      @JsonKey(ignore: true) PhoneAuthCredential? credentials,
+      @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
+          Locale? locale,
+      @JsonKey(ignore: true)
+          PhoneAuthCredential? firebaseCredentials,
       List<DeliveryAddresses> listOfDeliveryAddresses,
       bool hasSavedSeedPhrase,
       bool useLiveLocation,
-      @JsonKey(ignore: true) bool userIsVerified,
-      @JsonKey(ignore: true) Position? userLocation,
-      @JsonKey(ignore: true) bool isUsingSimulator,
-      @JsonKey(ignore: true) bool isUsingIosSimulator,
+      @JsonKey(ignore: true)
+          bool userIsVerified,
+      @JsonKey(ignore: true)
+          Position? userLocation,
+      @JsonKey(ignore: true)
+          bool isUsingSimulator,
+      @JsonKey(ignore: true)
+          bool isUsingIosSimulator,
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
-      @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
+      @JsonKey(ignore: true)
+          List<SurveyQuestion> surveyQuestions,
       bool surveyCompleted,
       bool isVendor});
 
@@ -163,16 +176,16 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
   @override
   $Res call({
     Object? wcURI = freezed,
-    Object? contractVersion = freezed,
     Object? walletModules = freezed,
     Object? installedAt = freezed,
     Object? isContactsSynced = freezed,
     Object? isLoggedOut = null,
-    Object? backup = null,
     Object? scrollToTop = null,
     Object? walletAddress = null,
     Object? accountAddress = null,
     Object? privateKey = null,
+    Object? fuseWalletCredentials = freezed,
+    Object? backup = null,
     Object? networks = null,
     Object? mnemonic = null,
     Object? pincode = null,
@@ -192,7 +205,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? hasUpgrade = null,
     Object? authType = null,
     Object? locale = null,
-    Object? credentials = freezed,
+    Object? firebaseCredentials = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
     Object? useLiveLocation = null,
@@ -211,10 +224,6 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.wcURI
           : wcURI // ignore: cast_nullable_to_non_nullable
               as String?,
-      contractVersion: freezed == contractVersion
-          ? _value.contractVersion
-          : contractVersion // ignore: cast_nullable_to_non_nullable
-              as String?,
       walletModules: freezed == walletModules
           ? _value.walletModules
           : walletModules // ignore: cast_nullable_to_non_nullable
@@ -230,10 +239,6 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
       isLoggedOut: null == isLoggedOut
           ? _value.isLoggedOut
           : isLoggedOut // ignore: cast_nullable_to_non_nullable
-              as bool,
-      backup: null == backup
-          ? _value.backup
-          : backup // ignore: cast_nullable_to_non_nullable
               as bool,
       scrollToTop: null == scrollToTop
           ? _value.scrollToTop
@@ -251,6 +256,14 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.privateKey
           : privateKey // ignore: cast_nullable_to_non_nullable
               as String,
+      fuseWalletCredentials: freezed == fuseWalletCredentials
+          ? _value.fuseWalletCredentials
+          : fuseWalletCredentials // ignore: cast_nullable_to_non_nullable
+              as EthPrivateKey?,
+      backup: null == backup
+          ? _value.backup
+          : backup // ignore: cast_nullable_to_non_nullable
+              as bool,
       networks: null == networks
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
@@ -327,9 +340,9 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
-      credentials: freezed == credentials
-          ? _value.credentials
-          : credentials // ignore: cast_nullable_to_non_nullable
+      firebaseCredentials: freezed == firebaseCredentials
+          ? _value.firebaseCredentials
+          : firebaseCredentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
       listOfDeliveryAddresses: null == listOfDeliveryAddresses
           ? _value.listOfDeliveryAddresses
@@ -403,17 +416,19 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(ignore: true) String? wcURI,
-      String? contractVersion,
+      {@JsonKey(ignore: true)
+          String? wcURI,
       WalletModules? walletModules,
       DateTime? installedAt,
       bool? isContactsSynced,
       bool isLoggedOut,
-      bool backup,
       bool scrollToTop,
       String walletAddress,
       String accountAddress,
       String privateKey,
+      @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+          EthPrivateKey? fuseWalletCredentials,
+      bool backup,
       List<String> networks,
       List<String> mnemonic,
       String pincode,
@@ -430,20 +445,28 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       List<String> syncedContacts,
       Map<String, String> reverseContacts,
       String currency,
-      @JsonKey(ignore: true) bool hasUpgrade,
+      @JsonKey(ignore: true)
+          bool hasUpgrade,
       BiometricAuth authType,
-      @JsonKey(fromJson: localeFromJson, toJson: localeToJson) Locale? locale,
-      @JsonKey(ignore: true) PhoneAuthCredential? credentials,
+      @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
+          Locale? locale,
+      @JsonKey(ignore: true)
+          PhoneAuthCredential? firebaseCredentials,
       List<DeliveryAddresses> listOfDeliveryAddresses,
       bool hasSavedSeedPhrase,
       bool useLiveLocation,
-      @JsonKey(ignore: true) bool userIsVerified,
-      @JsonKey(ignore: true) Position? userLocation,
-      @JsonKey(ignore: true) bool isUsingSimulator,
-      @JsonKey(ignore: true) bool isUsingIosSimulator,
+      @JsonKey(ignore: true)
+          bool userIsVerified,
+      @JsonKey(ignore: true)
+          Position? userLocation,
+      @JsonKey(ignore: true)
+          bool isUsingSimulator,
+      @JsonKey(ignore: true)
+          bool isUsingIosSimulator,
       String initialLoginDateTime,
       bool showSeedPhraseBanner,
-      @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
+      @JsonKey(ignore: true)
+          List<SurveyQuestion> surveyQuestions,
       bool surveyCompleted,
       bool isVendor});
 
@@ -463,16 +486,16 @@ class __$$_UserStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? wcURI = freezed,
-    Object? contractVersion = freezed,
     Object? walletModules = freezed,
     Object? installedAt = freezed,
     Object? isContactsSynced = freezed,
     Object? isLoggedOut = null,
-    Object? backup = null,
     Object? scrollToTop = null,
     Object? walletAddress = null,
     Object? accountAddress = null,
     Object? privateKey = null,
+    Object? fuseWalletCredentials = freezed,
+    Object? backup = null,
     Object? networks = null,
     Object? mnemonic = null,
     Object? pincode = null,
@@ -492,7 +515,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? hasUpgrade = null,
     Object? authType = null,
     Object? locale = null,
-    Object? credentials = freezed,
+    Object? firebaseCredentials = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
     Object? useLiveLocation = null,
@@ -511,10 +534,6 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.wcURI
           : wcURI // ignore: cast_nullable_to_non_nullable
               as String?,
-      contractVersion: freezed == contractVersion
-          ? _value.contractVersion
-          : contractVersion // ignore: cast_nullable_to_non_nullable
-              as String?,
       walletModules: freezed == walletModules
           ? _value.walletModules
           : walletModules // ignore: cast_nullable_to_non_nullable
@@ -530,10 +549,6 @@ class __$$_UserStateCopyWithImpl<$Res>
       isLoggedOut: null == isLoggedOut
           ? _value.isLoggedOut
           : isLoggedOut // ignore: cast_nullable_to_non_nullable
-              as bool,
-      backup: null == backup
-          ? _value.backup
-          : backup // ignore: cast_nullable_to_non_nullable
               as bool,
       scrollToTop: null == scrollToTop
           ? _value.scrollToTop
@@ -551,6 +566,14 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.privateKey
           : privateKey // ignore: cast_nullable_to_non_nullable
               as String,
+      fuseWalletCredentials: freezed == fuseWalletCredentials
+          ? _value.fuseWalletCredentials
+          : fuseWalletCredentials // ignore: cast_nullable_to_non_nullable
+              as EthPrivateKey?,
+      backup: null == backup
+          ? _value.backup
+          : backup // ignore: cast_nullable_to_non_nullable
+              as bool,
       networks: null == networks
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
@@ -627,9 +650,9 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as Locale?,
-      credentials: freezed == credentials
-          ? _value.credentials
-          : credentials // ignore: cast_nullable_to_non_nullable
+      firebaseCredentials: freezed == firebaseCredentials
+          ? _value.firebaseCredentials
+          : firebaseCredentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
       listOfDeliveryAddresses: null == listOfDeliveryAddresses
           ? _value.listOfDeliveryAddresses
@@ -688,17 +711,19 @@ class __$$_UserStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   _$_UserState(
-      {@JsonKey(ignore: true) this.wcURI,
-      this.contractVersion,
+      {@JsonKey(ignore: true)
+          this.wcURI,
       this.walletModules,
       this.installedAt,
       this.isContactsSynced,
       this.isLoggedOut = true,
-      this.backup = false,
       this.scrollToTop = false,
       this.walletAddress = '',
       this.accountAddress = '',
       this.privateKey = '',
+      @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+          this.fuseWalletCredentials = null,
+      this.backup = false,
       this.networks = const [],
       this.mnemonic = const [],
       this.pincode = '',
@@ -715,20 +740,28 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.syncedContacts = const [],
       this.reverseContacts = const {},
       this.currency = 'usd',
-      @JsonKey(ignore: true) this.hasUpgrade = false,
+      @JsonKey(ignore: true)
+          this.hasUpgrade = false,
       this.authType = BiometricAuth.none,
-      @JsonKey(fromJson: localeFromJson, toJson: localeToJson) this.locale,
-      @JsonKey(ignore: true) this.credentials,
+      @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
+          this.locale,
+      @JsonKey(ignore: true)
+          this.firebaseCredentials,
       this.listOfDeliveryAddresses = const [],
       this.hasSavedSeedPhrase = false,
       this.useLiveLocation = false,
-      @JsonKey(ignore: true) this.userIsVerified = false,
-      @JsonKey(ignore: true) this.userLocation = null,
-      @JsonKey(ignore: true) this.isUsingSimulator = false,
-      @JsonKey(ignore: true) this.isUsingIosSimulator = false,
+      @JsonKey(ignore: true)
+          this.userIsVerified = false,
+      @JsonKey(ignore: true)
+          this.userLocation = null,
+      @JsonKey(ignore: true)
+          this.isUsingSimulator = false,
+      @JsonKey(ignore: true)
+          this.isUsingIosSimulator = false,
       this.initialLoginDateTime = '',
       this.showSeedPhraseBanner = false,
-      @JsonKey(ignore: true) this.surveyQuestions = const [],
+      @JsonKey(ignore: true)
+          this.surveyQuestions = const [],
       this.surveyCompleted = false,
       this.isVendor = false})
       : super._();
@@ -740,8 +773,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   final String? wcURI;
   @override
-  final String? contractVersion;
-  @override
   final WalletModules? walletModules;
   @override
   final DateTime? installedAt;
@@ -750,9 +781,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final bool isLoggedOut;
-  @override
-  @JsonKey()
-  final bool backup;
   @override
   @JsonKey()
   final bool scrollToTop;
@@ -780,6 +808,12 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final String privateKey;
+  @override
+  @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+  final EthPrivateKey? fuseWalletCredentials;
+  @override
+  @JsonKey()
+  final bool backup;
   @override
   @JsonKey()
   final List<String> networks;
@@ -838,7 +872,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final Locale? locale;
   @override
   @JsonKey(ignore: true)
-  final PhoneAuthCredential? credentials;
+  final PhoneAuthCredential? firebaseCredentials;
   @override
   @JsonKey()
   final List<DeliveryAddresses> listOfDeliveryAddresses;
@@ -878,7 +912,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, contractVersion: $contractVersion, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, backup: $backup, scrollToTop: $scrollToTop, walletAddress: $walletAddress, accountAddress: $accountAddress, privateKey: $privateKey, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, credentials: $credentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, isVendor: $isVendor)';
+    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, accountAddress: $accountAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, firebaseCredentials: $firebaseCredentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, isVendor: $isVendor)';
   }
 
   @override
@@ -887,16 +921,16 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'UserState'))
       ..add(DiagnosticsProperty('wcURI', wcURI))
-      ..add(DiagnosticsProperty('contractVersion', contractVersion))
       ..add(DiagnosticsProperty('walletModules', walletModules))
       ..add(DiagnosticsProperty('installedAt', installedAt))
       ..add(DiagnosticsProperty('isContactsSynced', isContactsSynced))
       ..add(DiagnosticsProperty('isLoggedOut', isLoggedOut))
-      ..add(DiagnosticsProperty('backup', backup))
       ..add(DiagnosticsProperty('scrollToTop', scrollToTop))
       ..add(DiagnosticsProperty('walletAddress', walletAddress))
       ..add(DiagnosticsProperty('accountAddress', accountAddress))
       ..add(DiagnosticsProperty('privateKey', privateKey))
+      ..add(DiagnosticsProperty('fuseWalletCredentials', fuseWalletCredentials))
+      ..add(DiagnosticsProperty('backup', backup))
       ..add(DiagnosticsProperty('networks', networks))
       ..add(DiagnosticsProperty('mnemonic', mnemonic))
       ..add(DiagnosticsProperty('pincode', pincode))
@@ -916,7 +950,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('hasUpgrade', hasUpgrade))
       ..add(DiagnosticsProperty('authType', authType))
       ..add(DiagnosticsProperty('locale', locale))
-      ..add(DiagnosticsProperty('credentials', credentials))
+      ..add(DiagnosticsProperty('firebaseCredentials', firebaseCredentials))
       ..add(DiagnosticsProperty(
           'listOfDeliveryAddresses', listOfDeliveryAddresses))
       ..add(DiagnosticsProperty('hasSavedSeedPhrase', hasSavedSeedPhrase))
@@ -938,8 +972,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         (other.runtimeType == runtimeType &&
             other is _$_UserState &&
             (identical(other.wcURI, wcURI) || other.wcURI == wcURI) &&
-            (identical(other.contractVersion, contractVersion) ||
-                other.contractVersion == contractVersion) &&
             (identical(other.walletModules, walletModules) ||
                 other.walletModules == walletModules) &&
             (identical(other.installedAt, installedAt) ||
@@ -948,7 +980,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.isContactsSynced == isContactsSynced) &&
             (identical(other.isLoggedOut, isLoggedOut) ||
                 other.isLoggedOut == isLoggedOut) &&
-            (identical(other.backup, backup) || other.backup == backup) &&
             (identical(other.scrollToTop, scrollToTop) ||
                 other.scrollToTop == scrollToTop) &&
             (identical(other.walletAddress, walletAddress) ||
@@ -957,6 +988,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.accountAddress == accountAddress) &&
             (identical(other.privateKey, privateKey) ||
                 other.privateKey == privateKey) &&
+            (identical(other.fuseWalletCredentials, fuseWalletCredentials) ||
+                other.fuseWalletCredentials == fuseWalletCredentials) &&
+            (identical(other.backup, backup) || other.backup == backup) &&
             const DeepCollectionEquality().equals(other.networks, networks) &&
             const DeepCollectionEquality().equals(other.mnemonic, mnemonic) &&
             (identical(other.pincode, pincode) || other.pincode == pincode) &&
@@ -989,8 +1023,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             (identical(other.authType, authType) ||
                 other.authType == authType) &&
             const DeepCollectionEquality().equals(other.locale, locale) &&
-            (identical(other.credentials, credentials) ||
-                other.credentials == credentials) &&
+            (identical(other.firebaseCredentials, firebaseCredentials) ||
+                other.firebaseCredentials == firebaseCredentials) &&
             const DeepCollectionEquality().equals(
                 other.listOfDeliveryAddresses, listOfDeliveryAddresses) &&
             (identical(other.hasSavedSeedPhrase, hasSavedSeedPhrase) ||
@@ -1022,16 +1056,16 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   int get hashCode => Object.hashAll([
         runtimeType,
         wcURI,
-        contractVersion,
         walletModules,
         installedAt,
         isContactsSynced,
         isLoggedOut,
-        backup,
         scrollToTop,
         walletAddress,
         accountAddress,
         privateKey,
+        fuseWalletCredentials,
+        backup,
         const DeepCollectionEquality().hash(networks),
         const DeepCollectionEquality().hash(mnemonic),
         pincode,
@@ -1051,7 +1085,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         hasUpgrade,
         authType,
         const DeepCollectionEquality().hash(locale),
-        credentials,
+        firebaseCredentials,
         const DeepCollectionEquality().hash(listOfDeliveryAddresses),
         hasSavedSeedPhrase,
         useLiveLocation,
@@ -1084,16 +1118,17 @@ abstract class _UserState extends UserState {
   factory _UserState(
       {@JsonKey(ignore: true)
           final String? wcURI,
-      final String? contractVersion,
       final WalletModules? walletModules,
       final DateTime? installedAt,
       final bool? isContactsSynced,
       final bool isLoggedOut,
-      final bool backup,
       final bool scrollToTop,
       final String walletAddress,
       final String accountAddress,
       final String privateKey,
+      @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+          final EthPrivateKey? fuseWalletCredentials,
+      final bool backup,
       final List<String> networks,
       final List<String> mnemonic,
       final String pincode,
@@ -1116,7 +1151,7 @@ abstract class _UserState extends UserState {
       @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
           final Locale? locale,
       @JsonKey(ignore: true)
-          final PhoneAuthCredential? credentials,
+          final PhoneAuthCredential? firebaseCredentials,
       final List<DeliveryAddresses> listOfDeliveryAddresses,
       final bool hasSavedSeedPhrase,
       final bool useLiveLocation,
@@ -1143,8 +1178,6 @@ abstract class _UserState extends UserState {
   @JsonKey(ignore: true)
   String? get wcURI;
   @override
-  String? get contractVersion;
-  @override
   WalletModules? get walletModules;
   @override
   DateTime? get installedAt;
@@ -1152,8 +1185,6 @@ abstract class _UserState extends UserState {
   bool? get isContactsSynced;
   @override
   bool get isLoggedOut;
-  @override
-  bool get backup;
   @override
   bool get scrollToTop;
   @override
@@ -1177,6 +1208,11 @@ abstract class _UserState extends UserState {
   String get accountAddress;
   @override
   String get privateKey;
+  @override
+  @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+  EthPrivateKey? get fuseWalletCredentials;
+  @override
+  bool get backup;
   @override
   List<String> get networks;
   @override
@@ -1219,7 +1255,7 @@ abstract class _UserState extends UserState {
   Locale? get locale;
   @override
   @JsonKey(ignore: true)
-  PhoneAuthCredential? get credentials;
+  PhoneAuthCredential? get firebaseCredentials;
   @override
   List<DeliveryAddresses> get listOfDeliveryAddresses;
   @override

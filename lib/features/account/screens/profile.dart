@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String? displayName;
+  num? imageUploadPercent = 100;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       viewmodel.phone.isNotEmpty
                                   ? _showSourceImagePicker(
                                       context,
-                                      (source) => viewmodel.editAvatar(source),
+                                      (source) => viewmodel.editAvatar(
+                                        source,
+                                        progressCallback: (count, total) {
+                                          setState(() {
+                                            imageUploadPercent =
+                                                (count / total) * 100.0;
+                                          });
+                                        },
+                                        onSuccess: () {
+                                          setState(() {
+                                            imageUploadPercent = null;
+                                          });
+                                        },
+                                      ),
                                     )
                                   : null,
                               child: SizedBox(

@@ -10,6 +10,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/addre
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/bill_invoice_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/order_items_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/thanks_card.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutDialog.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/widgets/surveyCompletedCard.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
@@ -78,6 +79,36 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
                       Analytics.track(eventName: AnalyticsEvents.viewAccount);
                       final router = AutoRouter.of(context);
                       context.router.push(const ProfileScreen());
+                    },
+                  ),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      side: BorderSide(
+                        color: Colors.grey[100]!,
+                        width: 2,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      I10n.of(context).logout,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.grey[100],
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog<Widget>(
+                        context: context,
+                        builder: (context) => const LogoutDialog(),
+                      );
                     },
                   ),
                   if (kDebugMode)

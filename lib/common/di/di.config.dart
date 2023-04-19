@@ -9,12 +9,12 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:charge_wallet_sdk/charge_wallet_sdk.dart' as _i4;
-import 'package:dio/dio.dart' as _i5;
-import 'package:firebase_analytics/firebase_analytics.dart' as _i6;
-import 'package:firebase_auth/firebase_auth.dart' as _i8;
-import 'package:firebase_core/firebase_core.dart' as _i7;
-import 'package:firebase_messaging/firebase_messaging.dart' as _i9;
+import 'package:dio/dio.dart' as _i4;
+import 'package:firebase_analytics/firebase_analytics.dart' as _i5;
+import 'package:firebase_auth/firebase_auth.dart' as _i7;
+import 'package:firebase_core/firebase_core.dart' as _i6;
+import 'package:firebase_messaging/firebase_messaging.dart' as _i8;
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart' as _i9;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:internet_connection_checker/internet_connection_checker.dart'
@@ -52,35 +52,33 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    final servicesModule = _$ServicesModule();
     final dioDi = _$DioDi();
     final firebaseInjectableModule = _$FirebaseInjectableModule();
+    final servicesModule = _$ServicesModule();
     final onBoardStrategy = _$OnBoardStrategy();
     final networkInfoDi = _$NetworkInfoDi();
     final loggerDi = _$LoggerDi();
     final packageInfoDi = _$PackageInfoDi();
     final phone = _$Phone();
     gh.lazySingleton<_i3.BlueBeaconService>(() => _i3.BlueBeaconService());
-    gh.lazySingleton<_i4.ChargeApi>(() => servicesModule.chargeApi);
-    gh.factory<_i5.Dio>(() => dioDi.dio);
-    gh.lazySingleton<_i6.FirebaseAnalytics>(
+    gh.factory<_i4.Dio>(() => dioDi.dio);
+    gh.lazySingleton<_i5.FirebaseAnalytics>(
         () => firebaseInjectableModule.firebaseAnalytics);
-    await gh.factoryAsync<_i7.FirebaseApp>(
+    await gh.factoryAsync<_i6.FirebaseApp>(
       () => firebaseInjectableModule.firebaseApp,
       preResolve: true,
     );
-    gh.lazySingleton<_i8.FirebaseAuth>(
+    gh.lazySingleton<_i7.FirebaseAuth>(
         () => firebaseInjectableModule.firebaseAuth);
-    gh.lazySingleton<_i9.FirebaseMessaging>(
+    gh.lazySingleton<_i8.FirebaseMessaging>(
         () => firebaseInjectableModule.firebaseMessaging);
-    gh.lazySingleton<_i4.FuseExplorer>(() => servicesModule.fuseExplorerAPI);
-    gh.lazySingleton<_i4.Graph>(() => servicesModule.graph);
+    gh.lazySingleton<_i9.FuseWalletSDK>(() => servicesModule.fuseWalletSDK);
     gh.lazySingleton<_i10.IOnBoardStrategy>(
         () => onBoardStrategy.onBoardStrategy);
     gh.lazySingleton<_i11.InternetConnectionChecker>(
         () => networkInfoDi.dataConnectionChecker);
     gh.lazySingleton<_i12.LocationService>(
-        () => _i12.LocationService(gh<_i5.Dio>()));
+        () => _i12.LocationService(gh<_i4.Dio>()));
     gh.lazySingleton<_i13.Logger>(() => loggerDi.logger);
     gh.lazySingleton<_i14.NetworkInfo>(
         () => _i14.NetworkInfo(gh<_i11.InternetConnectionChecker>()));
@@ -89,13 +87,13 @@ extension GetItInjectableX on _i1.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i16.PeeplEatsService>(
-        () => _i16.PeeplEatsService(gh<_i5.Dio>()));
+        () => _i16.PeeplEatsService(gh<_i4.Dio>()));
     gh.lazySingleton<_i17.PeeplPayService>(
-        () => _i17.PeeplPayService(gh<_i5.Dio>()));
+        () => _i17.PeeplPayService(gh<_i4.Dio>()));
     gh.lazySingleton<_i18.PhoneNumberUtil>(() => phone.phoneNumberUtil);
     gh.lazySingleton<_i19.RootRouter>(() => servicesModule.rootRouter);
     gh.lazySingleton<_i20.StripePayService>(
-        () => _i20.StripePayService(gh<_i5.Dio>()));
+        () => _i20.StripePayService(gh<_i4.Dio>()));
     gh.lazySingleton<_i21.StripeService>(() => _i21.StripeService());
     gh.lazySingleton<_i22.LogIt>(() => _i22.LogIt(gh<_i13.Logger>()));
     return this;

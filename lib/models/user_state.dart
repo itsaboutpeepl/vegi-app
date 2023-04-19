@@ -1,13 +1,17 @@
-import 'package:charge_wallet_sdk/models/wallet_modules/wallet_modules.dart';
+import 'dart:ffi';
+
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 part 'user_state.freezed.dart';
 part 'user_state.g.dart';
@@ -25,17 +29,23 @@ Map<String, dynamic> localeToJson(Locale? locale) => locale == null
     ? {'languageCode': 'en', 'countryCode': 'US'}
     : {'languageCode': locale.languageCode, 'countryCode': locale.countryCode};
 
+EthPrivateKey? ethPrivateKeyFromJson(dynamic value) =>
+    value == null || value == BigInt.zero
+        ? null
+        : EthPrivateKey.fromInt(value as BigInt);
+
+BigInt ethPrivateKeyToJson(EthPrivateKey? ethPk) =>
+    ethPk == null ? BigInt.zero : ethPk.privateKeyInt;
+
 @freezed
 class UserState with _$UserState {
   @JsonSerializable()
   factory UserState({
     @JsonKey(ignore: true) String? wcURI,
-    String? contractVersion,
     WalletModules? walletModules,
     DateTime? installedAt,
     bool? isContactsSynced,
     @Default(true) bool isLoggedOut,
-    @Default(false) bool backup,
     @Default(false) bool scrollToTop,
 
     /// * The wallet address is a smart contract wallet which actually conducts payments, holds balances, etc.
@@ -55,6 +65,10 @@ class UserState with _$UserState {
     /// The account address is a 'real' wallet generated on the device which is only stored on the device.
     @Default('') String accountAddress,
     @Default('') String privateKey,
+    @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
+    @Default(null)
+        EthPrivateKey? fuseWalletCredentials,
+    @Default(false) bool backup,
     @Default([]) List<String> networks,
     @Default([]) List<String> mnemonic,
     @Default('') String pincode,
@@ -74,7 +88,7 @@ class UserState with _$UserState {
     @JsonKey(ignore: true) @Default(false) bool hasUpgrade,
     @Default(BiometricAuth.none) BiometricAuth authType,
     @JsonKey(fromJson: localeFromJson, toJson: localeToJson) Locale? locale,
-    @JsonKey(ignore: true) PhoneAuthCredential? credentials,
+    @JsonKey(ignore: true) PhoneAuthCredential? firebaseCredentials,
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
     @Default(false) bool hasSavedSeedPhrase,
     @Default(false) bool useLiveLocation,
@@ -98,7 +112,6 @@ class UserState with _$UserState {
         reverseContacts: <String, String>{},
         displayName: 'Anom',
         isLoggedOut: true,
-        backup: false,
         authType: BiometricAuth.none,
         currency: 'usd',
         useLiveLocation: false,
@@ -114,6 +127,21 @@ class UserState with _$UserState {
       _$UserStateFromJson(json);
 
   bool get accountDetailsExist => accountAddress.isNotEmpty;
+
+  EthPrivateKey get fuseWalletCredentialsNotNull {
+    if (fuseWalletCredentials == null) {
+      final e = Exception(
+          'No user credentials available for current user: "$displayName"');
+      log.error(e);
+      Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current,
+        hint: 'ERROR - fuseWalletCredentials should not be null',
+      );
+      throw e;
+    }
+    return fuseWalletCredentials!;
+  }
 }
 
 class UserStateConverter

@@ -72,6 +72,8 @@ class Secrets {
   static String get VEGI_EATS_BACKEND => dotenv.env['VEGI_EATS_BACKEND']!;
 
   static String get CHARGE_API_KEY => dotenv.env['CHARGE_API_KEY']!;
+  static String get FUSE_WALLET_SDK_PK => dotenv.env['FUSE_WALLET_SDK_PK']!;
+  static String get FUSE_WALLET_SDK_SK => dotenv.env['FUSE_WALLET_SDK_SK']!;
   static String get FOREIGN_NETWORK_ID => dotenv.env['FOREIGN_NETWORK_ID']!;
 
   static String get MAP_API_KEY_IOS => dotenv.env['MAP_API_KEY_IOS']!;
@@ -133,6 +135,10 @@ class Messages {
       "By registering, you'll be the first to know when we launch.";
   static const String unsubscribeAtAnyTime =
       'You can unsubscribe any time, no funny business.';
+
+  static const String walletLoadedSnackbarMessage = 'Wallet loaded';
+  static const String walletSignedOutSnackbarMessage = 'Wallet signed out';
+  static const String walletNotBackedUpSnackbarMessage = 'Wallet not backed up';
 }
 
 const ENV = String.fromEnvironment('ENV', defaultValue: 'production');
@@ -188,6 +194,8 @@ const imageFromLibraryText = 'Image from Gallery';
 const int cameraPreferredImageQuality =
     100; // % of image quality retained from original
 const fileUploadVegiMaxSizeMB = 1; // 1MB
+
+const inDebugMode = kDebugMode;
 
 Future<bool> deviceIsSimulator() async {
   final deviceInfo = DeviceInfoPlugin();

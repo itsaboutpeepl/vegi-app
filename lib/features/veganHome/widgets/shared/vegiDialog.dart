@@ -28,8 +28,6 @@ class _VegiDialogState<ViewModel> extends State<VegiDialog<ViewModel>>
   late AnimationController controller;
   late Animation<double> scaleAnimation;
 
-  late void Function() logout;
-
   @override
   void initState() {
     super.initState();

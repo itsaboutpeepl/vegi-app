@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
+import 'package:vegan_liverpool/models/admin/postVegiResponse.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
@@ -607,6 +608,76 @@ class PeeplEatsService extends HttpService {
     }
   }
 
+  Future<PostVegiResponse?> uploadImageForUserAvatar({
+    //todo: this call needs to be authenticated using a vegi jwt token...
+    required File image,
+    required void Function(PostVegiResponse) onSuccess,
+    required void Function(String error, ProductSuggestionUploadErrCode errCode)
+        onError,
+    required ProgressCallback onReceiveProgress,
+  }) async {
+    try {
+      final Response<Map<String, dynamic>> response = await dioPostFile(
+        'api/v1/products/upload-user-avatar',
+        file: image,
+        sendWithAuthCreds: true,
+        formDataCreator: ({required MultipartFile file}) => FormData.fromMap({
+          'uid': const Uuid().v4(),
+          'image': file,
+        }),
+        errorResponseData: {'image': ''},
+        onError: (error, errCode) {
+          switch (errCode) {
+            case FileUploadErrCode.imageTooLarge:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.imageTooLarge,
+              );
+            case FileUploadErrCode.imageEncodingError:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.imageEncodingError,
+              );
+            case FileUploadErrCode.unknownError:
+              return onError(
+                error,
+                ProductSuggestionUploadErrCode.unknownError,
+              );
+          }
+        },
+        // options: Options? ,
+        // cancelToken: CancelToken?,
+        // onSendProgress: ProgressCallback?,
+        onReceiveProgress: (count, total) =>
+            onReceiveProgress != null ? onReceiveProgress(count, total) : null,
+      );
+
+      if (response.statusCode != null && response.statusCode! >= 400) {
+        var errCode = ProductSuggestionUploadErrCode.unknownError;
+        if (response.statusCode == 404) {
+          errCode = ProductSuggestionUploadErrCode.productNotFound;
+        } else if (response.statusCode == 500) {
+          errCode = ProductSuggestionUploadErrCode.connectionIssue;
+        }
+        onError(
+          response.statusMessage ?? 'Unknown Error',
+          errCode,
+        );
+        return null;
+      } else {
+        final answer = PostVegiResponse.fromJson(
+          response.data as Map<String, dynamic>,
+        );
+
+        onSuccess(answer);
+
+        return answer;
+      }
+    } catch (err, st) {
+      log.error(err, stackTrace: st);
+    }
+  }
+
   Future<UploadProductSuggestionImageResponse?> tryUploadImage({
     required File image,
     required void Function(UploadProductSuggestionImageResponse) onSuccess,
@@ -814,7 +885,7 @@ class PeeplEatsService extends HttpService {
     void Function(String error) onError,
   ) async {
     final Response<dynamic> response = await dioGet(
-      '/api/v1/admin/user-for-wallet-address',
+      'api/v1/admin/user-for-wallet-address',
       queryParameters: {
         'walletAddress': walletAddress,
       },
@@ -839,7 +910,7 @@ class PeeplEatsService extends HttpService {
       );
     }
     final Response<dynamic> response = await dioGet(
-      '/api/v1/admin/account-is-vendor',
+      'api/v1/admin/account-is-vendor',
       queryParameters: {
         'walletAddress': walletAddress,
       },
@@ -859,7 +930,7 @@ class PeeplEatsService extends HttpService {
     void Function(String error) onError,
   ) async {
     final Response<dynamic> response = await dio.post(
-      '/api/v1/admin/register-email-to-waiting-list',
+      'api/v1/admin/register-email-to-waiting-list',
       data: {
         'emailAddress': email,
         'origin': kIsWeb ? 'guide' : 'mobile',
@@ -875,6 +946,44 @@ class PeeplEatsService extends HttpService {
     return;
   }
 
+  Future<void> backupUserSK(
+    String privateKey,
+  ) async {
+    final Response<dynamic> response = await dioPost(
+      'api/v1/admin/backup',
+      data: {
+        'privateKey': privateKey,
+      },
+      sendWithAuthCreds: true,
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      throw Exception(response.statusMessage ?? 'Unknown Error');
+    }
+
+    return;
+  }
+
+  Future<bool> isUserSKBackedUp({
+    required String smartWalletAddress,
+  }) async {
+    final Response<dynamic> response = await dioGet(
+      'api/v1/admin/is-backed-up',
+      queryParameters: {
+        'smartWalletAddress': smartWalletAddress,
+      },
+      sendWithAuthCreds: true,
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      return false;
+    } else if (response.data != null) {
+      return response.data == true;
+    }
+
+    return false;
+  }
+
   Future<void> submitSurveyResponse(
     String email,
     String question,
@@ -883,7 +992,7 @@ class PeeplEatsService extends HttpService {
     void Function(String error) onError,
   ) async {
     final Response<dynamic> response = await dio.post(
-      '/api/v1/admin/submit-survey-response',
+      'api/v1/admin/submit-survey-response',
       data: {
         'emailAddress': email,
         'question': question,
@@ -902,7 +1011,7 @@ class PeeplEatsService extends HttpService {
 
   Future<List<SurveyQuestion>> getSurveyQuestions() async {
     final Response<dynamic> response = await dio.get(
-      '/api/v1/admin/get-survey-questions',
+      'api/v1/admin/get-survey-questions',
     );
 
     return (response.data as List<dynamic>)
@@ -918,7 +1027,7 @@ class PeeplEatsService extends HttpService {
     T orderObject,
   ) async {
     final Response<dynamic> response = await dio
-        .post('/api/v1/orders/create-order', data: orderObject.toUploadJson());
+        .post('api/v1/orders/create-order', data: orderObject.toUploadJson());
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
@@ -930,7 +1039,7 @@ class PeeplEatsService extends HttpService {
 
   Future<Map<dynamic, dynamic>> checkOrderStatus(String orderID) async {
     final Response<dynamic> response =
-        await dio.get('/api/v1/orders/get-order-status?orderId=$orderID');
+        await dio.get('api/v1/orders/get-order-status?orderId=$orderID');
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
@@ -940,7 +1049,7 @@ class PeeplEatsService extends HttpService {
   Future<List<OrderModel.Order>> getPastOrders(String walletAddress) async {
     try {
       final Response<dynamic> response =
-          await dio.get('/api/v1/orders?walletId=$walletAddress');
+          await dio.get('api/v1/orders?walletId=$walletAddress');
       final scheduledOrders =
           (response.data['scheduledOrders'] as List<dynamic>)
               .map((order) =>

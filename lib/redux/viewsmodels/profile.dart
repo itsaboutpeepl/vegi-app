@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
@@ -31,8 +32,16 @@ class ProfileViewModel extends Equatable {
       seedPhrase: store.state.userState.mnemonic,
       walletAddress: store.state.userState.walletAddress,
       isVerified: store.state.userState.userIsVerified,
-      editAvatar: (source) {
-        store.dispatch(updateUserAvatarCall(source));
+      editAvatar: (
+        source, {
+        required ProgressCallback progressCallback,
+        required void Function() onSuccess,
+      }) {
+        store.dispatch(updateUserAvatarCall(
+          source,
+          progressCallback: progressCallback,
+          onSuccess: onSuccess,
+        ));
       },
       updateDisplayName: (displayName) {
         store.dispatch(updateDisplayNameCall(displayName));
@@ -61,7 +70,11 @@ class ProfileViewModel extends Equatable {
   final void Function(String displayName) updateDisplayName;
   final void Function(bool enabled) useLocationServices;
   final void Function() refreshVendors;
-  final void Function(ImageSource source) editAvatar;
+  final void Function(
+    ImageSource source, {
+    required ProgressCallback progressCallback,
+    required void Function() onSuccess,
+  }) editAvatar;
 
   @override
   List<Object> get props => [

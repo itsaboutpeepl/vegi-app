@@ -5,10 +5,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -39,7 +41,34 @@ class _SplashScreenState extends State<SplashScreen> {
           final UserState userState = store.state.userState;
           if (userState.authType != BiometricAuth.none) {
             store
-              ..dispatch(getWalletAddressesCall())
+              ..dispatch(fetchFuseSmartWallet(
+                onSuccess: () {
+                  showInfoSnack(
+                    context,
+                    title: Messages.walletLoadedSnackbarMessage,
+                  );
+                },
+                onFailure: () {
+                  showInfoSnack(
+                    context,
+                    title: Messages.walletSignedOutSnackbarMessage,
+                  );
+                },
+                onError: (error) {
+                  if (inDebugMode) {
+                    showErrorSnack(
+                      context: context,
+                      title: Messages.walletSignedOutSnackbarMessage,
+                      message: 'Error fetching smart wallet: $error',
+                    );
+                  } else {
+                    showInfoSnack(
+                      context,
+                      title: Messages.walletSignedOutSnackbarMessage,
+                    );
+                  }
+                },
+              ))
               ..dispatch(identifyCall());
           }
           if (BiometricAuth.faceID == userState.authType ||

@@ -16,11 +16,13 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/common/router/vegi_debug_route_observer.dart';
 import 'package:vegan_liverpool/constants/strings.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -60,7 +62,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     if (![null, ''].contains(jwtToken)) {
       isAuthenticated = true;
       log.info('JWT: $jwtToken');
-      chargeApi.setJwtToken(jwtToken);
+      fuseWalletSDK.jwtToken = jwtToken;
     }
   }
 
@@ -70,6 +72,17 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     setJwtToken(widget.store);
     widget.store
       ..dispatch(fetchHomePageData())
+      ..dispatch(
+        checkIfSmartWalletIsBackedUpToVegi(
+          errorHandler: (message, errcode) => inDebugMode
+              ? showErrorSnack(
+                  context: context,
+                  title: Messages.walletSignedOutSnackbarMessage,
+                  message: 'Error checking for smart wallet backup: $message',
+                )
+              : null,
+        ),
+      )
       ..dispatch(fetchDeviceType());
     _locale = widget.store.state.userState.locale;
     initPlatformState();
