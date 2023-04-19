@@ -15,7 +15,7 @@ class BackupViewModel extends Equatable {
       backupWallet: () {
         store.dispatch(
           BackupSuccess(),
-        ); // Maybe add this to one of the init app calls  //TODO: we need to be able to have a GET end point on vegi backend to tell us whether a wallet address has its pk backed up but must be authorized backend method
+        );
       },
     );
   }

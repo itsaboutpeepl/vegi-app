@@ -87,7 +87,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return StoreConnector<AppState, MainScreenViewModel>(
       converter: MainScreenViewModel.fromStore,
       onInit: (store) async {
-        store.dispatch(isBetaWhitelistedAddress());
+        store
+          .dispatch(isBetaWhitelistedAddress());
       },
       builder: (context, vm) {
         return MyScaffold(

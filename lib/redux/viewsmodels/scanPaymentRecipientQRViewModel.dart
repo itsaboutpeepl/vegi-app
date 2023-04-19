@@ -121,7 +121,8 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
                           .totalPrice(
                             quantity: menuItemQuantity,
                             selectedProductOptions: selectedProductOptions,
-                            fulfilmentMethod: store.state.cartState.fulfilmentMethod,
+                            fulfilmentMethod:
+                                store.state.cartState.fulfilmentMethod,
                           )
                           .totalPrice,
                       itemQuantity: menuItemQuantity,
@@ -140,9 +141,8 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
             );
           final generatorsWalletAddress =
               basketJson['generatorWalletAddress'] as String;
-          // 
+          //
         } on Exception catch (e, s) {
-          // TODO
           log.error(e);
           Sentry.captureException(
             e,

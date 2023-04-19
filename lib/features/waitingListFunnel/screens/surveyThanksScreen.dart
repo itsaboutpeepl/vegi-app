@@ -208,8 +208,6 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
                         if (isPrimaryPreloading) {
                           return;
                         }
-                        // ! after beta, uncomment ->
-                        // //TODO: make this readable PLEASE
                         setState(() {
                           isPrimaryPreloading = true;
                         });
@@ -289,8 +287,7 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
                         if (isPrimaryPreloading) {
                           return;
                         }
-                        // ! after beta, uncomment ->
-                        // //TODO: make this readable PLEASE
+                        // ! TODO after beta, uncomment ->
                         // if (viewmodel.isLoggedOut) {
                         //   viewmodel.loginAgain();
                         //   if (context.router.canPop()) {

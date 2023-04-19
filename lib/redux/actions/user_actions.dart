@@ -447,9 +447,9 @@ ThunkAction<AppState> fetchDeviceType() {
   };
 }
 
-ThunkAction<AppState> checkIfSmartWalletIsBackedUpToVegi(
-  {required void Function(String, VegiBackendResponseErrCode) errorHandler,}
-) {
+ThunkAction<AppState> checkIfSmartWalletIsBackedUpToVegi({
+  required void Function(String, VegiBackendResponseErrCode) errorHandler,
+}) {
   return (Store<AppState> store) async {
     try {
       final isBackedUp = await peeplEatsService.isUserSKBackedUp(

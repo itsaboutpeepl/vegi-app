@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart' as mime;
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -19,6 +21,24 @@ abstract class HttpService {
     this.dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
 
+  void _checkAuthRequest(bool authRequired) {
+    final satisfied =
+        authRequired && this.dio.options.headers.containsKey('Cookie');
+    if (!satisfied) {
+      rootRouter.push(const SignUpScreen());
+    }
+  }
+
+  bool _checkAuthDioResponse(DioError dioErr) {
+    if (dioErr.response?.statusCode == 401) {
+      // TODO? Do we need to set: set state logged out to true and then route to the login signin buttons screen
+      // navigating to the splash screen should ensure user can login back into vegi again using the phone -sms firebase onboard
+      rootRouter.push(const SignUpScreen());
+      return true;
+    }
+    return false;
+  }
+
   Future<Response<T?>> dioGet<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
@@ -27,8 +47,8 @@ abstract class HttpService {
     void Function(int, int)? onReceiveProgress,
     bool sendWithAuthCreds = false,
   }) {
+    _checkAuthRequest(sendWithAuthCreds);
     if (!path.startsWith('/')) path = '/' + path;
-
     try {
       return dio.get<T>(
         path,
@@ -38,8 +58,10 @@ abstract class HttpService {
         onReceiveProgress: onReceiveProgress,
       );
     } on DioError catch (dioErr) {
-      log.error(
-          'ERROR [vegi service [${dioErr.response?.statusCode}]] - dioGet -> $dioErr');
+      if (!_checkAuthDioResponse(dioErr)) {
+        log.error(
+            'ERROR [vegi service [${dioErr.response?.statusCode}]] - dioGet -> $dioErr');
+      }
       rethrow;
     } catch (e, s) {
       log.error('ERROR - dioGet -> $e');
@@ -63,6 +85,7 @@ abstract class HttpService {
     void Function(int, int)? onReceiveProgress,
     bool sendWithAuthCreds = false,
   }) {
+    _checkAuthRequest(sendWithAuthCreds);
     if (!path.startsWith('/')) path = '/' + path;
     return dio.post<T>(path,
         data: data,
@@ -80,21 +103,23 @@ abstract class HttpService {
             'If running from real_device, cant connect to localhost on running machine...',
           );
         } else if (error is DioError) {
-          return Response(
-            data: errorResponseData,
-            extra: {
-              'error': error.error,
-              'message': error.message,
-              'dioResponse': error.response,
-              'dioErrorType': error.type,
-              'data': error.response?.data,
-            },
-            isRedirect: error.response?.isRedirect ?? false,
-            redirects: error.response?.redirects ?? [],
-            headers: error.response?.headers,
-            statusCode: error.response?.statusCode ?? 500,
-            requestOptions: error.requestOptions,
-          );
+          if (!_checkAuthDioResponse(error)) {
+            return Response(
+              data: errorResponseData,
+              extra: {
+                'error': error.error,
+                'message': error.message,
+                'dioResponse': error.response,
+                'dioErrorType': error.type,
+                'data': error.response?.data,
+              },
+              isRedirect: error.response?.isRedirect ?? false,
+              redirects: error.response?.redirects ?? [],
+              headers: error.response?.headers,
+              statusCode: error.response?.statusCode ?? 500,
+              requestOptions: error.requestOptions,
+            );
+          }
         }
         return Response(
           data: errorResponseData,
@@ -119,6 +144,7 @@ abstract class HttpService {
     void Function(int, int)? onReceiveProgress,
     bool sendWithAuthCreds = false,
   }) {
+    _checkAuthRequest(sendWithAuthCreds);
     final image = file.readAsBytesSync();
 
     final options = Options(
@@ -150,21 +176,23 @@ abstract class HttpService {
             'If running from real_device, cant connect to localhost on running machine...',
           );
         } else if (error is DioError) {
-          return Response(
-            data: errorResponseData,
-            extra: {
-              'error': error.error,
-              'message': error.message,
-              'dioResponse': error.response,
-              'dioErrorType': error.type,
-              'data': error.response?.data,
-            },
-            isRedirect: error.response?.isRedirect ?? false,
-            redirects: error.response?.redirects ?? [],
-            headers: error.response?.headers,
-            statusCode: error.response?.statusCode ?? 500,
-            requestOptions: error.requestOptions,
-          );
+          if (!_checkAuthDioResponse(error)) {
+            return Response(
+              data: errorResponseData,
+              extra: {
+                'error': error.error,
+                'message': error.message,
+                'dioResponse': error.response,
+                'dioErrorType': error.type,
+                'data': error.response?.data,
+              },
+              isRedirect: error.response?.isRedirect ?? false,
+              redirects: error.response?.redirects ?? [],
+              headers: error.response?.headers,
+              statusCode: error.response?.statusCode ?? 500,
+              requestOptions: error.requestOptions,
+            );
+          }
         }
         return Response(
           data: errorResponseData,
@@ -191,6 +219,7 @@ abstract class HttpService {
     void Function(int, int)? onReceiveProgress,
     bool sendWithAuthCreds = false,
   }) {
+    _checkAuthRequest(sendWithAuthCreds);
     final image = file.readAsBytesSync();
 
     MultipartFile imgByteStream;
@@ -287,25 +316,27 @@ abstract class HttpService {
             FileUploadErrCode.unknownError,
           );
         } else if (error is DioError) {
-          onError(
-            error.message ?? '',
-            FileUploadErrCode.unknownError,
-          );
-          return Response(
-            data: errorResponseData,
-            extra: {
-              'error': error.error,
-              'message': error.message,
-              'dioResponse': error.response,
-              'dioErrorType': error.type,
-              'data': error.response?.data,
-            },
-            isRedirect: error.response?.isRedirect ?? false,
-            redirects: error.response?.redirects ?? [],
-            headers: error.response?.headers,
-            statusCode: error.response?.statusCode ?? 500,
-            requestOptions: error.requestOptions,
-          );
+          if (!_checkAuthDioResponse(error)) {
+            onError(
+              error.message ?? '',
+              FileUploadErrCode.unknownError,
+            );
+            return Response(
+              data: errorResponseData,
+              extra: {
+                'error': error.error,
+                'message': error.message,
+                'dioResponse': error.response,
+                'dioErrorType': error.type,
+                'data': error.response?.data,
+              },
+              isRedirect: error.response?.isRedirect ?? false,
+              redirects: error.response?.redirects ?? [],
+              headers: error.response?.headers,
+              statusCode: error.response?.statusCode ?? 500,
+              requestOptions: error.requestOptions,
+            );
+          }
         }
         onError(
           'Unknown error!',

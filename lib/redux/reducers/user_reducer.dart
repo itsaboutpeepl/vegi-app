@@ -188,6 +188,10 @@ UserState _loginVerifySuccess(
   );
 }
 
+// TODO: Update this as now logout means logging a user out of firebase and vegi, not fuse. The fuse smartWallet is obtained from the
+// TODOCONT: For fuse SDK, a user is considered authenticated if there is a privateKey saved for them, we store this private key against the user
+// ~ https://docs.fuse.io/v2/developers/fuse-sdk/flutter-sdk/features#authentication
+// TODOCONT What we might need to do is call the vegibackend to get a users privateKey once they have signed in and then use this to authenticate the smartQalletSDK
 UserState _logoutSuccess(
   UserState state,
   LogoutRequestSuccess action,

@@ -10,7 +10,7 @@
 // const Object requiresAdmin = _RequiresAdmin();
 
 // class _RequiresAdmin {
-//   //TODO: Check that the method invoked is in a class where user has to be signed in to use the methods.
+//   //*: Check that the method invoked is in a class where user has to be signed in to use the methods.
 //   const _RequiresAdmin();
 // }
 

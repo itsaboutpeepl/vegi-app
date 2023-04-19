@@ -38,7 +38,6 @@ class _MainScreenState extends State<MainScreen> {
     return StoreConnector<AppState, MainScreenViewModel>(
       onInit: (store) {
         store
-          ..dispatch(authenticateFuseWalletSDK())
           ..dispatch(fetchFuseSmartWallet(
             onSuccess: () {
               showInfoSnack(

@@ -12,6 +12,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
 import 'package:vegan_liverpool/models/admin/postVegiResponse.dart';
+import 'package:vegan_liverpool/models/admin/vegiSession.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
@@ -27,6 +28,7 @@ import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/services/abstract_apis/httpService.dart';
 import 'package:vegan_liverpool/services/apis/places.dart';
+import 'package:vegan_liverpool/services/apis/vegiBackendEndpoints.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -69,9 +71,88 @@ class PeeplEatsService extends HttpService {
     );
   }
 
+  // User Details
+
+  Future<VegiSession> loginWithPhone({
+    required String phoneNumber,
+    required String firebaseSessionToken,
+    bool rememberMe = true,
+  }) async {
+    final Response<dynamic> response = await dioPost(
+      VegiBackendEndpoints.loginWithPhone,
+      sendWithAuthCreds: false,
+      data: {
+        'phoneNumber': phoneNumber,
+        'firebaseSessionToken': firebaseSessionToken,
+        'rememberMe': rememberMe
+      },
+    );
+
+    // Capture session cookie to send with requests from nowon in a VegiSession object that we save to the singleton instance of the peeplEats service?...
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      throw Exception(
+          'Bad response returned when trying to loginWithPhone: $response');
+    } else if (response.headers.value('set-cookie') == null) {
+      throw Exception(
+          'No set-cookie returned in response headers when trying to loginWithPhone: $response');
+    }
+
+    final cookie = response.headers.value('set-cookie')!;
+
+    this.dio.options.headers['Cookie'] = cookie;
+
+    return VegiSession(sessionCookie: cookie);
+  }
+
+  Future<VegiSession> loginWithEmail({
+    required String emailAddress,
+    required String firebaseSessionToken,
+    bool rememberMe = true,
+  }) async {
+    final Response<dynamic> response = await dioPost(
+      VegiBackendEndpoints.loginWithEmail,
+      sendWithAuthCreds: false,
+      data: {
+        'emailAddress': emailAddress,
+        'firebaseSessionToken': firebaseSessionToken,
+        'rememberMe': rememberMe
+      },
+    );
+
+    // Capture session cookie to send with requests from nowon in a VegiSession object that we save to the singleton instance of the peeplEats service?...
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      throw Exception(
+          'Bad response returned when trying to loginWithPhone: $response');
+    } else if (response.headers.value('set-cookie') == null) {
+      throw Exception(
+          'No set-cookie returned in response headers when trying to loginWithPhone: $response');
+    }
+
+    final cookie = response.headers.value('set-cookie')!;
+
+    this.dio.options.headers['Cookie'] = cookie;
+
+    return VegiSession(sessionCookie: cookie);
+  }
+
+  Future<void> logOut() async {
+    await dioGet<dynamic>(
+      VegiBackendEndpoints.logout,
+    );
+  }
+
+  // TODO: Implement - backend needs new deregister handle to deregister a user by email or phone and
+  // todocont remove all wallet address backups, firebase creds, userlines from vegi and delete the user from firebase.
+  // Future<bool> deregister({required String phoneNumber}) async {}
+
+  // Future<bool> resetPassword({
+  //   required String email,
+  // }) async {}
+
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
     final Response<dynamic> response =
-        await dio.get<dynamic>('api/v1/vendors?outcode=$outCode').timeout(
+        await dioGet<dynamic>(VegiBackendEndpoints.featuredRestaurants(outCode))
+            .timeout(
       const Duration(seconds: 5),
       onTimeout: () {
         return Response(
@@ -114,7 +195,7 @@ class PeeplEatsService extends HttpService {
     required int restaurantID,
   }) async {
     final Response<dynamic> response = await dioGet<dynamic>(
-      'api/v1/vendors/$restaurantID',
+      VegiBackendEndpoints.fetchSingleRestaurant(restaurantID),
     ).onError((error, stackTrace) {
       log.error(error, stackTrace: stackTrace);
       return Response(
@@ -144,11 +225,13 @@ class PeeplEatsService extends HttpService {
         fulfilmentMethodTypeName != FulfilmentMethodType.none
             ? fulfilmentMethodTypeName.name
             : FulfilmentMethodType.collection.name;
-    final Response<dynamic> response = await dio
-        .get<dynamic>(
-      'api/v1/home/nearest-vendors?location=${geoLocation.lat},${geoLocation.lng}&fulfilmentMethodType=$fulfilmentMethodType$distanceFromQueryParam',
-    )
-        .timeout(
+    final Response<dynamic> response = await dioGet<dynamic>(
+      VegiBackendEndpoints.fetchNearestRestaurants(
+        geoLocation,
+        distanceFromQueryParam,
+        fulfilmentMethodType,
+      ),
+    ).timeout(
       const Duration(seconds: 5),
       onTimeout: () {
         return Response(
@@ -1026,8 +1109,9 @@ class PeeplEatsService extends HttpService {
   Future<Map<String, dynamic>> createOrder<T extends CreateOrderForFulfilment>(
     T orderObject,
   ) async {
-    final Response<dynamic> response = await dio
-        .post('api/v1/orders/create-order', data: orderObject.toUploadJson());
+    final Response<dynamic> response = await dioPost(
+        'api/v1/orders/create-order',
+        data: orderObject.toUploadJson());
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
