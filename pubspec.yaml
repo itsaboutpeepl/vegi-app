@@ -83,6 +83,7 @@ dependencies:
   qr_flutter: ^4.0.0
   uni_links: ^0.5.1
   fuse_wallet_sdk: ^0.0.17
+  web3auth_flutter: ^1.3.0
 dependency_overrides:
     # flutter_chips_input: # ~ https://github.com/danvick/flutter_chips_input/issues/136
     #    git: https://github.com/bradintheusa/flutter_chips_input

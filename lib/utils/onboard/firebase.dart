@@ -8,12 +8,18 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
+import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 class FirebaseStrategy implements IOnBoardStrategy {
   FirebaseStrategy({this.strategy = OnboardStrategy.firebase});
 
   @override
   OnboardStrategy strategy;
+
+  bool _useWeb3Auth = false;
 
   @override
   Future<void> login(
@@ -41,7 +47,11 @@ class FirebaseStrategy implements IOnBoardStrategy {
         store.dispatch(
             authenticateFuseWalletSDK()); // this does jwt storing and loginSuccess
         onSuccess();
-        await rootRouter.push(UserNameScreen());
+        if (_useWeb3Auth) {
+          await _initWeb3Auth();
+        } else {
+          await rootRouter.push(UserNameScreen());
+        }
       } catch (e) {
         onError(e.toString());
       }
@@ -88,6 +98,15 @@ class FirebaseStrategy implements IOnBoardStrategy {
     credential ??= PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: verificationCode,
+    );
+  }
+
+  Future<void> _initWeb3Auth() async {
+    final Web3AuthResponse response = await Web3AuthFlutter.login(
+      LoginParams(
+        loginProvider: Provider.email_passwordless,
+        redirectUrl: Uri.tryParse('vegi://vegiApp.co.uk/user-name-screen'),
+      ), //TODO: allow users to login in any number of ways that they want to...
     );
   }
 }

@@ -72,9 +72,12 @@ class Secrets {
   static String get VEGI_EATS_BACKEND => dotenv.env['VEGI_EATS_BACKEND']!;
 
   static String get CHARGE_API_KEY => dotenv.env['CHARGE_API_KEY']!;
-  static String get FUSE_WALLET_SDK_PK => dotenv.env['FUSE_WALLET_SDK_PK']!;
+  static String get FUSE_WALLET_SDK_PUBLIC_KEY =>
+      dotenv.env['FUSE_WALLET_SDK_PK']!;
   static String get FUSE_WALLET_SDK_SK => dotenv.env['FUSE_WALLET_SDK_SK']!;
   static String get FOREIGN_NETWORK_ID => dotenv.env['FOREIGN_NETWORK_ID']!;
+  
+  static String get WEB3AUTH_CLIENT_ID => dotenv.env['WEB3AUTH_CLIENT_ID']!;
 
   static String get MAP_API_KEY_IOS => dotenv.env['MAP_API_KEY_IOS']!;
   static String get MAP_API_KEY_ANDROID => dotenv.env['MAP_API_KEY_ANDROID']!;

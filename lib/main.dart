@@ -14,6 +14,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/app.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/di/env.dart';
+import 'package:vegan_liverpool/common/network/web3auth.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/redux_state_viewer.dart';
 import 'package:vegan_liverpool/loadAppState.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -36,6 +37,8 @@ void main() async {
   await dotenv.load(fileName: Env.envFile);
 
   StripeService().init();
+  
+  await initWeb3AuthService();
 
   await configureDependencies(environment: envStr);
 
