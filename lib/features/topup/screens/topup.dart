@@ -54,7 +54,6 @@ class _TopupScreenState extends State<TopupScreen>
         _amountText = _amountText + value;
       }
       // Prevent deposits greater than 250
-
     }
     setState(() {});
   }
@@ -180,11 +179,12 @@ class _TopupScreenState extends State<TopupScreen>
                 child: PrimaryButton(
                   // labelFontWeight: FontWeight.normal,
                   label: I10n.of(context).next_button,
-                  onPressed: () => stripeService.handleStripe(
+                  onPressed: () => stripeService.handleApplePay(
                     walletAddress: viewModel.walletAddress,
                     amount: int.parse(_amountText) * 100,
                     context: context,
                     shouldPushToHome: true,
+                    productName: 'vegi',
                   ),
                   preload: _isPreloading,
                   disabled: _isPreloading,

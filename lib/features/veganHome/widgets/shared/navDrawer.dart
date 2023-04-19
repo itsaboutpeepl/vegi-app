@@ -137,13 +137,13 @@ class _NavDrawerState extends State<NavDrawer> {
                   context.router.push(const ScheduledOrdersPage());
                 },
               ),
-              // ListTile(
-              //   leading: const Icon(Icons.money),
-              //   title: const Text('Top Up Wallet'),
-              //   onTap: () {
-              //     context.router.push(const TopUpScreen());
-              //   },
-              // ),
+              ListTile(
+                leading: const Icon(Icons.money),
+                title: const Text('Top Up Wallet'),
+                onTap: () {
+                  context.router.push(const TopUpScreen());
+                },
+              ),
               ListTile(
                 leading: const Icon(FontAwesomeIcons.clockRotateLeft),
                 title: const Text('My Orders'),
@@ -202,7 +202,6 @@ class _NavDrawerState extends State<NavDrawer> {
                     ),
                   ),
                 ),
-
               if (kDebugMode)
                 ListTile(
                   leading: const Icon(Icons.qr_code_scanner),
