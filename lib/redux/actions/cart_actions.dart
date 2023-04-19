@@ -1478,6 +1478,7 @@ ThunkAction<AppState> startPaymentProcess({
           amount: store.state.cartState.cartTotal,
           context: context,
           shouldPushToHome: false,
+          productName: 'Vegi',
         )
             .then(
           (value) {
