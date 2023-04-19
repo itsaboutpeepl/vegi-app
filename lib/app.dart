@@ -72,17 +72,17 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     setJwtToken(widget.store);
     widget.store
       ..dispatch(fetchHomePageData())
-      ..dispatch(
-        checkIfSmartWalletIsBackedUpToVegi(
-          errorHandler: (message, errcode) => inDebugMode
-              ? showErrorSnack(
-                  context: context,
-                  title: Messages.walletSignedOutSnackbarMessage,
-                  message: 'Error checking for smart wallet backup: $message',
-                )
-              : null,
-        ),
-      )
+      // ..dispatch(
+      //   checkIfSmartWalletIsBackedUpToVegi(
+      //     errorHandler: (message, errcode) => inDebugMode
+      //         ? showErrorSnack(
+      //             context: context,
+      //             title: Messages.walletSignedOutSnackbarMessage,
+      //             message: 'Error checking for smart wallet backup: $message',
+      //           )
+      //         : null,
+      //   ),
+      // )
       ..dispatch(fetchDeviceType());
     _locale = widget.store.state.userState.locale;
     initPlatformState();

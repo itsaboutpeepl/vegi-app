@@ -447,28 +447,28 @@ ThunkAction<AppState> fetchDeviceType() {
   };
 }
 
-ThunkAction<AppState> checkIfSmartWalletIsBackedUpToVegi({
-  required void Function(String, VegiBackendResponseErrCode) errorHandler,
-}) {
-  return (Store<AppState> store) async {
-    try {
-      final isBackedUp = await peeplEatsService.isUserSKBackedUp(
-          smartWalletAddress: store.state.userState.walletAddress);
-      store.dispatch(StoreBackupStatus(isSmartWalletBackedUp: isBackedUp));
-    } catch (e, s) {
-      log.error('ERROR - checkIfSmartWalletIsBackedUpToVegi $e');
-      await Sentry.captureException(
-        e,
-        stackTrace: s,
-        hint: 'ERROR - checkIfSmartWalletIsBackedUpToVegi $e',
-      );
-      errorHandler(
-        'ERROR - checkIfSmartWalletIsBackedUpToVegi $e',
-        VegiBackendResponseErrCode.connectionIssue,
-      );
-    }
-  };
-}
+// ThunkAction<AppState> checkIfSmartWalletIsBackedUpToVegi({
+//   required void Function(String, VegiBackendResponseErrCode) errorHandler,
+// }) {
+//   return (Store<AppState> store) async {
+//     try {
+//       final isBackedUp = await peeplEatsService.isUserSKBackedUp(
+//           smartWalletAddress: store.state.userState.walletAddress);
+//       store.dispatch(StoreBackupStatus(isSmartWalletBackedUp: isBackedUp));
+//     } catch (e, s) {
+//       log.error('ERROR - checkIfSmartWalletIsBackedUpToVegi $e');
+//       await Sentry.captureException(
+//         e,
+//         stackTrace: s,
+//         hint: 'ERROR - checkIfSmartWalletIsBackedUpToVegi $e',
+//       );
+//       errorHandler(
+//         'ERROR - checkIfSmartWalletIsBackedUpToVegi $e',
+//         VegiBackendResponseErrCode.connectionIssue,
+//       );
+//     }
+//   };
+// }
 
 ThunkAction<AppState> fetchSurveyQuestions() {
   return (Store<AppState> store) async {
@@ -804,7 +804,7 @@ ThunkAction<AppState> restoreWalletCall(
         ..info('restore wallet')
         ..info('compute pk');
       final String privateKey = Mnemonic.privateKeyFromMnemonic(mnemonic);
-      await peeplEatsService.backupUserSK(privateKey);
+      //! await peeplEatsService.backupUserSK(privateKey);
       final EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
       final EthereumAddress accountAddress = credentials.address;
       log.info('accountAddress: $accountAddress');
@@ -854,7 +854,7 @@ ThunkAction<AppState> createLocalAccountCall(
       // Generate a random Ethereum private key
       final String mnemonic = Mnemonic.generate();
       final String privateKey = Mnemonic.privateKeyFromMnemonic(mnemonic);
-      await peeplEatsService.backupUserSK(privateKey);
+      //! await peeplEatsService.backupUserSK(privateKey);
       final EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
       final EthereumAddress accountAddress = credentials.address;
       log.info('accountAddress: $accountAddress');

@@ -1029,43 +1029,43 @@ class PeeplEatsService extends HttpService {
     return;
   }
 
-  Future<void> backupUserSK(
-    String privateKey,
-  ) async {
-    final Response<dynamic> response = await dioPost(
-      'api/v1/admin/backup',
-      data: {
-        'privateKey': privateKey,
-      },
-      sendWithAuthCreds: true,
-    );
+  // Future<void> backupUserSK(
+  //   String privateKey,
+  // ) async {
+  //   final Response<dynamic> response = await dioPost(
+  //     'api/v1/admin/backup',
+  //     data: {
+  //       'privateKey': privateKey,
+  //     },
+  //     sendWithAuthCreds: true,
+  //   );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
-      throw Exception(response.statusMessage ?? 'Unknown Error');
-    }
+  //   if (response.statusCode != null && response.statusCode! >= 400) {
+  //     throw Exception(response.statusMessage ?? 'Unknown Error');
+  //   }
 
-    return;
-  }
+  //   return;
+  // }
 
-  Future<bool> isUserSKBackedUp({
-    required String smartWalletAddress,
-  }) async {
-    final Response<dynamic> response = await dioGet(
-      'api/v1/admin/is-backed-up',
-      queryParameters: {
-        'smartWalletAddress': smartWalletAddress,
-      },
-      sendWithAuthCreds: true,
-    );
+  // Future<bool> isUserSKBackedUp({
+  //   required String smartWalletAddress,
+  // }) async {
+  //   final Response<dynamic> response = await dioGet(
+  //     'api/v1/admin/is-backed-up',
+  //     queryParameters: {
+  //       'smartWalletAddress': smartWalletAddress,
+  //     },
+  //     sendWithAuthCreds: true,
+  //   );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
-      return false;
-    } else if (response.data != null) {
-      return response.data == true;
-    }
+  //   if (response.statusCode != null && response.statusCode! >= 400) {
+  //     return false;
+  //   } else if (response.data != null) {
+  //     return response.data == true;
+  //   }
 
-    return false;
-  }
+  //   return false;
+  // }
 
   Future<void> submitSurveyResponse(
     String email,
