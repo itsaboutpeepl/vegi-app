@@ -85,3 +85,5 @@ start_qa.sh
 /lib/main_qa.dart
 
 .fvm/flutter_sdk
+lib/redux/actions/cart_actions.dart
+thunder-tests/

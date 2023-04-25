@@ -1350,6 +1350,8 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
             title: 'Our servers seem to be down',
           );
         }
+        log.error(
+            'Url "${e.requestOptions.baseUrl}${e.requestOptions.path}" returned: ${e.response?.statusCode}');
         log.error(e.response!.data);
         if (e.response!.data is Map<String, dynamic>) {
           await Sentry.captureException(
@@ -1408,6 +1410,42 @@ ThunkAction<AppState> startPaymentProcess({
             eventName: AnalyticsEvents.payStripe,
           ),
         );
+        final orderId = store.state.cartState.orderID;
+        final paymentIntentID = store.state.cartState.paymentIntentID;
+        await stripeService
+            .handleStripe(
+          walletAddress: '',
+          amount: store.state.cartState.cartTotal,
+          context: context,
+          shouldPushToHome: true,
+        )
+            .then(
+          (value) {
+            if (!value) {
+              store
+                ..dispatch(SetPaymentButtonFlag(false))
+                ..dispatch(SetTransferringPayment(flag: value));
+              return;
+            }
+            unawaited(
+              Analytics.track(
+                eventName: AnalyticsEvents.mint,
+                properties: {
+                  'status': 'success',
+                },
+              ),
+            );
+          },
+        );
+      } else if (store.state.cartState.selectedPaymentMethod ==
+          PaymentMethod.stripeToFuse) {
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.payStripe,
+          ),
+        );
+        final orderId = store.state.cartState.orderID;
+        final paymentIntentID = store.state.cartState.paymentIntentID;
         await stripeService
             .handleStripe(
           walletAddress: store.state.userState.walletAddress,
@@ -1809,6 +1847,80 @@ ThunkAction<AppState> startPaymentConfirmationCheck() {
             );
             throw Exception('Payment checks exceeded time limit: '
                 'orderID: ${store.state.cartState.orderID}');
+          }
+        } catch (e, s) {
+          timer.cancel();
+          unawaited(
+            Analytics.track(
+              eventName: AnalyticsEvents.payment,
+              properties: {
+                'status': 'failure',
+              },
+            ),
+          );
+          store.dispatch(SetError(flag: true));
+          log.error('ERROR - startPaymentConfirmationCheck $e');
+          await Sentry.captureException(
+            e,
+            stackTrace: s,
+            hint: 'ERROR - startPaymentConfirmationCheck $e',
+          );
+        }
+      },
+    );
+  };
+}
+
+ThunkAction<AppState> subscribeToOrderUpdates() {
+  return (Store<AppState> store) async {
+    await firebaseMessaging
+        .subscribeToTopic('order-${store.state.cartState.orderID}');
+    int counter = 0;
+    Timer.periodic(
+      const Duration(seconds: 4),
+      (timer) async {
+        try {
+          final Future<Map<dynamic, dynamic>> checkOrderResponse =
+              peeplEatsService.checkOrderStatus(store.state.cartState.orderID);
+
+          await checkOrderResponse.then(
+            (completedValue) {
+              counter++;
+              log.info(
+                'PaymentStatus: ${completedValue["paymentStatus"]}, '
+                'counter: $counter',
+              );
+              if (completedValue['paymentStatus'] == 'paid') {
+                store
+                  ..dispatch(SetTransferringPayment(flag: false))
+                  ..dispatch(SetConfirmed(flag: true));
+                timer.cancel();
+                unawaited(
+                  Analytics.track(
+                    eventName: AnalyticsEvents.payment,
+                    properties: {
+                      'status': 'success',
+                    },
+                  ),
+                );
+              }
+            },
+          );
+
+          if (counter > 1) {
+            // cancel after 1 attempt
+            store
+              ..dispatch(SetTransferringPayment(flag: false))
+              ..dispatch(SetConfirmed(flag: false));
+            timer.cancel();
+            unawaited(
+              Analytics.track(
+                eventName: AnalyticsEvents.payment,
+                properties: {
+                  'status': 'pending',
+                },
+              ),
+            );
           }
         } catch (e, s) {
           timer.cancel();

@@ -133,12 +133,16 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           try {
             if (link != null) {
               _latestUri = Uri.parse(link);
-              final relativeLink =
-                  _latestLink.replaceAll(RegExp(r'vegi://vegiApp.dev'), '');
-              log.info('Deep-linking to relative route: ${relativeLink}');
-              rootRouter.pushNamed(
-                relativeLink,
-              );
+              // final relativeLink =
+              //     _latestLink.replaceAll(RegExp(r'vegi://vegiApp.dev'), '');
+              // log.info('Deep-linking to relative route: ${relativeLink}');
+              if (_latestLink.startsWith('vegi')) {
+                rootRouter.pushNamed(
+                  _latestLink,
+                );
+              } else {
+                log.info('Ignoring deep-linking route named: $_latestLink');
+              }
             }
           } on FormatException {}
         });
@@ -320,7 +324,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           );
         } else {
           return MaterialApp(
-            debugShowCheckedModeBanner: false,
+            debugShowCheckedModeBanner:
+                Secrets.VEGI_EATS_BACKEND.startsWith('http://localhost'),
             home: Scaffold(
               body: DecoratedBox(
                 decoration: const BoxDecoration(

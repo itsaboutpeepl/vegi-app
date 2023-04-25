@@ -1,9 +1,11 @@
-enum PaymentMethod { stripe, peeplPay, applePay, qrPay }
+enum PaymentMethod { stripe, stripeToFuse, peeplPay, applePay, qrPay }
 
 extension PaymentMethodHelpers on PaymentMethod {
   String get formattedName {
     switch (this) {
       case PaymentMethod.stripe:
+        return 'Card';
+      case PaymentMethod.stripeToFuse:
         return 'Card';
       case PaymentMethod.peeplPay:
         return 'Peepl Pay';

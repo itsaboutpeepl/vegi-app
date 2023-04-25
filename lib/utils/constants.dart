@@ -3,8 +3,10 @@
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,7 +23,7 @@ final Token fuseToken = Token(
   address: Addresses.zeroAddress,
   isNative: true,
   timestamp: 0,
-  amount: BigInt.zero,
+  amount: BigInt.from(0.0),
   walletActions: WalletActions.initial(),
 );
 
@@ -32,7 +34,7 @@ final Token gbpxToken = Token(
   decimals: 18,
   address: Addresses.gbpxTokenAddress,
   timestamp: 0,
-  amount: BigInt.zero,
+  amount: BigInt.from(0.0),
   walletActions: WalletActions.initial(),
 );
 
@@ -44,7 +46,7 @@ final Token pplToken = Token(
   address: Addresses.pplTokenAddress,
   isNative: false,
   timestamp: 0,
-  amount: BigInt.zero,
+  amount: BigInt.from(0.0),
   walletActions: WalletActions.initial(),
 );
 
@@ -55,7 +57,7 @@ final Token fuseDollarToken = Token(
   decimals: 18,
   address: Addresses.fusdTokenAddress,
   timestamp: 0,
-  amount: BigInt.zero,
+  amount: BigInt.from(0.0),
   walletActions: WalletActions.initial(),
 );
 
@@ -76,7 +78,7 @@ class Secrets {
       dotenv.env['FUSE_WALLET_SDK_PK']!;
   static String get FUSE_WALLET_SDK_SK => dotenv.env['FUSE_WALLET_SDK_SK']!;
   static String get FOREIGN_NETWORK_ID => dotenv.env['FOREIGN_NETWORK_ID']!;
-  
+
   static String get WEB3AUTH_CLIENT_ID => dotenv.env['WEB3AUTH_CLIENT_ID']!;
 
   static String get MAP_API_KEY_IOS => dotenv.env['MAP_API_KEY_IOS']!;
@@ -142,6 +144,29 @@ class Messages {
   static const String walletLoadedSnackbarMessage = 'Wallet loaded';
   static const String walletSignedOutSnackbarMessage = 'Wallet signed out';
   static const String walletNotBackedUpSnackbarMessage = 'Wallet not backed up';
+}
+
+class Labels {
+  static const String signupButtonLabelViewAccount = 'View account';
+  static const String signupButtonLabelCreateAccount = 'Create account';
+  static String Function(BuildContext) signupButtonLabelLogin =
+      (BuildContext context) => I10n.of(context).login;
+  static String Function(BuildContext) signupButtonLabelLogout =
+      (BuildContext context) => I10n.of(context).logout;
+  static String Function(BuildContext) signupButtonLabelSignUp =
+      (BuildContext context) => I10n.of(context).sign_up;
+  static const String signupButtonLabelResetSurvey = 'Reset survey';
+  static const String signupButtonLabelReAuthenticate = 'Re-authenticate';
+  static String Function({required bool isWhiteListedAccount})
+      signupScreenTitle = ({required bool isWhiteListedAccount}) =>
+          isWhiteListedAccount ? 'Welcome' : 'Waitlist';
+  static String Function({required bool isWhiteListedAccount})
+      signupScreenSubTitle = ({required bool isWhiteListedAccount}) =>
+          isWhiteListedAccount
+              ? ''
+              : "We'll be in touch as soon as you're off the waitlist list!";
+  static String Function(BuildContext) surveyThanksButtonRestoreBackupWallet =
+      (BuildContext context) => I10n.of(context).restore_from_backup;
 }
 
 const ENV = String.fromEnvironment('ENV', defaultValue: 'production');
@@ -218,3 +243,9 @@ Future<bool> deviceIsSimulator() async {
 
 Future<bool> deviceIsIosSimulator() async =>
     Platform.isIOS && (await deviceIsSimulator());
+
+class DebugHelpers {
+  static const bool inDebugMode = kDebugMode;
+  static Future<bool> deviceIsSimulator() => deviceIsSimulator();
+  static Future<bool> deviceIsIosSimulator() => deviceIsIosSimulator();
+}

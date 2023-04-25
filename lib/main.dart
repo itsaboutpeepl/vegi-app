@@ -44,12 +44,10 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
 
-  bool firstLogin = true;
-  if (false) {
-    // if (prefs.containsKey('hasLoggedIn')) {
-    firstLogin = false;
-  } else {
-    firstLogin = true;
+  final hasLoggedIn = await prefs.getInt('hasLoggedIn');
+
+  bool firstLogin = hasLoggedIn != 1;
+  if (firstLogin) {
     await prefs.setInt('hasLoggedIn', 1);
   }
 

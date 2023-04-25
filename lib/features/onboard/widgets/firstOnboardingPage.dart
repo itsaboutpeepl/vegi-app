@@ -50,7 +50,7 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
                     title: Messages.walletLoadedSnackbarMessage,
                   );
                 },
-                onFailure: () {
+                onFailure: ({String msg = ''}) {
                   showInfoSnack(
                     context,
                     title: Messages.walletSignedOutSnackbarMessage,

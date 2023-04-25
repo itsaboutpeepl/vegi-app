@@ -1,8 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
-import 'package:vegan_liverpool/common/di/di.dart';
-import 'package:vegan_liverpool/services/apis/peeplEats.dart';
-import 'package:web3auth_flutter/web3auth_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';

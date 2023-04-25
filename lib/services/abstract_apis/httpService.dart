@@ -22,9 +22,9 @@ abstract class HttpService {
   }
 
   void _checkAuthRequest(bool authRequired) {
-    final satisfied =
-        authRequired && this.dio.options.headers.containsKey('Cookie');
-    if (!satisfied) {
+    final unsatisfied =
+        authRequired && !this.dio.options.headers.containsKey('Cookie');
+    if (unsatisfied) {
       rootRouter.push(const SignUpScreen());
     }
   }
@@ -93,7 +93,7 @@ abstract class HttpService {
         options: options,
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress)
+        onReceiveProgress: onReceiveProgress,)
       ..onError((error, stackTrace) {
         log.error(error, stackTrace: stackTrace);
         if (error is Map<String, dynamic> &&

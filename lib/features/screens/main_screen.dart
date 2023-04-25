@@ -37,49 +37,65 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, MainScreenViewModel>(
       onInit: (store) {
-        store
-          ..dispatch(fetchFuseSmartWallet(
-            onSuccess: () {
-              showInfoSnack(
-                context,
-                title: Messages.walletLoadedSnackbarMessage,
-              );
-            },
-            onFailure: () {
-              showInfoSnack(
-                context,
-                title: Messages.walletSignedOutSnackbarMessage,
-              );
-            },
-            onError: (error) {
-              if (inDebugMode) {
-                showErrorSnack(
-                  context: context,
-                  title: Messages.walletSignedOutSnackbarMessage,
-                  message: 'Error fetching smart wallet: $error',
-                );
-              } else {
+        if (!store.state.userState.isLoggedOut) {
+          store.dispatch(
+            fetchFuseSmartWallet(
+              onSuccess: () {
                 showInfoSnack(
                   context,
-                  title: Messages.walletSignedOutSnackbarMessage,
+                  title: Messages.walletLoadedSnackbarMessage,
                 );
-              }
-            },
-          ))
+                store
+                  ..dispatch(isBetaWhitelistedAddress())
+                  ..dispatch(
+                    identifyCall(
+                      wallet: store.state.userState.walletAddress,
+                    ),
+                  );
+              },
+              onFailure: ({String msg = ''}) {
+                if (inDebugMode) {
+                  showErrorSnack(
+                    context: context,
+                    title: Messages.walletSignedOutSnackbarMessage,
+                    message: 'Failed to fetch smart wallet from fuse: $msg',
+                  );
+                } else {
+                  showInfoSnack(
+                    context,
+                    title: Messages.walletSignedOutSnackbarMessage,
+                  );
+                }
+              },
+              onError: (error) {
+                if (inDebugMode) {
+                  showErrorSnack(
+                    context: context,
+                    title: Messages.walletSignedOutSnackbarMessage,
+                    message: 'Error fetching smart wallet: $error',
+                  );
+                } else {
+                  showInfoSnack(
+                    context,
+                    title: Messages.walletSignedOutSnackbarMessage,
+                  );
+                }
+              },
+            ),
+          );
           // ..dispatch(
           //   enablePushNotifications(store.state.userState.walletAddress),
           // )
-          ..dispatch(isBetaWhitelistedAddress())
-          ..dispatch(identifyCall(wallet: store.state.userState.walletAddress));
+        }
       },
       converter: MainScreenViewModel.fromStore,
       builder: (context, vm) {
-        if (vm.loggedIn && !vm.userIsVerified) {
+        if (!vm.userIsVerified) {
           // showInfoSnack(
           //   context,
           //   title: "You're on the waitlist. We'll be in touch soon",
           // );
-          return const WaitingListFunnelScreen(surveyCompleted: true);
+          return WaitingListFunnelScreen(surveyCompleted: vm.surveyCompleted);
         }
         return WillPopScope(
           onWillPop: () {

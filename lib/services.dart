@@ -8,8 +8,8 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/services/apis/blueBeaconService.dart';
 import 'package:vegan_liverpool/services/apis/peeplEats.dart';
 import 'package:vegan_liverpool/services/apis/locationService.dart';
-import 'package:vegan_liverpool/services/apis/peeplPay.dart';
-import 'package:vegan_liverpool/services/apis/stripePay.dart';
+import 'package:vegan_liverpool/services/apis/peeplPay2.dart';
+import 'package:vegan_liverpool/services/apis/stripePay2.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
 

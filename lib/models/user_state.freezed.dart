@@ -43,7 +43,7 @@ mixin _$UserState {
   /// Fuse would be able to give you more information
   ///
   /// The account address is a 'real' wallet generated on the device which is only stored on the device.
-  String get accountAddress => throw _privateConstructorUsedError;
+// @Default('') String accountAddress,
   String get privateKey => throw _privateConstructorUsedError;
   @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
   EthPrivateKey? get fuseWalletCredentials =>
@@ -91,7 +91,9 @@ mixin _$UserState {
   List<SurveyQuestion> get surveyQuestions =>
       throw _privateConstructorUsedError;
   bool get surveyCompleted => throw _privateConstructorUsedError;
+  String get surveyEmailUsed => throw _privateConstructorUsedError;
   bool get isVendor => throw _privateConstructorUsedError;
+  String? get stripeCustomerId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -113,7 +115,6 @@ abstract class $UserStateCopyWith<$Res> {
       bool isLoggedOut,
       bool scrollToTop,
       String walletAddress,
-      String accountAddress,
       String privateKey,
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           EthPrivateKey? fuseWalletCredentials,
@@ -157,7 +158,9 @@ abstract class $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true)
           List<SurveyQuestion> surveyQuestions,
       bool surveyCompleted,
-      bool isVendor});
+      String surveyEmailUsed,
+      bool isVendor,
+      String? stripeCustomerId});
 
   $WalletModulesCopyWith<$Res>? get walletModules;
 }
@@ -182,7 +185,6 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? isLoggedOut = null,
     Object? scrollToTop = null,
     Object? walletAddress = null,
-    Object? accountAddress = null,
     Object? privateKey = null,
     Object? fuseWalletCredentials = freezed,
     Object? backup = null,
@@ -217,7 +219,9 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? showSeedPhraseBanner = null,
     Object? surveyQuestions = null,
     Object? surveyCompleted = null,
+    Object? surveyEmailUsed = null,
     Object? isVendor = null,
+    Object? stripeCustomerId = freezed,
   }) {
     return _then(_value.copyWith(
       wcURI: freezed == wcURI
@@ -247,10 +251,6 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
-              as String,
-      accountAddress: null == accountAddress
-          ? _value.accountAddress
-          : accountAddress // ignore: cast_nullable_to_non_nullable
               as String,
       privateKey: null == privateKey
           ? _value.privateKey
@@ -388,10 +388,18 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.surveyCompleted
           : surveyCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      surveyEmailUsed: null == surveyEmailUsed
+          ? _value.surveyEmailUsed
+          : surveyEmailUsed // ignore: cast_nullable_to_non_nullable
+              as String,
       isVendor: null == isVendor
           ? _value.isVendor
           : isVendor // ignore: cast_nullable_to_non_nullable
               as bool,
+      stripeCustomerId: freezed == stripeCustomerId
+          ? _value.stripeCustomerId
+          : stripeCustomerId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -424,7 +432,6 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       bool isLoggedOut,
       bool scrollToTop,
       String walletAddress,
-      String accountAddress,
       String privateKey,
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           EthPrivateKey? fuseWalletCredentials,
@@ -468,7 +475,9 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       @JsonKey(ignore: true)
           List<SurveyQuestion> surveyQuestions,
       bool surveyCompleted,
-      bool isVendor});
+      String surveyEmailUsed,
+      bool isVendor,
+      String? stripeCustomerId});
 
   @override
   $WalletModulesCopyWith<$Res>? get walletModules;
@@ -492,7 +501,6 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? isLoggedOut = null,
     Object? scrollToTop = null,
     Object? walletAddress = null,
-    Object? accountAddress = null,
     Object? privateKey = null,
     Object? fuseWalletCredentials = freezed,
     Object? backup = null,
@@ -527,7 +535,9 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? showSeedPhraseBanner = null,
     Object? surveyQuestions = null,
     Object? surveyCompleted = null,
+    Object? surveyEmailUsed = null,
     Object? isVendor = null,
+    Object? stripeCustomerId = freezed,
   }) {
     return _then(_$_UserState(
       wcURI: freezed == wcURI
@@ -557,10 +567,6 @@ class __$$_UserStateCopyWithImpl<$Res>
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
-              as String,
-      accountAddress: null == accountAddress
-          ? _value.accountAddress
-          : accountAddress // ignore: cast_nullable_to_non_nullable
               as String,
       privateKey: null == privateKey
           ? _value.privateKey
@@ -698,10 +704,18 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.surveyCompleted
           : surveyCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      surveyEmailUsed: null == surveyEmailUsed
+          ? _value.surveyEmailUsed
+          : surveyEmailUsed // ignore: cast_nullable_to_non_nullable
+              as String,
       isVendor: null == isVendor
           ? _value.isVendor
           : isVendor // ignore: cast_nullable_to_non_nullable
               as bool,
+      stripeCustomerId: freezed == stripeCustomerId
+          ? _value.stripeCustomerId
+          : stripeCustomerId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -719,7 +733,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.isLoggedOut = true,
       this.scrollToTop = false,
       this.walletAddress = '',
-      this.accountAddress = '',
       this.privateKey = '',
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           this.fuseWalletCredentials = null,
@@ -763,7 +776,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       @JsonKey(ignore: true)
           this.surveyQuestions = const [],
       this.surveyCompleted = false,
-      this.isVendor = false})
+      this.surveyEmailUsed = '',
+      this.isVendor = false,
+      this.stripeCustomerId = null})
       : super._();
 
   factory _$_UserState.fromJson(Map<String, dynamic> json) =>
@@ -802,9 +817,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   /// Fuse would be able to give you more information
   ///
   /// The account address is a 'real' wallet generated on the device which is only stored on the device.
-  @override
-  @JsonKey()
-  final String accountAddress;
+// @Default('') String accountAddress,
   @override
   @JsonKey()
   final String privateKey;
@@ -908,11 +921,17 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final bool surveyCompleted;
   @override
   @JsonKey()
+  final String surveyEmailUsed;
+  @override
+  @JsonKey()
   final bool isVendor;
+  @override
+  @JsonKey()
+  final String? stripeCustomerId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, accountAddress: $accountAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, firebaseCredentials: $firebaseCredentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, isVendor: $isVendor)';
+    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, firebaseCredentials: $firebaseCredentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId)';
   }
 
   @override
@@ -927,7 +946,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('isLoggedOut', isLoggedOut))
       ..add(DiagnosticsProperty('scrollToTop', scrollToTop))
       ..add(DiagnosticsProperty('walletAddress', walletAddress))
-      ..add(DiagnosticsProperty('accountAddress', accountAddress))
       ..add(DiagnosticsProperty('privateKey', privateKey))
       ..add(DiagnosticsProperty('fuseWalletCredentials', fuseWalletCredentials))
       ..add(DiagnosticsProperty('backup', backup))
@@ -963,7 +981,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('showSeedPhraseBanner', showSeedPhraseBanner))
       ..add(DiagnosticsProperty('surveyQuestions', surveyQuestions))
       ..add(DiagnosticsProperty('surveyCompleted', surveyCompleted))
-      ..add(DiagnosticsProperty('isVendor', isVendor));
+      ..add(DiagnosticsProperty('surveyEmailUsed', surveyEmailUsed))
+      ..add(DiagnosticsProperty('isVendor', isVendor))
+      ..add(DiagnosticsProperty('stripeCustomerId', stripeCustomerId));
   }
 
   @override
@@ -984,8 +1004,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.scrollToTop == scrollToTop) &&
             (identical(other.walletAddress, walletAddress) ||
                 other.walletAddress == walletAddress) &&
-            (identical(other.accountAddress, accountAddress) ||
-                other.accountAddress == accountAddress) &&
             (identical(other.privateKey, privateKey) ||
                 other.privateKey == privateKey) &&
             (identical(other.fuseWalletCredentials, fuseWalletCredentials) ||
@@ -1047,8 +1065,12 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 .equals(other.surveyQuestions, surveyQuestions) &&
             (identical(other.surveyCompleted, surveyCompleted) ||
                 other.surveyCompleted == surveyCompleted) &&
+            (identical(other.surveyEmailUsed, surveyEmailUsed) ||
+                other.surveyEmailUsed == surveyEmailUsed) &&
             (identical(other.isVendor, isVendor) ||
-                other.isVendor == isVendor));
+                other.isVendor == isVendor) &&
+            (identical(other.stripeCustomerId, stripeCustomerId) ||
+                other.stripeCustomerId == stripeCustomerId));
   }
 
   @JsonKey(ignore: true)
@@ -1062,7 +1084,6 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         isLoggedOut,
         scrollToTop,
         walletAddress,
-        accountAddress,
         privateKey,
         fuseWalletCredentials,
         backup,
@@ -1097,7 +1118,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         showSeedPhraseBanner,
         const DeepCollectionEquality().hash(surveyQuestions),
         surveyCompleted,
-        isVendor
+        surveyEmailUsed,
+        isVendor,
+        stripeCustomerId
       ]);
 
   @JsonKey(ignore: true)
@@ -1124,7 +1147,6 @@ abstract class _UserState extends UserState {
       final bool isLoggedOut,
       final bool scrollToTop,
       final String walletAddress,
-      final String accountAddress,
       final String privateKey,
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           final EthPrivateKey? fuseWalletCredentials,
@@ -1168,7 +1190,9 @@ abstract class _UserState extends UserState {
       @JsonKey(ignore: true)
           final List<SurveyQuestion> surveyQuestions,
       final bool surveyCompleted,
-      final bool isVendor}) = _$_UserState;
+      final String surveyEmailUsed,
+      final bool isVendor,
+      final String? stripeCustomerId}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
@@ -1205,8 +1229,7 @@ abstract class _UserState extends UserState {
   /// Fuse would be able to give you more information
   ///
   /// The account address is a 'real' wallet generated on the device which is only stored on the device.
-  String get accountAddress;
-  @override
+// @Default('') String accountAddress,
   String get privateKey;
   @override
   @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
@@ -1284,7 +1307,11 @@ abstract class _UserState extends UserState {
   @override
   bool get surveyCompleted;
   @override
+  String get surveyEmailUsed;
+  @override
   bool get isVendor;
+  @override
+  String? get stripeCustomerId;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

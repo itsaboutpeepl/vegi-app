@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SplashViewModel extends Equatable {
   const SplashViewModel({
@@ -15,14 +18,17 @@ class SplashViewModel extends Equatable {
     required this.createLocalAccount,
     required this.loginAgain,
     required this.surveyCompleted,
+    required this.isWhiteListedAccount,
   });
 
   factory SplashViewModel.fromStore(Store<AppState> store) {
     return SplashViewModel(
       privateKey: store.state.userState.privateKey,
       jwtToken: store.state.userState.jwtToken,
-      isLoggedOut: store.state.userState.isLoggedOut,
+      isLoggedOut: store.state.userState.isLoggedOut ||
+          store.state.userState.jwtToken == '',
       accountDetailsExist: store.state.userState.accountDetailsExist,
+      isWhiteListedAccount: store.state.userState.userIsVerified,
       createLocalAccount: (
         VoidCallback successCallback,
       ) {
@@ -40,7 +46,20 @@ class SplashViewModel extends Equatable {
               title: Messages.walletLoadedSnackbarMessage,
             );
           },
-          onFailure: () {
+          reOnboardRequired: () {
+            if (DebugHelpers.inDebugMode) {
+              log.verbose('Reauthentication of user requires reonboarding');
+            }
+            rootRouter.push(const SignUpScreen());
+          },
+          onFailure: (Exception e) {
+            if (DebugHelpers.inDebugMode) {
+              return showErrorSnack(
+                context: context,
+                title: Messages.walletSignedOutSnackbarMessage,
+                message: e.toString(),
+              );
+            }
             showInfoSnack(
               context,
               title: Messages.walletSignedOutSnackbarMessage,
@@ -72,6 +91,10 @@ class SplashViewModel extends Equatable {
   final bool accountDetailsExist;
   final void Function(BuildContext context) loginAgain;
   final bool surveyCompleted;
+  final bool isWhiteListedAccount;
+
+  bool get isLoggedIn => !isLoggedOut;
+  bool get accountIsWaitlisted => surveyCompleted && !isWhiteListedAccount;
 
   final void Function(
     VoidCallback successCallback,
@@ -84,5 +107,6 @@ class SplashViewModel extends Equatable {
         isLoggedOut,
         accountDetailsExist,
         surveyCompleted,
+        isWhiteListedAccount,
       ];
 }

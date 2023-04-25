@@ -18,7 +18,6 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       isLoggedOut: json['isLoggedOut'] as bool? ?? true,
       scrollToTop: json['scrollToTop'] as bool? ?? false,
       walletAddress: json['walletAddress'] as String? ?? '',
-      accountAddress: json['accountAddress'] as String? ?? '',
       privateKey: json['privateKey'] as String? ?? '',
       fuseWalletCredentials: json['fuseWalletCredentials'] == null
           ? null
@@ -66,7 +65,9 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       initialLoginDateTime: json['initialLoginDateTime'] as String? ?? '',
       showSeedPhraseBanner: json['showSeedPhraseBanner'] as bool? ?? false,
       surveyCompleted: json['surveyCompleted'] as bool? ?? false,
+      surveyEmailUsed: json['surveyEmailUsed'] as String? ?? '',
       isVendor: json['isVendor'] as bool? ?? false,
+      stripeCustomerId: json['stripeCustomerId'] as String? ?? null,
     );
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
@@ -77,7 +78,6 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'isLoggedOut': instance.isLoggedOut,
       'scrollToTop': instance.scrollToTop,
       'walletAddress': instance.walletAddress,
-      'accountAddress': instance.accountAddress,
       'privateKey': instance.privateKey,
       'fuseWalletCredentials':
           ethPrivateKeyToJson(instance.fuseWalletCredentials),
@@ -107,7 +107,9 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'initialLoginDateTime': instance.initialLoginDateTime,
       'showSeedPhraseBanner': instance.showSeedPhraseBanner,
       'surveyCompleted': instance.surveyCompleted,
+      'surveyEmailUsed': instance.surveyEmailUsed,
       'isVendor': instance.isVendor,
+      'stripeCustomerId': instance.stripeCustomerId,
     };
 
 const _$BiometricAuthEnumMap = {

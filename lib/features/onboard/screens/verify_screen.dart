@@ -1,11 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/onboard.dart';
+import 'package:vegan_liverpool/services.dart';
 
 class VerifyPhoneNumber extends StatefulWidget {
   const VerifyPhoneNumber({Key? key, this.verificationId}) : super(key: key);
@@ -151,7 +154,7 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                             padding: const EdgeInsets.only(right: 10),
                           ),
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            rootRouter.push(const SignUpScreen());
                           },
                           child: Text(
                             I10n.of(context).resend_code,
@@ -186,6 +189,11 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
           setState(() {
             isPreloading = false;
           });
+          if (viewModel.displayName != '') {
+            rootRouter.push(const MainScreen());
+          } else {
+            rootRouter.push(UserNameScreen());
+          }
         },
         (dynamic error) {
           setState(() {

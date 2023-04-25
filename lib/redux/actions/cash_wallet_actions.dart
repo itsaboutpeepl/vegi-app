@@ -292,7 +292,7 @@ ThunkAction<AppState> getTokensListForSmartWallet(
                       symbol: e.symbol,
                       decimals: e.decimals,
                       timestamp: 0,
-                      amount: BigInt.zero,
+                      amount: BigInt.from(0.0),
                       walletActions: WalletActions.initial(),
                     ),
                   ),

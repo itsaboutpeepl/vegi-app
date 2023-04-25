@@ -61,7 +61,7 @@ class PaymentMethodSelector extends StatelessWidget {
                 store.dispatch(SetPaymentMethod(PaymentMethod.stripe));
                 return;
               }
-              store.dispatch(SetPaymentMethod(PaymentMethod.peeplPay));
+              store.dispatch(SetPaymentMethod(PaymentMethod.stripe));
             },
             builder: (context, viewmodel) {
               return Text(
@@ -124,6 +124,7 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: () {
+                    // ~ https://stripe.com/docs/testing#testing-interactively
                     viewmodel.setPaymentMethod(
                       paymentMethod: PaymentMethod.stripe,
                     );
@@ -138,6 +139,23 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                     size: 14,
                   ),
                 ),
+                // ListTile(
+                //   onTap: () {
+                //     // ~ https://stripe.com/docs/testing#testing-interactively
+                //     viewmodel.setPaymentMethod(
+                //       paymentMethod: PaymentMethod.stripeToFuse,
+                //     );
+                //     context.router.pop();
+                //   },
+                //   leading: const Icon(
+                //     FontAwesomeIcons.creditCard,
+                //   ),
+                //   title: const Text('Credit & Debit Cards'),
+                //   trailing: const Icon(
+                //     Icons.arrow_forward_ios,
+                //     size: 14,
+                //   ),
+                // ),
                 if (Platform.isIOS)
                   ListTile(
                     onTap: () {

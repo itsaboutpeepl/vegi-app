@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.dart';
+import 'package:vegan_liverpool/features/onboard/widgets/sign_up_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
@@ -24,6 +27,114 @@ class _SignUpButtonsState extends State<SignUpButtons> {
   bool isPrimaryPreloading = false;
   bool isTransparentPreloading = false;
 
+  Future<void> Function() _viewAccount(
+    BuildContext context,
+    SplashViewModel viewmodel,
+  ) {
+    return () async {
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.viewAccount,
+        ),
+      );
+      unawaited(
+        context.router.push(
+          const ProfileScreen(),
+        ),
+      );
+    };
+  }
+
+  Future<void> Function() _signUpNewAccount(
+    BuildContext context,
+    SplashViewModel viewmodel,
+  ) {
+    return () async {
+      final bool? result = await showDialog<bool>(
+        context: context,
+        builder: (context) => const WarnBeforeReCreation(),
+      );
+      if (result!) {
+        setState(() {
+          isTransparentPreloading = true;
+        });
+        viewmodel.createLocalAccount(
+          () {
+            context.router.push(const SignUpScreen());
+          },
+        );
+      }
+    };
+  }
+
+  Future<void> Function() _signUpNewAccountOnWaitlist(
+    BuildContext context,
+    SplashViewModel viewmodel,
+  ) {
+    return () async {
+      if (viewmodel.surveyCompleted) {
+        if (context.router.canPop()) {
+          context.router.popUntilRoot();
+        }
+        await context.router.replace(
+          WaitingListFunnelScreen(
+            surveyCompleted: true,
+          ),
+        );
+      } else {
+        await context.router.replace(
+          WaitingListFunnelScreen(
+            surveyCompleted: false,
+          ),
+        );
+      }
+    };
+  }
+
+  Future<void> Function() _createAccount(
+    BuildContext context,
+    SplashViewModel viewmodel,
+  ) {
+    return () async {
+      if (isPrimaryPreloading) {
+        return;
+      }
+      setState(() {
+        isPrimaryPreloading = true;
+      });
+      viewmodel.createLocalAccount(
+        () {
+          setState(() {
+            isPrimaryPreloading = false;
+          });
+          context.router.push(const SignUpScreen());
+        },
+      );
+    };
+  }
+
+  Future<void> Function() _resetSurvey(
+    BuildContext context,
+    SplashViewModel viewmodel,
+  ) {
+    return () async {
+      await context.router.replace(
+        WaitingListFunnelScreen(
+          surveyCompleted: false,
+        ),
+      );
+    };
+  }
+
+  Future<void> Function() _reLogin(
+    BuildContext context,
+    SplashViewModel viewmodel,
+  ) {
+    return () async {
+      viewmodel.loginAgain(context);
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, SplashViewModel>(
@@ -31,6 +142,11 @@ class _SignUpButtonsState extends State<SignUpButtons> {
       converter: SplashViewModel.fromStore,
       onInit: (store) {
         store.dispatch(fetchSurveyQuestions());
+        if (store.state.userState.accountDetailsExist) {
+          store
+            ..dispatch(isBetaWhitelistedAddress())
+            ..dispatch(ReLogin());
+        }
       },
       builder: (_, viewmodel) {
         return Stack(
@@ -50,288 +166,88 @@ class _SignUpButtonsState extends State<SignUpButtons> {
                   SizedBox(
                     height: 150,
                     child: Text(
-                      'Waitlist',
-                      style: TextStyle(
+                      Labels.signupScreenTitle(
+                        isWhiteListedAccount: viewmodel.isWhiteListedAccount,
+                      ),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 80,
                       ),
                     ),
                   ),
+                  if (viewmodel.surveyCompleted)
+                    SizedBox(
+                      height: 64,
+                      child: Text(
+                        Labels.signupScreenSubTitle(
+                          isWhiteListedAccount: viewmodel.isWhiteListedAccount,
+                        ),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   Flexible(
                     flex: 3,
                     child: Column(
                       children: [
-                        if (!viewmodel.isLoggedOut) ...[
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              side: BorderSide(
-                                color: Colors.grey[100]!,
-                                width: 2,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                        if (viewmodel.isLoggedIn) ...[
+                          SignUpButton(
+                            buttonText: Labels.signupButtonLabelViewAccount,
+                            onPressed: _viewAccount(
+                              context,
+                              viewmodel,
                             ),
-                            child: Text(
-                              'View account',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.grey[100],
-                              ),
-                            ),
-                            onPressed: () async {
-                              Analytics.track(
-                                eventName: AnalyticsEvents.viewAccount,
-                              );
-                              final router = AutoRouter.of(context);
-                              // await router
-                              //   // ..pushNamed('account')
-                              //   ..pushNamed(
-                              //     'accountScreen',
-                              //     onFailure: (failure) async {
-                              //       showErrorSnack(
-                              //         context: context,
-                              //         title: 'Navigation Failure',
-                              //         message: failure.toString(),
-                              //       );
-                              //       await router.pushNamed(
-                              //         '/on-board-screen',
-                              //       );
-                              //     },
-                              //   );
-                              context.router.push(const ProfileScreen());
-                              showInfoSnack(
-                                context,
-                                title: 'Navigation Success',
-                              );
-                            },
                           ),
+                          if (viewmodel.isWhiteListedAccount)
+                            SignUpButton(
+                              buttonText:
+                                  Labels.signupButtonLabelReAuthenticate,
+                              onPressed: _reLogin(
+                                context,
+                                viewmodel,
+                              ),
+                            ),
                         ],
                         if (viewmodel.isLoggedOut) ...[
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 24.0, bottom: 0.0),
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                side: BorderSide(
-                                  color: Colors.grey[100]!,
-                                  width: 2,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 15,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                          if (viewmodel.surveyCompleted)
+                            SignUpButton(
+                              buttonText: Labels.signupButtonLabelResetSurvey,
+                              onPressed: _resetSurvey(
+                                context,
+                                viewmodel,
                               ),
-                              child: Text(
-                                I10n.of(context).sign_up,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.grey[100],
-                                ),
+                            )
+                          else
+                            SignUpButton(
+                              buttonText:
+                                  Labels.signupButtonLabelSignUp(context),
+                              onPressed: _signUpNewAccountOnWaitlist(
+                                context,
+                                viewmodel,
                               ),
-                              onPressed: () {
-                                // ! after beta, uncomment -> convert this back to the new_account button code:
-                                // final bool? result =
-                                //     await showDialog<bool>(
-                                //   context: context,
-                                //   builder: (context) =>
-                                //       const WarnBeforeReCreation(),
-                                // );
-                                // if (result!) {
-                                //   setState(() {
-                                //     isTransparentPreloading = true;
-                                //   });
-                                //   viewmodel.createLocalAccount(
-                                //     () {
-                                //       context.router
-                                //           .push(const SignUpScreen());
-                                //     },
-                                //   );
-                                // }
-                                if (viewmodel.surveyCompleted) {
-                                  if (context.router.canPop()) {
-                                    context.router.popUntilRoot();
-                                  }
-                                  context.router.replace(
-                                    WaitingListFunnelScreen(
-                                      surveyCompleted: true,
-                                    ),
-                                  );
-                                } else {
-                                  context.router.replace(
-                                    WaitingListFunnelScreen(
-                                      surveyCompleted: false,
-                                    ),
-                                  );
-                                }
-                              },
                             ),
-                          ),
+                          if (viewmodel.surveyCompleted &&
+                              !viewmodel.accountDetailsExist)
+                            SignUpButton(
+                              buttonText: Labels.signupButtonLabelCreateAccount,
+                              onPressed: _createAccount(
+                                context,
+                                viewmodel,
+                              ),
+                            ),
+                          if (viewmodel.isWhiteListedAccount)
+                            SignUpButton(
+                              buttonText:
+                                  Labels.signupButtonLabelLogin(context),
+                              onPressed: _reLogin(
+                                context,
+                                viewmodel,
+                              ),
+                            ),
                         ],
-                        // Padding(
-                        //   padding:
-                        //       const EdgeInsets.only(top: 24.0, bottom: 0.0),
-                        //   child: OutlinedButton(
-                        //     style: OutlinedButton.styleFrom(
-                        //       foregroundColor: Colors.white,
-                        //       side: BorderSide(
-                        //         color: Colors.grey[100]!,
-                        //         width: 2,
-                        //       ),
-                        //       padding: const EdgeInsets.symmetric(
-                        //         horizontal: 20,
-                        //         vertical: 15,
-                        //       ),
-                        //       shape: RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(10),
-                        //       ),
-                        //     ),
-                        //     child: Text(
-                        //       viewmodel.isLoggedOut
-                        //           ? I10n.of(context).login
-                        //           // : (I10n.of(context).restore_wallet),
-                        //           : 'Switch account',
-                        //       style: TextStyle(
-                        //         fontSize: 20,
-                        //         fontWeight: FontWeight.w800,
-                        //         color: Colors.grey[100],
-                        //       ),
-                        //     ),
-                        //     onPressed: () {
-                        //       // ! after beta, uncomment ->
-                        //       // //TODO: make this readable PLEASE
-                        //       // if (viewmodel.isLoggedOut) {
-                        //       //   viewmodel.loginAgain();
-                        //       //   if (context.router.canPop()) {
-                        //       //     context.router.popUntilRoot();
-                        //       //   }
-                        //       //   context.router.replace(const MainScreen());
-                        //       // } else {
-                        //       //   setState(() {
-                        //       //     isPrimaryPreloading = true;
-                        //       //   });
-                        //       //   viewmodel.createLocalAccount(
-                        //       //     () {
-                        //       //       setState(() {
-                        //       //         isPrimaryPreloading = false;
-                        //       //       });
-                        //       //       context.router.push(const SignUpScreen());
-                        //       //     },
-                        //       //   );
-                        //       // }
-                        //       context.router
-                        //           .push(const RestoreFromBackupScreen());
-                        //     },
-                        //   ),
-                        // ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(top: 24.0, bottom: 0.0),
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              side: BorderSide(
-                                color: Colors.grey[100]!,
-                                width: 2,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              viewmodel.isLoggedOut
-                                  ? I10n.of(context).login
-                                  // : (I10n.of(context).restore_wallet),
-                                  : 'Re-authenticate',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.grey[100],
-                              ),
-                            ),
-                            onPressed: () {
-                              viewmodel.loginAgain(context);
-                            },
-                          ),
-                        ),
-                        // ! after beta, uncomment ->
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 20),
-                        //   child:
-                        //       // ! newAccount button should be a part of the signup button process.
-                        //       // viewmodel.isLoggedOut
-                        //       //   ? Row(
-                        //       //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       //       children: <Widget>[
-                        //       //         TransparentButton(
-                        //       //           fontSize: 14,
-                        //       //           label: I10n.of(context).restore_backup,
-                        //       //           onPressed: () {
-                        //       //             context.router.push(
-                        //       //               const RestoreFromBackupScreen(),
-                        //       //             );
-                        //       //           },
-                        //       //           textColor: Colors.grey[100]!,
-                        //       //         ),
-                        //       //         Text(
-                        //       //           I10n.of(context).or,
-                        //       //           style: TextStyle(
-                        //       //             color: Colors.grey[100],
-                        //       //           ),
-                        //       //         ),
-                        //       //         TransparentButton(
-                        //       //           fontSize: 14,
-                        //       //           textColor: Colors.grey[100]!,
-                        //       //           label: Messages.createNewAccount,
-                        //       //           preload: isTransparentPreloading,
-                        //       //           onPressed: () async {
-                        //       //             final bool? result =
-                        //       //                 await showDialog<bool>(
-                        //       //               context: context,
-                        //       //               builder: (context) =>
-                        //       //                   const WarnBeforeReCreation(),
-                        //       //             );
-                        //       //             if (result!) {
-                        //       //               setState(() {
-                        //       //                 isTransparentPreloading = true;
-                        //       //               });
-                        //       //               viewmodel.createLocalAccount(
-                        //       //                 () {
-                        //       //                   context.router
-                        //       //                       .push(const SignUpScreen());
-                        //       //                 },
-                        //       //               );
-                        //       //             }
-                        //       //           },
-                        //       //         )
-                        //       //       ],
-                        //       //     )
-                        //       //   :
-                        //       TransparentButton(
-                        //     fontSize: 20,
-                        //     label: I10n.of(context).restore_from_backup,
-                        //     textColor: Colors.grey[100]!,
-                        //     onPressed: () {
-                        //       context.router
-                        //           .push(const RestoreFromBackupScreen());
-                        //     },
-                        //   ),
-                        // )
                       ],
                     ),
                   ),
@@ -340,18 +256,6 @@ class _SignUpButtonsState extends State<SignUpButtons> {
             ),
           ],
         );
-        // return Container(
-        //   decoration: BoxDecoration(
-        //     gradient: LinearGradient(
-        //       colors: screenGradient,
-        //       begin: Alignment.topRight,
-        //       end: Alignment.bottomLeft,
-        //       stops: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1],
-        //     ),
-        //   ),
-        //   padding: EdgeInsets.only(bottom: 80),
-        //   child: column,
-        // );
       },
     );
   }

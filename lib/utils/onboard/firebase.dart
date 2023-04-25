@@ -1,25 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/common/network/web3auth.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
-import 'package:vegan_liverpool/constants/strings.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
-import 'package:web3auth_flutter/enums.dart';
-import 'package:web3auth_flutter/input.dart';
-import 'package:web3auth_flutter/output.dart';
-import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 class FirebaseStrategy implements IOnBoardStrategy {
   FirebaseStrategy({this.strategy = OnboardStrategy.firebase});
 
   @override
   OnboardStrategy strategy;
-
-  bool _useWeb3Auth = false;
 
   @override
   Future<void> login(
@@ -28,33 +22,28 @@ class FirebaseStrategy implements IOnBoardStrategy {
     void Function() onSuccess,
     void Function(dynamic error) onError,
   ) async {
+    void codeSent(
+      String verificationId, [
+      int? forceResendingToken,
+    ]) {
+      log.info('PhoneCodeSent verificationId: $verificationId');
+      store
+        ..dispatch(SetFirebaseCredentials(null))
+        ..dispatch(SetVerificationId(verificationId));
+      rootRouter.push(VerifyPhoneNumber(verificationId: verificationId));
+    }
+
+    /// * This handler will only be called on Android devices which support automatic SMS code resolution.
+    /// ~ https://firebase.google.com/docs/auth/flutter/phone-auth#verificationcompleted
     Future<void> verificationCompleted(
       PhoneAuthCredential credentials,
     ) async {
-      store.dispatch(SetFirebaseCredentials(credentials));
-      final UserCredential userCredential =
-          await firebaseAuth.signInWithCredential(
+      return completeVerification(
+        store,
         credentials,
+        onSuccess,
+        onError,
       );
-      final User? user = userCredential.user;
-      final User currentUser = firebaseAuth.currentUser!;
-      assert(user?.uid == currentUser.uid, 'User IDs not same.');
-      // final String accountAddress = store.state.userState.accountAddress;
-      // final String identifier = store.state.userState.identifier;
-      // final String token = await user!.getIdToken();
-
-      try {
-        store.dispatch(
-            authenticateFuseWalletSDK()); // this does jwt storing and loginSuccess
-        onSuccess();
-        if (_useWeb3Auth) {
-          await _initWeb3Auth();
-        } else {
-          await rootRouter.push(UserNameScreen());
-        }
-      } catch (e) {
-        onError(e.toString());
-      }
     }
 
     Future<void> verificationFailed(FirebaseAuthException authException) async {
@@ -65,24 +54,20 @@ class FirebaseStrategy implements IOnBoardStrategy {
       onError(authException.message);
     }
 
-    void codeSent(
-      String verificationId, [
-      int? forceResendingToken,
-    ]) {
-      log.info('PhoneCodeSent verificationId: $verificationId');
-      onSuccess();
-      store
-        ..dispatch(SetFirebaseCredentials(null))
-        ..dispatch(SetVerificationId(verificationId));
-      rootRouter.push(VerifyPhoneNumber(verificationId: verificationId));
-      onSuccess();
-    }
+    // final confirmationResult = await firebaseAuth.signInWithPhoneNumber(
+    //   phoneNumber!,
+    // );
+
+    // if(confirmationResult.confirm(verificationCode))
 
     await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      codeAutoRetrievalTimeout: (String verificationId) {},
+      codeAutoRetrievalTimeout: (String verificationId) {
+        return onError('Code verification timeout.');
+      },
       codeSent: codeSent,
-      verificationCompleted: verificationCompleted,
+      verificationCompleted:
+          verificationCompleted, // * This handler will only be called on Android devices which support automatic SMS code resolution.
       verificationFailed: verificationFailed,
     );
   }
@@ -93,20 +78,116 @@ class FirebaseStrategy implements IOnBoardStrategy {
     String verificationCode,
     void Function() onSuccess,
   ) async {
-    PhoneAuthCredential? credential = store.state.userState.firebaseCredentials;
+    PhoneAuthCredential? credentials =
+        store.state.userState.firebaseCredentials;
     final String verificationId = store.state.userState.verificationId ?? '';
-    credential ??= PhoneAuthProvider.credential(
+    credentials ??= PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: verificationCode,
     );
+
+    return completeVerification(
+      store,
+      credentials,
+      onSuccess,
+      log.error,
+    );
   }
 
-  Future<void> _initWeb3Auth() async {
-    final Web3AuthResponse response = await Web3AuthFlutter.login(
-      LoginParams(
-        loginProvider: Provider.email_passwordless,
-        redirectUrl: Uri.tryParse('vegi://vegiApp.co.uk/user-name-screen'),
-      ), //TODO: allow users to login in any number of ways that they want to...
+  Future<void> resetPassword({
+    required String email,
+  }) async {
+    await firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> _reauthenticateUser({
+    required AuthCredential credential,
+  }) async {
+    await firebaseAuth.currentUser?.reauthenticateWithCredential(credential);
+  }
+
+  @override
+  Future<void> reauthenticateUser({
+    required Store<AppState> store,
+    required void Function() reOnboardRequired,
+    required dynamic Function(Exception) onFailure,
+  }) async {
+    if (store.state.userState.firebaseCredentials != null) {
+      try {
+        await _reauthenticateUser(
+          credential: store.state.userState.firebaseCredentials!,
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-credential') {
+          return reOnboardRequired();
+        }
+        log.error(
+            'Error whilst reauthenticating using Firebase Credentials from persistent store. $e');
+        return onFailure(e);
+      } on Exception catch (e) {
+        return onFailure(e);
+      }
+    } else {
+      return reOnboardRequired();
+    }
+  }
+
+  Future<void> completeVerification(
+    Store<AppState> store,
+    PhoneAuthCredential credentials,
+    void Function() onSuccess,
+    void Function(String) onFailure,
+  ) async {
+    store.dispatch(SetFirebaseCredentials(credentials));
+    final UserCredential userCredential =
+        await firebaseAuth.signInWithCredential(
+      credentials,
     );
+    final User? user = userCredential.user;
+    final firebaseSessionToken = await user?.getIdToken();
+    final User currentUser = firebaseAuth.currentUser!;
+    assert(user?.uid == currentUser.uid, 'User IDs not same.');
+
+    if (store.state.userState.email.isNotEmpty) {
+      await currentUser.updateEmail(store.state.userState.email);
+    }
+
+    if (firebaseSessionToken == null) {
+      return log.error(
+          'Firebase did not authenticate user using phone auth credentials in onboarding');
+    }
+    try {
+      final succeeded = await loginToVegi(
+        store: store,
+        phoneNumber: store.state.userState.phoneNumber,
+        firebaseSessionToken: firebaseSessionToken,
+      );
+      if (succeeded) {
+        onSuccess(); //! Bug one of these lines is killing my state
+      } else {
+        log.error('Could not login to vegi...');
+      }
+    } catch (e) {
+      log.error(e.toString());
+    }
+  }
+
+  Future<bool> loginToVegi({
+    required Store<AppState> store,
+    required String phoneNumber,
+    required String firebaseSessionToken,
+  }) async {
+    try {
+      // * sets the session cookie on the service class instance.
+      final loggedIn = await peeplEatsService.loginWithPhone(
+        phoneNumber: phoneNumber,
+        firebaseSessionToken: firebaseSessionToken,
+        rememberMe: true,
+      );
+      return loggedIn.sessionCookie.isNotEmpty;
+    } catch (err) {
+      log.error('Error: $err');
+      return false;
+    }
   }
 }

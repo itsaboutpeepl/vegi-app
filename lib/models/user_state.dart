@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:convert';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
@@ -29,13 +30,33 @@ Map<String, dynamic> localeToJson(Locale? locale) => locale == null
     ? {'languageCode': 'en', 'countryCode': 'US'}
     : {'languageCode': locale.languageCode, 'countryCode': locale.countryCode};
 
-EthPrivateKey? ethPrivateKeyFromJson(dynamic value) =>
-    value == null || value == BigInt.zero
-        ? null
-        : EthPrivateKey.fromInt(value as BigInt);
+T tryCatchInline<T>(
+  T Function() callback,
+  T defaultResult, {
+  bool silent = false,
+}) {
+  try {
+    return callback();
+  } catch (e) {
+    if (!silent) {
+      log.error(e);
+    }
+    return defaultResult;
+  }
+}
 
-BigInt ethPrivateKeyToJson(EthPrivateKey? ethPk) =>
-    ethPk == null ? BigInt.zero : ethPk.privateKeyInt;
+EthPrivateKey? ethPrivateKeyFromJson(dynamic value) =>
+    tryCatchInline<EthPrivateKey?>(
+      () => value == null || value == ''
+          ? null
+          : EthPrivateKey.fromInt(BigInt.parse(value as String)),
+      null,
+      silent: false,
+    );
+
+String ethPrivateKeyToJson(EthPrivateKey? ethPk) {
+  return ethPk == null ? '' : ethPk.privateKeyInt.toString();
+}
 
 @freezed
 class UserState with _$UserState {
@@ -63,7 +84,7 @@ class UserState with _$UserState {
     /// Fuse would be able to give you more information
     ///
     /// The account address is a 'real' wallet generated on the device which is only stored on the device.
-    @Default('') String accountAddress,
+    // @Default('') String accountAddress,
     @Default('') String privateKey,
     @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
     @Default(null)
@@ -100,7 +121,9 @@ class UserState with _$UserState {
     @Default(false) bool showSeedPhraseBanner,
     @Default([]) @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
     @Default(false) bool surveyCompleted,
+    @Default('') String surveyEmailUsed,
     @Default(false) bool isVendor,
+    @Default(null) String? stripeCustomerId,
   }) = _UserState;
 
   const UserState._();
@@ -118,6 +141,7 @@ class UserState with _$UserState {
         listOfDeliveryAddresses: [],
         surveyQuestions: [],
         surveyCompleted: false,
+        surveyEmailUsed: '',
         isVendor: false,
         isUsingSimulator: false,
         isUsingIosSimulator: false,
@@ -126,6 +150,7 @@ class UserState with _$UserState {
   factory UserState.fromJson(Map<String, dynamic> json) =>
       _$UserStateFromJson(json);
 
+  String get accountAddress => fuseWalletCredentials?.address.toString() ?? '';
   bool get accountDetailsExist => accountAddress.isNotEmpty;
 
   EthPrivateKey get fuseWalletCredentialsNotNull {

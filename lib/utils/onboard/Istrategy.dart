@@ -23,6 +23,11 @@ abstract class IOnBoardStrategy {
     String verificationCode,
     void Function() onSuccess,
   );
+  Future<void> reauthenticateUser({
+    required Store<AppState> store,
+    required void Function() reOnboardRequired,
+    required dynamic Function(Exception) onFailure,
+  });
 }
 
 class OnBoardStrategyFactory {

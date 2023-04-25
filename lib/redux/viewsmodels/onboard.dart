@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 class VerifyOnboardViewModel extends Equatable {
   const VerifyOnboardViewModel({
     required this.countryCode,
+    required this.displayName,
     required this.phoneNumber,
     required this.verificationId,
     required this.firebaseCredentials,
@@ -19,6 +20,7 @@ class VerifyOnboardViewModel extends Equatable {
     return VerifyOnboardViewModel(
       countryCode: store.state.userState.countryCode,
       phoneNumber: store.state.userState.phoneNumber,
+      displayName: store.state.userState.displayName,
       verificationId: store.state.userState.verificationId,
       firebaseCredentials: userState.firebaseCredentials,
       verify: (
@@ -39,6 +41,7 @@ class VerifyOnboardViewModel extends Equatable {
 
   final String countryCode;
   final String phoneNumber;
+  final String displayName;
   final String? verificationId;
   final PhoneAuthCredential? firebaseCredentials;
   final Function(
@@ -51,5 +54,6 @@ class VerifyOnboardViewModel extends Equatable {
   List<Object?> get props => [
         countryCode,
         phoneNumber,
+        displayName,
       ];
 }

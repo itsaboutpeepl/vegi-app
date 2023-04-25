@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     title: Messages.walletLoadedSnackbarMessage,
                   );
                 },
-                onFailure: () {
+                onFailure: ({String msg = ''}) {
                   showInfoSnack(
                     context,
                     title: Messages.walletSignedOutSnackbarMessage,

@@ -6,9 +6,12 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetWalletConnectURI>(_setWalletConnectURI),
   TypedReducer<UserState, GetWalletDataSuccess>(_getWalletDataSuccess),
+  TypedReducer<UserState, SetStripeCustomerDetails>(_setStripeCustomerDetails),
   TypedReducer<UserState, ScrollToTop>(_scrollToTop),
   TypedReducer<UserState, ToggleUpgrade>(_toggleUpgrade),
   TypedReducer<UserState, CreateLocalAccountSuccess>(_createNewWalletSuccess),
+  // TypedReducer<UserState, AddSurveyEmailSuccess>(_addSurveyEmailSuccess),
+  TypedReducer<UserState, CreateSurveyCompletedSuccess>(_completeSurveySuccess),
   TypedReducer<UserState, LoginRequestSuccess>(_loginSuccess),
   TypedReducer<UserState, LoginVerifySuccess>(_loginVerifySuccess),
   TypedReducer<UserState, LogoutRequestSuccess>(_logoutSuccess),
@@ -105,15 +108,6 @@ UserState _warnSendDialogShowed(
   );
 }
 
-UserState _setSecurityType(
-  UserState state,
-  SetSecurityType action,
-) {
-  return state.copyWith(
-    authType: action.biometricAuth,
-  );
-}
-
 UserState _getWalletDataSuccess(
   UserState state,
   GetWalletDataSuccess action,
@@ -122,6 +116,15 @@ UserState _getWalletDataSuccess(
     networks: action.networks,
     walletAddress: action.walletAddress,
     walletModules: action.walletModules,
+  );
+}
+
+UserState _setStripeCustomerDetails(
+  UserState state,
+  SetStripeCustomerDetails action,
+) {
+  return state.copyWith(
+    stripeCustomerId: action.customerId,
   );
 }
 
@@ -150,11 +153,29 @@ UserState _createNewWalletSuccess(
   UserState state,
   CreateLocalAccountSuccess action,
 ) {
-  return UserState(
+  return state.copyWith(
     mnemonic: action.mnemonic,
     privateKey: action.privateKey,
     fuseWalletCredentials: action.fuseWalletCredentials,
-    accountAddress: action.accountAddress,
+    // accountAddress: action.accountAddress,
+  );
+}
+
+// UserState _addSurveyEmailSuccess(
+//   UserState state,
+//   AddSurveyEmailSuccess action,
+// ) {
+//   return state.copyWith(
+//     surveyEmailUsed: action.email,
+//   );
+// }
+
+UserState _completeSurveySuccess(
+  UserState state,
+  CreateSurveyCompletedSuccess action,
+) {
+  return state.copyWith(
+    surveyCompleted: action.completed,
   );
 }
 
@@ -199,8 +220,14 @@ UserState _logoutSuccess(
   return state.copyWith(
     isLoggedOut: true,
     walletAddress: '',
-    accountAddress: '',
+    privateKey: '',
+    userIsVerified: false,
+    // email: '',
+    // phoneNumber: '',
     displayName: '',
+    // jwtToken: '',
+    firebaseCredentials: null,
+    // accountAddress: '',
     hasSavedSeedPhrase: false,
     mnemonic: [
       '',
@@ -244,7 +271,20 @@ UserState _setPincode(
   UserState state,
   SetPincodeSuccess action,
 ) {
-  return state.copyWith(pincode: action.pincode);
+  return state.copyWith(
+    pincode: action.pincode,
+    isLoggedOut: false,
+  );
+}
+
+UserState _setSecurityType(
+  UserState state,
+  SetSecurityType action,
+) {
+  return state.copyWith(
+    authType: action.biometricAuth,
+    isLoggedOut: false,
+  );
 }
 
 UserState _setFirebaseCredentials(
@@ -314,7 +354,10 @@ UserState _setUserEmailForRegistrationToWaitingList(
   UserState state,
   EmailWLRegistrationSuccess action,
 ) {
-  return state.copyWith(email: action.email);
+  return state.copyWith(
+    email: action.email,
+    surveyEmailUsed: action.email,
+  );
 }
 
 UserState _setSurveyQuestions(

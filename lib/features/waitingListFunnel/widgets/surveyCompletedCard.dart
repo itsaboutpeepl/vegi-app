@@ -17,27 +17,27 @@ class SurveyCompletedCard extends StatefulWidget {
 }
 
 class _SurveyCompletedCardState extends State<SurveyCompletedCard> {
-  late ConfettiController _confettiController;
+  // late ConfettiController _confettiController;
 
   @override
   void initState() {
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 10));
+    // _confettiController =
+    //     ConfettiController(duration: const Duration(seconds: 10));
 
-    playConfetti();
+    // playConfetti();
 
     super.initState();
   }
 
   void playConfetti() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      _confettiController.play();
-    });
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    //   _confettiController.play();
+    // });
   }
 
   @override
   void dispose() {
-    _confettiController.dispose();
+    // _confettiController.dispose();
     super.dispose();
   }
 
@@ -63,12 +63,12 @@ class _SurveyCompletedCardState extends State<SurveyCompletedCard> {
                     'assets/images/order-pending.gif',
                     width: MediaQuery.of(context).size.width * 0.6,
                   ),
-                  ConfettiWidget(
-                    confettiController: _confettiController,
-                    blastDirectionality: BlastDirectionality.explosive,
-                    colors: const [themeAccent600, themeShade600],
-                    createParticlePath: drawStar,
-                  ),
+                  // ConfettiWidget(
+                  //   confettiController: _confettiController,
+                  //   blastDirectionality: BlastDirectionality.explosive,
+                  //   colors: const [themeAccent600, themeShade600],
+                  //   createParticlePath: drawStar,
+                  // ),
                 ],
               ),
             ),

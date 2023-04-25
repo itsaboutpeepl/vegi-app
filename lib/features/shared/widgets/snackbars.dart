@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 
+import '../../../utils/log/log.dart';
+
 void showErrorSnack({
   required BuildContext context,
   String? title,
@@ -10,6 +12,9 @@ void showErrorSnack({
   EdgeInsets? margin,
   String? message,
 }) {
+  if (!context.mounted) {
+    return;
+  }
   Flushbar<void>(
     boxShadows: const [
       BoxShadow(
@@ -44,7 +49,12 @@ void showErrorSnack({
       width: 20,
       height: 20,
     ),
-  ).show(context);
+    onTap: (flushbar) async {
+      await flushbar.dismiss();
+    },
+  ).show(context).catchError((error) {
+    log.error('Caught error showing flushbar error snack: $error');
+  });
 }
 
 void showCopiedFlushbar(BuildContext context) {
@@ -70,6 +80,9 @@ void showCopiedFlushbar(BuildContext context) {
     borderRadius: const BorderRadius.all(
       Radius.circular(8),
     ),
+    onTap: (flushbar) async {
+      await flushbar.dismiss();
+    },
   ).show(context);
 }
 
@@ -78,6 +91,9 @@ void showInfoSnack(
   required String title,
   Color? backgroundColor,
 }) {
+  if (!context.mounted) {
+    return;
+  }
   Flushbar<void>(
     duration: const Duration(seconds: 1),
     boxShadows: const [
@@ -100,7 +116,12 @@ void showInfoSnack(
     borderRadius: const BorderRadius.all(
       Radius.circular(8),
     ),
-  ).show(context);
+    onTap: (flushbar) async {
+      await flushbar.dismiss();
+    },
+  ).show(context).catchError((error) {
+    log.error('Caught error showing flushbar info snack: $error');
+  });
 }
 
 void showPlayBackCompletedFlushBar(BuildContext context) {
@@ -126,5 +147,8 @@ void showPlayBackCompletedFlushBar(BuildContext context) {
     borderRadius: const BorderRadius.all(
       Radius.circular(8),
     ),
+    onTap: (flushbar) async {
+      await flushbar.dismiss();
+    },
   ).show(context);
 }

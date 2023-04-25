@@ -16,6 +16,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/common/network/web3auth.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/analytics_props.dart';
@@ -114,6 +115,19 @@ class SetDeviceIsSimulatorRTO {
   }
 }
 
+class SetStripeCustomerDetails {
+  SetStripeCustomerDetails({
+    required this.customerId,
+  });
+
+  final String customerId;
+
+  @override
+  String toString() {
+    return 'SetStripeCustomerDetails : customerId=$customerId';
+  }
+}
+
 class WarnSendDialogShowed {
   WarnSendDialogShowed({
     required this.value,
@@ -137,16 +151,39 @@ class CreateLocalAccountSuccess {
     this.mnemonic,
     this.privateKey,
     this.fuseWalletCredentials,
-    this.accountAddress,
+    // this.accountAddress,
   );
   final List<String> mnemonic;
   final String privateKey;
   final EthPrivateKey fuseWalletCredentials;
-  final String accountAddress;
+  // final String accountAddress;
 
   @override
-  String toString() => 'CreateLocalAccountSuccess:'
-      ' accountAddress: $accountAddress';
+  String toString() => 'CreateLocalAccountSuccess';
+}
+
+class CreateSurveyCompletedSuccess {
+  CreateSurveyCompletedSuccess(
+    this.completed,
+  );
+
+  final bool completed;
+
+  @override
+  String toString() => 'CreateSurveyCompletedSuccess:'
+      ' completed: $completed';
+}
+
+class AddSurveyEmailSuccess {
+  AddSurveyEmailSuccess(
+    this.email,
+  );
+
+  final String email;
+
+  @override
+  String toString() => 'AddSurveyEmailSuccess:'
+      ' email: $email';
 }
 
 class ReLogin {
@@ -572,7 +609,6 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
         return;
       }
       await peeplEatsService.getUserForWalletAddress(
-        // ! We are using account address not wallet address here, any idea what the difference is...
         store.state.userState.walletAddress,
         (userIsVerified) {
           Analytics.track(
@@ -692,6 +728,7 @@ ThunkAction<AppState> loginHandler(
   void Function() onSuccess,
   void Function(String error) onError,
 ) {
+  bool _useWeb3Auth = false;
   return (Store<AppState> store) async {
     try {
       store.dispatch(setDeviceId(phoneNumber.e164));
@@ -706,6 +743,14 @@ ThunkAction<AppState> loginHandler(
               AnalyticsProps.status: AnalyticsProps.success,
             },
           );
+          store.dispatch(
+            authenticateFuseWalletSDK(),
+          ); //!BUG why is this not called after login?
+          // if (_useWeb3Auth) {
+          //   loginWeb3Auth(/*'vegi://vegiApp.co.uk/user-name-screen'*/);
+          // } else {
+          //   rootRouter.push(UserNameScreen());
+          // }
           store.dispatch(
             LoginRequestSuccess(
               countryCode: countryCode,
@@ -765,9 +810,7 @@ ThunkAction<AppState> verifyHandler(
               AnalyticsProps.status: AnalyticsProps.success,
             },
           );
-
           onSuccess();
-          rootRouter.push(UserNameScreen());
         },
       );
     } catch (error, s) {
@@ -814,7 +857,7 @@ ThunkAction<AppState> restoreWalletCall(
             mnemonicWords,
             privateKey,
             credentials,
-            accountAddress.toString(),
+            // accountAddress.toString(),
           ),
         )
         ..dispatch(authenticateFuseWalletSDK());
@@ -852,6 +895,9 @@ ThunkAction<AppState> createLocalAccountCall(
   return (Store<AppState> store) async {
     try {
       // Generate a random Ethereum private key
+      if (store.state.userState.fuseWalletCredentials != null) {
+        return successCallback();
+      }
       final String mnemonic = Mnemonic.generate();
       final String privateKey = Mnemonic.privateKeyFromMnemonic(mnemonic);
       //! await peeplEatsService.backupUserSK(privateKey);
@@ -863,7 +909,7 @@ ThunkAction<AppState> createLocalAccountCall(
           mnemonic.split(' '),
           privateKey,
           credentials,
-          accountAddress.toString(),
+          // accountAddress.toString(),
         ),
       );
       await Analytics.track(
@@ -885,11 +931,16 @@ ThunkAction<AppState> createLocalAccountCall(
   };
 }
 
-ThunkAction<AppState> authenticateFuseWalletSDK() {
+ThunkAction<AppState> authenticateFuseWalletSDK({
+  void Function()? onSuccess,
+  void Function(String message)? onFailure,
+}) {
+  onFailure ??= log.error;
+  onSuccess ??= () => log.info('authenticateFuseWalletSDK succeeded');
   return (Store<AppState> store) async {
     try {
       if (store.state.userState.privateKey.isEmpty) {
-        throw Exception(
+        return onFailure!(
             'User details missing from reauthentication in authenticateFuseWalletSDK');
       }
       final EthPrivateKey credentials =
@@ -898,24 +949,26 @@ ThunkAction<AppState> authenticateFuseWalletSDK() {
         credentials,
       );
       if (authRes.hasError) {
-        print('Error occurred in authenticate');
-        print(authRes.error);
+        onFailure!('Error occurred in authenticate: ${authRes.error}');
       } else if (authRes.hasData) {
         final jwt = authRes.data!;
         store.dispatch(LoginVerifySuccess(jwt));
+        fuseWalletSDK.jwtToken = jwt;
+        onSuccess!();
         // * Use the JWT token to make authenticated API requests
       } else {
         throw Exception(
             'Bad AuthRes from Fuse Authentication did not contain either data or an error: $authRes');
       }
     } catch (e, s) {
+      onFailure!('Error in authenticateFuseWalletSDK: $e');
       log.error(
         'ERROR - authenticateFuseWalletSDK',
         error: e,
         stackTrace: s,
       );
       await Sentry.captureException(
-        Exception('Error in authenticateFuseWalletSDK: ${e.toString()}'),
+        Exception('Error in authenticateFuseWalletSDK: $e'),
         stackTrace: s,
         hint: 'ERROR - authenticateFuseWalletSDK',
       );
@@ -923,13 +976,35 @@ ThunkAction<AppState> authenticateFuseWalletSDK() {
   };
 }
 
+bool smartWalletInitialised(FuseWalletSDK fuseWalletSDK) {
+  try {
+    return fuseWalletSDK.smartWallet != null;
+  } on Exception catch (err) {
+    print('Error: $err');
+    return false;
+  } catch (err) {
+    print('Error: $err');
+    return false;
+  }
+  ;
+}
+
 ThunkAction<AppState> fetchFuseSmartWallet({
   required void Function() onSuccess,
-  required void Function() onFailure,
+  required void Function({String msg}) onFailure,
   required void Function(Exception error) onError,
+  bool allowRetry = true,
 }) {
   return (Store<AppState> store) async {
     try {
+      if (smartWalletInitialised(fuseWalletSDK)) {
+        store.dispatch(
+          saveSmartWallet(
+            smartWallet: fuseWalletSDK.smartWallet,
+          ),
+        );
+        return onSuccess();
+      }
       // Try to fetch a wallet for the EOA, if it doesn't exist create one
       final walletData = await fuseWalletSDK.fetchWallet();
 
@@ -937,11 +1012,36 @@ ThunkAction<AppState> fetchFuseSmartWallet({
         onData: (SmartWallet smartWallet) async {
           log.info(
               'Successfully refetched smart wallet address ${smartWallet.smartWalletAddress}');
+          store.dispatch(
+            saveSmartWallet(
+              smartWallet: fuseWalletSDK.smartWallet,
+            ),
+          );
           onSuccess();
         },
         onError: (Exception exception) async {
           log.info('Failed to fetch wallet.');
           log.info('Trying to create...');
+          if (allowRetry &&
+              exception.toString().contains('LateInit') &&
+              store.state.userState.jwtToken != '') {
+            fuseWalletSDK.jwtToken = store.state.userState.jwtToken;
+            store
+              ..dispatch(
+                authenticateFuseWalletSDK(
+                  onFailure: (message) => onFailure(),
+                ),
+              )
+              ..dispatch(
+                fetchFuseSmartWallet(
+                  onSuccess: onSuccess,
+                  onFailure: onFailure,
+                  onError: onError,
+                  allowRetry: false,
+                ),
+              );
+            return;
+          }
           final exceptionOrStream = await fuseWalletSDK.createWallet();
           if (exceptionOrStream.hasError) {
             log.error(exceptionOrStream.error.toString());
@@ -979,7 +1079,9 @@ ThunkAction<AppState> fetchFuseSmartWallet({
         error: e,
         stackTrace: s,
       );
-      onFailure();
+      onFailure(
+        msg: 'Error in setup wallet call: $e',
+      );
       await Sentry.captureException(
         Exception('Error in setup wallet call: ${e.toString()}'),
         stackTrace: s,
@@ -1016,19 +1118,69 @@ ThunkAction<AppState> saveSmartWallet({
   };
 }
 
+ThunkAction<AppState> reAuthenticateOnBoarding({
+  required void Function() onSuccess,
+  required void Function(Exception error) onFailure,
+  required void Function() reOnboardRequired,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      await onBoardStrategy.reauthenticateUser(
+        store: store,
+        reOnboardRequired: reOnboardRequired,
+        onFailure: (exception) {
+          Analytics.track(
+            eventName: AnalyticsEvents.verify,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.success,
+            },
+          );
+          onFailure(exception);
+        },
+      );
+    } on Exception catch (error, s) {
+      onFailure(error);
+      await Analytics.track(
+        eventName: AnalyticsEvents.verify,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': error.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception(
+            'Error in reauthenticate user [${onBoardStrategy.strategy.name}]: $error'),
+        stackTrace: s,
+        hint: 'Error while phone number verification',
+      );
+    }
+  };
+}
+
 ThunkAction<AppState> reLoginCall({
   required void Function() onSuccess,
-  required void Function() onFailure,
+  required void Function(Exception error) onFailure,
+  required void Function() reOnboardRequired,
   required void Function(Exception error) onError,
 }) {
   return (Store<AppState> store) async {
     store
       ..dispatch(ReLogin())
+      ..dispatch(
+        reAuthenticateOnBoarding(
+          onSuccess: () {},
+          reOnboardRequired: reOnboardRequired,
+          onFailure: onFailure,
+        ),
+      )
       ..dispatch(authenticateFuseWalletSDK())
       ..dispatch(
         fetchFuseSmartWallet(
           onSuccess: onSuccess,
-          onFailure: onFailure,
+          onFailure: (
+                  {String msg =
+                      'FetchFuseSmartWallet Exception from ReLoginCall'}) =>
+              onFailure(Exception(msg)),
           onError: onError,
         ),
       );
