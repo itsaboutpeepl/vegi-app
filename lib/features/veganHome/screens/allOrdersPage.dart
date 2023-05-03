@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
@@ -11,9 +12,12 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/orderItem.dart';
+import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/orders/allOrdersPageViewModel.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:redux/redux.dart';
 
 class AllOrdersPage extends StatefulWidget {
   const AllOrdersPage({Key? key}) : super(key: key);
@@ -27,21 +31,41 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
   bool _isLoading = true;
   bool _isEmpty = false;
 
-  Future<void> fetchOrdersList(String walletAddress) async {
-    listOfOrders =
-        (await peeplEatsService.getPastOrders(walletAddress)).reversed.toList();
+  // Future<void> fetchOrdersList(
+  //   String walletAddress,
+  //   Store<AppState> store,
+  // ) async {
+  //   listOfOrders =
+  //       (await peeplEatsService.getPastOrders(walletAddress)).reversed.toList();
 
-    setState(() {
-      _isLoading = false;
-      listOfOrders.isEmpty ? _isEmpty = true : _isEmpty = false;
-    });
-  }
+  //   setState(() {
+  //     _isLoading = false;
+  //     listOfOrders.isEmpty ? _isEmpty = true : _isEmpty = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, void>(
-      converter: (store) {},
-      onInit: (store) => fetchOrdersList(store.state.userState.walletAddress),
+    return StoreConnector<AppState, AllOrdersPageViewModel>(
+      converter: AllOrdersPageViewModel.fromStore,
+      onInit: (store) => store.dispatch(
+        fetchAllOrdersForWallet(
+          store.state.userState.walletAddress,
+          () {
+            setState(() {
+              _isLoading = false;
+            });
+          },
+          (errorMessage, errCode) {
+            showErrorSnack(
+              context: context,
+              title: 'Connection Error',
+              message:
+                  'Unable to fetch your orders. Please contact vegi support if this issue persists.',
+            );
+          },
+        ),
+      ),
       builder: (_, viewmodel) {
         return Scaffold(
           appBar: const CustomAppBar(
@@ -49,21 +73,32 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
           ),
           body: _isLoading
               ? const Center(child: CircularProgressIndicator())
-              : _isEmpty
+              : viewmodel.scheduledOrders.isEmpty
                   ? const EmptyStatePage(
                       emoji: '😐',
                       title: 'You have no upcoming orders… yet!',
                       subtitle: 'If this is incorrect, please contact support '
                           ' for assistance. Details are in our FAQ section.',
                     )
-                  : ListView.separated(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      itemBuilder: (_, index) =>
-                          SingleOrderCard(order: listOfOrders[index]),
-                      separatorBuilder: (_, index) => const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        viewmodel.refreshOrders(() {}, (message, errCode) {
+                          showErrorSnack(
+                            context: context,
+                            title: 'Connection error',
+                            message: 'Unable to fetch latest orders',
+                          );
+                        });
+                      },
+                      child: ListView.separated(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        itemBuilder: (_, index) => SingleOrderCard(
+                            order: viewmodel.scheduledOrders[index],),
+                        separatorBuilder: (_, index) => const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        itemCount: viewmodel.pastOrders.length,
                       ),
-                      itemCount: listOfOrders.length,
                     ),
         );
       },

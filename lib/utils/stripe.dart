@@ -6,13 +6,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/di/env.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/pay/dialogs/stripe_payment_confirmed_dialog.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/card_failed.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/minting_dialog.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class StripeCustomResponse {
@@ -29,17 +32,27 @@ class StripeService {
   final Stripe instance = Stripe.instance;
 
   void init() {
-    Stripe.publishableKey = kDebugMode
+    Stripe.publishableKey = Env.isDev
         ? dotenv.env['STRIPE_API_KEY_TEST']!
         : dotenv.env['STRIPE_API_KEY_LIVE']!;
-    if (Stripe.publishableKey.contains('live')) {
-      throw Exception('Stripe Instance not ready for production usage.');
-    }
+    // if (Stripe.publishableKey.contains('live')) {
+    //   final e = Exception('Stripe Instance not ready for production usage.');
+    //   Sentry.captureException(
+    //     e,
+    //     stackTrace: StackTrace.current,
+    //     hint: 'ERROR - fetchProductOptions $e',
+    //   );
+    //   throw e;
+    // }
     Stripe.merchantIdentifier = 'merchant.com.vegiapp';
   }
 
   Future<bool> handleStripe({
-    required String walletAddress,
+    required String recipientWalletAddress,
+    required String senderWalletAddress,
+    required Currency currency,
+    required num orderId,
+    required num accountId,
     required int amount,
     required BuildContext context,
     required bool shouldPushToHome,
@@ -49,8 +62,11 @@ class StripeService {
           await stripePayService.createStripePaymentIntent(
         //TODO: if walletAddress, then user stripePayService.createStripePaymentIntentForTopupFromBank or something
         amount: amount,
-        currency: 'gbp',
-        walletAddress: walletAddress,
+        currency: currency.name.toLowerCase(),
+        recipientWalletAddress: recipientWalletAddress,
+        senderWalletAddress: senderWalletAddress,
+        orderId: orderId,
+        accountId: accountId,
       );
       if (paymentIntentClientSecret == null) {
         log.error('Unable to create payment intent from ${stripePayService}');
@@ -80,7 +96,9 @@ class StripeService {
         ),
       );
       await instance.presentPaymentSheet();
-      final mintingCrypto = walletAddress.isNotEmpty;
+      final mintingCrypto = currency == Currency.GBPx ||
+          currency == Currency.PPL ||
+          currency == Currency.GBT;
       if (mintingCrypto) {
         await showDialog<void>(
           context: context,
@@ -100,7 +118,7 @@ class StripeService {
         await showDialog<void>(
           context: context,
           builder: (context) {
-            return StripePaymentConfirmedDialog();
+            return StripePaymentConfirmedDialog(); //TODO: Replace this with MintingDialog copy
           },
           barrierDismissible: true,
         );
@@ -153,7 +171,11 @@ class StripeService {
 
   Future<bool> handleApplePay({
     required String productName,
-    required String walletAddress,
+    required String recipientWalletAddress,
+    required String senderWalletAddress,
+    required Currency currency,
+    required num orderId,
+    required num accountId,
     required int amount,
     required BuildContext context,
     required bool shouldPushToHome,
@@ -163,8 +185,11 @@ class StripeService {
       final paymentIntentClientSecret =
           await stripePayService.createStripePaymentIntent(
         amount: amount,
-        currency: 'gbp',
-        walletAddress: walletAddress,
+        currency: currency.name.toLowerCase(),
+        recipientWalletAddress: recipientWalletAddress,
+        senderWalletAddress: senderWalletAddress,
+        orderId: orderId,
+        accountId: accountId,
       );
       if (paymentIntentClientSecret == null) {
         log.error('Unable to create payment intent from ${stripePayService}');
@@ -193,16 +218,33 @@ class StripeService {
           ),
         ),
       );
-      await showDialog<void>(
-        context: context,
-        builder: (context) {
-          return MintingDialog(
-            amountText: amount.formattedPrice,
-            shouldPushToHome: shouldPushToHome,
-          );
-        },
-        barrierDismissible: false,
-      );
+      final mintingCrypto = currency == Currency.GBPx ||
+          currency == Currency.PPL ||
+          currency == Currency.GBT;
+      if (mintingCrypto) {
+        await showDialog<void>(
+          context: context,
+          builder: (context) {
+            return MintingDialog(
+              amountText: amount.formattedPrice,
+              shouldPushToHome: shouldPushToHome,
+            );
+          },
+          barrierDismissible: false,
+        );
+      } else {
+        // Stripe sends a payment_intent.succeeded event when the payment completes. (~ https://stripe.com/docs/api/events/types#event_types-payment_intent.succeeded)
+        // Subscribe to these events from the vegi backend by passing the vegi backend here when creating the
+        // * we have a stripe webhook setup now on vegi backend.
+
+        await showDialog<void>(
+          context: context,
+          builder: (context) {
+            return StripePaymentConfirmedDialog(); //TODO: Replace this with MintingDialog copy
+          },
+          barrierDismissible: true,
+        );
+      }
       return true;
     } on Exception catch (e, s) {
       if (e is StripeException) {

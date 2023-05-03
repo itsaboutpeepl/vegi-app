@@ -38,15 +38,18 @@ class GenerateQRFromCartViewModel extends Equatable {
   final String orderId;
   final bool isSimulator;
 
-  Map<String, dynamic> get basketJson => (basket?.toUploadJson() ?? {})
-    ..addAll({
-      'uri': peeplEatsService.getOrderUri(orderId),
-      'generatorWalletAddress': generatorWalletAddress,
-      // 'customerWalletAddress': customerWalletAddress ?? '',
-      // 'vendorWalletAddress': vendorWalletAddress,
-    });
+  Future<Map<String, dynamic>> basketJson() async =>
+      (basket?.toUploadJson() ?? Future.value({})).then(
+        (value) => value
+          ..addAll({
+            'uri': peeplEatsService.getOrderUri(orderId),
+            'generatorWalletAddress': generatorWalletAddress,
+            // 'customerWalletAddress': customerWalletAddress ?? '',
+            // 'vendorWalletAddress': vendorWalletAddress,
+          }),
+      );
 
-  String get encodedBasket => json.encode(basketJson);
+  Future<String> encodedBasket() async => json.encode(basketJson);
 
   @override
   List<Object?> get props => [

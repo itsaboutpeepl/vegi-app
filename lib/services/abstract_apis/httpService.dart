@@ -29,6 +29,8 @@ abstract class HttpService {
     }
   }
 
+  bool get hasCookieStored => dio.options.headers.containsKey('Cookie');
+
   bool _checkAuthDioResponse(DioError dioErr) {
     if (dioErr.response?.statusCode == 401) {
       // TODO? Do we need to set: set state logged out to true and then route to the login signin buttons screen
@@ -49,6 +51,7 @@ abstract class HttpService {
   }) {
     _checkAuthRequest(sendWithAuthCreds);
     if (!path.startsWith('/')) path = '/' + path;
+    log.info('GET: "${dio.options.baseUrl}${path}"');
     try {
       return dio.get<T>(
         path,
@@ -85,16 +88,18 @@ abstract class HttpService {
     void Function(int, int)? onReceiveProgress,
     bool sendWithAuthCreds = false,
   }) {
+    log.info('POST: "${dio.options.baseUrl}${path}"');
     _checkAuthRequest(sendWithAuthCreds);
     if (!path.startsWith('/')) path = '/' + path;
-    return dio.post<T>(path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,)
-      ..onError((error, stackTrace) {
+    return dio.post<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    )..onError((error, stackTrace) {
         log.error(error, stackTrace: stackTrace);
         if (error is Map<String, dynamic> &&
             error['message'].toString().startsWith('SocketException:') &&
@@ -160,6 +165,7 @@ abstract class HttpService {
     if (!path.startsWith('/')) {
       path = '/$path';
     }
+    log.info('PUT: "${dio.options.baseUrl}${path}"');
     return dio.put<T>(
       path,
       data: Stream.fromIterable(image.map((e) => [e])),
@@ -221,7 +227,7 @@ abstract class HttpService {
   }) {
     _checkAuthRequest(sendWithAuthCreds);
     final image = file.readAsBytesSync();
-
+    log.info('POST: "${dio.options.baseUrl}${path}"');
     MultipartFile imgByteStream;
     String mimeType;
     String mimeSubType;

@@ -5,6 +5,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/onboard.dart';
@@ -76,6 +77,14 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                       ),
                     ),
                     Text(
+                      'A message has been sent to: ',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Text(
                       I10n.of(context).enter_verification_code,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
@@ -124,9 +133,9 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                               currentText = value;
                             });
                           },
-                          onCompleted: ((value) {
-                            _verifyCode(viewModel);
-                          }),
+                          onCompleted: (value) {
+                            _verifyCode(viewModel, context);
+                          },
                         ),
                       ),
                     ),
@@ -138,7 +147,7 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                         preload: isPreloading,
                         disabled: isPreloading,
                         onPressed: () {
-                          _verifyCode(viewModel);
+                          _verifyCode(viewModel, context);
                         },
                       ),
                     ),
@@ -177,7 +186,7 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
     );
   }
 
-  void _verifyCode(VerifyOnboardViewModel viewModel) {
+  void _verifyCode(VerifyOnboardViewModel viewModel, BuildContext context) {
     formKey.currentState!.validate();
     if (currentText.length == 6) {
       setState(() {
@@ -199,6 +208,13 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
           setState(() {
             isPreloading = false;
           });
+          if (context.mounted) {
+            showErrorSnack(
+              context: context,
+              title: 'Connection issue',
+              message: 'Unable to verify phonenumber verification code',
+            );
+          }
         },
       );
     }

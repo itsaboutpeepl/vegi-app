@@ -1,7 +1,8 @@
-// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: lines_longer_than_80_chars, constant_identifier_names
 
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 enum ImageSourceType { gallery, camera }
 
@@ -32,9 +33,10 @@ enum OrderAcceptanceStatus {
   pending,
   outForDelivery,
   delivered,
+  collected,
 }
 
-enum RestaurantAcceptedStatus {
+enum RestaurantAcceptanceStatus {
   accepted,
   rejected,
   pending,
@@ -51,39 +53,53 @@ enum ProductDiscontinuedStatus {
   inactive,
 }
 
-extension RestaurantAcceptedStatusHelpers on RestaurantAcceptedStatus {
+enum Currency {
+  GBT,
+  PPL,
+  GBPx,
+  GBP,
+  USD,
+  EUR,
+}
+
+enum VegiAccountType {
+  ethereum,
+  bank
+}
+
+extension RestaurantAcceptedStatusHelpers on RestaurantAcceptanceStatus {
   OrderAcceptanceStatus toOrderAcceptanceStatus() {
     switch (this) {
-      case RestaurantAcceptedStatus.accepted:
+      case RestaurantAcceptanceStatus.accepted:
         return OrderAcceptanceStatus.accepted;
 
-      case RestaurantAcceptedStatus.partiallyFulfilled:
+      case RestaurantAcceptanceStatus.partiallyFulfilled:
         return OrderAcceptanceStatus.partiallyFulfilled;
 
-      case RestaurantAcceptedStatus.rejected:
+      case RestaurantAcceptanceStatus.rejected:
         return OrderAcceptanceStatus.declined;
 
-      case RestaurantAcceptedStatus.pending:
+      case RestaurantAcceptanceStatus.pending:
         return OrderAcceptanceStatus.pending;
     }
   }
 
-  static RestaurantAcceptedStatus enumValueFromString(String other) {
+  static RestaurantAcceptanceStatus enumValueFromString(String other) {
     switch (other) {
       case 'accepted':
-        return RestaurantAcceptedStatus.accepted;
+        return RestaurantAcceptanceStatus.accepted;
 
       case 'partially fulfilled':
-        return RestaurantAcceptedStatus.partiallyFulfilled;
+        return RestaurantAcceptanceStatus.partiallyFulfilled;
 
       case 'rejected':
-        return RestaurantAcceptedStatus.rejected;
+        return RestaurantAcceptanceStatus.rejected;
 
       case 'pending':
-        return RestaurantAcceptedStatus.pending;
+        return RestaurantAcceptanceStatus.pending;
 
       default:
-        return RestaurantAcceptedStatus.pending;
+        return RestaurantAcceptanceStatus.pending;
     }
   }
 }
@@ -162,6 +178,9 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
       case 'declined':
         return OrderAcceptanceStatus.declined;
 
+      case 'collected':
+        return OrderAcceptanceStatus.collected;
+
       default:
         return OrderAcceptanceStatus.declined;
     }
@@ -186,6 +205,9 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
 
       case OrderAcceptanceStatus.delivered:
         return 'has been delivered!';
+
+      case OrderAcceptanceStatus.collected:
+        return 'has been collected!';
     }
   }
 
@@ -207,6 +229,9 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
         return 'videos/order-pending.gif';
 
       case OrderAcceptanceStatus.delivered:
+        return 'videos/order-delivered.gif';
+
+      case OrderAcceptanceStatus.collected:
         return 'videos/order-delivered.gif';
     }
   }
@@ -230,6 +255,76 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
 
       case OrderAcceptanceStatus.delivered:
         return 'Your order #$orderID has been delivered!';
+
+      case OrderAcceptanceStatus.collected:
+        return 'Your order #$orderID has been collected!';
+    }
+  }
+}
+
+extension RestaurantAcceptanceStatusHelpers on RestaurantAcceptanceStatus {
+  static RestaurantAcceptanceStatus enumValueFromString(String other) {
+    switch (other) {
+      case 'accepted':
+        return RestaurantAcceptanceStatus.accepted;
+
+      case 'partially fulfilled':
+        return RestaurantAcceptanceStatus.partiallyFulfilled;
+
+      case 'declined':
+      case 'rejected':
+        return RestaurantAcceptanceStatus.rejected;
+
+      default:
+        return RestaurantAcceptanceStatus.rejected;
+    }
+  }
+
+  String get displayTitle {
+    switch (this) {
+      case RestaurantAcceptanceStatus.pending:
+        return 'is awaiting confirmation';
+
+      case RestaurantAcceptanceStatus.accepted:
+        return 'is being prepared';
+
+      case RestaurantAcceptanceStatus.rejected:
+        return 'has been declined, sorry!';
+
+      case RestaurantAcceptanceStatus.partiallyFulfilled:
+        return 'has been partially fulfilled, please review!';
+    }
+  }
+
+  String get imageTitle {
+    switch (this) {
+      case RestaurantAcceptanceStatus.pending:
+        return 'videos/order-pending.gif';
+
+      case RestaurantAcceptanceStatus.accepted:
+        return 'videos/order-accepted.gif';
+
+      case RestaurantAcceptanceStatus.rejected:
+        return 'videos/order-declined.gif';
+
+      case RestaurantAcceptanceStatus.partiallyFulfilled:
+        return 'videos/order-pending.gif';
+    }
+  }
+
+  String descriptionText(String orderID) {
+    switch (this) {
+      case RestaurantAcceptanceStatus.pending:
+        return 'Your order #$orderID has been sent and is awaiting confirmation. We will notify you when the order status changes.\nIf you need help please contact support via the FAQ page.';
+
+      case RestaurantAcceptanceStatus.accepted:
+        return 'Your order #$orderID has been confirmed and is being prepared!\nIf you need help please contact support via the FAQ page.';
+
+      case RestaurantAcceptanceStatus.rejected:
+        return 'Unfortunately your order #$orderID has been declined by the merchant.  Please try again or for help contact support via the FAQ page.';
+
+      case RestaurantAcceptanceStatus.partiallyFulfilled:
+        return 'Your order #$orderID has been partially fulfilled! Please review in the orders section or for help contact support via the FAQ page.!';
     }
   }
 }
@@ -262,9 +357,38 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
   }
 }
 
-enum OrderPaidStatus { paid, unpaid, failed }
+enum OrderPaidStatus {
+  paid,
+  unpaid,
+  failed,
+}
 
-enum SurveyResponseType { boolean, string, multiline, number }
+enum PaymentStatus {
+  succeeded,
+  failed,
+  confirmed,
+}
+
+enum PaymentNetworkType {
+  peepl_fuse,
+  vegi_fuse,
+  stripe,
+}
+
+enum FetchOrdersVegiResponseEnum {
+  noOrders,
+  unauthorised,
+  badRequest,
+  error,
+  success
+}
+
+enum SurveyResponseType {
+  boolean,
+  string,
+  multiline,
+  number,
+}
 
 enum QRCodeScanErrCode {
   productNotFound,
@@ -301,4 +425,28 @@ enum ProductSuggestionImageType {
   ingredientInfo,
   nutritionalInfo,
   teachUsMore,
+}
+
+enum FirebaseMessagingCategoriesEnum {
+  payment_confirmed,
+  payment_succeeded,
+  payment_failed,
+  unknown_message,
+}
+
+extension FirebaseMessagingCategoriesEnumHelpers
+    on FirebaseMessagingCategoriesEnum {
+  static FirebaseMessagingCategoriesEnum fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'payment_confirmed':
+        return FirebaseMessagingCategoriesEnum.payment_confirmed;
+      case 'payment_succeeded':
+        return FirebaseMessagingCategoriesEnum.payment_succeeded;
+      case 'payment_failed':
+        return FirebaseMessagingCategoriesEnum.payment_failed;
+      default:
+        log.warn('Unknown firebase message send with category: "$value"');
+        return FirebaseMessagingCategoriesEnum.unknown_message;
+    }
+  }
 }

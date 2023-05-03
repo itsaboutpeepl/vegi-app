@@ -19,7 +19,7 @@ abstract class Env {
   static const _envFile = activeEnv == dev
       ? '.env_dev'
       : activeEnv == qa
-          ? '.env_qa'
+          ? '.env'
           : activeEnv == test
               ? '.env_dev'
               : '.env';

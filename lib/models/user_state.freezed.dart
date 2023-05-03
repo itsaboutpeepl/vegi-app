@@ -61,6 +61,7 @@ mixin _$UserState {
   String get avatarUrl => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String? get verificationId => throw _privateConstructorUsedError;
+  bool get verificationPassed => throw _privateConstructorUsedError;
   String get identifier => throw _privateConstructorUsedError;
   List<String> get syncedContacts => throw _privateConstructorUsedError;
   Map<String, String> get reverseContacts => throw _privateConstructorUsedError;
@@ -73,6 +74,7 @@ mixin _$UserState {
   @JsonKey(ignore: true)
   PhoneAuthCredential? get firebaseCredentials =>
       throw _privateConstructorUsedError;
+  String? get firebaseSessionToken => throw _privateConstructorUsedError;
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
       throw _privateConstructorUsedError;
   bool get hasSavedSeedPhrase => throw _privateConstructorUsedError;
@@ -94,6 +96,7 @@ mixin _$UserState {
   String get surveyEmailUsed => throw _privateConstructorUsedError;
   bool get isVendor => throw _privateConstructorUsedError;
   String? get stripeCustomerId => throw _privateConstructorUsedError;
+  num? get vegiAccountId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -131,6 +134,7 @@ abstract class $UserStateCopyWith<$Res> {
       String avatarUrl,
       String email,
       String? verificationId,
+      bool verificationPassed,
       String identifier,
       List<String> syncedContacts,
       Map<String, String> reverseContacts,
@@ -142,6 +146,7 @@ abstract class $UserStateCopyWith<$Res> {
           Locale? locale,
       @JsonKey(ignore: true)
           PhoneAuthCredential? firebaseCredentials,
+      String? firebaseSessionToken,
       List<DeliveryAddresses> listOfDeliveryAddresses,
       bool hasSavedSeedPhrase,
       bool useLiveLocation,
@@ -160,7 +165,8 @@ abstract class $UserStateCopyWith<$Res> {
       bool surveyCompleted,
       String surveyEmailUsed,
       bool isVendor,
-      String? stripeCustomerId});
+      String? stripeCustomerId,
+      num? vegiAccountId});
 
   $WalletModulesCopyWith<$Res>? get walletModules;
 }
@@ -200,6 +206,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? avatarUrl = null,
     Object? email = null,
     Object? verificationId = freezed,
+    Object? verificationPassed = null,
     Object? identifier = null,
     Object? syncedContacts = null,
     Object? reverseContacts = null,
@@ -208,6 +215,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? authType = null,
     Object? locale = null,
     Object? firebaseCredentials = freezed,
+    Object? firebaseSessionToken = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
     Object? useLiveLocation = null,
@@ -222,6 +230,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? surveyEmailUsed = null,
     Object? isVendor = null,
     Object? stripeCustomerId = freezed,
+    Object? vegiAccountId = freezed,
   }) {
     return _then(_value.copyWith(
       wcURI: freezed == wcURI
@@ -312,6 +321,10 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.verificationId
           : verificationId // ignore: cast_nullable_to_non_nullable
               as String?,
+      verificationPassed: null == verificationPassed
+          ? _value.verificationPassed
+          : verificationPassed // ignore: cast_nullable_to_non_nullable
+              as bool,
       identifier: null == identifier
           ? _value.identifier
           : identifier // ignore: cast_nullable_to_non_nullable
@@ -344,6 +357,10 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.firebaseCredentials
           : firebaseCredentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
+      firebaseSessionToken: freezed == firebaseSessionToken
+          ? _value.firebaseSessionToken
+          : firebaseSessionToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       listOfDeliveryAddresses: null == listOfDeliveryAddresses
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
@@ -400,6 +417,10 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.stripeCustomerId
           : stripeCustomerId // ignore: cast_nullable_to_non_nullable
               as String?,
+      vegiAccountId: freezed == vegiAccountId
+          ? _value.vegiAccountId
+          : vegiAccountId // ignore: cast_nullable_to_non_nullable
+              as num?,
     ) as $Val);
   }
 
@@ -448,6 +469,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       String avatarUrl,
       String email,
       String? verificationId,
+      bool verificationPassed,
       String identifier,
       List<String> syncedContacts,
       Map<String, String> reverseContacts,
@@ -459,6 +481,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
           Locale? locale,
       @JsonKey(ignore: true)
           PhoneAuthCredential? firebaseCredentials,
+      String? firebaseSessionToken,
       List<DeliveryAddresses> listOfDeliveryAddresses,
       bool hasSavedSeedPhrase,
       bool useLiveLocation,
@@ -477,7 +500,8 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       bool surveyCompleted,
       String surveyEmailUsed,
       bool isVendor,
-      String? stripeCustomerId});
+      String? stripeCustomerId,
+      num? vegiAccountId});
 
   @override
   $WalletModulesCopyWith<$Res>? get walletModules;
@@ -516,6 +540,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? avatarUrl = null,
     Object? email = null,
     Object? verificationId = freezed,
+    Object? verificationPassed = null,
     Object? identifier = null,
     Object? syncedContacts = null,
     Object? reverseContacts = null,
@@ -524,6 +549,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? authType = null,
     Object? locale = null,
     Object? firebaseCredentials = freezed,
+    Object? firebaseSessionToken = freezed,
     Object? listOfDeliveryAddresses = null,
     Object? hasSavedSeedPhrase = null,
     Object? useLiveLocation = null,
@@ -538,6 +564,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? surveyEmailUsed = null,
     Object? isVendor = null,
     Object? stripeCustomerId = freezed,
+    Object? vegiAccountId = freezed,
   }) {
     return _then(_$_UserState(
       wcURI: freezed == wcURI
@@ -628,6 +655,10 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.verificationId
           : verificationId // ignore: cast_nullable_to_non_nullable
               as String?,
+      verificationPassed: null == verificationPassed
+          ? _value.verificationPassed
+          : verificationPassed // ignore: cast_nullable_to_non_nullable
+              as bool,
       identifier: null == identifier
           ? _value.identifier
           : identifier // ignore: cast_nullable_to_non_nullable
@@ -660,6 +691,10 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.firebaseCredentials
           : firebaseCredentials // ignore: cast_nullable_to_non_nullable
               as PhoneAuthCredential?,
+      firebaseSessionToken: freezed == firebaseSessionToken
+          ? _value.firebaseSessionToken
+          : firebaseSessionToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       listOfDeliveryAddresses: null == listOfDeliveryAddresses
           ? _value.listOfDeliveryAddresses
           : listOfDeliveryAddresses // ignore: cast_nullable_to_non_nullable
@@ -716,6 +751,10 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.stripeCustomerId
           : stripeCustomerId // ignore: cast_nullable_to_non_nullable
               as String?,
+      vegiAccountId: freezed == vegiAccountId
+          ? _value.vegiAccountId
+          : vegiAccountId // ignore: cast_nullable_to_non_nullable
+              as num?,
     ));
   }
 }
@@ -749,6 +788,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.avatarUrl = '',
       this.email = '',
       this.verificationId,
+      this.verificationPassed = false,
       this.identifier = '',
       this.syncedContacts = const [],
       this.reverseContacts = const {},
@@ -760,6 +800,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
           this.locale,
       @JsonKey(ignore: true)
           this.firebaseCredentials,
+      this.firebaseSessionToken,
       this.listOfDeliveryAddresses = const [],
       this.hasSavedSeedPhrase = false,
       this.useLiveLocation = false,
@@ -778,7 +819,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.surveyCompleted = false,
       this.surveyEmailUsed = '',
       this.isVendor = false,
-      this.stripeCustomerId = null})
+      this.stripeCustomerId = null,
+      this.vegiAccountId = null})
       : super._();
 
   factory _$_UserState.fromJson(Map<String, dynamic> json) =>
@@ -864,6 +906,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final String? verificationId;
   @override
   @JsonKey()
+  final bool verificationPassed;
+  @override
+  @JsonKey()
   final String identifier;
   @override
   @JsonKey()
@@ -886,6 +931,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey(ignore: true)
   final PhoneAuthCredential? firebaseCredentials;
+  @override
+  final String? firebaseSessionToken;
   @override
   @JsonKey()
   final List<DeliveryAddresses> listOfDeliveryAddresses;
@@ -928,10 +975,13 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final String? stripeCustomerId;
+  @override
+  @JsonKey()
+  final num? vegiAccountId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, firebaseCredentials: $firebaseCredentials, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId)';
+    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId)';
   }
 
   @override
@@ -961,6 +1011,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('avatarUrl', avatarUrl))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('verificationId', verificationId))
+      ..add(DiagnosticsProperty('verificationPassed', verificationPassed))
       ..add(DiagnosticsProperty('identifier', identifier))
       ..add(DiagnosticsProperty('syncedContacts', syncedContacts))
       ..add(DiagnosticsProperty('reverseContacts', reverseContacts))
@@ -969,6 +1020,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('authType', authType))
       ..add(DiagnosticsProperty('locale', locale))
       ..add(DiagnosticsProperty('firebaseCredentials', firebaseCredentials))
+      ..add(DiagnosticsProperty('firebaseSessionToken', firebaseSessionToken))
       ..add(DiagnosticsProperty(
           'listOfDeliveryAddresses', listOfDeliveryAddresses))
       ..add(DiagnosticsProperty('hasSavedSeedPhrase', hasSavedSeedPhrase))
@@ -983,7 +1035,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('surveyCompleted', surveyCompleted))
       ..add(DiagnosticsProperty('surveyEmailUsed', surveyEmailUsed))
       ..add(DiagnosticsProperty('isVendor', isVendor))
-      ..add(DiagnosticsProperty('stripeCustomerId', stripeCustomerId));
+      ..add(DiagnosticsProperty('stripeCustomerId', stripeCustomerId))
+      ..add(DiagnosticsProperty('vegiAccountId', vegiAccountId));
   }
 
   @override
@@ -1028,6 +1081,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.verificationId, verificationId) ||
                 other.verificationId == verificationId) &&
+            (identical(other.verificationPassed, verificationPassed) ||
+                other.verificationPassed == verificationPassed) &&
             (identical(other.identifier, identifier) ||
                 other.identifier == identifier) &&
             const DeepCollectionEquality()
@@ -1043,6 +1098,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             const DeepCollectionEquality().equals(other.locale, locale) &&
             (identical(other.firebaseCredentials, firebaseCredentials) ||
                 other.firebaseCredentials == firebaseCredentials) &&
+            (identical(other.firebaseSessionToken, firebaseSessionToken) ||
+                other.firebaseSessionToken == firebaseSessionToken) &&
             const DeepCollectionEquality().equals(
                 other.listOfDeliveryAddresses, listOfDeliveryAddresses) &&
             (identical(other.hasSavedSeedPhrase, hasSavedSeedPhrase) ||
@@ -1070,7 +1127,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             (identical(other.isVendor, isVendor) ||
                 other.isVendor == isVendor) &&
             (identical(other.stripeCustomerId, stripeCustomerId) ||
-                other.stripeCustomerId == stripeCustomerId));
+                other.stripeCustomerId == stripeCustomerId) &&
+            (identical(other.vegiAccountId, vegiAccountId) ||
+                other.vegiAccountId == vegiAccountId));
   }
 
   @JsonKey(ignore: true)
@@ -1099,6 +1158,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         avatarUrl,
         email,
         verificationId,
+        verificationPassed,
         identifier,
         const DeepCollectionEquality().hash(syncedContacts),
         const DeepCollectionEquality().hash(reverseContacts),
@@ -1107,6 +1167,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         authType,
         const DeepCollectionEquality().hash(locale),
         firebaseCredentials,
+        firebaseSessionToken,
         const DeepCollectionEquality().hash(listOfDeliveryAddresses),
         hasSavedSeedPhrase,
         useLiveLocation,
@@ -1120,7 +1181,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         surveyCompleted,
         surveyEmailUsed,
         isVendor,
-        stripeCustomerId
+        stripeCustomerId,
+        vegiAccountId
       ]);
 
   @JsonKey(ignore: true)
@@ -1163,6 +1225,7 @@ abstract class _UserState extends UserState {
       final String avatarUrl,
       final String email,
       final String? verificationId,
+      final bool verificationPassed,
       final String identifier,
       final List<String> syncedContacts,
       final Map<String, String> reverseContacts,
@@ -1174,6 +1237,7 @@ abstract class _UserState extends UserState {
           final Locale? locale,
       @JsonKey(ignore: true)
           final PhoneAuthCredential? firebaseCredentials,
+      final String? firebaseSessionToken,
       final List<DeliveryAddresses> listOfDeliveryAddresses,
       final bool hasSavedSeedPhrase,
       final bool useLiveLocation,
@@ -1192,7 +1256,8 @@ abstract class _UserState extends UserState {
       final bool surveyCompleted,
       final String surveyEmailUsed,
       final bool isVendor,
-      final String? stripeCustomerId}) = _$_UserState;
+      final String? stripeCustomerId,
+      final num? vegiAccountId}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
@@ -1261,6 +1326,8 @@ abstract class _UserState extends UserState {
   @override
   String? get verificationId;
   @override
+  bool get verificationPassed;
+  @override
   String get identifier;
   @override
   List<String> get syncedContacts;
@@ -1279,6 +1346,8 @@ abstract class _UserState extends UserState {
   @override
   @JsonKey(ignore: true)
   PhoneAuthCredential? get firebaseCredentials;
+  @override
+  String? get firebaseSessionToken;
   @override
   List<DeliveryAddresses> get listOfDeliveryAddresses;
   @override
@@ -1312,6 +1381,8 @@ abstract class _UserState extends UserState {
   bool get isVendor;
   @override
   String? get stripeCustomerId;
+  @override
+  num? get vegiAccountId;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

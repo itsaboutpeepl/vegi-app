@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/numeric_keyboard.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
@@ -9,6 +11,7 @@ import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/topup.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class TopupScreen extends StatefulWidget {
   const TopupScreen({Key? key}) : super(key: key);
@@ -109,7 +112,7 @@ class _TopupScreenState extends State<TopupScreen>
                               vertical: 5,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).backgroundColor,
+                              color: Theme.of(context).colorScheme.background,
                               borderRadius: BorderRadius.circular(
                                 20,
                               ),
@@ -179,13 +182,29 @@ class _TopupScreenState extends State<TopupScreen>
                 child: PrimaryButton(
                   // labelFontWeight: FontWeight.normal,
                   label: I10n.of(context).next_button,
-                  onPressed: () => stripeService.handleApplePay(
-                    walletAddress: viewModel.walletAddress,
-                    amount: int.parse(_amountText) * 100,
-                    context: context,
-                    shouldPushToHome: true,
-                    productName: 'vegi',
-                  ),
+                  onPressed: () async {
+                    if (viewModel.accountId == null) {
+                      final e =
+                          'Vegi AccountId not set on state... Cannot start payment';
+                      log.error(e);
+                      await Sentry.captureException(
+                        Exception(e),
+                        stackTrace: StackTrace.current, // from catch (e, s)
+                        hint: 'ERROR - startPeeplPayProcess $e',
+                      );
+                    }
+                    await stripeService.handleApplePay(
+                      recipientWalletAddress: viewModel.recipientWalletAddress,
+                      senderWalletAddress: viewModel.senderWalletAddress,
+                      orderId: viewModel.orderId,
+                      accountId: viewModel.accountId!,
+                      currency: Currency.GBP,
+                      amount: int.parse(_amountText) * 100,
+                      context: context,
+                      shouldPushToHome: true,
+                      productName: 'vegi',
+                    );
+                  },
                   preload: _isPreloading,
                   disabled: _isPreloading,
                   width: 300,

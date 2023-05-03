@@ -19,27 +19,27 @@ class ThankYouCard extends StatefulWidget {
 }
 
 class _ThankYouCardState extends State<ThankYouCard> {
-  late ConfettiController _confettiController;
+  // late ConfettiController _confettiController;
 
   @override
   void initState() {
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 10));
+    // _confettiController =
+    //     ConfettiController(duration: const Duration(seconds: 10));
 
-    playConfetti();
+    // playConfetti();
 
     super.initState();
   }
 
   void playConfetti() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      _confettiController.play();
-    });
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    //   _confettiController.play();
+    // });
   }
 
   @override
   void dispose() {
-    _confettiController.dispose();
+    // _confettiController.dispose();
     super.dispose();
   }
 
@@ -67,18 +67,18 @@ class _ThankYouCardState extends State<ThankYouCard> {
                         : 'assets/${CollectionOrderCreationStatus.confirmed.imageTitle}',
                     width: MediaQuery.of(context).size.width * 0.6,
                   ),
-                  ConfettiWidget(
-                    confettiController: _confettiController,
-                    blastDirectionality: BlastDirectionality.explosive,
-                    colors: [
-                      Colors.green.withOpacity(0.8),
-                      Colors.blue.withOpacity(0.8),
-                      Colors.pink.withOpacity(0.8),
-                      Colors.orange.withOpacity(0.8),
-                      Colors.purple.withOpacity(0.8)
-                    ],
-                    createParticlePath: drawStar,
-                  ),
+                  // ConfettiWidget(
+                  //   confettiController: _confettiController,
+                  //   blastDirectionality: BlastDirectionality.explosive,
+                  //   colors: [
+                  //     Colors.green.withOpacity(0.8),
+                  //     Colors.blue.withOpacity(0.8),
+                  //     Colors.pink.withOpacity(0.8),
+                  //     Colors.orange.withOpacity(0.8),
+                  //     Colors.purple.withOpacity(0.8)
+                  //   ],
+                  //   createParticlePath: drawStar,
+                  // ),
                 ],
               ),
             ),

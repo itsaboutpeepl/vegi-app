@@ -109,10 +109,11 @@ abstract class CreateOrderForFulfilment {
 
   @override
   String toString() {
-    return toUploadJson().toString();
+    final dm = isDelivery? 'delivery' : 'collection';
+    return 'CreateOrderFor$dm -> $total -> $vendor [$fulfilmentSlotFrom]';
   }
 
-  Map<String, dynamic> toUploadJson() {
+  Future<Map<String, dynamic>> toUploadJson() async {
     return {}
       ..addAll({
         'items': items
@@ -134,6 +135,7 @@ abstract class CreateOrderForFulfilment {
         'vendor': vendor,
         'walletAddress': walletAddress,
         'isDelivery': isDelivery,
+        'firebaseRegistrationToken': await firebaseMessaging.getToken(),
       })
       ..addAll(
         {

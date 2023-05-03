@@ -46,7 +46,10 @@ class StripePayService {
     required int amount,
     String? stripeCustomerId,
     String currency = 'gbp',
-    String? walletAddress,
+    required String recipientWalletAddress,
+    required String senderWalletAddress,
+    required num orderId,
+    required num accountId,
   }) async {
     try {
       final Response<dynamic> response = await peeplEatsService.dioPost(
@@ -55,8 +58,12 @@ class StripePayService {
           'amount': amount,
           'currency': currency,
           'customerId': stripeCustomerId ?? '',
-          'businessName': 'vegi',
-          'walletAddress': walletAddress,
+          'vendorDisplayName': 'vegi',
+          // 'walletAddress': walletAddress,
+          'recipientWalletAddress': recipientWalletAddress,
+          'senderWalletAddress': senderWalletAddress,
+          'orderId': orderId,
+          'accountId': accountId,
         },
         sendWithAuthCreds: true,
       );

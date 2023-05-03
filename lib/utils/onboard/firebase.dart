@@ -59,17 +59,25 @@ class FirebaseStrategy implements IOnBoardStrategy {
     // );
 
     // if(confirmationResult.confirm(verificationCode))
-
-    await firebaseAuth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      codeAutoRetrievalTimeout: (String verificationId) {
-        return onError('Code verification timeout.');
-      },
-      codeSent: codeSent,
-      verificationCompleted:
-          verificationCompleted, // * This handler will only be called on Android devices which support automatic SMS code resolution.
-      verificationFailed: verificationFailed,
-    );
+    if (phoneNumber != null) {
+      store.dispatch(
+        SetPhoneNumber(
+          phoneNumber: phoneNumber,
+        ),
+      );
+      await firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        codeAutoRetrievalTimeout: (String verificationId) {
+          return onError('Code verification timeout.');
+        },
+        codeSent: codeSent,
+        verificationCompleted:
+            verificationCompleted, // * This handler will only be called on Android devices which support automatic SMS code resolution.
+        verificationFailed: verificationFailed,
+      );
+    } else {
+      onError('No phone number set...');
+    }
   }
 
   @override
@@ -77,6 +85,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
     Store<AppState> store,
     String verificationCode,
     void Function() onSuccess,
+    void Function(String message) onError,
   ) async {
     PhoneAuthCredential? credentials =
         store.state.userState.firebaseCredentials;
@@ -90,7 +99,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
       store,
       credentials,
       onSuccess,
-      log.error,
+      onError,
     );
   }
 
@@ -109,10 +118,32 @@ class FirebaseStrategy implements IOnBoardStrategy {
   @override
   Future<void> reauthenticateUser({
     required Store<AppState> store,
+    required void Function() onSuccess,
     required void Function() reOnboardRequired,
     required dynamic Function(Exception) onFailure,
   }) async {
-    if (store.state.userState.firebaseCredentials != null) {
+    if(store.state.userState.firebaseSessionToken != null){
+      try {
+        final succeeded = await loginToVegi(
+          store: store,
+          phoneNumber: store.state.userState.phoneNumber,
+          firebaseSessionToken: store.state.userState.firebaseSessionToken!,
+          onError: (s) => onFailure(Exception(s)),
+        );
+        if (succeeded) {
+          store.dispatch(
+            SetVerificationPassed(
+              verificationPassed: true,
+            ),
+          );
+          onSuccess(); //! Bug one of these lines is killing my state
+        } else {
+          log.error('Could not login to vegi...');
+        }
+      } on Exception catch (e) {
+        onFailure(e);
+      }
+    } else if (store.state.userState.firebaseCredentials != null) {
       try {
         await _reauthenticateUser(
           credential: store.state.userState.firebaseCredentials!,
@@ -145,6 +176,11 @@ class FirebaseStrategy implements IOnBoardStrategy {
     );
     final User? user = userCredential.user;
     final firebaseSessionToken = await user?.getIdToken();
+    store.dispatch(
+      SetFirebaseSessionToken(
+        firebaseSessionToken: firebaseSessionToken,
+      ),
+    );
     final User currentUser = firebaseAuth.currentUser!;
     assert(user?.uid == currentUser.uid, 'User IDs not same.');
 
@@ -161,14 +197,20 @@ class FirebaseStrategy implements IOnBoardStrategy {
         store: store,
         phoneNumber: store.state.userState.phoneNumber,
         firebaseSessionToken: firebaseSessionToken,
+        onError: onFailure,
       );
       if (succeeded) {
+        store.dispatch(
+          SetVerificationPassed(
+            verificationPassed: true,
+          ),
+        );
         onSuccess(); //! Bug one of these lines is killing my state
       } else {
         log.error('Could not login to vegi...');
       }
     } catch (e) {
-      log.error(e.toString());
+      onFailure(e.toString());
     }
   }
 
@@ -176,6 +218,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
     required Store<AppState> store,
     required String phoneNumber,
     required String firebaseSessionToken,
+    required void Function(String message) onError,
   }) async {
     try {
       // * sets the session cookie on the service class instance.
@@ -186,7 +229,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
       );
       return loggedIn.sessionCookie.isNotEmpty;
     } catch (err) {
-      log.error('Error: $err');
+      onError(err.toString());
       return false;
     }
   }

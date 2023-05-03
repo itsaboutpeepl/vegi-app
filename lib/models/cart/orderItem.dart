@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/product.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
@@ -34,5 +35,18 @@ class OrderItem with _$OrderItem {
 
   String get formattedPrice {
     return product.totalPriceFormatted;
+  }
+
+  List<String> get selectedProductOptionsString {
+    int _counter = 0;
+    final List<String> optionValues = [];
+    for (final element in product.options) {
+      _counter++;
+      optionValues.add(
+        '$_counter. ${element.chosenOption}'
+            .capitalizeWords(),
+      );
+    }
+    return optionValues;
   }
 }

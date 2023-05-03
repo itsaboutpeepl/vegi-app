@@ -22,9 +22,11 @@ abstract class IOnBoardStrategy {
     Store<AppState> store,
     String verificationCode,
     void Function() onSuccess,
+    void Function(String message) onError,
   );
   Future<void> reauthenticateUser({
     required Store<AppState> store,
+    required void Function() onSuccess,
     required void Function() reOnboardRequired,
     required dynamic Function(Exception) onFailure,
   });

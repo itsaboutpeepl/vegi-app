@@ -20,9 +20,11 @@ PastOrderState _$PastOrderStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PastOrderState {
-  List<OrderDetails> get listOfScheduledOrders =>
-      throw _privateConstructorUsedError;
-  List<OrderDetails> get listOfOngoingOrders =>
+  DateTime get lastRefreshTime => throw _privateConstructorUsedError;
+  List<Order> get listOfScheduledOrders => throw _privateConstructorUsedError;
+  List<Order> get listOfOngoingOrders => throw _privateConstructorUsedError;
+  List<Order> get allPastOrders => throw _privateConstructorUsedError;
+  List<Transaction> get transactionHistory =>
       throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,8 +40,11 @@ abstract class $PastOrderStateCopyWith<$Res> {
       _$PastOrderStateCopyWithImpl<$Res, PastOrderState>;
   @useResult
   $Res call(
-      {List<OrderDetails> listOfScheduledOrders,
-      List<OrderDetails> listOfOngoingOrders});
+      {DateTime lastRefreshTime,
+      List<Order> listOfScheduledOrders,
+      List<Order> listOfOngoingOrders,
+      List<Order> allPastOrders,
+      List<Transaction> transactionHistory});
 }
 
 /// @nodoc
@@ -55,18 +60,33 @@ class _$PastOrderStateCopyWithImpl<$Res, $Val extends PastOrderState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? lastRefreshTime = null,
     Object? listOfScheduledOrders = null,
     Object? listOfOngoingOrders = null,
+    Object? allPastOrders = null,
+    Object? transactionHistory = null,
   }) {
     return _then(_value.copyWith(
+      lastRefreshTime: null == lastRefreshTime
+          ? _value.lastRefreshTime
+          : lastRefreshTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       listOfScheduledOrders: null == listOfScheduledOrders
           ? _value.listOfScheduledOrders
           : listOfScheduledOrders // ignore: cast_nullable_to_non_nullable
-              as List<OrderDetails>,
+              as List<Order>,
       listOfOngoingOrders: null == listOfOngoingOrders
           ? _value.listOfOngoingOrders
           : listOfOngoingOrders // ignore: cast_nullable_to_non_nullable
-              as List<OrderDetails>,
+              as List<Order>,
+      allPastOrders: null == allPastOrders
+          ? _value.allPastOrders
+          : allPastOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
+      transactionHistory: null == transactionHistory
+          ? _value.transactionHistory
+          : transactionHistory // ignore: cast_nullable_to_non_nullable
+              as List<Transaction>,
     ) as $Val);
   }
 }
@@ -80,8 +100,11 @@ abstract class _$$_PastOrderStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<OrderDetails> listOfScheduledOrders,
-      List<OrderDetails> listOfOngoingOrders});
+      {DateTime lastRefreshTime,
+      List<Order> listOfScheduledOrders,
+      List<Order> listOfOngoingOrders,
+      List<Order> allPastOrders,
+      List<Transaction> transactionHistory});
 }
 
 /// @nodoc
@@ -95,18 +118,33 @@ class __$$_PastOrderStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? lastRefreshTime = null,
     Object? listOfScheduledOrders = null,
     Object? listOfOngoingOrders = null,
+    Object? allPastOrders = null,
+    Object? transactionHistory = null,
   }) {
     return _then(_$_PastOrderState(
+      lastRefreshTime: null == lastRefreshTime
+          ? _value.lastRefreshTime
+          : lastRefreshTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       listOfScheduledOrders: null == listOfScheduledOrders
           ? _value.listOfScheduledOrders
           : listOfScheduledOrders // ignore: cast_nullable_to_non_nullable
-              as List<OrderDetails>,
+              as List<Order>,
       listOfOngoingOrders: null == listOfOngoingOrders
           ? _value.listOfOngoingOrders
           : listOfOngoingOrders // ignore: cast_nullable_to_non_nullable
-              as List<OrderDetails>,
+              as List<Order>,
+      allPastOrders: null == allPastOrders
+          ? _value.allPastOrders
+          : allPastOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
+      transactionHistory: null == transactionHistory
+          ? _value.transactionHistory
+          : transactionHistory // ignore: cast_nullable_to_non_nullable
+              as List<Transaction>,
     ));
   }
 }
@@ -116,23 +154,34 @@ class __$$_PastOrderStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PastOrderState extends _PastOrderState {
   _$_PastOrderState(
-      {this.listOfScheduledOrders = const [],
-      this.listOfOngoingOrders = const []})
+      {required this.lastRefreshTime,
+      this.listOfScheduledOrders = const [],
+      this.listOfOngoingOrders = const [],
+      this.allPastOrders = const [],
+      this.transactionHistory = const []})
       : super._();
 
   factory _$_PastOrderState.fromJson(Map<String, dynamic> json) =>
       _$$_PastOrderStateFromJson(json);
 
   @override
-  @JsonKey()
-  final List<OrderDetails> listOfScheduledOrders;
+  final DateTime lastRefreshTime;
   @override
   @JsonKey()
-  final List<OrderDetails> listOfOngoingOrders;
+  final List<Order> listOfScheduledOrders;
+  @override
+  @JsonKey()
+  final List<Order> listOfOngoingOrders;
+  @override
+  @JsonKey()
+  final List<Order> allPastOrders;
+  @override
+  @JsonKey()
+  final List<Transaction> transactionHistory;
 
   @override
   String toString() {
-    return 'PastOrderState(listOfScheduledOrders: $listOfScheduledOrders, listOfOngoingOrders: $listOfOngoingOrders)';
+    return 'PastOrderState(lastRefreshTime: $lastRefreshTime, listOfScheduledOrders: $listOfScheduledOrders, listOfOngoingOrders: $listOfOngoingOrders, allPastOrders: $allPastOrders, transactionHistory: $transactionHistory)';
   }
 
   @override
@@ -140,18 +189,27 @@ class _$_PastOrderState extends _PastOrderState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PastOrderState &&
+            (identical(other.lastRefreshTime, lastRefreshTime) ||
+                other.lastRefreshTime == lastRefreshTime) &&
             const DeepCollectionEquality()
                 .equals(other.listOfScheduledOrders, listOfScheduledOrders) &&
             const DeepCollectionEquality()
-                .equals(other.listOfOngoingOrders, listOfOngoingOrders));
+                .equals(other.listOfOngoingOrders, listOfOngoingOrders) &&
+            const DeepCollectionEquality()
+                .equals(other.allPastOrders, allPastOrders) &&
+            const DeepCollectionEquality()
+                .equals(other.transactionHistory, transactionHistory));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      lastRefreshTime,
       const DeepCollectionEquality().hash(listOfScheduledOrders),
-      const DeepCollectionEquality().hash(listOfOngoingOrders));
+      const DeepCollectionEquality().hash(listOfOngoingOrders),
+      const DeepCollectionEquality().hash(allPastOrders),
+      const DeepCollectionEquality().hash(transactionHistory));
 
   @JsonKey(ignore: true)
   @override
@@ -169,17 +227,26 @@ class _$_PastOrderState extends _PastOrderState {
 
 abstract class _PastOrderState extends PastOrderState {
   factory _PastOrderState(
-      {final List<OrderDetails> listOfScheduledOrders,
-      final List<OrderDetails> listOfOngoingOrders}) = _$_PastOrderState;
+      {required final DateTime lastRefreshTime,
+      final List<Order> listOfScheduledOrders,
+      final List<Order> listOfOngoingOrders,
+      final List<Order> allPastOrders,
+      final List<Transaction> transactionHistory}) = _$_PastOrderState;
   _PastOrderState._() : super._();
 
   factory _PastOrderState.fromJson(Map<String, dynamic> json) =
       _$_PastOrderState.fromJson;
 
   @override
-  List<OrderDetails> get listOfScheduledOrders;
+  DateTime get lastRefreshTime;
   @override
-  List<OrderDetails> get listOfOngoingOrders;
+  List<Order> get listOfScheduledOrders;
+  @override
+  List<Order> get listOfOngoingOrders;
+  @override
+  List<Order> get allPastOrders;
+  @override
+  List<Transaction> get transactionHistory;
   @override
   @JsonKey(ignore: true)
   _$$_PastOrderStateCopyWith<_$_PastOrderState> get copyWith =>

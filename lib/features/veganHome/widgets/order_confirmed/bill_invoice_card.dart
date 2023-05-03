@@ -3,14 +3,17 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/bill_invoice_vm.dart';
 
 class BillInvoiceCard extends StatelessWidget {
-  const BillInvoiceCard({Key? key, required this.orderDetails})
-      : super(key: key);
+  const BillInvoiceCard({
+    Key? key,
+    required this.order,
+  }) : super(key: key);
 
-  final OrderDetails orderDetails;
+  final Order order;
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +53,14 @@ class BillInvoiceCard extends StatelessWidget {
                         'Amount paid in GBP',
                       ),
                       Text(
-                        (orderDetails.GBPxAmountPaid * 100).formattedPrice,
+                        (order.GBPxAmountPaid * 100).formattedPrice,
                       ),
                     ],
                   ),
-                  if (orderDetails.didUsePPL)
+                  if (order.didUsePPL) ...[
                     const SizedBox(
                       height: 5,
                     ),
-                  if (orderDetails.didUsePPL)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -66,10 +68,11 @@ class BillInvoiceCard extends StatelessWidget {
                           'Amount paid in PPL rewards',
                         ),
                         Text(
-                          (orderDetails.PPLAmountPaid * 100).formattedPrice,
+                          (order.PPLAmountPaid * 100).formattedPrice,
                         ),
                       ],
                     ),
+                  ],
                   const Divider(
                     color: themeShade300,
                     thickness: 1,
@@ -94,14 +97,14 @@ class BillInvoiceCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        '${orderDetails.pplRewardsEarned} ',
+                        '${order.rewardsEarnedInPPL} ',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        '(${orderDetails.pplRewardsEarnedValue})',
+                        '(${order.rewardsEarnedInGBP})',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,

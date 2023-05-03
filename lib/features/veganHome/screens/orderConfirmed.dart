@@ -19,7 +19,7 @@ class OrderConfirmedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, OrderConfirmedViewModel>(
       converter: OrderConfirmedViewModel.fromStore,
-      onInit: (store) => store.dispatch(createNewPastOrder()),
+      // onInit: (store) => store.dispatch(createNewPastOrder()),
       builder: (_, viewmodel) {
         return Scaffold(
           body: SingleChildScrollView(
@@ -41,7 +41,7 @@ class OrderConfirmedScreen extends StatelessWidget {
                     userName: viewmodel.userName,
                     restaurantName: viewmodel.restaurantName,
                   ),
-                  BillInvoiceCard(orderDetails: viewmodel.orderDetails),
+                  BillInvoiceCard(order: viewmodel.order),
                   OrderListCard(
                     orderItems: viewmodel.cartItems
                         .map(

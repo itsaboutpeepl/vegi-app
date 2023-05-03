@@ -16,6 +16,7 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/common/router/vegi_debug_route_observer.dart';
 import 'package:vegan_liverpool/constants/strings.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/dismiss_keyboard.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -262,64 +263,66 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         if (snapshot.hasData) {
           return StoreProvider<AppState>(
             store: widget.store,
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              locale: _locale,
-              title: Strings.appName, // only for android
-              theme: flexColorSchemeLight.toTheme,
-
-              // themeMode: ThemeMode.system,
-              // theme: getColorScheme(useFlex: true, isDark: false),
-              // darkTheme: getColorScheme(useFlex: true, isDark: true),
-              routeInformationParser: rootRouter.defaultRouteParser(),
-              routerDelegate: rootRouter.delegate(
-                // initialDeepLink: ,
-                navigatorObservers: () => [
-                  AutoRouteObserver(),
-                  SentryNavigatorObserver(),
-                  VegiDebugRouteObserver(),
+            child: DismissKeyboard(
+              child: MaterialApp.router(
+                debugShowCheckedModeBanner: false,
+                locale: _locale,
+                title: Strings.appName, // only for android
+                theme: flexColorSchemeLight.toTheme,
+            
+                // themeMode: ThemeMode.system,
+                // theme: getColorScheme(useFlex: true, isDark: false),
+                // darkTheme: getColorScheme(useFlex: true, isDark: true),
+                routeInformationParser: rootRouter.defaultRouteParser(),
+                routerDelegate: rootRouter.delegate(
+                  // initialDeepLink: ,
+                  navigatorObservers: () => [
+                    AutoRouteObserver(),
+                    SentryNavigatorObserver(),
+                    VegiDebugRouteObserver(),
+                  ],
+                ),
+                builder: (_, router) => ResponsiveWrapper.builder(
+                  router,
+                  maxWidth: 1200,
+                  minWidth: 400,
+                  defaultScale: true,
+                  breakpoints: [
+                    const ResponsiveBreakpoint.resize(480, name: MOBILE),
+                    const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                    const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
+                    const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+                    const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+                  ],
+                ),
+                localizationsDelegates: const [
+                  LocaleNamesLocalizationsDelegate(),
+                  I10n.delegate,
+                  CountryLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  FormBuilderLocalizations.delegate,
                 ],
-              ),
-              builder: (_, router) => ResponsiveWrapper.builder(
-                router,
-                maxWidth: 1200,
-                minWidth: 400,
-                defaultScale: true,
-                breakpoints: [
-                  const ResponsiveBreakpoint.resize(480, name: MOBILE),
-                  const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-                  const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
-                  const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-                  const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
-                ],
-              ),
-              localizationsDelegates: const [
-                LocaleNamesLocalizationsDelegate(),
-                I10n.delegate,
-                CountryLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                FormBuilderLocalizations.delegate,
-              ],
-              supportedLocales: I10n.delegate.supportedLocales,
-              localeListResolutionCallback: (locales, supportedLocales) {
-                for (final Locale locale in locales!) {
-                  if (supportedLocales.contains(locale)) {
-                    return locale;
+                supportedLocales: I10n.delegate.supportedLocales,
+                localeListResolutionCallback: (locales, supportedLocales) {
+                  for (final Locale locale in locales!) {
+                    if (supportedLocales.contains(locale)) {
+                      return locale;
+                    }
                   }
-                }
-                return const Locale('en', 'US');
-              },
-              localeResolutionCallback: (locale, supportedLocales) {
-                for (final supportedLocale in supportedLocales) {
-                  if (supportedLocale.languageCode == locale?.languageCode &&
-                      supportedLocale.countryCode == locale?.countryCode) {
-                    return supportedLocale;
+                  return const Locale('en', 'US');
+                },
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (final supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale?.languageCode &&
+                        supportedLocale.countryCode == locale?.countryCode) {
+                      return supportedLocale;
+                    }
                   }
-                }
-                return supportedLocales.first;
-              },
+                  return supportedLocales.first;
+                },
+              ),
             ),
           );
         } else {

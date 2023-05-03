@@ -414,7 +414,7 @@ class _SurveyQuestionScreenState extends State<SurveyQuestionScreen>
         ),
         hintText: 'Answer',
         border: InputBorder.none,
-        fillColor: Theme.of(context).backgroundColor,
+        fillColor: Theme.of(context).colorScheme.background,
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide.none,
         ),

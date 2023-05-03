@@ -303,6 +303,15 @@ class SetUserVerifiedStatusSuccess {
       'SetUserVerifiedStatusSuccess : userIsVerified: $userIsVerified';
 }
 
+class SetUserVegiAccountIdSuccess {
+  SetUserVegiAccountIdSuccess(this.accountId);
+  num accountId;
+
+  @override
+  String toString() =>
+      'SetUserVegiAccountIdSuccess : accountId: $accountId';
+}
+
 class SetUserIsVendorStatusSuccess {
   SetUserIsVendorStatusSuccess(this.isVendor);
   bool isVendor;
@@ -345,6 +354,15 @@ class SetFirebaseCredentials {
       'SetFirebaseCredentials : credentials: $firebaseCredentials';
 }
 
+class SetFirebaseSessionToken {
+  SetFirebaseSessionToken({required this.firebaseSessionToken});
+  String? firebaseSessionToken;
+
+  @override
+  String toString() =>
+      'SetFirebaseSessionToken : firebaseSessionToken: $firebaseSessionToken';
+}
+
 class SetFuseWalletCredentials {
   SetFuseWalletCredentials(this.fuseWalletCredentials);
   EthPrivateKey? fuseWalletCredentials;
@@ -360,6 +378,24 @@ class SetVerificationId {
 
   @override
   String toString() => 'SetVerificationId : verificationId: $verificationId';
+}
+
+class SetVerificationPassed {
+  SetVerificationPassed({required this.verificationPassed});
+  bool verificationPassed;
+
+  @override
+  String toString() =>
+      'SetVerificationPassed : verificationPassed: $verificationPassed';
+}
+
+class SetPhoneNumber {
+  SetPhoneNumber({required this.phoneNumber});
+
+  String phoneNumber;
+
+  @override
+  String toString() => 'SetPhoneNumber : phoneNumber: $phoneNumber';
 }
 
 class JustInstalled {
@@ -610,14 +646,16 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
       }
       await peeplEatsService.getUserForWalletAddress(
         store.state.userState.walletAddress,
-        (userIsVerified) {
+        (vegiAccount) {
           Analytics.track(
             eventName: AnalyticsEvents.getUserForWalletAddress,
             properties: {
               AnalyticsProps.status: AnalyticsProps.success,
             },
           );
-          store.dispatch(SetUserVerifiedStatusSuccess(userIsVerified));
+          store
+            ..dispatch(SetUserVerifiedStatusSuccess(vegiAccount.verified))
+            ..dispatch(SetUserVegiAccountIdSuccess(vegiAccount.id));
         },
         (eStr) {
           Analytics.track(
@@ -744,6 +782,12 @@ ThunkAction<AppState> loginHandler(
             },
           );
           store.dispatch(
+            LoginRequestSuccess(
+              countryCode: countryCode,
+              phoneNumber: phoneNumber.e164,
+            ),
+          );
+          store.dispatch(
             authenticateFuseWalletSDK(),
           ); //!BUG why is this not called after login?
           // if (_useWeb3Auth) {
@@ -751,12 +795,6 @@ ThunkAction<AppState> loginHandler(
           // } else {
           //   rootRouter.push(UserNameScreen());
           // }
-          store.dispatch(
-            LoginRequestSuccess(
-              countryCode: countryCode,
-              phoneNumber: phoneNumber.e164,
-            ),
-          );
           onSuccess();
         },
         (e) {
@@ -812,6 +850,7 @@ ThunkAction<AppState> verifyHandler(
           );
           onSuccess();
         },
+        onError,
       );
     } catch (error, s) {
       onError(error.toString());
@@ -1127,6 +1166,7 @@ ThunkAction<AppState> reAuthenticateOnBoarding({
     try {
       await onBoardStrategy.reauthenticateUser(
         store: store,
+        onSuccess: onSuccess,
         reOnboardRequired: reOnboardRequired,
         onFailure: (exception) {
           Analytics.track(

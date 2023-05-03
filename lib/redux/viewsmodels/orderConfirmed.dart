@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
@@ -16,7 +17,7 @@ class OrderConfirmedViewModel extends Equatable {
     required this.cartItems,
     required this.cartTotal,
     required this.orderID,
-    required this.orderDetails,
+    required this.order,
     required this.clearCart,
     required this.userName,
   });
@@ -25,15 +26,15 @@ class OrderConfirmedViewModel extends Equatable {
     int orderDetailsInd = store.state.pastOrderState.listOfScheduledOrders
         .indexWhere(
             (element) => element.orderID == store.state.cartState.orderID);
-    OrderDetails orderDetails;
+    Order order;
     if (orderDetailsInd == -1) {
       orderDetailsInd = store.state.pastOrderState.listOfOngoingOrders
           .indexWhere(
               (element) => element.orderID == store.state.cartState.orderID);
-      orderDetails =
+      order =
           store.state.pastOrderState.listOfOngoingOrders[orderDetailsInd];
     } else {
-      orderDetails =
+      order =
           store.state.pastOrderState.listOfScheduledOrders[orderDetailsInd];
     }
     return OrderConfirmedViewModel(
@@ -46,7 +47,7 @@ class OrderConfirmedViewModel extends Equatable {
       cartItems: store.state.cartState.cartItems,
       cartTotal: store.state.cartState.cartTotal,
       orderID: store.state.cartState.orderID,
-      orderDetails: orderDetails,
+      order: order,
       userName: store.state.userState.displayName,
       clearCart: () {
         store.dispatch(ClearCart());
@@ -61,7 +62,7 @@ class OrderConfirmedViewModel extends Equatable {
   final List<CartItem> cartItems;
   final int cartTotal;
   final String orderID;
-  final OrderDetails orderDetails;
+  final Order order;
   final void Function() clearCart;
   final String userName;
 

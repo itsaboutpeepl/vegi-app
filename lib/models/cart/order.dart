@@ -3,9 +3,12 @@ import 'dart:math';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/orderItem.dart';
+import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryPartnerDTO.dart';
+import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/models/restaurant/vendorDTO.dart';
 
@@ -33,8 +36,6 @@ num getFulfilmentMethodPriceModifier(
   return (json['fulfilmentMethod']['priceModifier'] ?? 0.0) as num;
 }
 
-DateTime _toTS(int json) => json.toTimeStamp();
-DateTime? _toTSNullable(int? json) => json?.toTimeStamp();
 // DateTime _slotFromTime(Map<String, dynamic> json) =>
 //     DateTimeHelpers.parseISOFormat((json['fulfilmentSlotFrom'] as String));
 // DateTime _slotToTime(Map<String, dynamic> json) =>
@@ -48,11 +49,11 @@ class Order with _$Order {
     required List<OrderItem> items,
     required num total,
     required num subtotal,
-    @JsonKey(fromJson: _toTS)
+    @JsonKey(fromJson: toTS)
         required DateTime orderedDateTime,
-    @JsonKey(fromJson: _toTSNullable)
+    @JsonKey(fromJson: toTSNullable)
         DateTime? paidDateTime,
-    @JsonKey(fromJson: _toTSNullable)
+    @JsonKey(fromJson: toTSNullable)
         DateTime? refundDateTime,
     required String? deliveryName,
     required String? deliveryEmail,
@@ -65,14 +66,28 @@ class Order with _$Order {
     required double? deliveryAddressLongitude,
     required String deliveryAddressInstructions,
     required String deliveryId,
+    @Default([])
+        List<TransactionItem> transactions,
+    required num fulfilmentCharge,
+    required num platformFee,
+    @Default('')
+        String cartDiscountCode,
+    @Default('fixed')
+        String cartDiscountType,
+    @Default(0)
+        num cartDiscountAmount,
+    @Default(0)
+        num cartTip,
     @JsonEnum()
     @JsonKey(
       unknownEnumValue: OrderPaidStatus.unpaid,
     )
         required OrderPaidStatus paymentStatus,
     @JsonEnum()
-    @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
-        required RestaurantAcceptedStatus restaurantAcceptanceStatus,
+    @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+        required RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+    @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+        required OrderAcceptanceStatus orderAcceptanceStatus,
     required bool deliveryPartnerAccepted,
     required bool deliveryPartnerConfirmed,
     @JsonKey(readValue: getFulfilmentMethodId)
@@ -106,12 +121,38 @@ class Order with _$Order {
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
+  num get GBPxAmountPaid =>
+      transactions
+          .where((t) => t.currency == Currency.GBPx)
+          .map((t) => t.amount)
+          .sum() +
+      transactions
+          .where((t) => t.currency == Currency.GBP)
+          .map((t) => t.amount * 100)
+          .sum();
+  num get PPLAmountPaid => transactions
+      .where((t) => t.currency == Currency.PPL)
+      .map((t) => t.amount)
+      .sum();
+
+  String get rewardsEarnedInPPL => getPPLRewardsFromPence(
+        GBPxAmountPaid * 100,
+      ).toStringAsFixed(2);
+
+  String get rewardsEarnedInGBP =>
+      '£${(getPPLRewardsFromPence(GBPxAmountPaid * 100) / 10).toStringAsFixed(2)}';
+
+  bool get didUsePPL => PPLAmountPaid != 0.0;
+
   //SECTION custom getter names for app readability
   String get restaurantName => vendorName;
   String get orderID => id.toString();
   String? get restaurantPhoneNumber => vendorPhoneNumber;
   String get paymentStatusLabel => paymentStatus.name.capitalize();
   bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;
+  bool get isDelivery => fulfilmentMethod == FulfilmentMethodType.delivery;
+  bool get isInStore => fulfilmentMethod == FulfilmentMethodType.inStore;
+  int get cartTotalGBPx => (total * 100).round();
 
   int get vendorId => vendor.id;
   String get vendorName => vendor.name;

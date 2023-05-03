@@ -74,7 +74,7 @@ class PeeplRewardsAppBar extends StatelessWidget {
                           builder: (context, pplBalance) {
                             return Text(
                               '${pplBalance.toStringAsFixed(2)} PPL '
-                              '(£${getPoundValueFromPPL(pplBalance)})',
+                              '(£${getPoundValueFormattedFromPPL(pplBalance)})',
                               style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,

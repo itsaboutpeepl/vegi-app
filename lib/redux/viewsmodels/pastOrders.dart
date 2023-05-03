@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 
 class PastOrdersViewmodel extends Equatable {
@@ -23,8 +24,8 @@ class PastOrdersViewmodel extends Equatable {
     );
   }
 
-  final List<OrderDetails> listOfScheduledOrders;
-  final List<OrderDetails> listOfOngoingOrders;
+  final List<Order> listOfScheduledOrders;
+  final List<Order> listOfOngoingOrders;
   final bool hasOngoingOrder;
   final bool globalSearchIsVisible;
   final bool isVendor;

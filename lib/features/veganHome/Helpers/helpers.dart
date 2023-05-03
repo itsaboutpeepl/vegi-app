@@ -4,17 +4,19 @@ import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
-import 'package:vegan_liverpool/models/restaurant/userCart.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/utils/config.dart' as VEGI_CONFIG;
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -40,6 +42,21 @@ Color? colorForESCRating(num rating) {
   } else {
     return Colors.orangeAccent[400];
   }
+}
+
+DateTime toTS(int json) => json.toTimeStamp();
+DateTime? toTSNullable(int? json) => json?.toTimeStamp();
+
+int objectIdFromJson(dynamic obj) {
+  if (obj is int) {
+    return obj;
+  }
+  if (obj is Map) {
+    if (obj.containsKey('id')) {
+      return obj['id'] as int;
+    }
+  }
+  throw Exception('unable to cast json object to int');
 }
 
 String parseHtmlString(String htmlString) {
@@ -86,12 +103,27 @@ bool shouldEndOngoing(TimeSlot selectedSlot) {
   }
 }
 
+const pplRewardsPcntDelivery = 0.05;
+const pplRewardsPcntPoS = 0.01;
+const pplPenceValue = 0.1;
+const pplPoundValue = pplPenceValue / 100;
+const minESCRating = 0.0;
+const maxESCRating = 5.0;
+
 double getPPLValueFromPence(num penceAmount) {
-  return penceAmount / 10;
+  return penceAmount * pplPenceValue;
+}
+
+double getPPLValueFromPounds(num poundAmount) {
+  return poundAmount * pplPoundValue;
+}
+
+double getPoundValueFromPPL(num pplAmount) {
+  return pplAmount / pplPoundValue;
 }
 
 double getPPLRewardsFromPence(num penceAmount) {
-  return getPPLValueFromPence((penceAmount * 5) / 100);
+  return getPPLValueFromPence(penceAmount * pplRewardsPcntDelivery);
 }
 
 int calculateRewardsForPrice({
@@ -99,9 +131,12 @@ int calculateRewardsForPrice({
   required ESCRating? rating,
   required FulfilmentMethodType fulfilmentMethod,
 }) {
-  return ((Math.max(Math.min(rating?.rating ?? 0, 5.0), 0.0) / 5.0) *
+  return ((Math.max(Math.min(rating?.rating ?? 0, maxESCRating), minESCRating) /
+              maxESCRating) *
           penceAmount *
-          (fulfilmentMethod == FulfilmentMethodType.inStore ? 0.01 : 0.05))
+          (fulfilmentMethod == FulfilmentMethodType.inStore
+              ? pplRewardsPcntPoS
+              : pplRewardsPcntDelivery))
       .floor();
   // return penceAmount * (fulfilmentMethod == FulfilmentMethodType.inStore ? 1 : 5) ~/ 100;
 }
@@ -112,10 +147,14 @@ double calculateCartRewardsForPrice({
 }) {
   final x = items.map(
     (item) {
-      return (Math.max(Math.min(item.menuItem.rating?.rating ?? 0, 5.0), 0.0) /
-              5.0) *
+      return (Math.max(
+                  Math.min(item.menuItem.rating?.rating ?? 0, maxESCRating),
+                  minESCRating) /
+              maxESCRating) *
           item.totalItemPrice *
-          (fulfilmentMethod == FulfilmentMethodType.inStore ? 0.01 : 0.05);
+          (fulfilmentMethod == FulfilmentMethodType.inStore
+              ? pplRewardsPcntPoS
+              : pplRewardsPcntDelivery);
     },
   ).reduce((value, element) => value + element);
   return x;
@@ -128,13 +167,14 @@ double calculateRewardsForOrder(CreateOrderForFulfilment order) {
   );
 }
 
-String getPoundValueFromPPL(num pplAmount) {
-  return (pplAmount / 10).toStringAsFixed(2);
+String getPoundValueFormattedFromPPL(num pplAmount) {
+  return getPPLValueFromPence(pplAmount).toStringAsFixed(2);
 }
 
 UpdateTotalPrice calculateMenuItemPrice({
   required RestaurantMenuItem menuItem,
   required int quantity,
+  bool inStore = false,
   Iterable<ProductOptions> productOptions = const [],
 }) {
   var total = quantity * menuItem.price;
@@ -145,8 +185,91 @@ UpdateTotalPrice calculateMenuItemPrice({
 
   return UpdateTotalPrice(
     totalPrice: total,
-    totalRewards: total * 5 ~/ 100,
+    totalRewards: total *
+        (inStore ? pplRewardsPcntPoS : pplRewardsPcntDelivery).truncate(),
   );
+}
+
+UpdateComputedCartValues? computeTotalsFromCart({
+  required List<CartItem> cartItems,
+  required int fulfilmentCharge,
+  required int platformFee,
+  required int cartDiscountPercent,
+  required int cartTip,
+}) {
+  try {
+    int cartSubTotal = 0;
+    const int cartTax = 0;
+    int cartTotal = 0;
+    int cartDiscountComputed = 0;
+
+    for (final element in cartItems) {
+      cartSubTotal += element.totalItemPrice;
+    }
+
+    cartDiscountComputed =
+        (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
+
+    cartTotal =
+        (cartSubTotal + cartTax + cartTip + fulfilmentCharge + platformFee) -
+            cartDiscountComputed;
+
+    if (cartItems.isEmpty) {
+      cartSubTotal = 0;
+      cartTotal = 0;
+      cartDiscountComputed = 0;
+    }
+
+    return UpdateComputedCartValues(
+      cartSubTotal,
+      cartTax,
+      cartTotal,
+      cartDiscountComputed,
+    );
+  } catch (e, s) {
+    log.error('ERROR - computeCartTotals $e');
+    Sentry.captureException(
+      e,
+      stackTrace: s,
+      hint: 'ERROR - computeCartTotals $e',
+    );
+    return null;
+  }
+}
+
+num fxAmount({
+  required num amount,
+  required Currency fromCurrency,
+  Currency toCurrency = Currency.GBP,
+}) {
+  var amountGBP = amount; // DEFAULT GBP CASE
+  if (fromCurrency == Currency.EUR || fromCurrency == Currency.USD) {
+    throw Exception(
+        'Not implemented cart totals for fromCurrency: $fromCurrency');
+  } else if (fromCurrency == Currency.GBPx) {
+    amountGBP = amount * 100;
+  } else if (fromCurrency == Currency.PPL) {
+    amountGBP = getPoundValueFromPPL(amount);
+  } else if (fromCurrency == Currency.GBP) {
+    amountGBP = amount;
+  } else if (fromCurrency == Currency.GBT) {
+    throw Exception(
+        'Not implemented cart totals for fromCurrency: $fromCurrency');
+  }
+
+  if (toCurrency == Currency.EUR ||
+      toCurrency == Currency.USD ||
+      toCurrency == Currency.GBT) {
+    throw Exception('Not implemented cart totals for toCurrency: $toCurrency');
+  } else if (toCurrency == Currency.GBPx) {
+    return amountGBP * 100;
+  } else if (toCurrency == Currency.PPL) {
+    return getPPLValueFromPounds(amountGBP);
+  } else if (toCurrency == Currency.GBP) {
+    return amountGBP;
+  } else {
+    throw Exception('Not implemented cart totals for toCurrency: $toCurrency');
+  }
 }
 
 // Conversion

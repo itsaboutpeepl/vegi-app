@@ -24,11 +24,11 @@ mixin _$Order {
   List<OrderItem> get items => throw _privateConstructorUsedError;
   num get total => throw _privateConstructorUsedError;
   num get subtotal => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _toTS)
+  @JsonKey(fromJson: toTS)
   DateTime get orderedDateTime => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _toTSNullable)
+  @JsonKey(fromJson: toTSNullable)
   DateTime? get paidDateTime => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _toTSNullable)
+  @JsonKey(fromJson: toTSNullable)
   DateTime? get refundDateTime => throw _privateConstructorUsedError;
   String? get deliveryName => throw _privateConstructorUsedError;
   String? get deliveryEmail => throw _privateConstructorUsedError;
@@ -41,12 +41,22 @@ mixin _$Order {
   double? get deliveryAddressLongitude => throw _privateConstructorUsedError;
   String get deliveryAddressInstructions => throw _privateConstructorUsedError;
   String get deliveryId => throw _privateConstructorUsedError;
+  List<TransactionItem> get transactions => throw _privateConstructorUsedError;
+  num get fulfilmentCharge => throw _privateConstructorUsedError;
+  num get platformFee => throw _privateConstructorUsedError;
+  String get cartDiscountCode => throw _privateConstructorUsedError;
+  String get cartDiscountType => throw _privateConstructorUsedError;
+  num get cartDiscountAmount => throw _privateConstructorUsedError;
+  num get cartTip => throw _privateConstructorUsedError;
   @JsonEnum()
   @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
   OrderPaidStatus get paymentStatus => throw _privateConstructorUsedError;
   @JsonEnum()
-  @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
-  RestaurantAcceptedStatus get restaurantAcceptanceStatus =>
+  @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+  RestaurantAcceptanceStatus get restaurantAcceptanceStatus =>
+      throw _privateConstructorUsedError;
+  @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+  OrderAcceptanceStatus get orderAcceptanceStatus =>
       throw _privateConstructorUsedError;
   bool get deliveryPartnerAccepted => throw _privateConstructorUsedError;
   bool get deliveryPartnerConfirmed => throw _privateConstructorUsedError;
@@ -83,11 +93,11 @@ abstract class $OrderCopyWith<$Res> {
       List<OrderItem> items,
       num total,
       num subtotal,
-      @JsonKey(fromJson: _toTS)
+      @JsonKey(fromJson: toTS)
           DateTime orderedDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           DateTime? paidDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           DateTime? refundDateTime,
       String? deliveryName,
       String? deliveryEmail,
@@ -100,12 +110,21 @@ abstract class $OrderCopyWith<$Res> {
       double? deliveryAddressLongitude,
       String deliveryAddressInstructions,
       String deliveryId,
+      List<TransactionItem> transactions,
+      num fulfilmentCharge,
+      num platformFee,
+      String cartDiscountCode,
+      String cartDiscountType,
+      num cartDiscountAmount,
+      num cartTip,
       @JsonEnum()
       @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
           OrderPaidStatus paymentStatus,
       @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
-          RestaurantAcceptedStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+          RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          OrderAcceptanceStatus orderAcceptanceStatus,
       bool deliveryPartnerAccepted,
       bool deliveryPartnerConfirmed,
       @JsonKey(readValue: getFulfilmentMethodId)
@@ -158,8 +177,16 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? deliveryAddressLongitude = freezed,
     Object? deliveryAddressInstructions = null,
     Object? deliveryId = null,
+    Object? transactions = null,
+    Object? fulfilmentCharge = null,
+    Object? platformFee = null,
+    Object? cartDiscountCode = null,
+    Object? cartDiscountType = null,
+    Object? cartDiscountAmount = null,
+    Object? cartTip = null,
     Object? paymentStatus = null,
     Object? restaurantAcceptanceStatus = null,
+    Object? orderAcceptanceStatus = null,
     Object? deliveryPartnerAccepted = null,
     Object? deliveryPartnerConfirmed = null,
     Object? fulfilmentMethodId = null,
@@ -247,6 +274,34 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
               as String,
+      transactions: null == transactions
+          ? _value.transactions
+          : transactions // ignore: cast_nullable_to_non_nullable
+              as List<TransactionItem>,
+      fulfilmentCharge: null == fulfilmentCharge
+          ? _value.fulfilmentCharge
+          : fulfilmentCharge // ignore: cast_nullable_to_non_nullable
+              as num,
+      platformFee: null == platformFee
+          ? _value.platformFee
+          : platformFee // ignore: cast_nullable_to_non_nullable
+              as num,
+      cartDiscountCode: null == cartDiscountCode
+          ? _value.cartDiscountCode
+          : cartDiscountCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      cartDiscountType: null == cartDiscountType
+          ? _value.cartDiscountType
+          : cartDiscountType // ignore: cast_nullable_to_non_nullable
+              as String,
+      cartDiscountAmount: null == cartDiscountAmount
+          ? _value.cartDiscountAmount
+          : cartDiscountAmount // ignore: cast_nullable_to_non_nullable
+              as num,
+      cartTip: null == cartTip
+          ? _value.cartTip
+          : cartTip // ignore: cast_nullable_to_non_nullable
+              as num,
       paymentStatus: null == paymentStatus
           ? _value.paymentStatus
           : paymentStatus // ignore: cast_nullable_to_non_nullable
@@ -254,7 +309,11 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       restaurantAcceptanceStatus: null == restaurantAcceptanceStatus
           ? _value.restaurantAcceptanceStatus
           : restaurantAcceptanceStatus // ignore: cast_nullable_to_non_nullable
-              as RestaurantAcceptedStatus,
+              as RestaurantAcceptanceStatus,
+      orderAcceptanceStatus: null == orderAcceptanceStatus
+          ? _value.orderAcceptanceStatus
+          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as OrderAcceptanceStatus,
       deliveryPartnerAccepted: null == deliveryPartnerAccepted
           ? _value.deliveryPartnerAccepted
           : deliveryPartnerAccepted // ignore: cast_nullable_to_non_nullable
@@ -342,11 +401,11 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       List<OrderItem> items,
       num total,
       num subtotal,
-      @JsonKey(fromJson: _toTS)
+      @JsonKey(fromJson: toTS)
           DateTime orderedDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           DateTime? paidDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           DateTime? refundDateTime,
       String? deliveryName,
       String? deliveryEmail,
@@ -359,12 +418,21 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       double? deliveryAddressLongitude,
       String deliveryAddressInstructions,
       String deliveryId,
+      List<TransactionItem> transactions,
+      num fulfilmentCharge,
+      num platformFee,
+      String cartDiscountCode,
+      String cartDiscountType,
+      num cartDiscountAmount,
+      num cartTip,
       @JsonEnum()
       @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
           OrderPaidStatus paymentStatus,
       @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
-          RestaurantAcceptedStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+          RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          OrderAcceptanceStatus orderAcceptanceStatus,
       bool deliveryPartnerAccepted,
       bool deliveryPartnerConfirmed,
       @JsonKey(readValue: getFulfilmentMethodId)
@@ -415,8 +483,16 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
     Object? deliveryAddressLongitude = freezed,
     Object? deliveryAddressInstructions = null,
     Object? deliveryId = null,
+    Object? transactions = null,
+    Object? fulfilmentCharge = null,
+    Object? platformFee = null,
+    Object? cartDiscountCode = null,
+    Object? cartDiscountType = null,
+    Object? cartDiscountAmount = null,
+    Object? cartTip = null,
     Object? paymentStatus = null,
     Object? restaurantAcceptanceStatus = null,
+    Object? orderAcceptanceStatus = null,
     Object? deliveryPartnerAccepted = null,
     Object? deliveryPartnerConfirmed = null,
     Object? fulfilmentMethodId = null,
@@ -504,6 +580,34 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
               as String,
+      transactions: null == transactions
+          ? _value.transactions
+          : transactions // ignore: cast_nullable_to_non_nullable
+              as List<TransactionItem>,
+      fulfilmentCharge: null == fulfilmentCharge
+          ? _value.fulfilmentCharge
+          : fulfilmentCharge // ignore: cast_nullable_to_non_nullable
+              as num,
+      platformFee: null == platformFee
+          ? _value.platformFee
+          : platformFee // ignore: cast_nullable_to_non_nullable
+              as num,
+      cartDiscountCode: null == cartDiscountCode
+          ? _value.cartDiscountCode
+          : cartDiscountCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      cartDiscountType: null == cartDiscountType
+          ? _value.cartDiscountType
+          : cartDiscountType // ignore: cast_nullable_to_non_nullable
+              as String,
+      cartDiscountAmount: null == cartDiscountAmount
+          ? _value.cartDiscountAmount
+          : cartDiscountAmount // ignore: cast_nullable_to_non_nullable
+              as num,
+      cartTip: null == cartTip
+          ? _value.cartTip
+          : cartTip // ignore: cast_nullable_to_non_nullable
+              as num,
       paymentStatus: null == paymentStatus
           ? _value.paymentStatus
           : paymentStatus // ignore: cast_nullable_to_non_nullable
@@ -511,7 +615,11 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
       restaurantAcceptanceStatus: null == restaurantAcceptanceStatus
           ? _value.restaurantAcceptanceStatus
           : restaurantAcceptanceStatus // ignore: cast_nullable_to_non_nullable
-              as RestaurantAcceptedStatus,
+              as RestaurantAcceptanceStatus,
+      orderAcceptanceStatus: null == orderAcceptanceStatus
+          ? _value.orderAcceptanceStatus
+          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as OrderAcceptanceStatus,
       deliveryPartnerAccepted: null == deliveryPartnerAccepted
           ? _value.deliveryPartnerAccepted
           : deliveryPartnerAccepted // ignore: cast_nullable_to_non_nullable
@@ -577,11 +685,11 @@ class _$_Order extends _Order {
       required this.items,
       required this.total,
       required this.subtotal,
-      @JsonKey(fromJson: _toTS)
+      @JsonKey(fromJson: toTS)
           required this.orderedDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           this.paidDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           this.refundDateTime,
       required this.deliveryName,
       required this.deliveryEmail,
@@ -594,12 +702,21 @@ class _$_Order extends _Order {
       required this.deliveryAddressLongitude,
       required this.deliveryAddressInstructions,
       required this.deliveryId,
+      this.transactions = const [],
+      required this.fulfilmentCharge,
+      required this.platformFee,
+      this.cartDiscountCode = '',
+      this.cartDiscountType = 'fixed',
+      this.cartDiscountAmount = 0,
+      this.cartTip = 0,
       @JsonEnum()
       @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
           required this.paymentStatus,
       @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
           required this.restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          required this.orderAcceptanceStatus,
       required this.deliveryPartnerAccepted,
       required this.deliveryPartnerConfirmed,
       @JsonKey(readValue: getFulfilmentMethodId)
@@ -630,13 +747,13 @@ class _$_Order extends _Order {
   @override
   final num subtotal;
   @override
-  @JsonKey(fromJson: _toTS)
+  @JsonKey(fromJson: toTS)
   final DateTime orderedDateTime;
   @override
-  @JsonKey(fromJson: _toTSNullable)
+  @JsonKey(fromJson: toTSNullable)
   final DateTime? paidDateTime;
   @override
-  @JsonKey(fromJson: _toTSNullable)
+  @JsonKey(fromJson: toTSNullable)
   final DateTime? refundDateTime;
   @override
   final String? deliveryName;
@@ -661,13 +778,35 @@ class _$_Order extends _Order {
   @override
   final String deliveryId;
   @override
+  @JsonKey()
+  final List<TransactionItem> transactions;
+  @override
+  final num fulfilmentCharge;
+  @override
+  final num platformFee;
+  @override
+  @JsonKey()
+  final String cartDiscountCode;
+  @override
+  @JsonKey()
+  final String cartDiscountType;
+  @override
+  @JsonKey()
+  final num cartDiscountAmount;
+  @override
+  @JsonKey()
+  final num cartTip;
+  @override
   @JsonEnum()
   @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
   final OrderPaidStatus paymentStatus;
   @override
   @JsonEnum()
-  @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
-  final RestaurantAcceptedStatus restaurantAcceptanceStatus;
+  @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+  final RestaurantAcceptanceStatus restaurantAcceptanceStatus;
+  @override
+  @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+  final OrderAcceptanceStatus orderAcceptanceStatus;
   @override
   final bool deliveryPartnerAccepted;
   @override
@@ -702,7 +841,7 @@ class _$_Order extends _Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, items: $items, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressLatitude: $deliveryAddressLatitude, deliveryAddressLongitude: $deliveryAddressLongitude, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, paymentStatus: $paymentStatus, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, fulfilmentMethodId: $fulfilmentMethodId, fulfilmentMethodPriceModifier: $fulfilmentMethodPriceModifier, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, publicId: $publicId, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, vendor: $vendor, deliveryPartner: $deliveryPartner, fulfilmentMethod: $fulfilmentMethod)';
+    return 'Order(id: $id, items: $items, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressLatitude: $deliveryAddressLatitude, deliveryAddressLongitude: $deliveryAddressLongitude, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, transactions: $transactions, fulfilmentCharge: $fulfilmentCharge, platformFee: $platformFee, cartDiscountCode: $cartDiscountCode, cartDiscountType: $cartDiscountType, cartDiscountAmount: $cartDiscountAmount, cartTip: $cartTip, paymentStatus: $paymentStatus, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, orderAcceptanceStatus: $orderAcceptanceStatus, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, fulfilmentMethodId: $fulfilmentMethodId, fulfilmentMethodPriceModifier: $fulfilmentMethodPriceModifier, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, publicId: $publicId, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, vendor: $vendor, deliveryPartner: $deliveryPartner, fulfilmentMethod: $fulfilmentMethod)';
   }
 
   @override
@@ -744,28 +883,35 @@ class _$_Order extends _Order {
                     deliveryAddressInstructions) &&
             (identical(other.deliveryId, deliveryId) ||
                 other.deliveryId == deliveryId) &&
+            const DeepCollectionEquality()
+                .equals(other.transactions, transactions) &&
+            (identical(other.fulfilmentCharge, fulfilmentCharge) ||
+                other.fulfilmentCharge == fulfilmentCharge) &&
+            (identical(other.platformFee, platformFee) ||
+                other.platformFee == platformFee) &&
+            (identical(other.cartDiscountCode, cartDiscountCode) ||
+                other.cartDiscountCode == cartDiscountCode) &&
+            (identical(other.cartDiscountType, cartDiscountType) ||
+                other.cartDiscountType == cartDiscountType) &&
+            (identical(other.cartDiscountAmount, cartDiscountAmount) ||
+                other.cartDiscountAmount == cartDiscountAmount) &&
+            (identical(other.cartTip, cartTip) || other.cartTip == cartTip) &&
             (identical(other.paymentStatus, paymentStatus) ||
                 other.paymentStatus == paymentStatus) &&
             (identical(other.restaurantAcceptanceStatus, restaurantAcceptanceStatus) ||
                 other.restaurantAcceptanceStatus ==
                     restaurantAcceptanceStatus) &&
+            (identical(other.orderAcceptanceStatus, orderAcceptanceStatus) ||
+                other.orderAcceptanceStatus == orderAcceptanceStatus) &&
             (identical(other.deliveryPartnerAccepted, deliveryPartnerAccepted) ||
                 other.deliveryPartnerAccepted == deliveryPartnerAccepted) &&
-            (identical(other.deliveryPartnerConfirmed, deliveryPartnerConfirmed) ||
-                other.deliveryPartnerConfirmed == deliveryPartnerConfirmed) &&
-            (identical(other.fulfilmentMethodId, fulfilmentMethodId) ||
-                other.fulfilmentMethodId == fulfilmentMethodId) &&
-            (identical(other.fulfilmentMethodPriceModifier, fulfilmentMethodPriceModifier) ||
-                other.fulfilmentMethodPriceModifier ==
-                    fulfilmentMethodPriceModifier) &&
-            (identical(other.fulfilmentSlotFrom, fulfilmentSlotFrom) ||
-                other.fulfilmentSlotFrom == fulfilmentSlotFrom) &&
-            (identical(other.fulfilmentSlotTo, fulfilmentSlotTo) ||
-                other.fulfilmentSlotTo == fulfilmentSlotTo) &&
-            (identical(other.publicId, publicId) ||
-                other.publicId == publicId) &&
-            (identical(other.tipAmount, tipAmount) ||
-                other.tipAmount == tipAmount) &&
+            (identical(other.deliveryPartnerConfirmed, deliveryPartnerConfirmed) || other.deliveryPartnerConfirmed == deliveryPartnerConfirmed) &&
+            (identical(other.fulfilmentMethodId, fulfilmentMethodId) || other.fulfilmentMethodId == fulfilmentMethodId) &&
+            (identical(other.fulfilmentMethodPriceModifier, fulfilmentMethodPriceModifier) || other.fulfilmentMethodPriceModifier == fulfilmentMethodPriceModifier) &&
+            (identical(other.fulfilmentSlotFrom, fulfilmentSlotFrom) || other.fulfilmentSlotFrom == fulfilmentSlotFrom) &&
+            (identical(other.fulfilmentSlotTo, fulfilmentSlotTo) || other.fulfilmentSlotTo == fulfilmentSlotTo) &&
+            (identical(other.publicId, publicId) || other.publicId == publicId) &&
+            (identical(other.tipAmount, tipAmount) || other.tipAmount == tipAmount) &&
             (identical(other.rewardsIssued, rewardsIssued) || other.rewardsIssued == rewardsIssued) &&
             (identical(other.sentToDeliveryPartner, sentToDeliveryPartner) || other.sentToDeliveryPartner == sentToDeliveryPartner) &&
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
@@ -795,8 +941,16 @@ class _$_Order extends _Order {
         deliveryAddressLongitude,
         deliveryAddressInstructions,
         deliveryId,
+        const DeepCollectionEquality().hash(transactions),
+        fulfilmentCharge,
+        platformFee,
+        cartDiscountCode,
+        cartDiscountType,
+        cartDiscountAmount,
+        cartTip,
         paymentStatus,
         restaurantAcceptanceStatus,
+        orderAcceptanceStatus,
         deliveryPartnerAccepted,
         deliveryPartnerConfirmed,
         fulfilmentMethodId,
@@ -832,11 +986,11 @@ abstract class _Order extends Order {
       required final List<OrderItem> items,
       required final num total,
       required final num subtotal,
-      @JsonKey(fromJson: _toTS)
+      @JsonKey(fromJson: toTS)
           required final DateTime orderedDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           final DateTime? paidDateTime,
-      @JsonKey(fromJson: _toTSNullable)
+      @JsonKey(fromJson: toTSNullable)
           final DateTime? refundDateTime,
       required final String? deliveryName,
       required final String? deliveryEmail,
@@ -849,12 +1003,21 @@ abstract class _Order extends Order {
       required final double? deliveryAddressLongitude,
       required final String deliveryAddressInstructions,
       required final String deliveryId,
+      final List<TransactionItem> transactions,
+      required final num fulfilmentCharge,
+      required final num platformFee,
+      final String cartDiscountCode,
+      final String cartDiscountType,
+      final num cartDiscountAmount,
+      final num cartTip,
       @JsonEnum()
       @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
           required final OrderPaidStatus paymentStatus,
       @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
-          required final RestaurantAcceptedStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+          required final RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          required final OrderAcceptanceStatus orderAcceptanceStatus,
       required final bool deliveryPartnerAccepted,
       required final bool deliveryPartnerConfirmed,
       @JsonKey(readValue: getFulfilmentMethodId)
@@ -884,13 +1047,13 @@ abstract class _Order extends Order {
   @override
   num get subtotal;
   @override
-  @JsonKey(fromJson: _toTS)
+  @JsonKey(fromJson: toTS)
   DateTime get orderedDateTime;
   @override
-  @JsonKey(fromJson: _toTSNullable)
+  @JsonKey(fromJson: toTSNullable)
   DateTime? get paidDateTime;
   @override
-  @JsonKey(fromJson: _toTSNullable)
+  @JsonKey(fromJson: toTSNullable)
   DateTime? get refundDateTime;
   @override
   String? get deliveryName;
@@ -915,13 +1078,30 @@ abstract class _Order extends Order {
   @override
   String get deliveryId;
   @override
+  List<TransactionItem> get transactions;
+  @override
+  num get fulfilmentCharge;
+  @override
+  num get platformFee;
+  @override
+  String get cartDiscountCode;
+  @override
+  String get cartDiscountType;
+  @override
+  num get cartDiscountAmount;
+  @override
+  num get cartTip;
+  @override
   @JsonEnum()
   @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
   OrderPaidStatus get paymentStatus;
   @override
   @JsonEnum()
-  @JsonKey(unknownEnumValue: RestaurantAcceptedStatus.pending)
-  RestaurantAcceptedStatus get restaurantAcceptanceStatus;
+  @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+  RestaurantAcceptanceStatus get restaurantAcceptanceStatus;
+  @override
+  @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+  OrderAcceptanceStatus get orderAcceptanceStatus;
   @override
   bool get deliveryPartnerAccepted;
   @override

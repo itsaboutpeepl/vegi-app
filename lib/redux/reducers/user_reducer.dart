@@ -29,8 +29,11 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, BackupSuccess>(_backupSuccess),
   TypedReducer<UserState, StoreBackupStatus>(_storeBackupStatus),
   TypedReducer<UserState, SetFirebaseCredentials>(_setFirebaseCredentials),
+  TypedReducer<UserState, SetFirebaseSessionToken>(_setFirebaseSessionToken),
   TypedReducer<UserState, SetFuseWalletCredentials>(_setFuseWalletCredentials),
   TypedReducer<UserState, SetVerificationId>(_setVerificationId),
+  TypedReducer<UserState, SetVerificationPassed>(_setVerificationPassed),
+  TypedReducer<UserState, SetPhoneNumber>(_setPhoneNumber),
   TypedReducer<UserState, JustInstalled>(_justInstalled),
   TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess),
   TypedReducer<UserState, SetSecurityType>(_setSecurityType),
@@ -43,6 +46,9 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, EnableLocationServices>(_setLocationServicesEnabled),
   TypedReducer<UserState, SetUserVerifiedStatusSuccess>(
     _setUserVerifiedStatusSuccessResponse,
+  ),
+  TypedReducer<UserState, SetUserVegiAccountIdSuccess>(
+    _setUserVegiAccountIdSuccessResponse,
   ),
   TypedReducer<UserState, SetUserIsVendorStatusSuccess>(
     _setUserIsVendorSuccessResponse,
@@ -198,6 +204,22 @@ UserState _setVerificationId(
     verificationId: action.verificationId,
   );
 }
+UserState _setVerificationPassed(
+  UserState state,
+  SetVerificationPassed action,
+) {
+  return state.copyWith(
+    verificationPassed: action.verificationPassed,
+  );
+}
+UserState _setPhoneNumber(
+  UserState state,
+  SetPhoneNumber action,
+) {
+  return state.copyWith(
+    phoneNumber: action.phoneNumber,
+  );
+}
 
 UserState _loginVerifySuccess(
   UserState state,
@@ -294,6 +316,13 @@ UserState _setFirebaseCredentials(
   return state.copyWith(firebaseCredentials: action.firebaseCredentials);
 }
 
+UserState _setFirebaseSessionToken(
+  UserState state,
+  SetFirebaseSessionToken action,
+) {
+  return state.copyWith(firebaseSessionToken: action.firebaseSessionToken);
+}
+
 UserState _setFuseWalletCredentials(
   UserState state,
   SetFuseWalletCredentials action,
@@ -375,6 +404,15 @@ UserState _setUserVerifiedStatusSuccessResponse(
 ) {
   return state.copyWith(
     userIsVerified: action.userIsVerified,
+  );
+}
+
+UserState _setUserVegiAccountIdSuccessResponse(
+  UserState state,
+  SetUserVegiAccountIdSuccess action,
+) {
+  return state.copyWith(
+    vegiAccountId: action.accountId,
   );
 }
 

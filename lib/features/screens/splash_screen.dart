@@ -10,7 +10,10 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -26,6 +29,110 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late Flushbar<bool> flush;
 
+  void _reLogin(
+    BuildContext context,
+    Store<AppState> store,
+  ) {
+    store.dispatch(
+      reLoginCall(
+        onSuccess: () {
+          showInfoSnack(
+            context,
+            title: Messages.walletLoadedSnackbarMessage,
+          );
+          finishAppStart(store: store);
+        },
+        reOnboardRequired: () {
+          if (DebugHelpers.inDebugMode) {
+            log.verbose('Reauthentication of user requires reonboarding');
+          }
+          rootRouter.push(const SignUpScreen());
+        },
+        onFailure: (Exception e) {
+          if (DebugHelpers.inDebugMode) {
+            return showErrorSnack(
+              context: context,
+              title: Messages.walletSignedOutSnackbarMessage,
+              message: e.toString(),
+            );
+          }
+          showInfoSnack(
+            context,
+            title: Messages.walletSignedOutSnackbarMessage,
+          );
+        },
+        onError: (error) {
+          if (inDebugMode) {
+            showErrorSnack(
+              context: context,
+              title: Messages.walletSignedOutSnackbarMessage,
+              message: 'Error fetching smart wallet: $error',
+            );
+          } else {
+            showInfoSnack(
+              context,
+              title: Messages.walletSignedOutSnackbarMessage,
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  void finishAppStart({
+    required Store<AppState> store,
+  }) {
+    final UserState userState = store.state.userState;
+    if (userState.authType != BiometricAuth.none) {
+      store
+        ..dispatch(
+          fetchFuseSmartWallet(
+            onSuccess: () {
+              showInfoSnack(
+                context,
+                title: Messages.walletLoadedSnackbarMessage,
+              );
+            },
+            onFailure: ({String msg = ''}) {
+              showInfoSnack(
+                context,
+                title: Messages.walletSignedOutSnackbarMessage,
+              );
+              context.router.replaceAll([const SignUpScreen()]);
+            },
+            onError: (error) {
+              if (inDebugMode) {
+                showErrorSnack(
+                  context: context,
+                  title: Messages.walletSignedOutSnackbarMessage,
+                  message: 'Error fetching smart wallet: $error',
+                );
+              } else {
+                showInfoSnack(
+                  context,
+                  title: Messages.walletSignedOutSnackbarMessage,
+                );
+              }
+              context.router.replaceAll([const SignUpScreen()]);
+            },
+          ),
+        )
+        ..dispatch(identifyCall());
+    }
+    log.warn('Need to implement BioMetric Auth here');
+    if (BiometricAuth.faceID == userState.authType ||
+        BiometricAuth.touchID == userState.authType) {
+      context.router.replaceAll([const MainScreen()]);
+      widget.onLoginResult?.call(true);
+    } else if (userState.authType == BiometricAuth.pincode) {
+      context.router.replaceAll([const MainScreen()]);
+      widget.onLoginResult?.call(true);
+    } else {
+      context.router.replaceAll([const MainScreen()]);
+      widget.onLoginResult?.call(true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, LockScreenViewModel>(
@@ -37,51 +144,16 @@ class _SplashScreenState extends State<SplashScreen> {
         if (privateKey.isEmpty || jwtToken.isEmpty || isLoggedOut) {
           context.router.replaceAll([const OnBoardScreen()]);
           widget.onLoginResult?.call(false);
-        } else {
-          final UserState userState = store.state.userState;
-          if (userState.authType != BiometricAuth.none) {
-            store
-              ..dispatch(fetchFuseSmartWallet(
-                onSuccess: () {
-                  showInfoSnack(
-                    context,
-                    title: Messages.walletLoadedSnackbarMessage,
-                  );
-                },
-                onFailure: ({String msg = ''}) {
-                  showInfoSnack(
-                    context,
-                    title: Messages.walletSignedOutSnackbarMessage,
-                  );
-                },
-                onError: (error) {
-                  if (inDebugMode) {
-                    showErrorSnack(
-                      context: context,
-                      title: Messages.walletSignedOutSnackbarMessage,
-                      message: 'Error fetching smart wallet: $error',
-                    );
-                  } else {
-                    showInfoSnack(
-                      context,
-                      title: Messages.walletSignedOutSnackbarMessage,
-                    );
-                  }
-                },
-              ))
-              ..dispatch(identifyCall());
-          }
-          if (BiometricAuth.faceID == userState.authType ||
-              BiometricAuth.touchID == userState.authType) {
-            context.router.replaceAll([const MainScreen()]);
-            widget.onLoginResult?.call(true);
-          } else if (userState.authType == BiometricAuth.pincode) {
-            context.router.replaceAll([const MainScreen()]);
-            widget.onLoginResult?.call(true);
+        } else if (!store.state.userState.verificationPassed) {
+          context.router.replaceAll([const SignUpScreen()]);
+        } else if (!peeplEatsService.hasCookieStored) {
+          if (store.state.userState.firebaseSessionToken != null) {
+            _reLogin(context, store);
           } else {
-            context.router.replaceAll([const MainScreen()]);
-            widget.onLoginResult?.call(true);
+            context.router.replaceAll([const SignUpScreen()]);
           }
+        } else {
+          finishAppStart(store: store);
         }
       },
       converter: LockScreenViewModel.fromStore,

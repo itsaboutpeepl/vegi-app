@@ -18,6 +18,21 @@
             ]
         },
         {
+            "name": "vegi - Debug [reset_state]",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "ENV=development",
+                "--dart-define",
+                "reset_state=true",
+                "--dart-define",
+                "USE_FIREBASE_EMULATOR=false"
+            ]
+        },
+        {
             "name": "vegi (qa)",
             "request": "launch",
             "type": "dart",
@@ -26,6 +41,19 @@
             "args": [
                 "--dart-define",
                 "ENV=qa",
+                "--dart-define",
+                "USE_FIREBASE_EMULATOR=false"
+            ]
+        },
+        {
+            "name": "vegi (PROD)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "ENV=production",
                 "--dart-define",
                 "USE_FIREBASE_EMULATOR=false"
             ]

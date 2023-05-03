@@ -147,6 +147,12 @@ extension IterableHelpers<T> on Iterable<T> {
   }
 }
 
+extension ListHelpers<T> on List<T> {
+  List<T> sortInline(int Function(T a, T b) convert) {
+    return sorted((a, b) => convert(a, b));
+  }
+}
+
 extension NumIterableHelpers<T> on Iterable<T> {
   /// Reduces a collection to a maximum value by iteratively comparing elements
   /// of the collection using the provided function.
@@ -198,6 +204,33 @@ extension NumIterableHelpers<T> on Iterable<T> {
     } else if (length > 0 && [0] is num && this is Iterable<num>) {
       return (this as Iterable<num>).reduce(
         (value, element) => value < element ? value : element,
+      ) as T;
+    } else {
+      log.error(
+          'Type of array vals must either extend a num or have a comparitor defined!');
+      throw TypeError();
+    }
+  }
+
+  /// Reduces a collection to its sum by iteratively summing elements
+  /// of the collection.
+  ///
+  /// Example of calculating the sum of an iterable:
+  /// ```dart
+  /// final numbers = <double>[10, 2, 5, 0.5];
+  /// final result = numbers.sum((a) => a);
+  /// print(result); // 17.5
+  /// ```
+  T sum({
+    T Function(T a, T b)? sumFunc,
+  }) {
+    if (sumFunc != null) {
+      return reduce(
+        (value, element) => sumFunc(value, element),
+      );
+    } else if (length > 0 && [0] is num && this is Iterable<num>) {
+      return (this as Iterable<num>).reduce(
+        (value, element) => value + element,
       ) as T;
     } else {
       log.error(

@@ -102,6 +102,7 @@ class UserState with _$UserState {
     @Default('') String avatarUrl,
     @Default('') String email,
     String? verificationId,
+    @Default(false) bool verificationPassed,
     @Default('') String identifier,
     @Default([]) List<String> syncedContacts,
     @Default({}) Map<String, String> reverseContacts,
@@ -110,6 +111,7 @@ class UserState with _$UserState {
     @Default(BiometricAuth.none) BiometricAuth authType,
     @JsonKey(fromJson: localeFromJson, toJson: localeToJson) Locale? locale,
     @JsonKey(ignore: true) PhoneAuthCredential? firebaseCredentials,
+    String? firebaseSessionToken,
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
     @Default(false) bool hasSavedSeedPhrase,
     @Default(false) bool useLiveLocation,
@@ -124,6 +126,7 @@ class UserState with _$UserState {
     @Default('') String surveyEmailUsed,
     @Default(false) bool isVendor,
     @Default(null) String? stripeCustomerId,
+    @Default(null) num? vegiAccountId,
   }) = _UserState;
 
   const UserState._();
@@ -136,7 +139,7 @@ class UserState with _$UserState {
         displayName: 'Anom',
         isLoggedOut: true,
         authType: BiometricAuth.none,
-        currency: 'usd',
+        currency: 'gbp',
         useLiveLocation: false,
         listOfDeliveryAddresses: [],
         surveyQuestions: [],

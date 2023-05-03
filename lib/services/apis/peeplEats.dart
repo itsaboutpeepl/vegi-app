@@ -12,10 +12,12 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
 import 'package:vegan_liverpool/models/admin/postVegiResponse.dart';
+import 'package:vegan_liverpool/models/admin/vegiAccount.dart';
 import 'package:vegan_liverpool/models/admin/vegiSession.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
+import 'package:vegan_liverpool/models/cart/orderStatus.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -72,6 +74,8 @@ class PeeplEatsService extends HttpService {
   }
 
   // User Details
+
+  bool get hasCookieStored => dio.options.headers.containsKey('Cookie');
 
   Future<VegiSession> loginWithPhone({
     required String phoneNumber,
@@ -964,10 +968,11 @@ class PeeplEatsService extends HttpService {
 
   Future<void> getUserForWalletAddress(
     String walletAddress,
-    void Function(bool userIsVerified) onSuccess,
+    void Function(VegiAccount vegiAccount) onSuccess,
     void Function(String error) onError,
   ) async {
     final Response<dynamic> response = await dioGet(
+      //todo: get and set accountId from response
       'api/v1/admin/user-for-wallet-address',
       queryParameters: {
         'walletAddress': walletAddress,
@@ -977,7 +982,9 @@ class PeeplEatsService extends HttpService {
     if (response.statusCode != null && response.statusCode! >= 400) {
       onError(response.statusMessage ?? 'Unknown Error');
     } else {
-      onSuccess((response.data as Map<String, dynamic>)['verified'] as bool);
+      final result =
+          VegiAccount.fromJson(response.data as Map<String, dynamic>);
+      onSuccess(result);
     }
   }
 
@@ -1110,8 +1117,9 @@ class PeeplEatsService extends HttpService {
     T orderObject,
   ) async {
     final Response<dynamic> response = await dioPost(
-        'api/v1/orders/create-order',
-        data: orderObject.toUploadJson());
+      'api/v1/orders/create-order',
+      data: await orderObject.toUploadJson(),
+    );
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
@@ -1121,27 +1129,33 @@ class PeeplEatsService extends HttpService {
   String getOrderUri(String orderID) =>
       '$baseUrl/api/v1/orders/get-order-details?orderId=$orderID';
 
-  Future<Map<dynamic, dynamic>> checkOrderStatus(String orderID) async {
+  Future<OrderStatus> checkOrderStatus(String orderID) async {
     final Response<dynamic> response =
         await dio.get('api/v1/orders/get-order-status?orderId=$orderID');
 
-    final Map<String, dynamic> result = response.data as Map<String, dynamic>;
+    final Map<String, dynamic> orderStatus =
+        response.data as Map<String, dynamic>;
 
-    return result;
+    return OrderStatus.fromJson(orderStatus);
   }
 
-  Future<List<OrderModel.Order>> getPastOrders(String walletAddress) async {
+  Future<List<OrderModel.Order>> getOrdersForWallet(
+    String walletAddress,
+  ) async {
     try {
       final Response<dynamic> response =
           await dio.get('api/v1/orders?walletId=$walletAddress');
       final scheduledOrders =
           (response.data['scheduledOrders'] as List<dynamic>)
-              .map((order) =>
-                  OrderModel.Order.fromJson(order as Map<String, dynamic>))
+              .map(
+                (order) =>
+                    OrderModel.Order.fromJson(order as Map<String, dynamic>),
+              )
               .toList();
       final ongoingOrders = (response.data['ongoingOrders'] as List<dynamic>)
-          .map((order) =>
-              OrderModel.Order.fromJson(order as Map<String, dynamic>))
+          .map(
+            (order) => OrderModel.Order.fromJson(order as Map<String, dynamic>),
+          )
           .toList();
       return [
         ...ongoingOrders,

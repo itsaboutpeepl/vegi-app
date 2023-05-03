@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 
 class PreparingOrderAppBar extends StatelessWidget {
-  const PreparingOrderAppBar({Key? key, required this.orderDetails})
-      : super(key: key);
+  const PreparingOrderAppBar({Key? key, required this.order}) : super(key: key);
 
-  final OrderDetails orderDetails;
+  final Order order;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class PreparingOrderAppBar extends StatelessWidget {
       flexibleSpace: FlexibleSpaceBar(
         title: GestureDetector(
           onTap: () => context.router.push(
-            PreparingOrderPage(orderDetails: orderDetails),
+            PreparingOrderPage(order: order),
           ),
           child: Card(
             color: themeShade200,
@@ -37,7 +37,7 @@ class PreparingOrderAppBar extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Text(
-                  'Order #${orderDetails.orderID} ${orderDetails.orderAcceptanceStatus.displayTitle}',
+                  'Order #${order.orderID} ${order.restaurantAcceptanceStatus.displayTitle}',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,

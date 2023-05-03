@@ -54,7 +54,7 @@ import '../../features/veganHome/widgets/shared/redux_state_viewer.dart'
 import '../../features/waitingListFunnel/screens/waitingListFunnel.dart'
     as _i10;
 import '../../models/app_state.dart' as _i39;
-import '../../models/restaurant/orderDetails.dart' as _i40;
+import '../../models/cart/order.dart' as _i40;
 import 'route_guards.dart' as _i34;
 
 class RootRouter extends _i32.RootStackRouter {
@@ -261,7 +261,7 @@ class RootRouter extends _i32.RootStackRouter {
         routeData: routeData,
         child: _i24.PreparingOrderPage(
           key: args.key,
-          orderDetails: args.orderDetails,
+          order: args.order,
         ),
         transitionsBuilder: _i32.TransitionsBuilders.slideBottom,
         opaque: true,
@@ -1010,13 +1010,13 @@ class AboutScreen extends _i32.PageRouteInfo<void> {
 class PreparingOrderPage extends _i32.PageRouteInfo<PreparingOrderPageArgs> {
   PreparingOrderPage({
     _i35.Key? key,
-    required _i40.OrderDetails orderDetails,
+    required _i40.Order order,
   }) : super(
           PreparingOrderPage.name,
           path: 'preparing-order-page',
           args: PreparingOrderPageArgs(
             key: key,
-            orderDetails: orderDetails,
+            order: order,
           ),
         );
 
@@ -1026,16 +1026,16 @@ class PreparingOrderPage extends _i32.PageRouteInfo<PreparingOrderPageArgs> {
 class PreparingOrderPageArgs {
   const PreparingOrderPageArgs({
     this.key,
-    required this.orderDetails,
+    required this.order,
   });
 
   final _i35.Key? key;
 
-  final _i40.OrderDetails orderDetails;
+  final _i40.Order order;
 
   @override
   String toString() {
-    return 'PreparingOrderPageArgs{key: $key, orderDetails: $orderDetails}';
+    return 'PreparingOrderPageArgs{key: $key, order: $order}';
   }
 }
 

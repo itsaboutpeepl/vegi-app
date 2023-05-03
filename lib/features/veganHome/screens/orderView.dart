@@ -20,12 +20,12 @@ import 'package:vegan_liverpool/redux/viewsmodels/orderConfirmed.dart';
 class OrderViewScreen extends StatelessWidget {
   const OrderViewScreen({
     Key? key,
-    required this.orderDetails,
+    required this.order,
     required this.isNewOrder,
     required this.homeAction,
   }) : super(key: key);
 
-  final OrderDetails orderDetails;
+  final Order order;
 
   final bool isNewOrder;
 
@@ -45,31 +45,31 @@ class OrderViewScreen extends StatelessWidget {
               if (isNewOrder)
                 ThankYouCard(
                   // * only on orderConfirmed
-                  isDelivery: orderDetails.isDelivery,
-                  orderId: orderDetails.orderID,
+                  isDelivery: order.isDelivery,
+                  orderId: order.orderID,
                 )
               else
                 OrderStatusCard(
-                  isDelivery: orderDetails.isDelivery,
-                  orderId: orderDetails.orderID,
-                  orderStatus: orderDetails.orderAcceptanceStatus,
+                  isDelivery: order.isDelivery,
+                  orderId: order.orderID,
+                  orderStatus: order.orderAcceptanceStatus,
                 ),
 
               AddressCard(
-                isDelivery: orderDetails.isDelivery,
-                orderAddress: orderDetails.orderAddress,
-                selectedSlot: orderDetails.selectedSlot,
-                userName: orderDetails.userName,
-                restaurantName: orderDetails.restaurantName,
+                isDelivery: order.isDelivery,
+                orderAddress: order.address,
+                selectedSlot: order.timeSlot,
+                userName: order.deliveryName ?? 'No name',
+                restaurantName: order.restaurantName,
               ),
               BillInvoiceCard(
-                orderDetails: orderDetails,
+                order: order,
               ), //TODO: include once we pull following from api in the order object: gbpxUsed, didUsePPL, pplUsed, pplRewardsEarned, pplRewardsEarnedValue;
               OrderListCard(
-                orderItems: orderDetails.cartItems
+                orderItems: order.items
                     .map(
                       (element) => ViewItem(
-                        name: element.menuItem.name,
+                        name: element.product.name,
                         totalPriceFormatted: element.formattedPrice,
                         chosenOptions: element.selectedProductOptionsString,
                       ),

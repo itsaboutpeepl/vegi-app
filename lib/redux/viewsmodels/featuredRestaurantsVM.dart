@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
@@ -31,6 +32,7 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.updateSelectedSearchPostalCode,
     required this.filterVendors,
     required this.listOfScheduledOrders,
+    required this.refreshFeaturedRestaurants,
     required this.selectedSearchPostCode,
   });
 
@@ -55,7 +57,9 @@ class FeaturedRestaurantsVM extends Equatable {
       userInVendorMode: store.state.userState.isVendor,
       setIsDelivery: (isDelivery) {
         store
-          ..dispatch(SetFulfilmentMethod(fulfilmentMethodType: FulfilmentMethodType.delivery,))
+          ..dispatch(SetFulfilmentMethod(
+            fulfilmentMethodType: FulfilmentMethodType.delivery,
+          ))
           ..dispatch(computeCartTotals());
         // todo: dont fetch if he have already loaded delivery vendors for this outcode
         if (store.state.userState.useLiveLocation) {
@@ -68,6 +72,14 @@ class FeaturedRestaurantsVM extends Equatable {
             makeGlobalSearchVisible: makeVisible,
           ),
         );
+      },
+      refreshFeaturedRestaurants: () async {
+        if (store.state.userState.useLiveLocation) {
+          store.dispatch(fetchFeaturedRestaurantsByUserLocation());
+        } else {
+          store.dispatch(fetchFeaturedRestaurantsByPostCode(
+              outCode: store.state.homePageState.selectedSearchPostCode));
+        }
       },
       changeOutCode: (outCode) {
         store.dispatch(fetchFeaturedRestaurantsByPostCode(outCode: outCode));
@@ -101,13 +113,14 @@ class FeaturedRestaurantsVM extends Equatable {
   final List<String> postalCodes;
   final bool isDelivery;
   final void Function(bool isDelivery) setIsDelivery;
+  final Future<void> Function() refreshFeaturedRestaurants;
   final void Function({required bool makeVisible}) showGlobalSearchBarField;
   final bool userLocationEnabled;
   final bool userInVendorMode;
 
   final void Function({required String query, required String outCode})
       filterVendors;
-  final List<OrderDetails> listOfScheduledOrders;
+  final List<Order> listOfScheduledOrders;
 
   @override
   List<Object> get props => [

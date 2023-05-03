@@ -131,6 +131,9 @@ class _RegisterEmailWaitingListScreenState
                             child: TextFormField(
                               controller: emailController,
                               keyboardType: TextInputType.emailAddress,
+                              onTapOutside: (event) {
+                                FocusScope.of(context).unfocus();
+                              },
                               autocorrect: false,
                               autofocus: true,
                               validator: (String? value) => value!.isEmpty
@@ -147,7 +150,8 @@ class _RegisterEmailWaitingListScreenState
                                 ),
                                 hintText: Messages.email,
                                 border: InputBorder.none,
-                                fillColor: Theme.of(context).backgroundColor,
+                                fillColor:
+                                    Theme.of(context).colorScheme.background,
                                 focusedBorder: const OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
@@ -180,6 +184,7 @@ class _RegisterEmailWaitingListScreenState
                             disabled: isPreloading,
                             onPressed: () async {
                               final String email = emailController.text;
+                              FocusScope.of(context).unfocus();
                               setState(() {
                                 isPreloading = true;
                               });

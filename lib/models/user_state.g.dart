@@ -41,6 +41,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       avatarUrl: json['avatarUrl'] as String? ?? '',
       email: json['email'] as String? ?? '',
       verificationId: json['verificationId'] as String?,
+      verificationPassed: json['verificationPassed'] as bool? ?? false,
       identifier: json['identifier'] as String? ?? '',
       syncedContacts: (json['syncedContacts'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -54,6 +55,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       authType: $enumDecodeNullable(_$BiometricAuthEnumMap, json['authType']) ??
           BiometricAuth.none,
       locale: localeFromJson(json['locale'] as Map<String, dynamic>?),
+      firebaseSessionToken: json['firebaseSessionToken'] as String?,
       listOfDeliveryAddresses: (json['listOfDeliveryAddresses']
                   as List<dynamic>?)
               ?.map(
@@ -68,6 +70,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       surveyEmailUsed: json['surveyEmailUsed'] as String? ?? '',
       isVendor: json['isVendor'] as bool? ?? false,
       stripeCustomerId: json['stripeCustomerId'] as String? ?? null,
+      vegiAccountId: json['vegiAccountId'] as num? ?? null,
     );
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
@@ -94,12 +97,14 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'avatarUrl': instance.avatarUrl,
       'email': instance.email,
       'verificationId': instance.verificationId,
+      'verificationPassed': instance.verificationPassed,
       'identifier': instance.identifier,
       'syncedContacts': instance.syncedContacts,
       'reverseContacts': instance.reverseContacts,
       'currency': instance.currency,
       'authType': _$BiometricAuthEnumMap[instance.authType]!,
       'locale': localeToJson(instance.locale),
+      'firebaseSessionToken': instance.firebaseSessionToken,
       'listOfDeliveryAddresses':
           instance.listOfDeliveryAddresses.map((e) => e.toJson()).toList(),
       'hasSavedSeedPhrase': instance.hasSavedSeedPhrase,
@@ -110,6 +115,7 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'surveyEmailUsed': instance.surveyEmailUsed,
       'isVendor': instance.isVendor,
       'stripeCustomerId': instance.stripeCustomerId,
+      'vegiAccountId': instance.vegiAccountId,
     };
 
 const _$BiometricAuthEnumMap = {

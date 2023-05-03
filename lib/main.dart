@@ -34,10 +34,12 @@ void main() async {
 
   const envStr = Env.activeEnv;
 
+  print('Loading secrets from ${Env.envFile} for Env: ${Env.activeEnv}');
+
   await dotenv.load(fileName: Env.envFile);
 
   StripeService().init();
-  
+
   await initWeb3AuthService();
 
   await configureDependencies(environment: envStr);

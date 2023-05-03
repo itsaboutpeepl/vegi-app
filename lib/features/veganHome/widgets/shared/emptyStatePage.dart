@@ -50,6 +50,18 @@ class EmptyStatePage extends StatelessWidget {
               fontSize: 22,
               fontWeight: FontWeight.w500,
             ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            'Pull down to refreh',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.italic,
+            ),
           )
         ],
       ),

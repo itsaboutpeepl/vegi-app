@@ -49,7 +49,6 @@ mixin _$UserCartState {
   String get restaurantWalletAddress => throw _privateConstructorUsedError;
   FulfilmentMethodType get fulfilmentMethod =>
       throw _privateConstructorUsedError;
-  bool get isDelivery => throw _privateConstructorUsedError;
   int get restaurantMinimumOrder => throw _privateConstructorUsedError;
   int get restaurantPlatformFee => throw _privateConstructorUsedError;
   String get deliveryInstructions => throw _privateConstructorUsedError;
@@ -102,7 +101,6 @@ abstract class $UserCartStateCopyWith<$Res> {
       DeliveryAddresses? restaurantAddress,
       String restaurantWalletAddress,
       FulfilmentMethodType fulfilmentMethod,
-      bool isDelivery,
       int restaurantMinimumOrder,
       int restaurantPlatformFee,
       String deliveryInstructions,
@@ -160,7 +158,6 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? restaurantAddress = freezed,
     Object? restaurantWalletAddress = null,
     Object? fulfilmentMethod = null,
-    Object? isDelivery = null,
     Object? restaurantMinimumOrder = null,
     Object? restaurantPlatformFee = null,
     Object? deliveryInstructions = null,
@@ -276,10 +273,6 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
           ? _value.fulfilmentMethod
           : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
               as FulfilmentMethodType,
-      isDelivery: null == isDelivery
-          ? _value.isDelivery
-          : isDelivery // ignore: cast_nullable_to_non_nullable
-              as bool,
       restaurantMinimumOrder: null == restaurantMinimumOrder
           ? _value.restaurantMinimumOrder
           : restaurantMinimumOrder // ignore: cast_nullable_to_non_nullable
@@ -428,7 +421,6 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       DeliveryAddresses? restaurantAddress,
       String restaurantWalletAddress,
       FulfilmentMethodType fulfilmentMethod,
-      bool isDelivery,
       int restaurantMinimumOrder,
       int restaurantPlatformFee,
       String deliveryInstructions,
@@ -490,7 +482,6 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? restaurantAddress = freezed,
     Object? restaurantWalletAddress = null,
     Object? fulfilmentMethod = null,
-    Object? isDelivery = null,
     Object? restaurantMinimumOrder = null,
     Object? restaurantPlatformFee = null,
     Object? deliveryInstructions = null,
@@ -606,10 +597,6 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.fulfilmentMethod
           : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
               as FulfilmentMethodType,
-      isDelivery: null == isDelivery
-          ? _value.isDelivery
-          : isDelivery // ignore: cast_nullable_to_non_nullable
-              as bool,
       restaurantMinimumOrder: null == restaurantMinimumOrder
           ? _value.restaurantMinimumOrder
           : restaurantMinimumOrder // ignore: cast_nullable_to_non_nullable
@@ -681,7 +668,6 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       this.restaurantAddress = null,
       this.restaurantWalletAddress = '',
       this.fulfilmentMethod = FulfilmentMethodType.delivery,
-      this.isDelivery = false,
       this.restaurantMinimumOrder = 0,
       this.restaurantPlatformFee = 0,
       this.deliveryInstructions = '',
@@ -776,9 +762,6 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   final FulfilmentMethodType fulfilmentMethod;
   @override
   @JsonKey()
-  final bool isDelivery;
-  @override
-  @JsonKey()
   final int restaurantMinimumOrder;
   @override
   @JsonKey()
@@ -807,7 +790,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, isDelivery: $isDelivery, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion)';
   }
 
   @override
@@ -844,7 +827,6 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty(
           'restaurantWalletAddress', restaurantWalletAddress))
       ..add(DiagnosticsProperty('fulfilmentMethod', fulfilmentMethod))
-      ..add(DiagnosticsProperty('isDelivery', isDelivery))
       ..add(
           DiagnosticsProperty('restaurantMinimumOrder', restaurantMinimumOrder))
       ..add(DiagnosticsProperty('restaurantPlatformFee', restaurantPlatformFee))
@@ -912,8 +894,6 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 other.restaurantWalletAddress == restaurantWalletAddress) &&
             (identical(other.fulfilmentMethod, fulfilmentMethod) ||
                 other.fulfilmentMethod == fulfilmentMethod) &&
-            (identical(other.isDelivery, isDelivery) ||
-                other.isDelivery == isDelivery) &&
             (identical(other.restaurantMinimumOrder, restaurantMinimumOrder) ||
                 other.restaurantMinimumOrder == restaurantMinimumOrder) &&
             (identical(other.restaurantPlatformFee, restaurantPlatformFee) ||
@@ -930,7 +910,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 other.nextCollectionSlot == nextCollectionSlot) &&
             (identical(other.nextDeliverySlot, nextDeliverySlot) ||
                 other.nextDeliverySlot == nextDeliverySlot) &&
-            (identical(other.productSuggestion, productSuggestion) || other.productSuggestion == productSuggestion));
+            (identical(other.productSuggestion, productSuggestion) ||
+                other.productSuggestion == productSuggestion));
   }
 
   @JsonKey(ignore: true)
@@ -963,7 +944,6 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
         restaurantAddress,
         restaurantWalletAddress,
         fulfilmentMethod,
-        isDelivery,
         restaurantMinimumOrder,
         restaurantPlatformFee,
         deliveryInstructions,
@@ -1017,7 +997,6 @@ abstract class _UserCartState extends UserCartState {
       final DeliveryAddresses? restaurantAddress,
       final String restaurantWalletAddress,
       final FulfilmentMethodType fulfilmentMethod,
-      final bool isDelivery,
       final int restaurantMinimumOrder,
       final int restaurantPlatformFee,
       final String deliveryInstructions,
@@ -1084,8 +1063,6 @@ abstract class _UserCartState extends UserCartState {
   String get restaurantWalletAddress;
   @override
   FulfilmentMethodType get fulfilmentMethod;
-  @override
-  bool get isDelivery;
   @override
   int get restaurantMinimumOrder;
   @override

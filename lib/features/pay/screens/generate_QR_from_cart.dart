@@ -47,18 +47,28 @@ class _GenerateQRFromCartState extends State<GenerateQRFromCart> {
             //   bottomRight: Radius.circular(16),
             // ),
           ),
-          child: QrImage(
-            data: viewmodel.encodedBasket,
-            backgroundColor: Theme.of(context).canvasColor,
-            embeddedImage: Image.asset(
-              'assets/images/Vegi-Logo-square.png',
-            ).image,
-            foregroundColor: themeShade1200,
-            size: Math.min(
-                  MediaQuery.of(context).size.width,
-                  MediaQuery.of(context).size.height,
-                ) *
-                0.8,
+          child: FutureBuilder<String>(
+            future: viewmodel.encodedBasket(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(color: themeShade400),
+                );
+              }
+              return QrImage(
+                data: snapshot.data!,
+                backgroundColor: Theme.of(context).canvasColor,
+                embeddedImage: Image.asset(
+                  'assets/images/Vegi-Logo-square.png',
+                ).image,
+                foregroundColor: themeShade1200,
+                size: Math.min(
+                      MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height,
+                    ) *
+                    0.8,
+              );
+            },
           ),
         );
         return Container(
@@ -74,7 +84,9 @@ class _GenerateQRFromCartState extends State<GenerateQRFromCart> {
                   GestureDetector(
                     child: _qrImage,
                     onTap: () async {
-                      await copyToClipboard(viewmodel.encodedBasket);
+                      await copyToClipboard(
+                        await viewmodel.encodedBasket(),
+                      );
                       showInfoSnack(
                         context,
                         title: 'Basked copied to clipboard',

@@ -5,6 +5,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:phone_number/phone_number.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
@@ -251,8 +252,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                       hintText: I10n.of(context).phoneNumber,
                                       border: InputBorder.none,
-                                      fillColor:
-                                          Theme.of(context).backgroundColor,
+                                      fillColor: Theme.of(context)
+                                          .colorScheme
+                                          .background,
                                       focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                       ),
@@ -286,60 +288,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               label: I10n.of(context).next_button,
                               preload: isPreloading,
                               disabled: isPreloading,
-                              onPressed: () async {
-                                final String phoneNumber =
-                                    '${countryCode.dialCode}${phoneController.text}';
-                                setState(() {
-                                  isPreloading = true;
+                              onPressed: () {
+                                parsePhoneNumber(
+                                  signUp: signUp,
+                                ).then((e) {
+                                  if (e != null) {
+                                    showErrorSnack(
+                                      message: I10n.of(context).invalid_number,
+                                      title:
+                                          I10n.of(context).something_went_wrong,
+                                      context: context,
+                                      margin: const EdgeInsets.only(
+                                        top: 8,
+                                        right: 8,
+                                        left: 8,
+                                        bottom: 120,
+                                      ),
+                                    );
+                                  }
                                 });
-                                try {
-                                  final value = await phoneNumberUtil.parse(
-                                    phoneNumber,
-                                  );
-                                  signUp(
-                                    countryCode,
-                                    value,
-                                    () {
-                                      // setState(() {
-                                      //   isPreloading = false;
-                                      // });
-                                    },
-                                    (error) {
-                                      setState(() {
-                                        isPreloading = false;
-                                      });
-                                      showErrorSnack(
-                                        message:
-                                            I10n.of(context).invalid_number,
-                                        title: I10n.of(context)
-                                            .something_went_wrong,
-                                        context: context,
-                                        margin: const EdgeInsets.only(
-                                          top: 8,
-                                          right: 8,
-                                          left: 8,
-                                          bottom: 120,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                } catch (e) {
-                                  setState(() {
-                                    isPreloading = false;
-                                  });
-                                  showErrorSnack(
-                                    message: I10n.of(context).invalid_number,
-                                    title:
-                                        I10n.of(context).something_went_wrong,
-                                    context: context,
-                                    margin: const EdgeInsets.only(
-                                      top: 8,
-                                      right: 8,
-                                      left: 8,
-                                      bottom: 120,
-                                    ),
-                                  );
-                                }
                               },
                             ),
                           ),
@@ -367,5 +334,78 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       },
     );
+  }
+
+  Future<Exception?> parsePhoneNumber({
+    required void Function(
+      CountryCode,
+      PhoneNumber,
+      void Function(),
+      void Function(dynamic),
+    )
+        signUp,
+  }) async {
+    final String phoneNumber = '${countryCode.dialCode}${phoneController.text}';
+    setState(() {
+      isPreloading = true;
+    });
+    PhoneNumber? value = null;
+    try {
+      value = await phoneNumberUtil.parse(
+        phoneNumber,
+      );
+    } catch (e) {
+      // do nothing and try again....
+    }
+    try {
+      value ??= await PhoneNumberUtil().parse(
+        phoneController.text,
+        regionCode: countryCode.code,
+      );
+    } on Exception catch (e) {
+      setState(() {
+        isPreloading = false;
+      });
+
+      await Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current, // from catch (e, s)
+        hint: 'ERROR - fetchProductOptions $e',
+      );
+      return e;
+    }
+    try {
+      signUp(
+        countryCode,
+        value,
+        () {
+          // setState(() {
+          //   isPreloading = false;
+          // });
+        },
+        (error) {
+          setState(() {
+            isPreloading = false;
+          });
+          showErrorSnack(
+            message: I10n.of(context).invalid_number,
+            title: I10n.of(context).something_went_wrong,
+            context: context,
+            margin: const EdgeInsets.only(
+              top: 8,
+              right: 8,
+              left: 8,
+              bottom: 120,
+            ),
+          );
+        },
+      );
+    } on Exception catch (e) {
+      setState(() {
+        isPreloading = false;
+      });
+      return e;
+    }
+    return null;
   }
 }

@@ -13,9 +13,9 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
           .toList(),
       total: json['total'] as num,
       subtotal: json['subtotal'] as num,
-      orderedDateTime: _toTS(json['orderedDateTime'] as int),
-      paidDateTime: _toTSNullable(json['paidDateTime'] as int?),
-      refundDateTime: _toTSNullable(json['refundDateTime'] as int?),
+      orderedDateTime: toTS(json['orderedDateTime'] as int),
+      paidDateTime: toTSNullable(json['paidDateTime'] as int?),
+      refundDateTime: toTSNullable(json['refundDateTime'] as int?),
       deliveryName: json['deliveryName'] as String?,
       deliveryEmail: json['deliveryEmail'] as String?,
       deliveryPhoneNumber: json['deliveryPhoneNumber'] as String?,
@@ -30,12 +30,26 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
       deliveryAddressInstructions:
           json['deliveryAddressInstructions'] as String,
       deliveryId: json['deliveryId'] as String,
+      transactions: (json['transactions'] as List<dynamic>?)
+              ?.map((e) => TransactionItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      fulfilmentCharge: json['fulfilmentCharge'] as num,
+      platformFee: json['platformFee'] as num,
+      cartDiscountCode: json['cartDiscountCode'] as String? ?? '',
+      cartDiscountType: json['cartDiscountType'] as String? ?? 'fixed',
+      cartDiscountAmount: json['cartDiscountAmount'] as num? ?? 0,
+      cartTip: json['cartTip'] as num? ?? 0,
       paymentStatus: $enumDecode(
           _$OrderPaidStatusEnumMap, json['paymentStatus'],
           unknownValue: OrderPaidStatus.unpaid),
       restaurantAcceptanceStatus: $enumDecode(
-          _$RestaurantAcceptedStatusEnumMap, json['restaurantAcceptanceStatus'],
-          unknownValue: RestaurantAcceptedStatus.pending),
+          _$RestaurantAcceptanceStatusEnumMap,
+          json['restaurantAcceptanceStatus'],
+          unknownValue: RestaurantAcceptanceStatus.pending),
+      orderAcceptanceStatus: $enumDecode(
+          _$OrderAcceptanceStatusEnumMap, json['orderAcceptanceStatus'],
+          unknownValue: OrderAcceptanceStatus.pending),
       deliveryPartnerAccepted: json['deliveryPartnerAccepted'] as bool,
       deliveryPartnerConfirmed: json['deliveryPartnerConfirmed'] as bool,
       fulfilmentMethodId:
@@ -76,9 +90,18 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'deliveryAddressLongitude': instance.deliveryAddressLongitude,
       'deliveryAddressInstructions': instance.deliveryAddressInstructions,
       'deliveryId': instance.deliveryId,
+      'transactions': instance.transactions.map((e) => e.toJson()).toList(),
+      'fulfilmentCharge': instance.fulfilmentCharge,
+      'platformFee': instance.platformFee,
+      'cartDiscountCode': instance.cartDiscountCode,
+      'cartDiscountType': instance.cartDiscountType,
+      'cartDiscountAmount': instance.cartDiscountAmount,
+      'cartTip': instance.cartTip,
       'paymentStatus': _$OrderPaidStatusEnumMap[instance.paymentStatus]!,
-      'restaurantAcceptanceStatus': _$RestaurantAcceptedStatusEnumMap[
+      'restaurantAcceptanceStatus': _$RestaurantAcceptanceStatusEnumMap[
           instance.restaurantAcceptanceStatus]!,
+      'orderAcceptanceStatus':
+          _$OrderAcceptanceStatusEnumMap[instance.orderAcceptanceStatus]!,
       'deliveryPartnerAccepted': instance.deliveryPartnerAccepted,
       'deliveryPartnerConfirmed': instance.deliveryPartnerConfirmed,
       'fulfilmentMethodId': instance.fulfilmentMethodId,
@@ -101,11 +124,21 @@ const _$OrderPaidStatusEnumMap = {
   OrderPaidStatus.failed: 'failed',
 };
 
-const _$RestaurantAcceptedStatusEnumMap = {
-  RestaurantAcceptedStatus.accepted: 'accepted',
-  RestaurantAcceptedStatus.rejected: 'rejected',
-  RestaurantAcceptedStatus.pending: 'pending',
-  RestaurantAcceptedStatus.partiallyFulfilled: 'partiallyFulfilled',
+const _$RestaurantAcceptanceStatusEnumMap = {
+  RestaurantAcceptanceStatus.accepted: 'accepted',
+  RestaurantAcceptanceStatus.rejected: 'rejected',
+  RestaurantAcceptanceStatus.pending: 'pending',
+  RestaurantAcceptanceStatus.partiallyFulfilled: 'partiallyFulfilled',
+};
+
+const _$OrderAcceptanceStatusEnumMap = {
+  OrderAcceptanceStatus.accepted: 'accepted',
+  OrderAcceptanceStatus.declined: 'declined',
+  OrderAcceptanceStatus.partiallyFulfilled: 'partiallyFulfilled',
+  OrderAcceptanceStatus.pending: 'pending',
+  OrderAcceptanceStatus.outForDelivery: 'outForDelivery',
+  OrderAcceptanceStatus.delivered: 'delivered',
+  OrderAcceptanceStatus.collected: 'collected',
 };
 
 const _$FulfilmentMethodTypeEnumMap = {

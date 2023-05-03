@@ -7,7 +7,12 @@ Future<AppState> loadState(
   Persistor<AppState> persistor,
   bool isFirstLogin,
 ) async {
-  if (isFirstLogin) {
+  if (isFirstLogin ||
+      const String.fromEnvironment(
+            'reset_state',
+            defaultValue: '',
+          ) ==
+          'true') {
     return AppState.initial();
   }
   try {

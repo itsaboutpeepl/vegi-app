@@ -6,15 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart'
     hide WaitingListFunnelScreen;
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/firebase_options.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
+import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -27,8 +31,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    firebaseMessaging.getInitialMessage().then(handleFCM);
-    startFirebaseNotifs();
     Future.delayed(const Duration(seconds: 5), requestAppTracking);
     super.initState();
   }
@@ -37,6 +39,13 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, MainScreenViewModel>(
       onInit: (store) {
+        firebaseMessaging.getInitialMessage().then(
+              (remoteMessage) => handleFCMOpenedApp(
+                remoteMessage,
+                store,
+              ),
+            );
+        startFirebaseNotifs(store);
         if (!store.state.userState.isLoggedOut) {
           store.dispatch(
             fetchFuseSmartWallet(
@@ -121,24 +130,124 @@ Future<void> requestAppTracking() async {
   await AppTrackingTransparency.requestTrackingAuthorization();
 }
 
-void startFirebaseNotifs() {
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+void startFirebaseNotifs(Store<AppState> store) {
+  FirebaseMessaging.onBackgroundMessage(
+    (remoteMessage) => _firebaseMessagingBackgroundHandler(
+      remoteMessage,
+      store,
+    ),
+  );
 
-  FirebaseMessaging.onMessageOpenedApp.listen(handleFCM);
+  FirebaseMessaging.onMessageOpenedApp.listen(
+    (message) => handleFCMOpenedApp(
+      message,
+      store,
+    ),
+  );
 
-  FirebaseMessaging.onMessage.listen(handleFCM);
+  FirebaseMessaging.onMessage.listen(
+    (message) => handleFCM(
+      message,
+      store,
+    ),
+  );
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(
   RemoteMessage remoteMessage,
+  Store<AppState> store,
 ) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  await handleFCM(remoteMessage);
+  await handleFCM(
+    remoteMessage,
+    store,
+  );
 }
 
-Future<void> handleFCM(RemoteMessage? remoteMessage) async {
+Future<void> handleFCM(
+    RemoteMessage? remoteMessage, Store<AppState> store) async {
   if (remoteMessage != null) {
-    print('New Message From Firebase: ${remoteMessage.data}');
+    log.info('New Message From Firebase: ${remoteMessage.data}');
+  } else {
+    return;
+  }
+  if (remoteMessage.category == null) {
+    return;
+  }
+  final messageCategory = FirebaseMessagingCategoriesEnumHelpers.fromString(
+    remoteMessage.category!,
+  );
+  if (messageCategory == FirebaseMessagingCategoriesEnum.payment_confirmed ||
+      messageCategory == FirebaseMessagingCategoriesEnum.payment_succeeded) {
+    store.dispatch(
+      updateOrderPaymentStatus(
+        orderId: remoteMessage.data['orderId'] as String,
+        paymentIntentId: remoteMessage.data['paymentIntentId'] as String,
+        status:
+            messageCategory == FirebaseMessagingCategoriesEnum.payment_confirmed
+                ? PaymentStatus.confirmed
+                : PaymentStatus.succeeded,
+        errorHandler: (p0) {},
+        successHandler: () {},
+      ),
+    );
+    await rootRouter.push(const AllOrdersPage());
+  } else if (messageCategory ==
+      FirebaseMessagingCategoriesEnum.payment_failed) {
+    store.dispatch(
+      updateOrderPaymentStatus(
+        orderId: remoteMessage.data['orderId'] as String,
+        paymentIntentId: remoteMessage.data['paymentIntentId'] as String,
+        status: PaymentStatus.failed,
+        errorHandler: (p0) {},
+        successHandler: () {},
+      ),
+    );
+  }
+}
+
+Future<void> handleFCMOpenedApp(
+  RemoteMessage? remoteMessage,
+  Store<AppState> store,
+) async {
+  if (remoteMessage != null) {
+    log.info('New Message From Firebase opened the app: ${remoteMessage.data}');
+  } else {
+    return;
+  }
+  if (remoteMessage.category == null) {
+    return;
+  }
+  final messageCategory = FirebaseMessagingCategoriesEnumHelpers.fromString(
+    remoteMessage.category!,
+  );
+  if (messageCategory == FirebaseMessagingCategoriesEnum.payment_confirmed ||
+      messageCategory == FirebaseMessagingCategoriesEnum.payment_succeeded) {
+    store.dispatch(
+      updateOrderPaymentStatus(
+        orderId: remoteMessage.data['orderId'] as String,
+        paymentIntentId: remoteMessage.data['paymentIntentId'] as String,
+        status:
+            messageCategory == FirebaseMessagingCategoriesEnum.payment_confirmed
+                ? PaymentStatus.confirmed
+                : PaymentStatus.succeeded,
+        errorHandler: (p0) {},
+        successHandler: () {},
+      ),
+    );
+    await rootRouter.push(const AllOrdersPage());
+  } else if (messageCategory ==
+      FirebaseMessagingCategoriesEnum.payment_failed) {
+    store.dispatch(
+      updateOrderPaymentStatus(
+        orderId: remoteMessage.data['orderId'] as String,
+        paymentIntentId: remoteMessage.data['paymentIntentId'] as String,
+        status: PaymentStatus.failed,
+        errorHandler: (p0) {},
+        successHandler: () {},
+      ),
+    );
+    await rootRouter.push(const AllOrdersPage());
   }
 }

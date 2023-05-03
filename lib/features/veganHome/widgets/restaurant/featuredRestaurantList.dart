@@ -41,29 +41,37 @@ class FeaturedRestaurantList extends StatelessWidget {
             : Stack(
                 fit: StackFit.expand,
                 children: [
-                  restaurants.isEmpty
-                      ? EmptyStatePage(
-                          emoji: noVendorsFoundCopyEmoji,
-                          title: noVendorsFoundCopyTitle,
-                          subtitle: noVendorsFoundCopyMessage(location),
-                        )
-                      : ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                            top: 20,
-                            bottom: 50,
+                  RefreshIndicator(
+                    child: restaurants.isEmpty
+                        ? ListView(
+                            children: [
+                              EmptyStatePage(
+                                emoji: noVendorsFoundCopyEmoji,
+                                title: noVendorsFoundCopyTitle,
+                                subtitle: noVendorsFoundCopyMessage(location),
+                              ),
+                            ],
+                          )
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              right: 20,
+                              top: 20,
+                              bottom: 50,
+                            ),
+                            itemCount: restaurants.length,
+                            itemBuilder: (context, index) =>
+                                SingleRestaurantItem(
+                              vendorItem: restaurants[index],
+                            ),
+                            separatorBuilder: (_, __) => const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                            ),
                           ),
-                          itemCount: restaurants.length,
-                          itemBuilder: (context, index) => SingleRestaurantItem(
-                            vendorItem: restaurants[index],
-                          ),
-                          separatorBuilder: (_, __) => const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                          ),
-                        ),
+                    onRefresh: viewmodel.refreshFeaturedRestaurants,
+                  ),
                   Container(
                     alignment: Alignment.bottomCenter,
                     padding: new EdgeInsets.only(
@@ -90,7 +98,9 @@ class FeaturedRestaurantList extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(12),
                               child: Text(
-                                viewmodel.userInVendorMode ? 'Take vegiPayment' : 'vegiPay',
+                                viewmodel.userInVendorMode
+                                    ? 'Take vegiPayment'
+                                    : 'vegiPay',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontSize: 18,

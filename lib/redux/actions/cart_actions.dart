@@ -1103,52 +1103,18 @@ ThunkAction<AppState> removeCartItem(int itemId) {
 
 ThunkAction<AppState> computeCartTotals() {
   return (Store<AppState> store) async {
-    try {
-      final List<CartItem> cartItems = store.state.cartState.cartItems;
-
-      int cartSubTotal = 0;
-      const int cartTax = 0;
-      int cartTotal = 0;
-      final int fulfilmentCharge =
-          store.state.cartState.selectedTimeSlot != null
-              ? store.state.cartState.selectedTimeSlot!.priceModifier
-              : 0;
-      final int platformFee = store.state.cartState.restaurantPlatformFee;
-      final int cartDiscountPercent = store.state.cartState.cartDiscountPercent;
-      int cartDiscountComputed = 0;
-      final int cartTip = store.state.cartState.selectedTipAmount;
-
-      for (final element in cartItems) {
-        cartSubTotal += element.totalItemPrice;
-      }
-
-      cartDiscountComputed =
-          (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
-
-      cartTotal =
-          (cartSubTotal + cartTax + cartTip + fulfilmentCharge + platformFee) -
-              cartDiscountComputed;
-
-      if (cartItems.isEmpty) {
-        cartSubTotal = 0;
-        cartTotal = 0;
-        cartDiscountComputed = 0;
-      }
-
+    final updateCartItems = computeTotalsFromCart(
+      cartItems: store.state.cartState.cartItems,
+      fulfilmentCharge: store.state.cartState.selectedTimeSlot != null
+          ? store.state.cartState.selectedTimeSlot!.priceModifier
+          : 0,
+      platformFee: store.state.cartState.restaurantPlatformFee,
+      cartDiscountPercent: store.state.cartState.cartDiscountPercent,
+      cartTip: store.state.cartState.selectedTipAmount,
+    );
+    if (updateCartItems != null) {
       store.dispatch(
-        UpdateComputedCartValues(
-          cartSubTotal,
-          cartTax,
-          cartTotal,
-          cartDiscountComputed,
-        ),
-      );
-    } catch (e, s) {
-      log.error('ERROR - computeCartTotals $e');
-      await Sentry.captureException(
-        e,
-        stackTrace: s,
-        hint: 'ERROR - computeCartTotals $e',
+        updateCartItems,
       );
     }
   };
@@ -1282,7 +1248,7 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
       store.dispatch(SetPaymentButtonFlag(true));
       final Map<String, dynamic> result =
           await peeplEatsService.createOrder(orderObject).timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: inDebugMode ? 300 : 10),
         onTimeout: () {
           return {};
         },
@@ -1338,6 +1304,7 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
         ),
       );
       store.dispatch(SetPaymentButtonFlag(false));
+      log.error(e);
       if (e.response != null) {
         if (e.response == 'Interal Server Error') {
           await Sentry.captureException(
@@ -1412,9 +1379,22 @@ ThunkAction<AppState> startPaymentProcess({
         );
         final orderId = store.state.cartState.orderID;
         final paymentIntentID = store.state.cartState.paymentIntentID;
+        if (store.state.userState.vegiAccountId == null) {
+          final e = 'Vegi AccountId not set on state... Cannot start payment';
+          log.error(e);
+          await Sentry.captureException(
+            Exception(e),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - startPeeplPayProcess $e',
+          );
+        }
         await stripeService
             .handleStripe(
-          walletAddress: '',
+          recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
+          senderWalletAddress: store.state.userState.walletAddress,
+          orderId: num.parse(store.state.cartState.orderID),
+          accountId: store.state.userState.vegiAccountId!,
+          currency: Currency.GBP,
           amount: store.state.cartState.cartTotal,
           context: context,
           shouldPushToHome: true,
@@ -1424,7 +1404,8 @@ ThunkAction<AppState> startPaymentProcess({
             if (!value) {
               store
                 ..dispatch(SetPaymentButtonFlag(false))
-                ..dispatch(SetTransferringPayment(flag: value));
+                ..dispatch(SetTransferringPayment(flag: value))
+                ..dispatch(SetConfirmed(flag: true));
               return;
             }
             unawaited(
@@ -1435,6 +1416,7 @@ ThunkAction<AppState> startPaymentProcess({
                 },
               ),
             );
+            store.dispatch(subscribeToOrderUpdates());
           },
         );
       } else if (store.state.cartState.selectedPaymentMethod ==
@@ -1446,9 +1428,22 @@ ThunkAction<AppState> startPaymentProcess({
         );
         final orderId = store.state.cartState.orderID;
         final paymentIntentID = store.state.cartState.paymentIntentID;
+        if (store.state.userState.vegiAccountId == null) {
+          final e = 'Vegi AccountId not set on state... Cannot start payment';
+          log.error(e);
+          await Sentry.captureException(
+            Exception(e),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - startPeeplPayProcess $e',
+          );
+        }
         await stripeService
             .handleStripe(
-          walletAddress: store.state.userState.walletAddress,
+          recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
+          senderWalletAddress: store.state.userState.walletAddress,
+          orderId: num.parse(store.state.cartState.orderID),
+          accountId: store.state.userState.vegiAccountId!,
+          currency: Currency.GBP,
           amount: store.state.cartState.cartTotal,
           context: context,
           shouldPushToHome: false,
@@ -1510,9 +1505,22 @@ ThunkAction<AppState> startPaymentProcess({
             eventName: AnalyticsEvents.mint,
           ),
         );
+        if (store.state.userState.vegiAccountId == null) {
+          final e = 'Vegi AccountId not set on state... Cannot start payment';
+          log.error(e);
+          await Sentry.captureException(
+            Exception(e),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - startPeeplPayProcess $e',
+          );
+        }
         await stripeService
             .handleApplePay(
-          walletAddress: store.state.userState.walletAddress,
+          recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
+          senderWalletAddress: store.state.userState.walletAddress,
+          orderId: num.parse(store.state.cartState.orderID),
+          accountId: store.state.userState.vegiAccountId!,
+          currency: Currency.GBP,
           amount: store.state.cartState.cartTotal,
           context: context,
           shouldPushToHome: false,
@@ -1604,9 +1612,22 @@ ThunkAction<AppState> startPeeplPayProcess({
       if (hasSufficientGbpxBalance) {
         store.dispatch(startTokenPaymentToRestaurant(context: context));
       } else {
+        if (store.state.userState.vegiAccountId == null) {
+          final e = 'Vegi AccountId not set on state... Cannot start payment';
+          log.error(e);
+          await Sentry.captureException(
+            Exception(e),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - startPeeplPayProcess $e',
+          );
+        }
         await stripeService
             .handleStripe(
-          walletAddress: store.state.userState.walletAddress,
+          recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
+          senderWalletAddress: store.state.userState.walletAddress,
+          orderId: num.parse(store.state.cartState.orderID),
+          accountId: store.state.userState.vegiAccountId!,
+          currency: Currency.GBP,
           amount: (selectedGBPXAmount * 100).toInt(),
           context: context,
           shouldPushToHome: false,
@@ -1808,17 +1829,17 @@ ThunkAction<AppState> startPaymentConfirmationCheck() {
       const Duration(seconds: 4),
       (timer) async {
         try {
-          final Future<Map<dynamic, dynamic>> checkOrderResponse =
+          final checkOrderResponse =
               peeplEatsService.checkOrderStatus(store.state.cartState.orderID);
 
           await checkOrderResponse.then(
             (completedValue) {
               counter++;
-              log.info(
-                'PaymentStatus: ${completedValue["paymentStatus"]}, '
+              log.verbose(
+                'PaymentStatus: ${completedValue.paymentStatus}, '
                 'counter: $counter',
               );
-              if (completedValue['paymentStatus'] == 'paid') {
+              if (completedValue.paymentStatus == OrderPaidStatus.paid) {
                 store
                   ..dispatch(SetTransferringPayment(flag: false))
                   ..dispatch(SetConfirmed(flag: true));
@@ -1875,73 +1896,78 @@ ThunkAction<AppState> subscribeToOrderUpdates() {
   return (Store<AppState> store) async {
     await firebaseMessaging
         .subscribeToTopic('order-${store.state.cartState.orderID}');
-    int counter = 0;
-    Timer.periodic(
-      const Duration(seconds: 4),
-      (timer) async {
-        try {
-          final Future<Map<dynamic, dynamic>> checkOrderResponse =
-              peeplEatsService.checkOrderStatus(store.state.cartState.orderID);
+    store
+      ..dispatch(SetTransferringPayment(flag: false))
+      ..dispatch(SetConfirmed(flag: true));
 
-          await checkOrderResponse.then(
-            (completedValue) {
-              counter++;
-              log.info(
-                'PaymentStatus: ${completedValue["paymentStatus"]}, '
-                'counter: $counter',
-              );
-              if (completedValue['paymentStatus'] == 'paid') {
-                store
-                  ..dispatch(SetTransferringPayment(flag: false))
-                  ..dispatch(SetConfirmed(flag: true));
-                timer.cancel();
-                unawaited(
-                  Analytics.track(
-                    eventName: AnalyticsEvents.payment,
-                    properties: {
-                      'status': 'success',
-                    },
-                  ),
-                );
-              }
-            },
-          );
+    // Below to notify the user with a message once the payment is confirmed using firebasemessaging.
+    // int counter = 0;
+    // Timer.periodic(
+    //   const Duration(seconds: 4),
+    //   (timer) async {
+    //     try {
+    //       final Future<Map<dynamic, dynamic>> checkOrderResponse =
+    //           peeplEatsService.checkOrderStatus(store.state.cartState.orderID);
 
-          if (counter > 1) {
-            // cancel after 1 attempt
-            store
-              ..dispatch(SetTransferringPayment(flag: false))
-              ..dispatch(SetConfirmed(flag: false));
-            timer.cancel();
-            unawaited(
-              Analytics.track(
-                eventName: AnalyticsEvents.payment,
-                properties: {
-                  'status': 'pending',
-                },
-              ),
-            );
-          }
-        } catch (e, s) {
-          timer.cancel();
-          unawaited(
-            Analytics.track(
-              eventName: AnalyticsEvents.payment,
-              properties: {
-                'status': 'failure',
-              },
-            ),
-          );
-          store.dispatch(SetError(flag: true));
-          log.error('ERROR - startPaymentConfirmationCheck $e');
-          await Sentry.captureException(
-            e,
-            stackTrace: s,
-            hint: 'ERROR - startPaymentConfirmationCheck $e',
-          );
-        }
-      },
-    );
+    //       await checkOrderResponse.then(
+    //         (completedValue) {
+    //           counter++;
+    //           log.info(
+    //             'PaymentStatus: ${completedValue["paymentStatus"]}, '
+    //             'counter: $counter',
+    //           );
+    //           if (completedValue['paymentStatus'] == 'paid') {
+    //             store
+    //               ..dispatch(SetTransferringPayment(flag: false))
+    //               ..dispatch(SetConfirmed(flag: true));
+    //             timer.cancel();
+    //             unawaited(
+    //               Analytics.track(
+    //                 eventName: AnalyticsEvents.payment,
+    //                 properties: {
+    //                   'status': 'success',
+    //                 },
+    //               ),
+    //             );
+    //           }
+    //         },
+    //       );
+
+    //       if (counter > 1) {
+    //         // cancel after 1 attempt
+    //         store
+    //           ..dispatch(SetTransferringPayment(flag: false))
+    //           ..dispatch(SetConfirmed(flag: true));
+    //         timer.cancel();
+    //         unawaited(
+    //           Analytics.track(
+    //             eventName: AnalyticsEvents.payment,
+    //             properties: {
+    //               'status': 'pending',
+    //             },
+    //           ),
+    //         );
+    //       }
+    //     } catch (e, s) {
+    //       timer.cancel();
+    //       unawaited(
+    //         Analytics.track(
+    //           eventName: AnalyticsEvents.payment,
+    //           properties: {
+    //             'status': 'failure',
+    //           },
+    //         ),
+    //       );
+    //       store.dispatch(SetError(flag: true));
+    //       log.error('ERROR - startPaymentConfirmationCheck $e');
+    //       await Sentry.captureException(
+    //         e,
+    //         stackTrace: s,
+    //         hint: 'ERROR - startPaymentConfirmationCheck $e',
+    //       );
+    //     }
+    //   },
+    // );
   };
 }
 

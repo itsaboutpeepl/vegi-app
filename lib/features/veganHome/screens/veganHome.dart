@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as Math;
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/VendorHomeView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/featuredRestaurantList.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/backupWalletAppBar.dart';
@@ -39,10 +41,25 @@ class VeganHomeScreen extends StatelessWidget {
                     : viewmodel.listOfScheduledOrders
                         .map(
                           (e) => PreparingOrderAppBar(
-                            orderDetails: e,
+                            order: e,
                           ),
                         )
-                        .toList()),
+                        .toList()
+                        .sortInline((a, b) {
+                        final timeComp = a.order.timeSlot.startTime
+                            .compareTo(b.order.timeSlot.startTime);
+                        if (timeComp == 0) {
+                          return a.order.orderID.compareTo(b.order.orderID);
+                        } else {
+                          return timeComp;
+                        }
+                      }).sublist(
+                        0,
+                        Math.min(
+                          1,
+                          viewmodel.listOfScheduledOrders.length,
+                        ),
+                      )),
             body: viewmodel.isVendor
                 ? const VendorHomeView() // todo: Make this screen into 2 tiles... -> take payment and new customer
                 : const FeaturedRestaurantList(),

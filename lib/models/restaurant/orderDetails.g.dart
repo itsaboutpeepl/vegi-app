@@ -51,4 +51,5 @@ const _$OrderAcceptanceStatusEnumMap = {
   OrderAcceptanceStatus.pending: 'pending',
   OrderAcceptanceStatus.outForDelivery: 'outForDelivery',
   OrderAcceptanceStatus.delivered: 'delivered',
+  OrderAcceptanceStatus.collected: 'collected',
 };
