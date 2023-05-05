@@ -61,6 +61,12 @@ mixin _$UserCartState {
   TimeSlot? get nextDeliverySlot => throw _privateConstructorUsedError;
   ProductSuggestion? get productSuggestion =>
       throw _privateConstructorUsedError;
+  OrderCreationProcessStatus get orderCreationProcessStatus =>
+      throw _privateConstructorUsedError;
+  StripePaymentStatus get stripePaymentStatus =>
+      throw _privateConstructorUsedError;
+  @JsonKey(fromJson: LivePayment.fromJson, toJson: paymentInProcessToJson)
+  LivePayment? get paymentInProcess => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -109,7 +115,11 @@ abstract class $UserCartStateCopyWith<$Res> {
       List<DateTime> eligibleOrderDates,
       TimeSlot? nextCollectionSlot,
       TimeSlot? nextDeliverySlot,
-      ProductSuggestion? productSuggestion});
+      ProductSuggestion? productSuggestion,
+      OrderCreationProcessStatus orderCreationProcessStatus,
+      StripePaymentStatus stripePaymentStatus,
+      @JsonKey(fromJson: LivePayment.fromJson, toJson: paymentInProcessToJson)
+          LivePayment? paymentInProcess});
 
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   $TimeSlotCopyWith<$Res>? get selectedTimeSlot;
@@ -117,6 +127,7 @@ abstract class $UserCartStateCopyWith<$Res> {
   $TimeSlotCopyWith<$Res>? get nextCollectionSlot;
   $TimeSlotCopyWith<$Res>? get nextDeliverySlot;
   $ProductSuggestionCopyWith<$Res>? get productSuggestion;
+  $LivePaymentCopyWith<$Res>? get paymentInProcess;
 }
 
 /// @nodoc
@@ -167,6 +178,9 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? nextCollectionSlot = freezed,
     Object? nextDeliverySlot = freezed,
     Object? productSuggestion = freezed,
+    Object? orderCreationProcessStatus = null,
+    Object? stripePaymentStatus = null,
+    Object? paymentInProcess = freezed,
   }) {
     return _then(_value.copyWith(
       cartItems: null == cartItems
@@ -309,6 +323,18 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
           ? _value.productSuggestion
           : productSuggestion // ignore: cast_nullable_to_non_nullable
               as ProductSuggestion?,
+      orderCreationProcessStatus: null == orderCreationProcessStatus
+          ? _value.orderCreationProcessStatus
+          : orderCreationProcessStatus // ignore: cast_nullable_to_non_nullable
+              as OrderCreationProcessStatus,
+      stripePaymentStatus: null == stripePaymentStatus
+          ? _value.stripePaymentStatus
+          : stripePaymentStatus // ignore: cast_nullable_to_non_nullable
+              as StripePaymentStatus,
+      paymentInProcess: freezed == paymentInProcess
+          ? _value.paymentInProcess
+          : paymentInProcess // ignore: cast_nullable_to_non_nullable
+              as LivePayment?,
     ) as $Val);
   }
 
@@ -384,6 +410,18 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       return _then(_value.copyWith(productSuggestion: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $LivePaymentCopyWith<$Res>? get paymentInProcess {
+    if (_value.paymentInProcess == null) {
+      return null;
+    }
+
+    return $LivePaymentCopyWith<$Res>(_value.paymentInProcess!, (value) {
+      return _then(_value.copyWith(paymentInProcess: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -429,7 +467,11 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       List<DateTime> eligibleOrderDates,
       TimeSlot? nextCollectionSlot,
       TimeSlot? nextDeliverySlot,
-      ProductSuggestion? productSuggestion});
+      ProductSuggestion? productSuggestion,
+      OrderCreationProcessStatus orderCreationProcessStatus,
+      StripePaymentStatus stripePaymentStatus,
+      @JsonKey(fromJson: LivePayment.fromJson, toJson: paymentInProcessToJson)
+          LivePayment? paymentInProcess});
 
   @override
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
@@ -443,6 +485,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
   $TimeSlotCopyWith<$Res>? get nextDeliverySlot;
   @override
   $ProductSuggestionCopyWith<$Res>? get productSuggestion;
+  @override
+  $LivePaymentCopyWith<$Res>? get paymentInProcess;
 }
 
 /// @nodoc
@@ -491,6 +535,9 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? nextCollectionSlot = freezed,
     Object? nextDeliverySlot = freezed,
     Object? productSuggestion = freezed,
+    Object? orderCreationProcessStatus = null,
+    Object? stripePaymentStatus = null,
+    Object? paymentInProcess = freezed,
   }) {
     return _then(_$_UserCartState(
       cartItems: null == cartItems
@@ -633,6 +680,18 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.productSuggestion
           : productSuggestion // ignore: cast_nullable_to_non_nullable
               as ProductSuggestion?,
+      orderCreationProcessStatus: null == orderCreationProcessStatus
+          ? _value.orderCreationProcessStatus
+          : orderCreationProcessStatus // ignore: cast_nullable_to_non_nullable
+              as OrderCreationProcessStatus,
+      stripePaymentStatus: null == stripePaymentStatus
+          ? _value.stripePaymentStatus
+          : stripePaymentStatus // ignore: cast_nullable_to_non_nullable
+              as StripePaymentStatus,
+      paymentInProcess: freezed == paymentInProcess
+          ? _value.paymentInProcess
+          : paymentInProcess // ignore: cast_nullable_to_non_nullable
+              as LivePayment?,
     ));
   }
 }
@@ -676,7 +735,11 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       this.eligibleOrderDates = const [],
       this.nextCollectionSlot = null,
       this.nextDeliverySlot = null,
-      this.productSuggestion = null})
+      this.productSuggestion = null,
+      this.orderCreationProcessStatus = OrderCreationProcessStatus.none,
+      this.stripePaymentStatus = StripePaymentStatus.none,
+      @JsonKey(fromJson: LivePayment.fromJson, toJson: paymentInProcessToJson)
+          this.paymentInProcess = null})
       : super._();
 
   factory _$_UserCartState.fromJson(Map<String, dynamic> json) =>
@@ -787,10 +850,19 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final ProductSuggestion? productSuggestion;
+  @override
+  @JsonKey()
+  final OrderCreationProcessStatus orderCreationProcessStatus;
+  @override
+  @JsonKey()
+  final StripePaymentStatus stripePaymentStatus;
+  @override
+  @JsonKey(fromJson: LivePayment.fromJson, toJson: paymentInProcessToJson)
+  final LivePayment? paymentInProcess;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess)';
   }
 
   @override
@@ -837,7 +909,11 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('eligibleOrderDates', eligibleOrderDates))
       ..add(DiagnosticsProperty('nextCollectionSlot', nextCollectionSlot))
       ..add(DiagnosticsProperty('nextDeliverySlot', nextDeliverySlot))
-      ..add(DiagnosticsProperty('productSuggestion', productSuggestion));
+      ..add(DiagnosticsProperty('productSuggestion', productSuggestion))
+      ..add(DiagnosticsProperty(
+          'orderCreationProcessStatus', orderCreationProcessStatus))
+      ..add(DiagnosticsProperty('stripePaymentStatus', stripePaymentStatus))
+      ..add(DiagnosticsProperty('paymentInProcess', paymentInProcess));
   }
 
   @override
@@ -911,7 +987,10 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
             (identical(other.nextDeliverySlot, nextDeliverySlot) ||
                 other.nextDeliverySlot == nextDeliverySlot) &&
             (identical(other.productSuggestion, productSuggestion) ||
-                other.productSuggestion == productSuggestion));
+                other.productSuggestion == productSuggestion) &&
+            (identical(other.orderCreationProcessStatus, orderCreationProcessStatus) || other.orderCreationProcessStatus == orderCreationProcessStatus) &&
+            (identical(other.stripePaymentStatus, stripePaymentStatus) || other.stripePaymentStatus == stripePaymentStatus) &&
+            (identical(other.paymentInProcess, paymentInProcess) || other.paymentInProcess == paymentInProcess));
   }
 
   @JsonKey(ignore: true)
@@ -952,7 +1031,10 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
         const DeepCollectionEquality().hash(eligibleOrderDates),
         nextCollectionSlot,
         nextDeliverySlot,
-        productSuggestion
+        productSuggestion,
+        orderCreationProcessStatus,
+        stripePaymentStatus,
+        paymentInProcess
       ]);
 
   @JsonKey(ignore: true)
@@ -1005,7 +1087,11 @@ abstract class _UserCartState extends UserCartState {
       final List<DateTime> eligibleOrderDates,
       final TimeSlot? nextCollectionSlot,
       final TimeSlot? nextDeliverySlot,
-      final ProductSuggestion? productSuggestion}) = _$_UserCartState;
+      final ProductSuggestion? productSuggestion,
+      final OrderCreationProcessStatus orderCreationProcessStatus,
+      final StripePaymentStatus stripePaymentStatus,
+      @JsonKey(fromJson: LivePayment.fromJson, toJson: paymentInProcessToJson)
+          final LivePayment? paymentInProcess}) = _$_UserCartState;
   _UserCartState._() : super._();
 
   factory _UserCartState.fromJson(Map<String, dynamic> json) =
@@ -1081,6 +1167,13 @@ abstract class _UserCartState extends UserCartState {
   TimeSlot? get nextDeliverySlot;
   @override
   ProductSuggestion? get productSuggestion;
+  @override
+  OrderCreationProcessStatus get orderCreationProcessStatus;
+  @override
+  StripePaymentStatus get stripePaymentStatus;
+  @override
+  @JsonKey(fromJson: LivePayment.fromJson, toJson: paymentInProcessToJson)
+  LivePayment? get paymentInProcess;
   @override
   @JsonKey(ignore: true)
   _$$_UserCartStateCopyWith<_$_UserCartState> get copyWith =>

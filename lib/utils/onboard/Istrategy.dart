@@ -16,19 +16,19 @@ abstract class IOnBoardStrategy {
     Store<AppState> store,
     String? phoneNumber,
     void Function() onSuccess,
-    void Function(dynamic error) onError,
+    void Function(dynamic error, UserAuthenticationStatus status) onError,
   );
   Future<dynamic> verify(
     Store<AppState> store,
     String verificationCode,
     void Function() onSuccess,
-    void Function(String message) onError,
+    void Function(String message, UserAuthenticationStatus status) onError,
   );
   Future<void> reauthenticateUser({
     required Store<AppState> store,
-    required void Function() onSuccess,
-    required void Function() reOnboardRequired,
-    required dynamic Function(Exception) onFailure,
+    void Function()? onSuccess,
+    void Function(Exception error, UserAuthenticationStatus status)? onFailure,
+    void Function()? reOnboardRequired,
   });
 }
 

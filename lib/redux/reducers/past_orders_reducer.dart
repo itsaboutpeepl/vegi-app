@@ -1,8 +1,10 @@
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/past_order_state.dart';
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 
 final pastOrdersReducer = combineReducers<PastOrderState>([
+  TypedReducer<PastOrderState, CreateOrder>(_createOrder),
   TypedReducer<PastOrderState, UpdateOngoingOrderList>(_updateOngoingOrderList),
   TypedReducer<PastOrderState, UpdateScheduledOrders>(_updateScheduledOrders),
   TypedReducer<PastOrderState, AddAllPastOrdersList>(_updatePastOrders),
@@ -35,9 +37,25 @@ PastOrderState _updatePastOrders(
   AddAllPastOrdersList action,
 ) {
   return state.copyWith(
-    allPastOrders: action.allPastOrders,
-    
+    allPastOrders: action.pastOrders,
+    listOfScheduledOrders: action.scheduledOrders,
+    listOfOngoingOrders: action.ongoingOrders,
     lastRefreshTime: DateTime.now(),
+  );
+}
+
+PastOrderState _createOrder(
+  PastOrderState state,
+  CreateOrder action,
+) {
+  final existingScheduledOrders = state.listOfScheduledOrders
+      .where(
+        (element) => element.id != action.order.id,
+      )
+      .toList()
+    ..add(action.order);
+  return state.copyWith(
+    listOfScheduledOrders: existingScheduledOrders,
   );
 }
 

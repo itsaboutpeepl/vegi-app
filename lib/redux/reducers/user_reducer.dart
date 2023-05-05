@@ -1,4 +1,5 @@
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -26,6 +27,12 @@ final userReducers = combineReducers<UserState>([
   ),
   TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
   TypedReducer<UserState, ReLogin>(_reLoginUser),
+  TypedReducer<UserState, ReauthenticateUserFailure>(
+      _reAuthenticateUserFailure),
+  TypedReducer<UserState, AuthenticateFuseWalletSDKFailure>(
+      _authenticateFuseWalletSDKFailure),
+  TypedReducer<UserState, FetchFuseSmartWalletFailure>(
+      _fetchFuseSmartWalletFailure),
   TypedReducer<UserState, BackupSuccess>(_backupSuccess),
   TypedReducer<UserState, StoreBackupStatus>(_storeBackupStatus),
   TypedReducer<UserState, SetFirebaseCredentials>(_setFirebaseCredentials),
@@ -155,6 +162,27 @@ UserState _reLoginUser(
   return state.copyWith(isLoggedOut: false);
 }
 
+UserState _reAuthenticateUserFailure(
+  UserState state,
+  ReauthenticateUserFailure action,
+) {
+  return state.copyWith(userAuthenticationStatus: action.error);
+}
+
+UserState _authenticateFuseWalletSDKFailure(
+  UserState state,
+  AuthenticateFuseWalletSDKFailure action,
+) {
+  return state.copyWith(fuseWalletCreationStatus: action.error);
+}
+
+UserState _fetchFuseSmartWalletFailure(
+  UserState state,
+  FetchFuseSmartWalletFailure action,
+) {
+  return state.copyWith(fuseWalletCreationStatus: action.error);
+}
+
 UserState _createNewWalletSuccess(
   UserState state,
   CreateLocalAccountSuccess action,
@@ -193,6 +221,8 @@ UserState _loginSuccess(
     countryCode: action.countryCode.dialCode!,
     isoCode: action.countryCode.code!,
     phoneNumber: action.phoneNumber,
+    userAuthenticationStatus:
+        UserAuthenticationStatus.authenticatedWithFirebase,
   );
 }
 
@@ -204,14 +234,17 @@ UserState _setVerificationId(
     verificationId: action.verificationId,
   );
 }
+
 UserState _setVerificationPassed(
   UserState state,
   SetVerificationPassed action,
 ) {
   return state.copyWith(
     verificationPassed: action.verificationPassed,
+    userAuthenticationStatus: UserAuthenticationStatus.authenticatedWithVegi,
   );
 }
+
 UserState _setPhoneNumber(
   UserState state,
   SetPhoneNumber action,
@@ -320,7 +353,11 @@ UserState _setFirebaseSessionToken(
   UserState state,
   SetFirebaseSessionToken action,
 ) {
-  return state.copyWith(firebaseSessionToken: action.firebaseSessionToken);
+  return state.copyWith(
+    firebaseSessionToken: action.firebaseSessionToken,
+    userAuthenticationStatus:
+        UserAuthenticationStatus.authenticatedWithFirebase,
+  );
 }
 
 UserState _setFuseWalletCredentials(

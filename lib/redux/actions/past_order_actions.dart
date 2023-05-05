@@ -35,8 +35,15 @@ class UpdateOrderPaymentStatus {
 }
 
 class AddAllPastOrdersList {
-  AddAllPastOrdersList(this.allPastOrders);
-  final List<Order> allPastOrders;
+  AddAllPastOrdersList({
+    required this.scheduledOrders,
+    required this.ongoingOrders,
+    required this.pastOrders,
+  });
+
+  final List<Order> scheduledOrders;
+  final List<Order> ongoingOrders;
+  final List<Order> pastOrders;
 }
 
 class UpdateTransactionHistory {
@@ -163,11 +170,15 @@ ThunkAction<AppState> fetchAllOrdersForWallet(
   return (Store<AppState> store) async {
     try {
       final listOfOrders =
-          (await peeplEatsService.getOrdersForWallet(walletAddress))
-              .reversed
-              .toList();
+          await peeplEatsService.getOrdersForWallet(walletAddress);
 
-      store.dispatch(AddAllPastOrdersList(listOfOrders));
+      store.dispatch(
+        AddAllPastOrdersList(
+          scheduledOrders: listOfOrders.scheduledOrders,
+          ongoingOrders: listOfOrders.ongoingOrders,
+          pastOrders: listOfOrders.pastOrders,
+        ),
+      );
 
       successHandler();
     } catch (e, s) {
@@ -198,8 +209,7 @@ void ongoingOrderCheck(Store<AppState> store) {
             newList.add(
               //create a new element with status changed, add it to the list, and update the list state.
               element.copyWith(
-                orderAcceptanceStatus:
-                  orderStatus.orderAcceptanceStatus,
+                orderAcceptanceStatus: orderStatus.orderAcceptanceStatus,
               ),
             );
           } //if it has passed the timeslot, then its not added to the list and removed by default.

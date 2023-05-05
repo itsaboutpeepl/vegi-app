@@ -13,7 +13,7 @@ import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
-import 'package:vegan_liverpool/features/topup/dialogs/processing_payment.dart';
+
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/paymentSheet.dart';
@@ -23,7 +23,9 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForCollection.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
+import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -55,6 +57,45 @@ class UpdateCartItem {
   @override
   String toString() {
     return 'UpdateCartItem : $cartItem';
+  }
+}
+
+class OrderCreationProcessStatusUpdate {
+  OrderCreationProcessStatusUpdate({
+    required this.status,
+  });
+
+  final OrderCreationProcessStatus status;
+
+  @override
+  String toString() {
+    return 'OrderCreationProcessStatusUpdate : status:"${status.name}"';
+  }
+}
+
+class StripePaymentStatusUpdate {
+  StripePaymentStatusUpdate({
+    required this.status,
+  });
+
+  final StripePaymentStatus status;
+
+  @override
+  String toString() {
+    return 'StripePaymentStatusUpdate : status:"${status.name}"';
+  }
+}
+
+class SetProcessingPayment {
+  SetProcessingPayment({
+    required this.payment,
+  });
+
+  final LivePayment payment;
+
+  @override
+  String toString() {
+    return 'SetProcessingPayment : payment:"$payment"';
   }
 }
 
@@ -224,13 +265,16 @@ class UpdateTipAmount {
 }
 
 class CreateOrder {
-  CreateOrder(this.orderID, this.paymentIntentID);
-  final String orderID;
-  final String paymentIntentID;
+  CreateOrder({
+    required this.order,
+    required this.paymentIntentId,
+  });
+  final Order order;
+  final String paymentIntentId;
 
   @override
   String toString() {
-    return 'CreateOrder : orderID: $orderID, paymentIntentID: $paymentIntentID';
+    return 'CreateOrder : orderID: ${order.id}, paymentIntentID: $paymentIntentId';
   }
 }
 
@@ -1121,40 +1165,51 @@ ThunkAction<AppState> computeCartTotals() {
 }
 
 ThunkAction<AppState> startOrderCreationProcess({
-  required BuildContext context,
+  required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
 }) {
   return (Store<AppState> store) async {
     try {
       final cartState = store.state.cartState;
       if (cartState.selectedTimeSlot == null) {
-        showErrorSnack(context: context, title: 'Please select a time slot');
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.needToSelectATimeSlot,
+          ),
+        );
         return;
       }
       if (cartState.selectedDeliveryAddress == null && cartState.isDelivery) {
-        showErrorSnack(
-          context: context,
-          title: 'Please select a delivery address',
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.needToSelectADeliveryAddress,
+          ),
         );
         return;
       }
       if (cartState.restaurantMinimumOrder > cartState.cartSubTotal) {
-        showErrorSnack(
-          context: context,
-          title: 'This restaurant is not accepting orders below'
-              '${cartState.restaurantMinimumOrder.formattedPrice}',
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.orderIsBelowVendorMinimumOrder,
+          ),
         );
       } else {
         if (cartState.isDelivery) {
           store.dispatch(
-            prepareOrderObjectForDelivery(context: context),
+            prepareOrderObjectForDelivery(
+              showBottomPaymentSheet: showBottomPaymentSheet,
+            ),
           );
         } else if (cartState.isCollection) {
           store.dispatch(
-            prepareOrderObjectForCollection(context: context),
+            prepareOrderObjectForCollection(
+              showBottomPaymentSheet: showBottomPaymentSheet,
+            ),
           );
         } else if (cartState.isInStore) {
           store.dispatch(
-            prepareOrderObjectForInStorePayment(context: context),
+            prepareOrderObjectForInStorePayment(
+              showBottomPaymentSheet: showBottomPaymentSheet,
+            ),
           );
         } else {
           throw Exception(
@@ -1174,7 +1229,7 @@ ThunkAction<AppState> startOrderCreationProcess({
 }
 
 ThunkAction<AppState> prepareOrderObjectForDelivery({
-  required BuildContext context,
+  required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
 }) {
   return (Store<AppState> store) async {
     try {
@@ -1183,7 +1238,7 @@ ThunkAction<AppState> prepareOrderObjectForDelivery({
       store.dispatch(
         sendOrderObject(
           orderObject: orderObject,
-          context: context,
+          showBottomPaymentSheet: showBottomPaymentSheet,
         ),
       );
     } catch (e, s) {
@@ -1198,14 +1253,17 @@ ThunkAction<AppState> prepareOrderObjectForDelivery({
 }
 
 ThunkAction<AppState> prepareOrderObjectForCollection({
-  required BuildContext context,
+  required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
 }) {
   return (Store<AppState> store) async {
     try {
       final orderObject = CreateOrderForCollection.fromStore(store);
 
       store.dispatch(
-        sendOrderObject(orderObject: orderObject, context: context),
+        sendOrderObject(
+          orderObject: orderObject,
+          showBottomPaymentSheet: showBottomPaymentSheet,
+        ),
       );
     } catch (e, s) {
       log.error('ERROR - prepareOrderObjectForCollection $e');
@@ -1219,14 +1277,17 @@ ThunkAction<AppState> prepareOrderObjectForCollection({
 }
 
 ThunkAction<AppState> prepareOrderObjectForInStorePayment({
-  required BuildContext context,
+  required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
 }) {
   return (Store<AppState> store) async {
     try {
       final orderObject = CreateOrderForCollection.fromStore(store);
 
       store.dispatch(
-        sendOrderObject(orderObject: orderObject, context: context),
+        sendOrderObject(
+          orderObject: orderObject,
+          showBottomPaymentSheet: showBottomPaymentSheet,
+        ),
       );
     } catch (e, s) {
       log.error('ERROR - prepareOrderObjectForInStorePayment $e');
@@ -1241,54 +1302,65 @@ ThunkAction<AppState> prepareOrderObjectForInStorePayment({
 
 ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
   required T orderObject,
-  required BuildContext context,
+  required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
 }) {
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetPaymentButtonFlag(true));
-      final Map<String, dynamic> result =
-          await peeplEatsService.createOrder(orderObject).timeout(
-        const Duration(seconds: inDebugMode ? 300 : 10),
-        onTimeout: () {
-          return {};
-        },
-      );
+      final result = await peeplEatsService.createOrder(orderObject);
 
-      if (result.isEmpty) {
-        showErrorSnack(context: context, title: 'The operation has timed out');
+      if (result == null) {
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.sendOrderCallTimedOut,
+          ),
+        );
+      } else if (result.orderCreationStatus == OrderCreationStatus.failed) {
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.sendOrderCallServerError,
+          ),
+        );
       } else {
-        log.info('Order Result $result');
-        final Map<String, dynamic> checkResult = await peeplPayService
-            .checkOrderValidity(result['paymentIntentID'] as String);
+        log.verbose('Order Result $result');
+        final Map<String, dynamic> checkResult =
+            await peeplPayService.checkOrderValidity(result.paymentIntentID);
 
         final Map<String, dynamic> paymentIntent =
             checkResult['paymentIntent'] as Map<String, dynamic>;
 
         if (paymentIntent['amount'] != store.state.cartState.cartTotal) {
-          showErrorSnack(
-            context: context,
-            title: "Order totals aren't matching",
+          store.dispatch(
+            OrderCreationProcessStatusUpdate(
+              status: OrderCreationProcessStatus
+                  .paymentIntentAmountDoesntMatchCartTotal,
+            ),
           );
         } else {
           store
             ..dispatch(
               CreateOrder(
-                result['orderId'].toString(),
-                result['paymentIntentID'] as String,
+                paymentIntentId: result.paymentIntentID,
+                order: result.order,
               ),
             )
-            ..dispatch(startPaymentProcess(context: context));
+            ..dispatch(
+              startPaymentProcess(
+                showBottomPaymentSheet: showBottomPaymentSheet,
+              ),
+            );
           unawaited(
-            firebaseMessaging.subscribeToTopic('order-${result['orderId']}'),
+            firebaseMessaging.subscribeToTopic('order-${result.orderId}'),
           );
           unawaited(
             Analytics.track(
               eventName: AnalyticsEvents.orderGen,
               properties: {
                 'status': 'success',
-                'orderId': result['orderId'].toString(),
+                'orderId': result.orderId.toString(),
                 'orderTotal': store.state.cartState.cartTotal,
-                'paymentIntentID': result['paymentIntentID'] as String,
+                'paymentIntentID': result.paymentIntentID,
+                'orderCreationStatus': result.orderCreationStatus.name,
               },
             ),
           );
@@ -1306,45 +1378,16 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
       store.dispatch(SetPaymentButtonFlag(false));
       log.error(e);
       if (e.response != null) {
-        if (e.response == 'Interal Server Error') {
-          await Sentry.captureException(
-            e,
-            hint: 'DioError - sendOrderObject - '
-                'Internal Server Error',
-          );
-          showErrorSnack(
-            context: context,
-            title: 'Our servers seem to be down',
-          );
-        }
-        log.error(
-            'Url "${e.requestOptions.baseUrl}${e.requestOptions.path}" returned: ${e.response?.statusCode}');
-        log.error(e.response!.data);
-        if (e.response!.data is Map<String, dynamic>) {
-          await Sentry.captureException(
-            e,
-            hint: 'DioError - sendOrderObject - '
-                "${e.response!.data['cause']['code']}",
-          );
-          final responseContainsData = (e.response!.data['cause'] is Map &&
-              (e.response!.data['cause'] as Map).containsKey('data'));
-          showErrorSnack(
-            context: context,
-            title: getErrorMessageForOrder(
-              (e.response!.data['cause']['code'] as String) +
-                  ': ' +
-                  (responseContainsData
-                      ? ((e.response!.data['cause']['raw']['data'] ?? '')
-                          as String)
-                      : ''),
-            ),
-          );
-        } else {
-          showErrorSnack(
-            context: context,
-            title: 'Unable to create Order!',
-          );
-        }
+        await Sentry.captureException(
+          e,
+          hint: 'DioError - sendOrderObject - '
+              'Internal Server Error',
+        );
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.sendOrderCallServerError,
+          ),
+        );
       }
     } catch (e, s) {
       unawaited(
@@ -1355,7 +1398,13 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           },
         ),
       );
-      store.dispatch(SetPaymentButtonFlag(false));
+      store
+        ..dispatch(SetPaymentButtonFlag(false))
+        ..dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.sendOrderCallClientError,
+          ),
+        );
       log.error('ERROR - sendOrderObject $e');
       await Sentry.captureException(
         e,
@@ -1367,7 +1416,7 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
 }
 
 ThunkAction<AppState> startPaymentProcess({
-  required BuildContext context,
+  required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
 }) {
   return (Store<AppState> store) async {
     try {
@@ -1395,8 +1444,8 @@ ThunkAction<AppState> startPaymentProcess({
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           currency: Currency.GBP,
+          store: store,
           amount: store.state.cartState.cartTotal,
-          context: context,
           shouldPushToHome: true,
         )
             .then(
@@ -1445,7 +1494,7 @@ ThunkAction<AppState> startPaymentProcess({
           accountId: store.state.userState.vegiAccountId!,
           currency: Currency.GBP,
           amount: store.state.cartState.cartTotal,
-          context: context,
+          store: store,
           shouldPushToHome: false,
         )
             .then(
@@ -1472,9 +1521,7 @@ ThunkAction<AppState> startPaymentProcess({
                 ),
               )
               ..dispatch(
-                startTokenPaymentToRestaurant(
-                  context: context,
-                ),
+                startTokenPaymentToRestaurant(),
               );
           },
         );
@@ -1485,19 +1532,8 @@ ThunkAction<AppState> startPaymentProcess({
             eventName: AnalyticsEvents.payQRVegi,
           ),
         );
-
-        await showModalBottomSheet<Widget>(
-          isScrollControlled: true,
-          backgroundColor: const Color.fromARGB(255, 44, 42, 39),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
-          elevation: 5,
-          context: context,
-          builder: (context) => const QRFromCartSheet(),
-        );
+        await showBottomPaymentSheet(
+            store.state.cartState.selectedPaymentMethod);
       } else if (store.state.cartState.selectedPaymentMethod ==
           PaymentMethod.applePay) {
         unawaited(
@@ -1522,7 +1558,7 @@ ThunkAction<AppState> startPaymentProcess({
           accountId: store.state.userState.vegiAccountId!,
           currency: Currency.GBP,
           amount: store.state.cartState.cartTotal,
-          context: context,
+          store: store,
           shouldPushToHome: false,
           productName: 'Vegi',
         )
@@ -1548,9 +1584,7 @@ ThunkAction<AppState> startPaymentProcess({
                 ),
               )
               ..dispatch(
-                startTokenPaymentToRestaurant(
-                  context: context,
-                ),
+                startTokenPaymentToRestaurant(),
               );
           },
         ).catchError((error) {
@@ -1569,19 +1603,8 @@ ThunkAction<AppState> startPaymentProcess({
         //transfer tokens
         //show loading popup
         //show order confirmed
-
-        await showModalBottomSheet<Widget>(
-          isScrollControlled: true,
-          backgroundColor: Colors.grey[900],
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
-          elevation: 5,
-          context: context,
-          builder: (context) => const PaymentSheet(),
-        );
+        await showBottomPaymentSheet(
+            store.state.cartState.selectedPaymentMethod);
       }
     } catch (e, s) {
       store.dispatch(SetPaymentButtonFlag(false));
@@ -1595,11 +1618,19 @@ ThunkAction<AppState> startPaymentProcess({
   };
 }
 
-ThunkAction<AppState> startPeeplPayProcess({
-  required BuildContext context,
-}) {
+ThunkAction<AppState> startPeeplPayProcess() {
   return (Store<AppState> store) async {
     try {
+      if (store.state.userState.vegiAccountId == null) {
+        final e = 'vegi AccountId not set on state... Cannot start payment';
+        log.error(e);
+        await Sentry.captureException(
+          Exception(e),
+          stackTrace: StackTrace.current, // from catch (e, s)
+          hint: 'ERROR - startPeeplPayProcess $e',
+        );
+      }
+
       final double currentGBPXAmount =
           store.state.cashWalletState.tokens[gbpxToken.address]!.getAmount();
 
@@ -1610,17 +1641,8 @@ ThunkAction<AppState> startPeeplPayProcess({
           selectedGBPXAmount.compareTo(currentGBPXAmount) < 0;
 
       if (hasSufficientGbpxBalance) {
-        store.dispatch(startTokenPaymentToRestaurant(context: context));
+        store.dispatch(startTokenPaymentToRestaurant());
       } else {
-        if (store.state.userState.vegiAccountId == null) {
-          final e = 'Vegi AccountId not set on state... Cannot start payment';
-          log.error(e);
-          await Sentry.captureException(
-            Exception(e),
-            stackTrace: StackTrace.current, // from catch (e, s)
-            hint: 'ERROR - startPeeplPayProcess $e',
-          );
-        }
         await stripeService
             .handleStripe(
           recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
@@ -1629,7 +1651,7 @@ ThunkAction<AppState> startPeeplPayProcess({
           accountId: store.state.userState.vegiAccountId!,
           currency: Currency.GBP,
           amount: (selectedGBPXAmount * 100).toInt(),
-          context: context,
+          store: store,
           shouldPushToHome: false,
         )
             .then(
@@ -1639,9 +1661,7 @@ ThunkAction<AppState> startPeeplPayProcess({
               return;
             }
             store.dispatch(
-              startTokenPaymentToRestaurant(
-                context: context,
-              ),
+              startTokenPaymentToRestaurant(),
             );
           },
         );
@@ -1658,21 +1678,13 @@ ThunkAction<AppState> startPeeplPayProcess({
   };
 }
 
-ThunkAction<AppState> startTokenPaymentToRestaurant({
-  required BuildContext context,
-}) {
+ThunkAction<AppState> startTokenPaymentToRestaurant() {
   return (Store<AppState> store) async {
     try {
       //Set loading to true
       store
         ..dispatch(SetTransferringPayment(flag: true))
         ..dispatch(SetPaymentButtonFlag(false));
-      unawaited(
-        showDialog<void>(
-          context: context,
-          builder: (context) => const ProcessingPayment(),
-        ),
-      );
 
       final BigInt currentGBPXAmount =
           store.state.cashWalletState.tokens[gbpxToken.address]!.amount;

@@ -80,6 +80,17 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
           ? null
           : ProductSuggestion.fromJson(
               json['productSuggestion'] as Map<String, dynamic>),
+      orderCreationProcessStatus: $enumDecodeNullable(
+              _$OrderCreationProcessStatusEnumMap,
+              json['orderCreationProcessStatus']) ??
+          OrderCreationProcessStatus.none,
+      stripePaymentStatus: $enumDecodeNullable(
+              _$StripePaymentStatusEnumMap, json['stripePaymentStatus']) ??
+          StripePaymentStatus.none,
+      paymentInProcess: json['paymentInProcess'] == null
+          ? null
+          : LivePayment.fromJson(
+              json['paymentInProcess'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
@@ -123,6 +134,11 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'nextCollectionSlot': instance.nextCollectionSlot?.toJson(),
       'nextDeliverySlot': instance.nextDeliverySlot?.toJson(),
       'productSuggestion': instance.productSuggestion?.toJson(),
+      'orderCreationProcessStatus': _$OrderCreationProcessStatusEnumMap[
+          instance.orderCreationProcessStatus]!,
+      'stripePaymentStatus':
+          _$StripePaymentStatusEnumMap[instance.stripePaymentStatus]!,
+      'paymentInProcess': paymentInProcessToJson(instance.paymentInProcess),
     };
 
 const _$FulfilmentMethodTypeEnumMap = {
@@ -138,4 +154,33 @@ const _$PaymentMethodEnumMap = {
   PaymentMethod.peeplPay: 'peeplPay',
   PaymentMethod.applePay: 'applePay',
   PaymentMethod.qrPay: 'qrPay',
+};
+
+const _$OrderCreationProcessStatusEnumMap = {
+  OrderCreationProcessStatus.none: 'none',
+  OrderCreationProcessStatus.needToSelectATimeSlot: 'needToSelectATimeSlot',
+  OrderCreationProcessStatus.needToSelectADeliveryAddress:
+      'needToSelectADeliveryAddress',
+  OrderCreationProcessStatus.vendorNotAcceptingOrders:
+      'vendorNotAcceptingOrders',
+  OrderCreationProcessStatus.orderIsBelowVendorMinimumOrder:
+      'orderIsBelowVendorMinimumOrder',
+  OrderCreationProcessStatus.sendOrderCallServerError:
+      'sendOrderCallServerError',
+  OrderCreationProcessStatus.sendOrderCallTimedOut: 'sendOrderCallTimedOut',
+  OrderCreationProcessStatus.paymentIntentAmountDoesntMatchCartTotal:
+      'paymentIntentAmountDoesntMatchCartTotal',
+  OrderCreationProcessStatus.success: 'success',
+  OrderCreationProcessStatus.sendOrderCallClientError:
+      'sendOrderCallClientError',
+};
+
+const _$StripePaymentStatusEnumMap = {
+  StripePaymentStatus.none: 'none',
+  StripePaymentStatus.paymentFailed: 'paymentFailed',
+  StripePaymentStatus.topupSucceeded: 'topupSucceeded',
+  StripePaymentStatus.paymentConfirmed: 'paymentConfirmed',
+  StripePaymentStatus.mintingStarted: 'mintingStarted',
+  StripePaymentStatus.mintingSucceeded: 'mintingSucceeded',
+  StripePaymentStatus.mintingFailed: 'mintingFailed',
 };

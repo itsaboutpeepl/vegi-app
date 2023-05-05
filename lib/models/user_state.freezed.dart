@@ -48,6 +48,10 @@ mixin _$UserState {
   @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
   EthPrivateKey? get fuseWalletCredentials =>
       throw _privateConstructorUsedError;
+  UserAuthenticationStatus get userAuthenticationStatus =>
+      throw _privateConstructorUsedError;
+  FuseWalletCreationStatus get fuseWalletCreationStatus =>
+      throw _privateConstructorUsedError;
   bool get backup => throw _privateConstructorUsedError;
   List<String> get networks => throw _privateConstructorUsedError;
   List<String> get mnemonic => throw _privateConstructorUsedError;
@@ -121,6 +125,8 @@ abstract class $UserStateCopyWith<$Res> {
       String privateKey,
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           EthPrivateKey? fuseWalletCredentials,
+      UserAuthenticationStatus userAuthenticationStatus,
+      FuseWalletCreationStatus fuseWalletCreationStatus,
       bool backup,
       List<String> networks,
       List<String> mnemonic,
@@ -193,6 +199,8 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? walletAddress = null,
     Object? privateKey = null,
     Object? fuseWalletCredentials = freezed,
+    Object? userAuthenticationStatus = null,
+    Object? fuseWalletCreationStatus = null,
     Object? backup = null,
     Object? networks = null,
     Object? mnemonic = null,
@@ -269,6 +277,14 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.fuseWalletCredentials
           : fuseWalletCredentials // ignore: cast_nullable_to_non_nullable
               as EthPrivateKey?,
+      userAuthenticationStatus: null == userAuthenticationStatus
+          ? _value.userAuthenticationStatus
+          : userAuthenticationStatus // ignore: cast_nullable_to_non_nullable
+              as UserAuthenticationStatus,
+      fuseWalletCreationStatus: null == fuseWalletCreationStatus
+          ? _value.fuseWalletCreationStatus
+          : fuseWalletCreationStatus // ignore: cast_nullable_to_non_nullable
+              as FuseWalletCreationStatus,
       backup: null == backup
           ? _value.backup
           : backup // ignore: cast_nullable_to_non_nullable
@@ -456,6 +472,8 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       String privateKey,
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           EthPrivateKey? fuseWalletCredentials,
+      UserAuthenticationStatus userAuthenticationStatus,
+      FuseWalletCreationStatus fuseWalletCreationStatus,
       bool backup,
       List<String> networks,
       List<String> mnemonic,
@@ -527,6 +545,8 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? walletAddress = null,
     Object? privateKey = null,
     Object? fuseWalletCredentials = freezed,
+    Object? userAuthenticationStatus = null,
+    Object? fuseWalletCreationStatus = null,
     Object? backup = null,
     Object? networks = null,
     Object? mnemonic = null,
@@ -603,6 +623,14 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.fuseWalletCredentials
           : fuseWalletCredentials // ignore: cast_nullable_to_non_nullable
               as EthPrivateKey?,
+      userAuthenticationStatus: null == userAuthenticationStatus
+          ? _value.userAuthenticationStatus
+          : userAuthenticationStatus // ignore: cast_nullable_to_non_nullable
+              as UserAuthenticationStatus,
+      fuseWalletCreationStatus: null == fuseWalletCreationStatus
+          ? _value.fuseWalletCreationStatus
+          : fuseWalletCreationStatus // ignore: cast_nullable_to_non_nullable
+              as FuseWalletCreationStatus,
       backup: null == backup
           ? _value.backup
           : backup // ignore: cast_nullable_to_non_nullable
@@ -775,6 +803,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.privateKey = '',
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           this.fuseWalletCredentials = null,
+      this.userAuthenticationStatus = UserAuthenticationStatus.unauthenticated,
+      this.fuseWalletCreationStatus = FuseWalletCreationStatus.unauthenticated,
       this.backup = false,
       this.networks = const [],
       this.mnemonic = const [],
@@ -784,7 +814,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.warnSendDialogShowed = false,
       this.isoCode = '',
       this.jwtToken = '',
-      this.displayName = 'Anom',
+      this.displayName = VegiConstants.defaultDisplayName,
       this.avatarUrl = '',
       this.email = '',
       this.verificationId,
@@ -866,6 +896,12 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
   final EthPrivateKey? fuseWalletCredentials;
+  @override
+  @JsonKey()
+  final UserAuthenticationStatus userAuthenticationStatus;
+  @override
+  @JsonKey()
+  final FuseWalletCreationStatus fuseWalletCreationStatus;
   @override
   @JsonKey()
   final bool backup;
@@ -981,7 +1017,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId)';
+    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, userAuthenticationStatus: $userAuthenticationStatus, fuseWalletCreationStatus: $fuseWalletCreationStatus, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId)';
   }
 
   @override
@@ -998,6 +1034,10 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('walletAddress', walletAddress))
       ..add(DiagnosticsProperty('privateKey', privateKey))
       ..add(DiagnosticsProperty('fuseWalletCredentials', fuseWalletCredentials))
+      ..add(DiagnosticsProperty(
+          'userAuthenticationStatus', userAuthenticationStatus))
+      ..add(DiagnosticsProperty(
+          'fuseWalletCreationStatus', fuseWalletCreationStatus))
       ..add(DiagnosticsProperty('backup', backup))
       ..add(DiagnosticsProperty('networks', networks))
       ..add(DiagnosticsProperty('mnemonic', mnemonic))
@@ -1061,6 +1101,10 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.privateKey == privateKey) &&
             (identical(other.fuseWalletCredentials, fuseWalletCredentials) ||
                 other.fuseWalletCredentials == fuseWalletCredentials) &&
+            (identical(other.userAuthenticationStatus, userAuthenticationStatus) ||
+                other.userAuthenticationStatus == userAuthenticationStatus) &&
+            (identical(other.fuseWalletCreationStatus, fuseWalletCreationStatus) ||
+                other.fuseWalletCreationStatus == fuseWalletCreationStatus) &&
             (identical(other.backup, backup) || other.backup == backup) &&
             const DeepCollectionEquality().equals(other.networks, networks) &&
             const DeepCollectionEquality().equals(other.mnemonic, mnemonic) &&
@@ -1108,28 +1152,17 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.useLiveLocation == useLiveLocation) &&
             (identical(other.userIsVerified, userIsVerified) ||
                 other.userIsVerified == userIsVerified) &&
-            (identical(other.userLocation, userLocation) ||
-                other.userLocation == userLocation) &&
-            (identical(other.isUsingSimulator, isUsingSimulator) ||
-                other.isUsingSimulator == isUsingSimulator) &&
-            (identical(other.isUsingIosSimulator, isUsingIosSimulator) ||
-                other.isUsingIosSimulator == isUsingIosSimulator) &&
-            (identical(other.initialLoginDateTime, initialLoginDateTime) ||
-                other.initialLoginDateTime == initialLoginDateTime) &&
-            (identical(other.showSeedPhraseBanner, showSeedPhraseBanner) ||
-                other.showSeedPhraseBanner == showSeedPhraseBanner) &&
-            const DeepCollectionEquality()
-                .equals(other.surveyQuestions, surveyQuestions) &&
-            (identical(other.surveyCompleted, surveyCompleted) ||
-                other.surveyCompleted == surveyCompleted) &&
-            (identical(other.surveyEmailUsed, surveyEmailUsed) ||
-                other.surveyEmailUsed == surveyEmailUsed) &&
-            (identical(other.isVendor, isVendor) ||
-                other.isVendor == isVendor) &&
-            (identical(other.stripeCustomerId, stripeCustomerId) ||
-                other.stripeCustomerId == stripeCustomerId) &&
-            (identical(other.vegiAccountId, vegiAccountId) ||
-                other.vegiAccountId == vegiAccountId));
+            (identical(other.userLocation, userLocation) || other.userLocation == userLocation) &&
+            (identical(other.isUsingSimulator, isUsingSimulator) || other.isUsingSimulator == isUsingSimulator) &&
+            (identical(other.isUsingIosSimulator, isUsingIosSimulator) || other.isUsingIosSimulator == isUsingIosSimulator) &&
+            (identical(other.initialLoginDateTime, initialLoginDateTime) || other.initialLoginDateTime == initialLoginDateTime) &&
+            (identical(other.showSeedPhraseBanner, showSeedPhraseBanner) || other.showSeedPhraseBanner == showSeedPhraseBanner) &&
+            const DeepCollectionEquality().equals(other.surveyQuestions, surveyQuestions) &&
+            (identical(other.surveyCompleted, surveyCompleted) || other.surveyCompleted == surveyCompleted) &&
+            (identical(other.surveyEmailUsed, surveyEmailUsed) || other.surveyEmailUsed == surveyEmailUsed) &&
+            (identical(other.isVendor, isVendor) || other.isVendor == isVendor) &&
+            (identical(other.stripeCustomerId, stripeCustomerId) || other.stripeCustomerId == stripeCustomerId) &&
+            (identical(other.vegiAccountId, vegiAccountId) || other.vegiAccountId == vegiAccountId));
   }
 
   @JsonKey(ignore: true)
@@ -1145,6 +1178,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         walletAddress,
         privateKey,
         fuseWalletCredentials,
+        userAuthenticationStatus,
+        fuseWalletCreationStatus,
         backup,
         const DeepCollectionEquality().hash(networks),
         const DeepCollectionEquality().hash(mnemonic),
@@ -1212,6 +1247,8 @@ abstract class _UserState extends UserState {
       final String privateKey,
       @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
           final EthPrivateKey? fuseWalletCredentials,
+      final UserAuthenticationStatus userAuthenticationStatus,
+      final FuseWalletCreationStatus fuseWalletCreationStatus,
       final bool backup,
       final List<String> networks,
       final List<String> mnemonic,
@@ -1299,6 +1336,10 @@ abstract class _UserState extends UserState {
   @override
   @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
   EthPrivateKey? get fuseWalletCredentials;
+  @override
+  UserAuthenticationStatus get userAuthenticationStatus;
+  @override
+  FuseWalletCreationStatus get fuseWalletCreationStatus;
   @override
   bool get backup;
   @override

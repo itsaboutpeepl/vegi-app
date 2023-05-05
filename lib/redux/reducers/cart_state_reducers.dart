@@ -12,6 +12,10 @@ final cartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
   TypedReducer<UserCartState, ClearCart>(_clearCart),
   TypedReducer<UserCartState, UpdateSlots>(_updateSlots),
+  TypedReducer<UserCartState, OrderCreationProcessStatusUpdate>(
+      _updateOrderCreationProcessStatus),
+  TypedReducer<UserCartState, StripePaymentStatusUpdate>(
+      _updateStripePaymentStatus),
   TypedReducer<UserCartState, UpdateSelectedTimeSlot>(_updateSelectedTimeSlot),
   TypedReducer<UserCartState, UpdateTipAmount>(_updateTipAmount),
   TypedReducer<UserCartState, UpdateSelectedDeliveryAddress>(
@@ -135,6 +139,24 @@ UserCartState _updateSlots(
   );
 }
 
+UserCartState _updateOrderCreationProcessStatus(
+  UserCartState state,
+  OrderCreationProcessStatusUpdate action,
+) {
+  return state.copyWith(
+    orderCreationProcessStatus: action.status,
+  );
+}
+
+UserCartState _updateStripePaymentStatus(
+  UserCartState state,
+  StripePaymentStatusUpdate action,
+) {
+  return state.copyWith(
+    stripePaymentStatus: action.status,
+  );
+}
+
 UserCartState _updateSelectedTimeSlot(
   UserCartState state,
   UpdateSelectedTimeSlot action,
@@ -161,8 +183,9 @@ UserCartState _createOrder(
   CreateOrder action,
 ) {
   return state.copyWith(
-    orderID: action.orderID,
-    paymentIntentID: action.paymentIntentID,
+    orderID: action.order.id.toString(),
+    paymentIntentID: action.paymentIntentId,
+    orderCreationProcessStatus: OrderCreationProcessStatus.success,
   );
 }
 

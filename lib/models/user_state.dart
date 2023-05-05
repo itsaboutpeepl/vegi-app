@@ -12,6 +12,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/utils/constants.dart' as VegiConstants;
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 part 'user_state.freezed.dart';
@@ -89,6 +90,8 @@ class UserState with _$UserState {
     @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
     @Default(null)
         EthPrivateKey? fuseWalletCredentials,
+    @Default(UserAuthenticationStatus.unauthenticated) UserAuthenticationStatus userAuthenticationStatus,
+    @Default(FuseWalletCreationStatus.unauthenticated) FuseWalletCreationStatus fuseWalletCreationStatus,
     @Default(false) bool backup,
     @Default([]) List<String> networks,
     @Default([]) List<String> mnemonic,
@@ -98,7 +101,7 @@ class UserState with _$UserState {
     @Default(false) bool warnSendDialogShowed,
     @Default('') String isoCode,
     @Default('') String jwtToken,
-    @Default('Anom') String displayName,
+    @Default(VegiConstants.defaultDisplayName) String displayName,
     @Default('') String avatarUrl,
     @Default('') String email,
     String? verificationId,
@@ -136,7 +139,7 @@ class UserState with _$UserState {
         mnemonic: [],
         syncedContacts: [],
         reverseContacts: <String, String>{},
-        displayName: 'Anom',
+        displayName: VegiConstants.defaultDisplayName,
         isLoggedOut: true,
         authType: BiometricAuth.none,
         currency: 'gbp',

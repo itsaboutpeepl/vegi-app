@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/peaman.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/shape1.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class FirstOnboardingPage extends StatefulWidget {
   const FirstOnboardingPage({
@@ -43,35 +45,23 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
       onInit: (store) => store.state.userState.isLoggedOut
           ? null
           : store.dispatch(
-              fetchFuseSmartWallet(
-                onSuccess: () {
-                  showInfoSnack(
-                    context,
-                    title: Messages.walletLoadedSnackbarMessage,
-                  );
-                },
-                onFailure: ({String msg = ''}) {
-                  showInfoSnack(
-                    context,
-                    title: Messages.walletSignedOutSnackbarMessage,
-                  );
-                },
-                onError: (error) {
-                  if (inDebugMode) {
-                    showErrorSnack(
-                      context: context,
-                      title: Messages.walletSignedOutSnackbarMessage,
-                      message: 'Error fetching smart wallet: $error',
-                    );
-                  } else {
-                    showInfoSnack(
-                      context,
-                      title: Messages.walletSignedOutSnackbarMessage,
-                    );
-                  }
-                },
-              ),
+              fetchFuseSmartWallet(),
             ),
+      onWillChange: (previousViewModel, newViewModel) async {
+        if (newViewModel.userAuthenticationStatus !=
+            (previousViewModel?.userAuthenticationStatus ??
+                UserAuthenticationStatus.unauthenticated)) {
+          log.info(
+              'Update to user authentication: ${newViewModel.userAuthenticationStatus.name}');
+        }
+        if (newViewModel.fuseWalletCreationStatus !=
+            (previousViewModel?.fuseWalletCreationStatus ??
+                FuseWalletCreationStatus.unauthenticated)) {
+          log.info(
+              'Update to fuseWalletCreationStatus: ${newViewModel.fuseWalletCreationStatus.name}');
+          // await showInfoSnack(context, title: 'title')
+        }
+      },
       builder: (context, viewModel) => Stack(
         children: [
           Positioned(

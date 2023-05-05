@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.dart';
 import 'package:vegan_liverpool/features/onboard/widgets/sign_up_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
@@ -15,6 +16,7 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SignUpButtons extends StatefulWidget {
   const SignUpButtons({Key? key}) : super(key: key);
@@ -131,7 +133,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
     SplashViewModel viewmodel,
   ) {
     return () async {
-      viewmodel.loginAgain(context);
+      viewmodel.loginAgain();
     };
   }
 
@@ -140,6 +142,21 @@ class _SignUpButtonsState extends State<SignUpButtons> {
     return StoreConnector<AppState, SplashViewModel>(
       distinct: true,
       converter: SplashViewModel.fromStore,
+      onWillChange: (previousViewModel, newViewModel) async {
+        if (newViewModel.userAuthenticationStatus !=
+            (previousViewModel?.userAuthenticationStatus ??
+                UserAuthenticationStatus.unauthenticated)) {
+          log.info(
+              'Update to user authentication: ${newViewModel.userAuthenticationStatus.name}');
+        }
+        if (newViewModel.fuseWalletCreationStatus !=
+            (previousViewModel?.fuseWalletCreationStatus ??
+                FuseWalletCreationStatus.unauthenticated)) {
+          log.info(
+              'Update to fuseWalletCreationStatus: ${newViewModel.fuseWalletCreationStatus.name}');
+          // await showInfoSnack(context, title: 'title')
+        }
+      },
       onInit: (store) {
         store.dispatch(fetchSurveyQuestions());
         if (store.state.userState.accountDetailsExist) {

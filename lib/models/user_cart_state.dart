@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/envService.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
+import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -11,46 +12,95 @@ import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 part 'user_cart_state.freezed.dart';
 part 'user_cart_state.g.dart';
 
+Map<String, dynamic> paymentInProcessToJson(
+  LivePayment? paymentInProcess,
+) =>
+    paymentInProcess?.toJson() ?? {};
+
 @Freezed()
 class UserCartState with _$UserCartState {
   @JsonSerializable()
   factory UserCartState({
-    @Default([]) List<CartItem> cartItems,
-    @Default(0) int cartSubTotal,
-    @Default(0) int cartTax,
-    @Default(0) int cartTotal,
-    @Default(0) int cartDiscountPercent,
-    @Default(0) int cartDiscountComputed,
-    @Default([]) List<TimeSlot> deliverySlots,
-    @Default([]) List<TimeSlot> collectionSlots,
-    @Default(null) DeliveryAddresses? selectedDeliveryAddress,
-    @Default(null) TimeSlot? selectedTimeSlot,
-    @Default(0) int selectedTipAmount,
-    @Default('') String discountCode,
-    @Default('') String paymentIntentID,
-    @Default('') String orderID,
-    @Default(0.0) double selectedGBPxAmount,
-    @Default(0.0) double selectedPPLAmount,
-    @Default(false) bool payButtonLoading,
-    @Default(false) bool transferringTokens,
-    @Default(false) bool errorCompletingPayment,
-    @Default(false) bool confirmedPayment,
-    @Default('') String restaurantName,
-    @Default('') String restaurantID,
-    @Default(false) bool restaurantIsLive,
-    @Default(null) DeliveryAddresses? restaurantAddress,
-    @Default('') String restaurantWalletAddress,
+    @Default([])
+        List<CartItem> cartItems,
+    @Default(0)
+        int cartSubTotal,
+    @Default(0)
+        int cartTax,
+    @Default(0)
+        int cartTotal,
+    @Default(0)
+        int cartDiscountPercent,
+    @Default(0)
+        int cartDiscountComputed,
+    @Default([])
+        List<TimeSlot> deliverySlots,
+    @Default([])
+        List<TimeSlot> collectionSlots,
+    @Default(null)
+        DeliveryAddresses? selectedDeliveryAddress,
+    @Default(null)
+        TimeSlot? selectedTimeSlot,
+    @Default(0)
+        int selectedTipAmount,
+    @Default('')
+        String discountCode,
+    @Default('')
+        String paymentIntentID,
+    @Default('')
+        String orderID,
+    @Default(0.0)
+        double selectedGBPxAmount,
+    @Default(0.0)
+        double selectedPPLAmount,
+    @Default(false)
+        bool payButtonLoading,
+    @Default(false)
+        bool transferringTokens,
+    @Default(false)
+        bool errorCompletingPayment,
+    @Default(false)
+        bool confirmedPayment,
+    @Default('')
+        String restaurantName,
+    @Default('')
+        String restaurantID,
+    @Default(false)
+        bool restaurantIsLive,
+    @Default(null)
+        DeliveryAddresses? restaurantAddress,
+    @Default('')
+        String restaurantWalletAddress,
     @Default(FulfilmentMethodType.delivery)
         FulfilmentMethodType fulfilmentMethod,
-    @Default(0) int restaurantMinimumOrder,
-    @Default(0) int restaurantPlatformFee,
-    @Default('') String deliveryInstructions,
-    @Default(null) PaymentMethod? selectedPaymentMethod,
-    @Default([]) List<String> fulfilmentPostalDistricts,
-    @Default([]) List<DateTime> eligibleOrderDates,
-    @Default(null) TimeSlot? nextCollectionSlot,
-    @Default(null) TimeSlot? nextDeliverySlot,
-    @Default(null) ProductSuggestion? productSuggestion,
+    @Default(0)
+        int restaurantMinimumOrder,
+    @Default(0)
+        int restaurantPlatformFee,
+    @Default('')
+        String deliveryInstructions,
+    @Default(null)
+        PaymentMethod? selectedPaymentMethod,
+    @Default([])
+        List<String> fulfilmentPostalDistricts,
+    @Default([])
+        List<DateTime> eligibleOrderDates,
+    @Default(null)
+        TimeSlot? nextCollectionSlot,
+    @Default(null)
+        TimeSlot? nextDeliverySlot,
+    @Default(null)
+        ProductSuggestion? productSuggestion,
+    @Default(OrderCreationProcessStatus.none)
+        OrderCreationProcessStatus orderCreationProcessStatus,
+    @Default(StripePaymentStatus.none)
+        StripePaymentStatus stripePaymentStatus,
+    @JsonKey(
+      fromJson: LivePayment.fromJson,
+      toJson: paymentInProcessToJson,
+    )
+    @Default(null)
+        LivePayment? paymentInProcess,
   }) = _UserCartState;
 
   const UserCartState._();
@@ -81,6 +131,7 @@ class UserCartState with _$UserCartState {
         fulfilmentMethod: FulfilmentMethodType.delivery,
         fulfilmentPostalDistricts: [],
         eligibleOrderDates: [],
+        paymentInProcess: LivePayment.initial(),
       );
 
   factory UserCartState.fromJson(Map<String, dynamic> json) =>

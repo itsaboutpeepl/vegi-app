@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class PeeplPaySheetViewModel extends Equatable {
@@ -16,6 +18,9 @@ class PeeplPaySheetViewModel extends Equatable {
     required this.confirmedPayment,
     required this.restaurantName,
     required this.cartTotal,
+    required this.orderCreationProcessStatus,
+    required this.stripePaymentStatus,
+    required this.processingPayment,
   });
 
   factory PeeplPaySheetViewModel.fromStore(Store<AppState> store) {
@@ -35,9 +40,13 @@ class PeeplPaySheetViewModel extends Equatable {
           ),
         );
       },
-      startPaymentProcess: ({required BuildContext context}) {
-        store.dispatch(startPeeplPayProcess(context: context));
+      orderCreationProcessStatus:
+          store.state.cartState.orderCreationProcessStatus,
+      stripePaymentStatus: store.state.cartState.stripePaymentStatus,
+      startPaymentProcess: () {
+        store.dispatch(startPeeplPayProcess());
       },
+      processingPayment: store.state.cartState.paymentInProcess,
     );
   }
   final double selectedGBPxAmount;
@@ -48,7 +57,10 @@ class PeeplPaySheetViewModel extends Equatable {
   final bool confirmedPayment;
   final String restaurantName;
   final void Function(double gbpxAmount, double pplAmount) updateSelectedValues;
-  final void Function({required BuildContext context}) startPaymentProcess;
+  final void Function() startPaymentProcess;
+  final OrderCreationProcessStatus orderCreationProcessStatus;
+  final StripePaymentStatus stripePaymentStatus;
+  final LivePayment? processingPayment;
 
   @override
   List<Object> get props => [
@@ -57,5 +69,9 @@ class PeeplPaySheetViewModel extends Equatable {
         transferringTokens,
         errorCompletingPayment,
         confirmedPayment,
+        orderCreationProcessStatus,
+        stripePaymentStatus,
+        processingPayment?.amount ?? 0,
+        processingPayment?.status ?? PaymentProcessingStatus.none,
       ];
 }

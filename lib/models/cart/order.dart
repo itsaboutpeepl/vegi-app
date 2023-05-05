@@ -121,6 +121,15 @@ class Order with _$Order {
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
+  num get GBPAmountPaid =>
+      transactions
+          .where((t) => t.currency == Currency.GBPx)
+          .map((t) => t.amount / 100)
+          .sum() +
+      transactions
+          .where((t) => t.currency == Currency.GBP)
+          .map((t) => t.amount)
+          .sum();
   num get GBPxAmountPaid =>
       transactions
           .where((t) => t.currency == Currency.GBPx)
@@ -139,7 +148,7 @@ class Order with _$Order {
         GBPxAmountPaid * 100,
       ).toStringAsFixed(2);
 
-  String get rewardsEarnedInGBP =>
+  String get pplRewardsEarnedValue =>
       '£${(getPPLRewardsFromPence(GBPxAmountPaid * 100) / 10).toStringAsFixed(2)}';
 
   bool get didUsePPL => PPLAmountPaid != 0.0;

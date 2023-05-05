@@ -50,7 +50,7 @@ class FeaturedRestaurantsVM extends Equatable {
       isDelivery: store.state.cartState.isDelivery,
       postalCodes: store.state.homePageState.postalCodes,
       listOfScheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
-      refreshLocation: (BuildContext context) {
+      refreshLocation: () {
         store.dispatch(fetchFeaturedRestaurantsByUserLocation());
       },
       userLocationEnabled: store.state.userState.useLiveLocation,
@@ -108,7 +108,7 @@ class FeaturedRestaurantsVM extends Equatable {
   final String selectedSearchPostCode;
   final void Function(String outCode) changeOutCode;
   final void Function(String newPostalCode) updateSelectedSearchPostalCode;
-  final void Function(BuildContext context) refreshLocation;
+  final void Function() refreshLocation;
   final String avatarUrl;
   final List<String> postalCodes;
   final bool isDelivery;

@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/onboard/widgets/sign_up_button.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/address_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/bill_invoice_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/order_items_card.dart';
@@ -25,6 +27,7 @@ import 'package:vegan_liverpool/redux/viewsmodels/orderConfirmed.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/survey_thanks.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SurveyThanksScreen extends StatefulWidget {
   const SurveyThanksScreen({Key? key}) : super(key: key);
@@ -73,7 +76,7 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
         return;
       }
       if (viewmodel.isLoggedOut) {
-        viewmodel.loginAgain(context);
+        viewmodel.loginAgain();
         if (context.router.canPop()) {
           context.router.popUntilRoot();
         }
@@ -134,6 +137,21 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
       converter: SurveyThanksViewModel.fromStore,
       distinct: true,
       onInit: (store) => store.dispatch(CreateSurveyCompletedSuccess(true)),
+      onWillChange: (previousViewModel, newViewModel) async {
+        if (newViewModel.userAuthenticationStatus !=
+            (previousViewModel?.userAuthenticationStatus ??
+                UserAuthenticationStatus.unauthenticated)) {
+          log.info(
+              'Update to user authentication: ${newViewModel.userAuthenticationStatus.name}');
+        }
+        if (newViewModel.fuseWalletCreationStatus !=
+            (previousViewModel?.fuseWalletCreationStatus ??
+                FuseWalletCreationStatus.unauthenticated)) {
+          log.info(
+              'Update to fuseWalletCreationStatus: ${newViewModel.fuseWalletCreationStatus.name}');
+          // await showInfoSnack(context, title: 'title')
+        }
+      },
       builder: (_, viewmodel) {
         return Scaffold(
           backgroundColor: themeShade1100,

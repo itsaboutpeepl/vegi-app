@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 
@@ -25,13 +27,31 @@ class BiometricUtils {
   static Future<void> showDefaultPopupCheckBiometricAuth({
     String message = '',
     required void Function(bool) callback,
+    void Function()? noHardWare,
+    void Function()? permanentLockOut,
+    void Function()? authFailed,
+    void Function()? defaultFailureCallback,
     bool stickyAuth = false,
   }) async {
     final localAuth = LocalAuthentication();
-    final bool result = await localAuth.authenticate(
-      localizedReason: message,
-    );
-    callback.call(result);
+
+    try {
+      final bool result = await localAuth.authenticate(
+        localizedReason: message,
+      );
+      callback.call(result);
+    } on PlatformException catch (e) {
+      if (e.code == auth_error.notEnrolled) {
+        noHardWare != null ? noHardWare() : defaultFailureCallback?.call();
+      } else if (e.code == auth_error.lockedOut ||
+          e.code == auth_error.permanentlyLockedOut) {
+        permanentLockOut != null
+            ? permanentLockOut()
+            : defaultFailureCallback?.call();
+      } else {
+        authFailed != null ? authFailed() : defaultFailureCallback?.call();
+      }
+    }
   }
 
   static String getBiometricString(

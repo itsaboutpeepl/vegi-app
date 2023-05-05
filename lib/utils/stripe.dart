@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:injectable/injectable.dart';
+import 'package:redux/redux.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/env.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
@@ -13,6 +14,10 @@ import 'package:vegan_liverpool/features/pay/dialogs/stripe_payment_confirmed_di
 import 'package:vegan_liverpool/features/topup/dialogs/card_failed.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/minting_dialog.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/payments/live_payment.dart';
+
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -54,8 +59,8 @@ class StripeService {
     required num orderId,
     required num accountId,
     required int amount,
-    required BuildContext context,
     required bool shouldPushToHome,
+    required Store<AppState> store,
   }) async {
     try {
       final paymentIntentClientSecret =
@@ -70,10 +75,9 @@ class StripeService {
       );
       if (paymentIntentClientSecret == null) {
         log.error('Unable to create payment intent from ${stripePayService}');
-        await showDialog<void>(
-          context: context,
-          builder: (context) => const TopUpFailed(
-            isFailed: true,
+        store.dispatch(
+          StripePaymentStatusUpdate(
+            status: StripePaymentStatus.paymentFailed,
           ),
         );
         return false;
@@ -100,28 +104,41 @@ class StripeService {
           currency == Currency.PPL ||
           currency == Currency.GBT;
       if (mintingCrypto) {
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return MintingDialog(
-              amountText: amount.formattedPrice,
-              shouldPushToHome: shouldPushToHome,
-            );
-          },
-          barrierDismissible: false,
-        );
+        store
+          ..dispatch(
+            SetProcessingPayment(
+              payment: LivePayment(
+                amount: amount.toDouble(),
+                currency: currency,
+                status: PaymentProcessingStatus.started,
+                technology: PaymentTechnology.stripeOnRamp,
+                type: PaymentType.topup,
+              ),
+            ),
+          )
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.mintingStarted,
+            ),
+          );
       } else {
-        // Stripe sends a payment_intent.succeeded event when the payment completes. (~ https://stripe.com/docs/api/events/types#event_types-payment_intent.succeeded)
-        // Subscribe to these events from the vegi backend by passing the vegi backend here when creating the
-        // * we have a stripe webhook setup now on vegi backend.
-
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return StripePaymentConfirmedDialog(); //TODO: Replace this with MintingDialog copy
-          },
-          barrierDismissible: true,
-        );
+        store
+          ..dispatch(
+            SetProcessingPayment(
+              payment: LivePayment(
+                amount: amount.toDouble(),
+                currency: currency,
+                status: PaymentProcessingStatus.succeeded,
+                technology: PaymentTechnology.card,
+                type: PaymentType.cardPayment,
+              ),
+            ),
+          )
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.paymentConfirmed,
+            ),
+          );
       }
       return true;
     } on Exception catch (e, s) {
@@ -141,10 +158,9 @@ class StripeService {
             stackTrace: s,
             hint: 'ERROR - Stripe Exception: ${e.error.localizedMessage}',
           );
-          await showDialog<void>(
-            context: context,
-            builder: (context) => const TopUpFailed(
-              isFailed: true,
+          store.dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.paymentFailed,
             ),
           );
           return false;
@@ -158,10 +174,9 @@ class StripeService {
           stackTrace: s,
           hint: 'ERROR - Stripe Exception: $e',
         );
-        await showDialog<void>(
-          context: context,
-          builder: (context) => const TopUpFailed(
-            isFailed: true,
+        store.dispatch(
+          StripePaymentStatusUpdate(
+            status: StripePaymentStatus.paymentFailed,
           ),
         );
         return false;
@@ -177,7 +192,7 @@ class StripeService {
     required num orderId,
     required num accountId,
     required int amount,
-    required BuildContext context,
+    required Store<AppState> store,
     required bool shouldPushToHome,
   }) async {
     try {
@@ -193,10 +208,9 @@ class StripeService {
       );
       if (paymentIntentClientSecret == null) {
         log.error('Unable to create payment intent from ${stripePayService}');
-        await showDialog<void>(
-          context: context,
-          builder: (context) => const TopUpFailed(
-            isFailed: true,
+        store.dispatch(
+          StripePaymentStatusUpdate(
+            status: StripePaymentStatus.paymentFailed,
           ),
         );
         return false;
@@ -222,31 +236,49 @@ class StripeService {
           currency == Currency.PPL ||
           currency == Currency.GBT;
       if (mintingCrypto) {
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return MintingDialog(
-              amountText: amount.formattedPrice,
-              shouldPushToHome: shouldPushToHome,
-            );
-          },
-          barrierDismissible: false,
-        );
+        store
+          ..dispatch(
+            SetProcessingPayment(
+              payment: LivePayment(
+                amount: amount.toDouble(),
+                currency: currency,
+                status: PaymentProcessingStatus.started,
+                technology: PaymentTechnology.stripeOnRamp,
+                type: PaymentType.topup,
+              ),
+            ),
+          )
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.mintingStarted,
+            ),
+          );
       } else {
-        // Stripe sends a payment_intent.succeeded event when the payment completes. (~ https://stripe.com/docs/api/events/types#event_types-payment_intent.succeeded)
-        // Subscribe to these events from the vegi backend by passing the vegi backend here when creating the
-        // * we have a stripe webhook setup now on vegi backend.
-
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return StripePaymentConfirmedDialog(); //TODO: Replace this with MintingDialog copy
-          },
-          barrierDismissible: true,
-        );
+        store
+          ..dispatch(
+            SetProcessingPayment(
+              payment: LivePayment(
+                amount: amount.toDouble(),
+                currency: currency,
+                status: PaymentProcessingStatus.succeeded,
+                technology: PaymentTechnology.card,
+                type: PaymentType.cardPayment,
+              ),
+            ),
+          )
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.paymentConfirmed,
+            ),
+          );
       }
       return true;
     } on Exception catch (e, s) {
+      store.dispatch(
+        StripePaymentStatusUpdate(
+          status: StripePaymentStatus.paymentFailed,
+        ),
+      );
       if (e is StripeException) {
         if (e.error.code != FailureCode.Canceled) {
           unawaited(
@@ -262,12 +294,6 @@ class StripeService {
             e,
             stackTrace: s,
           );
-          await showDialog<void>(
-            context: context,
-            builder: (context) => const TopUpFailed(
-              isFailed: true,
-            ),
-          );
           return false;
         } else {
           return false;
@@ -277,12 +303,6 @@ class StripeService {
         await Sentry.captureException(
           e,
           stackTrace: s,
-        );
-        await showDialog<void>(
-          context: context,
-          builder: (context) => const TopUpFailed(
-            isFailed: true,
-          ),
         );
         return false;
       }

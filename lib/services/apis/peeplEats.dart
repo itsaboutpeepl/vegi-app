@@ -16,6 +16,8 @@ import 'package:vegan_liverpool/models/admin/vegiAccount.dart';
 import 'package:vegan_liverpool/models/admin/vegiSession.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/createOrderResponse.dart';
+import 'package:vegan_liverpool/models/cart/getOrdersResponse.dart';
 import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
 import 'package:vegan_liverpool/models/cart/orderStatus.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
@@ -1113,17 +1115,26 @@ class PeeplEatsService extends HttpService {
         .toList();
   }
 
-  Future<Map<String, dynamic>> createOrder<T extends CreateOrderForFulfilment>(
+  Future<CreateOrderResponse?> createOrder<T extends CreateOrderForFulfilment>(
     T orderObject,
   ) async {
-    final Response<dynamic> response = await dioPost(
+    final response = await dioPost<Map<String, dynamic>>(
       'api/v1/orders/create-order',
       data: await orderObject.toUploadJson(),
+    ).timeout(
+      const Duration(seconds: inDebugMode ? 300 : 10),
+      onTimeout: () {
+        return Response(
+          data: {},
+          statusCode: 500,
+          requestOptions: RequestOptions(path: 'api/v1/orders/create-order'),
+        );
+      },
     );
-
-    final Map<String, dynamic> result = response.data as Map<String, dynamic>;
-
-    return result;
+    if (response.data?.isEmpty ?? true) {
+      return null;
+    }
+    return CreateOrderResponse.fromJson(response.data!);
   }
 
   String getOrderUri(String orderID) =>
@@ -1139,7 +1150,7 @@ class PeeplEatsService extends HttpService {
     return OrderStatus.fromJson(orderStatus);
   }
 
-  Future<List<OrderModel.Order>> getOrdersForWallet(
+  Future<GetOrdersResponse> getOrdersForWallet(
     String walletAddress,
   ) async {
     try {
@@ -1157,10 +1168,18 @@ class PeeplEatsService extends HttpService {
             (order) => OrderModel.Order.fromJson(order as Map<String, dynamic>),
           )
           .toList();
-      return [
-        ...ongoingOrders,
-        ...scheduledOrders,
-      ];
+      final pastOrders = (response.data['pastOrders'] as List<dynamic>)
+          .map(
+            (order) => OrderModel.Order.fromJson(order as Map<String, dynamic>),
+          )
+          .toList()
+          .reversed
+          .toList();
+      return GetOrdersResponse(
+        ongoingOrders: ongoingOrders,
+        scheduledOrders: scheduledOrders,
+        pastOrders: pastOrders,
+      );
     } catch (e, stackTrace) {
       log.error(
         'Order parsing threw with stackTrace: $stackTrace & error: $e',

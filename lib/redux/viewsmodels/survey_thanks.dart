@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
@@ -24,6 +25,8 @@ class SurveyThanksViewModel extends Equatable {
     required this.logout,
     required this.isLoggedOut,
     required this.surveyCompleted,
+    required this.userAuthenticationStatus,
+    required this.fuseWalletCreationStatus,
   });
 
   factory SurveyThanksViewModel.fromStore(Store<AppState> store) {
@@ -41,48 +44,16 @@ class SurveyThanksViewModel extends Equatable {
           ),
         );
       },
-      loginAgain: (BuildContext context) {
-        store.dispatch(reLoginCall(
-          onSuccess: () {
-            showInfoSnack(
-              context,
-              title: Messages.walletLoadedSnackbarMessage,
-            );
-          },
-          reOnboardRequired: () {
-            if (DebugHelpers.inDebugMode) {
-              log.verbose('Reauthentication of user requires reonboarding');
-            }
-            rootRouter.push(const SignUpScreen());
-          },
-          onFailure: (Exception e) {
-            if (DebugHelpers.inDebugMode) {
-              return showErrorSnack(
-                context: context,
-                title: Messages.walletSignedOutSnackbarMessage,
-                message: e.toString(),
-              );
-            }
-            showInfoSnack(
-              context,
-              title: Messages.walletSignedOutSnackbarMessage,
-            );
-          },
-          onError: (error) {
-            if (inDebugMode) {
-              showErrorSnack(
-                context: context,
-                title: Messages.walletSignedOutSnackbarMessage,
-                message: 'Error fetching smart wallet: $error',
-              );
-            } else {
-              showInfoSnack(
-                context,
-                title: Messages.walletSignedOutSnackbarMessage,
-              );
-            }
-          },
-        ));
+      userAuthenticationStatus: store.state.userState.userAuthenticationStatus,
+      fuseWalletCreationStatus: store.state.userState.fuseWalletCreationStatus,
+      loginAgain: () {
+        store.dispatch(
+          reLoginCall(
+            reOnboardRequired: () {
+              rootRouter.push(const SignUpScreen());
+            },
+          ),
+        );
       },
       logout: () {
         store.dispatch(LogoutRequestSuccess());
@@ -94,8 +65,10 @@ class SurveyThanksViewModel extends Equatable {
   final String email;
   final bool accountCreated;
   final bool isLoggedOut;
+  final UserAuthenticationStatus userAuthenticationStatus;
+  final FuseWalletCreationStatus fuseWalletCreationStatus;
   final void Function() logout;
-  final void Function(BuildContext context) loginAgain;
+  final void Function() loginAgain;
   final bool surveyCompleted;
 
   final void Function(
@@ -108,5 +81,7 @@ class SurveyThanksViewModel extends Equatable {
         accountCreated,
         isLoggedOut,
         surveyCompleted,
+        userAuthenticationStatus,
+        fuseWalletCreationStatus,
       ];
 }

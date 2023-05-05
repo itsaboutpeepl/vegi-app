@@ -22,6 +22,14 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       fuseWalletCredentials: json['fuseWalletCredentials'] == null
           ? null
           : ethPrivateKeyFromJson(json['fuseWalletCredentials']),
+      userAuthenticationStatus: $enumDecodeNullable(
+              _$UserAuthenticationStatusEnumMap,
+              json['userAuthenticationStatus']) ??
+          UserAuthenticationStatus.unauthenticated,
+      fuseWalletCreationStatus: $enumDecodeNullable(
+              _$FuseWalletCreationStatusEnumMap,
+              json['fuseWalletCreationStatus']) ??
+          FuseWalletCreationStatus.unauthenticated,
       backup: json['backup'] as bool? ?? false,
       networks: (json['networks'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -37,7 +45,8 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       warnSendDialogShowed: json['warnSendDialogShowed'] as bool? ?? false,
       isoCode: json['isoCode'] as String? ?? '',
       jwtToken: json['jwtToken'] as String? ?? '',
-      displayName: json['displayName'] as String? ?? 'Anom',
+      displayName:
+          json['displayName'] as String? ?? VegiConstants.defaultDisplayName,
       avatarUrl: json['avatarUrl'] as String? ?? '',
       email: json['email'] as String? ?? '',
       verificationId: json['verificationId'] as String?,
@@ -84,6 +93,10 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'privateKey': instance.privateKey,
       'fuseWalletCredentials':
           ethPrivateKeyToJson(instance.fuseWalletCredentials),
+      'userAuthenticationStatus':
+          _$UserAuthenticationStatusEnumMap[instance.userAuthenticationStatus]!,
+      'fuseWalletCreationStatus':
+          _$FuseWalletCreationStatusEnumMap[instance.fuseWalletCreationStatus]!,
       'backup': instance.backup,
       'networks': instance.networks,
       'mnemonic': instance.mnemonic,
@@ -117,6 +130,34 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'stripeCustomerId': instance.stripeCustomerId,
       'vegiAccountId': instance.vegiAccountId,
     };
+
+const _$UserAuthenticationStatusEnumMap = {
+  UserAuthenticationStatus.unauthenticated: 'unauthenticated',
+  UserAuthenticationStatus.authenticatedWithFirebase:
+      'authenticatedWithFirebase',
+  UserAuthenticationStatus.authenticatedWithVegi: 'authenticatedWithVegi',
+  UserAuthenticationStatus.authenticatedWithFuse: 'authenticatedWithFuse',
+  UserAuthenticationStatus.firebasePhoneAuthFailed: 'firebasePhoneAuthFailed',
+  UserAuthenticationStatus.vegiLoginFailed: 'vegiLoginFailed',
+  UserAuthenticationStatus.firebaseTFAFailed: 'firebaseTFAFailed',
+  UserAuthenticationStatus.firebaseNoPhoneNumberSet: 'firebaseNoPhoneNumberSet',
+  UserAuthenticationStatus.firebaseVerificationCodeTimedOut:
+      'firebaseVerificationCodeTimedOut',
+  UserAuthenticationStatus.firebaseVerificationFailed:
+      'firebaseVerificationFailed',
+};
+
+const _$FuseWalletCreationStatusEnumMap = {
+  FuseWalletCreationStatus.unauthenticated: 'unauthenticated',
+  FuseWalletCreationStatus.authenticated: 'authenticated',
+  FuseWalletCreationStatus.created: 'created',
+  FuseWalletCreationStatus.fetched: 'fetched',
+  FuseWalletCreationStatus.failedFetch: 'failedFetch',
+  FuseWalletCreationStatus.failedCreate: 'failedCreate',
+  FuseWalletCreationStatus.failedAuthentication: 'failedAuthentication',
+  FuseWalletCreationStatus.missingUserDetailsToAuthFuseWallet:
+      'missingUserDetailsToAuthFuseWallet',
+};
 
 const _$BiometricAuthEnumMap = {
   BiometricAuth.faceID: 'faceID',

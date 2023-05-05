@@ -5,17 +5,17 @@ import 'package:vegan_liverpool/generated/l10n.dart';
 
 import '../../../utils/log/log.dart';
 
-void showErrorSnack({
+Future<void> showErrorSnack({
   required BuildContext context,
   String? title,
   int duration = 3,
   EdgeInsets? margin,
   String? message,
-}) {
+}) async {
   if (!context.mounted) {
     return;
   }
-  Flushbar<void>(
+  return Flushbar<void>(
     boxShadows: const [
       BoxShadow(
         offset: Offset(0.5, 0.5),
@@ -33,7 +33,8 @@ void showErrorSnack({
         fontSize: 14,
       ),
     ),
-    backgroundColor: Theme.of(context).bottomAppBarColor,
+    backgroundColor: Theme.of(context).bottomAppBarTheme.color ??
+        Colors.lightGreenAccent[100]!,
     margin: margin ??
         EdgeInsets.only(
           top: 8,
@@ -50,15 +51,19 @@ void showErrorSnack({
       height: 20,
     ),
     onTap: (flushbar) async {
-      await flushbar.dismiss();
+      try {
+        await flushbar.dismiss();
+      } on Exception catch (e) {
+        log.error('Unable to dismiss flushbar: $e');
+      }
     },
   ).show(context).catchError((error) {
     log.error('Caught error showing flushbar error snack: $error');
   });
 }
 
-void showCopiedFlushbar(BuildContext context) {
-  Flushbar<void>(
+Future<void> showCopiedFlushbar(BuildContext context) async {
+  return Flushbar<void>(
     duration: const Duration(seconds: 1),
     boxShadows: const [
       BoxShadow(
@@ -70,7 +75,8 @@ void showCopiedFlushbar(BuildContext context) {
       I10n.of(context).copied_to_clipboard,
       textAlign: TextAlign.center,
     ),
-    backgroundColor: Theme.of(context).bottomAppBarColor,
+    backgroundColor: Theme.of(context).bottomAppBarTheme.color ??
+        Colors.lightGreenAccent[100]!,
     margin: const EdgeInsets.only(
       top: 25,
       right: 25,
@@ -81,20 +87,24 @@ void showCopiedFlushbar(BuildContext context) {
       Radius.circular(8),
     ),
     onTap: (flushbar) async {
-      await flushbar.dismiss();
+      try {
+        await flushbar.dismiss();
+      } on Exception catch (e) {
+        log.error('Unable to dismiss flushbar: $e');
+      }
     },
   ).show(context);
 }
 
-void showInfoSnack(
+Future<void> showInfoSnack(
   BuildContext context, {
   required String title,
   Color? backgroundColor,
-}) {
+}) async {
   if (!context.mounted) {
     return;
   }
-  Flushbar<void>(
+  return Flushbar<void>(
     duration: const Duration(seconds: 1),
     boxShadows: const [
       BoxShadow(
@@ -106,7 +116,9 @@ void showInfoSnack(
       title,
       textAlign: TextAlign.center,
     ),
-    backgroundColor: backgroundColor ?? Theme.of(context).bottomAppBarColor,
+    backgroundColor: backgroundColor ??
+        Theme.of(context).bottomAppBarTheme.color ??
+        Colors.lightGreenAccent[100]!,
     margin: const EdgeInsets.only(
       top: 25,
       right: 25,
@@ -117,15 +129,19 @@ void showInfoSnack(
       Radius.circular(8),
     ),
     onTap: (flushbar) async {
-      await flushbar.dismiss();
+      try {
+        await flushbar.dismiss();
+      } on Exception catch (e) {
+        log.error('Unable to dismiss flushbar: $e');
+      }
     },
-  ).show(context).catchError((error) {
+  ).show(context).catchError((Object error) {
     log.error('Caught error showing flushbar info snack: $error');
   });
 }
 
-void showPlayBackCompletedFlushBar(BuildContext context) {
-  Flushbar<void>(
+Future<void> showPlayBackCompletedFlushBar(BuildContext context) {
+  return Flushbar<void>(
     duration: const Duration(seconds: 4),
     boxShadows: const [
       BoxShadow(
@@ -137,7 +153,8 @@ void showPlayBackCompletedFlushBar(BuildContext context) {
       'Thanks for watching. Your Reward will be added to your wallet.',
       textAlign: TextAlign.center,
     ),
-    backgroundColor: Theme.of(context).bottomAppBarColor,
+    backgroundColor: Theme.of(context).bottomAppBarTheme.color ??
+        Colors.lightGreenAccent[100]!,
     margin: const EdgeInsets.only(
       top: 8,
       right: 8,
@@ -148,7 +165,11 @@ void showPlayBackCompletedFlushBar(BuildContext context) {
       Radius.circular(8),
     ),
     onTap: (flushbar) async {
-      await flushbar.dismiss();
+      try {
+        await flushbar.dismiss();
+      } on Exception catch (e) {
+        log.error('Unable to dismiss flushbar: $e');
+      }
     },
   ).show(context);
 }

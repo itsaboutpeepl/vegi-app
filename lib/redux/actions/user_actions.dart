@@ -193,6 +193,45 @@ class ReLogin {
   String toString() => 'ReLogin';
 }
 
+class ReauthenticateUserFailure {
+  ReauthenticateUserFailure({
+    required this.error,
+  });
+
+  final UserAuthenticationStatus error;
+
+  @override
+  String toString() {
+    return 'ReauthenticateUserFailure : $error';
+  }
+}
+
+class AuthenticateFuseWalletSDKFailure {
+  AuthenticateFuseWalletSDKFailure({
+    required this.error,
+  });
+
+  final FuseWalletCreationStatus error;
+
+  @override
+  String toString() {
+    return 'AuthenticateFuseWalletSDKFailure : error:"$error"';
+  }
+}
+
+class FetchFuseSmartWalletFailure {
+  FetchFuseSmartWalletFailure({
+    required this.error,
+  });
+
+  final FuseWalletCreationStatus error;
+
+  @override
+  String toString() {
+    return 'FetchFuseSmartWalletFailure : $error';
+  }
+}
+
 class EmailWLRegistrationSuccess {
   EmailWLRegistrationSuccess({
     required this.email,
@@ -308,8 +347,7 @@ class SetUserVegiAccountIdSuccess {
   num accountId;
 
   @override
-  String toString() =>
-      'SetUserVegiAccountIdSuccess : accountId: $accountId';
+  String toString() => 'SetUserVegiAccountIdSuccess : accountId: $accountId';
 }
 
 class SetUserIsVendorStatusSuccess {
@@ -443,8 +481,8 @@ class SetHasSavedSeedPhrase {
 
 ThunkAction<AppState> registerEmailWaitingListHandler(
   String email,
-  void Function() onSuccess,
-  void Function(String error) onError,
+  void Function()? onSuccess,
+  void Function(String error)? onError,
 ) {
   return (Store<AppState> store) async {
     try {
@@ -462,7 +500,7 @@ ThunkAction<AppState> registerEmailWaitingListHandler(
               email: email,
             ),
           );
-          onSuccess();
+          onSuccess?.call();
         },
         (eStr) {
           Analytics.track(
@@ -472,7 +510,7 @@ ThunkAction<AppState> registerEmailWaitingListHandler(
               'error': eStr,
             },
           );
-          onError(eStr);
+          onError?.call(eStr);
         },
       );
     } catch (e, s) {
@@ -481,7 +519,7 @@ ThunkAction<AppState> registerEmailWaitingListHandler(
         error: e,
         stackTrace: s,
       );
-      onError(e.toString());
+      onError?.call(e.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.emailWLRegistration,
         properties: {
@@ -596,7 +634,7 @@ ThunkAction<AppState> submitSurveyResponse(
           //     answer: response,
           //   ),
           // );
-          onSuccess();
+          onSuccess?.call();
         },
         (eStr) {
           Analytics.track(
@@ -606,7 +644,7 @@ ThunkAction<AppState> submitSurveyResponse(
               'error': eStr,
             },
           );
-          onError(eStr);
+          onError?.call(eStr);
         },
       );
     } catch (e, s) {
@@ -615,7 +653,7 @@ ThunkAction<AppState> submitSurveyResponse(
         error: e,
         stackTrace: s,
       );
-      onError(e.toString());
+      onError?.call(e.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.submitSurveyResponse,
         properties: {
@@ -673,7 +711,7 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
         error: e,
         stackTrace: s,
       );
-      // onError(e.toString());
+      // onError?.call(e.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.submitSurveyResponse,
         properties: {
@@ -742,7 +780,7 @@ ThunkAction<AppState> isUserWalletAddressAVendorAddress({
         error: e,
         stackTrace: s,
       );
-      // onError(e.toString());
+      // onError?.call(e.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.submitSurveyResponse,
         properties: {
@@ -795,9 +833,9 @@ ThunkAction<AppState> loginHandler(
           // } else {
           //   rootRouter.push(UserNameScreen());
           // }
-          onSuccess();
+          onSuccess?.call();
         },
-        (e) {
+        (e, status) {
           Analytics.track(
             eventName: AnalyticsEvents.loginWithPhone,
             properties: {
@@ -805,7 +843,12 @@ ThunkAction<AppState> loginHandler(
               'error': e.toString(),
             },
           );
-          onError(e.toString());
+          store.dispatch(
+            ReauthenticateUserFailure(
+              error: UserAuthenticationStatus.firebasePhoneAuthFailed,
+            ),
+          );
+          onError?.call(e.toString());
         },
       );
     } catch (e, s) {
@@ -814,7 +857,7 @@ ThunkAction<AppState> loginHandler(
         error: e,
         stackTrace: s,
       );
-      onError(e.toString());
+      onError?.call(e.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.loginWithPhone,
         properties: {
@@ -833,8 +876,8 @@ ThunkAction<AppState> loginHandler(
 
 ThunkAction<AppState> verifyHandler(
   String verificationCode,
-  Function onSuccess,
-  void Function(String error) onError,
+  void Function()? onSuccess,
+  void Function(String error)? onError,
 ) {
   return (Store<AppState> store) async {
     try {
@@ -848,12 +891,19 @@ ThunkAction<AppState> verifyHandler(
               AnalyticsProps.status: AnalyticsProps.success,
             },
           );
-          onSuccess();
+          onSuccess?.call();
         },
-        onError,
+        (errorMsg, status) {
+          store.dispatch(
+            ReauthenticateUserFailure(
+              error: UserAuthenticationStatus.firebaseVerificationFailed,
+            ),
+          );
+          onError?.call(errorMsg);
+        },
       );
     } catch (error, s) {
-      onError(error.toString());
+      onError?.call(error.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.verify,
         properties: {
@@ -979,6 +1029,11 @@ ThunkAction<AppState> authenticateFuseWalletSDK({
   return (Store<AppState> store) async {
     try {
       if (store.state.userState.privateKey.isEmpty) {
+        store.dispatch(
+          AuthenticateFuseWalletSDKFailure(
+            error: FuseWalletCreationStatus.missingUserDetailsToAuthFuseWallet,
+          ),
+        );
         return onFailure!(
             'User details missing from reauthentication in authenticateFuseWalletSDK');
       }
@@ -988,18 +1043,32 @@ ThunkAction<AppState> authenticateFuseWalletSDK({
         credentials,
       );
       if (authRes.hasError) {
+        store.dispatch(
+          AuthenticateFuseWalletSDKFailure(
+            error: FuseWalletCreationStatus.failedAuthentication,
+          ),
+        );
         onFailure!('Error occurred in authenticate: ${authRes.error}');
       } else if (authRes.hasData) {
         final jwt = authRes.data!;
         store.dispatch(LoginVerifySuccess(jwt));
         fuseWalletSDK.jwtToken = jwt;
         onSuccess!();
-        // * Use the JWT token to make authenticated API requests
       } else {
+        store.dispatch(
+          AuthenticateFuseWalletSDKFailure(
+            error: FuseWalletCreationStatus.failedAuthentication,
+          ),
+        );
         throw Exception(
             'Bad AuthRes from Fuse Authentication did not contain either data or an error: $authRes');
       }
     } catch (e, s) {
+      store.dispatch(
+        AuthenticateFuseWalletSDKFailure(
+          error: FuseWalletCreationStatus.failedAuthentication,
+        ),
+      );
       onFailure!('Error in authenticateFuseWalletSDK: $e');
       log.error(
         'ERROR - authenticateFuseWalletSDK',
@@ -1029,9 +1098,9 @@ bool smartWalletInitialised(FuseWalletSDK fuseWalletSDK) {
 }
 
 ThunkAction<AppState> fetchFuseSmartWallet({
-  required void Function() onSuccess,
-  required void Function({String msg}) onFailure,
-  required void Function(Exception error) onError,
+  void Function()? onSuccess,
+  void Function(Exception error)? onFailure,
+  void Function(Exception error)? onError,
   bool allowRetry = true,
 }) {
   return (Store<AppState> store) async {
@@ -1042,7 +1111,7 @@ ThunkAction<AppState> fetchFuseSmartWallet({
             smartWallet: fuseWalletSDK.smartWallet,
           ),
         );
-        return onSuccess();
+        return onSuccess?.call();
       }
       // Try to fetch a wallet for the EOA, if it doesn't exist create one
       final walletData = await fuseWalletSDK.fetchWallet();
@@ -1056,11 +1125,14 @@ ThunkAction<AppState> fetchFuseSmartWallet({
               smartWallet: fuseWalletSDK.smartWallet,
             ),
           );
-          onSuccess();
+          onSuccess?.call();
         },
         onError: (Exception exception) async {
-          log.info('Failed to fetch wallet.');
-          log.info('Trying to create...');
+          store.dispatch(
+            FetchFuseSmartWalletFailure(
+              error: FuseWalletCreationStatus.failedFetch,
+            ),
+          );
           if (allowRetry &&
               exception.toString().contains('LateInit') &&
               store.state.userState.jwtToken != '') {
@@ -1068,7 +1140,7 @@ ThunkAction<AppState> fetchFuseSmartWallet({
             store
               ..dispatch(
                 authenticateFuseWalletSDK(
-                  onFailure: (message) => onFailure(),
+                  onFailure: (message) => onFailure?.call(exception),
                 ),
               )
               ..dispatch(
@@ -1084,6 +1156,11 @@ ThunkAction<AppState> fetchFuseSmartWallet({
           final exceptionOrStream = await fuseWalletSDK.createWallet();
           if (exceptionOrStream.hasError) {
             log.error(exceptionOrStream.error.toString());
+            store.dispatch(
+              FetchFuseSmartWalletFailure(
+                error: FuseWalletCreationStatus.failedCreate,
+              ),
+            );
           } else if (exceptionOrStream.hasData) {
             exceptionOrStream.data!.listen(
               (SmartWalletEvent event) {
@@ -1093,10 +1170,15 @@ ThunkAction<AppState> fetchFuseSmartWallet({
                   log.info('transactionHash ${event.data}');
                 } else if (event.name == 'smartWalletCreationSucceeded') {
                   log.info('smartWalletCreationSucceeded ${event.data}');
-                  onSuccess();
+                  onSuccess?.call();
                 } else if (event.name == 'smartWalletCreationFailed') {
                   log.error('smartWalletCreationFailed ${event.data}');
-                  onFailure();
+                  store.dispatch(
+                    FetchFuseSmartWalletFailure(
+                      error: FuseWalletCreationStatus.failedCreate,
+                    ),
+                  );
+                  onFailure?.call(exception);
                 } else {
                   log.info(
                       'No event handler for fuseWalletSDK.fetchWallet event: '
@@ -1106,7 +1188,7 @@ ThunkAction<AppState> fetchFuseSmartWallet({
               cancelOnError: true,
               onError: (error) {
                 log.error('Error occurred: $error');
-                onError(error as Exception);
+                onError?.call(error as Exception);
               },
             );
           }
@@ -1118,8 +1200,13 @@ ThunkAction<AppState> fetchFuseSmartWallet({
         error: e,
         stackTrace: s,
       );
-      onFailure(
-        msg: 'Error in setup wallet call: $e',
+      store.dispatch(
+        FetchFuseSmartWalletFailure(
+          error: FuseWalletCreationStatus.failedFetch,
+        ),
+      );
+      onFailure?.call(
+        Exception('Error in setup wallet call: $e'),
       );
       await Sentry.captureException(
         Exception('Error in setup wallet call: ${e.toString()}'),
@@ -1158,9 +1245,9 @@ ThunkAction<AppState> saveSmartWallet({
 }
 
 ThunkAction<AppState> reAuthenticateOnBoarding({
-  required void Function() onSuccess,
-  required void Function(Exception error) onFailure,
-  required void Function() reOnboardRequired,
+  void Function()? onSuccess,
+  void Function(Exception error)? onFailure,
+  void Function()? reOnboardRequired,
 }) {
   return (Store<AppState> store) async {
     try {
@@ -1168,18 +1255,24 @@ ThunkAction<AppState> reAuthenticateOnBoarding({
         store: store,
         onSuccess: onSuccess,
         reOnboardRequired: reOnboardRequired,
-        onFailure: (exception) {
+        onFailure: (exception, status) {
           Analytics.track(
             eventName: AnalyticsEvents.verify,
             properties: {
               AnalyticsProps.status: AnalyticsProps.success,
             },
           );
-          onFailure(exception);
+          store.dispatch(ReauthenticateUserFailure(error: status));
+          onFailure?.call(exception);
         },
       );
     } on Exception catch (error, s) {
-      onFailure(error);
+      store.dispatch(
+        ReauthenticateUserFailure(
+          error: UserAuthenticationStatus.firebasePhoneAuthFailed,
+        ),
+      );
+      onFailure?.call(error);
       await Analytics.track(
         eventName: AnalyticsEvents.verify,
         properties: {
@@ -1198,10 +1291,10 @@ ThunkAction<AppState> reAuthenticateOnBoarding({
 }
 
 ThunkAction<AppState> reLoginCall({
-  required void Function() onSuccess,
-  required void Function(Exception error) onFailure,
-  required void Function() reOnboardRequired,
-  required void Function(Exception error) onError,
+  void Function()? onSuccess,
+  void Function(Exception error)? onFailure,
+  void Function(Exception error)? onError,
+  void Function()? reOnboardRequired,
 }) {
   return (Store<AppState> store) async {
     store
@@ -1217,11 +1310,8 @@ ThunkAction<AppState> reLoginCall({
       ..dispatch(
         fetchFuseSmartWallet(
           onSuccess: onSuccess,
-          onFailure: (
-                  {String msg =
-                      'FetchFuseSmartWallet Exception from ReLoginCall'}) =>
-              onFailure(Exception(msg)),
           onError: onError,
+          onFailure: onFailure,
         ),
       );
   };
@@ -1315,7 +1405,7 @@ ThunkAction<AppState> updateUserAvatarCall(
             onSuccess: (PostVegiResponse response) async {
               await firebaseUser.updatePhotoURL(response.url);
               store.dispatch(SetUserAvatar(response.url));
-              onSuccess();
+              onSuccess?.call();
             },
             onError: (error, errCode) async {
               log.error(

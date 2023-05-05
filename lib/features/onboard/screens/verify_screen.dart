@@ -198,10 +198,12 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
           setState(() {
             isPreloading = false;
           });
-          if (viewModel.displayName != '') {
-            rootRouter.push(const MainScreen());
-          } else {
+          if (!viewModel.displayNameIsSet) {
             rootRouter.push(UserNameScreen());
+          } else if (!viewModel.biometricAuthIsSet) {
+            rootRouter.push(const ChooseSecurityOption());
+          } else {
+            rootRouter.push(const MainScreen());
           }
         },
         (dynamic error) {

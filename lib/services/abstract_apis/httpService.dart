@@ -31,10 +31,17 @@ abstract class HttpService {
 
   bool get hasCookieStored => dio.options.headers.containsKey('Cookie');
 
+  void _deleteSessionCookie() {
+    if (hasCookieStored) {
+      dio.options.headers.remove('Cookie');
+    }
+  }
+
   bool _checkAuthDioResponse(DioError dioErr) {
     if (dioErr.response?.statusCode == 401) {
       // TODO? Do we need to set: set state logged out to true and then route to the login signin buttons screen
       // navigating to the splash screen should ensure user can login back into vegi again using the phone -sms firebase onboard
+      _deleteSessionCookie();
       rootRouter.push(const SignUpScreen());
       return true;
     }
@@ -100,7 +107,12 @@ abstract class HttpService {
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     )..onError((error, stackTrace) {
+        log.error(
+            'Ran into error trying to POST to "${dio.options.baseUrl}${path}"');
         log.error(error, stackTrace: stackTrace);
+        if (error.toString().contains('Connection reset by peer')) {
+          _deleteSessionCookie(); //todo: return a 401...
+        }
         if (error is Map<String, dynamic> &&
             error['message'].toString().startsWith('SocketException:') &&
             dio.options.baseUrl.startsWith('http://localhost')) {

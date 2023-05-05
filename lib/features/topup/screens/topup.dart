@@ -183,27 +183,7 @@ class _TopupScreenState extends State<TopupScreen>
                   // labelFontWeight: FontWeight.normal,
                   label: I10n.of(context).next_button,
                   onPressed: () async {
-                    if (viewModel.accountId == null) {
-                      final e =
-                          'Vegi AccountId not set on state... Cannot start payment';
-                      log.error(e);
-                      await Sentry.captureException(
-                        Exception(e),
-                        stackTrace: StackTrace.current, // from catch (e, s)
-                        hint: 'ERROR - startPeeplPayProcess $e',
-                      );
-                    }
-                    await stripeService.handleApplePay(
-                      recipientWalletAddress: viewModel.recipientWalletAddress,
-                      senderWalletAddress: viewModel.senderWalletAddress,
-                      orderId: viewModel.orderId,
-                      accountId: viewModel.accountId!,
-                      currency: Currency.GBP,
-                      amount: int.parse(_amountText) * 100,
-                      context: context,
-                      shouldPushToHome: true,
-                      productName: 'vegi',
-                    );
+                    await viewModel.handleApplePay(int.parse(_amountText) * 100);
                   },
                   preload: _isPreloading,
                   disabled: _isPreloading,

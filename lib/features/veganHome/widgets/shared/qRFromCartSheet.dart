@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:vegan_liverpool/features/pay/screens/generate_QR_from_cart.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/features/topup/dialogs/processing_payment.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/ppl_balance_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/ppl_slider_control.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
@@ -29,6 +30,15 @@ class QRFromCartSheet extends StatelessWidget {
               pplAmount: 0,
             ),
           );
+      },
+      onWillChange: (previousViewModel, newViewModel) async {
+        if (newViewModel.transferringTokens &&
+            !(previousViewModel?.transferringTokens ?? false)) {
+          await showDialog<void>(
+            context: context,
+            builder: (context) => const ProcessingPayment(),
+          );
+        } 
       },
       builder: (context, viewmodel) {
         return FractionallySizedBox(

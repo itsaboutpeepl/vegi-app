@@ -14,6 +14,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/menu/suggestionQRCode
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/scan_qrcode.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/suggestProductViewModel.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class ScanQRCodeScreen extends StatefulWidget {
@@ -98,17 +99,17 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
   Future<void> _submitQRCode(BuildContext context, String qrCode) async {
     widget.scanQRCodeHandler(
       qrCode,
-      () {
-        context.router.replaceAll([
-          const RestaurantMenuScreen()
-        ]); // push the restaurantMenuList to the stack
-        showInfoSnack(
+      () async {
+        await showInfoSnack(
           context,
           title: 'Barcode scanned.',
         );
         setState(() {
           isProcessing = false;
         });
+        await rootRouter.replaceAll([
+          const RestaurantMenuScreen()
+        ]); // push the restaurantMenuList to the stack
       },
       (errMessage, errCode) {
         log.error(errMessage);

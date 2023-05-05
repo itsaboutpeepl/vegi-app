@@ -1,12 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
+import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class OrderConfirmedViewModel extends Equatable {
   const OrderConfirmedViewModel({
@@ -23,19 +26,36 @@ class OrderConfirmedViewModel extends Equatable {
   });
 
   factory OrderConfirmedViewModel.fromStore(Store<AppState> store) {
-    int orderDetailsInd = store.state.pastOrderState.listOfScheduledOrders
-        .indexWhere(
-            (element) => element.orderID == store.state.cartState.orderID);
-    Order order;
-    if (orderDetailsInd == -1) {
-      orderDetailsInd = store.state.pastOrderState.listOfOngoingOrders
-          .indexWhere(
-              (element) => element.orderID == store.state.cartState.orderID);
-      order =
-          store.state.pastOrderState.listOfOngoingOrders[orderDetailsInd];
-    } else {
-      order =
-          store.state.pastOrderState.listOfScheduledOrders[orderDetailsInd];
+    Order? order;
+    try {
+      int orderDetailsInd = //BUG: Becasue we are no longer creating the orderDetails our self, we need to create it once we get the response from the createOrder call
+          store.state.pastOrderState.listOfScheduledOrders.indexWhere(
+        (element) => element.orderID == store.state.cartState.orderID,
+      );
+      if (orderDetailsInd == -1) {
+        orderDetailsInd = store.state.pastOrderState.listOfOngoingOrders
+            .indexWhere(
+                (element) => element.orderID == store.state.cartState.orderID);
+        order = store.state.pastOrderState.listOfOngoingOrders[orderDetailsInd];
+      } else {
+        order =
+            store.state.pastOrderState.listOfScheduledOrders[orderDetailsInd];
+      }
+    } on Exception catch (e, s) {
+      log.error(e, stackTrace: s);
+      log.error('Issue initialising OrderConfirmedViewModel: $e');
+    }
+    if (order != null && order.transactions.length < 1) {
+      order.transactions.add(
+        TransactionItem(
+          timestamp: order.orderedDateTime,
+          amount: store.state.cartState.cartTotal / 100,
+          currency: Currency.GBP,
+          receiver: -1,
+          payer: store.state.userState.vegiAccountId?.toInt() ?? -1,
+          order: order.id,
+        ),
+      );
     }
     return OrderConfirmedViewModel(
       selectedSlot: store.state.cartState.selectedTimeSlot,
@@ -47,7 +67,7 @@ class OrderConfirmedViewModel extends Equatable {
       cartItems: store.state.cartState.cartItems,
       cartTotal: store.state.cartState.cartTotal,
       orderID: store.state.cartState.orderID,
-      order: order,
+      order: order ?? store.state.pastOrderState.listOfScheduledOrders.last,
       userName: store.state.userState.displayName,
       clearCart: () {
         store.dispatch(ClearCart());

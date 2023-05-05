@@ -36,6 +36,11 @@ enum OrderAcceptanceStatus {
   collected,
 }
 
+enum OrderCreationStatus {
+  confirmed,
+  failed,
+}
+
 enum RestaurantAcceptanceStatus {
   accepted,
   rejected,
@@ -62,10 +67,7 @@ enum Currency {
   EUR,
 }
 
-enum VegiAccountType {
-  ethereum,
-  bank
-}
+enum VegiAccountType { ethereum, bank }
 
 extension RestaurantAcceptedStatusHelpers on RestaurantAcceptanceStatus {
   OrderAcceptanceStatus toOrderAcceptanceStatus() {
@@ -369,6 +371,27 @@ enum PaymentStatus {
   confirmed,
 }
 
+enum PaymentProcessingStatus {
+  started,
+  none,
+  succeeded,
+  failed,
+}
+
+enum PaymentType {
+  topup,
+  cardPayment,
+  refund,
+}
+
+enum PaymentTechnology {
+  applePay,
+  googlePay,
+  card,
+  fuse,
+  stripeOnRamp,
+}
+
 enum PaymentNetworkType {
   peepl_fuse,
   vegi_fuse,
@@ -449,4 +472,49 @@ extension FirebaseMessagingCategoriesEnumHelpers
         return FirebaseMessagingCategoriesEnum.unknown_message;
     }
   }
+}
+
+enum OrderCreationProcessStatus {
+  none,
+  needToSelectATimeSlot,
+  needToSelectADeliveryAddress,
+  vendorNotAcceptingOrders,
+  orderIsBelowVendorMinimumOrder,
+  sendOrderCallServerError,
+  sendOrderCallTimedOut,
+  paymentIntentAmountDoesntMatchCartTotal, success, sendOrderCallClientError,
+}
+
+enum StripePaymentStatus {
+  none,
+  paymentFailed,
+  topupSucceeded,
+  paymentConfirmed,
+  mintingStarted,
+  mintingSucceeded,
+  mintingFailed,
+}
+
+enum UserAuthenticationStatus {
+  unauthenticated,
+  authenticatedWithFirebase,
+  authenticatedWithVegi,
+  authenticatedWithFuse,
+  firebasePhoneAuthFailed,
+  vegiLoginFailed,
+  firebaseTFAFailed,
+  firebaseNoPhoneNumberSet,
+  firebaseVerificationCodeTimedOut,
+  firebaseVerificationFailed,
+}
+
+enum FuseWalletCreationStatus {
+  unauthenticated,
+  authenticated,
+  created,
+  fetched,
+  failedFetch,
+  failedCreate,
+  failedAuthentication,
+  missingUserDetailsToAuthFuseWallet,
 }

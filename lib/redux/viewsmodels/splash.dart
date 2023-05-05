@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -19,6 +20,8 @@ class SplashViewModel extends Equatable {
     required this.loginAgain,
     required this.surveyCompleted,
     required this.isWhiteListedAccount,
+    required this.userAuthenticationStatus,
+    required this.fuseWalletCreationStatus,
   });
 
   factory SplashViewModel.fromStore(Store<AppState> store) {
@@ -29,6 +32,8 @@ class SplashViewModel extends Equatable {
           store.state.userState.jwtToken == '',
       accountDetailsExist: store.state.userState.accountDetailsExist,
       isWhiteListedAccount: store.state.userState.userIsVerified,
+      userAuthenticationStatus: store.state.userState.userAuthenticationStatus,
+      fuseWalletCreationStatus: store.state.userState.fuseWalletCreationStatus,
       createLocalAccount: (
         VoidCallback successCallback,
       ) {
@@ -38,48 +43,17 @@ class SplashViewModel extends Equatable {
           ),
         );
       },
-      loginAgain: (BuildContext context) {
-        store.dispatch(reLoginCall(
-          onSuccess: () {
-            showInfoSnack(
-              context,
-              title: Messages.walletLoadedSnackbarMessage,
-            );
-          },
-          reOnboardRequired: () {
-            if (DebugHelpers.inDebugMode) {
-              log.verbose('Reauthentication of user requires reonboarding');
-            }
-            rootRouter.push(const SignUpScreen());
-          },
-          onFailure: (Exception e) {
-            if (DebugHelpers.inDebugMode) {
-              return showErrorSnack(
-                context: context,
-                title: Messages.walletSignedOutSnackbarMessage,
-                message: e.toString(),
-              );
-            }
-            showInfoSnack(
-              context,
-              title: Messages.walletSignedOutSnackbarMessage,
-            );
-          },
-          onError: (error) {
-            if (inDebugMode) {
-              showErrorSnack(
-                context: context,
-                title: Messages.walletSignedOutSnackbarMessage,
-                message: 'Error fetching smart wallet: $error',
-              );
-            } else {
-              showInfoSnack(
-                context,
-                title: Messages.walletSignedOutSnackbarMessage,
-              );
-            }
-          },
-        ));
+      loginAgain: () {
+        store.dispatch(
+          reLoginCall(
+            reOnboardRequired: () {
+              if (DebugHelpers.inDebugMode) {
+                log.verbose('Reauthentication of user requires reonboarding');
+              }
+              rootRouter.push(const SignUpScreen());
+            },
+          ),
+        );
       },
       surveyCompleted: store.state.userState.surveyCompleted,
     );
@@ -89,9 +63,11 @@ class SplashViewModel extends Equatable {
   final String jwtToken;
   final bool isLoggedOut;
   final bool accountDetailsExist;
-  final void Function(BuildContext context) loginAgain;
+  final void Function() loginAgain;
   final bool surveyCompleted;
   final bool isWhiteListedAccount;
+  final UserAuthenticationStatus userAuthenticationStatus;
+  final FuseWalletCreationStatus fuseWalletCreationStatus;
 
   bool get isLoggedIn => !isLoggedOut;
   bool get accountIsWaitlisted => surveyCompleted && !isWhiteListedAccount;
@@ -108,5 +84,7 @@ class SplashViewModel extends Equatable {
         accountDetailsExist,
         surveyCompleted,
         isWhiteListedAccount,
+        userAuthenticationStatus,
+        fuseWalletCreationStatus,
       ];
 }

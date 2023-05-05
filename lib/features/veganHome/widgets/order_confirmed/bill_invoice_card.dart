@@ -104,7 +104,7 @@ class BillInvoiceCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '(${order.rewardsEarnedInGBP})',
+                        '(${order.pplRewardsEarnedValue})',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,

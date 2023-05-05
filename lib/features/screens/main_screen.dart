@@ -49,11 +49,7 @@ class _MainScreenState extends State<MainScreen> {
         if (!store.state.userState.isLoggedOut) {
           store.dispatch(
             fetchFuseSmartWallet(
-              onSuccess: () {
-                showInfoSnack(
-                  context,
-                  title: Messages.walletLoadedSnackbarMessage,
-                );
+              onSuccess: () async {
                 store
                   ..dispatch(isBetaWhitelistedAddress())
                   ..dispatch(
@@ -62,40 +58,15 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   );
               },
-              onFailure: ({String msg = ''}) {
-                if (inDebugMode) {
-                  showErrorSnack(
-                    context: context,
-                    title: Messages.walletSignedOutSnackbarMessage,
-                    message: 'Failed to fetch smart wallet from fuse: $msg',
-                  );
-                } else {
-                  showInfoSnack(
-                    context,
-                    title: Messages.walletSignedOutSnackbarMessage,
-                  );
-                }
-              },
-              onError: (error) {
-                if (inDebugMode) {
-                  showErrorSnack(
-                    context: context,
-                    title: Messages.walletSignedOutSnackbarMessage,
-                    message: 'Error fetching smart wallet: $error',
-                  );
-                } else {
-                  showInfoSnack(
-                    context,
-                    title: Messages.walletSignedOutSnackbarMessage,
-                  );
-                }
-              },
             ),
           );
           // ..dispatch(
           //   enablePushNotifications(store.state.userState.walletAddress),
           // )
         }
+      },
+      onWillChange: (previousViewModel, newViewModel) {
+        
       },
       converter: MainScreenViewModel.fromStore,
       builder: (context, vm) {

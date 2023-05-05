@@ -228,10 +228,12 @@ extension NumIterableHelpers<T> on Iterable<T> {
       return reduce(
         (value, element) => sumFunc(value, element),
       );
-    } else if (length > 0 && [0] is num && this is Iterable<num>) {
+    } else if (length > 0 && first is num && this is Iterable<num>) {
       return (this as Iterable<num>).reduce(
         (value, element) => value + element,
       ) as T;
+    } else if (length == 0) {
+      return (0) as T;
     } else {
       log.error(
           'Type of array vals must either extend a num or have a comparitor defined!');

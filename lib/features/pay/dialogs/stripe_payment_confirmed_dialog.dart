@@ -39,8 +39,11 @@ class StripePaymentConfirmedDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(
       const Duration(seconds: 5),
-      () async {
-        await rootRouter.popAndPush(const OrderConfirmedScreen());
+      () {
+        context.router
+            .pop()
+            .then((_) => context.router.navigate(const OrderConfirmedScreen()));
+        // await rootRouter.popAndPush(const OrderConfirmedScreen());
         // if (widget.shouldPushToHome) {
         //   context.router.navigate(const VeganHomeTab());
         // }
@@ -64,8 +67,12 @@ class StripePaymentConfirmedDialog extends StatelessWidget {
           VegiDialogButton(
             label: 'O.K.',
             icon: Icons.thumb_up_alt,
-            onPressed: () async {
-              await rootRouter.popAndPush(const OrderConfirmedScreen());
+            onPressed: () {
+              context.router.pop().then(
+                    (_) =>
+                        context.router.navigate(const OrderConfirmedScreen()),
+                  );
+              // await rootRouter.popAndPush(const OrderConfirmedScreen());
             },
           ),
         ],

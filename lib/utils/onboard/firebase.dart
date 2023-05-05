@@ -20,7 +20,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
     Store<AppState> store,
     String? phoneNumber,
     void Function() onSuccess,
-    void Function(dynamic error) onError,
+    void Function(dynamic error, UserAuthenticationStatus status) onError,
   ) async {
     void codeSent(
       String verificationId, [
@@ -42,7 +42,12 @@ class FirebaseStrategy implements IOnBoardStrategy {
         store,
         credentials,
         onSuccess,
-        onError,
+        (exception) {
+          onError(
+            exception,
+            UserAuthenticationStatus.firebaseTFAFailed,
+          );
+        },
       );
     }
 
@@ -51,7 +56,10 @@ class FirebaseStrategy implements IOnBoardStrategy {
         ..info('Phone number verification failed.')
         ..info('Code: ${authException.code}.')
         ..info('Message: ${authException.message}');
-      onError(authException.message);
+      onError(
+        authException.message,
+        UserAuthenticationStatus.firebasePhoneAuthFailed,
+      );
     }
 
     // final confirmationResult = await firebaseAuth.signInWithPhoneNumber(
@@ -68,7 +76,10 @@ class FirebaseStrategy implements IOnBoardStrategy {
       await firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         codeAutoRetrievalTimeout: (String verificationId) {
-          return onError('Code verification timeout.');
+          return onError(
+            'Code verification timeout.',
+            UserAuthenticationStatus.firebaseVerificationCodeTimedOut,
+          );
         },
         codeSent: codeSent,
         verificationCompleted:
@@ -76,7 +87,10 @@ class FirebaseStrategy implements IOnBoardStrategy {
         verificationFailed: verificationFailed,
       );
     } else {
-      onError('No phone number set...');
+      onError(
+        'No phone number set...',
+        UserAuthenticationStatus.firebaseNoPhoneNumberSet,
+      );
     }
   }
 
@@ -85,7 +99,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
     Store<AppState> store,
     String verificationCode,
     void Function() onSuccess,
-    void Function(String message) onError,
+    void Function(String message, UserAuthenticationStatus status) onError,
   ) async {
     PhoneAuthCredential? credentials =
         store.state.userState.firebaseCredentials;
@@ -99,7 +113,12 @@ class FirebaseStrategy implements IOnBoardStrategy {
       store,
       credentials,
       onSuccess,
-      onError,
+      (exception) {
+        onError(
+          exception,
+          UserAuthenticationStatus.firebaseTFAFailed,
+        );
+      },
     );
   }
 
@@ -118,17 +137,20 @@ class FirebaseStrategy implements IOnBoardStrategy {
   @override
   Future<void> reauthenticateUser({
     required Store<AppState> store,
-    required void Function() onSuccess,
-    required void Function() reOnboardRequired,
-    required dynamic Function(Exception) onFailure,
+    void Function()? onSuccess,
+    void Function(Exception error, UserAuthenticationStatus status)? onFailure,
+    void Function()? reOnboardRequired,
   }) async {
-    if(store.state.userState.firebaseSessionToken != null){
+    if (store.state.userState.firebaseSessionToken != null) {
       try {
         final succeeded = await loginToVegi(
           store: store,
           phoneNumber: store.state.userState.phoneNumber,
           firebaseSessionToken: store.state.userState.firebaseSessionToken!,
-          onError: (s) => onFailure(Exception(s)),
+          onError: (s) => onFailure?.call(
+            Exception(s),
+            UserAuthenticationStatus.vegiLoginFailed,
+          ),
         );
         if (succeeded) {
           store.dispatch(
@@ -136,12 +158,20 @@ class FirebaseStrategy implements IOnBoardStrategy {
               verificationPassed: true,
             ),
           );
-          onSuccess(); //! Bug one of these lines is killing my state
+          onSuccess?.call(); //! Bug one of these lines is killing my state
         } else {
           log.error('Could not login to vegi...');
+          store.dispatch(
+            ReauthenticateUserFailure(
+              error: UserAuthenticationStatus.vegiLoginFailed,
+            ),
+          );
         }
       } on Exception catch (e) {
-        onFailure(e);
+        onFailure?.call(
+          e,
+          UserAuthenticationStatus.vegiLoginFailed,
+        );
       }
     } else if (store.state.userState.firebaseCredentials != null) {
       try {
@@ -150,16 +180,22 @@ class FirebaseStrategy implements IOnBoardStrategy {
         );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-credential') {
-          return reOnboardRequired();
+          return reOnboardRequired?.call();
         }
         log.error(
             'Error whilst reauthenticating using Firebase Credentials from persistent store. $e');
-        return onFailure(e);
+        return onFailure?.call(
+          e,
+          UserAuthenticationStatus.firebasePhoneAuthFailed,
+        );
       } on Exception catch (e) {
-        return onFailure(e);
+        return onFailure?.call(
+          e,
+          UserAuthenticationStatus.firebasePhoneAuthFailed,
+        );
       }
     } else {
-      return reOnboardRequired();
+      return reOnboardRequired?.call();
     }
   }
 
@@ -230,6 +266,11 @@ class FirebaseStrategy implements IOnBoardStrategy {
       return loggedIn.sessionCookie.isNotEmpty;
     } catch (err) {
       onError(err.toString());
+      store.dispatch(
+        SetFirebaseSessionToken(
+          firebaseSessionToken: null,
+        ),
+      );
       return false;
     }
   }
