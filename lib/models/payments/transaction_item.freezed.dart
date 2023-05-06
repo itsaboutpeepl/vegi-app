@@ -20,7 +20,7 @@ TransactionItem _$TransactionItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TransactionItem {
-  @JsonKey(fromJson: toTS)
+  @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
   DateTime get timestamp => throw _privateConstructorUsedError;
   num get amount => throw _privateConstructorUsedError;
   Currency get currency => throw _privateConstructorUsedError;
@@ -44,12 +44,16 @@ abstract class $TransactionItemCopyWith<$Res> {
       _$TransactionItemCopyWithImpl<$Res, TransactionItem>;
   @useResult
   $Res call(
-      {@JsonKey(fromJson: toTS) DateTime timestamp,
+      {@JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
+          DateTime timestamp,
       num amount,
       Currency currency,
-      @JsonKey(fromJson: objectIdFromJson) int receiver,
-      @JsonKey(fromJson: objectIdFromJson) int payer,
-      @JsonKey(fromJson: objectIdFromJson) int order});
+      @JsonKey(fromJson: objectIdFromJson)
+          int receiver,
+      @JsonKey(fromJson: objectIdFromJson)
+          int payer,
+      @JsonKey(fromJson: objectIdFromJson)
+          int order});
 }
 
 /// @nodoc
@@ -110,12 +114,16 @@ abstract class _$$_TransactionItemCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(fromJson: toTS) DateTime timestamp,
+      {@JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
+          DateTime timestamp,
       num amount,
       Currency currency,
-      @JsonKey(fromJson: objectIdFromJson) int receiver,
-      @JsonKey(fromJson: objectIdFromJson) int payer,
-      @JsonKey(fromJson: objectIdFromJson) int order});
+      @JsonKey(fromJson: objectIdFromJson)
+          int receiver,
+      @JsonKey(fromJson: objectIdFromJson)
+          int payer,
+      @JsonKey(fromJson: objectIdFromJson)
+          int order});
 }
 
 /// @nodoc
@@ -170,19 +178,23 @@ class __$$_TransactionItemCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TransactionItem extends _TransactionItem {
   _$_TransactionItem(
-      {@JsonKey(fromJson: toTS) required this.timestamp,
+      {@JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
+          required this.timestamp,
       required this.amount,
       required this.currency,
-      @JsonKey(fromJson: objectIdFromJson) required this.receiver,
-      @JsonKey(fromJson: objectIdFromJson) required this.payer,
-      @JsonKey(fromJson: objectIdFromJson) required this.order})
+      @JsonKey(fromJson: objectIdFromJson)
+          required this.receiver,
+      @JsonKey(fromJson: objectIdFromJson)
+          required this.payer,
+      @JsonKey(fromJson: objectIdFromJson)
+          required this.order})
       : super._();
 
   factory _$_TransactionItem.fromJson(Map<String, dynamic> json) =>
       _$$_TransactionItemFromJson(json);
 
   @override
-  @JsonKey(fromJson: toTS)
+  @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
   final DateTime timestamp;
   @override
   final num amount;
@@ -240,20 +252,23 @@ class _$_TransactionItem extends _TransactionItem {
 
 abstract class _TransactionItem extends TransactionItem {
   factory _TransactionItem(
-          {@JsonKey(fromJson: toTS) required final DateTime timestamp,
-          required final num amount,
-          required final Currency currency,
-          @JsonKey(fromJson: objectIdFromJson) required final int receiver,
-          @JsonKey(fromJson: objectIdFromJson) required final int payer,
-          @JsonKey(fromJson: objectIdFromJson) required final int order}) =
-      _$_TransactionItem;
+      {@JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
+          required final DateTime timestamp,
+      required final num amount,
+      required final Currency currency,
+      @JsonKey(fromJson: objectIdFromJson)
+          required final int receiver,
+      @JsonKey(fromJson: objectIdFromJson)
+          required final int payer,
+      @JsonKey(fromJson: objectIdFromJson)
+          required final int order}) = _$_TransactionItem;
   _TransactionItem._() : super._();
 
   factory _TransactionItem.fromJson(Map<String, dynamic> json) =
       _$_TransactionItem.fromJson;
 
   @override
-  @JsonKey(fromJson: toTS)
+  @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
   DateTime get timestamp;
   @override
   num get amount;

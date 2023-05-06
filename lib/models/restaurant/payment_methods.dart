@@ -1,4 +1,13 @@
-enum PaymentMethod { stripe, stripeToFuse, peeplPay, applePay, qrPay }
+enum PaymentMethod {
+  stripe,
+  stripeToFuse,
+  peeplPay,
+  applePay,
+  applePayToFuse,
+  googlePay,
+  googlePayToFuse,
+  qrPay
+}
 
 extension PaymentMethodHelpers on PaymentMethod {
   String get formattedName {
@@ -6,13 +15,19 @@ extension PaymentMethodHelpers on PaymentMethod {
       case PaymentMethod.stripe:
         return 'Card';
       case PaymentMethod.stripeToFuse:
-        return 'Card';
+        return 'Card [Fuse]';
       case PaymentMethod.peeplPay:
         return 'Peepl Pay';
-      case PaymentMethod.applePay:
-        return 'Apple Pay';
       case PaymentMethod.qrPay:
         return 'vegi Pay';
+      case PaymentMethod.applePay:
+        return 'Apple Pay';
+      case PaymentMethod.googlePay:
+        return 'Apple Pay';
+      case PaymentMethod.applePayToFuse:
+        return 'Apple Pay [Fuse]';
+      case PaymentMethod.googlePayToFuse:
+        return 'Google Pay [Fuse]';
     }
   }
 }

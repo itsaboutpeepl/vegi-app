@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class EmptyStatePage extends StatelessWidget {
   const EmptyStatePage({
@@ -55,7 +56,7 @@ class EmptyStatePage extends StatelessWidget {
             height: 10,
           ),
           const Text(
-            'Pull down to refreh',
+            Messages.pullDownToRefresh,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 18,

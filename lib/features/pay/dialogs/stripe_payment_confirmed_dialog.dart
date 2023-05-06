@@ -30,23 +30,34 @@ class _StripePaymentConfirmedDialogViewModel extends Equatable {
       ];
 }
 
-class StripePaymentConfirmedDialog extends StatelessWidget {
+class StripePaymentConfirmedDialog extends StatefulWidget {
   const StripePaymentConfirmedDialog({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<StripePaymentConfirmedDialog> createState() =>
+      _StripePaymentConfirmedDialogState();
+}
+
+class _StripePaymentConfirmedDialogState
+    extends State<StripePaymentConfirmedDialog> {
+  bool hasNavigatedAway = false;
+  @override
   Widget build(BuildContext context) {
     Future.delayed(
       const Duration(seconds: 5),
       () {
-        context.router
-            .pop()
-            .then((_) => context.router.navigate(const OrderConfirmedScreen()));
+        if (hasNavigatedAway) {
+          return;
+        }
+        setState(() {
+          hasNavigatedAway = true;
+        });
+        context.router.pop().then(
+              (_) => context.router.navigate(const OrderConfirmedScreen()),
+            );
         // await rootRouter.popAndPush(const OrderConfirmedScreen());
-        // if (widget.shouldPushToHome) {
-        //   context.router.navigate(const VeganHomeTab());
-        // }
       },
     );
     return VegiDialog<_StripePaymentConfirmedDialogViewModel>(
@@ -68,6 +79,12 @@ class StripePaymentConfirmedDialog extends StatelessWidget {
             label: 'O.K.',
             icon: Icons.thumb_up_alt,
             onPressed: () {
+              if (hasNavigatedAway) {
+                return;
+              }
+              setState(() {
+                hasNavigatedAway = true;
+              });
               context.router.pop().then(
                     (_) =>
                         context.router.navigate(const OrderConfirmedScreen()),

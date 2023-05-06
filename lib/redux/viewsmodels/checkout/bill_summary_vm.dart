@@ -28,16 +28,20 @@ class BillSummaryViewModel extends Equatable {
       hasDiscount: store.state.cartState.discountCode.isNotEmpty,
       hasTip: store.state.cartState.selectedTipAmount != 0,
       deliveryCharge: hasSelectedSlot
-          ? store.state.cartState.selectedTimeSlot!.priceModifier.formattedPrice
-          : 0.formattedPrice,
+          ? store.state.cartState.selectedTimeSlot!.priceModifier
+              .formattedGBPxPrice
+          : 0.formattedGBPxPrice,
       collectionCharge: hasSelectedSlot
-          ? store.state.cartState.selectedTimeSlot!.priceModifier.formattedPrice
-          : 0.formattedPrice,
-      grandTotal: store.state.cartState.cartTotal.formattedPrice,
-      itemTotal: store.state.cartState.cartSubTotal.formattedPrice,
-      serviceCharge: store.state.cartState.restaurantPlatformFee.formattedPrice,
-      discountAmount: store.state.cartState.cartDiscountComputed.formattedPrice,
-      tipAmount: store.state.cartState.selectedTipAmount.formattedPrice,
+          ? store.state.cartState.selectedTimeSlot!.priceModifier
+              .formattedGBPxPrice
+          : 0.formattedGBPxPrice,
+      grandTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
+      itemTotal: store.state.cartState.cartSubTotal.formattedGBPxPrice,
+      serviceCharge:
+          store.state.cartState.restaurantPlatformFee.formattedGBPxPrice,
+      discountAmount:
+          store.state.cartState.cartDiscountComputed.formattedGBPxPrice,
+      tipAmount: store.state.cartState.selectedTipAmount.formattedGBPxPrice,
     );
   }
 

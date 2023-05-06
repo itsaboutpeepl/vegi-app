@@ -93,11 +93,12 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                       child: ListView.separated(
                         padding: const EdgeInsets.symmetric(vertical: 30),
                         itemBuilder: (_, index) => SingleOrderCard(
-                            order: viewmodel.scheduledOrders[index],),
+                          order: viewmodel.scheduledOrders[index],
+                        ),
                         separatorBuilder: (_, index) => const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
                         ),
-                        itemCount: viewmodel.pastOrders.length,
+                        itemCount: viewmodel.scheduledOrders.length,
                       ),
                     ),
         );
@@ -142,7 +143,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                       text: '${widget.order.restaurantName}\n',
                       children: [
                         TextSpan(
-                          text: '${widget.order.total.formattedPrice}\n',
+                          text: '${widget.order.total.formattedGBPxPrice}\n',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),

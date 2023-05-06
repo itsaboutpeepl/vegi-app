@@ -50,10 +50,24 @@ class BillInvoiceCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
+                        'Payment status',
+                      ),
+                      Text(
+                        order.paymentStatusLabel,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
                         'Amount paid in GBP',
                       ),
                       Text(
-                        (order.GBPxAmountPaid * 100).formattedPrice,
+                        (order.GBPAmountPaid).formattedGBPPrice,
                       ),
                     ],
                   ),
@@ -68,7 +82,7 @@ class BillInvoiceCard extends StatelessWidget {
                           'Amount paid in PPL rewards',
                         ),
                         Text(
-                          (order.PPLAmountPaid * 100).formattedPrice,
+                          (order.PPLAmountPaid * 100).formattedGBPxPrice,
                         ),
                       ],
                     ),
@@ -97,7 +111,7 @@ class BillInvoiceCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        '${order.rewardsEarnedInPPL} ',
+                        '${order.rewardsEarnedInPPLFormatted} ',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,

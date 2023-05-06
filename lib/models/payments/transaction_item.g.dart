@@ -8,7 +8,7 @@ part of 'transaction_item.dart';
 
 _$_TransactionItem _$$_TransactionItemFromJson(Map<String, dynamic> json) =>
     _$_TransactionItem(
-      timestamp: toTS(json['timestamp'] as int),
+      timestamp: jsonToTimeStamp(json['timestamp']),
       amount: json['amount'] as num,
       currency: $enumDecode(_$CurrencyEnumMap, json['currency']),
       receiver: objectIdFromJson(json['receiver']),
@@ -18,7 +18,7 @@ _$_TransactionItem _$$_TransactionItemFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_TransactionItemToJson(_$_TransactionItem instance) =>
     <String, dynamic>{
-      'timestamp': instance.timestamp.toIso8601String(),
+      'timestamp': timeStampToJsonInt(instance.timestamp),
       'amount': instance.amount,
       'currency': _$CurrencyEnumMap[instance.currency]!,
       'receiver': instance.receiver,

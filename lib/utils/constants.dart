@@ -138,6 +138,7 @@ class Messages {
       'Sign up to the pre-release version of vegi via The Guide Liverpool';
   static const String byRegisteringEmailWaitListReason =
       "By registering, you'll be the first to know when we launch.";
+  static const String pullDownToRefresh = 'Pull down to refresh';
   static const String unsubscribeAtAnyTime =
       'You can unsubscribe any time, no funny business.';
 

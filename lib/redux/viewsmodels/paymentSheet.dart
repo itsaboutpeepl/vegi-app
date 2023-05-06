@@ -25,7 +25,7 @@ class PeeplPaySheetViewModel extends Equatable {
 
   factory PeeplPaySheetViewModel.fromStore(Store<AppState> store) {
     return PeeplPaySheetViewModel(
-      cartTotal: store.state.cartState.cartTotal.formattedPrice,
+      cartTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
       selectedGBPxAmount: store.state.cartState.selectedGBPxAmount,
       selectedPPLAmount: store.state.cartState.selectedPPLAmount,
       transferringTokens: store.state.cartState.transferringTokens,

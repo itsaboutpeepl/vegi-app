@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
@@ -81,7 +82,9 @@ class CashWalletState with _$CashWalletState {
   }
 
   factory CashWalletState.fromJson(Map<String, dynamic> json) =>
-      _$CashWalletStateFromJson(json);
+      tryCatchRethrowInline(
+        () => _$CashWalletStateFromJson(json),
+      );
 }
 
 class CashWalletStateConverter
@@ -89,8 +92,11 @@ class CashWalletStateConverter
   const CashWalletStateConverter();
 
   @override
-  CashWalletState fromJson(Map<String, dynamic>? json) =>
-      json != null ? CashWalletState.fromJson(json) : CashWalletState.initial();
+  CashWalletState fromJson(Map<String, dynamic>? json) => tryCatchRethrowInline(
+        () => json != null
+            ? CashWalletState.fromJson(json)
+            : CashWalletState.initial(),
+      );
 
   @override
   Map<String, dynamic> toJson(CashWalletState instance) => instance.toJson();

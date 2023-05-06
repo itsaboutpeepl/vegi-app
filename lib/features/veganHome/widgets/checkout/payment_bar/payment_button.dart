@@ -83,7 +83,7 @@ class PaymentButton extends StatelessWidget {
               await showErrorSnack(
                 context: context,
                 title: 'This restaurant is not accepting orders below'
-                    '${newViewModel.restaurantMinimumOrder.formattedPrice}',
+                    '${newViewModel.restaurantMinimumOrder.formattedGBPxPrice}',
               );
             } else {
               log.info(
@@ -109,8 +109,8 @@ class PaymentButton extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return MintingDialog(
-                    amountText:
-                        newViewModel.processingPayment!.amount.formattedPrice,
+                    amountText: newViewModel
+                        .processingPayment!.amount.formattedGBPxPrice,
                     shouldPushToHome: true,
                   );
                 },

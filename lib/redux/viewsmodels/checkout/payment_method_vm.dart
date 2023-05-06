@@ -44,7 +44,7 @@ class PaymentMethodViewModel extends Equatable {
           store.state.cartState.fulfilmentMethod ==
               FulfilmentMethodType.inStore,
       hasPplBalance: pplBalance > 0,
-      cartTotal: store.state.cartState.cartTotal.formattedPrice,
+      cartTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
       restaurantMinimumOrder: store.state.cartState.restaurantMinimumOrder,
       orderCreationProcessStatus:
           store.state.cartState.orderCreationProcessStatus,

@@ -299,12 +299,12 @@ class SetError {
 }
 
 class SetConfirmed {
-  SetConfirmed({required this.flag});
+  SetConfirmed({required this.flag, required this.orderId});
   bool flag;
-
+  int orderId;
   @override
   String toString() {
-    return 'SetConfirmed : flag: $flag';
+    return 'SetConfirmed : flag: $flag, orderId: $orderId';
   }
 }
 
@@ -1349,6 +1349,8 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
                 showBottomPaymentSheet: showBottomPaymentSheet,
               ),
             );
+          // todo: this needs to be replaced with the result.order.firebaseRegistrationToken subscription
+          // do a cmd f12 of all locations where the below subscribeToTopic function is called from
           unawaited(
             firebaseMessaging.subscribeToTopic('order-${result.orderId}'),
           );
@@ -1426,22 +1428,30 @@ ThunkAction<AppState> startPaymentProcess({
             eventName: AnalyticsEvents.payStripe,
           ),
         );
-        final orderId = store.state.cartState.orderID;
         final paymentIntentID = store.state.cartState.paymentIntentID;
         if (store.state.userState.vegiAccountId == null) {
-          final e = 'Vegi AccountId not set on state... Cannot start payment';
-          log.error(e);
+          final e = 'vegi AccountId not set on state... Cannot start payment';
+          log.error(e, stackTrace: StackTrace.current);
           await Sentry.captureException(
             Exception(e),
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPeeplPayProcess $e',
           );
+          store.dispatch(SetPaymentButtonFlag(false));
+        } else if (store.state.cartState.orderCreationProcessStatus !=
+            OrderCreationProcessStatus.none) {
+          final e =
+              'orderCreationProcess in state: ${store.state.cartState.orderCreationProcessStatus.name}... Cannot start payment';
+          log.error(e, stackTrace: StackTrace.current);
+          store.dispatch(SetPaymentButtonFlag(false));
+          return;
         }
+        final orderId = int.parse(store.state.cartState.orderID);
         await stripeService
             .handleStripe(
           recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
           senderWalletAddress: store.state.userState.walletAddress,
-          orderId: num.parse(store.state.cartState.orderID),
+          orderId: orderId,
           accountId: store.state.userState.vegiAccountId!,
           currency: Currency.GBP,
           store: store,
@@ -1454,12 +1464,20 @@ ThunkAction<AppState> startPaymentProcess({
               store
                 ..dispatch(SetPaymentButtonFlag(false))
                 ..dispatch(SetTransferringPayment(flag: value))
-                ..dispatch(SetConfirmed(flag: true));
+                ..dispatch(
+                  OrderCreationProcessStatusUpdate(
+                    status: OrderCreationProcessStatus.success,
+                  ),
+                )
+                ..dispatch(SetConfirmed(
+                  flag: true,
+                  orderId: orderId,
+                ));
               return;
             }
             unawaited(
               Analytics.track(
-                eventName: AnalyticsEvents.mint,
+                eventName: AnalyticsEvents.payStripe,
                 properties: {
                   'status': 'success',
                 },
@@ -1485,6 +1503,7 @@ ThunkAction<AppState> startPaymentProcess({
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPeeplPayProcess $e',
           );
+          store.dispatch(SetPaymentButtonFlag(false));
         }
         await stripeService
             .handleStripe(
@@ -1533,9 +1552,76 @@ ThunkAction<AppState> startPaymentProcess({
           ),
         );
         await showBottomPaymentSheet(
-            store.state.cartState.selectedPaymentMethod);
+          store.state.cartState.selectedPaymentMethod,
+        );
       } else if (store.state.cartState.selectedPaymentMethod ==
           PaymentMethod.applePay) {
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.payStripe,
+          ),
+        );
+        if (store.state.userState.vegiAccountId == null) {
+          final e = 'Vegi AccountId not set on state... Cannot start payment';
+          log.error(e);
+          await Sentry.captureException(
+            Exception(e),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - startPeeplPayProcess $e',
+          );
+          store.dispatch(SetPaymentButtonFlag(false));
+        } else if (store.state.cartState.orderCreationProcessStatus !=
+            OrderCreationProcessStatus.none) {
+          final e =
+              'orderCreationProcess in state: ${store.state.cartState.orderCreationProcessStatus.name}... Cannot start payment';
+          log.error(e, stackTrace: StackTrace.current);
+          store.dispatch(SetPaymentButtonFlag(false));
+          return;
+        }
+        await stripeService
+            .handleApplePay(
+          recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
+          senderWalletAddress: store.state.userState.walletAddress,
+          orderId: num.parse(store.state.cartState.orderID),
+          accountId: store.state.userState.vegiAccountId!,
+          currency: Currency.GBP,
+          store: store,
+          amount: store.state.cartState.cartTotal,
+          shouldPushToHome: false,
+          productName: 'Vegi',
+        )
+            .then(
+          (value) {
+            if (!value) {
+              store
+                ..dispatch(SetPaymentButtonFlag(false))
+                ..dispatch(SetTransferringPayment(flag: value))
+                ..dispatch(
+                  OrderCreationProcessStatusUpdate(
+                    status: OrderCreationProcessStatus.success,
+                  ),
+                )
+                ..dispatch(SetConfirmed(
+                  flag: true,
+                  orderId: int.parse(store.state.cartState.orderID),
+                ));
+              return;
+            }
+            unawaited(
+              Analytics.track(
+                eventName: AnalyticsEvents.payStripe,
+                properties: {
+                  'status': 'success',
+                },
+              ),
+            );
+            store.dispatch(subscribeToOrderUpdates());
+          },
+        ).catchError((dynamic error) {
+          throw Exception('Apple Pay Failed - $error');
+        });
+      } else if (store.state.cartState.selectedPaymentMethod ==
+          PaymentMethod.applePayToFuse) {
         unawaited(
           Analytics.track(
             eventName: AnalyticsEvents.mint,
@@ -1549,6 +1635,14 @@ ThunkAction<AppState> startPaymentProcess({
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPeeplPayProcess $e',
           );
+          store.dispatch(SetPaymentButtonFlag(false));
+        } else if (store.state.cartState.orderCreationProcessStatus !=
+            OrderCreationProcessStatus.none) {
+          final e =
+              'orderCreationProcess in state: ${store.state.cartState.orderCreationProcessStatus.name}... Cannot start payment';
+          log.error(e, stackTrace: StackTrace.current);
+          store.dispatch(SetPaymentButtonFlag(false));
+          return;
         }
         await stripeService
             .handleApplePay(
@@ -1854,7 +1948,10 @@ ThunkAction<AppState> startPaymentConfirmationCheck() {
               if (completedValue.paymentStatus == OrderPaidStatus.paid) {
                 store
                   ..dispatch(SetTransferringPayment(flag: false))
-                  ..dispatch(SetConfirmed(flag: true));
+                  ..dispatch(SetConfirmed(
+                    flag: true,
+                    orderId: int.parse(store.state.cartState.orderID),
+                  ));
                 timer.cancel();
                 unawaited(
                   Analytics.track(
@@ -1910,7 +2007,10 @@ ThunkAction<AppState> subscribeToOrderUpdates() {
         .subscribeToTopic('order-${store.state.cartState.orderID}');
     store
       ..dispatch(SetTransferringPayment(flag: false))
-      ..dispatch(SetConfirmed(flag: true));
+      ..dispatch(SetConfirmed(
+        flag: true,
+        orderId: int.parse(store.state.cartState.orderID),
+      ));
 
     // Below to notify the user with a message once the payment is confirmed using firebasemessaging.
     // int counter = 0;

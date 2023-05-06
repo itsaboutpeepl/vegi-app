@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
 import 'package:vegan_liverpool/models/home_page_state.dart';
 import 'package:vegan_liverpool/models/menu_item_state.dart';
@@ -50,6 +51,7 @@ class AppState with _$AppState {
     );
   }
 
-  factory AppState.fromJson(dynamic json) =>
-      _$AppStateFromJson(json as Map<String, dynamic>);
+  factory AppState.fromJson(dynamic json) => tryCatchRethrowInline(
+        () => _$AppStateFromJson(json as Map<String, dynamic>),
+      );
 }

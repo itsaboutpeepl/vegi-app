@@ -120,7 +120,7 @@ class _TipCardState extends State<TipCard> {
                       ),
                     ),
                     TextSpan(
-                      text: widget.tipAmount.formattedPriceNoDec,
+                      text: widget.tipAmount.formattedGBPxPriceNoDec,
                       style: const TextStyle(
                         fontSize: 16,
                       ),

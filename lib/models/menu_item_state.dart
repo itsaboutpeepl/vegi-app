@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
@@ -29,7 +30,9 @@ class MenuItemState with _$MenuItemState {
       );
 
   factory MenuItemState.fromJson(Map<String, dynamic> json) =>
-      _$MenuItemStateFromJson(json);
+      tryCatchRethrowInline(
+        () => _$MenuItemStateFromJson(json),
+      );
 }
 
 class MenuItemStateConverter
@@ -37,8 +40,11 @@ class MenuItemStateConverter
   const MenuItemStateConverter();
 
   @override
-  MenuItemState fromJson(Map<String, dynamic>? json) =>
-      json != null ? MenuItemState.fromJson(json) : MenuItemState.initial();
+  MenuItemState fromJson(Map<String, dynamic>? json) => tryCatchRethrowInline(
+        () => json != null
+            ? MenuItemState.fromJson(json)
+            : MenuItemState.initial(),
+      );
 
   @override
   Map<String, dynamic> toJson(MenuItemState instance) => instance.toJson();

@@ -9,7 +9,9 @@ part 'transaction_item.g.dart';
 class TransactionItem with _$TransactionItem {
   @JsonSerializable()
   factory TransactionItem({
-    @JsonKey(fromJson: toTS) required DateTime timestamp,
+    @JsonKey(fromJson: jsonToTimeStamp,
+      toJson: timeStampToJsonInt,
+    ) required DateTime timestamp,
     required num amount,
     required Currency currency,
     @JsonKey(fromJson: objectIdFromJson) required int receiver,

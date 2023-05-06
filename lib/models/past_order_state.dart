@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/payments/transaction.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
@@ -28,7 +29,9 @@ class PastOrderState with _$PastOrderState {
       );
 
   factory PastOrderState.fromJson(Map<String, dynamic> json) =>
-      _$PastOrderStateFromJson(json);
+      tryCatchRethrowInline(
+        () => _$PastOrderStateFromJson(json),
+      );
 }
 
 class PastOrderStateConverter
@@ -36,8 +39,11 @@ class PastOrderStateConverter
   const PastOrderStateConverter();
 
   @override
-  PastOrderState fromJson(Map<String, dynamic>? json) =>
-      json != null ? PastOrderState.fromJson(json) : PastOrderState.initial();
+  PastOrderState fromJson(Map<String, dynamic>? json) => tryCatchRethrowInline(
+        () => json != null
+            ? PastOrderState.fromJson(json)
+            : PastOrderState.initial(),
+      );
 
   @override
   Map<String, dynamic> toJson(PastOrderState instance) => instance.toJson();

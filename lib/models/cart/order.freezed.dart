@@ -21,62 +21,68 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Order {
   int get id => throw _privateConstructorUsedError;
-  List<OrderItem> get items => throw _privateConstructorUsedError;
   num get total => throw _privateConstructorUsedError;
   num get subtotal => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: toTS)
+  @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
   DateTime get orderedDateTime => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: toTSNullable)
+  @JsonKey(
+      fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
   DateTime? get paidDateTime => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: toTSNullable)
+  @JsonKey(
+      fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
   DateTime? get refundDateTime => throw _privateConstructorUsedError;
+  @JsonEnum()
+  @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
+  OrderPaidStatus get paymentStatus => throw _privateConstructorUsedError;
+  String get paymentIntentId => throw _privateConstructorUsedError;
+  String? get firebaseRegistrationToken => throw _privateConstructorUsedError;
   String? get deliveryName => throw _privateConstructorUsedError;
   String? get deliveryEmail => throw _privateConstructorUsedError;
   String? get deliveryPhoneNumber => throw _privateConstructorUsedError;
   String get deliveryAddressLineOne => throw _privateConstructorUsedError;
-  String get deliveryAddressLineTwo => throw _privateConstructorUsedError;
+  String? get deliveryAddressLineTwo => throw _privateConstructorUsedError;
   String get deliveryAddressCity => throw _privateConstructorUsedError;
   String get deliveryAddressPostCode => throw _privateConstructorUsedError;
   double? get deliveryAddressLatitude => throw _privateConstructorUsedError;
   double? get deliveryAddressLongitude => throw _privateConstructorUsedError;
-  String get deliveryAddressInstructions => throw _privateConstructorUsedError;
-  String get deliveryId => throw _privateConstructorUsedError;
-  List<TransactionItem> get transactions => throw _privateConstructorUsedError;
-  num get fulfilmentCharge => throw _privateConstructorUsedError;
-  num get platformFee => throw _privateConstructorUsedError;
-  String get cartDiscountCode => throw _privateConstructorUsedError;
-  String get cartDiscountType => throw _privateConstructorUsedError;
-  num get cartDiscountAmount => throw _privateConstructorUsedError;
-  num get cartTip => throw _privateConstructorUsedError;
-  @JsonEnum()
-  @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
-  OrderPaidStatus get paymentStatus => throw _privateConstructorUsedError;
-  @JsonEnum()
+  String? get deliveryAddressInstructions => throw _privateConstructorUsedError;
+  String? get deliveryId => throw _privateConstructorUsedError;
+  bool get deliveryPartnerAccepted => throw _privateConstructorUsedError;
+  bool get deliveryPartnerConfirmed => throw _privateConstructorUsedError;
+  String get customerWalletAddress => throw _privateConstructorUsedError;
+  String get publicId => throw _privateConstructorUsedError;
   @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
   RestaurantAcceptanceStatus get restaurantAcceptanceStatus =>
       throw _privateConstructorUsedError;
   @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
   OrderAcceptanceStatus get orderAcceptanceStatus =>
       throw _privateConstructorUsedError;
-  bool get deliveryPartnerAccepted => throw _privateConstructorUsedError;
-  bool get deliveryPartnerConfirmed => throw _privateConstructorUsedError;
-  @JsonKey(readValue: getFulfilmentMethodId)
-  int get fulfilmentMethodId => throw _privateConstructorUsedError;
-  @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-  num get fulfilmentMethodPriceModifier => throw _privateConstructorUsedError;
+  int get tipAmount => throw _privateConstructorUsedError;
+  double get rewardsIssued => throw _privateConstructorUsedError;
+  bool get sentToDeliveryPartner => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: orderCompletedFlagFromJson, toJson: orderCompletedFlagToJson)
+  OrderCompletedFlag get completedFlag => throw _privateConstructorUsedError;
+  String? get completedOrderFeedback => throw _privateConstructorUsedError;
+  int? get deliveryPunctuality => throw _privateConstructorUsedError;
+  int? get orderCondition => throw _privateConstructorUsedError;
   DateTime get fulfilmentSlotFrom =>
       throw _privateConstructorUsedError; // "2022-09-29T10:00:00.000Z"
   DateTime get fulfilmentSlotTo =>
       throw _privateConstructorUsedError; // "2022-09-29T10:00:00.000Z"
-  String get publicId => throw _privateConstructorUsedError;
-  int get tipAmount => throw _privateConstructorUsedError;
-  double get rewardsIssued => throw _privateConstructorUsedError;
-  bool get sentToDeliveryPartner => throw _privateConstructorUsedError;
+  FulfilmentMethod get fulfilmentMethod => throw _privateConstructorUsedError;
   VendorDTO get vendor => throw _privateConstructorUsedError;
   DeliveryPartnerDTO? get deliveryPartner => throw _privateConstructorUsedError;
-  @JsonKey(readValue: getFulfilmentMethodString)
-  FulfilmentMethodType get fulfilmentMethod =>
-      throw _privateConstructorUsedError;
+  Discount? get discount => throw _privateConstructorUsedError;
+  List<OrderItem> get items => throw _privateConstructorUsedError;
+  Order? get parentOrder => throw _privateConstructorUsedError;
+  List<OrderItem> get unfulfilledItems => throw _privateConstructorUsedError;
+  List<TransactionItem> get transactions => throw _privateConstructorUsedError;
+  num get fulfilmentCharge => throw _privateConstructorUsedError;
+  num get platformFee => throw _privateConstructorUsedError;
+  String get cartDiscountCode => throw _privateConstructorUsedError;
+  String get cartDiscountType => throw _privateConstructorUsedError;
+  num get cartDiscountAmount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -90,60 +96,67 @@ abstract class $OrderCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      List<OrderItem> items,
       num total,
       num subtotal,
-      @JsonKey(fromJson: toTS)
+      @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           DateTime orderedDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           DateTime? paidDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           DateTime? refundDateTime,
+      @JsonEnum()
+      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
+          OrderPaidStatus paymentStatus,
+      String paymentIntentId,
+      String? firebaseRegistrationToken,
       String? deliveryName,
       String? deliveryEmail,
       String? deliveryPhoneNumber,
       String deliveryAddressLineOne,
-      String deliveryAddressLineTwo,
+      String? deliveryAddressLineTwo,
       String deliveryAddressCity,
       String deliveryAddressPostCode,
       double? deliveryAddressLatitude,
       double? deliveryAddressLongitude,
-      String deliveryAddressInstructions,
-      String deliveryId,
+      String? deliveryAddressInstructions,
+      String? deliveryId,
+      bool deliveryPartnerAccepted,
+      bool deliveryPartnerConfirmed,
+      String customerWalletAddress,
+      String publicId,
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+          RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          OrderAcceptanceStatus orderAcceptanceStatus,
+      int tipAmount,
+      double rewardsIssued,
+      bool sentToDeliveryPartner,
+      @JsonKey(fromJson: orderCompletedFlagFromJson, toJson: orderCompletedFlagToJson)
+          OrderCompletedFlag completedFlag,
+      String? completedOrderFeedback,
+      int? deliveryPunctuality,
+      int? orderCondition,
+      DateTime fulfilmentSlotFrom,
+      DateTime fulfilmentSlotTo,
+      FulfilmentMethod fulfilmentMethod,
+      VendorDTO vendor,
+      DeliveryPartnerDTO? deliveryPartner,
+      Discount? discount,
+      List<OrderItem> items,
+      Order? parentOrder,
+      List<OrderItem> unfulfilledItems,
       List<TransactionItem> transactions,
       num fulfilmentCharge,
       num platformFee,
       String cartDiscountCode,
       String cartDiscountType,
-      num cartDiscountAmount,
-      num cartTip,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
-          OrderPaidStatus paymentStatus,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
-          RestaurantAcceptanceStatus restaurantAcceptanceStatus,
-      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
-          OrderAcceptanceStatus orderAcceptanceStatus,
-      bool deliveryPartnerAccepted,
-      bool deliveryPartnerConfirmed,
-      @JsonKey(readValue: getFulfilmentMethodId)
-          int fulfilmentMethodId,
-      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-          num fulfilmentMethodPriceModifier,
-      DateTime fulfilmentSlotFrom,
-      DateTime fulfilmentSlotTo,
-      String publicId,
-      int tipAmount,
-      double rewardsIssued,
-      bool sentToDeliveryPartner,
-      VendorDTO vendor,
-      DeliveryPartnerDTO? deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodString)
-          FulfilmentMethodType fulfilmentMethod});
+      num cartDiscountAmount});
 
+  $FulfilmentMethodCopyWith<$Res> get fulfilmentMethod;
   $VendorDTOCopyWith<$Res> get vendor;
   $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner;
+  $DiscountCopyWith<$Res>? get discount;
+  $OrderCopyWith<$Res>? get parentOrder;
 }
 
 /// @nodoc
@@ -160,56 +173,59 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
   @override
   $Res call({
     Object? id = null,
-    Object? items = null,
     Object? total = null,
     Object? subtotal = null,
     Object? orderedDateTime = null,
     Object? paidDateTime = freezed,
     Object? refundDateTime = freezed,
+    Object? paymentStatus = null,
+    Object? paymentIntentId = null,
+    Object? firebaseRegistrationToken = freezed,
     Object? deliveryName = freezed,
     Object? deliveryEmail = freezed,
     Object? deliveryPhoneNumber = freezed,
     Object? deliveryAddressLineOne = null,
-    Object? deliveryAddressLineTwo = null,
+    Object? deliveryAddressLineTwo = freezed,
     Object? deliveryAddressCity = null,
     Object? deliveryAddressPostCode = null,
     Object? deliveryAddressLatitude = freezed,
     Object? deliveryAddressLongitude = freezed,
-    Object? deliveryAddressInstructions = null,
-    Object? deliveryId = null,
+    Object? deliveryAddressInstructions = freezed,
+    Object? deliveryId = freezed,
+    Object? deliveryPartnerAccepted = null,
+    Object? deliveryPartnerConfirmed = null,
+    Object? customerWalletAddress = null,
+    Object? publicId = null,
+    Object? restaurantAcceptanceStatus = null,
+    Object? orderAcceptanceStatus = null,
+    Object? tipAmount = null,
+    Object? rewardsIssued = null,
+    Object? sentToDeliveryPartner = null,
+    Object? completedFlag = null,
+    Object? completedOrderFeedback = freezed,
+    Object? deliveryPunctuality = freezed,
+    Object? orderCondition = freezed,
+    Object? fulfilmentSlotFrom = null,
+    Object? fulfilmentSlotTo = null,
+    Object? fulfilmentMethod = null,
+    Object? vendor = null,
+    Object? deliveryPartner = freezed,
+    Object? discount = freezed,
+    Object? items = null,
+    Object? parentOrder = freezed,
+    Object? unfulfilledItems = null,
     Object? transactions = null,
     Object? fulfilmentCharge = null,
     Object? platformFee = null,
     Object? cartDiscountCode = null,
     Object? cartDiscountType = null,
     Object? cartDiscountAmount = null,
-    Object? cartTip = null,
-    Object? paymentStatus = null,
-    Object? restaurantAcceptanceStatus = null,
-    Object? orderAcceptanceStatus = null,
-    Object? deliveryPartnerAccepted = null,
-    Object? deliveryPartnerConfirmed = null,
-    Object? fulfilmentMethodId = null,
-    Object? fulfilmentMethodPriceModifier = null,
-    Object? fulfilmentSlotFrom = null,
-    Object? fulfilmentSlotTo = null,
-    Object? publicId = null,
-    Object? tipAmount = null,
-    Object? rewardsIssued = null,
-    Object? sentToDeliveryPartner = null,
-    Object? vendor = null,
-    Object? deliveryPartner = freezed,
-    Object? fulfilmentMethod = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      items: null == items
-          ? _value.items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<OrderItem>,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
@@ -230,6 +246,18 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.refundDateTime
           : refundDateTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      paymentStatus: null == paymentStatus
+          ? _value.paymentStatus
+          : paymentStatus // ignore: cast_nullable_to_non_nullable
+              as OrderPaidStatus,
+      paymentIntentId: null == paymentIntentId
+          ? _value.paymentIntentId
+          : paymentIntentId // ignore: cast_nullable_to_non_nullable
+              as String,
+      firebaseRegistrationToken: freezed == firebaseRegistrationToken
+          ? _value.firebaseRegistrationToken
+          : firebaseRegistrationToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       deliveryName: freezed == deliveryName
           ? _value.deliveryName
           : deliveryName // ignore: cast_nullable_to_non_nullable
@@ -246,10 +274,10 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.deliveryAddressLineOne
           : deliveryAddressLineOne // ignore: cast_nullable_to_non_nullable
               as String,
-      deliveryAddressLineTwo: null == deliveryAddressLineTwo
+      deliveryAddressLineTwo: freezed == deliveryAddressLineTwo
           ? _value.deliveryAddressLineTwo
           : deliveryAddressLineTwo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       deliveryAddressCity: null == deliveryAddressCity
           ? _value.deliveryAddressCity
           : deliveryAddressCity // ignore: cast_nullable_to_non_nullable
@@ -266,14 +294,102 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.deliveryAddressLongitude
           : deliveryAddressLongitude // ignore: cast_nullable_to_non_nullable
               as double?,
-      deliveryAddressInstructions: null == deliveryAddressInstructions
+      deliveryAddressInstructions: freezed == deliveryAddressInstructions
           ? _value.deliveryAddressInstructions
           : deliveryAddressInstructions // ignore: cast_nullable_to_non_nullable
-              as String,
-      deliveryId: null == deliveryId
+              as String?,
+      deliveryId: freezed == deliveryId
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryPartnerAccepted: null == deliveryPartnerAccepted
+          ? _value.deliveryPartnerAccepted
+          : deliveryPartnerAccepted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      deliveryPartnerConfirmed: null == deliveryPartnerConfirmed
+          ? _value.deliveryPartnerConfirmed
+          : deliveryPartnerConfirmed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customerWalletAddress: null == customerWalletAddress
+          ? _value.customerWalletAddress
+          : customerWalletAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      publicId: null == publicId
+          ? _value.publicId
+          : publicId // ignore: cast_nullable_to_non_nullable
+              as String,
+      restaurantAcceptanceStatus: null == restaurantAcceptanceStatus
+          ? _value.restaurantAcceptanceStatus
+          : restaurantAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as RestaurantAcceptanceStatus,
+      orderAcceptanceStatus: null == orderAcceptanceStatus
+          ? _value.orderAcceptanceStatus
+          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as OrderAcceptanceStatus,
+      tipAmount: null == tipAmount
+          ? _value.tipAmount
+          : tipAmount // ignore: cast_nullable_to_non_nullable
+              as int,
+      rewardsIssued: null == rewardsIssued
+          ? _value.rewardsIssued
+          : rewardsIssued // ignore: cast_nullable_to_non_nullable
+              as double,
+      sentToDeliveryPartner: null == sentToDeliveryPartner
+          ? _value.sentToDeliveryPartner
+          : sentToDeliveryPartner // ignore: cast_nullable_to_non_nullable
+              as bool,
+      completedFlag: null == completedFlag
+          ? _value.completedFlag
+          : completedFlag // ignore: cast_nullable_to_non_nullable
+              as OrderCompletedFlag,
+      completedOrderFeedback: freezed == completedOrderFeedback
+          ? _value.completedOrderFeedback
+          : completedOrderFeedback // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryPunctuality: freezed == deliveryPunctuality
+          ? _value.deliveryPunctuality
+          : deliveryPunctuality // ignore: cast_nullable_to_non_nullable
+              as int?,
+      orderCondition: freezed == orderCondition
+          ? _value.orderCondition
+          : orderCondition // ignore: cast_nullable_to_non_nullable
+              as int?,
+      fulfilmentSlotFrom: null == fulfilmentSlotFrom
+          ? _value.fulfilmentSlotFrom
+          : fulfilmentSlotFrom // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      fulfilmentSlotTo: null == fulfilmentSlotTo
+          ? _value.fulfilmentSlotTo
+          : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      fulfilmentMethod: null == fulfilmentMethod
+          ? _value.fulfilmentMethod
+          : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
+              as FulfilmentMethod,
+      vendor: null == vendor
+          ? _value.vendor
+          : vendor // ignore: cast_nullable_to_non_nullable
+              as VendorDTO,
+      deliveryPartner: freezed == deliveryPartner
+          ? _value.deliveryPartner
+          : deliveryPartner // ignore: cast_nullable_to_non_nullable
+              as DeliveryPartnerDTO?,
+      discount: freezed == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as Discount?,
+      items: null == items
+          ? _value.items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<OrderItem>,
+      parentOrder: freezed == parentOrder
+          ? _value.parentOrder
+          : parentOrder // ignore: cast_nullable_to_non_nullable
+              as Order?,
+      unfulfilledItems: null == unfulfilledItems
+          ? _value.unfulfilledItems
+          : unfulfilledItems // ignore: cast_nullable_to_non_nullable
+              as List<OrderItem>,
       transactions: null == transactions
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
@@ -298,75 +414,15 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.cartDiscountAmount
           : cartDiscountAmount // ignore: cast_nullable_to_non_nullable
               as num,
-      cartTip: null == cartTip
-          ? _value.cartTip
-          : cartTip // ignore: cast_nullable_to_non_nullable
-              as num,
-      paymentStatus: null == paymentStatus
-          ? _value.paymentStatus
-          : paymentStatus // ignore: cast_nullable_to_non_nullable
-              as OrderPaidStatus,
-      restaurantAcceptanceStatus: null == restaurantAcceptanceStatus
-          ? _value.restaurantAcceptanceStatus
-          : restaurantAcceptanceStatus // ignore: cast_nullable_to_non_nullable
-              as RestaurantAcceptanceStatus,
-      orderAcceptanceStatus: null == orderAcceptanceStatus
-          ? _value.orderAcceptanceStatus
-          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
-              as OrderAcceptanceStatus,
-      deliveryPartnerAccepted: null == deliveryPartnerAccepted
-          ? _value.deliveryPartnerAccepted
-          : deliveryPartnerAccepted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      deliveryPartnerConfirmed: null == deliveryPartnerConfirmed
-          ? _value.deliveryPartnerConfirmed
-          : deliveryPartnerConfirmed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      fulfilmentMethodId: null == fulfilmentMethodId
-          ? _value.fulfilmentMethodId
-          : fulfilmentMethodId // ignore: cast_nullable_to_non_nullable
-              as int,
-      fulfilmentMethodPriceModifier: null == fulfilmentMethodPriceModifier
-          ? _value.fulfilmentMethodPriceModifier
-          : fulfilmentMethodPriceModifier // ignore: cast_nullable_to_non_nullable
-              as num,
-      fulfilmentSlotFrom: null == fulfilmentSlotFrom
-          ? _value.fulfilmentSlotFrom
-          : fulfilmentSlotFrom // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      fulfilmentSlotTo: null == fulfilmentSlotTo
-          ? _value.fulfilmentSlotTo
-          : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      publicId: null == publicId
-          ? _value.publicId
-          : publicId // ignore: cast_nullable_to_non_nullable
-              as String,
-      tipAmount: null == tipAmount
-          ? _value.tipAmount
-          : tipAmount // ignore: cast_nullable_to_non_nullable
-              as int,
-      rewardsIssued: null == rewardsIssued
-          ? _value.rewardsIssued
-          : rewardsIssued // ignore: cast_nullable_to_non_nullable
-              as double,
-      sentToDeliveryPartner: null == sentToDeliveryPartner
-          ? _value.sentToDeliveryPartner
-          : sentToDeliveryPartner // ignore: cast_nullable_to_non_nullable
-              as bool,
-      vendor: null == vendor
-          ? _value.vendor
-          : vendor // ignore: cast_nullable_to_non_nullable
-              as VendorDTO,
-      deliveryPartner: freezed == deliveryPartner
-          ? _value.deliveryPartner
-          : deliveryPartner // ignore: cast_nullable_to_non_nullable
-              as DeliveryPartnerDTO?,
-      fulfilmentMethod: null == fulfilmentMethod
-          ? _value.fulfilmentMethod
-          : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
-              as FulfilmentMethodType,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FulfilmentMethodCopyWith<$Res> get fulfilmentMethod {
+    return $FulfilmentMethodCopyWith<$Res>(_value.fulfilmentMethod, (value) {
+      return _then(_value.copyWith(fulfilmentMethod: value) as $Val);
+    });
   }
 
   @override
@@ -388,6 +444,30 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       return _then(_value.copyWith(deliveryPartner: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DiscountCopyWith<$Res>? get discount {
+    if (_value.discount == null) {
+      return null;
+    }
+
+    return $DiscountCopyWith<$Res>(_value.discount!, (value) {
+      return _then(_value.copyWith(discount: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $OrderCopyWith<$Res>? get parentOrder {
+    if (_value.parentOrder == null) {
+      return null;
+    }
+
+    return $OrderCopyWith<$Res>(_value.parentOrder!, (value) {
+      return _then(_value.copyWith(parentOrder: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -398,62 +478,72 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      List<OrderItem> items,
       num total,
       num subtotal,
-      @JsonKey(fromJson: toTS)
+      @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           DateTime orderedDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           DateTime? paidDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           DateTime? refundDateTime,
+      @JsonEnum()
+      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
+          OrderPaidStatus paymentStatus,
+      String paymentIntentId,
+      String? firebaseRegistrationToken,
       String? deliveryName,
       String? deliveryEmail,
       String? deliveryPhoneNumber,
       String deliveryAddressLineOne,
-      String deliveryAddressLineTwo,
+      String? deliveryAddressLineTwo,
       String deliveryAddressCity,
       String deliveryAddressPostCode,
       double? deliveryAddressLatitude,
       double? deliveryAddressLongitude,
-      String deliveryAddressInstructions,
-      String deliveryId,
+      String? deliveryAddressInstructions,
+      String? deliveryId,
+      bool deliveryPartnerAccepted,
+      bool deliveryPartnerConfirmed,
+      String customerWalletAddress,
+      String publicId,
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+          RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          OrderAcceptanceStatus orderAcceptanceStatus,
+      int tipAmount,
+      double rewardsIssued,
+      bool sentToDeliveryPartner,
+      @JsonKey(fromJson: orderCompletedFlagFromJson, toJson: orderCompletedFlagToJson)
+          OrderCompletedFlag completedFlag,
+      String? completedOrderFeedback,
+      int? deliveryPunctuality,
+      int? orderCondition,
+      DateTime fulfilmentSlotFrom,
+      DateTime fulfilmentSlotTo,
+      FulfilmentMethod fulfilmentMethod,
+      VendorDTO vendor,
+      DeliveryPartnerDTO? deliveryPartner,
+      Discount? discount,
+      List<OrderItem> items,
+      Order? parentOrder,
+      List<OrderItem> unfulfilledItems,
       List<TransactionItem> transactions,
       num fulfilmentCharge,
       num platformFee,
       String cartDiscountCode,
       String cartDiscountType,
-      num cartDiscountAmount,
-      num cartTip,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
-          OrderPaidStatus paymentStatus,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
-          RestaurantAcceptanceStatus restaurantAcceptanceStatus,
-      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
-          OrderAcceptanceStatus orderAcceptanceStatus,
-      bool deliveryPartnerAccepted,
-      bool deliveryPartnerConfirmed,
-      @JsonKey(readValue: getFulfilmentMethodId)
-          int fulfilmentMethodId,
-      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-          num fulfilmentMethodPriceModifier,
-      DateTime fulfilmentSlotFrom,
-      DateTime fulfilmentSlotTo,
-      String publicId,
-      int tipAmount,
-      double rewardsIssued,
-      bool sentToDeliveryPartner,
-      VendorDTO vendor,
-      DeliveryPartnerDTO? deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodString)
-          FulfilmentMethodType fulfilmentMethod});
+      num cartDiscountAmount});
 
+  @override
+  $FulfilmentMethodCopyWith<$Res> get fulfilmentMethod;
   @override
   $VendorDTOCopyWith<$Res> get vendor;
   @override
   $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner;
+  @override
+  $DiscountCopyWith<$Res>? get discount;
+  @override
+  $OrderCopyWith<$Res>? get parentOrder;
 }
 
 /// @nodoc
@@ -466,56 +556,59 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
   @override
   $Res call({
     Object? id = null,
-    Object? items = null,
     Object? total = null,
     Object? subtotal = null,
     Object? orderedDateTime = null,
     Object? paidDateTime = freezed,
     Object? refundDateTime = freezed,
+    Object? paymentStatus = null,
+    Object? paymentIntentId = null,
+    Object? firebaseRegistrationToken = freezed,
     Object? deliveryName = freezed,
     Object? deliveryEmail = freezed,
     Object? deliveryPhoneNumber = freezed,
     Object? deliveryAddressLineOne = null,
-    Object? deliveryAddressLineTwo = null,
+    Object? deliveryAddressLineTwo = freezed,
     Object? deliveryAddressCity = null,
     Object? deliveryAddressPostCode = null,
     Object? deliveryAddressLatitude = freezed,
     Object? deliveryAddressLongitude = freezed,
-    Object? deliveryAddressInstructions = null,
-    Object? deliveryId = null,
+    Object? deliveryAddressInstructions = freezed,
+    Object? deliveryId = freezed,
+    Object? deliveryPartnerAccepted = null,
+    Object? deliveryPartnerConfirmed = null,
+    Object? customerWalletAddress = null,
+    Object? publicId = null,
+    Object? restaurantAcceptanceStatus = null,
+    Object? orderAcceptanceStatus = null,
+    Object? tipAmount = null,
+    Object? rewardsIssued = null,
+    Object? sentToDeliveryPartner = null,
+    Object? completedFlag = null,
+    Object? completedOrderFeedback = freezed,
+    Object? deliveryPunctuality = freezed,
+    Object? orderCondition = freezed,
+    Object? fulfilmentSlotFrom = null,
+    Object? fulfilmentSlotTo = null,
+    Object? fulfilmentMethod = null,
+    Object? vendor = null,
+    Object? deliveryPartner = freezed,
+    Object? discount = freezed,
+    Object? items = null,
+    Object? parentOrder = freezed,
+    Object? unfulfilledItems = null,
     Object? transactions = null,
     Object? fulfilmentCharge = null,
     Object? platformFee = null,
     Object? cartDiscountCode = null,
     Object? cartDiscountType = null,
     Object? cartDiscountAmount = null,
-    Object? cartTip = null,
-    Object? paymentStatus = null,
-    Object? restaurantAcceptanceStatus = null,
-    Object? orderAcceptanceStatus = null,
-    Object? deliveryPartnerAccepted = null,
-    Object? deliveryPartnerConfirmed = null,
-    Object? fulfilmentMethodId = null,
-    Object? fulfilmentMethodPriceModifier = null,
-    Object? fulfilmentSlotFrom = null,
-    Object? fulfilmentSlotTo = null,
-    Object? publicId = null,
-    Object? tipAmount = null,
-    Object? rewardsIssued = null,
-    Object? sentToDeliveryPartner = null,
-    Object? vendor = null,
-    Object? deliveryPartner = freezed,
-    Object? fulfilmentMethod = null,
   }) {
     return _then(_$_Order(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      items: null == items
-          ? _value.items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<OrderItem>,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
@@ -536,6 +629,18 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.refundDateTime
           : refundDateTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      paymentStatus: null == paymentStatus
+          ? _value.paymentStatus
+          : paymentStatus // ignore: cast_nullable_to_non_nullable
+              as OrderPaidStatus,
+      paymentIntentId: null == paymentIntentId
+          ? _value.paymentIntentId
+          : paymentIntentId // ignore: cast_nullable_to_non_nullable
+              as String,
+      firebaseRegistrationToken: freezed == firebaseRegistrationToken
+          ? _value.firebaseRegistrationToken
+          : firebaseRegistrationToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       deliveryName: freezed == deliveryName
           ? _value.deliveryName
           : deliveryName // ignore: cast_nullable_to_non_nullable
@@ -552,10 +657,10 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.deliveryAddressLineOne
           : deliveryAddressLineOne // ignore: cast_nullable_to_non_nullable
               as String,
-      deliveryAddressLineTwo: null == deliveryAddressLineTwo
+      deliveryAddressLineTwo: freezed == deliveryAddressLineTwo
           ? _value.deliveryAddressLineTwo
           : deliveryAddressLineTwo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       deliveryAddressCity: null == deliveryAddressCity
           ? _value.deliveryAddressCity
           : deliveryAddressCity // ignore: cast_nullable_to_non_nullable
@@ -572,14 +677,102 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.deliveryAddressLongitude
           : deliveryAddressLongitude // ignore: cast_nullable_to_non_nullable
               as double?,
-      deliveryAddressInstructions: null == deliveryAddressInstructions
+      deliveryAddressInstructions: freezed == deliveryAddressInstructions
           ? _value.deliveryAddressInstructions
           : deliveryAddressInstructions // ignore: cast_nullable_to_non_nullable
-              as String,
-      deliveryId: null == deliveryId
+              as String?,
+      deliveryId: freezed == deliveryId
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryPartnerAccepted: null == deliveryPartnerAccepted
+          ? _value.deliveryPartnerAccepted
+          : deliveryPartnerAccepted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      deliveryPartnerConfirmed: null == deliveryPartnerConfirmed
+          ? _value.deliveryPartnerConfirmed
+          : deliveryPartnerConfirmed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customerWalletAddress: null == customerWalletAddress
+          ? _value.customerWalletAddress
+          : customerWalletAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      publicId: null == publicId
+          ? _value.publicId
+          : publicId // ignore: cast_nullable_to_non_nullable
+              as String,
+      restaurantAcceptanceStatus: null == restaurantAcceptanceStatus
+          ? _value.restaurantAcceptanceStatus
+          : restaurantAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as RestaurantAcceptanceStatus,
+      orderAcceptanceStatus: null == orderAcceptanceStatus
+          ? _value.orderAcceptanceStatus
+          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
+              as OrderAcceptanceStatus,
+      tipAmount: null == tipAmount
+          ? _value.tipAmount
+          : tipAmount // ignore: cast_nullable_to_non_nullable
+              as int,
+      rewardsIssued: null == rewardsIssued
+          ? _value.rewardsIssued
+          : rewardsIssued // ignore: cast_nullable_to_non_nullable
+              as double,
+      sentToDeliveryPartner: null == sentToDeliveryPartner
+          ? _value.sentToDeliveryPartner
+          : sentToDeliveryPartner // ignore: cast_nullable_to_non_nullable
+              as bool,
+      completedFlag: null == completedFlag
+          ? _value.completedFlag
+          : completedFlag // ignore: cast_nullable_to_non_nullable
+              as OrderCompletedFlag,
+      completedOrderFeedback: freezed == completedOrderFeedback
+          ? _value.completedOrderFeedback
+          : completedOrderFeedback // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryPunctuality: freezed == deliveryPunctuality
+          ? _value.deliveryPunctuality
+          : deliveryPunctuality // ignore: cast_nullable_to_non_nullable
+              as int?,
+      orderCondition: freezed == orderCondition
+          ? _value.orderCondition
+          : orderCondition // ignore: cast_nullable_to_non_nullable
+              as int?,
+      fulfilmentSlotFrom: null == fulfilmentSlotFrom
+          ? _value.fulfilmentSlotFrom
+          : fulfilmentSlotFrom // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      fulfilmentSlotTo: null == fulfilmentSlotTo
+          ? _value.fulfilmentSlotTo
+          : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      fulfilmentMethod: null == fulfilmentMethod
+          ? _value.fulfilmentMethod
+          : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
+              as FulfilmentMethod,
+      vendor: null == vendor
+          ? _value.vendor
+          : vendor // ignore: cast_nullable_to_non_nullable
+              as VendorDTO,
+      deliveryPartner: freezed == deliveryPartner
+          ? _value.deliveryPartner
+          : deliveryPartner // ignore: cast_nullable_to_non_nullable
+              as DeliveryPartnerDTO?,
+      discount: freezed == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as Discount?,
+      items: null == items
+          ? _value.items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<OrderItem>,
+      parentOrder: freezed == parentOrder
+          ? _value.parentOrder
+          : parentOrder // ignore: cast_nullable_to_non_nullable
+              as Order?,
+      unfulfilledItems: null == unfulfilledItems
+          ? _value.unfulfilledItems
+          : unfulfilledItems // ignore: cast_nullable_to_non_nullable
+              as List<OrderItem>,
       transactions: null == transactions
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
@@ -604,74 +797,6 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.cartDiscountAmount
           : cartDiscountAmount // ignore: cast_nullable_to_non_nullable
               as num,
-      cartTip: null == cartTip
-          ? _value.cartTip
-          : cartTip // ignore: cast_nullable_to_non_nullable
-              as num,
-      paymentStatus: null == paymentStatus
-          ? _value.paymentStatus
-          : paymentStatus // ignore: cast_nullable_to_non_nullable
-              as OrderPaidStatus,
-      restaurantAcceptanceStatus: null == restaurantAcceptanceStatus
-          ? _value.restaurantAcceptanceStatus
-          : restaurantAcceptanceStatus // ignore: cast_nullable_to_non_nullable
-              as RestaurantAcceptanceStatus,
-      orderAcceptanceStatus: null == orderAcceptanceStatus
-          ? _value.orderAcceptanceStatus
-          : orderAcceptanceStatus // ignore: cast_nullable_to_non_nullable
-              as OrderAcceptanceStatus,
-      deliveryPartnerAccepted: null == deliveryPartnerAccepted
-          ? _value.deliveryPartnerAccepted
-          : deliveryPartnerAccepted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      deliveryPartnerConfirmed: null == deliveryPartnerConfirmed
-          ? _value.deliveryPartnerConfirmed
-          : deliveryPartnerConfirmed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      fulfilmentMethodId: null == fulfilmentMethodId
-          ? _value.fulfilmentMethodId
-          : fulfilmentMethodId // ignore: cast_nullable_to_non_nullable
-              as int,
-      fulfilmentMethodPriceModifier: null == fulfilmentMethodPriceModifier
-          ? _value.fulfilmentMethodPriceModifier
-          : fulfilmentMethodPriceModifier // ignore: cast_nullable_to_non_nullable
-              as num,
-      fulfilmentSlotFrom: null == fulfilmentSlotFrom
-          ? _value.fulfilmentSlotFrom
-          : fulfilmentSlotFrom // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      fulfilmentSlotTo: null == fulfilmentSlotTo
-          ? _value.fulfilmentSlotTo
-          : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      publicId: null == publicId
-          ? _value.publicId
-          : publicId // ignore: cast_nullable_to_non_nullable
-              as String,
-      tipAmount: null == tipAmount
-          ? _value.tipAmount
-          : tipAmount // ignore: cast_nullable_to_non_nullable
-              as int,
-      rewardsIssued: null == rewardsIssued
-          ? _value.rewardsIssued
-          : rewardsIssued // ignore: cast_nullable_to_non_nullable
-              as double,
-      sentToDeliveryPartner: null == sentToDeliveryPartner
-          ? _value.sentToDeliveryPartner
-          : sentToDeliveryPartner // ignore: cast_nullable_to_non_nullable
-              as bool,
-      vendor: null == vendor
-          ? _value.vendor
-          : vendor // ignore: cast_nullable_to_non_nullable
-              as VendorDTO,
-      deliveryPartner: freezed == deliveryPartner
-          ? _value.deliveryPartner
-          : deliveryPartner // ignore: cast_nullable_to_non_nullable
-              as DeliveryPartnerDTO?,
-      fulfilmentMethod: null == fulfilmentMethod
-          ? _value.fulfilmentMethod
-          : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
-              as FulfilmentMethodType,
     ));
   }
 }
@@ -682,15 +807,19 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
 class _$_Order extends _Order {
   _$_Order(
       {required this.id,
-      required this.items,
       required this.total,
       required this.subtotal,
-      @JsonKey(fromJson: toTS)
+      @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           required this.orderedDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           this.paidDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           this.refundDateTime,
+      @JsonEnum()
+      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
+          required this.paymentStatus,
+      required this.paymentIntentId,
+      required this.firebaseRegistrationToken,
       required this.deliveryName,
       required this.deliveryEmail,
       required this.deliveryPhoneNumber,
@@ -702,37 +831,37 @@ class _$_Order extends _Order {
       required this.deliveryAddressLongitude,
       required this.deliveryAddressInstructions,
       required this.deliveryId,
+      required this.deliveryPartnerAccepted,
+      required this.deliveryPartnerConfirmed,
+      required this.customerWalletAddress,
+      required this.publicId,
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+          required this.restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          required this.orderAcceptanceStatus,
+      required this.tipAmount,
+      required this.rewardsIssued,
+      required this.sentToDeliveryPartner,
+      @JsonKey(fromJson: orderCompletedFlagFromJson, toJson: orderCompletedFlagToJson)
+          required this.completedFlag,
+      required this.completedOrderFeedback,
+      required this.deliveryPunctuality,
+      required this.orderCondition,
+      required this.fulfilmentSlotFrom,
+      required this.fulfilmentSlotTo,
+      required this.fulfilmentMethod,
+      required this.vendor,
+      required this.deliveryPartner,
+      this.discount = null,
+      required this.items,
+      this.parentOrder = null,
+      this.unfulfilledItems = const [],
       this.transactions = const [],
       required this.fulfilmentCharge,
       required this.platformFee,
       this.cartDiscountCode = '',
       this.cartDiscountType = 'fixed',
-      this.cartDiscountAmount = 0,
-      this.cartTip = 0,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
-          required this.paymentStatus,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
-          required this.restaurantAcceptanceStatus,
-      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
-          required this.orderAcceptanceStatus,
-      required this.deliveryPartnerAccepted,
-      required this.deliveryPartnerConfirmed,
-      @JsonKey(readValue: getFulfilmentMethodId)
-          required this.fulfilmentMethodId,
-      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-          required this.fulfilmentMethodPriceModifier,
-      required this.fulfilmentSlotFrom,
-      required this.fulfilmentSlotTo,
-      required this.publicId,
-      required this.tipAmount,
-      required this.rewardsIssued,
-      required this.sentToDeliveryPartner,
-      required this.vendor,
-      required this.deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodString)
-          required this.fulfilmentMethod})
+      this.cartDiscountAmount = 0})
       : super._();
 
   factory _$_Order.fromJson(Map<String, dynamic> json) =>
@@ -741,20 +870,28 @@ class _$_Order extends _Order {
   @override
   final int id;
   @override
-  final List<OrderItem> items;
-  @override
   final num total;
   @override
   final num subtotal;
   @override
-  @JsonKey(fromJson: toTS)
+  @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
   final DateTime orderedDateTime;
   @override
-  @JsonKey(fromJson: toTSNullable)
+  @JsonKey(
+      fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
   final DateTime? paidDateTime;
   @override
-  @JsonKey(fromJson: toTSNullable)
+  @JsonKey(
+      fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
   final DateTime? refundDateTime;
+  @override
+  @JsonEnum()
+  @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
+  final OrderPaidStatus paymentStatus;
+  @override
+  final String paymentIntentId;
+  @override
+  final String? firebaseRegistrationToken;
   @override
   final String? deliveryName;
   @override
@@ -764,7 +901,7 @@ class _$_Order extends _Order {
   @override
   final String deliveryAddressLineOne;
   @override
-  final String deliveryAddressLineTwo;
+  final String? deliveryAddressLineTwo;
   @override
   final String deliveryAddressCity;
   @override
@@ -774,9 +911,62 @@ class _$_Order extends _Order {
   @override
   final double? deliveryAddressLongitude;
   @override
-  final String deliveryAddressInstructions;
+  final String? deliveryAddressInstructions;
   @override
-  final String deliveryId;
+  final String? deliveryId;
+  @override
+  final bool deliveryPartnerAccepted;
+  @override
+  final bool deliveryPartnerConfirmed;
+  @override
+  final String customerWalletAddress;
+  @override
+  final String publicId;
+  @override
+  @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+  final RestaurantAcceptanceStatus restaurantAcceptanceStatus;
+  @override
+  @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+  final OrderAcceptanceStatus orderAcceptanceStatus;
+  @override
+  final int tipAmount;
+  @override
+  final double rewardsIssued;
+  @override
+  final bool sentToDeliveryPartner;
+  @override
+  @JsonKey(
+      fromJson: orderCompletedFlagFromJson, toJson: orderCompletedFlagToJson)
+  final OrderCompletedFlag completedFlag;
+  @override
+  final String? completedOrderFeedback;
+  @override
+  final int? deliveryPunctuality;
+  @override
+  final int? orderCondition;
+  @override
+  final DateTime fulfilmentSlotFrom;
+// "2022-09-29T10:00:00.000Z"
+  @override
+  final DateTime fulfilmentSlotTo;
+// "2022-09-29T10:00:00.000Z"
+  @override
+  final FulfilmentMethod fulfilmentMethod;
+  @override
+  final VendorDTO vendor;
+  @override
+  final DeliveryPartnerDTO? deliveryPartner;
+  @override
+  @JsonKey()
+  final Discount? discount;
+  @override
+  final List<OrderItem> items;
+  @override
+  @JsonKey()
+  final Order? parentOrder;
+  @override
+  @JsonKey()
+  final List<OrderItem> unfulfilledItems;
   @override
   @JsonKey()
   final List<TransactionItem> transactions;
@@ -793,55 +983,10 @@ class _$_Order extends _Order {
   @override
   @JsonKey()
   final num cartDiscountAmount;
-  @override
-  @JsonKey()
-  final num cartTip;
-  @override
-  @JsonEnum()
-  @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
-  final OrderPaidStatus paymentStatus;
-  @override
-  @JsonEnum()
-  @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
-  final RestaurantAcceptanceStatus restaurantAcceptanceStatus;
-  @override
-  @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
-  final OrderAcceptanceStatus orderAcceptanceStatus;
-  @override
-  final bool deliveryPartnerAccepted;
-  @override
-  final bool deliveryPartnerConfirmed;
-  @override
-  @JsonKey(readValue: getFulfilmentMethodId)
-  final int fulfilmentMethodId;
-  @override
-  @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-  final num fulfilmentMethodPriceModifier;
-  @override
-  final DateTime fulfilmentSlotFrom;
-// "2022-09-29T10:00:00.000Z"
-  @override
-  final DateTime fulfilmentSlotTo;
-// "2022-09-29T10:00:00.000Z"
-  @override
-  final String publicId;
-  @override
-  final int tipAmount;
-  @override
-  final double rewardsIssued;
-  @override
-  final bool sentToDeliveryPartner;
-  @override
-  final VendorDTO vendor;
-  @override
-  final DeliveryPartnerDTO? deliveryPartner;
-  @override
-  @JsonKey(readValue: getFulfilmentMethodString)
-  final FulfilmentMethodType fulfilmentMethod;
 
   @override
   String toString() {
-    return 'Order(id: $id, items: $items, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressLatitude: $deliveryAddressLatitude, deliveryAddressLongitude: $deliveryAddressLongitude, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, transactions: $transactions, fulfilmentCharge: $fulfilmentCharge, platformFee: $platformFee, cartDiscountCode: $cartDiscountCode, cartDiscountType: $cartDiscountType, cartDiscountAmount: $cartDiscountAmount, cartTip: $cartTip, paymentStatus: $paymentStatus, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, orderAcceptanceStatus: $orderAcceptanceStatus, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, fulfilmentMethodId: $fulfilmentMethodId, fulfilmentMethodPriceModifier: $fulfilmentMethodPriceModifier, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, publicId: $publicId, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, vendor: $vendor, deliveryPartner: $deliveryPartner, fulfilmentMethod: $fulfilmentMethod)';
+    return 'Order(id: $id, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, paymentStatus: $paymentStatus, paymentIntentId: $paymentIntentId, firebaseRegistrationToken: $firebaseRegistrationToken, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressLatitude: $deliveryAddressLatitude, deliveryAddressLongitude: $deliveryAddressLongitude, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, customerWalletAddress: $customerWalletAddress, publicId: $publicId, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, orderAcceptanceStatus: $orderAcceptanceStatus, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, completedFlag: $completedFlag, completedOrderFeedback: $completedOrderFeedback, deliveryPunctuality: $deliveryPunctuality, orderCondition: $orderCondition, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, fulfilmentMethod: $fulfilmentMethod, vendor: $vendor, deliveryPartner: $deliveryPartner, discount: $discount, items: $items, parentOrder: $parentOrder, unfulfilledItems: $unfulfilledItems, transactions: $transactions, fulfilmentCharge: $fulfilmentCharge, platformFee: $platformFee, cartDiscountCode: $cartDiscountCode, cartDiscountType: $cartDiscountType, cartDiscountAmount: $cartDiscountAmount)';
   }
 
   @override
@@ -850,7 +995,6 @@ class _$_Order extends _Order {
         (other.runtimeType == runtimeType &&
             other is _$_Order &&
             (identical(other.id, id) || other.id == id) &&
-            const DeepCollectionEquality().equals(other.items, items) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.subtotal, subtotal) ||
                 other.subtotal == subtotal) &&
@@ -860,6 +1004,12 @@ class _$_Order extends _Order {
                 other.paidDateTime == paidDateTime) &&
             (identical(other.refundDateTime, refundDateTime) ||
                 other.refundDateTime == refundDateTime) &&
+            (identical(other.paymentStatus, paymentStatus) ||
+                other.paymentStatus == paymentStatus) &&
+            (identical(other.paymentIntentId, paymentIntentId) ||
+                other.paymentIntentId == paymentIntentId) &&
+            (identical(other.firebaseRegistrationToken, firebaseRegistrationToken) ||
+                other.firebaseRegistrationToken == firebaseRegistrationToken) &&
             (identical(other.deliveryName, deliveryName) ||
                 other.deliveryName == deliveryName) &&
             (identical(other.deliveryEmail, deliveryEmail) ||
@@ -883,40 +1033,43 @@ class _$_Order extends _Order {
                     deliveryAddressInstructions) &&
             (identical(other.deliveryId, deliveryId) ||
                 other.deliveryId == deliveryId) &&
-            const DeepCollectionEquality()
-                .equals(other.transactions, transactions) &&
-            (identical(other.fulfilmentCharge, fulfilmentCharge) ||
-                other.fulfilmentCharge == fulfilmentCharge) &&
-            (identical(other.platformFee, platformFee) ||
-                other.platformFee == platformFee) &&
-            (identical(other.cartDiscountCode, cartDiscountCode) ||
-                other.cartDiscountCode == cartDiscountCode) &&
-            (identical(other.cartDiscountType, cartDiscountType) ||
-                other.cartDiscountType == cartDiscountType) &&
-            (identical(other.cartDiscountAmount, cartDiscountAmount) ||
-                other.cartDiscountAmount == cartDiscountAmount) &&
-            (identical(other.cartTip, cartTip) || other.cartTip == cartTip) &&
-            (identical(other.paymentStatus, paymentStatus) ||
-                other.paymentStatus == paymentStatus) &&
+            (identical(other.deliveryPartnerAccepted, deliveryPartnerAccepted) ||
+                other.deliveryPartnerAccepted == deliveryPartnerAccepted) &&
+            (identical(other.deliveryPartnerConfirmed, deliveryPartnerConfirmed) ||
+                other.deliveryPartnerConfirmed == deliveryPartnerConfirmed) &&
+            (identical(other.customerWalletAddress, customerWalletAddress) ||
+                other.customerWalletAddress == customerWalletAddress) &&
+            (identical(other.publicId, publicId) ||
+                other.publicId == publicId) &&
             (identical(other.restaurantAcceptanceStatus, restaurantAcceptanceStatus) ||
                 other.restaurantAcceptanceStatus ==
                     restaurantAcceptanceStatus) &&
             (identical(other.orderAcceptanceStatus, orderAcceptanceStatus) ||
                 other.orderAcceptanceStatus == orderAcceptanceStatus) &&
-            (identical(other.deliveryPartnerAccepted, deliveryPartnerAccepted) ||
-                other.deliveryPartnerAccepted == deliveryPartnerAccepted) &&
-            (identical(other.deliveryPartnerConfirmed, deliveryPartnerConfirmed) || other.deliveryPartnerConfirmed == deliveryPartnerConfirmed) &&
-            (identical(other.fulfilmentMethodId, fulfilmentMethodId) || other.fulfilmentMethodId == fulfilmentMethodId) &&
-            (identical(other.fulfilmentMethodPriceModifier, fulfilmentMethodPriceModifier) || other.fulfilmentMethodPriceModifier == fulfilmentMethodPriceModifier) &&
+            (identical(other.tipAmount, tipAmount) ||
+                other.tipAmount == tipAmount) &&
+            (identical(other.rewardsIssued, rewardsIssued) ||
+                other.rewardsIssued == rewardsIssued) &&
+            (identical(other.sentToDeliveryPartner, sentToDeliveryPartner) || other.sentToDeliveryPartner == sentToDeliveryPartner) &&
+            (identical(other.completedFlag, completedFlag) || other.completedFlag == completedFlag) &&
+            (identical(other.completedOrderFeedback, completedOrderFeedback) || other.completedOrderFeedback == completedOrderFeedback) &&
+            (identical(other.deliveryPunctuality, deliveryPunctuality) || other.deliveryPunctuality == deliveryPunctuality) &&
+            (identical(other.orderCondition, orderCondition) || other.orderCondition == orderCondition) &&
             (identical(other.fulfilmentSlotFrom, fulfilmentSlotFrom) || other.fulfilmentSlotFrom == fulfilmentSlotFrom) &&
             (identical(other.fulfilmentSlotTo, fulfilmentSlotTo) || other.fulfilmentSlotTo == fulfilmentSlotTo) &&
-            (identical(other.publicId, publicId) || other.publicId == publicId) &&
-            (identical(other.tipAmount, tipAmount) || other.tipAmount == tipAmount) &&
-            (identical(other.rewardsIssued, rewardsIssued) || other.rewardsIssued == rewardsIssued) &&
-            (identical(other.sentToDeliveryPartner, sentToDeliveryPartner) || other.sentToDeliveryPartner == sentToDeliveryPartner) &&
+            (identical(other.fulfilmentMethod, fulfilmentMethod) || other.fulfilmentMethod == fulfilmentMethod) &&
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             (identical(other.deliveryPartner, deliveryPartner) || other.deliveryPartner == deliveryPartner) &&
-            (identical(other.fulfilmentMethod, fulfilmentMethod) || other.fulfilmentMethod == fulfilmentMethod));
+            (identical(other.discount, discount) || other.discount == discount) &&
+            const DeepCollectionEquality().equals(other.items, items) &&
+            (identical(other.parentOrder, parentOrder) || other.parentOrder == parentOrder) &&
+            const DeepCollectionEquality().equals(other.unfulfilledItems, unfulfilledItems) &&
+            const DeepCollectionEquality().equals(other.transactions, transactions) &&
+            (identical(other.fulfilmentCharge, fulfilmentCharge) || other.fulfilmentCharge == fulfilmentCharge) &&
+            (identical(other.platformFee, platformFee) || other.platformFee == platformFee) &&
+            (identical(other.cartDiscountCode, cartDiscountCode) || other.cartDiscountCode == cartDiscountCode) &&
+            (identical(other.cartDiscountType, cartDiscountType) || other.cartDiscountType == cartDiscountType) &&
+            (identical(other.cartDiscountAmount, cartDiscountAmount) || other.cartDiscountAmount == cartDiscountAmount));
   }
 
   @JsonKey(ignore: true)
@@ -924,12 +1077,14 @@ class _$_Order extends _Order {
   int get hashCode => Object.hashAll([
         runtimeType,
         id,
-        const DeepCollectionEquality().hash(items),
         total,
         subtotal,
         orderedDateTime,
         paidDateTime,
         refundDateTime,
+        paymentStatus,
+        paymentIntentId,
+        firebaseRegistrationToken,
         deliveryName,
         deliveryEmail,
         deliveryPhoneNumber,
@@ -941,29 +1096,34 @@ class _$_Order extends _Order {
         deliveryAddressLongitude,
         deliveryAddressInstructions,
         deliveryId,
+        deliveryPartnerAccepted,
+        deliveryPartnerConfirmed,
+        customerWalletAddress,
+        publicId,
+        restaurantAcceptanceStatus,
+        orderAcceptanceStatus,
+        tipAmount,
+        rewardsIssued,
+        sentToDeliveryPartner,
+        completedFlag,
+        completedOrderFeedback,
+        deliveryPunctuality,
+        orderCondition,
+        fulfilmentSlotFrom,
+        fulfilmentSlotTo,
+        fulfilmentMethod,
+        vendor,
+        deliveryPartner,
+        discount,
+        const DeepCollectionEquality().hash(items),
+        parentOrder,
+        const DeepCollectionEquality().hash(unfulfilledItems),
         const DeepCollectionEquality().hash(transactions),
         fulfilmentCharge,
         platformFee,
         cartDiscountCode,
         cartDiscountType,
-        cartDiscountAmount,
-        cartTip,
-        paymentStatus,
-        restaurantAcceptanceStatus,
-        orderAcceptanceStatus,
-        deliveryPartnerAccepted,
-        deliveryPartnerConfirmed,
-        fulfilmentMethodId,
-        fulfilmentMethodPriceModifier,
-        fulfilmentSlotFrom,
-        fulfilmentSlotTo,
-        publicId,
-        tipAmount,
-        rewardsIssued,
-        sentToDeliveryPartner,
-        vendor,
-        deliveryPartner,
-        fulfilmentMethod
+        cartDiscountAmount
       ]);
 
   @JsonKey(ignore: true)
@@ -983,57 +1143,61 @@ class _$_Order extends _Order {
 abstract class _Order extends Order {
   factory _Order(
       {required final int id,
-      required final List<OrderItem> items,
       required final num total,
       required final num subtotal,
-      @JsonKey(fromJson: toTS)
+      @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           required final DateTime orderedDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           final DateTime? paidDateTime,
-      @JsonKey(fromJson: toTSNullable)
+      @JsonKey(fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
           final DateTime? refundDateTime,
+      @JsonEnum()
+      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
+          required final OrderPaidStatus paymentStatus,
+      required final String paymentIntentId,
+      required final String? firebaseRegistrationToken,
       required final String? deliveryName,
       required final String? deliveryEmail,
       required final String? deliveryPhoneNumber,
       required final String deliveryAddressLineOne,
-      required final String deliveryAddressLineTwo,
+      required final String? deliveryAddressLineTwo,
       required final String deliveryAddressCity,
       required final String deliveryAddressPostCode,
       required final double? deliveryAddressLatitude,
       required final double? deliveryAddressLongitude,
-      required final String deliveryAddressInstructions,
-      required final String deliveryId,
+      required final String? deliveryAddressInstructions,
+      required final String? deliveryId,
+      required final bool deliveryPartnerAccepted,
+      required final bool deliveryPartnerConfirmed,
+      required final String customerWalletAddress,
+      required final String publicId,
+      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+          required final RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+          required final OrderAcceptanceStatus orderAcceptanceStatus,
+      required final int tipAmount,
+      required final double rewardsIssued,
+      required final bool sentToDeliveryPartner,
+      @JsonKey(fromJson: orderCompletedFlagFromJson, toJson: orderCompletedFlagToJson)
+          required final OrderCompletedFlag completedFlag,
+      required final String? completedOrderFeedback,
+      required final int? deliveryPunctuality,
+      required final int? orderCondition,
+      required final DateTime fulfilmentSlotFrom,
+      required final DateTime fulfilmentSlotTo,
+      required final FulfilmentMethod fulfilmentMethod,
+      required final VendorDTO vendor,
+      required final DeliveryPartnerDTO? deliveryPartner,
+      final Discount? discount,
+      required final List<OrderItem> items,
+      final Order? parentOrder,
+      final List<OrderItem> unfulfilledItems,
       final List<TransactionItem> transactions,
       required final num fulfilmentCharge,
       required final num platformFee,
       final String cartDiscountCode,
       final String cartDiscountType,
-      final num cartDiscountAmount,
-      final num cartTip,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
-          required final OrderPaidStatus paymentStatus,
-      @JsonEnum()
-      @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
-          required final RestaurantAcceptanceStatus restaurantAcceptanceStatus,
-      @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
-          required final OrderAcceptanceStatus orderAcceptanceStatus,
-      required final bool deliveryPartnerAccepted,
-      required final bool deliveryPartnerConfirmed,
-      @JsonKey(readValue: getFulfilmentMethodId)
-          required final int fulfilmentMethodId,
-      @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-          required final num fulfilmentMethodPriceModifier,
-      required final DateTime fulfilmentSlotFrom,
-      required final DateTime fulfilmentSlotTo,
-      required final String publicId,
-      required final int tipAmount,
-      required final double rewardsIssued,
-      required final bool sentToDeliveryPartner,
-      required final VendorDTO vendor,
-      required final DeliveryPartnerDTO? deliveryPartner,
-      @JsonKey(readValue: getFulfilmentMethodString)
-          required final FulfilmentMethodType fulfilmentMethod}) = _$_Order;
+      final num cartDiscountAmount}) = _$_Order;
   _Order._() : super._();
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$_Order.fromJson;
@@ -1041,20 +1205,28 @@ abstract class _Order extends Order {
   @override
   int get id;
   @override
-  List<OrderItem> get items;
-  @override
   num get total;
   @override
   num get subtotal;
   @override
-  @JsonKey(fromJson: toTS)
+  @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
   DateTime get orderedDateTime;
   @override
-  @JsonKey(fromJson: toTSNullable)
+  @JsonKey(
+      fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
   DateTime? get paidDateTime;
   @override
-  @JsonKey(fromJson: toTSNullable)
+  @JsonKey(
+      fromJson: jsonToTimeStampNullable, toJson: timeStampToJsonIntNullable)
   DateTime? get refundDateTime;
+  @override
+  @JsonEnum()
+  @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
+  OrderPaidStatus get paymentStatus;
+  @override
+  String get paymentIntentId;
+  @override
+  String? get firebaseRegistrationToken;
   @override
   String? get deliveryName;
   @override
@@ -1064,7 +1236,7 @@ abstract class _Order extends Order {
   @override
   String get deliveryAddressLineOne;
   @override
-  String get deliveryAddressLineTwo;
+  String? get deliveryAddressLineTwo;
   @override
   String get deliveryAddressCity;
   @override
@@ -1074,9 +1246,57 @@ abstract class _Order extends Order {
   @override
   double? get deliveryAddressLongitude;
   @override
-  String get deliveryAddressInstructions;
+  String? get deliveryAddressInstructions;
   @override
-  String get deliveryId;
+  String? get deliveryId;
+  @override
+  bool get deliveryPartnerAccepted;
+  @override
+  bool get deliveryPartnerConfirmed;
+  @override
+  String get customerWalletAddress;
+  @override
+  String get publicId;
+  @override
+  @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+  RestaurantAcceptanceStatus get restaurantAcceptanceStatus;
+  @override
+  @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+  OrderAcceptanceStatus get orderAcceptanceStatus;
+  @override
+  int get tipAmount;
+  @override
+  double get rewardsIssued;
+  @override
+  bool get sentToDeliveryPartner;
+  @override
+  @JsonKey(
+      fromJson: orderCompletedFlagFromJson, toJson: orderCompletedFlagToJson)
+  OrderCompletedFlag get completedFlag;
+  @override
+  String? get completedOrderFeedback;
+  @override
+  int? get deliveryPunctuality;
+  @override
+  int? get orderCondition;
+  @override
+  DateTime get fulfilmentSlotFrom;
+  @override // "2022-09-29T10:00:00.000Z"
+  DateTime get fulfilmentSlotTo;
+  @override // "2022-09-29T10:00:00.000Z"
+  FulfilmentMethod get fulfilmentMethod;
+  @override
+  VendorDTO get vendor;
+  @override
+  DeliveryPartnerDTO? get deliveryPartner;
+  @override
+  Discount? get discount;
+  @override
+  List<OrderItem> get items;
+  @override
+  Order? get parentOrder;
+  @override
+  List<OrderItem> get unfulfilledItems;
   @override
   List<TransactionItem> get transactions;
   @override
@@ -1089,48 +1309,6 @@ abstract class _Order extends Order {
   String get cartDiscountType;
   @override
   num get cartDiscountAmount;
-  @override
-  num get cartTip;
-  @override
-  @JsonEnum()
-  @JsonKey(unknownEnumValue: OrderPaidStatus.unpaid)
-  OrderPaidStatus get paymentStatus;
-  @override
-  @JsonEnum()
-  @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
-  RestaurantAcceptanceStatus get restaurantAcceptanceStatus;
-  @override
-  @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
-  OrderAcceptanceStatus get orderAcceptanceStatus;
-  @override
-  bool get deliveryPartnerAccepted;
-  @override
-  bool get deliveryPartnerConfirmed;
-  @override
-  @JsonKey(readValue: getFulfilmentMethodId)
-  int get fulfilmentMethodId;
-  @override
-  @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-  num get fulfilmentMethodPriceModifier;
-  @override
-  DateTime get fulfilmentSlotFrom;
-  @override // "2022-09-29T10:00:00.000Z"
-  DateTime get fulfilmentSlotTo;
-  @override // "2022-09-29T10:00:00.000Z"
-  String get publicId;
-  @override
-  int get tipAmount;
-  @override
-  double get rewardsIssued;
-  @override
-  bool get sentToDeliveryPartner;
-  @override
-  VendorDTO get vendor;
-  @override
-  DeliveryPartnerDTO? get deliveryPartner;
-  @override
-  @JsonKey(readValue: getFulfilmentMethodString)
-  FulfilmentMethodType get fulfilmentMethod;
   @override
   @JsonKey(ignore: true)
   _$$_OrderCopyWith<_$_Order> get copyWith =>

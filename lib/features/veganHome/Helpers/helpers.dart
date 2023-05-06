@@ -44,8 +44,22 @@ Color? colorForESCRating(num rating) {
   }
 }
 
-DateTime toTS(int json) => json.toTimeStamp();
-DateTime? toTSNullable(int? json) => json?.toTimeStamp();
+DateTime? intToTimeStampNullable(int? json) => tryCatchRethrowInline(
+      () => json?.toTimeStamp(),
+    );
+DateTime intToTimeStamp(int json) => intToTimeStampNullable(json)!;
+DateTime? jsonToTimeStampNullable(dynamic json) => tryCatchRethrowInline(
+      () => json == null
+          ? null
+          : json is int
+              ? json.toTimeStamp()
+              : DateTime.parse(json.toString()),
+    );
+DateTime jsonToTimeStamp(dynamic json) => jsonToTimeStampNullable(json)!;
+int? timeStampToJsonIntNullable(DateTime? json) => tryCatchRethrowInline(
+      () => json?.millisecondsSinceEpoch,
+    );
+int timeStampToJsonInt(DateTime json) => timeStampToJsonIntNullable(json)!;
 
 int objectIdFromJson(dynamic obj) {
   if (obj is int) {
@@ -105,26 +119,30 @@ bool shouldEndOngoing(TimeSlot selectedSlot) {
 
 const pplRewardsPcntDelivery = 0.05;
 const pplRewardsPcntPoS = 0.01;
+const numberOfPPLInOneGBP = 10.0;
 const pplPenceValue = 0.1;
 const pplPoundValue = pplPenceValue / 100;
 const minESCRating = 0.0;
 const maxESCRating = 5.0;
 
 double getPPLValueFromPence(num penceAmount) {
-  return penceAmount * pplPenceValue;
+  return getPPLValueFromPounds(penceAmount / 100);
 }
 
 double getPPLValueFromPounds(num poundAmount) {
-  return poundAmount * pplPoundValue;
+  return poundAmount * numberOfPPLInOneGBP;
 }
 
 double getPoundValueFromPPL(num pplAmount) {
-  return pplAmount / pplPoundValue;
+  return pplAmount / numberOfPPLInOneGBP;
 }
 
-double getPPLRewardsFromPence(num penceAmount) {
-  return getPPLValueFromPence(penceAmount * pplRewardsPcntDelivery);
+double getPPLRewardsFromPounds(num gBPAmount) {
+  return getPPLValueFromPounds(gBPAmount * pplRewardsPcntDelivery);
 }
+
+double getPPLRewardsFromPence(num penceAmount) =>
+    getPPLRewardsFromPounds(penceAmount / 100);
 
 int calculateRewardsForPrice({
   required num penceAmount,
@@ -330,3 +348,35 @@ double rectArea(
   Offset p4,
 ) =>
     triangleArea(p1, p2, p3) + triangleArea(p2, p3, p4);
+
+T tryCatchInline<T>(
+  T Function() callback,
+  T defaultResult, {
+  bool silent = false,
+}) {
+  try {
+    return callback();
+  } catch (e, s) {
+    if (!silent) {
+      log.error(
+        e,
+        stackTrace: s,
+      );
+    }
+    return defaultResult;
+  }
+}
+
+T tryCatchRethrowInline<T>(
+  T Function() callback,
+) {
+  try {
+    return callback();
+  } catch (e, s) {
+    log.error(
+      e,
+      stackTrace: s,
+    );
+    rethrow;
+  }
+}

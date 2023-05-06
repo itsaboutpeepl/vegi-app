@@ -23,6 +23,7 @@ mixin _$GetOrdersResponse {
   List<Order> get ongoingOrders => throw _privateConstructorUsedError;
   List<Order> get scheduledOrders => throw _privateConstructorUsedError;
   List<Order> get pastOrders => throw _privateConstructorUsedError;
+  List<Order> get unpaidOrders => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,7 +40,8 @@ abstract class $GetOrdersResponseCopyWith<$Res> {
   $Res call(
       {List<Order> ongoingOrders,
       List<Order> scheduledOrders,
-      List<Order> pastOrders});
+      List<Order> pastOrders,
+      List<Order> unpaidOrders});
 }
 
 /// @nodoc
@@ -58,6 +60,7 @@ class _$GetOrdersResponseCopyWithImpl<$Res, $Val extends GetOrdersResponse>
     Object? ongoingOrders = null,
     Object? scheduledOrders = null,
     Object? pastOrders = null,
+    Object? unpaidOrders = null,
   }) {
     return _then(_value.copyWith(
       ongoingOrders: null == ongoingOrders
@@ -71,6 +74,10 @@ class _$GetOrdersResponseCopyWithImpl<$Res, $Val extends GetOrdersResponse>
       pastOrders: null == pastOrders
           ? _value.pastOrders
           : pastOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
+      unpaidOrders: null == unpaidOrders
+          ? _value.unpaidOrders
+          : unpaidOrders // ignore: cast_nullable_to_non_nullable
               as List<Order>,
     ) as $Val);
   }
@@ -87,7 +94,8 @@ abstract class _$$_GetOrdersResponseCopyWith<$Res>
   $Res call(
       {List<Order> ongoingOrders,
       List<Order> scheduledOrders,
-      List<Order> pastOrders});
+      List<Order> pastOrders,
+      List<Order> unpaidOrders});
 }
 
 /// @nodoc
@@ -104,6 +112,7 @@ class __$$_GetOrdersResponseCopyWithImpl<$Res>
     Object? ongoingOrders = null,
     Object? scheduledOrders = null,
     Object? pastOrders = null,
+    Object? unpaidOrders = null,
   }) {
     return _then(_$_GetOrdersResponse(
       ongoingOrders: null == ongoingOrders
@@ -118,6 +127,10 @@ class __$$_GetOrdersResponseCopyWithImpl<$Res>
           ? _value.pastOrders
           : pastOrders // ignore: cast_nullable_to_non_nullable
               as List<Order>,
+      unpaidOrders: null == unpaidOrders
+          ? _value.unpaidOrders
+          : unpaidOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
     ));
   }
 }
@@ -129,7 +142,8 @@ class _$_GetOrdersResponse extends _GetOrdersResponse {
   _$_GetOrdersResponse(
       {required this.ongoingOrders,
       required this.scheduledOrders,
-      required this.pastOrders})
+      required this.pastOrders,
+      required this.unpaidOrders})
       : super._();
 
   factory _$_GetOrdersResponse.fromJson(Map<String, dynamic> json) =>
@@ -141,10 +155,12 @@ class _$_GetOrdersResponse extends _GetOrdersResponse {
   final List<Order> scheduledOrders;
   @override
   final List<Order> pastOrders;
+  @override
+  final List<Order> unpaidOrders;
 
   @override
   String toString() {
-    return 'GetOrdersResponse(ongoingOrders: $ongoingOrders, scheduledOrders: $scheduledOrders, pastOrders: $pastOrders)';
+    return 'GetOrdersResponse(ongoingOrders: $ongoingOrders, scheduledOrders: $scheduledOrders, pastOrders: $pastOrders, unpaidOrders: $unpaidOrders)';
   }
 
   @override
@@ -157,7 +173,9 @@ class _$_GetOrdersResponse extends _GetOrdersResponse {
             const DeepCollectionEquality()
                 .equals(other.scheduledOrders, scheduledOrders) &&
             const DeepCollectionEquality()
-                .equals(other.pastOrders, pastOrders));
+                .equals(other.pastOrders, pastOrders) &&
+            const DeepCollectionEquality()
+                .equals(other.unpaidOrders, unpaidOrders));
   }
 
   @JsonKey(ignore: true)
@@ -166,7 +184,8 @@ class _$_GetOrdersResponse extends _GetOrdersResponse {
       runtimeType,
       const DeepCollectionEquality().hash(ongoingOrders),
       const DeepCollectionEquality().hash(scheduledOrders),
-      const DeepCollectionEquality().hash(pastOrders));
+      const DeepCollectionEquality().hash(pastOrders),
+      const DeepCollectionEquality().hash(unpaidOrders));
 
   @JsonKey(ignore: true)
   @override
@@ -187,7 +206,8 @@ abstract class _GetOrdersResponse extends GetOrdersResponse {
   factory _GetOrdersResponse(
       {required final List<Order> ongoingOrders,
       required final List<Order> scheduledOrders,
-      required final List<Order> pastOrders}) = _$_GetOrdersResponse;
+      required final List<Order> pastOrders,
+      required final List<Order> unpaidOrders}) = _$_GetOrdersResponse;
   _GetOrdersResponse._() : super._();
 
   factory _GetOrdersResponse.fromJson(Map<String, dynamic> json) =
@@ -199,6 +219,8 @@ abstract class _GetOrdersResponse extends GetOrdersResponse {
   List<Order> get scheduledOrders;
   @override
   List<Order> get pastOrders;
+  @override
+  List<Order> get unpaidOrders;
   @override
   @JsonKey(ignore: true)
   _$$_GetOrdersResponseCopyWith<_$_GetOrdersResponse> get copyWith =>

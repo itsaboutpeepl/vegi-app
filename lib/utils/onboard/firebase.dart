@@ -271,6 +271,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
           firebaseSessionToken: null,
         ),
       );
+      // rootRouter.replaceAll([const SignUpScreen()])
       return false;
     }
   }

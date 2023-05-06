@@ -31,7 +31,9 @@ class OrderItem with _$OrderItem {
   const OrderItem._();
 
   factory OrderItem.fromJson(Map<String, dynamic> json) =>
-      _$OrderItemFromJson(json);
+      tryCatchRethrowInline(
+        () => _$OrderItemFromJson(json),
+      );
 
   String get formattedPrice {
     return product.totalPriceFormatted;
@@ -43,8 +45,7 @@ class OrderItem with _$OrderItem {
     for (final element in product.options) {
       _counter++;
       optionValues.add(
-        '$_counter. ${element.chosenOption}'
-            .capitalizeWords(),
+        '$_counter. ${element.chosenOption}'.capitalizeWords(),
       );
     }
     return optionValues;

@@ -21,6 +21,7 @@ import 'package:vegan_liverpool/models/cart/getOrdersResponse.dart';
 import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
 import 'package:vegan_liverpool/models/cart/orderStatus.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
+import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
@@ -1134,7 +1135,20 @@ class PeeplEatsService extends HttpService {
     if (response.data?.isEmpty ?? true) {
       return null;
     }
-    return CreateOrderResponse.fromJson(response.data!);
+    final result = CreateOrderResponse.fromJson(response.data!);
+    if (result.order.transactions.isEmpty) {
+      result.order.transactions.add(
+        TransactionItem(
+          amount: orderObject.total,
+          currency: Currency.GBPx,
+          order: result.order.id,
+          payer: -1,
+          receiver: -2,
+          timestamp: DateTime.now(),
+        ),
+      );
+    }
+    return result;
   }
 
   String getOrderUri(String orderID) =>
@@ -1175,10 +1189,18 @@ class PeeplEatsService extends HttpService {
           .toList()
           .reversed
           .toList();
+      final unpaidOrders = (response.data['unpaidOrders'] as List<dynamic>)
+          .map(
+            (order) => OrderModel.Order.fromJson(order as Map<String, dynamic>),
+          )
+          .toList()
+          .reversed
+          .toList();
       return GetOrdersResponse(
         ongoingOrders: ongoingOrders,
         scheduledOrders: scheduledOrders,
         pastOrders: pastOrders,
+        unpaidOrders: unpaidOrders,
       );
     } catch (e, stackTrace) {
       log.error(

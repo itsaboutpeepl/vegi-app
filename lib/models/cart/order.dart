@@ -4,6 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/cart/discount.dart';
+import 'package:vegan_liverpool/models/cart/fulfilmentMethod.dart';
 import 'package:vegan_liverpool/models/cart/orderItem.dart';
 import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -14,6 +16,14 @@ import 'package:vegan_liverpool/models/restaurant/vendorDTO.dart';
 
 part 'order.freezed.dart';
 part 'order.g.dart';
+
+OrderCompletedFlag orderCompletedFlagFromJson(dynamic json) =>
+    OrderCompletedFlagHelpers.enumValueFromString(
+        json == null ? '' : json.toString());
+String orderCompletedFlagToJson(OrderCompletedFlag flag) =>
+    flag == OrderCompletedFlag.partiallyRefunded
+        ? 'partially refunded'
+        : flag.name;
 
 String getFulfilmentMethodString(
   Map<dynamic, dynamic> json,
@@ -46,26 +56,72 @@ class Order with _$Order {
   @JsonSerializable()
   factory Order({
     required int id,
-    required List<OrderItem> items,
     required num total,
     required num subtotal,
-    @JsonKey(fromJson: toTS)
+    @JsonKey(
+      fromJson: jsonToTimeStamp,
+      toJson: timeStampToJsonInt,
+    )
         required DateTime orderedDateTime,
-    @JsonKey(fromJson: toTSNullable)
+    @JsonKey(
+      fromJson: jsonToTimeStampNullable,
+      toJson: timeStampToJsonIntNullable,
+    )
         DateTime? paidDateTime,
-    @JsonKey(fromJson: toTSNullable)
+    @JsonKey(
+      fromJson: jsonToTimeStampNullable,
+      toJson: timeStampToJsonIntNullable,
+    )
         DateTime? refundDateTime,
+    @JsonEnum()
+    @JsonKey(
+      unknownEnumValue: OrderPaidStatus.unpaid,
+    )
+        required OrderPaidStatus paymentStatus,
+    required String paymentIntentId,
+    required String? firebaseRegistrationToken,
     required String? deliveryName,
     required String? deliveryEmail,
     required String? deliveryPhoneNumber,
     required String deliveryAddressLineOne,
-    required String deliveryAddressLineTwo,
+    required String? deliveryAddressLineTwo,
     required String deliveryAddressCity,
     required String deliveryAddressPostCode,
     required double? deliveryAddressLatitude,
     required double? deliveryAddressLongitude,
-    required String deliveryAddressInstructions,
-    required String deliveryId,
+    required String? deliveryAddressInstructions,
+    required String? deliveryId,
+    required bool deliveryPartnerAccepted,
+    required bool deliveryPartnerConfirmed,
+    required String customerWalletAddress,
+    required String publicId,
+    @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
+        required RestaurantAcceptanceStatus restaurantAcceptanceStatus,
+    @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
+        required OrderAcceptanceStatus orderAcceptanceStatus,
+    required int tipAmount,
+    required double rewardsIssued,
+    required bool sentToDeliveryPartner,
+    @JsonKey(
+      fromJson: orderCompletedFlagFromJson,
+      toJson: orderCompletedFlagToJson,
+    )
+        required OrderCompletedFlag completedFlag,
+    required String? completedOrderFeedback,
+    required int? deliveryPunctuality,
+    required int? orderCondition,
+    required DateTime fulfilmentSlotFrom, // "2022-09-29T10:00:00.000Z"
+    required DateTime fulfilmentSlotTo, // "2022-09-29T10:00:00.000Z"
+    required FulfilmentMethod fulfilmentMethod,
+    required VendorDTO vendor,
+    required DeliveryPartnerDTO? deliveryPartner,
+    @Default(null)
+        Discount? discount,
+    required List<OrderItem> items,
+    @Default(null)
+        Order? parentOrder,
+    @Default([])
+        List<OrderItem> unfulfilledItems,
     @Default([])
         List<TransactionItem> transactions,
     required num fulfilmentCharge,
@@ -76,80 +132,43 @@ class Order with _$Order {
         String cartDiscountType,
     @Default(0)
         num cartDiscountAmount,
-    @Default(0)
-        num cartTip,
-    @JsonEnum()
-    @JsonKey(
-      unknownEnumValue: OrderPaidStatus.unpaid,
-    )
-        required OrderPaidStatus paymentStatus,
-    @JsonEnum()
-    @JsonKey(unknownEnumValue: RestaurantAcceptanceStatus.pending)
-        required RestaurantAcceptanceStatus restaurantAcceptanceStatus,
-    @JsonKey(unknownEnumValue: OrderAcceptanceStatus.pending)
-        required OrderAcceptanceStatus orderAcceptanceStatus,
-    required bool deliveryPartnerAccepted,
-    required bool deliveryPartnerConfirmed,
-    @JsonKey(readValue: getFulfilmentMethodId)
-        required int fulfilmentMethodId,
-    @JsonKey(readValue: getFulfilmentMethodPriceModifier)
-        required num fulfilmentMethodPriceModifier,
-    required DateTime fulfilmentSlotFrom, // "2022-09-29T10:00:00.000Z"
-    required DateTime fulfilmentSlotTo, // "2022-09-29T10:00:00.000Z"
-    required String publicId,
-    required int tipAmount,
-    required double rewardsIssued,
-    required bool sentToDeliveryPartner,
-    required VendorDTO vendor,
-    required DeliveryPartnerDTO? deliveryPartner,
-    @JsonKey(readValue: getFulfilmentMethodString)
-        required FulfilmentMethodType fulfilmentMethod,
-
-    //ignore following keys:
-    // required String customerWalletAddress,
-    // required String paymentIntentId,
-    // required String completedFlag,
-    // required String completedOrderFeedback,
-    // required double? orderCondition,
-    // required double? deliveryPunctuality,
-    // required String? discount,
-    // required int fulfilmentMethod,
-    // required int? parentOrder,
   }) = _Order;
 
   const Order._();
 
-  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+  factory Order.fromJson(Map<String, dynamic> json) => tryCatchRethrowInline(
+        () => _$OrderFromJson(json),
+      );
 
-  num get GBPAmountPaid =>
-      transactions
-          .where((t) => t.currency == Currency.GBPx)
-          .map((t) => t.amount / 100)
-          .sum() +
-      transactions
-          .where((t) => t.currency == Currency.GBP)
-          .map((t) => t.amount)
-          .sum();
-  num get GBPxAmountPaid =>
-      transactions
-          .where((t) => t.currency == Currency.GBPx)
-          .map((t) => t.amount)
-          .sum() +
-      transactions
-          .where((t) => t.currency == Currency.GBP)
-          .map((t) => t.amount * 100)
-          .sum();
+  int get fulfilmentMethodId => fulfilmentMethod.id;
+  num? get fulfilmentMethodPriceModifier => fulfilmentMethod.priceModifier;
+  FulfilmentMethodType get fulfilmentMethodType => fulfilmentMethod.methodType;
+
+  num get GBPAmountPaid => transactions.isEmpty
+      ? total / 100
+      : transactions
+              .where((t) => t.currency == Currency.GBPx)
+              .map((t) => t.amount / 100)
+              .sum() +
+          transactions
+              .where((t) => t.currency == Currency.GBP)
+              .map((t) => t.amount)
+              .sum();
+  num get GBPxAmountPaid => GBPAmountPaid * 100;
   num get PPLAmountPaid => transactions
       .where((t) => t.currency == Currency.PPL)
       .map((t) => t.amount)
       .sum();
 
-  String get rewardsEarnedInPPL => getPPLRewardsFromPence(
-        GBPxAmountPaid * 100,
-      ).toStringAsFixed(2);
+  double get rewardsEarnedInPPL => getPPLRewardsFromPounds(
+        GBPAmountPaid,
+      );
+
+  String get rewardsEarnedInPPLFormatted =>
+      rewardsEarnedInPPL.toStringAsFixed(2);
 
   String get pplRewardsEarnedValue =>
-      '£${(getPPLRewardsFromPence(GBPxAmountPaid * 100) / 10).toStringAsFixed(2)}';
+      '£${getPoundValueFromPPL(rewardsEarnedInPPL).toStringAsFixed(2)}';
 
   bool get didUsePPL => PPLAmountPaid != 0.0;
 
@@ -161,7 +180,10 @@ class Order with _$Order {
   bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;
   bool get isDelivery => fulfilmentMethod == FulfilmentMethodType.delivery;
   bool get isInStore => fulfilmentMethod == FulfilmentMethodType.inStore;
-  int get cartTotalGBPx => (total * 100).round();
+  int get cartTotalGBPx => total.round();
+  int get cartTotalGBP => (total / 100).round();
+  int get cartSubTotalGBPx => subtotal.round();
+  int get cartSubTotalGBP => (subtotal / 100).round();
 
   int get vendorId => vendor.id;
   String get vendorName => vendor.name;
@@ -172,7 +194,7 @@ class Order with _$Order {
   TimeSlot get timeSlot => TimeSlot(
         startTime: fulfilmentSlotFrom,
         endTime: fulfilmentSlotTo,
-        priceModifier: fulfilmentMethodPriceModifier.round(),
+        priceModifier: fulfilmentMethodPriceModifier?.round() ?? 0,
         fulfilmentMethodId: fulfilmentMethodId,
       );
 
@@ -185,7 +207,7 @@ class Order with _$Order {
         instructions: deliveryAddressInstructions,
         phoneNumber: deliveryPhoneNumber,
         addressLine1: deliveryAddressLineOne,
-        addressLine2: deliveryAddressLineTwo,
+        addressLine2: deliveryAddressLineTwo ?? '',
         townCity: deliveryAddressCity,
         postalCode: deliveryAddressPostCode,
         latitude: deliveryAddressLatitude ?? 0.0,

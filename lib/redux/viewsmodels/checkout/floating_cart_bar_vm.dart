@@ -16,10 +16,11 @@ class FloatingCartBarViewModel extends Equatable {
     return FloatingCartBarViewModel(
       hasItems: store.state.cartState.cartItems.isNotEmpty,
       itemCount: store.state.cartState.cartItems.length,
-      itemTotal: store.state.cartState.cartSubTotal.formattedPrice,
+      itemTotal: store.state.cartState.cartSubTotal.formattedGBPxPrice,
       isBelowOrderMinimum: store.state.cartState.restaurantMinimumOrder >
           store.state.cartState.cartSubTotal,
-      orderMinimum: store.state.cartState.restaurantMinimumOrder.formattedPrice,
+      orderMinimum:
+          store.state.cartState.restaurantMinimumOrder.formattedGBPxPrice,
     );
   }
 

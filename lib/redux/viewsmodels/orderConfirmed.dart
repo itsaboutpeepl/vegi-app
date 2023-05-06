@@ -33,9 +33,12 @@ class OrderConfirmedViewModel extends Equatable {
         (element) => element.orderID == store.state.cartState.orderID,
       );
       if (orderDetailsInd == -1) {
-        orderDetailsInd = store.state.pastOrderState.listOfOngoingOrders
-            .indexWhere(
-                (element) => element.orderID == store.state.cartState.orderID);
+        orderDetailsInd =
+            store.state.pastOrderState.listOfOngoingOrders.indexWhere(
+          (element) => element.orderID == store.state.cartState.orderID,
+        );
+      }
+      if (orderDetailsInd > -1) {
         order = store.state.pastOrderState.listOfOngoingOrders[orderDetailsInd];
       } else {
         order =
@@ -49,9 +52,9 @@ class OrderConfirmedViewModel extends Equatable {
       order.transactions.add(
         TransactionItem(
           timestamp: order.orderedDateTime,
-          amount: store.state.cartState.cartTotal / 100,
-          currency: Currency.GBP,
-          receiver: -1,
+          amount: store.state.cartState.cartTotal,
+          currency: Currency.GBPx,
+          receiver: -2,
           payer: store.state.userState.vegiAccountId?.toInt() ?? -1,
           order: order.id,
         ),

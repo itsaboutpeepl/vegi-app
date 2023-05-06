@@ -84,8 +84,7 @@ class SingleScheduledOrderCard extends StatelessWidget {
                         ),
                         if (order.PPLAmountPaid != 0.0)
                           TextSpan(
-                            text:
-                                '${order.PPLAmountPaid.toStringAsFixed(2)} ',
+                            text: '${order.PPLAmountPaid.toStringAsFixed(2)} ',
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -106,7 +105,7 @@ class SingleScheduledOrderCard extends StatelessWidget {
                           const WidgetSpan(child: SizedBox.shrink()),
                         TextSpan(
                           text:
-                              '${(order.GBPxAmountPaid * 5).toStringAsFixed(2)} ',
+                              '${getPPLRewardsFromPounds(order.GBPAmountPaid).toStringAsFixed(2)} ',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
@@ -248,7 +247,8 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (widget.item.product.options.isNotEmpty) // BUG Do order objects pull off order items with selected ProductOptions info....
+                if (widget.item.product.options
+                    .isNotEmpty) // BUG Do order objects pull off order items with selected ProductOptions info....
                   GestureDetector(
                     onTap: () => setState(() {
                       _showOptions = !_showOptions;
@@ -268,20 +268,22 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               ],
             ),
           ] +
-          widget.item.product.options.map((option) => 
-            _showOptions
-                  ? Text.rich(
-                      TextSpan(
-                        text: option.name,
-                        children: [
-                          const TextSpan(text: ' - '),
-                          TextSpan(text: option.priceModifierFormatted)
-                        ],
-                      ),
-                      style: TextStyle(color: Colors.grey[700]),
-                    )
-                  : const SizedBox.shrink(),
-          ).toList(),
+          widget.item.product.options
+              .map(
+                (option) => _showOptions
+                    ? Text.rich(
+                        TextSpan(
+                          text: option.name,
+                          children: [
+                            const TextSpan(text: ' - '),
+                            TextSpan(text: option.priceModifierFormatted)
+                          ],
+                        ),
+                        style: TextStyle(color: Colors.grey[700]),
+                      )
+                    : const SizedBox.shrink(),
+              )
+              .toList(),
     );
   }
 }

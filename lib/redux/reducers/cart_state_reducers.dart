@@ -145,6 +145,7 @@ UserCartState _updateOrderCreationProcessStatus(
 ) {
   return state.copyWith(
     orderCreationProcessStatus: action.status,
+    payButtonLoading: false,
   );
 }
 
@@ -185,7 +186,6 @@ UserCartState _createOrder(
   return state.copyWith(
     orderID: action.order.id.toString(),
     paymentIntentID: action.paymentIntentId,
-    orderCreationProcessStatus: OrderCreationProcessStatus.success,
   );
 }
 
@@ -207,7 +207,10 @@ UserCartState _toggleConfirmed(
   UserCartState state,
   SetConfirmed action,
 ) {
-  return state.copyWith(confirmedPayment: action.flag);
+  return state.copyWith(
+    confirmedPayment: action.flag,
+    orderCreationProcessStatus: OrderCreationProcessStatus.success,
+  );
 }
 
 UserCartState _updateSelectedAmounts(

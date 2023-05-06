@@ -41,7 +41,7 @@ class PaymentSheet extends StatelessWidget {
             context: context,
             builder: (context) => const ProcessingPayment(),
           );
-        }else if (newViewModel.stripePaymentStatus !=
+        } else if (newViewModel.stripePaymentStatus !=
             (previousViewModel?.stripePaymentStatus ??
                 StripePaymentStatus.none)) {
           String title = '';
@@ -55,13 +55,14 @@ class PaymentSheet extends StatelessWidget {
               title: message,
             );
           } else if (newViewModel.stripePaymentStatus ==
-              StripePaymentStatus.mintingStarted &&
+                  StripePaymentStatus.mintingStarted &&
               newViewModel.processingPayment != null) {
             await showDialog<void>(
               context: context,
               builder: (context) {
                 return MintingDialog(
-                  amountText: newViewModel.processingPayment!.amount.formattedPrice,
+                  amountText:
+                      newViewModel.processingPayment!.amount.formattedGBPxPrice,
                   shouldPushToHome: false,
                 );
               },

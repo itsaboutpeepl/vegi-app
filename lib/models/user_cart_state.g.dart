@@ -153,6 +153,9 @@ const _$PaymentMethodEnumMap = {
   PaymentMethod.stripeToFuse: 'stripeToFuse',
   PaymentMethod.peeplPay: 'peeplPay',
   PaymentMethod.applePay: 'applePay',
+  PaymentMethod.applePayToFuse: 'applePayToFuse',
+  PaymentMethod.googlePay: 'googlePay',
+  PaymentMethod.googlePayToFuse: 'googlePayToFuse',
   PaymentMethod.qrPay: 'qrPay',
 };
 

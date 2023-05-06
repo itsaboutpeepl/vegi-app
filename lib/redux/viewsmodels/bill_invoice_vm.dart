@@ -17,10 +17,11 @@ class BillInvoiceViewModel extends Equatable {
   factory BillInvoiceViewModel.fromStore(Store<AppState> store) {
     return BillInvoiceViewModel(
         didUsePPL: store.state.cartState.selectedPPLAmount > 0,
-        grandTotal: store.state.cartState.cartTotal.formattedPrice,
+        grandTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
         gbpxUsed:
-            (store.state.cartState.selectedGBPxAmount * 100).formattedPrice,
-        pplUsed: (store.state.cartState.selectedPPLAmount * 100).formattedPrice,
+            (store.state.cartState.selectedGBPxAmount * 100).formattedGBPxPrice,
+        pplUsed:
+            (store.state.cartState.selectedPPLAmount * 100).formattedGBPxPrice,
         pplRewardsEarned: getPPLRewardsFromPence(
           store.state.cartState.selectedGBPxAmount * 100,
         ).toStringAsFixed(2),

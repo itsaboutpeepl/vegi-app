@@ -109,7 +109,7 @@ abstract class CreateOrderForFulfilment {
 
   @override
   String toString() {
-    final dm = isDelivery? 'delivery' : 'collection';
+    final dm = isDelivery ? 'delivery' : 'collection';
     return 'CreateOrderFor$dm -> $total -> $vendor [$fulfilmentSlotFrom]';
   }
 
@@ -173,7 +173,8 @@ abstract class CreateOrderForFulfilment {
       walletAddress: json['walletAddress']! as String,
       isDelivery: json['isDelivery']! as bool,
       address: DeliveryAddresses.fromCartJson(
-          json['address'] as Map<String, dynamic>),
+        json['address'] as Map<String, dynamic>,
+      ),
       fulfilmentMethod: json['fulfilmentMethod']! as int,
       fulfilmentSlotFrom: json['fulfilmentSlotFrom']! as String,
       fulfilmentSlotTo: json['fulfilmentSlotTo']! as String,

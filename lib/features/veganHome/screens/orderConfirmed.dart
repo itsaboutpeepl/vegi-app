@@ -70,11 +70,12 @@ class OrderConfirmedScreen extends StatelessWidget {
                         ),
                       ),
                       buttonAction: () {
+                        viewmodel.clearCart();
                         context.router.replaceAll([const VeganHomeScreen()]);
-                        Future.delayed(
-                          const Duration(seconds: 2),
-                          () => viewmodel.clearCart(),
-                        );
+                        // Future.delayed(
+                        //   const Duration(seconds: 2),
+                        //   () => viewmodel.clearCart(),
+                        // );
                       },
                       baseColor: Colors.grey[900]!,
                       highlightColor: Colors.grey[800]!,

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/envService.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
@@ -135,7 +136,9 @@ class UserCartState with _$UserCartState {
       );
 
   factory UserCartState.fromJson(Map<String, dynamic> json) =>
-      _$UserCartStateFromJson(json);
+      tryCatchRethrowInline(
+        () => _$UserCartStateFromJson(json),
+      );
 
   bool get isDelivery => fulfilmentMethod == FulfilmentMethodType.delivery;
   bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;
@@ -147,8 +150,11 @@ class UserCartStateConverter
   const UserCartStateConverter();
 
   @override
-  UserCartState fromJson(Map<String, dynamic>? json) =>
-      json != null ? UserCartState.fromJson(json) : UserCartState.initial();
+  UserCartState fromJson(Map<String, dynamic>? json) => tryCatchRethrowInline(
+        () => json != null
+            ? UserCartState.fromJson(json)
+            : UserCartState.initial(),
+      );
 
   @override
   Map<String, dynamic> toJson(UserCartState instance) => instance.toJson();

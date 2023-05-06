@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
+import 'package:tuple/tuple.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 extension CapitalizeString on String {
@@ -48,8 +49,10 @@ extension EnumHelpers on Enum {
 }
 
 extension NumHelpers on num {
-  String get formattedPrice => '£${(this / 100).toStringAsFixed(2)}';
-  String get formattedPriceNoDec => '£${(this / 100).toStringAsFixed(0)}';
+  String get formattedGBPxPrice => '£${(this / 100).toStringAsFixed(2)}';
+  String get formattedGBPxPriceNoDec => '£${(this / 100).toStringAsFixed(0)}';
+  String get formattedGBPPrice => '£${(this).toStringAsFixed(2)}';
+  String get formattedGBPPriceNoDec => '£${(this).toStringAsFixed(0)}';
 }
 
 extension IntHelpers on int {
@@ -145,6 +148,23 @@ extension IterableHelpers<T> on Iterable<T> {
       yield convert(index++, element);
     }
   }
+
+  Tuple2<T?, Iterable<T>> separateElement(
+    bool Function(T element) selector,
+  ) {
+    var selected = false;
+    final outL = <T>[];
+    T? outEl;
+    for (final element in this) {
+      if (!selected && selector(element)) {
+        selected = true;
+        outEl = element;
+      } else {
+        outL.add(element);
+      }
+    }
+    return Tuple2<T?, Iterable<T>>(outEl, outL);
+  }
 }
 
 extension ListHelpers<T> on List<T> {
@@ -229,11 +249,25 @@ extension NumIterableHelpers<T> on Iterable<T> {
         (value, element) => sumFunc(value, element),
       );
     } else if (length > 0 && first is num && this is Iterable<num>) {
-      return (this as Iterable<num>).reduce(
-        (value, element) => value + element,
-      ) as T;
+      if (T is num) {
+        return (this as Iterable<num>).reduce(
+          (value, element) => value + element,
+        ) as T;
+      } else if (T is double) {
+        return (this as Iterable<double>).reduce(
+          (value, element) => value + element,
+        ) as T;
+      } else if (T is int) {
+        return (this as Iterable<int>).reduce(
+          (value, element) => value + element,
+        ) as T;
+      } else {
+        return cast<num>().reduce(
+          (value, element) => value + element,
+        ) as T;
+      }
     } else if (length == 0) {
-      return (0) as T;
+      return 0.0 as T;
     } else {
       log.error(
           'Type of array vals must either extend a num or have a comparitor defined!');

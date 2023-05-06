@@ -68,6 +68,7 @@ dependencies:
   shimmer: ^2.0.0
   simple_animations: ^5.0.0+2
   smooth_page_indicator: ^1.0.0+2
+  tuple: ^2.0.1
   url_launcher: ^6.1.6
   uuid: ^3.0.6
   wallet_connect: ^1.0.4

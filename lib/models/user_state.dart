@@ -10,6 +10,7 @@ import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/utils/constants.dart' as VegiConstants;
@@ -30,21 +31,6 @@ Locale localeFromJson(Map<String, dynamic>? map) => map == null
 Map<String, dynamic> localeToJson(Locale? locale) => locale == null
     ? {'languageCode': 'en', 'countryCode': 'US'}
     : {'languageCode': locale.languageCode, 'countryCode': locale.countryCode};
-
-T tryCatchInline<T>(
-  T Function() callback,
-  T defaultResult, {
-  bool silent = false,
-}) {
-  try {
-    return callback();
-  } catch (e) {
-    if (!silent) {
-      log.error(e);
-    }
-    return defaultResult;
-  }
-}
 
 EthPrivateKey? ethPrivateKeyFromJson(dynamic value) =>
     tryCatchInline<EthPrivateKey?>(
@@ -90,8 +76,10 @@ class UserState with _$UserState {
     @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
     @Default(null)
         EthPrivateKey? fuseWalletCredentials,
-    @Default(UserAuthenticationStatus.unauthenticated) UserAuthenticationStatus userAuthenticationStatus,
-    @Default(FuseWalletCreationStatus.unauthenticated) FuseWalletCreationStatus fuseWalletCreationStatus,
+    @Default(UserAuthenticationStatus.unauthenticated)
+        UserAuthenticationStatus userAuthenticationStatus,
+    @Default(FuseWalletCreationStatus.unauthenticated)
+        FuseWalletCreationStatus fuseWalletCreationStatus,
     @Default(false) bool backup,
     @Default([]) List<String> networks,
     @Default([]) List<String> mnemonic,
@@ -154,7 +142,9 @@ class UserState with _$UserState {
       );
 
   factory UserState.fromJson(Map<String, dynamic> json) =>
-      _$UserStateFromJson(json);
+      tryCatchRethrowInline(
+        () => _$UserStateFromJson(json),
+      );
 
   String get accountAddress => fuseWalletCredentials?.address.toString() ?? '';
   bool get accountDetailsExist => accountAddress.isNotEmpty;
@@ -180,8 +170,9 @@ class UserStateConverter
   const UserStateConverter();
 
   @override
-  UserState fromJson(Map<String, dynamic>? json) =>
-      json != null ? UserState.fromJson(json) : UserState.initial();
+  UserState fromJson(Map<String, dynamic>? json) => tryCatchRethrowInline(
+        () => json != null ? UserState.fromJson(json) : UserState.initial(),
+      );
 
   @override
   Map<String, dynamic> toJson(UserState instance) => instance.toJson();

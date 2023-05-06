@@ -112,6 +112,18 @@ abstract class HttpService {
         log.error(error, stackTrace: stackTrace);
         if (error.toString().contains('Connection reset by peer')) {
           _deleteSessionCookie(); //todo: return a 401...
+          rootRouter.push(const SignUpScreen());
+          return Response(
+            data: errorResponseData,
+            extra: {
+              'error': null,
+              'message':
+                  'Stale session cookie possible caused by server reboot',
+            },
+            statusCode: 401,
+            requestOptions:
+                RequestOptions(path: '${dio.options.baseUrl}${path}'),
+          );
         }
         if (error is Map<String, dynamic> &&
             error['message'].toString().startsWith('SocketException:') &&

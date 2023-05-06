@@ -26,6 +26,16 @@ enum FulfilmentMethodType {
   none,
 }
 
+enum DayOfWeek {
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+  Sunday,
+}
+
 enum OrderAcceptanceStatus {
   accepted,
   declined,
@@ -39,6 +49,15 @@ enum OrderAcceptanceStatus {
 enum OrderCreationStatus {
   confirmed,
   failed,
+}
+
+enum OrderCompletedFlag {
+  none,
+  completed,
+  cancelled,
+  refunded,
+  partiallyRefunded,
+  voided,
 }
 
 enum RestaurantAcceptanceStatus {
@@ -67,8 +86,35 @@ enum Currency {
   EUR,
 }
 
+enum DiscountType {
+  percentage,
+  fixed,
+}
+
 enum VegiAccountType { ethereum, bank }
 
+extension OrderCompletedFlagHelpers on OrderCompletedFlag {
+  static OrderCompletedFlag enumValueFromString(String other) {
+    switch (other) {
+      case 'cancelled':
+        return OrderCompletedFlag.cancelled;
+      case 'none':
+        return OrderCompletedFlag.none;
+      case 'completed':
+        return OrderCompletedFlag.completed;
+      case 'partiallyRefunded':
+        return OrderCompletedFlag.partiallyRefunded;
+      case 'refunded':
+        return OrderCompletedFlag.refunded;
+      case 'voided':
+        return OrderCompletedFlag.voided;
+      case '':
+        return OrderCompletedFlag.none; 
+      default:
+        return OrderCompletedFlag.none;
+    }
+  }
+}
 extension RestaurantAcceptedStatusHelpers on RestaurantAcceptanceStatus {
   OrderAcceptanceStatus toOrderAcceptanceStatus() {
     switch (this) {

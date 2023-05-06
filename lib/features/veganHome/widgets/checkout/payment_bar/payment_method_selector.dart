@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/payment_method_vm.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:vegan_liverpool/utils/config.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
 class PaymentMethodSelector extends StatelessWidget {
@@ -157,28 +158,69 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                 //   ),
                 // ),
                 if (Platform.isIOS)
-                  ListTile(
-                    onTap: () {
-                      viewmodel.setPaymentMethod(
-                        paymentMethod: PaymentMethod.applePay,
-                      );
-                      context.router.pop();
-                    },
-                    leading: const Icon(FontAwesomeIcons.applePay),
-                    title: const Text('Apple Pay'),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 14,
+                  if (AppConfig.useFusePayments)
+                    ListTile(
+                      onTap: () {
+                        viewmodel.setPaymentMethod(
+                          paymentMethod: PaymentMethod.applePayToFuse,
+                        );
+                        context.router.pop();
+                      },
+                      leading: const Icon(FontAwesomeIcons.applePay),
+                      title: Text(PaymentMethod.applePayToFuse.formattedName),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                      ),
+                    )
+                  else
+                    ListTile(
+                      onTap: () {
+                        viewmodel.setPaymentMethod(
+                          paymentMethod: PaymentMethod.applePay,
+                        );
+                        context.router.pop();
+                      },
+                      leading: const Icon(FontAwesomeIcons.applePay),
+                      title: Text(PaymentMethod.applePay.formattedName),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                      ),
+                    )
+                else if (AppConfig.useFusePayments)
+                  Opacity(
+                    opacity: 0.5,
+                    child: ListTile(
+                      onTap: () {
+                        // viewmodel.setPaymentMethod(
+                        //   paymentMethod: PaymentMethod.googlePayToFuse,
+                        // );
+                        // context.router.pop();
+                      },
+                      enabled: false,
+                      leading: const Icon(FontAwesomeIcons.googlePay),
+                      title: Text(PaymentMethod.googlePayToFuse.formattedName),
+                      subtitle: const Text('Coming soon'),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                      ),
                     ),
                   )
                 else
                   Opacity(
                     opacity: 0.5,
                     child: ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        // viewmodel.setPaymentMethod(
+                        //   paymentMethod: PaymentMethod.googlePay,
+                        // );
+                        // context.router.pop();
+                      },
                       enabled: false,
                       leading: const Icon(FontAwesomeIcons.googlePay),
-                      title: Text('Google Pay'),
+                      title: Text(PaymentMethod.googlePay.formattedName),
                       subtitle: const Text('Coming soon'),
                       trailing: const Icon(
                         Icons.arrow_forward_ios,

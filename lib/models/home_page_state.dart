@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
@@ -39,7 +40,9 @@ class HomePageState with _$HomePageState {
       );
 
   factory HomePageState.fromJson(Map<String, dynamic> json) =>
-      _$HomePageStateFromJson(json);
+      tryCatchRethrowInline(
+        () => _$HomePageStateFromJson(json),
+      );
 }
 
 class HomePageStateConverter
@@ -47,8 +50,11 @@ class HomePageStateConverter
   const HomePageStateConverter();
 
   @override
-  HomePageState fromJson(Map<String, dynamic>? json) =>
-      json != null ? HomePageState.fromJson(json) : HomePageState.initial();
+  HomePageState fromJson(Map<String, dynamic>? json) => tryCatchRethrowInline(
+        () => json != null
+            ? HomePageState.fromJson(json)
+            : HomePageState.initial(),
+      );
 
   @override
   Map<String, dynamic> toJson(HomePageState instance) => instance.toJson();
