@@ -21,6 +21,7 @@ VegiSession _$VegiSessionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$VegiSession {
   String get sessionCookie => throw _privateConstructorUsedError;
+  UserDTO? get user => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,9 @@ abstract class $VegiSessionCopyWith<$Res> {
           VegiSession value, $Res Function(VegiSession) then) =
       _$VegiSessionCopyWithImpl<$Res, VegiSession>;
   @useResult
-  $Res call({String sessionCookie});
+  $Res call({String sessionCookie, UserDTO? user});
+
+  $UserDTOCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -51,13 +54,30 @@ class _$VegiSessionCopyWithImpl<$Res, $Val extends VegiSession>
   @override
   $Res call({
     Object? sessionCookie = null,
+    Object? user = freezed,
   }) {
     return _then(_value.copyWith(
       sessionCookie: null == sessionCookie
           ? _value.sessionCookie
           : sessionCookie // ignore: cast_nullable_to_non_nullable
               as String,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserDTO?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserDTOCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserDTOCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -69,7 +89,10 @@ abstract class _$$_VegiSessionCopyWith<$Res>
       __$$_VegiSessionCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String sessionCookie});
+  $Res call({String sessionCookie, UserDTO? user});
+
+  @override
+  $UserDTOCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -84,12 +107,17 @@ class __$$_VegiSessionCopyWithImpl<$Res>
   @override
   $Res call({
     Object? sessionCookie = null,
+    Object? user = freezed,
   }) {
     return _then(_$_VegiSession(
       sessionCookie: null == sessionCookie
           ? _value.sessionCookie
           : sessionCookie // ignore: cast_nullable_to_non_nullable
               as String,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserDTO?,
     ));
   }
 }
@@ -98,17 +126,20 @@ class __$$_VegiSessionCopyWithImpl<$Res>
 
 @JsonSerializable()
 class _$_VegiSession extends _VegiSession {
-  _$_VegiSession({required this.sessionCookie}) : super._();
+  _$_VegiSession({required this.sessionCookie, this.user = null}) : super._();
 
   factory _$_VegiSession.fromJson(Map<String, dynamic> json) =>
       _$$_VegiSessionFromJson(json);
 
   @override
   final String sessionCookie;
+  @override
+  @JsonKey()
+  final UserDTO? user;
 
   @override
   String toString() {
-    return 'VegiSession(sessionCookie: $sessionCookie)';
+    return 'VegiSession(sessionCookie: $sessionCookie, user: $user)';
   }
 
   @override
@@ -117,12 +148,13 @@ class _$_VegiSession extends _VegiSession {
         (other.runtimeType == runtimeType &&
             other is _$_VegiSession &&
             (identical(other.sessionCookie, sessionCookie) ||
-                other.sessionCookie == sessionCookie));
+                other.sessionCookie == sessionCookie) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, sessionCookie);
+  int get hashCode => Object.hash(runtimeType, sessionCookie, user);
 
   @JsonKey(ignore: true)
   @override
@@ -139,7 +171,9 @@ class _$_VegiSession extends _VegiSession {
 }
 
 abstract class _VegiSession extends VegiSession {
-  factory _VegiSession({required final String sessionCookie}) = _$_VegiSession;
+  factory _VegiSession(
+      {required final String sessionCookie,
+      final UserDTO? user}) = _$_VegiSession;
   _VegiSession._() : super._();
 
   factory _VegiSession.fromJson(Map<String, dynamic> json) =
@@ -147,6 +181,8 @@ abstract class _VegiSession extends VegiSession {
 
   @override
   String get sessionCookie;
+  @override
+  UserDTO? get user;
   @override
   @JsonKey(ignore: true)
   _$$_VegiSessionCopyWith<_$_VegiSession> get copyWith =>

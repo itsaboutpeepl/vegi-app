@@ -9,6 +9,7 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:wallet_connect/wc_session_store.dart';
 
 final cashWalletReducers = combineReducers<CashWalletState>([
+  TypedReducer<CashWalletState, ResetAppState>(_resetApp),
   TypedReducer<CashWalletState, GetTokenIntervalStatsSuccess>(
     _getTokenIntervalStatsSuccess,
   ),
@@ -38,6 +39,13 @@ final cashWalletReducers = combineReducers<CashWalletState>([
   ),
   TypedReducer<CashWalletState, SetIsFetchingBalances>(_setIsFetchingBalances),
 ]);
+
+CashWalletState _resetApp(
+  CashWalletState state,
+  ResetAppState action,
+) {
+  return CashWalletState.initial();
+}
 
 CashWalletState _getTokenIntervalStatsSuccess(
   CashWalletState state,

@@ -10,6 +10,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/qRFromCartShee
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class RestaurantMenuAppBar extends StatefulWidget {
@@ -100,7 +101,7 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                                       color: themeShade300, width: 3),
                                 ),
                                 fillColor: Colors.transparent,
-                                hintText: 'Search vegi...',
+                                hintText: Messages.searchVendorPlaceholder,
                               ),
                               style: DefaultTextStyle.of(context)
                                   .style
@@ -227,29 +228,30 @@ class _RestaurantMenuAppBarState extends State<RestaurantMenuAppBar> {
                           ? const Icon(Icons.cancel)
                           : const Icon(Icons.search),
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        // await context.router
-                        //     .push(const ScanPaymentRecipientQR());
-                        await context.router.push(const ScanProductQRCode());
-                        // await showModalBottomSheet<Widget>(
-                        //   isScrollControlled: true,
-                        //   backgroundColor: Color.fromARGB(255, 44, 42, 39),
-                        //   shape: const RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.vertical(
-                        //       top: Radius.circular(20),
-                        //     ),
-                        //   ),
-                        //   elevation: 5,
-                        //   context: context,
-                        //   builder: (context) => const QRFromCartSheet(),
-                        // );
-                      },
-                      icon: const Icon(Icons.qr_code_scanner),
-                      padding: const EdgeInsets.all(4),
-                      // icon: const Icon(Icons.contact_support),
-                      // icon: const Icon(Icons.live_help),
-                    ),
+                    if (viewmodel.userIsSuperAdmin)
+                      IconButton(
+                        onPressed: () async {
+                          // await context.router
+                          //     .push(const ScanPaymentRecipientQR());
+                          await context.router.push(const ScanProductQRCode());
+                          // await showModalBottomSheet<Widget>(
+                          //   isScrollControlled: true,
+                          //   backgroundColor: Color.fromARGB(255, 44, 42, 39),
+                          //   shape: const RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.vertical(
+                          //       top: Radius.circular(20),
+                          //     ),
+                          //   ),
+                          //   elevation: 5,
+                          //   context: context,
+                          //   builder: (context) => const QRFromCartSheet(),
+                          // );
+                        },
+                        icon: const Icon(Icons.qr_code_scanner),
+                        padding: const EdgeInsets.all(4),
+                        // icon: const Icon(Icons.contact_support),
+                        // icon: const Icon(Icons.live_help),
+                      ),
                     IconButton(
                       onPressed: () => showDialog<Widget>(
                         context: context,

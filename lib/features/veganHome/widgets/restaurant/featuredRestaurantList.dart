@@ -49,6 +49,7 @@ class FeaturedRestaurantList extends StatelessWidget {
                                 emoji: noVendorsFoundCopyEmoji,
                                 title: noVendorsFoundCopyTitle,
                                 subtitle: noVendorsFoundCopyMessage(location),
+                                refreshable: true,
                               ),
                             ],
                           )
@@ -72,50 +73,66 @@ class FeaturedRestaurantList extends StatelessWidget {
                           ),
                     onRefresh: viewmodel.refreshFeaturedRestaurants,
                   ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    padding: new EdgeInsets.only(
-                      bottom: 20,
-                      right: 20.0,
-                      left: 20.0,
+                  if (viewmodel.userIsVegiAdmin)
+                    VegiPayBottomButton(
+                      userInVendorMode: viewmodel.userInVendorMode,
                     ),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.65,
-                      height: 60,
-                      child: GestureDetector(
-                        onTap: () =>
-                            context.router.push(const ScanPaymentRecipientQR()),
-                        child: Card(
-                          color: themeShade200,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: themeShade900,
-                              width: 2,
-                            ),
-                          ),
-                          child: SizedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Text(
-                                viewmodel.userInVendorMode
-                                    ? 'Take vegiPayment'
-                                    : 'vegiPay',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               );
       },
+    );
+  }
+}
+
+class VegiPayBottomButton extends StatelessWidget {
+  const VegiPayBottomButton({
+    Key? key,
+    required this.userInVendorMode,
+  }) : super(key: key);
+
+  final bool userInVendorMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.only(
+        bottom: 20,
+        right: 20.0,
+        left: 20.0,
+      ),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.65,
+        height: 60,
+        child: GestureDetector(
+          onTap: () => context.router.push(const ScanPaymentRecipientQR()),
+          child: Card(
+            color: themeShade200,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: themeShade900,
+                width: 2,
+              ),
+            ),
+            child: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  Labels.vegiPay(
+                    vendorMode: userInVendorMode,
+                  ),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

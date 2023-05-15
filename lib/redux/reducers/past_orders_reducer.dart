@@ -5,8 +5,10 @@ import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/past_order_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 final pastOrdersReducer = combineReducers<PastOrderState>([
+  TypedReducer<PastOrderState, ResetAppState>(_resetApp),
   TypedReducer<PastOrderState, CreateOrder>(_createOrder),
   TypedReducer<PastOrderState, UpdateOngoingOrderList>(_updateOngoingOrderList),
   TypedReducer<PastOrderState, UpdateScheduledOrders>(_updateScheduledOrders),
@@ -15,6 +17,13 @@ final pastOrdersReducer = combineReducers<PastOrderState>([
   TypedReducer<PastOrderState, UpdateTransactionHistory>(
       _updateTransactionHistory),
 ]);
+
+PastOrderState _resetApp(
+  PastOrderState state,
+  ResetAppState action,
+) {
+  return PastOrderState.initial();
+}
 
 List<Order> updateOrder({
   required SetConfirmed action,
@@ -82,6 +91,7 @@ PastOrderState _updatePastOrders(
 ) {
   return state.copyWith(
     allPastOrders: action.pastOrders,
+    allUnpaidOrders: action.allUnpaidOrders,
     listOfScheduledOrders: action.scheduledOrders,
     listOfOngoingOrders: action.ongoingOrders,
     lastRefreshTime: DateTime.now(),

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class OnBoardingScreenGeneric extends StatelessWidget {
   const OnBoardingScreenGeneric(
@@ -19,7 +20,7 @@ class OnBoardingScreenGeneric extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Image.asset(
-          'assets/images/Vegi-Logo-horizontal.png',
+          ImagePaths.vegiHorizontalLogo,
           width: MediaQuery.of(context).size.width * .4,
         ),
         const SizedBox(

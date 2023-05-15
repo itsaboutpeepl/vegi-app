@@ -18,6 +18,21 @@
             ]
         },
         {
+            "name": "vegi - Debug [verbose]",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "ENV=development",
+                "--dart-define",
+                "verbose=true",
+                "--dart-define",
+                "USE_FIREBASE_EMULATOR=false"
+            ]
+        },
+        {
             "name": "vegi - Debug [reset_state]",
             "request": "launch",
             "type": "dart",

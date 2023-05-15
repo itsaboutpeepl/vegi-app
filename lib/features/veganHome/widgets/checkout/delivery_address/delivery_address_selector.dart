@@ -15,7 +15,7 @@ class DeliveryAddressSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
+    return const Positioned(
       bottom: 100,
       child: DeliveryAddressSelectorButton(),
     );

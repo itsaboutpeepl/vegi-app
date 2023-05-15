@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 
 part 'restaurantMenuItem.freezed.dart';
@@ -18,6 +18,7 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
     required String imageURL,
     required String categoryName,
     required int categoryId,
+
     /// this is the price in pence of the restaurant item without any product options applied
     required int price,
     required String description,
@@ -49,13 +50,13 @@ class RestaurantMenuItem with _$RestaurantMenuItem {
 
   TotalPrice totalPrice({
     required int quantity,
-    required Map<int, ProductOptions> selectedProductOptions,
+    required Map<int, ProductOptionValue> selectedProductOptions,
     required FulfilmentMethodType fulfilmentMethod,
   }) {
     var total = quantity * price;
 
     selectedProductOptions
-        .forEach((int optionID, ProductOptions productOptions) {
+        .forEach((int optionID, ProductOptionValue productOptions) {
       total += productOptions.price;
     });
 

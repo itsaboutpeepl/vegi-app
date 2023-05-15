@@ -10,10 +10,12 @@ import 'package:vegan_liverpool/features/onboard/dialogs/warn_before_recreate.da
 import 'package:vegan_liverpool/features/onboard/widgets/sign_up_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -62,6 +64,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
         });
         viewmodel.createLocalAccount(
           () {
+            log.info('Push SignUpScreen()');
             context.router.push(const SignUpScreen());
           },
         );
@@ -74,22 +77,23 @@ class _SignUpButtonsState extends State<SignUpButtons> {
     SplashViewModel viewmodel,
   ) {
     return () async {
-      if (viewmodel.surveyCompleted) {
-        if (context.router.canPop()) {
-          context.router.popUntilRoot();
-        }
-        await context.router.replace(
-          WaitingListFunnelScreen(
-            surveyCompleted: true,
-          ),
-        );
-      } else {
-        await context.router.replace(
-          WaitingListFunnelScreen(
-            surveyCompleted: false,
-          ),
-        );
-      }
+      // if (viewmodel.surveyCompleted) {
+      //   if (context.router.canPop()) {
+      //     context.router.popUntilRoot();
+      //   }
+      //   await context.router.replace(
+      //     WaitingListFunnelScreen(
+      //       surveyCompleted: true,
+      //     ),
+      //   );
+      // } else {
+      //   await context.router.replace(
+      //     WaitingListFunnelScreen(
+      //       surveyCompleted: false,
+      //     ),
+      //   );
+      // }
+      await rootRouter.replace(const WaitingListFunnelScreen());
     };
   }
 
@@ -109,6 +113,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
           setState(() {
             isPrimaryPreloading = false;
           });
+          log.info('Push SignUpScreen()');
           context.router.push(const SignUpScreen());
         },
       );
@@ -120,10 +125,9 @@ class _SignUpButtonsState extends State<SignUpButtons> {
     SplashViewModel viewmodel,
   ) {
     return () async {
-      await context.router.replace(
-        WaitingListFunnelScreen(
-          surveyCompleted: false,
-        ),
+      viewmodel.resetSurveyCompleted();
+      await rootRouter.replace(
+        const WaitingListFunnelScreen(),
       );
     };
   }
@@ -143,26 +147,17 @@ class _SignUpButtonsState extends State<SignUpButtons> {
       distinct: true,
       converter: SplashViewModel.fromStore,
       onWillChange: (previousViewModel, newViewModel) async {
-        if (newViewModel.userAuthenticationStatus !=
-            (previousViewModel?.userAuthenticationStatus ??
-                UserAuthenticationStatus.unauthenticated)) {
-          log.info(
-              'Update to user authentication: ${newViewModel.userAuthenticationStatus.name}');
-        }
-        if (newViewModel.fuseWalletCreationStatus !=
-            (previousViewModel?.fuseWalletCreationStatus ??
-                FuseWalletCreationStatus.unauthenticated)) {
-          log.info(
-              'Update to fuseWalletCreationStatus: ${newViewModel.fuseWalletCreationStatus.name}');
-          // await showInfoSnack(context, title: 'title')
-        }
+        checkAuth(
+          oldViewModel: previousViewModel,
+          newViewModel: newViewModel,
+          routerContext: context,
+        );
       },
       onInit: (store) {
         store.dispatch(fetchSurveyQuestions());
         if (store.state.userState.accountDetailsExist) {
-          store
-            ..dispatch(isBetaWhitelistedAddress())
-            ..dispatch(ReLogin());
+          store.dispatch(isBetaWhitelistedAddress());
+          // ..dispatch(ReLogin());
         }
       },
       builder: (_, viewmodel) {

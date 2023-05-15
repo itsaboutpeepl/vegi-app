@@ -161,18 +161,19 @@ class UpdatePostalCodes {
 
 ThunkAction<AppState> fetchFeaturedRestaurantsByPostCode({
   String outCode = 'L1',
+  bool dontRoute = false,
 }) {
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetIsLoadingHomePage(isLoading: true));
       final List<RestaurantItem> restaurants =
-          await peeplEatsService.featuredRestaurants(outCode);
+          await peeplEatsService.featuredRestaurants(outCode, dontRoute: dontRoute,);
 
       store
         ..dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
         )
-        ..dispatch(fetchMenuItemsForFeaturedRestaurants())
+        ..dispatch(fetchMenuItemsForFeaturedRestaurants(dontRoute: true))
         ..dispatch(
           UpdateSelectedSearchPostCode(
             selectedSearchPostCode: outCode,
@@ -318,7 +319,9 @@ Future<Coordinates> fetchUserDeliverToCoordinates(Store<AppState> store) async {
   }
 }
 
-ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
+ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation({
+  bool dontRoute = false,
+}) {
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetIsLoadingHomePage(isLoading: true));
@@ -345,6 +348,7 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
         fulfilmentMethodTypeName: store.state.cartState.isDelivery
             ? FulfilmentMethodType.delivery
             : FulfilmentMethodType.collection,
+        dontRoute: dontRoute,
       );
 
       final outCode = postcodeDetails.isNotEmpty
@@ -357,7 +361,7 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
         ..dispatch(
           UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants),
         )
-        ..dispatch(fetchMenuItemsForFeaturedRestaurants())
+        ..dispatch(fetchMenuItemsForFeaturedRestaurants(dontRoute: dontRoute))
         ..dispatch(
           UpdateSelectedSearchPostCode(
             selectedSearchPostCode: outCode,
@@ -374,7 +378,9 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByUserLocation() {
   };
 }
 
-ThunkAction<AppState> fetchMenuItemsForFeaturedRestaurants() {
+ThunkAction<AppState> fetchMenuItemsForFeaturedRestaurants({
+  bool dontRoute = false,
+}) {
   return (Store<AppState> store) async {
     try {
       final List<RestaurantItem> currentList =
@@ -385,10 +391,10 @@ ThunkAction<AppState> fetchMenuItemsForFeaturedRestaurants() {
         (RestaurantItem element) async {
           element.productCategories.addAll(
             await peeplEatsService
-                .getProductCategoriesForVendor(int.parse(element.restaurantID)),
+                .getProductCategoriesForVendor(int.parse(element.restaurantID), dontRoute: dontRoute),
           );
           element.listOfMenuItems.addAll(
-            await peeplEatsService.getRestaurantMenuItems(element.restaurantID),
+            await peeplEatsService.getRestaurantMenuItems(element.restaurantID, dontRoute: dontRoute),
           );
         },
       );
@@ -411,13 +417,14 @@ ThunkAction<AppState> fetchMenuItemsForFeaturedRestaurants() {
 
 ThunkAction<AppState> fetchMenuItemsForRestaurant({
   required String restaurantID,
+  bool dontRoute = false,
 }) {
   return (Store<AppState> store) async {
     try {
       final productCategories = await peeplEatsService
-          .getProductCategoriesForVendor(int.parse(restaurantID));
+          .getProductCategoriesForVendor(int.parse(restaurantID), dontRoute: dontRoute);
       final products =
-          await peeplEatsService.getRestaurantMenuItems(restaurantID);
+          await peeplEatsService.getRestaurantMenuItems(restaurantID, dontRoute: dontRoute);
 
       final restaurant =
           store.state.homePageState.featuredRestaurants.firstWhere(
@@ -624,10 +631,12 @@ ThunkAction<AppState> setMenuSearchQuery({required String searchQuery}) {
   };
 }
 
-ThunkAction<AppState> fetchPostalCodes() {
+ThunkAction<AppState> fetchPostalCodes({
+  bool dontRoute = false,
+}) {
   return (Store<AppState> store) async {
     try {
-      final List<String> postalCodes = await peeplEatsService.getPostalCodes();
+      final List<String> postalCodes = await peeplEatsService.getPostalCodes(dontRoute: dontRoute);
 
       store.dispatch(UpdatePostalCodes(postalCodes));
     } catch (e, s) {
@@ -649,10 +658,10 @@ ThunkAction<AppState> fetchHomePageData() {
       store
         ..dispatch(
           locationEnabled
-              ? fetchFeaturedRestaurantsByUserLocation()
-              : fetchFeaturedRestaurantsByPostCode(),
+              ? fetchFeaturedRestaurantsByUserLocation(dontRoute: true)
+              : fetchFeaturedRestaurantsByPostCode(dontRoute: true),
         )
-        ..dispatch(fetchPostalCodes())
+        ..dispatch(fetchPostalCodes(dontRoute: true))
         ..dispatch(checkForSavedSeedPhrase());
     } catch (e, s) {
       log.error('ERROR - fetchHomePageData $e');

@@ -23,7 +23,8 @@ ProductOptionsCategory _$ProductOptionsCategoryFromJson(
 mixin _$ProductOptionsCategory {
   int get categoryID => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  List<ProductOptions> get listOfOptions => throw _privateConstructorUsedError;
+  List<ProductOptionValue> get listOfOptions =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +38,8 @@ abstract class $ProductOptionsCategoryCopyWith<$Res> {
           $Res Function(ProductOptionsCategory) then) =
       _$ProductOptionsCategoryCopyWithImpl<$Res, ProductOptionsCategory>;
   @useResult
-  $Res call({int categoryID, String name, List<ProductOptions> listOfOptions});
+  $Res call(
+      {int categoryID, String name, List<ProductOptionValue> listOfOptions});
 }
 
 /// @nodoc
@@ -70,7 +72,7 @@ class _$ProductOptionsCategoryCopyWithImpl<$Res,
       listOfOptions: null == listOfOptions
           ? _value.listOfOptions
           : listOfOptions // ignore: cast_nullable_to_non_nullable
-              as List<ProductOptions>,
+              as List<ProductOptionValue>,
     ) as $Val);
   }
 }
@@ -83,7 +85,8 @@ abstract class _$$_ProductOptionsCategoryCopyWith<$Res>
       __$$_ProductOptionsCategoryCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int categoryID, String name, List<ProductOptions> listOfOptions});
+  $Res call(
+      {int categoryID, String name, List<ProductOptionValue> listOfOptions});
 }
 
 /// @nodoc
@@ -114,7 +117,7 @@ class __$$_ProductOptionsCategoryCopyWithImpl<$Res>
       listOfOptions: null == listOfOptions
           ? _value.listOfOptions
           : listOfOptions // ignore: cast_nullable_to_non_nullable
-              as List<ProductOptions>,
+              as List<ProductOptionValue>,
     ));
   }
 }
@@ -137,7 +140,7 @@ class _$_ProductOptionsCategory extends _ProductOptionsCategory {
   @override
   final String name;
   @override
-  final List<ProductOptions> listOfOptions;
+  final List<ProductOptionValue> listOfOptions;
 
   @override
   String toString() {
@@ -180,7 +183,7 @@ abstract class _ProductOptionsCategory extends ProductOptionsCategory {
   factory _ProductOptionsCategory(
           {required final int categoryID,
           required final String name,
-          required final List<ProductOptions> listOfOptions}) =
+          required final List<ProductOptionValue> listOfOptions}) =
       _$_ProductOptionsCategory;
   _ProductOptionsCategory._() : super._();
 
@@ -192,7 +195,7 @@ abstract class _ProductOptionsCategory extends ProductOptionsCategory {
   @override
   String get name;
   @override
-  List<ProductOptions> get listOfOptions;
+  List<ProductOptionValue> get listOfOptions;
   @override
   @JsonKey(ignore: true)
   _$$_ProductOptionsCategoryCopyWith<_$_ProductOptionsCategory> get copyWith =>

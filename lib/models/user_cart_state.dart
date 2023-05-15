@@ -3,8 +3,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/envService.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/cart/discount.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -34,6 +36,14 @@ class UserCartState with _$UserCartState {
         int cartDiscountPercent,
     @Default(0)
         int cartDiscountComputed,
+    @JsonKey(
+      fromJson: Money.fromJson,
+      toJson: Money.toJson,
+    )
+    @Default(Money.zero())
+        Money voucherPotValue,
+    @Default([])
+        List<Discount> appliedVouchers,
     @Default([])
         List<TimeSlot> deliverySlots,
     @Default([])

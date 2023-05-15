@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
 part 'cartItem.freezed.dart';
@@ -15,7 +15,7 @@ class CartItem with _$CartItem {
     required RestaurantMenuItem menuItem,
     required int totalItemPrice,
     required int itemQuantity,
-    required Map<int, ProductOptions> selectedProductOptions,
+    required Map<int, ProductOptionValue> selectedProductOptions,
   }) = _CartItem;
 
   const CartItem._();

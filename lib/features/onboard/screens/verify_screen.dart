@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/onboard.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class VerifyPhoneNumber extends StatefulWidget {
   const VerifyPhoneNumber({Key? key, this.verificationId}) : super(key: key);
@@ -31,6 +34,40 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
     super.initState();
   }
 
+  Future<void> _route(VerifyOnboardViewModel viewModel) async {
+    final success = viewModel.firebaseAuthenticationStatus ==
+        FirebaseAuthenticationStatus.authenticated;
+    if (viewModel.vegiAuthenticationStatus == VegiAuthenticationStatus.failed) {
+      log.error('Vegi login failed. Investigate why...');
+    }
+    if (isPreloading &&
+        viewModel.firebaseAuthenticationStatus !=
+            FirebaseAuthenticationStatus.loading) {
+      setState(() {
+        isPreloading = false;
+      });
+    }
+    if (success) {
+      if (!viewModel.displayNameIsSet) {
+        log.info('Push UserNameScreen()');
+        await rootRouter.push(UserNameScreen());
+      } else if (viewModel.email.isEmpty) {
+        log.info('Push RegisterEmailOnBoardingScreen()');
+        await rootRouter.push(
+          RegisterEmailOnBoardingScreen(
+            onSubmitEmail: () {},
+          ),
+        );
+      } else if (!viewModel.biometricAuthIsSet) {
+        log.info('Push ChooseSecurityOption()');
+        await rootRouter.push(const ChooseSecurityOption());
+      } else {
+        log.info('Push MainScreen()');
+        await rootRouter.push(const MainScreen());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
@@ -45,20 +82,26 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
             setState(() {
               isPreloading = true;
             });
-            viewModel.verify(
-              autoCode,
+            delayed(
+              10000,
               () {
                 setState(() {
                   isPreloading = false;
                 });
               },
-              (error) {
-                setState(() {
-                  isPreloading = false;
-                });
-              },
+              () => viewModel.verify(
+                autoCode,
+                (error) {
+                  setState(() {
+                    isPreloading = false;
+                  });
+                },
+              ),
             );
           }
+        },
+        onWillChange: (oldViewModel, newViewModel) {
+          _route(newViewModel);
         },
         builder: (_, viewModel) {
           return Column(
@@ -163,6 +206,7 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                             padding: const EdgeInsets.only(right: 10),
                           ),
                           onPressed: () {
+                            log.info('Push SignUpScreen()');
                             rootRouter.push(const SignUpScreen());
                           },
                           child: Text(
@@ -192,32 +236,32 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
       setState(() {
         isPreloading = true;
       });
-      viewModel.verify(
-        codeController.text,
+      delayed(
+        10000,
         () {
           setState(() {
             isPreloading = false;
           });
-          if (!viewModel.displayNameIsSet) {
-            rootRouter.push(UserNameScreen());
-          } else if (!viewModel.biometricAuthIsSet) {
-            rootRouter.push(const ChooseSecurityOption());
-          } else {
-            rootRouter.push(const MainScreen());
-          }
         },
-        (dynamic error) {
-          setState(() {
-            isPreloading = false;
-          });
-          if (context.mounted) {
-            showErrorSnack(
-              context: context,
-              title: 'Connection issue',
-              message: 'Unable to verify phonenumber verification code',
+        () => viewModel.verify(
+          codeController.text,
+          (dynamic error) {
+            setState(() {
+              isPreloading = false;
+            });
+            log.error(
+              error,
+              stackTrace: StackTrace.current,
             );
-          }
-        },
+            if (context.mounted) {
+              showErrorSnack(
+                context: context,
+                title: 'Connection issue',
+                message: 'Unable to verify phonenumber verification code',
+              );
+            }
+          },
+        ),
       );
     }
   }

@@ -22,26 +22,29 @@ import 'package:internet_connection_checker/internet_connection_checker.dart'
 import 'package:logger/logger.dart' as _i13;
 import 'package:package_info/package_info.dart' as _i15;
 import 'package:phone_number/phone_number.dart' as _i19;
-import 'package:vegan_liverpool/common/di/dio.dart' as _i27;
-import 'package:vegan_liverpool/common/di/firebase.dart' as _i29;
-import 'package:vegan_liverpool/common/di/logger_di.dart' as _i26;
-import 'package:vegan_liverpool/common/di/network_info_di.dart' as _i30;
-import 'package:vegan_liverpool/common/di/onboard.dart' as _i28;
-import 'package:vegan_liverpool/common/di/package_info.dart' as _i31;
-import 'package:vegan_liverpool/common/di/phone.dart' as _i25;
-import 'package:vegan_liverpool/common/network/services.dart' as _i32;
+import 'package:redux/redux.dart' as _i21;
+import 'package:vegan_liverpool/common/di/dio.dart' as _i29;
+import 'package:vegan_liverpool/common/di/firebase.dart' as _i31;
+import 'package:vegan_liverpool/common/di/logger_di.dart' as _i28;
+import 'package:vegan_liverpool/common/di/network_info_di.dart' as _i32;
+import 'package:vegan_liverpool/common/di/onboard.dart' as _i30;
+import 'package:vegan_liverpool/common/di/package_info.dart' as _i33;
+import 'package:vegan_liverpool/common/di/phone.dart' as _i27;
+import 'package:vegan_liverpool/common/network/services.dart' as _i34;
 import 'package:vegan_liverpool/common/router/routes.dart' as _i20;
+import 'package:vegan_liverpool/initStore.dart' as _i35;
+import 'package:vegan_liverpool/models/app_state.dart' as _i22;
 import 'package:vegan_liverpool/services/apis/blueBeaconService.dart' as _i3;
 import 'package:vegan_liverpool/services/apis/locationService.dart' as _i12;
 import 'package:vegan_liverpool/services/apis/peeplEats.dart' as _i16;
 import 'package:vegan_liverpool/services/apis/peeplPay.dart' as _i17;
 import 'package:vegan_liverpool/services/apis/peeplPay2.dart' as _i18;
-import 'package:vegan_liverpool/services/apis/stripePay.dart' as _i22;
-import 'package:vegan_liverpool/services/apis/stripePay2.dart' as _i21;
+import 'package:vegan_liverpool/services/apis/stripePay.dart' as _i24;
+import 'package:vegan_liverpool/services/apis/stripePay2.dart' as _i23;
 import 'package:vegan_liverpool/utils/connectionChecker.dart' as _i14;
-import 'package:vegan_liverpool/utils/log/log_it.dart' as _i24;
+import 'package:vegan_liverpool/utils/log/log_it.dart' as _i26;
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart' as _i10;
-import 'package:vegan_liverpool/utils/stripe.dart' as _i23;
+import 'package:vegan_liverpool/utils/stripe.dart' as _i25;
 
 extension GetItInjectableX on _i1.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -62,6 +65,7 @@ extension GetItInjectableX on _i1.GetIt {
     final loggerDi = _$LoggerDi();
     final packageInfoDi = _$PackageInfoDi();
     final phone = _$Phone();
+    final registerModule = _$RegisterModule();
     gh.lazySingleton<_i3.BlueBeaconService>(() => _i3.BlueBeaconService());
     gh.factory<_i4.Dio>(() => dioDi.dio);
     gh.lazySingleton<_i5.FirebaseAnalytics>(
@@ -95,27 +99,30 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i18.PeeplPayService>(() => _i18.PeeplPayService());
     gh.lazySingleton<_i19.PhoneNumberUtil>(() => phone.phoneNumberUtil);
     gh.lazySingleton<_i20.RootRouter>(() => servicesModule.rootRouter);
-    gh.lazySingleton<_i21.StripePayService>(() => _i21.StripePayService());
-    gh.lazySingleton<_i22.StripePayService>(
-        () => _i22.StripePayService(gh<_i4.Dio>()));
-    gh.lazySingleton<_i23.StripeService>(() => _i23.StripeService());
-    gh.lazySingleton<_i24.LogIt>(() => _i24.LogIt(gh<_i13.Logger>()));
+    gh.singletonAsync<_i21.Store<_i22.AppState>>(() => registerModule.store());
+    gh.lazySingleton<_i23.StripePayService>(() => _i23.StripePayService());
+    gh.lazySingleton<_i24.StripePayService>(
+        () => _i24.StripePayService(gh<_i4.Dio>()));
+    gh.lazySingleton<_i25.StripeService>(() => _i25.StripeService());
+    gh.lazySingleton<_i26.LogIt>(() => _i26.LogIt(gh<_i13.Logger>()));
     return this;
   }
 }
 
-class _$Phone extends _i25.Phone {}
+class _$Phone extends _i27.Phone {}
 
-class _$LoggerDi extends _i26.LoggerDi {}
+class _$LoggerDi extends _i28.LoggerDi {}
 
-class _$DioDi extends _i27.DioDi {}
+class _$DioDi extends _i29.DioDi {}
 
-class _$OnBoardStrategy extends _i28.OnBoardStrategy {}
+class _$OnBoardStrategy extends _i30.OnBoardStrategy {}
 
-class _$FirebaseInjectableModule extends _i29.FirebaseInjectableModule {}
+class _$FirebaseInjectableModule extends _i31.FirebaseInjectableModule {}
 
-class _$NetworkInfoDi extends _i30.NetworkInfoDi {}
+class _$NetworkInfoDi extends _i32.NetworkInfoDi {}
 
-class _$PackageInfoDi extends _i31.PackageInfoDi {}
+class _$PackageInfoDi extends _i33.PackageInfoDi {}
 
-class _$ServicesModule extends _i32.ServicesModule {}
+class _$ServicesModule extends _i34.ServicesModule {}
+
+class _$RegisterModule extends _i35.RegisterModule {}

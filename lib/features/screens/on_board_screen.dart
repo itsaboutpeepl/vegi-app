@@ -7,6 +7,8 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/onboard/widgets/firstOnboardingPage.dart';
 import 'package:vegan_liverpool/features/onboard/widgets/on_boarding_page.dart';
 import 'package:vegan_liverpool/features/onboard/widgets/sign_up_buttons.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListBetaEligibilityScreen.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({Key? key}) : super(key: key);
@@ -72,23 +74,22 @@ class _OnBoardScreenState extends State<OnBoardScreen>
     final List<Widget> welcomeScreens = [
       const FirstOnboardingPage(),
       const OnBoardingScreenGeneric(
-        'Shop plant-based',
-        'Find plant-based, planet-kind and ethical '
-            'products from local businesses and growers',
-        'plant-icon.svg',
+        CopyWrite.onboardingScreenHeading1,
+        CopyWrite.onboardingScreenSubHeading1,
+        ImagePaths.onboardingScreenHeadingImage1,
       ),
       const OnBoardingScreenGeneric(
-        'Shop local',
-        'vegi is a digital wallet that supports independents'
-            ' only. Top your wallet and spend with Liverpool locals',
-        'local-icon.svg',
+        CopyWrite.onboardingScreenHeading2,
+        CopyWrite.onboardingScreenSubHeading2,
+        ImagePaths.onboardingScreenHeadingImage2,
       ),
-      const OnBoardingScreenGeneric(
-        'Earn rewards',
-        'Receive 5% back to spend next time from Peepl Rewards (PPL Tokens)',
-        'rewards-icon.svg',
+      OnBoardingScreenGeneric(
+        CopyWrite.onboardingScreenHeading3,
+        CopyWrite.onboardingScreenSubHeading3,
+        ImagePaths.onboardingScreenHeadingImage3,
       ),
-      const SignUpButtons()
+      // const SignUpButtons()
+      const WaitingListBetaEligibilityScreen(),
     ];
 
     final _tween = MovieTween()
@@ -120,7 +121,9 @@ class _OnBoardScreenState extends State<OnBoardScreen>
               duration: _tween.duration, // Obtain duration
               builder: (_, Movie value, child) {
                 return ColoredBox(
-                  color: value.get(screenColor),
+                  color: _bottomRowOpacity > 0
+                      ? value.get(screenColor)
+                      : Colors.grey[350] ?? Colors.grey,
                   child: Column(
                     children: <Widget>[
                       Expanded(

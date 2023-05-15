@@ -12,6 +12,7 @@ class AllOrdersPageViewModel extends Equatable {
   const AllOrdersPageViewModel({
     required this.lastRefreshTime,
     required this.pastOrders,
+    required this.allUnpaidOrders,
     required this.ongoingOrders,
     required this.scheduledOrders,
     // required this.failedPayments,
@@ -24,6 +25,7 @@ class AllOrdersPageViewModel extends Equatable {
       ongoingOrders: store.state.pastOrderState.listOfOngoingOrders,
       scheduledOrders: store.state.pastOrderState.listOfScheduledOrders,
       pastOrders: store.state.pastOrderState.allPastOrders,
+      allUnpaidOrders: store.state.pastOrderState.allUnpaidOrders,
 
       // fetchTransactionsForWallet: () {
       //   store.dispatch(
@@ -49,8 +51,14 @@ class AllOrdersPageViewModel extends Equatable {
 
   final DateTime lastRefreshTime;
   final List<Order> pastOrders;
+  final List<Order> allUnpaidOrders;
   final List<Order> ongoingOrders;
   final List<Order> scheduledOrders;
+
+  List<Order> get allOrders => scheduledOrders
+    ..addAll(ongoingOrders)
+    ..addAll(allUnpaidOrders)
+    ..addAll(pastOrders);
 
   final void Function(
     void Function() successHandler,
@@ -67,5 +75,6 @@ class AllOrdersPageViewModel extends Equatable {
   @override
   List<Object?> get props => [
         lastRefreshTime,
+        allOrders.map((e) => e.id).join(';'),
       ];
 }

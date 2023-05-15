@@ -55,10 +55,32 @@ extension NumHelpers on num {
   String get formattedGBPPriceNoDec => '£${(this).toStringAsFixed(0)}';
 }
 
+final _thLookUp = <int, String>{
+  1: 'st',
+  2: 'nd',
+  3: 'rd',
+  4: 'th',
+  5: 'th',
+  6: 'th',
+  7: 'th',
+  8: 'th',
+  9: 'th',
+};
+
+String getThSuffix(int i) => _thLookUp.containsKey(i) ? _thLookUp[i]! : 'th';
+
 extension IntHelpers on int {
   DateTime toTimeStamp() => DateTime.fromMillisecondsSinceEpoch(
         this,
       ).toLocal();
+  String thFormatted({
+    required int dontFormatStrictlyAbove,
+  }) =>
+      '$this${this <= dontFormatStrictlyAbove ? getThSuffix(this) : ''}';
+}
+
+extension DoubleHelpers on double {
+  String toPercent([int decimalPlaces = 0]) => '${(this * 100.0).toStringAsFixed(decimalPlaces)}%';
 }
 
 extension DateTimeHelpers on DateTime {
@@ -78,7 +100,8 @@ extension DateTimeHelpers on DateTime {
 
   String get formattedForUI {
     final DateFormat formatter = DateFormat(
-        'HH:mm - E, d MMM'); // ~ https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html
+      'HH:mm - E, d MMM',
+    ); // ~ https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html
 
     return formatter.format(this);
   }
@@ -147,6 +170,10 @@ extension IterableHelpers<T> on Iterable<T> {
     for (final element in this) {
       yield convert(index++, element);
     }
+  }
+
+  bool indexExists(int index) {
+    return toList().length > index && index > -1;
   }
 
   Tuple2<T?, Iterable<T>> separateElement(
@@ -237,37 +264,43 @@ extension NumIterableHelpers<T> on Iterable<T> {
   ///
   /// Example of calculating the sum of an iterable:
   /// ```dart
-  /// final numbers = <double>[10, 2, 5, 0.5];
-  /// final result = numbers.sum((a) => a);
+  /// final numbers = <T>[10, 2, 5, 0.5];
+  /// final result = numbers.sum<T>((num previousValue, T nextValue) => nextValue + previousValue);
   /// print(result); // 17.5
   /// ```
-  T sum({
-    T Function(T a, T b)? sumFunc,
-  }) {
+  num sum([
+    num Function(
+      num previousVal,
+      T next,
+    )?
+        sumFunc,
+  ]) {
     if (sumFunc != null) {
-      return reduce(
-        (value, element) => sumFunc(value, element),
+      return fold<num>(
+        0.0,
+        (previousValue, element) => sumFunc(previousValue, element),
       );
     } else if (length > 0 && first is num && this is Iterable<num>) {
       if (T is num) {
-        return (this as Iterable<num>).reduce(
-          (value, element) => value + element,
-        ) as T;
+        return (this as Iterable<num>).fold<num>(
+          0.0,
+          (previousValue, element) => previousValue + element,
+        );
       } else if (T is double) {
         return (this as Iterable<double>).reduce(
           (value, element) => value + element,
-        ) as T;
+        );
       } else if (T is int) {
         return (this as Iterable<int>).reduce(
           (value, element) => value + element,
-        ) as T;
+        );
       } else {
         return cast<num>().reduce(
           (value, element) => value + element,
-        ) as T;
+        );
       }
     } else if (length == 0) {
-      return 0.0 as T;
+      return 0.0;
     } else {
       log.error(
           'Type of array vals must either extend a num or have a comparitor defined!');

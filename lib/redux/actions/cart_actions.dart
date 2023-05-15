@@ -23,17 +23,19 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForCollection.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/discount.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/models/waitingListFunnel/waitingListEntry.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
@@ -201,6 +203,27 @@ class UpdateComputedCartValues {
   }
 }
 
+class AddValidVoucherCodeToCart {
+  AddValidVoucherCodeToCart({
+    // required this.vendorId,
+    // required this.value,
+    // required this.code,
+    // required this.expiryDate,
+    required this.voucher,
+  });
+  // final int vendorId;
+  // final num value;
+  // final String code;
+  // final DateTime expiryDate;
+  final Discount voucher;
+
+  @override
+  String toString() {
+    return 'AddValidVoucherCodeToCart : value: ${voucher.value}, '
+        'discountCode: ${voucher.code}, vendorId: ${voucher.vendor}';
+  }
+}
+
 class UpdateCartDiscount {
   UpdateCartDiscount(this.cartDiscountPercent, this.discountCode);
   final int cartDiscountPercent;
@@ -219,6 +242,19 @@ class ClearCart {
   @override
   String toString() {
     return 'ClearCart';
+  }
+}
+
+class SetSubscribedToWaitingListUpdates {
+  SetSubscribedToWaitingListUpdates({
+    required this.updatedEntry,
+  });
+
+  final WaitingListEntry updatedEntry;
+
+  @override
+  String toString() {
+    return 'SetSubscribedToWaitingListUpdates : updatedEntry:"${updatedEntry.email}, emailUpdates: ${updatedEntry.emailUpdates}"';
   }
 }
 
@@ -539,6 +575,83 @@ ThunkAction<AppState> updateCartTip(int newTip) {
   };
 }
 
+ThunkAction<AppState> subscribeToWaitingListEmails({
+  required String email,
+  required bool receiveUpdates,
+  required void Function(String) onError,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      final entry = await peeplEatsService.subscribeToWaitingListEmails(
+        email: email,
+        receiveUpdates: receiveUpdates,
+        onError: onError,
+      );
+      if (entry == null) {
+        return onError('Unable to subscribe email to waiting list updates');
+      }
+      store.dispatch(
+        SetSubscribedToWaitingListUpdates(
+          updatedEntry: entry,
+        ),
+      );
+    } catch (e, s) {
+      log.error('ERROR - subsribeToWaitingListEmails $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - subsribeToWaitingListEmails $e',
+      );
+      onError(
+        'ERROR - subsribeToWaitingListEmails $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> validateFixedVoucherCode({
+  required String code,
+  required int vendor,
+  required void Function(String) onError,
+  void Function()? successHandler,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      final discount = await peeplEatsService.validateFixedDiscountCode(
+        store: store,
+        code: code,
+        walletAddress: store.state.userState.walletAddress,
+        vendor: vendor,
+        onError: onError,
+      );
+      if (discount == null) {
+        return;
+      }
+      store.dispatch(
+        AddValidVoucherCodeToCart(
+          // code: code,
+          // vendorId: vendor,
+          // value: discount.value,
+          // expiryDate: discount.expiryDateTime,
+          voucher: discount,
+        ),
+      );
+
+      successHandler?.call();
+    } catch (e, s) {
+      log.error('ERROR - validateFixedVoucherCode $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - validateFixedVoucherCode $e',
+      );
+      onError(
+        'ERROR - validateFixedVoucherCode $e',
+      );
+    }
+  };
+}
+
 ThunkAction<AppState> updateCartDiscount({
   required String newDiscountCode,
   required void Function() successCallback,
@@ -633,7 +746,7 @@ ThunkAction<AppState> updateCartItems(List<CartItem> itemsToAdd) {
 ThunkAction<AppState> selectProductOptionForCartItem({
   required CartItem item,
   required ProductOptionsCategory productOptionCategory,
-  required ProductOptions selectedProductOption,
+  required ProductOptionValue selectedProductOption,
 }) {
   return (Store<AppState> store) async {
     try {
@@ -1170,10 +1283,22 @@ ThunkAction<AppState> startOrderCreationProcess({
   return (Store<AppState> store) async {
     try {
       final cartState = store.state.cartState;
+      OrderCreationProcessStatus _sentryUpdatePipe(
+        OrderCreationProcessStatus status,
+      ) {
+        final message =
+            'OrderCreationProcessStatus changed to "${status.name}"';
+        Sentry.captureMessage(
+          message,
+        );
+        return status;
+      }
+
       if (cartState.selectedTimeSlot == null) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
-            status: OrderCreationProcessStatus.needToSelectATimeSlot,
+            status: _sentryUpdatePipe(
+                OrderCreationProcessStatus.needToSelectATimeSlot),
           ),
         );
         return;
@@ -1181,7 +1306,8 @@ ThunkAction<AppState> startOrderCreationProcess({
       if (cartState.selectedDeliveryAddress == null && cartState.isDelivery) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
-            status: OrderCreationProcessStatus.needToSelectADeliveryAddress,
+            status: _sentryUpdatePipe(
+                OrderCreationProcessStatus.needToSelectADeliveryAddress),
           ),
         );
         return;
@@ -1189,7 +1315,8 @@ ThunkAction<AppState> startOrderCreationProcess({
       if (cartState.restaurantMinimumOrder > cartState.cartSubTotal) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
-            status: OrderCreationProcessStatus.orderIsBelowVendorMinimumOrder,
+            status: _sentryUpdatePipe(
+                OrderCreationProcessStatus.orderIsBelowVendorMinimumOrder),
           ),
         );
       } else {
@@ -1308,17 +1435,29 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
     try {
       store.dispatch(SetPaymentButtonFlag(true));
       final result = await peeplEatsService.createOrder(orderObject);
+      OrderCreationProcessStatus _sentryUpdatePipe(
+        OrderCreationProcessStatus status,
+      ) {
+        final message =
+            'OrderCreationProcessStatus changed to "${status.name}"';
+        Sentry.captureMessage(
+          message,
+        );
+        return status;
+      }
 
       if (result == null) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
-            status: OrderCreationProcessStatus.sendOrderCallTimedOut,
+            status: _sentryUpdatePipe(
+                OrderCreationProcessStatus.sendOrderCallTimedOut),
           ),
         );
       } else if (result.orderCreationStatus == OrderCreationStatus.failed) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
-            status: OrderCreationProcessStatus.sendOrderCallServerError,
+            status: _sentryUpdatePipe(
+                OrderCreationProcessStatus.sendOrderCallServerError),
           ),
         );
       } else {
@@ -1332,8 +1471,10 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
         if (paymentIntent['amount'] != store.state.cartState.cartTotal) {
           store.dispatch(
             OrderCreationProcessStatusUpdate(
-              status: OrderCreationProcessStatus
-                  .paymentIntentAmountDoesntMatchCartTotal,
+              status: _sentryUpdatePipe(
+                OrderCreationProcessStatus
+                    .paymentIntentAmountDoesntMatchCartTotal,
+              ),
             ),
           );
         } else {

@@ -17,6 +17,13 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       cartTotal: json['cartTotal'] as int? ?? 0,
       cartDiscountPercent: json['cartDiscountPercent'] as int? ?? 0,
       cartDiscountComputed: json['cartDiscountComputed'] as int? ?? 0,
+      voucherPotValue: json['voucherPotValue'] == null
+          ? const Money.zero()
+          : Money.fromJson(json['voucherPotValue'] as Map<String, dynamic>),
+      appliedVouchers: (json['appliedVouchers'] as List<dynamic>?)
+              ?.map((e) => Discount.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       deliverySlots: (json['deliverySlots'] as List<dynamic>?)
               ?.map((e) => TimeSlot.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -101,6 +108,9 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'cartTotal': instance.cartTotal,
       'cartDiscountPercent': instance.cartDiscountPercent,
       'cartDiscountComputed': instance.cartDiscountComputed,
+      'voucherPotValue': Money.toJson(instance.voucherPotValue),
+      'appliedVouchers':
+          instance.appliedVouchers.map((e) => e.toJson()).toList(),
       'deliverySlots': instance.deliverySlots.map((e) => e.toJson()).toList(),
       'collectionSlots':
           instance.collectionSlots.map((e) => e.toJson()).toList(),

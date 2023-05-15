@@ -5,23 +5,29 @@ import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/authViewModel.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
-class SplashViewModel extends Equatable {
+class SplashViewModel extends Equatable implements IAuthViewModel {
   const SplashViewModel({
     required this.privateKey,
     required this.jwtToken,
     required this.isLoggedOut,
     required this.accountDetailsExist,
+    required this.email,
+    required this.accountCreated,
+    required this.logout,
     required this.createLocalAccount,
     required this.loginAgain,
     required this.surveyCompleted,
+    required this.resetSurveyCompleted,
     required this.isWhiteListedAccount,
-    required this.userAuthenticationStatus,
-    required this.fuseWalletCreationStatus,
+    required this.firebaseAuthenticationStatus,
+    required this.fuseAuthenticationStatus,
+    required this.vegiAuthenticationStatus,
   });
 
   factory SplashViewModel.fromStore(Store<AppState> store) {
@@ -32,8 +38,16 @@ class SplashViewModel extends Equatable {
           store.state.userState.jwtToken == '',
       accountDetailsExist: store.state.userState.accountDetailsExist,
       isWhiteListedAccount: store.state.userState.userIsVerified,
-      userAuthenticationStatus: store.state.userState.userAuthenticationStatus,
-      fuseWalletCreationStatus: store.state.userState.fuseWalletCreationStatus,
+      firebaseAuthenticationStatus:
+          store.state.userState.firebaseAuthenticationStatus,
+      fuseAuthenticationStatus: store.state.userState.fuseAuthenticationStatus,
+      vegiAuthenticationStatus: store.state.userState.vegiAuthenticationStatus,
+      email: store.state.userState.email,
+      accountCreated: store.state.userState.walletAddress
+          .isNotEmpty, //! BUG to do with jwt token not used to init fuse wallet ->
+      logout: () {
+        store.dispatch(LogoutRequestSuccess());
+      },
       createLocalAccount: (
         VoidCallback successCallback,
       ) {
@@ -46,14 +60,20 @@ class SplashViewModel extends Equatable {
       loginAgain: () {
         store.dispatch(
           reLoginCall(
-            reOnboardRequired: () {
-              if (DebugHelpers.inDebugMode) {
-                log.verbose('Reauthentication of user requires reonboarding');
+            onSuccess: () {
+              if (store.state.userState.firebaseSessionToken == null) {
+                log.info('Push SignUpScreen()');
+                rootRouter.push(const SignUpScreen());
+              } else {
+                log.info('Push MainScreen()');
+                rootRouter.replaceAll([const MainScreen()]);
               }
-              rootRouter.push(const SignUpScreen());
             },
           ),
         );
+      },
+      resetSurveyCompleted: () {
+        store.dispatch(ResetSurveyCompleted());
       },
       surveyCompleted: store.state.userState.surveyCompleted,
     );
@@ -63,28 +83,35 @@ class SplashViewModel extends Equatable {
   final String jwtToken;
   final bool isLoggedOut;
   final bool accountDetailsExist;
-  final void Function() loginAgain;
   final bool surveyCompleted;
   final bool isWhiteListedAccount;
-  final UserAuthenticationStatus userAuthenticationStatus;
-  final FuseWalletCreationStatus fuseWalletCreationStatus;
-
-  bool get isLoggedIn => !isLoggedOut;
-  bool get accountIsWaitlisted => surveyCompleted && !isWhiteListedAccount;
-
+  final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
+  final FuseAuthenticationStatus fuseAuthenticationStatus;
+  final VegiAuthenticationStatus vegiAuthenticationStatus;
+  final String email;
+  final bool accountCreated;
+  final void Function() logout;
+  final void Function() loginAgain;
+  final void Function() resetSurveyCompleted;
   final void Function(
     VoidCallback successCallback,
   ) createLocalAccount;
 
+  bool get isLoggedIn => !isLoggedOut && accountDetailsExist;
+  bool get accountIsWaitlisted => surveyCompleted && !isWhiteListedAccount;
+
   @override
   List<Object> get props => [
+        email,
+        accountCreated,
         privateKey,
         jwtToken,
         isLoggedOut,
         accountDetailsExist,
         surveyCompleted,
         isWhiteListedAccount,
-        userAuthenticationStatus,
-        fuseWalletCreationStatus,
+        firebaseAuthenticationStatus,
+        fuseAuthenticationStatus,
+        vegiAuthenticationStatus,
       ];
 }

@@ -39,11 +39,13 @@ class AddAllPastOrdersList {
     required this.scheduledOrders,
     required this.ongoingOrders,
     required this.pastOrders,
+    required this.allUnpaidOrders,
   });
 
   final List<Order> scheduledOrders;
   final List<Order> ongoingOrders;
   final List<Order> pastOrders;
+  final List<Order> allUnpaidOrders;
 }
 
 class UpdateTransactionHistory {
@@ -177,6 +179,7 @@ ThunkAction<AppState> fetchAllOrdersForWallet(
           scheduledOrders: listOfOrders.scheduledOrders,
           ongoingOrders: listOfOrders.ongoingOrders,
           pastOrders: listOfOrders.pastOrders,
+          allUnpaidOrders: listOfOrders.unpaidOrders,
         ),
       );
 

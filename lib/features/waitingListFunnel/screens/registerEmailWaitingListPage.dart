@@ -20,12 +20,10 @@ typedef RegisterEmailToWaitingList = void Function(
 class RegisterEmailWaitingListScreen extends StatefulWidget {
   const RegisterEmailWaitingListScreen({
     Key? key,
-    required this.nextPage,
-    required this.previousPage,
+    this.onSubmitEmail,
   }) : super(key: key);
 
-  final void Function() nextPage;
-  final void Function() previousPage;
+  final void Function()? onSubmitEmail;
 
   @override
   State<RegisterEmailWaitingListScreen> createState() =>
@@ -86,7 +84,7 @@ class _RegisterEmailWaitingListScreenState
             Container(
               padding: const EdgeInsets.all(20),
               child: Column(
-                children: <Widget>[
+                children: const <Widget>[
                   Text(
                     Messages.enterEmail,
                     textAlign: TextAlign.center,
@@ -98,7 +96,7 @@ class _RegisterEmailWaitingListScreenState
                       //     Colors.white,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 20,
                   ),
                 ],
@@ -131,9 +129,9 @@ class _RegisterEmailWaitingListScreenState
                             child: TextFormField(
                               controller: emailController,
                               keyboardType: TextInputType.emailAddress,
-                              onTapOutside: (event) {
-                                FocusScope.of(context).unfocus();
-                              },
+                              // onTapOutside: (event) {
+                              //   FocusScope.of(context).unfocus();
+                              // },
                               autocorrect: false,
                               autofocus: true,
                               validator: (String? value) => value!.isEmpty
@@ -195,7 +193,7 @@ class _RegisterEmailWaitingListScreenState
                                     setState(() {
                                       isPreloading = false;
                                     });
-                                    widget.nextPage();
+                                    widget.onSubmitEmail?.call();
                                   },
                                   (error) {
                                     setState(() {
@@ -219,7 +217,7 @@ class _RegisterEmailWaitingListScreenState
                                 setState(() {
                                   isPreloading = false;
                                 });
-                                showErrorSnack(
+                                await showErrorSnack(
                                   message: Messages.invalidEmail,
                                   title: I10n.of(context).something_went_wrong,
                                   context: context,

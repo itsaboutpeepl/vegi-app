@@ -23,6 +23,7 @@ mixin _$Discount {
   int get id => throw _privateConstructorUsedError;
   String get code => throw _privateConstructorUsedError;
   num get value => throw _privateConstructorUsedError;
+  Currency get currency => throw _privateConstructorUsedError;
   DiscountType get discountType => throw _privateConstructorUsedError;
   @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
   DateTime get expiryDateTime => throw _privateConstructorUsedError;
@@ -30,6 +31,7 @@ mixin _$Discount {
   int? get maxUses => throw _privateConstructorUsedError;
   bool get isEnabled => throw _privateConstructorUsedError;
   String? get linkedWalletAddress => throw _privateConstructorUsedError;
+  @JsonKey()
   VendorDTO? get vendor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,6 +49,7 @@ abstract class $DiscountCopyWith<$Res> {
       {int id,
       String code,
       num value,
+      Currency currency,
       DiscountType discountType,
       @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           DateTime expiryDateTime,
@@ -54,7 +57,8 @@ abstract class $DiscountCopyWith<$Res> {
       int? maxUses,
       bool isEnabled,
       String? linkedWalletAddress,
-      VendorDTO? vendor});
+      @JsonKey()
+          VendorDTO? vendor});
 
   $VendorDTOCopyWith<$Res>? get vendor;
 }
@@ -75,6 +79,7 @@ class _$DiscountCopyWithImpl<$Res, $Val extends Discount>
     Object? id = null,
     Object? code = null,
     Object? value = null,
+    Object? currency = null,
     Object? discountType = null,
     Object? expiryDateTime = null,
     Object? timesUsed = freezed,
@@ -96,6 +101,10 @@ class _$DiscountCopyWithImpl<$Res, $Val extends Discount>
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as num,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as Currency,
       discountType: null == discountType
           ? _value.discountType
           : discountType // ignore: cast_nullable_to_non_nullable
@@ -151,6 +160,7 @@ abstract class _$$_DiscountCopyWith<$Res> implements $DiscountCopyWith<$Res> {
       {int id,
       String code,
       num value,
+      Currency currency,
       DiscountType discountType,
       @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           DateTime expiryDateTime,
@@ -158,7 +168,8 @@ abstract class _$$_DiscountCopyWith<$Res> implements $DiscountCopyWith<$Res> {
       int? maxUses,
       bool isEnabled,
       String? linkedWalletAddress,
-      VendorDTO? vendor});
+      @JsonKey()
+          VendorDTO? vendor});
 
   @override
   $VendorDTOCopyWith<$Res>? get vendor;
@@ -178,6 +189,7 @@ class __$$_DiscountCopyWithImpl<$Res>
     Object? id = null,
     Object? code = null,
     Object? value = null,
+    Object? currency = null,
     Object? discountType = null,
     Object? expiryDateTime = null,
     Object? timesUsed = freezed,
@@ -199,6 +211,10 @@ class __$$_DiscountCopyWithImpl<$Res>
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as num,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as Currency,
       discountType: null == discountType
           ? _value.discountType
           : discountType // ignore: cast_nullable_to_non_nullable
@@ -239,6 +255,7 @@ class _$_Discount extends _Discount {
       {required this.id,
       required this.code,
       required this.value,
+      required this.currency,
       required this.discountType,
       @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           required this.expiryDateTime,
@@ -246,7 +263,8 @@ class _$_Discount extends _Discount {
       required this.maxUses,
       this.isEnabled = false,
       required this.linkedWalletAddress,
-      this.vendor = null})
+      @JsonKey()
+          this.vendor = null})
       : super._();
 
   factory _$_Discount.fromJson(Map<String, dynamic> json) =>
@@ -258,6 +276,8 @@ class _$_Discount extends _Discount {
   final String code;
   @override
   final num value;
+  @override
+  final Currency currency;
   @override
   final DiscountType discountType;
   @override
@@ -278,7 +298,7 @@ class _$_Discount extends _Discount {
 
   @override
   String toString() {
-    return 'Discount(id: $id, code: $code, value: $value, discountType: $discountType, expiryDateTime: $expiryDateTime, timesUsed: $timesUsed, maxUses: $maxUses, isEnabled: $isEnabled, linkedWalletAddress: $linkedWalletAddress, vendor: $vendor)';
+    return 'Discount(id: $id, code: $code, value: $value, currency: $currency, discountType: $discountType, expiryDateTime: $expiryDateTime, timesUsed: $timesUsed, maxUses: $maxUses, isEnabled: $isEnabled, linkedWalletAddress: $linkedWalletAddress, vendor: $vendor)';
   }
 
   @override
@@ -289,6 +309,8 @@ class _$_Discount extends _Discount {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.value, value) || other.value == value) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
             (identical(other.discountType, discountType) ||
                 other.discountType == discountType) &&
             (identical(other.expiryDateTime, expiryDateTime) ||
@@ -310,6 +332,7 @@ class _$_Discount extends _Discount {
       id,
       code,
       value,
+      currency,
       discountType,
       expiryDateTime,
       timesUsed,
@@ -337,6 +360,7 @@ abstract class _Discount extends Discount {
       {required final int id,
       required final String code,
       required final num value,
+      required final Currency currency,
       required final DiscountType discountType,
       @JsonKey(fromJson: jsonToTimeStamp, toJson: timeStampToJsonInt)
           required final DateTime expiryDateTime,
@@ -344,7 +368,8 @@ abstract class _Discount extends Discount {
       required final int? maxUses,
       final bool isEnabled,
       required final String? linkedWalletAddress,
-      final VendorDTO? vendor}) = _$_Discount;
+      @JsonKey()
+          final VendorDTO? vendor}) = _$_Discount;
   _Discount._() : super._();
 
   factory _Discount.fromJson(Map<String, dynamic> json) = _$_Discount.fromJson;
@@ -355,6 +380,8 @@ abstract class _Discount extends Discount {
   String get code;
   @override
   num get value;
+  @override
+  Currency get currency;
   @override
   DiscountType get discountType;
   @override
@@ -369,6 +396,7 @@ abstract class _Discount extends Discount {
   @override
   String? get linkedWalletAddress;
   @override
+  @JsonKey()
   VendorDTO? get vendor;
   @override
   @JsonKey(ignore: true)

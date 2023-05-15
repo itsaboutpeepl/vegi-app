@@ -177,6 +177,10 @@ class _ChooseSecurityOptionState extends State<ChooseSecurityOption> {
                                               'Please use $biometric to unlock!',
                                           callback: (bool result) {
                                             if (result) {
+                                              viewModel.setBiometricallyAuthenticated(
+                                                isBiometricallyAuthenticated:
+                                                    true,
+                                              );
                                               Analytics.track(
                                                 eventName: AnalyticsEvents
                                                     .securityScreen,

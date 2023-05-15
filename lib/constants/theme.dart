@@ -32,6 +32,7 @@ const Color themeShade600 = Color(0xFF8AC479);
 
 const Color themeShade700 = Color(0xFFBFC8C4);
 const Color themeShade800 = Color(0xFF7F9188);
+const Color themeShade850 = Color(0xFF0e7f5c);
 const Color themeShade900 = Color(0xFF465E55);
 const Color themeShade1000 = Color(0xFF2A443B);
 const Color themeShade1100 = Color(0xFF1C372E);
@@ -43,6 +44,15 @@ const Color themeAccent300 = Color(0xFF88578F);
 const Color themeAccent400 = Color(0xFF743B7C);
 const Color themeAccent500 = Color(0xFF6A2D73);
 const Color themeAccent600 = Color(0xFF601E69);
+
+const Color textLinkColor = themeAccent400;
+
+const Color themeLightShade100 = Color.fromARGB(255, 248, 248, 231);
+const Color themeLightShade300 = Color(0xFFF8F6D3);
+const Color themeLightShade500 = Color.fromARGB(255, 221, 219, 174);
+const Color themeLightShade800 = Color.fromARGB(255, 182, 179, 113);
+const Color themeLightShade1000 = Color(0xFFE5AA52);
+const Color themeLightShade1200 = Color.fromARGB(255, 193, 127, 28);
 
 //Blue Color Scheme
 // const Color themeShade100 = Color(0xFFb3e5fc);

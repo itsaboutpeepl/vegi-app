@@ -6,9 +6,12 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 const String wethTokenAddress = '0xa722c13135930332eb3d749b2f0906559d2c5b99';
@@ -102,6 +105,7 @@ const EMAIL_NOT_PROVIDED = 'email@notprovided.com';
 const VEGI_BASE_URL = 'https://vegiapp.co.uk';
 const VEGI_PRIVACY_URL = '$VEGI_BASE_URL/privacy';
 const VEGI_CONTACT_US_URL = '$VEGI_BASE_URL/contact';
+const VEGI_FAQs_URL = '$VEGI_BASE_URL/FAQs';
 const VEGI_TIKTOK_HANDLE = '@vegi_app';
 const VEGI_TIKTOK_PROFILE_URL = 'https://vm.tiktok.com/ZMNF3ekHX/';
 const VEGI_INSTA_HANDLE = 'wearevegi';
@@ -123,14 +127,30 @@ String getGuideLiverpoolLink() {
   //     : THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK;
 }
 
+class Fonts {
+  static const String fatFace = 'Fat Cheeks';
+}
+
 class Messages {
   static const String email = 'Email Address';
+  static const String voucherCode = 'Voucher';
   static const String enterEmail =
       'Please enter your email to be first to receive an update when we launch.';
 
+  static const String emailRegisteredThankYou = 'Thank you for registering';
+  static const String emailPleaseRegisterForLaunchNotifications = 'Enter your email to be notified when we launch';
+  static const String emailPleaseEnterToHelpProtectYourAccount = 'Please enter your email to help us protect your account';
+  static const String wellBeInTouchSoon = 'We will be in touch soon!';
+  static const String pleaseEnterEmail = 'Please enter your email';
+
   static const String createNewAccount = 'New Account';
+  static const String checkWaitingListError = 'Unable to check waitinglist';
+
+  static String loginSuccess(BuildContext context) =>
+      '${I10n.of(context).login} success!';
 
   static const String invalidEmail = 'Invalid Email';
+  static const String invalidDiscountCode = 'Invalid voucher code';
   static const String newSupportRequestSubjectHeader = 'New Support Request';
   static const String thanksForRegisteringEmailWaitList =
       'Thank you for registering with vegi 💚';
@@ -145,9 +165,73 @@ class Messages {
   static const String walletLoadedSnackbarMessage = 'Wallet loaded';
   static const String walletSignedOutSnackbarMessage = 'Wallet signed out';
   static const String walletNotBackedUpSnackbarMessage = 'Wallet not backed up';
+
+  static const String answerYNQuestionsToBumpQueue =
+      'Answer 3 yes/no questions to move up the queue';
+  static const String unableToRegisterEmailForNotifications =
+      'Unable to register email for notifications';
+
+  static const String addVoucherCode = 'Add a voucher code';
+
+  static const String willEmailOnceLive =
+      "We'll send you an email when we are live and you can spend your credit!";
+
+  static const String unableToFetchOrders = 'Unable to fetch latest orders';
+  static const String unableToCheckWaitingListQueue =
+      'Unable to check queue at this time. Please check back later.';
+  static const String noUpcomingOrders = 'You have no upcoming orders… yet!';
+  static const String noUpcomingOrdersSubtitle =
+      'If this is incorrect, please contact support '
+      ' for assistance. Details are in our FAQ section.';
+  static const String connectionError = 'Connection error';
+  static const String operationFailed = 'Operation failed';
+
+  static const String searchVegiPlaceholder = 'Search vegi...';
+  static const String searchVendorPlaceholder = 'Search vendor...';
+}
+
+class CopyWrite {
+  static const String onboardingScreenHeading1 = 'Shop plant-based';
+  static const String onboardingScreenSubHeading1 =
+      'Find plant-based, planet-kind and ethical '
+      'products from local businesses and growers';
+  static const String onboardingScreenHeading2 = 'Shop local';
+  static const String onboardingScreenSubHeading2 =
+      'vegi is a digital wallet that supports independents'
+      ' only. Top up your wallet and spend with Liverpool locals';
+  static const String onboardingScreenHeading3 = 'Earn rewards';
+  static String onboardingScreenSubHeading3 =
+      'Receive ${pplRewardsPcntDelivery.toPercent()} cash back to spend next time using vegi';
+  static const String continueWithoutDiscountCode =
+      'Continue without voucher code?';
+  static const String preLaunchPerksHeadingPart1 = 'Shop local, get rewards';
+  static const String preLaunchPerksHeadingPart2 = ' ...even before we launch!';
+  static final String preLaunchPerksCreditsExplanation =
+      'Get £1 credit for every shop in Purple Carrot that includes an item '
+      'from a local business this ${DateFormat('MMMM').format(DateTime.now())}';
+  static const String startCollectingFreeCreditNow =
+      'Start collecting free credit now';
+  static const String collectCreditForEcoProducts =
+      'Collect credit when you purchase a product made by a local business '
+      'from Purple Carrot';
+}
+
+class ImagePaths {
+  static const String onboardingScreenHeadingImage1 = 'plant-icon.svg';
+  static const String onboardingScreenHeadingImage2 = 'local-icon.svg';
+  static const String onboardingScreenHeadingImage3 = 'rewards-icon.svg';
+  static const String vegiHorizontalLogo =
+      'assets/images/Vegi-Logo-horizontal.png';
+  static const String vegiBeanMan = 'assets/images/beanman.jpg';
+  static const String vegiBeanManNSEW = 'assets/images/beanman-nsew.png';
 }
 
 class Labels {
+  static const String registerEmailOnboardingScreenTitle = 'Email';
+  static const String registerEmailWaitingListNotificationsScreenTitle =
+      'Register';
+
+  static const String submit = 'Submit';
   static const String signupButtonLabelViewAccount = 'View account';
   static const String signupButtonLabelCreateAccount = 'Create account';
   static String Function(BuildContext) signupButtonLabelLogin =
@@ -168,6 +252,15 @@ class Labels {
               : "We'll be in touch as soon as you're off the waitlist list!";
   static String Function(BuildContext) surveyThanksButtonRestoreBackupWallet =
       (BuildContext context) => I10n.of(context).restore_from_backup;
+
+  static const String fullDetailsAndFAQsLinkLabel = 'Full details & FAQs';
+
+  static const String notifyMeWhenYouRelease = 'Notify me when you launch';
+  static const String dontNotifyMeWhenYouRelease =
+      "Don't notify me when you launch";
+
+  static String vegiPay({required bool vendorMode}) =>
+      vendorMode ? 'Take vegiPayment' : 'vegiPay';
 }
 
 const ENV = String.fromEnvironment('ENV', defaultValue: 'production');
@@ -249,6 +342,7 @@ Future<bool> deviceIsIosSimulator() async =>
 
 class DebugHelpers {
   static const bool inDebugMode = kDebugMode;
+  static bool isVerboseDebugMode = kDebugMode && const String.fromEnvironment('verbose', defaultValue: "").isNotEmpty;
   static Future<bool> deviceIsSimulator() => deviceIsSimulator();
   static Future<bool> deviceIsIosSimulator() => deviceIsIosSimulator();
 }

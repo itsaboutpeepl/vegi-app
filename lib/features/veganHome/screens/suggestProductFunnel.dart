@@ -17,7 +17,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/suggestProductViewModel.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/waitingListFunnelViewModel.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/waitingListFunnel/waitingListFunnelViewModel.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 

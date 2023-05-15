@@ -6,6 +6,7 @@ import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/authViewModel.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
@@ -16,7 +17,7 @@ import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
-class SurveyThanksViewModel extends Equatable {
+class SurveyThanksViewModel extends Equatable implements IAuthViewModel {
   const SurveyThanksViewModel({
     required this.email,
     required this.accountCreated,
@@ -25,8 +26,9 @@ class SurveyThanksViewModel extends Equatable {
     required this.logout,
     required this.isLoggedOut,
     required this.surveyCompleted,
-    required this.userAuthenticationStatus,
-    required this.fuseWalletCreationStatus,
+    required this.firebaseAuthenticationStatus,
+    required this.fuseAuthenticationStatus,
+    required this.vegiAuthenticationStatus,
   });
 
   factory SurveyThanksViewModel.fromStore(Store<AppState> store) {
@@ -44,15 +46,13 @@ class SurveyThanksViewModel extends Equatable {
           ),
         );
       },
-      userAuthenticationStatus: store.state.userState.userAuthenticationStatus,
-      fuseWalletCreationStatus: store.state.userState.fuseWalletCreationStatus,
+      firebaseAuthenticationStatus:
+          store.state.userState.firebaseAuthenticationStatus,
+      fuseAuthenticationStatus: store.state.userState.fuseAuthenticationStatus,
+      vegiAuthenticationStatus: store.state.userState.vegiAuthenticationStatus,
       loginAgain: () {
         store.dispatch(
-          reLoginCall(
-            reOnboardRequired: () {
-              rootRouter.push(const SignUpScreen());
-            },
-          ),
+          reLoginCall(),
         );
       },
       logout: () {
@@ -65,12 +65,12 @@ class SurveyThanksViewModel extends Equatable {
   final String email;
   final bool accountCreated;
   final bool isLoggedOut;
-  final UserAuthenticationStatus userAuthenticationStatus;
-  final FuseWalletCreationStatus fuseWalletCreationStatus;
+  final bool surveyCompleted;
+  final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
+  final FuseAuthenticationStatus fuseAuthenticationStatus;
+  final VegiAuthenticationStatus vegiAuthenticationStatus;
   final void Function() logout;
   final void Function() loginAgain;
-  final bool surveyCompleted;
-
   final void Function(
     VoidCallback successCallback,
   ) createLocalAccount;
@@ -81,7 +81,8 @@ class SurveyThanksViewModel extends Equatable {
         accountCreated,
         isLoggedOut,
         surveyCompleted,
-        userAuthenticationStatus,
-        fuseWalletCreationStatus,
+        firebaseAuthenticationStatus,
+        fuseAuthenticationStatus,
+        vegiAuthenticationStatus,
       ];
 }

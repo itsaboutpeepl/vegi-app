@@ -2,7 +2,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/services.dart';

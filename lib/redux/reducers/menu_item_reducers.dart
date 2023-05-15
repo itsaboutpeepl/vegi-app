@@ -1,9 +1,11 @@
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/menu_item_state.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 final menuItemReducers = combineReducers<MenuItemState>(
   [
+    TypedReducer<MenuItemState, ResetAppState>(_resetApp),
     TypedReducer<MenuItemState, ResetMenuItem>(_resetMenuItem),
     TypedReducer<MenuItemState, SetMenuItem>(_setMenuItem),
     TypedReducer<MenuItemState, UpdateTotalPrice>(_calculateTotalPrice),
@@ -16,6 +18,14 @@ final menuItemReducers = combineReducers<MenuItemState>(
     ),
   ],
 );
+
+
+MenuItemState _resetApp(
+  MenuItemState state,
+  ResetAppState action,
+) {
+  return MenuItemState.initial();
+}
 
 MenuItemState _resetMenuItem(
   MenuItemState state,

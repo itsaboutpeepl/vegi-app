@@ -138,7 +138,7 @@ class SingleRestaurantItem extends StatelessWidget {
                   clearCart: false,
                 );
                 context.router.push(
-                  RestaurantMenuScreen(),
+                  const RestaurantMenuScreen(),
                 );
               }
             },

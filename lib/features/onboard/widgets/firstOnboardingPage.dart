@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/constants/CustomPainterWidgets/peaman.dart';
 import 'package:vegan_liverpool/constants/CustomPainterWidgets/shape1.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -47,20 +48,13 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
           : store.dispatch(
               fetchFuseSmartWallet(),
             ),
+      distinct: true,
       onWillChange: (previousViewModel, newViewModel) async {
-        if (newViewModel.userAuthenticationStatus !=
-            (previousViewModel?.userAuthenticationStatus ??
-                UserAuthenticationStatus.unauthenticated)) {
-          log.info(
-              'Update to user authentication: ${newViewModel.userAuthenticationStatus.name}');
-        }
-        if (newViewModel.fuseWalletCreationStatus !=
-            (previousViewModel?.fuseWalletCreationStatus ??
-                FuseWalletCreationStatus.unauthenticated)) {
-          log.info(
-              'Update to fuseWalletCreationStatus: ${newViewModel.fuseWalletCreationStatus.name}');
-          // await showInfoSnack(context, title: 'title')
-        }
+        checkAuth(
+          oldViewModel: previousViewModel,
+          newViewModel: newViewModel,
+          routerContext: context,
+        );
       },
       builder: (context, viewModel) => Stack(
         children: [
@@ -87,7 +81,7 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
               if (!viewModel.isLoggedOut) {
                 showInfoSnack(
                   context,
-                  title: '${I10n.of(context).login} success!',
+                  title: Messages.loginSuccess(context),
                 );
               }
             },

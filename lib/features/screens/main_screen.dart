@@ -9,6 +9,7 @@ import 'package:vegan_liverpool/common/router/routes.dart'
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/firebase_options.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
@@ -65,8 +66,13 @@ class _MainScreenState extends State<MainScreen> {
           // )
         }
       },
+      distinct: true,
       onWillChange: (previousViewModel, newViewModel) {
-        
+        checkAuth(
+          oldViewModel: previousViewModel,
+          newViewModel: newViewModel,
+          routerContext: context,
+        );
       },
       converter: MainScreenViewModel.fromStore,
       builder: (context, vm) {
@@ -75,7 +81,25 @@ class _MainScreenState extends State<MainScreen> {
           //   context,
           //   title: "You're on the waitlist. We'll be in touch soon",
           // );
-          return WaitingListFunnelScreen(surveyCompleted: vm.surveyCompleted);
+          return const WaitingListFunnelScreen();
+        } else if (vm.firebaseAuthenticationStatus ==
+            FirebaseAuthenticationStatus.unauthenticated) {
+          log.info('Push SignUpScreen()');
+          log.info(
+              'Can we try and reauthentication here first using existing firebase creds? firebaseStatus: ${vm.firebaseAuthenticationStatus.name}');
+          onBoardStrategy.reauthenticateUser();
+          rootRouter.replaceAll([const SignUpScreen()]);
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          peeplEatsService
+              .checkVegiSessionIsStillValid()
+              .then((sessionStillValid) {
+            if (!sessionStillValid) {
+              vm.setUserIsLoggedOut();
+              log.info('Push SignUpScreen()');
+              rootRouter.replaceAll([const SignUpScreen()]);
+            }
+          });
         }
         return WillPopScope(
           onWillPop: () {

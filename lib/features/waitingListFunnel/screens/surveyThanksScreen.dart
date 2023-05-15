@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/onboard/widgets/sign_up_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/address_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/bill_invoice_card.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/order_confirmed/order_items_card.dart';
@@ -90,6 +91,7 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
             setState(() {
               isPrimaryPreloading = false;
             });
+            log.info('Push SignUpScreen()');
             context.router.push(const SignUpScreen());
           },
         );
@@ -125,6 +127,7 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
           setState(() {
             isPrimaryPreloading = false;
           });
+          log.info('Push SignUpScreen()');
           context.router.push(const SignUpScreen());
         },
       );
@@ -138,19 +141,11 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
       distinct: true,
       onInit: (store) => store.dispatch(CreateSurveyCompletedSuccess(true)),
       onWillChange: (previousViewModel, newViewModel) async {
-        if (newViewModel.userAuthenticationStatus !=
-            (previousViewModel?.userAuthenticationStatus ??
-                UserAuthenticationStatus.unauthenticated)) {
-          log.info(
-              'Update to user authentication: ${newViewModel.userAuthenticationStatus.name}');
-        }
-        if (newViewModel.fuseWalletCreationStatus !=
-            (previousViewModel?.fuseWalletCreationStatus ??
-                FuseWalletCreationStatus.unauthenticated)) {
-          log.info(
-              'Update to fuseWalletCreationStatus: ${newViewModel.fuseWalletCreationStatus.name}');
-          // await showInfoSnack(context, title: 'title')
-        }
+        checkAuth(
+          oldViewModel: previousViewModel,
+          newViewModel: newViewModel,
+          routerContext: context,
+        );
       },
       builder: (_, viewmodel) {
         return Scaffold(

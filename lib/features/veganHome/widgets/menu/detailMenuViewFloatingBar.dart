@@ -10,7 +10,12 @@ import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 
 class DetailMenuViewFloatingBar extends StatelessWidget {
-  const DetailMenuViewFloatingBar({Key? key}) : super(key: key);
+  const DetailMenuViewFloatingBar({
+    Key? key,
+    this.detailFloatingBarHeight = 100.0,
+  }) : super(key: key);
+
+  final double? detailFloatingBarHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,7 @@ class DetailMenuViewFloatingBar extends StatelessWidget {
                   ],
                 ),
                 width: MediaQuery.of(context).size.width,
-                height: 100,
+                height: detailFloatingBarHeight,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Row(

@@ -1,12 +1,15 @@
 // ignore_for_file: avoid_dynamic_calls
 // ignore_for_file: argument_type_not_assignable
 //TODO: Fix dynamic stuff here.
+import 'package:expandable_sliver_list/expandable_sliver_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/MenuStickyHeader.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -31,6 +34,25 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
   bool _isLoading = true;
   bool _isEmpty = false;
 
+  late final Map<String, ExpandableSliverListController<Order>>
+      categoryItemsControllers;
+
+  @override
+  void initState() {
+    categoryItemsControllers =
+        Map<String, ExpandableSliverListController<Order>>.fromIterable(
+      categoryNames.keys,
+      key: (cat) => cat.toString(),
+      value: (cat) => ExpandableSliverListController(
+        initialStatus:
+            cat.toString().toLowerCase() != scheduledOrders.toLowerCase()
+                ? ExpandableSliverListStatus.collapsed
+                : ExpandableSliverListStatus.expanded,
+      ),
+    );
+    super.initState();
+  }
+
   // Future<void> fetchOrdersList(
   //   String walletAddress,
   //   Store<AppState> store,
@@ -44,10 +66,104 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
   //   });
   // }
 
+  bool noOrders(AllOrdersPageViewModel viewmodel) =>
+      viewmodel.scheduledOrders.isEmpty &&
+      viewmodel.ongoingOrders.isEmpty &&
+      viewmodel.allUnpaidOrders.isEmpty &&
+      viewmodel.pastOrders.isEmpty;
+
+  int itemCount(AllOrdersPageViewModel viewmodel) =>
+      noOrders(viewmodel) ? 1 : viewmodel.scheduledOrders.length;
+
+  Widget? Function(BuildContext context, int index) itemBuilder(
+    AllOrdersPageViewModel viewmodel,
+  ) {
+    Widget? builder(BuildContext context, int index) {
+      if (noOrders(viewmodel)) {
+        return const EmptyStatePage(
+          emoji: '😐',
+          title: Messages.noUpcomingOrders,
+          subtitle: Messages.noUpcomingOrdersSubtitle,
+          refreshable: true,
+        );
+      } else {
+        return SingleOrderCard(
+          order: viewmodel.scheduledOrders[index],
+        );
+      }
+    }
+
+    return builder;
+  }
+
+  final String scheduledOrders = 'scheduledOrders';
+  final String ongoingOrders = 'ongoingOrders';
+  final String unpaidOrders = 'unpaidOrders';
+  final String pastOrders = 'pastOrders';
+
+  Map<String, String> get categoryNames => <String, String>{
+        scheduledOrders: 'Scheduled orders',
+        ongoingOrders: 'Ongoing orders',
+        unpaidOrders: 'Unpaid orders',
+        pastOrders: 'Past orders',
+      };
+
+  Map<String, Map<int, Order>> getCategories(
+    AllOrdersPageViewModel viewmodel,
+  ) {
+    return <String, Map<int, Order>>{
+      scheduledOrders: Map.fromEntries(
+        viewmodel.scheduledOrders.map((order) => MapEntry(order.id, order)),
+      ),
+      ongoingOrders: Map.fromEntries(
+        viewmodel.ongoingOrders.map((order) => MapEntry(order.id, order)),
+      ),
+      unpaidOrders: Map.fromEntries(
+        viewmodel.allUnpaidOrders.map((order) => MapEntry(order.id, order)),
+      ),
+      pastOrders: Map.fromEntries(
+        viewmodel.pastOrders.map((order) => MapEntry(order.id, order)),
+      ),
+    };
+  }
+
+  Iterable<SliverStickyHeader> getCategoryWidgets(
+    AllOrdersPageViewModel viewmodel,
+  ) {
+    final categories = getCategories(viewmodel);
+    return categoryNames.keys
+        .where(
+          (categoryName) => categoryItemsControllers[categoryName] != null,
+        )
+        .map(
+          (categoryName) => SliverStickyHeader(
+            header: MenuStickyHeader<Order>(
+              title:
+                  '${categoryNames[categoryName]!} ${categories[categoryName]?.isNotEmpty ?? false ? '[${categories[categoryName]?.length}]' : ''}',
+              controller: categoryItemsControllers[categoryName]!,
+            ),
+            sliver: SliverPadding(
+              padding: const EdgeInsets.only(top: 10, bottom: 20),
+              sliver: ExpandableSliverList<Order>(
+                initialItems: categories[categoryName]!.values,
+                builder: (context, item, index) =>
+                    categories[categoryName]!.containsKey(item.id)
+                        ? SingleOrderCard(
+                            order: item,
+                          )
+                        : Container(),
+                controller: categoryItemsControllers[categoryName]!,
+              ),
+            ),
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AllOrdersPageViewModel>(
       converter: AllOrdersPageViewModel.fromStore,
+      distinct: true,
       onInit: (store) => store.dispatch(
         fetchAllOrdersForWallet(
           store.state.userState.walletAddress,
@@ -67,40 +183,69 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
         ),
       ),
       builder: (_, viewmodel) {
+        final categoryWidgets = getCategoryWidgets(viewmodel).toList();
         return Scaffold(
           appBar: const CustomAppBar(
             pageTitle: 'My Orders',
           ),
           body: _isLoading
               ? const Center(child: CircularProgressIndicator())
-              : viewmodel.scheduledOrders.isEmpty
-                  ? const EmptyStatePage(
-                      emoji: '😐',
-                      title: 'You have no upcoming orders… yet!',
-                      subtitle: 'If this is incorrect, please contact support '
-                          ' for assistance. Details are in our FAQ section.',
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () async {
-                        viewmodel.refreshOrders(() {}, (message, errCode) {
-                          showErrorSnack(
-                            context: context,
-                            title: 'Connection error',
-                            message: 'Unable to fetch latest orders',
-                          );
-                        });
-                      },
-                      child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(vertical: 30),
-                        itemBuilder: (_, index) => SingleOrderCard(
-                          order: viewmodel.scheduledOrders[index],
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    viewmodel.refreshOrders(() {}, (message, errCode) {
+                      showErrorSnack(
+                        context: context,
+                        title: Messages.connectionError,
+                        message: Messages.unableToFetchOrders,
+                      );
+                    });
+                  },
+                  // child: ListView.separated(
+                  //   //todo: Replace this with silverCategoryHeaders like in the lib/features/veganHome/widgets/restaurantMenu.dart:46
+                  //   padding: const EdgeInsets.symmetric(vertical: 30),
+                  //   itemBuilder: itemBuilder(viewmodel),
+                  //   itemCount: itemCount(viewmodel),
+                  //   separatorBuilder: (_, index) => const Padding(
+                  //     padding: EdgeInsets.symmetric(vertical: 10),
+                  //   ),
+                  // ),
+                  child: noOrders(viewmodel)
+                      ? const SingleChildScrollView(
+                          child: EmptyStatePage(
+                            emoji: '😐',
+                            title: Messages.noUpcomingOrders,
+                            subtitle: Messages.noUpcomingOrdersSubtitle,
+                            refreshable: true,
+                          ),
+                        )
+                      : CustomScrollView(
+                          slivers: [
+                            const SliverPadding(
+                                padding: EdgeInsets.only(bottom: 10)),
+                            // SliverStickyHeader(
+                            //   header: MenuStickyHeader(
+                            //     title: 'Featured Items',
+                            //     controller: featuredListController,
+                            //   ),
+                            //   sliver: SliverPadding(
+                            //     padding: const EdgeInsets.only(top: 10, bottom: 20),
+                            //     sliver: ExpandableSliverList<RestaurantMenuItem>(
+                            //       initialItems: widget.featuredList,
+                            //       builder: (context, item, index) =>
+                            //           SingleFeaturedMenuItem(
+                            //         menuItem: widget.featuredList[index],
+                            //       ),
+                            //       controller: featuredListController,
+                            //     ),
+                            //   ),
+                            // ),
+                            ...categoryWidgets,
+                            const SliverPadding(
+                              padding: EdgeInsets.only(bottom: 100),
+                            ),
+                          ],
                         ),
-                        separatorBuilder: (_, index) => const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                        ),
-                        itemCount: viewmodel.scheduledOrders.length,
-                      ),
-                    ),
+                ),
         );
       },
     );

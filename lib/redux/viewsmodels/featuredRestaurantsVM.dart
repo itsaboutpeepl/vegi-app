@@ -24,6 +24,7 @@ class FeaturedRestaurantsVM extends Equatable {
     required this.refreshLocation,
     required this.userLocationEnabled,
     required this.userInVendorMode,
+    required this.userIsVegiAdmin,
     required this.postalCodes,
     required this.isDelivery,
     required this.setIsDelivery,
@@ -55,11 +56,16 @@ class FeaturedRestaurantsVM extends Equatable {
       },
       userLocationEnabled: store.state.userState.useLiveLocation,
       userInVendorMode: store.state.userState.isVendor,
+      userIsVegiAdmin: store.state.userState.isVegiSuperAdmin,
       setIsDelivery: (isDelivery) {
         store
-          ..dispatch(SetFulfilmentMethod(
-            fulfilmentMethodType: FulfilmentMethodType.delivery,
-          ))
+          ..dispatch(
+            SetFulfilmentMethod(
+              fulfilmentMethodType: isDelivery
+                  ? FulfilmentMethodType.delivery
+                  : FulfilmentMethodType.collection,
+            ),
+          )
           ..dispatch(computeCartTotals());
         // todo: dont fetch if he have already loaded delivery vendors for this outcode
         if (store.state.userState.useLiveLocation) {
@@ -117,6 +123,7 @@ class FeaturedRestaurantsVM extends Equatable {
   final void Function({required bool makeVisible}) showGlobalSearchBarField;
   final bool userLocationEnabled;
   final bool userInVendorMode;
+  final bool userIsVegiAdmin;
 
   final void Function({required String query, required String outCode})
       filterVendors;
@@ -124,15 +131,18 @@ class FeaturedRestaurantsVM extends Equatable {
 
   @override
   List<Object> get props => [
-        featuredRestaurants,
-        listOfScheduledOrders,
         isLoadingHomePage,
-        postalCodes,
-        isDelivery,
-        globalSearchIsVisible,
-        selectedSearchPostCode,
+        featuredRestaurants,
         filterRestaurantsQuery,
         filterMenuQuery,
+        globalSearchIsVisible,
+        selectedSearchPostCode,
+        avatarUrl,
+        postalCodes,
+        isDelivery,
         userLocationEnabled,
+        userInVendorMode,
+        userIsVegiAdmin,
+        listOfScheduledOrders,
       ];
 }

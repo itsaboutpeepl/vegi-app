@@ -9,11 +9,13 @@ class MyScaffold extends StatelessWidget {
     Key? key,
     required this.title,
     required this.body,
+    this.makeBodySafe = false,
     this.automaticallyImplyLeading = true,
     this.resizeToAvoidBottomInset = true,
   }) : super(key: key);
   final String title;
   final Widget body;
+  final bool makeBodySafe;
   final bool automaticallyImplyLeading;
   final bool resizeToAvoidBottomInset;
 
@@ -43,7 +45,7 @@ class MyScaffold extends StatelessWidget {
           ),
         ),
       ),
-      body: body,
+      body: makeBodySafe ? SafeArea(child: body) : body,
     );
   }
 }

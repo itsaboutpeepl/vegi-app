@@ -38,12 +38,13 @@ const _$PaymentProcessingStatusEnumMap = {
 };
 
 const _$CurrencyEnumMap = {
-  Currency.GBT: 'GBT',
-  Currency.PPL: 'PPL',
-  Currency.GBPx: 'GBPx',
   Currency.GBP: 'GBP',
   Currency.USD: 'USD',
   Currency.EUR: 'EUR',
+  Currency.GBPx: 'GBPx',
+  Currency.PPL: 'PPL',
+  Currency.GBT: 'GBT',
+  Currency.FUSE: 'FUSE',
 };
 
 const _$PaymentTypeEnumMap = {

@@ -24,6 +24,7 @@ mixin _$PastOrderState {
   List<Order> get listOfScheduledOrders => throw _privateConstructorUsedError;
   List<Order> get listOfOngoingOrders => throw _privateConstructorUsedError;
   List<Order> get allPastOrders => throw _privateConstructorUsedError;
+  List<Order> get allUnpaidOrders => throw _privateConstructorUsedError;
   List<Transaction> get transactionHistory =>
       throw _privateConstructorUsedError;
 
@@ -44,6 +45,7 @@ abstract class $PastOrderStateCopyWith<$Res> {
       List<Order> listOfScheduledOrders,
       List<Order> listOfOngoingOrders,
       List<Order> allPastOrders,
+      List<Order> allUnpaidOrders,
       List<Transaction> transactionHistory});
 }
 
@@ -64,6 +66,7 @@ class _$PastOrderStateCopyWithImpl<$Res, $Val extends PastOrderState>
     Object? listOfScheduledOrders = null,
     Object? listOfOngoingOrders = null,
     Object? allPastOrders = null,
+    Object? allUnpaidOrders = null,
     Object? transactionHistory = null,
   }) {
     return _then(_value.copyWith(
@@ -82,6 +85,10 @@ class _$PastOrderStateCopyWithImpl<$Res, $Val extends PastOrderState>
       allPastOrders: null == allPastOrders
           ? _value.allPastOrders
           : allPastOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
+      allUnpaidOrders: null == allUnpaidOrders
+          ? _value.allUnpaidOrders
+          : allUnpaidOrders // ignore: cast_nullable_to_non_nullable
               as List<Order>,
       transactionHistory: null == transactionHistory
           ? _value.transactionHistory
@@ -104,6 +111,7 @@ abstract class _$$_PastOrderStateCopyWith<$Res>
       List<Order> listOfScheduledOrders,
       List<Order> listOfOngoingOrders,
       List<Order> allPastOrders,
+      List<Order> allUnpaidOrders,
       List<Transaction> transactionHistory});
 }
 
@@ -122,6 +130,7 @@ class __$$_PastOrderStateCopyWithImpl<$Res>
     Object? listOfScheduledOrders = null,
     Object? listOfOngoingOrders = null,
     Object? allPastOrders = null,
+    Object? allUnpaidOrders = null,
     Object? transactionHistory = null,
   }) {
     return _then(_$_PastOrderState(
@@ -141,6 +150,10 @@ class __$$_PastOrderStateCopyWithImpl<$Res>
           ? _value.allPastOrders
           : allPastOrders // ignore: cast_nullable_to_non_nullable
               as List<Order>,
+      allUnpaidOrders: null == allUnpaidOrders
+          ? _value.allUnpaidOrders
+          : allUnpaidOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
       transactionHistory: null == transactionHistory
           ? _value.transactionHistory
           : transactionHistory // ignore: cast_nullable_to_non_nullable
@@ -158,6 +171,7 @@ class _$_PastOrderState extends _PastOrderState {
       this.listOfScheduledOrders = const [],
       this.listOfOngoingOrders = const [],
       this.allPastOrders = const [],
+      this.allUnpaidOrders = const [],
       this.transactionHistory = const []})
       : super._();
 
@@ -177,11 +191,14 @@ class _$_PastOrderState extends _PastOrderState {
   final List<Order> allPastOrders;
   @override
   @JsonKey()
+  final List<Order> allUnpaidOrders;
+  @override
+  @JsonKey()
   final List<Transaction> transactionHistory;
 
   @override
   String toString() {
-    return 'PastOrderState(lastRefreshTime: $lastRefreshTime, listOfScheduledOrders: $listOfScheduledOrders, listOfOngoingOrders: $listOfOngoingOrders, allPastOrders: $allPastOrders, transactionHistory: $transactionHistory)';
+    return 'PastOrderState(lastRefreshTime: $lastRefreshTime, listOfScheduledOrders: $listOfScheduledOrders, listOfOngoingOrders: $listOfOngoingOrders, allPastOrders: $allPastOrders, allUnpaidOrders: $allUnpaidOrders, transactionHistory: $transactionHistory)';
   }
 
   @override
@@ -198,6 +215,8 @@ class _$_PastOrderState extends _PastOrderState {
             const DeepCollectionEquality()
                 .equals(other.allPastOrders, allPastOrders) &&
             const DeepCollectionEquality()
+                .equals(other.allUnpaidOrders, allUnpaidOrders) &&
+            const DeepCollectionEquality()
                 .equals(other.transactionHistory, transactionHistory));
   }
 
@@ -209,6 +228,7 @@ class _$_PastOrderState extends _PastOrderState {
       const DeepCollectionEquality().hash(listOfScheduledOrders),
       const DeepCollectionEquality().hash(listOfOngoingOrders),
       const DeepCollectionEquality().hash(allPastOrders),
+      const DeepCollectionEquality().hash(allUnpaidOrders),
       const DeepCollectionEquality().hash(transactionHistory));
 
   @JsonKey(ignore: true)
@@ -231,6 +251,7 @@ abstract class _PastOrderState extends PastOrderState {
       final List<Order> listOfScheduledOrders,
       final List<Order> listOfOngoingOrders,
       final List<Order> allPastOrders,
+      final List<Order> allUnpaidOrders,
       final List<Transaction> transactionHistory}) = _$_PastOrderState;
   _PastOrderState._() : super._();
 
@@ -245,6 +266,8 @@ abstract class _PastOrderState extends PastOrderState {
   List<Order> get listOfOngoingOrders;
   @override
   List<Order> get allPastOrders;
+  @override
+  List<Order> get allUnpaidOrders;
   @override
   List<Transaction> get transactionHistory;
   @override

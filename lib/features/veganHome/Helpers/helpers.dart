@@ -1,22 +1,80 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math' as Math;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/models/authViewModel.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/config.dart' as VEGI_CONFIG;
 import 'package:vegan_liverpool/utils/log/log.dart';
+
+bool checkAuth<T extends IAuthViewModel>({
+  required T? oldViewModel,
+  required T newViewModel,
+  required BuildContext routerContext,
+}) {
+  final oldFirebaseAuthStatus = oldViewModel?.firebaseAuthenticationStatus ??
+      FirebaseAuthenticationStatus.unauthenticated;
+  final oldFuseAuthStatus = oldViewModel?.fuseAuthenticationStatus ??
+      FuseAuthenticationStatus.unauthenticated;
+  final oldVegiAuthStatus = oldViewModel?.vegiAuthenticationStatus ??
+      VegiAuthenticationStatus.unauthenticated;
+
+  if (newViewModel.fuseAuthenticationStatus
+      .isNewFailureStatus(oldFuseAuthStatus)) {
+    if (routerContext.mounted) {
+      rootRouter.replace(const CreateWalletFirstOnboardingScreen());
+    }
+    log.error(
+        'fuse auth has failed, investigate why this is happening...: status: ${newViewModel.fuseAuthenticationStatus.name}');
+    return false;
+  }
+  if (newViewModel.firebaseAuthenticationStatus
+      .isNewFailureStatus(oldFirebaseAuthStatus)) {
+    if (routerContext.mounted) {
+      log.info('Push SignUpScreen()');
+      rootRouter.replace(const SignUpScreen());
+    }
+    return false;
+  }
+  if (newViewModel.vegiAuthenticationStatus
+      .isNewFailureStatus(oldVegiAuthStatus)) {
+    // if(routerContext.mounted){
+    //   rootRouter.replace(const )
+    // }
+    log.error(
+        'vegi auth has failed, investigate why this is happening...: status: ${newViewModel.vegiAuthenticationStatus.name}');
+    return false;
+  }
+  return true;
+}
+
+Future<T> delayed<T>(
+  int delayMillis,
+  T Function() callback,
+  dynamic Function() execNow,
+) {
+  execNow();
+  return Future.delayed(
+    const Duration(milliseconds: 500),
+    callback,
+  );
+}
 
 String cFPrice(int price) {
   //isPence ? price = price ~/ 100 : price;
@@ -193,7 +251,7 @@ UpdateTotalPrice calculateMenuItemPrice({
   required RestaurantMenuItem menuItem,
   required int quantity,
   bool inStore = false,
-  Iterable<ProductOptions> productOptions = const [],
+  Iterable<ProductOptionValue> productOptions = const [],
 }) {
   var total = quantity * menuItem.price;
 
@@ -349,6 +407,28 @@ double rectArea(
 ) =>
     triangleArea(p1, p2, p3) + triangleArea(p2, p3, p4);
 
+Future<Size> calculateImageDimension({
+  required String imageUrl,
+}) {
+  final completer = Completer<Size>();
+  final image = Image(
+    image: CachedNetworkImageProvider(
+      imageUrl,
+    ),
+  ); // I modified this line
+  const imageConfig = ImageConfiguration.empty;
+  image.image.resolve(imageConfig).addListener(
+    ImageStreamListener(
+      (ImageInfo image, bool synchronousCall) {
+        final myImage = image.image;
+        Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+        completer.complete(size);
+      },
+    ),
+  );
+  return completer.future;
+}
+
 T tryCatchInline<T>(
   T Function() callback,
   T defaultResult, {
@@ -379,4 +459,30 @@ T tryCatchRethrowInline<T>(
     );
     rethrow;
   }
+}
+
+T? Function(dynamic) fromSailsObjectJson<T>(
+  T Function(Map<String, dynamic> json) fromJson,
+) =>
+    (
+      dynamic json,
+    ) =>
+        tryCatchRethrowInline(
+          () => json is int || json == null
+              ? null
+              : fromJson(json as Map<String, dynamic>),
+        );
+
+List<T> Function(dynamic) fromSailsListOfObjectJson<T>(
+  T Function(Map<String, dynamic> json) fromJson,
+) {
+  List<T> fn(dynamic json) {
+    if (json is Iterable) {
+      return json.map((e) => fromJson(e as Map<String, dynamic>)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  return fn;
 }

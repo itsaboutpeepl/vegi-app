@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
-class MenuStickyHeader extends StatefulWidget {
+class MenuStickyHeader<T> extends StatefulWidget {
   const MenuStickyHeader({
     Key? key,
     required this.title,
@@ -11,7 +11,7 @@ class MenuStickyHeader extends StatefulWidget {
   }) : super(key: key);
 
   final String title;
-  final ExpandableSliverListController<RestaurantMenuItem> controller;
+  final ExpandableSliverListController<T> controller;
 
   @override
   State<MenuStickyHeader> createState() => _MenuStickyHeaderState();

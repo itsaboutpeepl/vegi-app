@@ -5,14 +5,14 @@ class VegiDialogButton extends StatelessWidget {
   const VegiDialogButton({
     Key? key,
     required this.label,
-    required this.icon,
+    this.icon,
     required this.onPressed,
     this.disabled = false,
     this.dangerButton = false,
   }) : super(key: key);
 
   final String label;
-  final IconData icon;
+  final IconData? icon;
   final void Function() onPressed;
   final bool disabled;
   final bool dangerButton;
@@ -57,11 +57,12 @@ class VegiDialogButton extends StatelessWidget {
             // const SizedBox(
             //   width: 16,
             // ),
-            Icon(
-              icon, //Icons.sms
-              color: _buttonLabelColour,
-              size: _buttonLabelFontSize,
-            ),
+            if(icon != null)
+              Icon(
+                icon, //Icons.sms
+                color: _buttonLabelColour,
+                size: _buttonLabelFontSize,
+              ),
           ],
         ),
       ),

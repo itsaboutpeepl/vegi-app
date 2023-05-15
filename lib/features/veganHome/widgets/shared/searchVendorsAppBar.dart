@@ -5,6 +5,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SearchVendorsAppBar extends StatefulWidget {
@@ -90,7 +91,7 @@ class _SearchVendorsAppBarState extends State<SearchVendorsAppBar> {
                                         ),
                                       ),
                                       fillColor: Colors.transparent,
-                                      hintText: 'Search vegi...',
+                                      hintText: Messages.searchVegiPlaceholder,
                                     ),
                                     style: DefaultTextStyle.of(context)
                                         .style

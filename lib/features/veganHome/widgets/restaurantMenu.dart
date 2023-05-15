@@ -48,7 +48,7 @@ class _RestaurantMenuListState extends State<RestaurantMenuList> {
       widget.categories,
       key: (cat) => cat.toString(),
       value: (cat) => ExpandableSliverListController(
-        initialStatus: cat.toString().toLowerCase() == 'general'
+        initialStatus: cat.toString().toLowerCase() != 'featured'
             ? ExpandableSliverListStatus.collapsed
             : ExpandableSliverListStatus.expanded,
       ),
@@ -83,7 +83,7 @@ class _RestaurantMenuListState extends State<RestaurantMenuList> {
                   // ],
                   const SliverPadding(padding: EdgeInsets.only(bottom: 10)),
                   SliverStickyHeader(
-                    header: MenuStickyHeader(
+                    header: MenuStickyHeader<RestaurantMenuItem>(
                       title: 'Featured Items',
                       controller: featuredListController,
                     ),
@@ -106,7 +106,7 @@ class _RestaurantMenuListState extends State<RestaurantMenuList> {
                       )
                       .map(
                         (categoryName) => SliverStickyHeader(
-                          header: MenuStickyHeader(
+                          header: MenuStickyHeader<RestaurantMenuItem>(
                             title: categoryName,
                             controller: categoryItemsControllers[categoryName]!,
                           ),

@@ -33,6 +33,10 @@ _$_RestaurantItem _$$_RestaurantItemFromJson(Map<String, dynamic> json) =>
       isVegan: json['isVegan'] as bool,
       minimumOrderAmount: json['minimumOrderAmount'] as int,
       platformFee: json['platformFee'] as int,
+      deliveryPartner: json['deliveryPartner'] == null
+          ? null
+          : DeliveryPartnerDTO.fromJson(
+              json['deliveryPartner'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_RestaurantItemToJson(_$_RestaurantItem instance) =>
@@ -56,4 +60,5 @@ Map<String, dynamic> _$$_RestaurantItemToJson(_$_RestaurantItem instance) =>
       'isVegan': instance.isVegan,
       'minimumOrderAmount': instance.minimumOrderAmount,
       'platformFee': instance.platformFee,
+      'deliveryPartner': instance.deliveryPartner?.toJson(),
     };

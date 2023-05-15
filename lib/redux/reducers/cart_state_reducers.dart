@@ -1,15 +1,21 @@
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/envService.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageResponse.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 final cartStateReducers = combineReducers<UserCartState>([
+  TypedReducer<UserCartState, ResetAppState>(_resetApp),
   TypedReducer<UserCartState, UpdateCartItems>(_updateCartItems),
   TypedReducer<UserCartState, UpdateCartItem>(_updateCartItem),
   TypedReducer<UserCartState, UpdateComputedCartValues>(_computeCartTotals),
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
+  TypedReducer<UserCartState, AddValidVoucherCodeToCart>(
+      _addValidVoucherCodeToCart),
   TypedReducer<UserCartState, ClearCart>(_clearCart),
   TypedReducer<UserCartState, UpdateSlots>(_updateSlots),
   TypedReducer<UserCartState, OrderCreationProcessStatusUpdate>(
@@ -55,6 +61,13 @@ final cartStateReducers = combineReducers<UserCartState>([
     _createProductSuggestion,
   ),
 ]);
+
+UserCartState _resetApp(
+  UserCartState state,
+  ResetAppState action,
+) {
+  return UserCartState.initial();
+}
 
 UserCartState _updateCartItems(
   UserCartState state,
@@ -126,6 +139,32 @@ UserCartState _updateCartDiscount(
   return state.copyWith(
     cartDiscountPercent: action.cartDiscountPercent,
     discountCode: action.discountCode,
+  );
+}
+
+UserCartState _addValidVoucherCodeToCart(
+  UserCartState state,
+  AddValidVoucherCodeToCart action,
+) {
+  final appliedVouchers = state.appliedVouchers..add(action.voucher);
+  num potValue = 0.0;
+  final thisCurrency = action.voucher.currency;
+  if (action.voucher.vendor != null) {
+    potValue = appliedVouchers.sum(
+      (previousValue, discount) =>
+          ((discount.vendor?.id ?? '') == (action.voucher.vendor?.id ?? '') &&
+                  discount.currency == thisCurrency
+              ? discount.value
+              : 0.0) +
+          previousValue,
+    );
+  }
+  return state.copyWith(
+    voucherPotValue: Money(
+      currency: thisCurrency,
+      value: potValue,
+    ),
+    appliedVouchers: appliedVouchers,
   );
 }
 

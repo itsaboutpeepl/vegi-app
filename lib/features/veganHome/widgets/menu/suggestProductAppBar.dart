@@ -10,6 +10,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/qRFromCartShee
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/restaurantItem.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SuggestProductAppBar extends StatefulWidget {
@@ -100,7 +101,7 @@ class _SuggestProductAppBarState extends State<SuggestProductAppBar> {
                                       color: themeShade300, width: 3),
                                 ),
                                 fillColor: Colors.transparent,
-                                hintText: 'Search vegi...',
+                                hintText: Messages.searchVegiPlaceholder,
                               ),
                               style: DefaultTextStyle.of(context)
                                   .style

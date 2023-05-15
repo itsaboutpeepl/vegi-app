@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,6 +27,7 @@ import 'package:vegan_liverpool/models/admin/postVegiResponse.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
+import 'package:vegan_liverpool/models/waitingListFunnel/waitingListEntry.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
@@ -35,6 +37,12 @@ import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/json_helpers.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
+
+class ResetAppState {
+  ResetAppState();
+  @override
+  String toString() => 'ResetAppState';
+}
 
 class SetWalletConnectURI {
   SetWalletConnectURI(this.wcURI);
@@ -146,6 +154,15 @@ class SetSecurityType {
   String toString() => 'SetSecurityType : biometricAuth: $biometricAuth';
 }
 
+class SetBiometricallyAuthenticated {
+  SetBiometricallyAuthenticated({required this.isBiometricallyAuthenticated});
+  bool isBiometricallyAuthenticated;
+
+  @override
+  String toString() =>
+      'SetBiometricallyAuthenticated : isBiometricallyAuthenticated: $isBiometricallyAuthenticated';
+}
+
 class CreateLocalAccountSuccess {
   CreateLocalAccountSuccess(
     this.mnemonic,
@@ -193,53 +210,58 @@ class ReLogin {
   String toString() => 'ReLogin';
 }
 
-class ReauthenticateUserFailure {
-  ReauthenticateUserFailure({
-    required this.error,
+class SetUserAuthenticationStatus {
+  SetUserAuthenticationStatus({
+    this.firebaseStatus,
+    this.vegiStatus,
+    this.fuseStatus,
   });
 
-  final UserAuthenticationStatus error;
+  final FirebaseAuthenticationStatus? firebaseStatus;
+  final VegiAuthenticationStatus? vegiStatus;
+  final FuseAuthenticationStatus? fuseStatus;
 
   @override
   String toString() {
-    return 'ReauthenticateUserFailure : $error';
+    return 'SetUserAuthenticationStatus : firebaseStatus:"${firebaseStatus?.name}", '
+        'vegiStatus:"${vegiStatus?.name}", fuseStatus:"${fuseStatus?.name}"';
   }
 }
 
-class AuthenticateFuseWalletSDKFailure {
-  AuthenticateFuseWalletSDKFailure({
-    required this.error,
-  });
+// class AuthenticateFuseWalletSDKFailure {
+//   AuthenticateFuseWalletSDKFailure({
+//     required this.fuseStatus,
+//   });
 
-  final FuseWalletCreationStatus error;
+//   final FuseAuthenticationStatus fuseStatus;
 
-  @override
-  String toString() {
-    return 'AuthenticateFuseWalletSDKFailure : error:"$error"';
-  }
-}
+//   @override
+//   String toString() {
+//     return 'AuthenticateFuseWalletSDKFailure : error:"$fuseStatus"';
+//   }
+// }
 
-class FetchFuseSmartWalletFailure {
-  FetchFuseSmartWalletFailure({
-    required this.error,
-  });
+// class FetchFuseSmartWalletFailure {
+//   FetchFuseSmartWalletFailure({
+//     required this.fuseStatus,
+//   });
 
-  final FuseWalletCreationStatus error;
+//   final FuseAuthenticationStatus fuseStatus;
 
-  @override
-  String toString() {
-    return 'FetchFuseSmartWalletFailure : $error';
-  }
-}
+//   @override
+//   String toString() {
+//     return 'FetchFuseSmartWalletFailure : $fuseStatus';
+//   }
+// }
 
 class EmailWLRegistrationSuccess {
   EmailWLRegistrationSuccess({
-    required this.email,
+    required this.entry,
   });
-  final String email;
+  final WaitingListEntry entry;
 
   @override
-  String toString() => 'EmailWLRegistrationSuccess : email: $email';
+  String toString() => 'EmailWLRegistrationSuccess : email: $entry';
 }
 
 // class SurveyResponseSuccess {
@@ -269,6 +291,23 @@ class SetSurveyQuestionsSuccess {
   String toString() => 'SetSurveyQuestionsSuccess : email[${questions.length}]';
 }
 
+class SetPhoneNumberSuccess {
+  SetPhoneNumberSuccess({
+    required this.countryCode,
+    required this.phoneNumber,
+    this.displayName,
+    this.email,
+  });
+  final CountryCode countryCode;
+  final PhoneNumber phoneNumber;
+  final String? displayName;
+  final String? email;
+
+  @override
+  String toString() => 'SetPhoneNumberSuccess : countryCode: $countryCode, '
+      'phoneNumber: ${phoneNumber.e164}, displayName: $displayName, email: $email';
+}
+
 class LoginRequestSuccess {
   LoginRequestSuccess({
     required this.countryCode,
@@ -277,13 +316,13 @@ class LoginRequestSuccess {
     this.email,
   });
   final CountryCode countryCode;
-  final String phoneNumber;
+  final PhoneNumber phoneNumber;
   final String? displayName;
   final String? email;
 
   @override
   String toString() => 'LoginRequestSuccess : countryCode: $countryCode, '
-      'phoneNumber: $phoneNumber, displayName: $displayName, email: $email';
+      'phoneNumber: ${phoneNumber.e164}, displayName: $displayName, email: $email';
 }
 
 class LogoutRequestSuccess {
@@ -325,6 +364,15 @@ class SetEmail {
   String toString() => 'SetEmail : email: $email';
 }
 
+class ResetSurveyCompleted {
+  ResetSurveyCompleted();
+
+  @override
+  String toString() {
+    return 'ResetSurveyCompleted';
+  }
+}
+
 class SetUserAvatar {
   SetUserAvatar(this.avatarUrl);
   String avatarUrl;
@@ -340,6 +388,18 @@ class SetUserVerifiedStatusSuccess {
   @override
   String toString() =>
       'SetUserVerifiedStatusSuccess : userIsVerified: $userIsVerified';
+}
+
+class SetUserRoleOnVegi {
+  SetUserRoleOnVegi({
+    required this.userRole,
+    required this.isSuperAdmin,
+  });
+  VegiRole userRole;
+  bool isSuperAdmin;
+
+  @override
+  String toString() => 'SetUserRoleOnVegi : userRole: $userRole';
 }
 
 class SetUserVegiAccountIdSuccess {
@@ -418,13 +478,35 @@ class SetVerificationId {
   String toString() => 'SetVerificationId : verificationId: $verificationId';
 }
 
-class SetVerificationPassed {
-  SetVerificationPassed({required this.verificationPassed});
-  bool verificationPassed;
+class SetVerificationFailed {
+  SetVerificationFailed();
 
   @override
-  String toString() =>
-      'SetVerificationPassed : verificationPassed: $verificationPassed';
+  String toString() {
+    return 'SetVerificationFailed';
+  }
+}
+
+class SetVegiSessionExpired {
+  SetVegiSessionExpired();
+
+  @override
+  String toString() {
+    return 'SetVegiSessionExpired';
+  }
+}
+
+class SetVegiSessionCookie {
+  SetVegiSessionCookie({
+    required this.cookie,
+  });
+
+  final String cookie;
+
+  @override
+  String toString() {
+    return 'SetVegiSessionCookie : cookie:"$cookie"';
+  }
 }
 
 class SetPhoneNumber {
@@ -479,6 +561,109 @@ class SetHasSavedSeedPhrase {
       'SetHasSavedSeedPhrase : hasSavedSeedPhrase: $hasSavedSeedPhrase';
 }
 
+class SetPositionInWaitingList {
+  SetPositionInWaitingList({
+    required this.positionInQueue,
+  });
+
+  final int positionInQueue;
+
+  @override
+  String toString() {
+    return 'SetPositionInWaitingList : positionInQueue:"$positionInQueue"';
+  }
+}
+
+ThunkAction<AppState> loggedInToVegiSuccess({
+  required void Function(String err) onError,
+  void Function()? successHandler,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      store
+        ..dispatch(
+          SetUserAuthenticationStatus(
+            vegiStatus: VegiAuthenticationStatus.authenticated,
+            firebaseStatus: FirebaseAuthenticationStatus.authenticated,
+          ),
+        )
+        ..dispatch(isBetaWhitelistedAddress());
+
+      successHandler?.call();
+    } catch (e, s) {
+      log.error('ERROR - loggedInToVegiSuccess $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - loggedInToVegiSuccess $e',
+      );
+      onError(
+        'ERROR - loggedInToVegiSuccess $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> updateEmail({
+  required String email,
+  required void Function(String) onError,
+  void Function()? successHandler,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetEmail(email));
+      if (store.state.userState.waitingListEntryId == null) {
+        final warning =
+            'Cant update user email with vegi as no waiting list entry id is stored in state...';
+        log.error(warning);
+        onError(warning);
+      }
+
+      final updatedEntry = await peeplEatsService.updateEmailForAccount(
+        email: email,
+        waitingListEntryId: store.state.userState.waitingListEntryId!,
+        onError: (errStr) {
+          log.error(errStr);
+          Analytics.track(
+            eventName: AnalyticsEvents.emailWLUpdateEmail,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.failed,
+              'error': errStr,
+            },
+          );
+          onError?.call(errStr);
+        },
+      );
+
+      if (updatedEntry != null) {
+        store
+          ..dispatch(
+            EmailWLRegistrationSuccess(
+              entry: updatedEntry,
+            ),
+          )
+          ..dispatch(
+            SetSubscribedToWaitingListUpdates(
+              updatedEntry: updatedEntry,
+            ),
+          );
+      }
+
+      successHandler?.call();
+    } catch (e, s) {
+      log.error('ERROR - updateEmail $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - updateEmail $e',
+      );
+      onError(
+        'ERROR - updateEmail $e',
+      );
+    }
+  };
+}
+
 ThunkAction<AppState> registerEmailWaitingListHandler(
   String email,
   void Function()? onSuccess,
@@ -486,22 +671,9 @@ ThunkAction<AppState> registerEmailWaitingListHandler(
 ) {
   return (Store<AppState> store) async {
     try {
-      await peeplEatsService.registerEmailToWaitingList(
+      final newEntry = await peeplEatsService.registerEmailToWaitingList(
         email,
-        () {
-          Analytics.track(
-            eventName: AnalyticsEvents.emailWLRegistration,
-            properties: {
-              AnalyticsProps.status: AnalyticsProps.success,
-            },
-          );
-          store.dispatch(
-            EmailWLRegistrationSuccess(
-              email: email,
-            ),
-          );
-          onSuccess?.call();
-        },
+        store,
         (eStr) {
           Analytics.track(
             eventName: AnalyticsEvents.emailWLRegistration,
@@ -513,6 +685,28 @@ ThunkAction<AppState> registerEmailWaitingListHandler(
           onError?.call(eStr);
         },
       );
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.emailWLRegistration,
+          properties: {
+            AnalyticsProps.status: AnalyticsProps.success,
+          },
+        ),
+      );
+      if (newEntry != null) {
+        store
+          ..dispatch(
+            EmailWLRegistrationSuccess(
+              entry: newEntry,
+            ),
+          )
+          ..dispatch(
+            SetSubscribedToWaitingListUpdates(
+              updatedEntry: newEntry,
+            ),
+          );
+      }
+      onSuccess?.call();
     } catch (e, s) {
       log.error(
         'ERROR - Email WaitingList Registration Request',
@@ -533,6 +727,13 @@ ThunkAction<AppState> registerEmailWaitingListHandler(
         hint: 'ERROR in Email Registration',
       );
     }
+    store.dispatch(
+      fetchPositionInWaitingListQueue(
+        errorHandler: (p0) {
+          onError?.call(p0);
+        },
+      ),
+    );
   };
 }
 
@@ -553,6 +754,36 @@ ThunkAction<AppState> fetchDeviceType() {
         e,
         stackTrace: s,
         hint: 'ERROR - fetchDeviceType e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> fetchPositionInWaitingListQueue({
+  void Function()? successHandler,
+  required void Function(String) errorHandler,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      final positionInQueue = await peeplEatsService.getPositionInWaitingList(
+        store.state.userState.email,
+        (error) {
+          return errorHandler(error);
+        },
+      );
+      store
+          .dispatch(SetPositionInWaitingList(positionInQueue: positionInQueue));
+
+      successHandler?.call();
+    } catch (e, s) {
+      log.error('ERROR - fetchPositionInWaitingListQueue $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - fetchPositionInWaitingListQueue $e',
+      );
+      errorHandler(
+        'ERROR - fetchPositionInWaitingListQueue $e',
       );
     }
   };
@@ -682,19 +913,8 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
         );
         return;
       }
-      await peeplEatsService.getUserForWalletAddress(
+      final vegiAccount = await peeplEatsService.getVegiAccountForWalletAddress(
         store.state.userState.walletAddress,
-        (vegiAccount) {
-          Analytics.track(
-            eventName: AnalyticsEvents.getUserForWalletAddress,
-            properties: {
-              AnalyticsProps.status: AnalyticsProps.success,
-            },
-          );
-          store
-            ..dispatch(SetUserVerifiedStatusSuccess(vegiAccount.verified))
-            ..dispatch(SetUserVegiAccountIdSuccess(vegiAccount.id));
-        },
         (eStr) {
           Analytics.track(
             eventName: AnalyticsEvents.getUserForWalletAddress,
@@ -705,6 +925,39 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
           );
         },
       );
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.getUserForWalletAddress,
+          properties: {
+            AnalyticsProps.status: AnalyticsProps.success,
+          },
+        ),
+      );
+      if (vegiAccount != null) {
+        store
+          ..dispatch(SetUserVerifiedStatusSuccess(vegiAccount.verified))
+          ..dispatch(SetUserAvatar(vegiAccount.imageUrl))
+          ..dispatch(SetUserVegiAccountIdSuccess(vegiAccount.id));
+        if (vegiAccount.imageUrl.isEmpty) {
+          store.dispatch(
+            setRandomUserAvatar(
+              onError: (errStr) {
+                log.error(errStr);
+                Sentry.captureException(
+                  errStr,
+                  stackTrace: StackTrace.current, // from catch (e, s)
+                  hint: 'ERROR - fetchProductOptions $errStr',
+                );
+              },
+            ),
+          );
+        }
+      }
+
+      if (store.state.userState.isLoggedInToVegi &&
+          store.state.userState.email.isNotEmpty) {
+        store.dispatch(getUserDetails());
+      }
     } catch (e, s) {
       log.error(
         'ERROR - isBetaWhitelistedAddress Request',
@@ -723,6 +976,41 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
         Exception('Error in isBetaWhitelistedAddress: ${e.toString()}'),
         stackTrace: s,
         hint: 'ERROR in isBetaWhitelistedAddress',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> getUserDetails() {
+  return (Store<AppState> store) async {
+    try {
+      final vegiUser = await peeplEatsService.getUserDetails(
+        store.state.userState.email,
+        store.state.userState.phoneNumberNoCountry,
+        (eStr) {
+          Analytics.track(
+            eventName: AnalyticsEvents.getUserForWalletAddress,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.failed,
+              'error': eStr,
+            },
+          );
+        },
+      );
+      if (vegiUser != null) {
+        store.dispatch(
+          SetUserRoleOnVegi(
+            userRole: vegiUser.role,
+            isSuperAdmin: vegiUser.isSuperAdmin,
+          ),
+        );
+      }
+    } catch (e, s) {
+      log.error('ERROR - getUserDetails $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - getUserDetails $e',
       );
     }
   };
@@ -801,8 +1089,8 @@ ThunkAction<AppState> isUserWalletAddressAVendorAddress({
 ThunkAction<AppState> loginHandler(
   CountryCode countryCode,
   PhoneNumber phoneNumber,
-  void Function() onSuccess,
   void Function(String error) onError,
+  void Function()? onSuccess,
 ) {
   bool _useWeb3Auth = false;
   return (Store<AppState> store) async {
@@ -822,7 +1110,7 @@ ThunkAction<AppState> loginHandler(
           store.dispatch(
             LoginRequestSuccess(
               countryCode: countryCode,
-              phoneNumber: phoneNumber.e164,
+              phoneNumber: phoneNumber,
             ),
           );
           store.dispatch(
@@ -844,11 +1132,11 @@ ThunkAction<AppState> loginHandler(
             },
           );
           store.dispatch(
-            ReauthenticateUserFailure(
-              error: UserAuthenticationStatus.firebasePhoneAuthFailed,
+            SetUserAuthenticationStatus(
+              firebaseStatus: FirebaseAuthenticationStatus.phoneAuthFailed,
             ),
           );
-          onError?.call(e.toString());
+          onError.call(e.toString());
         },
       );
     } catch (e, s) {
@@ -876,7 +1164,6 @@ ThunkAction<AppState> loginHandler(
 
 ThunkAction<AppState> verifyHandler(
   String verificationCode,
-  void Function()? onSuccess,
   void Function(String error)? onError,
 ) {
   return (Store<AppState> store) async {
@@ -884,23 +1171,6 @@ ThunkAction<AppState> verifyHandler(
       await onBoardStrategy.verify(
         store,
         verificationCode,
-        () {
-          Analytics.track(
-            eventName: AnalyticsEvents.verify,
-            properties: {
-              AnalyticsProps.status: AnalyticsProps.success,
-            },
-          );
-          onSuccess?.call();
-        },
-        (errorMsg, status) {
-          store.dispatch(
-            ReauthenticateUserFailure(
-              error: UserAuthenticationStatus.firebaseVerificationFailed,
-            ),
-          );
-          onError?.call(errorMsg);
-        },
       );
     } catch (error, s) {
       onError?.call(error.toString());
@@ -1030,13 +1300,19 @@ ThunkAction<AppState> authenticateFuseWalletSDK({
     try {
       if (store.state.userState.privateKey.isEmpty) {
         store.dispatch(
-          AuthenticateFuseWalletSDKFailure(
-            error: FuseWalletCreationStatus.missingUserDetailsToAuthFuseWallet,
+          SetUserAuthenticationStatus(
+            fuseStatus:
+                FuseAuthenticationStatus.missingUserDetailsToAuthFuseWallet,
           ),
         );
         return onFailure!(
             'User details missing from reauthentication in authenticateFuseWalletSDK');
       }
+      store.dispatch(
+        SetUserAuthenticationStatus(
+          fuseStatus: FuseAuthenticationStatus.loading,
+        ),
+      );
       final EthPrivateKey credentials =
           EthPrivateKey.fromHex(store.state.userState.privateKey);
       final DC<Exception, String> authRes = await fuseWalletSDK.authenticate(
@@ -1044,20 +1320,26 @@ ThunkAction<AppState> authenticateFuseWalletSDK({
       );
       if (authRes.hasError) {
         store.dispatch(
-          AuthenticateFuseWalletSDKFailure(
-            error: FuseWalletCreationStatus.failedAuthentication,
+          SetUserAuthenticationStatus(
+            fuseStatus: FuseAuthenticationStatus.failedAuthentication,
           ),
         );
         onFailure!('Error occurred in authenticate: ${authRes.error}');
       } else if (authRes.hasData) {
         final jwt = authRes.data!;
-        store.dispatch(LoginVerifySuccess(jwt));
+        store
+          ..dispatch(LoginVerifySuccess(jwt))
+          ..dispatch(
+            SetUserAuthenticationStatus(
+              fuseStatus: FuseAuthenticationStatus.created,
+            ),
+          );
         fuseWalletSDK.jwtToken = jwt;
         onSuccess!();
       } else {
         store.dispatch(
-          AuthenticateFuseWalletSDKFailure(
-            error: FuseWalletCreationStatus.failedAuthentication,
+          SetUserAuthenticationStatus(
+            fuseStatus: FuseAuthenticationStatus.failedAuthentication,
           ),
         );
         throw Exception(
@@ -1065,8 +1347,8 @@ ThunkAction<AppState> authenticateFuseWalletSDK({
       }
     } catch (e, s) {
       store.dispatch(
-        AuthenticateFuseWalletSDKFailure(
-          error: FuseWalletCreationStatus.failedAuthentication,
+        SetUserAuthenticationStatus(
+          fuseStatus: FuseAuthenticationStatus.failedAuthentication,
         ),
       );
       onFailure!('Error in authenticateFuseWalletSDK: $e');
@@ -1084,17 +1366,20 @@ ThunkAction<AppState> authenticateFuseWalletSDK({
   };
 }
 
-bool smartWalletInitialised(FuseWalletSDK fuseWalletSDK) {
+bool smartWalletInitialised(
+  FuseWalletSDK fuseWalletSDK,
+  Store<AppState> store,
+) {
   try {
     return fuseWalletSDK.smartWallet != null;
-  } on Exception catch (err) {
-    print('Error: $err');
-    return false;
   } catch (err) {
-    print('Error: $err');
+    store.dispatch(
+      SetUserAuthenticationStatus(
+        fuseStatus: FuseAuthenticationStatus.unauthenticated,
+      ),
+    );
     return false;
   }
-  ;
 }
 
 ThunkAction<AppState> fetchFuseSmartWallet({
@@ -1104,13 +1389,24 @@ ThunkAction<AppState> fetchFuseSmartWallet({
   bool allowRetry = true,
 }) {
   return (Store<AppState> store) async {
+    store.dispatch(
+      SetUserAuthenticationStatus(
+        fuseStatus: FuseAuthenticationStatus.loading,
+      ),
+    );
     try {
-      if (smartWalletInitialised(fuseWalletSDK)) {
-        store.dispatch(
-          saveSmartWallet(
-            smartWallet: fuseWalletSDK.smartWallet,
-          ),
-        );
+      if (smartWalletInitialised(fuseWalletSDK, store)) {
+        store
+          ..dispatch(
+            saveSmartWallet(
+              smartWallet: fuseWalletSDK.smartWallet,
+            ),
+          )
+          ..dispatch(
+            SetUserAuthenticationStatus(
+              fuseStatus: FuseAuthenticationStatus.authenticated,
+            ),
+          );
         return onSuccess?.call();
       }
       // Try to fetch a wallet for the EOA, if it doesn't exist create one
@@ -1120,17 +1416,23 @@ ThunkAction<AppState> fetchFuseSmartWallet({
         onData: (SmartWallet smartWallet) async {
           log.info(
               'Successfully refetched smart wallet address ${smartWallet.smartWalletAddress}');
-          store.dispatch(
-            saveSmartWallet(
-              smartWallet: fuseWalletSDK.smartWallet,
-            ),
-          );
+          store
+            ..dispatch(
+              saveSmartWallet(
+                smartWallet: fuseWalletSDK.smartWallet,
+              ),
+            )
+            ..dispatch(
+              SetUserAuthenticationStatus(
+                fuseStatus: FuseAuthenticationStatus.authenticated,
+              ),
+            );
           onSuccess?.call();
         },
         onError: (Exception exception) async {
           store.dispatch(
-            FetchFuseSmartWalletFailure(
-              error: FuseWalletCreationStatus.failedFetch,
+            SetUserAuthenticationStatus(
+              fuseStatus: FuseAuthenticationStatus.failedFetch,
             ),
           );
           if (allowRetry &&
@@ -1138,6 +1440,11 @@ ThunkAction<AppState> fetchFuseSmartWallet({
               store.state.userState.jwtToken != '') {
             fuseWalletSDK.jwtToken = store.state.userState.jwtToken;
             store
+              ..dispatch(
+                SetUserAuthenticationStatus(
+                  fuseStatus: FuseAuthenticationStatus.loading,
+                ),
+              )
               ..dispatch(
                 authenticateFuseWalletSDK(
                   onFailure: (message) => onFailure?.call(exception),
@@ -1157,8 +1464,8 @@ ThunkAction<AppState> fetchFuseSmartWallet({
           if (exceptionOrStream.hasError) {
             log.error(exceptionOrStream.error.toString());
             store.dispatch(
-              FetchFuseSmartWalletFailure(
-                error: FuseWalletCreationStatus.failedCreate,
+              SetUserAuthenticationStatus(
+                fuseStatus: FuseAuthenticationStatus.failedCreate,
               ),
             );
           } else if (exceptionOrStream.hasData) {
@@ -1174,8 +1481,8 @@ ThunkAction<AppState> fetchFuseSmartWallet({
                 } else if (event.name == 'smartWalletCreationFailed') {
                   log.error('smartWalletCreationFailed ${event.data}');
                   store.dispatch(
-                    FetchFuseSmartWalletFailure(
-                      error: FuseWalletCreationStatus.failedCreate,
+                    SetUserAuthenticationStatus(
+                      fuseStatus: FuseAuthenticationStatus.failedCreate,
                     ),
                   );
                   onFailure?.call(exception);
@@ -1201,8 +1508,8 @@ ThunkAction<AppState> fetchFuseSmartWallet({
         stackTrace: s,
       );
       store.dispatch(
-        FetchFuseSmartWalletFailure(
-          error: FuseWalletCreationStatus.failedFetch,
+        SetUserAuthenticationStatus(
+          fuseStatus: FuseAuthenticationStatus.failedFetch,
         ),
       );
       onFailure?.call(
@@ -1247,29 +1554,14 @@ ThunkAction<AppState> saveSmartWallet({
 ThunkAction<AppState> reAuthenticateOnBoarding({
   void Function()? onSuccess,
   void Function(Exception error)? onFailure,
-  void Function()? reOnboardRequired,
 }) {
   return (Store<AppState> store) async {
     try {
-      await onBoardStrategy.reauthenticateUser(
-        store: store,
-        onSuccess: onSuccess,
-        reOnboardRequired: reOnboardRequired,
-        onFailure: (exception, status) {
-          Analytics.track(
-            eventName: AnalyticsEvents.verify,
-            properties: {
-              AnalyticsProps.status: AnalyticsProps.success,
-            },
-          );
-          store.dispatch(ReauthenticateUserFailure(error: status));
-          onFailure?.call(exception);
-        },
-      );
+      await onBoardStrategy.reauthenticateUser();
     } on Exception catch (error, s) {
       store.dispatch(
-        ReauthenticateUserFailure(
-          error: UserAuthenticationStatus.firebasePhoneAuthFailed,
+        SetUserAuthenticationStatus(
+          firebaseStatus: FirebaseAuthenticationStatus.phoneAuthFailed,
         ),
       );
       onFailure?.call(error);
@@ -1292,9 +1584,7 @@ ThunkAction<AppState> reAuthenticateOnBoarding({
 
 ThunkAction<AppState> reLoginCall({
   void Function()? onSuccess,
-  void Function(Exception error)? onFailure,
   void Function(Exception error)? onError,
-  void Function()? reOnboardRequired,
 }) {
   return (Store<AppState> store) async {
     store
@@ -1302,8 +1592,6 @@ ThunkAction<AppState> reLoginCall({
       ..dispatch(
         reAuthenticateOnBoarding(
           onSuccess: () {},
-          reOnboardRequired: reOnboardRequired,
-          onFailure: onFailure,
         ),
       )
       ..dispatch(authenticateFuseWalletSDK())
@@ -1311,7 +1599,6 @@ ThunkAction<AppState> reLoginCall({
         fetchFuseSmartWallet(
           onSuccess: onSuccess,
           onError: onError,
-          onFailure: onFailure,
         ),
       );
   };
@@ -1390,23 +1677,88 @@ ThunkAction<AppState> updateDisplayNameCall(String displayName) {
   };
 }
 
+ThunkAction<AppState> setRandomUserAvatar({
+  required void Function(String err) onError,
+  void Function()? onSuccess,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      updateFirebaseCurrentUser(({required User firebaseUser}) async {
+        final imageUrl = await peeplEatsService.setRandomAvatar(
+          accountId: store.state.userState.vegiAccountId!.round(),
+          onError: (error) async {
+            log.error(
+              'ERROR - peeplEatsService.setRandomAvatar',
+              error: error,
+              stackTrace: StackTrace.current,
+            );
+            await Sentry.captureException(
+              Exception('ERROR - peeplEatsService.setRandomAvatar'),
+              stackTrace: StackTrace.current,
+            );
+          },
+        );
+        if (imageUrl.isNotEmpty) {
+          await firebaseUser.updatePhotoURL(imageUrl);
+          store.dispatch(SetUserAvatar(imageUrl));
+          onSuccess?.call();
+        }
+      });
+    } catch (e, s) {
+      log.error(
+        'ERROR - getRandomUserAvatar',
+        error: e,
+        stackTrace: s,
+      );
+      await Sentry.captureException(
+        Exception(
+            'Error in update user profile image [getRandomUserAvatar]: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'Error in update user profile image',
+      );
+      store.dispatch(SetUserAvatar(''));
+    }
+  };
+}
+
 ThunkAction<AppState> updateUserAvatarCall(
   ImageSource source, {
   required ProgressCallback progressCallback,
   required void Function() onSuccess,
+  void Function(String errStr)? onError,
 }) {
   return (Store<AppState> store) async {
-    final file = await ImagePicker().pickImage(source: source);
+    if (store.state.userState.vegiAccountId == null) {
+      log.error(
+          'No Account is set on vegi for user. Please login and retrieve account details first.');
+      await Sentry.captureException(
+        'No Account is set on vegi for user. Please login and retrieve account details first.',
+        stackTrace: StackTrace.current,
+      );
+      return;
+    }
+    XFile? file;
+    try {
+      file = await ImagePicker().pickImage(source: source);
+    } on PlatformException catch (err, s) {
+      if (err.code == 'invalid_image' &&
+          err.details == 'NSItemProviderErrorDomain') {
+        log.error(
+          'Image seems to be corrupt. See https://stackoverflow.com/questions/75492854/platformexceptioninvalid-image-cannot-load-representation-of-type-public-jpeg. \nTry uploading a different image. Message was: "${err.message}"',
+          stackTrace: s,
+        );
+      } else {
+        log.error(err);
+      }
+    } on Exception catch (e, s) {
+      log.error(e, stackTrace: s);
+    }
     if (file != null) {
       try {
         updateFirebaseCurrentUser(({required User firebaseUser}) async {
-          await peeplEatsService.uploadImageForUserAvatar(
-            image: File(file.path),
-            onSuccess: (PostVegiResponse response) async {
-              await firebaseUser.updatePhotoURL(response.url);
-              store.dispatch(SetUserAvatar(response.url));
-              onSuccess?.call();
-            },
+          final imageUrl = await peeplEatsService.uploadImageForUserAvatar(
+            image: File(file!.path),
+            accountId: store.state.userState.vegiAccountId!.round(),
             onError: (error, errCode) async {
               log.error(
                 'ERROR - peeplEatsService.uploadImageForUserAvatar',
@@ -1417,9 +1769,15 @@ ThunkAction<AppState> updateUserAvatarCall(
                 Exception('ERROR - peeplEatsService.uploadImageForUserAvatar'),
                 stackTrace: StackTrace.current,
               );
+              onError?.call(error);
             },
             onReceiveProgress: progressCallback,
           );
+          if (imageUrl != null) {
+            await firebaseUser.updatePhotoURL(imageUrl);
+            store.dispatch(SetUserAvatar(imageUrl));
+            onSuccess?.call();
+          }
         });
       } catch (e, s) {
         log.error(

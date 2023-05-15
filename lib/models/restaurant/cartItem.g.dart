@@ -14,8 +14,8 @@ _$_CartItem _$$_CartItemFromJson(Map<String, dynamic> json) => _$_CartItem(
       itemQuantity: json['itemQuantity'] as int,
       selectedProductOptions:
           (json['selectedProductOptions'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(
-            int.parse(k), ProductOptions.fromJson(e as Map<String, dynamic>)),
+        (k, e) => MapEntry(int.parse(k),
+            ProductOptionValue.fromJson(e as Map<String, dynamic>)),
       ),
     );
 

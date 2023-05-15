@@ -16,20 +16,13 @@ abstract class IOnBoardStrategy {
     Store<AppState> store,
     String? phoneNumber,
     void Function() onSuccess,
-    void Function(dynamic error, UserAuthenticationStatus status) onError,
+    void Function(dynamic error, FirebaseAuthenticationStatus status) onError,
   );
   Future<dynamic> verify(
     Store<AppState> store,
     String verificationCode,
-    void Function() onSuccess,
-    void Function(String message, UserAuthenticationStatus status) onError,
   );
-  Future<void> reauthenticateUser({
-    required Store<AppState> store,
-    void Function()? onSuccess,
-    void Function(Exception error, UserAuthenticationStatus status)? onFailure,
-    void Function()? reOnboardRequired,
-  });
+  Future<bool> reauthenticateUser();
 }
 
 class OnBoardStrategyFactory {

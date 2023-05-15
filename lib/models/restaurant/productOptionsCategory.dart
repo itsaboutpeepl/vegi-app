@@ -1,16 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 
 part 'productOptionsCategory.freezed.dart';
 part 'productOptionsCategory.g.dart';
 
 @Freezed()
-class ProductOptionsCategory with _$ProductOptionsCategory {
+class ProductOptionsCategory with _$ProductOptionsCategory { //TODO Remove to replace with ProductOption
   @JsonSerializable()
   factory ProductOptionsCategory({
     required int categoryID,
     required String name,
-    required List<ProductOptions> listOfOptions,
+    required List<ProductOptionValue> listOfOptions,
   }) = _ProductOptionsCategory;
 
   const ProductOptionsCategory._();

@@ -18,6 +18,7 @@ class RestaurantItemViewModel extends Equatable {
     required this.selectVendor,
     required this.menuSearchQuery,
     required this.menuSearchIsVisible,
+    required this.userIsSuperAdmin,
     required this.restaurantListOfMenuItems,
     required this.restaurantFilteredListOfMenuItems,
     required this.showMenuSearchBarField,
@@ -51,6 +52,7 @@ class RestaurantItemViewModel extends Equatable {
           : [],
       menuSearchQuery: store.state.homePageState.filterMenuQuery,
       menuSearchIsVisible: store.state.homePageState.showMenuSearchBarField,
+      userIsSuperAdmin: store.state.userState.isVegiSuperAdmin,
       restaurantFilteredListOfMenuItems:
           store.state.homePageState.filteredMenuItems,
       showMenuSearchBarField: ({required bool makeVisible}) {
@@ -94,6 +96,7 @@ class RestaurantItemViewModel extends Equatable {
   final List<RestaurantMenuItem> restaurantListOfMenuItems;
   final List<RestaurantMenuItem> restaurantFilteredListOfMenuItems;
   final bool menuSearchIsVisible;
+  final bool userIsSuperAdmin;
   final String menuSearchQuery;
   final void Function({required bool makeVisible}) showMenuSearchBarField;
   final void Function({required String query}) filterRestaurantMenu;
@@ -152,5 +155,6 @@ class RestaurantItemViewModel extends Equatable {
         featuredList.length,
         categories,
         restaurantFilteredListOfMenuItems,
+        userIsSuperAdmin,
       ];
 }

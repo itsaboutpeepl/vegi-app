@@ -6,16 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
 typedef SignUp = void Function(
@@ -87,13 +91,61 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, MainScreenViewModel>(
       converter: MainScreenViewModel.fromStore,
-      onInit: (store) async {
+      distinct: true,
+      onInit: (store) {
+        // if (store.state.userState.countryCode.isNotEmpty &&
+        //     store.state.userState.isoCode.isNotEmpty &&
+        //     store.state.userState.phoneNumber.isNotEmpty) {
+        //   setState(() {
+        //     countryCode = CountryCode(
+        //       dialCode: store.state.userState.countryCode,
+        //       code: store.state.userState.isoCode,
+        //     );
+        //   });
+        //   phoneController.text = store.state.userState.phoneNumber;
+        // }
         store.dispatch(isBetaWhitelistedAddress());
       },
-      builder: (context, vm) {
+      onInitialBuild: (viewModel) async {
+        if (viewModel.firebaseSessionToken != null) {
+          if (viewModel.firebaseAuthenticationStatus ==
+              FirebaseAuthenticationStatus.authenticated) {
+            setState(() {
+              isPreloading = true;
+            });
+            await onBoardStrategy.reauthenticateUser();
+            await rootRouter.replace(const MainScreen());
+          }
+        }
+      },
+      onWillChange: (previousViewModel, newViewModel) {
+        checkAuth(
+          oldViewModel: previousViewModel,
+          newViewModel: newViewModel,
+          routerContext: context,
+        );
+      },
+      builder: (context, viewmodel) {
+        if (viewmodel.countryCode.isNotEmpty &&
+            viewmodel.dialCode.isNotEmpty &&
+            viewmodel.phoneNumberNoCountry.isNotEmpty) {
+          // setState(() {
+          //   countryCode = CountryCode(
+          //     dialCode: viewmodel.dialCode,
+          //     code: viewmodel.countryCode,
+          //   );
+          // });
+          countryCode = CountryCode(
+            dialCode: viewmodel.dialCode,
+            code: viewmodel.countryCode,
+          );
+          phoneController.text = viewmodel.phoneNumberNoCountry;
+        }
         return MyScaffold(
           resizeToAvoidBottomInset: false,
-          title: I10n.of(context).sign_up,
+          title: viewmodel.hasLoggedInBefore
+              ? 'Reauthenticate'
+              : I10n.of(context).sign_up,
           body: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -102,7 +154,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      I10n.of(context).enter_phone_number,
+                      viewmodel.hasLoggedInBefore
+                          ? 'Please enter your phone number to reauthenticate'
+                          : I10n.of(context).enter_phone_number,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 20,
@@ -268,47 +322,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           const SizedBox(height: 40),
-                          StoreConnector<AppState, SignUp>(
-                            distinct: true,
-                            converter: (store) => (
-                              CountryCode countryCode,
-                              PhoneNumber phoneNumber,
-                              void Function() onSuccess,
-                              dynamic Function(dynamic) onError,
-                            ) =>
-                                store.dispatch(
-                                  loginHandler(
-                                    countryCode,
-                                    phoneNumber,
-                                    onSuccess,
-                                    onError,
-                                  ),
-                                ),
-                            builder: (_, signUp) => PrimaryButton(
-                              label: I10n.of(context).next_button,
-                              preload: isPreloading,
-                              disabled: isPreloading,
-                              onPressed: () {
-                                parsePhoneNumber(
-                                  signUp: signUp,
-                                ).then((e) {
-                                  if (e != null) {
-                                    showErrorSnack(
-                                      message: I10n.of(context).invalid_number,
-                                      title:
-                                          I10n.of(context).something_went_wrong,
-                                      context: context,
-                                      margin: const EdgeInsets.only(
-                                        top: 8,
-                                        right: 8,
-                                        left: 8,
-                                        bottom: 120,
-                                      ),
-                                    );
-                                  }
-                                });
-                              },
-                            ),
+                          PrimaryButton(
+                            label: I10n.of(context).next_button,
+                            preload: isPreloading,
+                            disabled: isPreloading,
+                            onPressed: () {
+                              parsePhoneNumber(
+                                viewmodel: viewmodel,
+                              ).then((e) {
+                                if (e != null) {
+                                  showErrorSnack(
+                                    message: I10n.of(context).invalid_number,
+                                    title:
+                                        I10n.of(context).something_went_wrong,
+                                    context: context,
+                                    margin: const EdgeInsets.only(
+                                      top: 8,
+                                      right: 8,
+                                      left: 8,
+                                      bottom: 120,
+                                    ),
+                                  );
+                                }
+                              });
+                            },
                           ),
                           const SizedBox(height: 20),
                           GestureDetector(
@@ -337,13 +374,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<Exception?> parsePhoneNumber({
-    required void Function(
-      CountryCode,
-      PhoneNumber,
-      void Function(),
-      void Function(dynamic),
-    )
-        signUp,
+    required MainScreenViewModel viewmodel,
   }) async {
     final String phoneNumber = '${countryCode.dialCode}${phoneController.text}';
     setState(() {
@@ -375,15 +406,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return e;
     }
     try {
-      signUp(
-        countryCode,
-        value,
-        () {
+      viewmodel.setPhoneNumber(
+        countryCode: countryCode,
+        phoneNumber: value,
+      );
+    } catch (err) {
+      log.error('Unable to set phoneNumber in store with error: $err');
+    }
+
+    try {
+      viewmodel.signup(
+        countryCode: countryCode,
+        phoneNumber: value,
+        onSuccess: () {
           // setState(() {
           //   isPreloading = false;
           // });
         },
-        (error) {
+        onError: (error) {
           setState(() {
             isPreloading = false;
           });

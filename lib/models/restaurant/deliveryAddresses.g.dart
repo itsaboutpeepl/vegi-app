@@ -43,4 +43,5 @@ const _$DeliveryAddressLabelEnumMap = {
   DeliveryAddressLabel.home: 'home',
   DeliveryAddressLabel.work: 'work',
   DeliveryAddressLabel.hotel: 'hotel',
+  DeliveryAddressLabel.Store: 'Store',
 };

@@ -15,6 +15,7 @@ class PastOrderState with _$PastOrderState {
     @Default([]) List<Order> listOfScheduledOrders,
     @Default([]) List<Order> listOfOngoingOrders,
     @Default([]) List<Order> allPastOrders,
+    @Default([]) List<Order> allUnpaidOrders,
     @Default([]) List<Transaction> transactionHistory,
   }) = _PastOrderState;
 
@@ -25,6 +26,7 @@ class PastOrderState with _$PastOrderState {
         listOfScheduledOrders: [],
         listOfOngoingOrders: [],
         allPastOrders: [],
+        allUnpaidOrders: [],
         transactionHistory: [],
       );
 

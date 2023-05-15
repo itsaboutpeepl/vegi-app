@@ -24,7 +24,7 @@ mixin _$CartItem {
   RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
   int get totalItemPrice => throw _privateConstructorUsedError;
   int get itemQuantity => throw _privateConstructorUsedError;
-  Map<int, ProductOptions> get selectedProductOptions =>
+  Map<int, ProductOptionValue> get selectedProductOptions =>
       throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ abstract class $CartItemCopyWith<$Res> {
       RestaurantMenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
-      Map<int, ProductOptions> selectedProductOptions});
+      Map<int, ProductOptionValue> selectedProductOptions});
 
   $RestaurantMenuItemCopyWith<$Res> get menuItem;
 }
@@ -87,7 +87,7 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
       selectedProductOptions: null == selectedProductOptions
           ? _value.selectedProductOptions
           : selectedProductOptions // ignore: cast_nullable_to_non_nullable
-              as Map<int, ProductOptions>,
+              as Map<int, ProductOptionValue>,
     ) as $Val);
   }
 
@@ -112,7 +112,7 @@ abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
       RestaurantMenuItem menuItem,
       int totalItemPrice,
       int itemQuantity,
-      Map<int, ProductOptions> selectedProductOptions});
+      Map<int, ProductOptionValue> selectedProductOptions});
 
   @override
   $RestaurantMenuItemCopyWith<$Res> get menuItem;
@@ -155,7 +155,7 @@ class __$$_CartItemCopyWithImpl<$Res>
       selectedProductOptions: null == selectedProductOptions
           ? _value.selectedProductOptions
           : selectedProductOptions // ignore: cast_nullable_to_non_nullable
-              as Map<int, ProductOptions>,
+              as Map<int, ProductOptionValue>,
     ));
   }
 }
@@ -184,7 +184,7 @@ class _$_CartItem extends _CartItem {
   @override
   final int itemQuantity;
   @override
-  final Map<int, ProductOptions> selectedProductOptions;
+  final Map<int, ProductOptionValue> selectedProductOptions;
 
   @override
   String toString() {
@@ -238,7 +238,7 @@ abstract class _CartItem extends CartItem {
           required final RestaurantMenuItem menuItem,
           required final int totalItemPrice,
           required final int itemQuantity,
-          required final Map<int, ProductOptions> selectedProductOptions}) =
+          required final Map<int, ProductOptionValue> selectedProductOptions}) =
       _$_CartItem;
   _CartItem._() : super._();
 
@@ -253,7 +253,7 @@ abstract class _CartItem extends CartItem {
   @override
   int get itemQuantity;
   @override
-  Map<int, ProductOptions> get selectedProductOptions;
+  Map<int, ProductOptionValue> get selectedProductOptions;
   @override
   @JsonKey(ignore: true)
   _$$_CartItemCopyWith<_$_CartItem> get copyWith =>

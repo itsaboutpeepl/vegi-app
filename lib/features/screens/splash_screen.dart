@@ -7,6 +7,7 @@ import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -33,43 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Store<AppState> store,
   ) async {
     store.dispatch(
-      reLoginCall(
-        onSuccess: () async {},
-        reOnboardRequired: () {
-          if (DebugHelpers.inDebugMode) {
-            log.verbose('Reauthentication of user requires reonboarding');
-          }
-          rootRouter.push(const SignUpScreen());
-        },
-        // onFailure: (Exception e) async {
-        //   if (DebugHelpers.inDebugMode) {
-        //     await showErrorSnack(
-        //       context: context,
-        //       title: Messages.walletSignedOutSnackbarMessage,
-        //       message: e.toString(),
-        //     );
-        //   } else {
-        //     await showInfoSnack(
-        //       context,
-        //       title: Messages.walletSignedOutSnackbarMessage,
-        //     );
-        //   }
-        // },
-        // onError: (error) async {
-        //   if (inDebugMode) {
-        //     await showErrorSnack(
-        //       context: context,
-        //       title: Messages.walletSignedOutSnackbarMessage,
-        //       message: 'Error fetching smart wallet: $error',
-        //     );
-        //   } else {
-        //     await showInfoSnack(
-        //       context,
-        //       title: Messages.walletSignedOutSnackbarMessage,
-        //     );
-        //   }
-        // },
-      ),
+      reLoginCall(),
     );
   }
 
@@ -78,9 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }) async {
     if (store.state.userState.firebaseSessionToken != null) {
       await _reLogin(store);
+      log.info('Push PinCodeScreen()');
       await rootRouter.replaceAll([const PinCodeScreen()]);
       widget.onLoginResult?.call(true);
     } else {
+      log.info('Push SignUpScreen()');
       await rootRouter.replaceAll([const SignUpScreen()]);
     }
   }
@@ -95,7 +62,6 @@ class _SplashScreenState extends State<SplashScreen> {
         ..dispatch(
           fetchFuseSmartWallet(
             onSuccess: () async {
-              log.warn('Need to implement BioMetric Auth here');
               if (BiometricAuth.faceID == userState.authType ||
                   BiometricAuth.touchID == userState.authType) {
                 await _checkLoggedInToVegi(store: store);
@@ -103,19 +69,23 @@ class _SplashScreenState extends State<SplashScreen> {
                 await _checkLoggedInToVegi(store: store);
               } else {
                 throw Exception(
-                    'BiometricAuth of ${userState.authType.name} not handled');
+                  'BiometricAuth of ${userState.authType.name} not handled',
+                );
               }
             },
             onFailure: (exception) async {
+              log.info('Push SignUpScreen()');
               await rootRouter.replaceAll([const SignUpScreen()]);
             },
             onError: (error) async {
+              log.info('Push SignUpScreen()');
               await rootRouter.replaceAll([const SignUpScreen()]);
             },
           ),
         )
         ..dispatch(identifyCall());
     } else {
+      log.info('Push SignUpScreen()');
       context.router.replaceAll([const SignUpScreen()]);
     }
   }
@@ -123,15 +93,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, LockScreenViewModel>(
-      distinct: true,
       onInit: (store) {
         final String privateKey = store.state.userState.privateKey;
         final String jwtToken = store.state.userState.jwtToken;
         final bool isLoggedOut = store.state.userState.isLoggedOut;
         if (privateKey.isEmpty || jwtToken.isEmpty || isLoggedOut) {
+          log.info('Push OnBoardScreen()');
           context.router.replaceAll([const OnBoardScreen()]);
           widget.onLoginResult?.call(false);
         } else if (!store.state.userState.verificationPassed) {
+          log.info('Push SignUpScreen()');
           context.router.replaceAll([const SignUpScreen()]);
         } else {
           finishAppStart(
@@ -141,20 +112,13 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
       converter: LockScreenViewModel.fromStore,
+      distinct: true,
       onWillChange: (previousViewModel, newViewModel) async {
-        if (newViewModel.userAuthenticationStatus !=
-            (previousViewModel?.userAuthenticationStatus ??
-                UserAuthenticationStatus.unauthenticated)) {
-          log.info(
-              'Update to user authentication: ${newViewModel.userAuthenticationStatus.name}');
-        }
-        if (newViewModel.fuseWalletCreationStatus !=
-            (previousViewModel?.fuseWalletCreationStatus ??
-                FuseWalletCreationStatus.unauthenticated)) {
-          log.info(
-              'Update to fuseWalletCreationStatus: ${newViewModel.fuseWalletCreationStatus.name}');
-          // await showInfoSnack(context, title: 'title')
-        }
+        checkAuth(
+            oldViewModel: previousViewModel,
+            newViewModel: newViewModel,
+            routerContext: context,
+        );
       },
       builder: (_, viewModel) {
         return Scaffold(

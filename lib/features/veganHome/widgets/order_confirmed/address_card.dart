@@ -16,7 +16,7 @@ class AddressCard extends StatelessWidget {
   final bool isDelivery;
   final String userName;
   final String restaurantName;
-  final DeliveryAddresses orderAddress;
+  final DeliveryAddresses? orderAddress;
   final TimeSlot selectedSlot;
 
   @override
@@ -55,7 +55,7 @@ class AddressCard extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Text(orderAddress.shortAddress),
+              Text(orderAddress?.shortAddress ?? ''),
               Text('Time: ${selectedSlot.formattedDate}')
             ],
           ),

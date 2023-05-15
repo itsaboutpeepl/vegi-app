@@ -78,12 +78,31 @@ enum ProductDiscontinuedStatus {
 }
 
 enum Currency {
-  GBT,
-  PPL,
-  GBPx,
   GBP,
   USD,
   EUR,
+  GBPx,
+  PPL,
+  GBT,
+  FUSE,
+}
+
+extension CurrencyAmountFormatter on Currency {
+  String formatAmountWithSymbol(num amount) {
+    switch (this) {
+      case Currency.GBP:
+        return '£$amount';
+      case Currency.USD:
+        return '\$$amount';
+      case Currency.EUR:
+        return '€$amount';
+      case Currency.GBPx:
+      case Currency.PPL:
+      case Currency.GBT:
+      case Currency.FUSE:
+        return '$amount $name';
+    }
+  }
 }
 
 enum DiscountType {
@@ -92,6 +111,25 @@ enum DiscountType {
 }
 
 enum VegiAccountType { ethereum, bank }
+
+enum VegiRole {
+  admin,
+  vendor,
+  deliveryPartner,
+  consumer,
+  service,
+}
+
+enum VendorType {
+  restaurant,
+  shop,
+}
+
+enum VendorStatus {
+  active,
+  inactive,
+  draft,
+}
 
 extension OrderCompletedFlagHelpers on OrderCompletedFlag {
   static OrderCompletedFlag enumValueFromString(String other) {
@@ -109,12 +147,13 @@ extension OrderCompletedFlagHelpers on OrderCompletedFlag {
       case 'voided':
         return OrderCompletedFlag.voided;
       case '':
-        return OrderCompletedFlag.none; 
+        return OrderCompletedFlag.none;
       default:
         return OrderCompletedFlag.none;
     }
   }
 }
+
 extension RestaurantAcceptedStatusHelpers on RestaurantAcceptanceStatus {
   OrderAcceptanceStatus toOrderAcceptanceStatus() {
     switch (this) {
@@ -377,7 +416,7 @@ extension RestaurantAcceptanceStatusHelpers on RestaurantAcceptanceStatus {
   }
 }
 
-enum DeliveryAddressLabel { home, work, hotel }
+enum DeliveryAddressLabel { home, work, hotel, Store }
 
 extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
   IconData get icon {
@@ -388,6 +427,8 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
         return FontAwesomeIcons.building;
       case DeliveryAddressLabel.hotel:
         return FontAwesomeIcons.hotel;
+      case DeliveryAddressLabel.Store:
+        return FontAwesomeIcons.store;
     }
   }
 
@@ -399,6 +440,8 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
         return DeliveryAddressLabel.work;
       case 'hotel':
         return DeliveryAddressLabel.hotel;
+      case 'Store':
+        return DeliveryAddressLabel.Store;
       default:
         return DeliveryAddressLabel.home;
     }
@@ -528,7 +571,9 @@ enum OrderCreationProcessStatus {
   orderIsBelowVendorMinimumOrder,
   sendOrderCallServerError,
   sendOrderCallTimedOut,
-  paymentIntentAmountDoesntMatchCartTotal, success, sendOrderCallClientError,
+  paymentIntentAmountDoesntMatchCartTotal,
+  success,
+  sendOrderCallClientError,
 }
 
 enum StripePaymentStatus {
@@ -541,21 +586,43 @@ enum StripePaymentStatus {
   mintingFailed,
 }
 
-enum UserAuthenticationStatus {
+enum FirebaseAuthenticationStatus {
   unauthenticated,
-  authenticatedWithFirebase,
-  authenticatedWithVegi,
-  authenticatedWithFuse,
-  firebasePhoneAuthFailed,
-  vegiLoginFailed,
-  firebaseTFAFailed,
-  firebaseNoPhoneNumberSet,
-  firebaseVerificationCodeTimedOut,
-  firebaseVerificationFailed,
+  loading,
+  phoneAuthFailed,
+  tFAFailed,
+  noPhoneNumberSet,
+  verificationCodeTimedOut,
+  verificationFailed,
+  reauthenticationFailed,
+  authenticated,
+  expired,
+  // firebaseAuthenticationSucceededAndVegiLoginFailed,
+  // firebaseAuthenticationSucceededAndVegiLoginSucceeded,
+  // authenticatedWithFuse,
 }
 
-enum FuseWalletCreationStatus {
+// enum FirebaseAuthenticationStatus {
+//   unauthenticated,
+//   phoneAuthFailed,
+//   tFAFailed,
+//   noPhoneNumberSet,
+//   verificationCodeTimedOut,
+//   verificationFailed,
+//   reauthenticationFailed,
+//   authenticated,
+// }
+
+enum VegiAuthenticationStatus {
   unauthenticated,
+  loading,
+  authenticated,
+  failed,
+}
+
+enum FuseAuthenticationStatus {
+  unauthenticated,
+  loading,
   authenticated,
   created,
   fetched,
@@ -563,4 +630,43 @@ enum FuseWalletCreationStatus {
   failedCreate,
   failedAuthentication,
   missingUserDetailsToAuthFuseWallet,
+}
+
+extension FirebaseAuthenticationStatusHelpers on FirebaseAuthenticationStatus {
+  bool isNewFailureStatus(FirebaseAuthenticationStatus oldStatus) {
+    return [
+          FirebaseAuthenticationStatus.noPhoneNumberSet,
+          FirebaseAuthenticationStatus.phoneAuthFailed,
+          FirebaseAuthenticationStatus.reauthenticationFailed,
+          FirebaseAuthenticationStatus.tFAFailed,
+          FirebaseAuthenticationStatus.unauthenticated,
+          FirebaseAuthenticationStatus.expired,
+          FirebaseAuthenticationStatus.verificationCodeTimedOut,
+          FirebaseAuthenticationStatus.verificationFailed,
+        ].contains(this) &&
+        oldStatus != this;
+  }
+}
+
+extension VegiAuthenticationStatusHelpers on VegiAuthenticationStatus {
+  bool isNewFailureStatus(VegiAuthenticationStatus oldStatus) {
+    return [
+          VegiAuthenticationStatus.failed,
+          VegiAuthenticationStatus.unauthenticated,
+        ].contains(this) &&
+        oldStatus != this;
+  }
+}
+
+extension FuseAuthenticationStatusHelpers on FuseAuthenticationStatus {
+  bool isNewFailureStatus(FuseAuthenticationStatus oldStatus) {
+    return [
+          FuseAuthenticationStatus.failedAuthentication,
+          FuseAuthenticationStatus.failedCreate,
+          FuseAuthenticationStatus.failedFetch,
+          FuseAuthenticationStatus.missingUserDetailsToAuthFuseWallet,
+          // FuseAuthenticationStatus.unauthenticated,
+        ].contains(this) &&
+        oldStatus != this;
+  }
 }

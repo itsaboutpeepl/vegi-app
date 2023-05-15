@@ -13,6 +13,7 @@ class WaitingListFunnelViewModel extends Equatable {
     required this.email,
     required this.surveyQuestions,
     required this.surveyCompleted,
+    required this.userIsVerified,
   });
 
   factory WaitingListFunnelViewModel.fromStore(Store<AppState> store) {
@@ -20,12 +21,14 @@ class WaitingListFunnelViewModel extends Equatable {
       email: store.state.userState.email,
       surveyQuestions: store.state.userState.surveyQuestions,
       surveyCompleted: store.state.userState.surveyCompleted,
+      userIsVerified: store.state.userState.userIsVerified,
     );
   }
 
   final String email;
   final List<SurveyQuestion> surveyQuestions;
   final bool surveyCompleted;
+  final bool userIsVerified;
 
   @override
   List<Object> get props => [
@@ -33,5 +36,6 @@ class WaitingListFunnelViewModel extends Equatable {
         surveyQuestions.length,
         surveyQuestions,
         surveyCompleted,
+        userIsVerified,
       ];
 }

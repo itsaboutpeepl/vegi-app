@@ -76,16 +76,20 @@ class UserState with _$UserState {
     @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
     @Default(null)
         EthPrivateKey? fuseWalletCredentials,
-    @Default(UserAuthenticationStatus.unauthenticated)
-        UserAuthenticationStatus userAuthenticationStatus,
-    @Default(FuseWalletCreationStatus.unauthenticated)
-        FuseWalletCreationStatus fuseWalletCreationStatus,
+    @JsonKey(ignore: true)
+    @Default(VegiAuthenticationStatus.unauthenticated)
+        VegiAuthenticationStatus vegiAuthenticationStatus,
+    @Default(FirebaseAuthenticationStatus.unauthenticated)
+        FirebaseAuthenticationStatus firebaseAuthenticationStatus,
+    @Default(FuseAuthenticationStatus.unauthenticated)
+        FuseAuthenticationStatus fuseAuthenticationStatus,
     @Default(false) bool backup,
     @Default([]) List<String> networks,
     @Default([]) List<String> mnemonic,
     @Default('') String pincode,
     @Default('') String countryCode,
     @Default('') String phoneNumber,
+    @Default('') String phoneNumberNoCountry,
     @Default(false) bool warnSendDialogShowed,
     @Default('') String isoCode,
     @Default('') String jwtToken,
@@ -100,9 +104,11 @@ class UserState with _$UserState {
     @Default('usd') String currency,
     @JsonKey(ignore: true) @Default(false) bool hasUpgrade,
     @Default(BiometricAuth.none) BiometricAuth authType,
+    @JsonKey(ignore: true) @Default(false) bool biometricallyAuthenticated,
     @JsonKey(fromJson: localeFromJson, toJson: localeToJson) Locale? locale,
     @JsonKey(ignore: true) PhoneAuthCredential? firebaseCredentials,
-    String? firebaseSessionToken,
+    @Default(null) String? firebaseSessionToken,
+    @Default(null) String? vegiSessionCookie,
     @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
     @Default(false) bool hasSavedSeedPhrase,
     @Default(false) bool useLiveLocation,
@@ -118,6 +124,11 @@ class UserState with _$UserState {
     @Default(false) bool isVendor,
     @Default(null) String? stripeCustomerId,
     @Default(null) num? vegiAccountId,
+    @Default(false) bool isVegiSuperAdmin,
+    @Default(VegiRole.consumer) VegiRole userVegiRole,
+    @Default(null) int? positionInWaitingList,
+    @Default(false) bool subscribedToWaitingListUpdates,
+    @Default(null) int? waitingListEntryId,
   }) = _UserState;
 
   const UserState._();
@@ -132,6 +143,7 @@ class UserState with _$UserState {
         authType: BiometricAuth.none,
         currency: 'gbp',
         useLiveLocation: false,
+        biometricallyAuthenticated: false,
         listOfDeliveryAddresses: [],
         surveyQuestions: [],
         surveyCompleted: false,
@@ -148,6 +160,14 @@ class UserState with _$UserState {
 
   String get accountAddress => fuseWalletCredentials?.address.toString() ?? '';
   bool get accountDetailsExist => accountAddress.isNotEmpty;
+
+  bool get isLoggedInToVegi =>
+      firebaseAuthenticationStatus ==
+          FirebaseAuthenticationStatus.authenticated &&
+      vegiAuthenticationStatus == VegiAuthenticationStatus.authenticated;
+
+  bool get hasLoggedInBefore =>
+      authType != BiometricAuth.none || vegiAccountId != null;
 
   EthPrivateKey get fuseWalletCredentialsNotNull {
     if (fuseWalletCredentials == null) {

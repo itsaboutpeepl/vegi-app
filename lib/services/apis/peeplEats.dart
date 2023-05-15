@@ -14,9 +14,11 @@ import 'package:vegan_liverpool/models/admin/uploadProductSuggestionImageRespons
 import 'package:vegan_liverpool/models/admin/postVegiResponse.dart';
 import 'package:vegan_liverpool/models/admin/vegiAccount.dart';
 import 'package:vegan_liverpool/models/admin/vegiSession.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForDelivery.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/createOrderResponse.dart';
+import 'package:vegan_liverpool/models/cart/discount.dart';
 import 'package:vegan_liverpool/models/cart/getOrdersResponse.dart';
 import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
 import 'package:vegan_liverpool/models/cart/orderStatus.dart';
@@ -24,18 +26,25 @@ import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryPartnerDTO.dart';
 import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/productRating.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/models/restaurant/userDTO.dart';
+import 'package:vegan_liverpool/models/restaurant/vendorDTO.dart';
+import 'package:vegan_liverpool/models/waitingListFunnel/waitingListEntry.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/services/abstract_apis/httpService.dart';
 import 'package:vegan_liverpool/services/apis/places.dart';
 import 'package:vegan_liverpool/services/apis/vegiBackendEndpoints.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
+import 'package:redux/redux.dart';
 
 @lazySingleton
 class PeeplEatsService extends HttpService {
@@ -45,46 +54,100 @@ class PeeplEatsService extends HttpService {
   }
 
   RestaurantItem _vendorJsonToRestaurantItem(Map<String, dynamic> element) {
-    final List<Map<String, dynamic>> postalCodes = List.from(
-      element['fulfilmentPostalDistricts'] as Iterable<dynamic>,
-    );
+    try {
+      final List<Map<String, dynamic>> postalCodes = List.from(
+        element['fulfilmentPostalDistricts'] as Iterable<dynamic>,
+      );
 
-    final List<String> deliversTo = [];
+      final List<String> deliversTo = [];
 
-    for (final element in postalCodes) {
-      deliversTo.add((element['outcode'] as String? ?? '').toUpperCase());
+      for (final element in postalCodes) {
+        deliversTo.add((element['outcode'] as String? ?? '').toUpperCase());
+      }
+
+      final vendor = VendorDTO.fromJson(element);
+
+      return vendor.toRestaurantItem();
+
+      // return RestaurantItem(
+      //   restaurantID: element['id'].toString(),
+      //   name: element['name'] as String? ?? '',
+      //   description: element['description'] as String? ?? '',
+      //   phoneNumber: element['phoneNumber'] as String? ?? '',
+      //   status: element['status'] as String? ?? 'draft',
+      //   deliveryRestrictionDetails: deliversTo,
+      //   imageURL: element['imageUrl'] as String? ?? '',
+      //   category: 'Category',
+      //   costLevel: element['costLevel'] as int? ?? 2,
+      //   rating: element['rating'] as int? ?? 2,
+      //   address: DeliveryAddresses.fromJson(
+      //     element['pickupAddress'] as Map<String, dynamic>,
+      //   ),
+      //   deliveryPartner: element.containsKey('deliveryPartner')
+      //       ? DeliveryPartnerDTO.fromJson(
+      //           element['deliveryPartner'] as Map<String, dynamic>,
+      //         )
+      //       : null,
+      //   walletAddress: element['walletAddress'] as String? ?? '',
+      //   listOfMenuItems: [],
+      //   productCategories: [],
+      //   isVegan: element['isVegan'] as bool? ?? false,
+      //   minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
+      //   platformFee: element['platformFee'] as int? ?? 0,
+      // );
+    } on Exception catch (e) {
+      log.error(e);
+      rethrow;
     }
-
-    return RestaurantItem(
-      restaurantID: element['id'].toString(),
-      name: element['name'] as String? ?? '',
-      description: element['description'] as String? ?? '',
-      phoneNumber: element['phoneNumber'] as String? ?? '',
-      status: element['status'] as String? ?? 'draft',
-      deliveryRestrictionDetails: deliversTo,
-      imageURL: element['imageUrl'] as String? ?? '',
-      category: 'Category',
-      costLevel: element['costLevel'] as int? ?? 2,
-      rating: element['rating'] as int? ?? 2,
-      address: DeliveryAddresses.fromVendorJson(element),
-      walletAddress: element['walletAddress'] as String? ?? '',
-      listOfMenuItems: [],
-      productCategories: [],
-      isVegan: element['isVegan'] as bool? ?? false,
-      minimumOrderAmount: element['minimumOrderAmount'] as int? ?? 0,
-      platformFee: element['platformFee'] as int? ?? 0,
-    );
   }
 
   // User Details
 
   bool get hasCookieStored => dio.options.headers.containsKey('Cookie');
 
+  Future<bool> checkVegiSessionIsStillValid({
+    void Function()? sessionIsStaleCallback,
+  }) async {
+    if (!hasCookieStored) {
+      final cookie = (await reduxStore).state.userState.vegiSessionCookie;
+      if (cookie == null || cookie.isEmpty) {
+        sessionIsStaleCallback?.call();
+        return false;
+      }
+      await setSessionCookie(cookie);
+    }
+    final Response<dynamic> response = await dioGet(
+      VegiBackendEndpoints.isLoggedIn,
+      sendWithAuthCreds: true,
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      throw Exception(
+        'Bad response returned when trying to checkVegiSessionIsStillValid: $response',
+      );
+    }
+
+    final validSession = response.data!['authenticated'] as bool;
+
+    if (!validSession) {
+      sessionIsStaleCallback?.call();
+    }
+
+    return validSession;
+  }
+
   Future<VegiSession> loginWithPhone({
     required String phoneNumber,
     required String firebaseSessionToken,
     bool rememberMe = true,
   }) async {
+    if (hasCookieStored) {
+      //todo: Dont login again if have user details already and isCookieExpired is false...
+      // if(await isCookieExpired()){
+
+      // }
+      await deleteSessionCookie();
+    }
     final Response<dynamic> response = await dioPost(
       VegiBackendEndpoints.loginWithPhone,
       sendWithAuthCreds: false,
@@ -98,17 +161,37 @@ class PeeplEatsService extends HttpService {
     // Capture session cookie to send with requests from nowon in a VegiSession object that we save to the singleton instance of the peeplEats service?...
     if (response.statusCode != null && response.statusCode! >= 400) {
       throw Exception(
-          'Bad response returned when trying to loginWithPhone: $response');
+        'Bad response returned when trying to loginWithPhone: $response',
+      );
     } else if (response.headers.value('set-cookie') == null) {
-      throw Exception(
-          'No set-cookie returned in response headers when trying to loginWithPhone: $response');
+      log.error(
+        'No set-cookie returned in response headers when trying to loginWithPhone with:\n\t responseHeaders: ${response.headers} & response: $response',
+      );
     }
 
-    final cookie = response.headers.value('set-cookie')!;
+    final userDetails =
+        UserDTO.fromJson(response.data['user'] as Map<String, dynamic>);
 
-    this.dio.options.headers['Cookie'] = cookie;
-
-    return VegiSession(sessionCookie: cookie);
+    final cookie = response.headers.value('set-cookie');
+    if (cookie != null) {
+      await setSessionCookie(cookie);
+      (await reduxStore)
+        ..dispatch(
+          SetVegiSessionCookie(
+            cookie: cookie,
+          ),
+        )
+        ..dispatch(
+          SetUserRoleOnVegi(
+            userRole: userDetails.role,
+            isSuperAdmin: userDetails.isSuperAdmin,
+          ),
+        );
+    }
+    return VegiSession(
+      sessionCookie: cookie ?? '',
+      user: userDetails,
+    );
   }
 
   Future<VegiSession> loginWithEmail({
@@ -129,15 +212,22 @@ class PeeplEatsService extends HttpService {
     // Capture session cookie to send with requests from nowon in a VegiSession object that we save to the singleton instance of the peeplEats service?...
     if (response.statusCode != null && response.statusCode! >= 400) {
       throw Exception(
-          'Bad response returned when trying to loginWithPhone: $response');
+        'Bad response returned when trying to loginWithPhone: $response',
+      );
     } else if (response.headers.value('set-cookie') == null) {
       throw Exception(
-          'No set-cookie returned in response headers when trying to loginWithPhone: $response');
+        'No set-cookie returned in response headers when trying to loginWithPhone: $response',
+      );
     }
 
     final cookie = response.headers.value('set-cookie')!;
 
-    this.dio.options.headers['Cookie'] = cookie;
+    await setSessionCookie(cookie);
+    (await reduxStore).dispatch(
+      SetVegiSessionCookie(
+        cookie: cookie,
+      ),
+    );
 
     return VegiSession(sessionCookie: cookie);
   }
@@ -146,6 +236,7 @@ class PeeplEatsService extends HttpService {
     await dioGet<dynamic>(
       VegiBackendEndpoints.logout,
     );
+    await logoutSession();
   }
 
   // TODO: Implement - backend needs new deregister handle to deregister a user by email or phone and
@@ -156,10 +247,15 @@ class PeeplEatsService extends HttpService {
   //   required String email,
   // }) async {}
 
-  Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
-    final Response<dynamic> response =
-        await dioGet<dynamic>(VegiBackendEndpoints.featuredRestaurants(outCode))
-            .timeout(
+  Future<List<RestaurantItem>> featuredRestaurants(
+    String outCode, {
+    bool dontRoute = false,
+  }) async {
+    final Response<dynamic> response = await dioGet<dynamic>(
+      VegiBackendEndpoints.featuredRestaurants(outCode),
+      sendWithAuthCreds: true,
+      dontRoute: dontRoute,
+    ).timeout(
       const Duration(seconds: 5),
       onTimeout: () {
         return Response(
@@ -174,7 +270,8 @@ class PeeplEatsService extends HttpService {
               .startsWith('SocketException:') &&
           dio.options.baseUrl.startsWith('http://localhost')) {
         log.warn(
-            'If running from real_device, cant connect to localhost on running machine...');
+          'If running from real_device, cant connect to localhost on running machine...',
+        );
       }
       return Response(
         data: {'vendors': List<RestaurantItem>.empty()},
@@ -220,10 +317,36 @@ class PeeplEatsService extends HttpService {
     }
   }
 
+  Future<VendorDTO?> _fetchSingleRestaurantAsVendorDTO({
+    required int vendorId,
+  }) async {
+    final Response<dynamic> response = await dioGet<dynamic>(
+      VegiBackendEndpoints.fetchSingleRestaurant(vendorId),
+    ).onError((error, stackTrace) {
+      log.error(
+        error,
+        stackTrace: stackTrace,
+      );
+      return Response(
+        data: {'vendor': null},
+        requestOptions: RequestOptions(path: ''),
+      );
+    });
+
+    final element = response.data['vendor'] as Map<String, dynamic>?;
+
+    if (element != null) {
+      return VendorDTO.fromJson(element);
+    } else {
+      return null;
+    }
+  }
+
   Future<List<RestaurantItem>> getRestaurantsByLocation({
     required Coordinates geoLocation,
     required num? distanceFromLocationAllowedInKm,
     required FulfilmentMethodType fulfilmentMethodTypeName,
+    bool dontRoute = false,
   }) async {
     final distanceFromQueryParam = distanceFromLocationAllowedInKm == null
         ? ''
@@ -238,6 +361,7 @@ class PeeplEatsService extends HttpService {
         distanceFromQueryParam,
         fulfilmentMethodType,
       ),
+      dontRoute: dontRoute,
     ).timeout(
       const Duration(seconds: 5),
       onTimeout: () {
@@ -282,7 +406,15 @@ class PeeplEatsService extends HttpService {
             category: 'Category',
             costLevel: element['costLevel'] as int? ?? 2,
             rating: element['rating'] as int? ?? 2,
-            address: DeliveryAddresses.fromVendorJson(element),
+            // address: DeliveryAddresses.fromVendorJson(element),
+            address: DeliveryAddresses.fromJson(
+              element['pickupAddress'] as Map<String, dynamic>,
+            ),
+            deliveryPartner: element.containsKey('deliveryPartner')
+                ? DeliveryPartnerDTO.fromJson(
+                    element['deliveryPartner'] as Map<String, dynamic>,
+                  )
+                : null,
             walletAddress: element['walletAddress'] as String? ?? '',
             listOfMenuItems: [],
             productCategories: [],
@@ -303,7 +435,8 @@ class PeeplEatsService extends HttpService {
   }) async {
     final Response<dynamic> response = await dio
         .get<dynamic>(
-            'api/v1/vendors?outcode=$outCode&search=$globalSearchQuery')
+      'api/v1/vendors?outcode=$outCode&search=$globalSearchQuery',
+    )
         .timeout(
       const Duration(seconds: 5),
       onTimeout: () {
@@ -348,7 +481,15 @@ class PeeplEatsService extends HttpService {
             category: 'Category',
             costLevel: element['costLevel'] as int? ?? 2,
             rating: element['rating'] as int? ?? 2,
-            address: DeliveryAddresses.fromVendorJson(element),
+            // address: DeliveryAddresses.fromVendorJson(element),
+            address: DeliveryAddresses.fromJson(
+              element['pickupAddress'] as Map<String, dynamic>,
+            ),
+            deliveryPartner: element.containsKey('deliveryPartner')
+                ? DeliveryPartnerDTO.fromJson(
+                    element['deliveryPartner'] as Map<String, dynamic>,
+                  )
+                : null,
             walletAddress: element['walletAddress'] as String? ?? '',
             listOfMenuItems: [],
             productCategories: [],
@@ -364,10 +505,13 @@ class PeeplEatsService extends HttpService {
   }
 
   Future<List<RestaurantMenuItem>> getRestaurantMenuItems(
-    String restaurantID,
-  ) async {
-    final Response<dynamic> response =
-        await dioGet('api/v1/vendors/$restaurantID'); // BUG Taking too long
+    String restaurantID, {
+    bool dontRoute = false,
+  }) async {
+    final Response<dynamic> response = await dioGet(
+      'api/v1/vendors/$restaurantID',
+      dontRoute: dontRoute,
+    ); // BUG Taking too long
 
     final List<Map<String, dynamic>> results =
         List.from(response.data['vendor']['products'] as Iterable<dynamic>);
@@ -394,8 +538,10 @@ class PeeplEatsService extends HttpService {
             vendorInternalId: element['vendorInternalId'] as String? ?? '',
             ingredients: element['ingredients'] as String? ?? '',
             productBarCode: element['productBarCode'] as String? ?? '',
-            status: EnumHelpers.enumFromString(ProductDiscontinuedStatus.values,
-                    element['status'] as String) ??
+            status: EnumHelpers.enumFromString(
+                  ProductDiscontinuedStatus.values,
+                  element['status'] as String,
+                ) ??
                 ProductDiscontinuedStatus.inactive,
             stockCount: element['stockCount'] as int? ?? 0,
             sizeInnerUnitValue: element['sizeInnerUnitValue'] as num? ?? 1,
@@ -518,8 +664,10 @@ class PeeplEatsService extends HttpService {
             vendorInternalId: element['vendorInternalId'] as String? ?? '',
             ingredients: element['ingredients'] as String? ?? '',
             productBarCode: element['productBarCode'] as String? ?? '',
-            status: EnumHelpers.enumFromString(ProductDiscontinuedStatus.values,
-                    element['status'] as String) ??
+            status: EnumHelpers.enumFromString(
+                  ProductDiscontinuedStatus.values,
+                  element['status'] as String,
+                ) ??
                 ProductDiscontinuedStatus.inactive,
             stockCount: element['stockCount'] as int? ?? 0,
             sizeInnerUnitValue: element['sizeInnerUnitValue'] as num? ?? 1,
@@ -555,10 +703,13 @@ class PeeplEatsService extends HttpService {
   }
 
   Future<List<ProductCategory>> getProductCategoriesForVendor(
-    int vendorId,
-  ) async {
-    final Response<dynamic> response =
-        await dio.get('api/v1/vendors/product-categories?vendor=$vendorId');
+    int vendorId, {
+    bool dontRoute = false,
+  }) async {
+    final Response<dynamic> response = await dioGet(
+      'api/v1/vendors/product-categories?vendor=$vendorId',
+      dontRoute: dontRoute,
+    );
 
     final List<dynamic> productCategories =
         response.data['productCategories'] as List<dynamic>;
@@ -570,9 +721,14 @@ class PeeplEatsService extends HttpService {
         .toList();
   }
 
-  Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {
-    final Response<dynamic> response =
-        await dio.get('api/v1/products/get-product-options/$itemID?');
+  Future<List<ProductOptionsCategory>> getProductOptions(
+    String itemID, {
+    bool dontRoute = false,
+  }) async {
+    final Response<dynamic> response = await dioGet(
+      'api/v1/products/get-product-options/$itemID?',
+      dontRoute: dontRoute,
+    );
 
     final List<Map<String, dynamic>> results =
         List.from(response.data as Iterable<dynamic>);
@@ -580,13 +736,13 @@ class PeeplEatsService extends HttpService {
     final List<ProductOptionsCategory> listOfProductOptionCategories = [];
 
     for (final Map<String, dynamic> category in results) {
-      final List<ProductOptions> listOfOptions = [];
+      final List<ProductOptionValue> listOfOptions = [];
 
       final List<Map<String, dynamic>> options =
           List.from(category['values'] as Iterable<dynamic>);
 
       for (final Map<String, dynamic> option in options) {
-        listOfOptions.add(ProductOptions.fromJson(option));
+        listOfOptions.add(ProductOptionValue.fromJson(option));
       }
 
       if (options.isEmpty) continue;
@@ -698,24 +854,49 @@ class PeeplEatsService extends HttpService {
     }
   }
 
-  Future<PostVegiResponse?> uploadImageForUserAvatar({
-    //todo: this call needs to be authenticated using a vegi jwt token...
+  Future<String> setRandomAvatar({
+    required int accountId,
+    required void Function(String error) onError,
+  }) async {
+    try {
+      final Response<dynamic> response = await dioPost(
+        '/api/v1/users/set-random-avatar',
+        data: {'accountId': accountId},
+        sendWithAuthCreds: true,
+      );
+
+      final results = response.data as Map<String, dynamic>;
+
+      return results['imageUrl'] as String? ?? '';
+    } on Exception catch (e, s) {
+      // TODO
+      log.error(
+        e,
+        stackTrace: s,
+      );
+      onError(e.toString());
+      return '';
+    }
+  }
+
+  Future<String?> uploadImageForUserAvatar({
     required File image,
-    required void Function(PostVegiResponse) onSuccess,
+    required int accountId,
     required void Function(String error, ProductSuggestionUploadErrCode errCode)
         onError,
     required ProgressCallback onReceiveProgress,
   }) async {
     try {
       final Response<Map<String, dynamic>> response = await dioPostFile(
-        'api/v1/products/upload-user-avatar',
+        'api/v1/users/upload-user-avatar',
         file: image,
         sendWithAuthCreds: true,
         formDataCreator: ({required MultipartFile file}) => FormData.fromMap({
-          'uid': const Uuid().v4(),
+          // 'uid': const Uuid().v4(),
           'image': file,
+          'accountId': accountId
         }),
-        errorResponseData: {'image': ''},
+        errorResponseData: {'imageUrl': ''},
         onError: (error, errCode) {
           switch (errCode) {
             case FileUploadErrCode.imageTooLarge:
@@ -742,27 +923,26 @@ class PeeplEatsService extends HttpService {
             onReceiveProgress != null ? onReceiveProgress(count, total) : null,
       );
 
-      if (response.statusCode != null && response.statusCode! >= 400) {
-        var errCode = ProductSuggestionUploadErrCode.unknownError;
-        if (response.statusCode == 404) {
-          errCode = ProductSuggestionUploadErrCode.productNotFound;
-        } else if (response.statusCode == 500) {
-          errCode = ProductSuggestionUploadErrCode.connectionIssue;
-        }
-        onError(
-          response.statusMessage ?? 'Unknown Error',
-          errCode,
-        );
-        return null;
-      } else {
-        final answer = PostVegiResponse.fromJson(
-          response.data as Map<String, dynamic>,
-        );
+      // if (response.statusCode != null && response.statusCode! >= 400) {
+      //   var errCode = ProductSuggestionUploadErrCode.unknownError;
+      //   if (response.statusCode == 404) {
+      //     errCode = ProductSuggestionUploadErrCode.productNotFound;
+      //   } else if (response.statusCode == 500) {
+      //     errCode = ProductSuggestionUploadErrCode.connectionIssue;
+      //   }
+      //   onError(
+      //     response.statusMessage ?? 'Unknown Error',
+      //     errCode,
+      //   );
+      //   return null;
+      // } else {
+      //   final results = response.data as Map<String, dynamic>;
 
-        onSuccess(answer);
+      //   return results['imageUrl'] as String? ?? '';
+      // }
+      final results = response.data as Map<String, dynamic>;
 
-        return answer;
-      }
+      return results['imageUrl'] as String? ?? '';
     } catch (err, st) {
       log.error(err, stackTrace: st);
     }
@@ -969,25 +1149,63 @@ class PeeplEatsService extends HttpService {
     return nextSlots;
   }
 
-  Future<void> getUserForWalletAddress(
+  Future<VegiAccount?> getVegiAccountForWalletAddress(
     String walletAddress,
-    void Function(VegiAccount vegiAccount) onSuccess,
     void Function(String error) onError,
   ) async {
     final Response<dynamic> response = await dioGet(
-      //todo: get and set accountId from response
       'api/v1/admin/user-for-wallet-address',
       queryParameters: {
         'walletAddress': walletAddress,
       },
+      sendWithAuthCreds: true,
     );
 
     if (response.statusCode != null && response.statusCode! >= 400) {
       onError(response.statusMessage ?? 'Unknown Error');
+      return null;
     } else {
-      final result =
-          VegiAccount.fromJson(response.data as Map<String, dynamic>);
-      onSuccess(result);
+      final result = VegiAccount.fromJson(
+        response.data['account'] as Map<String, dynamic>,
+      );
+      return result;
+    }
+  }
+
+  Future<UserDTO?> getUserDetails(
+    String email,
+    String phoneNoCountry,
+    void Function(String error) onError,
+  ) async {
+    try {
+      final Response<dynamic> response = await dioGet(
+        '/api/v1/admin/user-details',
+        queryParameters: {
+          'email': email,
+          'phoneNoCountry': phoneNoCountry,
+        },
+        sendWithAuthCreds: true,
+        allowStatusCodes: [404],
+      );
+      if (response.statusCode != null && response.statusCode! >= 400) {
+        if (response.statusCode! == 404) {
+          log.info(
+              'Expected 404 response for user details request for not internal vegi user');
+          return null;
+        }
+        onError(response.statusMessage ?? 'Unknown Error');
+        return null;
+      } else {
+        final result = UserDTO.fromJson(response.data as Map<String, dynamic>);
+        return result;
+      }
+    } on Exception catch (e) {
+      if (e is DioError) {
+        if (e.response != null && e.response!.statusCode == 404) {
+          return null;
+        }
+      }
+      rethrow;
     }
   }
 
@@ -1017,12 +1235,37 @@ class PeeplEatsService extends HttpService {
     }
   }
 
-  Future<void> registerEmailToWaitingList(
+  Future<WaitingListEntry?> updateEmailForAccount({
+    required String email,
+    required int waitingListEntryId,
+    required void Function(String error) onError,
+  }) async {
+    final Response<dynamic> response = await dioPost(
+      'api/v1/admin/update-waiting-list-entry',
+      data: {
+        'id': waitingListEntryId,
+        'emailAddress': email,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
+      return null;
+    } else {
+      final entry =
+          WaitingListEntry.fromJson(response.data as Map<String, dynamic>);
+      (await reduxStore)
+          .dispatch(SetPositionInWaitingList(positionInQueue: entry.order));
+      return entry;
+    }
+  }
+
+  Future<WaitingListEntry?> registerEmailToWaitingList(
     String email,
-    void Function() onSuccess,
+    Store<AppState> store,
     void Function(String error) onError,
   ) async {
-    final Response<dynamic> response = await dio.post(
+    final Response<dynamic> response = await dioPost(
       'api/v1/admin/register-email-to-waiting-list',
       data: {
         'emailAddress': email,
@@ -1032,11 +1275,84 @@ class PeeplEatsService extends HttpService {
 
     if (response.statusCode != null && response.statusCode! >= 400) {
       onError(response.statusMessage ?? 'Unknown Error');
+      return null;
     } else {
-      onSuccess();
+      final entry =
+          WaitingListEntry.fromJson(response.data as Map<String, dynamic>);
+      store.dispatch(SetPositionInWaitingList(positionInQueue: entry.order));
+      return entry;
+    }
+  }
+
+  Future<WaitingListEntry?> subscribeToWaitingListEmails({
+    required String email,
+    required bool receiveUpdates,
+    required void Function(String error) onError,
+  }) async {
+    final Response<dynamic> response = await dioPost(
+      'api/v1/admin/subscribe-waitlist-email-notifications',
+      data: {
+        'emailAddress': email,
+        'receiveUpdates': receiveUpdates,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
+      return null;
+    } else {
+      return WaitingListEntry.fromJson(response.data as Map<String, dynamic>);
+    }
+  }
+
+  Future<int> getPositionInWaitingList(
+    String email,
+    void Function(String error) onError,
+  ) async {
+    final Response<dynamic> response = await dioGet(
+      '/api/v1/admin/get-position-in-waitinglist',
+      queryParameters: {
+        'emailAddress': email,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
     }
 
-    return;
+    return response.data['position'] as int;
+  }
+
+  Future<Discount?> validateFixedDiscountCode({
+    required Store<AppState> store,
+    required String code,
+    required String walletAddress,
+    required int vendor,
+    required void Function(String error) onError,
+  }) async {
+    final Response<dynamic> response = await dioGet(
+      '/api/v1/admin/validate-discount-code',
+      queryParameters: {
+        'code': code,
+        'isGlobalPercentageCode': false,
+        'walletAddress': walletAddress,
+        'vendor': vendor,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      onError(response.statusMessage ?? 'Unknown Error');
+      return null;
+    }
+    final data = response.data as Map<String, dynamic>;
+    final vendorKVP = data['vendor'];
+    if (vendorKVP is int) {
+      final vendorDetails = await _fetchSingleRestaurantAsVendorDTO(
+        vendorId: vendorKVP,
+      );
+      data['vendor'] = vendorDetails;
+    }
+    return Discount.fromJson(data);
   }
 
   // Future<void> backupUserSK(
@@ -1165,11 +1481,14 @@ class PeeplEatsService extends HttpService {
   }
 
   Future<GetOrdersResponse> getOrdersForWallet(
-    String walletAddress,
-  ) async {
+    String walletAddress, {
+    bool dontRoute = false,
+  }) async {
     try {
-      final Response<dynamic> response =
-          await dio.get('api/v1/orders?walletId=$walletAddress');
+      final Response<dynamic> response = await dioGet(
+        'api/v1/orders?walletId=$walletAddress',
+        dontRoute: dontRoute,
+      );
       final scheduledOrders =
           (response.data['scheduledOrders'] as List<dynamic>)
               .map(
@@ -1210,9 +1529,13 @@ class PeeplEatsService extends HttpService {
     }
   }
 
-  Future<List<String>> getPostalCodes() async {
-    final Response<dynamic> response =
-        await dio.get('api/v1/postal-districts/get-all-postal-districts');
+  Future<List<String>> getPostalCodes({
+    bool dontRoute = false,
+  }) async {
+    final Response<dynamic> response = await dioGet(
+      'api/v1/postal-districts/get-all-postal-districts',
+      dontRoute: dontRoute,
+    );
 
     final List<String> outCodes = [];
 

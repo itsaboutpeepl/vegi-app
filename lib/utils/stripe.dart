@@ -86,6 +86,7 @@ class StripeService {
       // ~ https://docs.page/flutter-stripe/flutter_stripe/sheet#5-test-the-integration
       final dynamicUrl = 'vegi://vegiApp.co.uk${rootRouter.currentUrl}';
       log.info(dynamicUrl);
+      //todo: can we call rootRouter.addListener at beginning of this call for startPeeplPayProcess thunk and then remove handler if finishes and close payment sheet if rootRouter is called....
       await instance.initPaymentSheet(
         // todo: Check that the returnUrl makes sense...
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -156,13 +157,20 @@ class StripeService {
           await Sentry.captureException(
             e,
             stackTrace: s,
-            hint: 'ERROR - Stripe Exception: ${e.error.localizedMessage}',
+            hint:
+                'ERROR - Stripe Exception: ${e.error.localizedMessage}; message: ${e.error.message}',
           );
-          store.dispatch(
-            StripePaymentStatusUpdate(
-              status: StripePaymentStatus.paymentFailed,
-            ),
-          );
+          store
+            ..dispatch(
+              StripePaymentStatusUpdate(
+                status: StripePaymentStatus.paymentFailed,
+              ),
+            )
+            ..dispatch(
+              OrderCreationProcessStatusUpdate(
+                status: OrderCreationProcessStatus.none,
+              ),
+            );
           return false;
         } else {
           return false;

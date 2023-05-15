@@ -2,9 +2,11 @@ import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/home_page_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 final homePageReducers = combineReducers<HomePageState>(
   [
+    TypedReducer<HomePageState, ResetAppState>(_resetApp),
     TypedReducer<HomePageState, UpdateFeaturedRestaurants>(
       _getFeaturedRestaurants,
     ),
@@ -26,6 +28,14 @@ final homePageReducers = combineReducers<HomePageState>(
     ),
   ],
 );
+
+
+HomePageState _resetApp(
+  HomePageState state,
+  ResetAppState action,
+) {
+  return HomePageState.initial();
+}
 
 HomePageState _getFeaturedRestaurants(
   HomePageState state,

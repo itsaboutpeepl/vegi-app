@@ -21,7 +21,6 @@ class PaymentSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PeeplPaySheetViewModel>(
-      distinct: true,
       converter: PeeplPaySheetViewModel.fromStore,
       onInit: (store) {
         store
@@ -34,6 +33,7 @@ class PaymentSheet extends StatelessWidget {
             ),
           );
       },
+      distinct: true,
       onWillChange: (previousViewModel, newViewModel) async {
         if (newViewModel.transferringTokens &&
             !(previousViewModel?.transferringTokens ?? false)) {

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/payments/transaction_item.dart';
@@ -38,11 +39,19 @@ class OrderConfirmedViewModel extends Equatable {
           (element) => element.orderID == store.state.cartState.orderID,
         );
       }
-      if (orderDetailsInd > -1) {
+      if (store.state.pastOrderState.listOfOngoingOrders
+          .indexExists(orderDetailsInd)) {
         order = store.state.pastOrderState.listOfOngoingOrders[orderDetailsInd];
-      } else {
+      } else if (store.state.pastOrderState.listOfScheduledOrders
+          .indexExists(orderDetailsInd)) {
         order =
             store.state.pastOrderState.listOfScheduledOrders[orderDetailsInd];
+      } else if (store.state.pastOrderState.allPastOrders
+          .indexExists(orderDetailsInd)) {
+        order = store.state.pastOrderState.allPastOrders[orderDetailsInd];
+      } else if (store.state.pastOrderState.allUnpaidOrders
+          .indexExists(orderDetailsInd)) {
+        order = store.state.pastOrderState.allUnpaidOrders[orderDetailsInd];
       }
     } on Exception catch (e, s) {
       log.error(e, stackTrace: s);
@@ -64,8 +73,9 @@ class OrderConfirmedViewModel extends Equatable {
       selectedSlot: store.state.cartState.selectedTimeSlot,
       isDelivery: store.state.cartState.isDelivery,
       orderAddress: store.state.cartState.isDelivery
-          ? store.state.cartState.selectedDeliveryAddress!
-          : store.state.cartState.restaurantAddress!,
+          ? (store.state.cartState.selectedDeliveryAddress ??
+              store.state.cartState.restaurantAddress)
+          : store.state.cartState.restaurantAddress,
       restaurantName: store.state.cartState.restaurantName,
       cartItems: store.state.cartState.cartItems,
       cartTotal: store.state.cartState.cartTotal,
@@ -80,7 +90,7 @@ class OrderConfirmedViewModel extends Equatable {
 
   final TimeSlot? selectedSlot;
   final bool isDelivery;
-  final DeliveryAddresses orderAddress;
+  final DeliveryAddresses? orderAddress;
   final String restaurantName;
   final List<CartItem> cartItems;
   final int cartTotal;

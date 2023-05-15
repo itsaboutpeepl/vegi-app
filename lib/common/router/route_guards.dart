@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
-bool isAuthenticated = false;
+bool isAuthenticatedRouteGuard = false;
 
 class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    if (isAuthenticated) {
+    if (isAuthenticatedRouteGuard) {
       resolver.next();
     } else {
       if (kDebugMode) {
@@ -17,7 +17,7 @@ class AuthGuard extends AutoRouteGuard {
       router.push(
         SplashScreen(
           onLoginResult: (bool isLoggedIn) {
-            isAuthenticated = isLoggedIn;
+            isAuthenticatedRouteGuard = isLoggedIn;
             resolver.next(isLoggedIn);
           },
         ),

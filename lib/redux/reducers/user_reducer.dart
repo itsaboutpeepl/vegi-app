@@ -1,10 +1,16 @@
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
+import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 final userReducers = combineReducers<UserState>([
+  TypedReducer<UserState, ResetAppState>(_resetApp),
+  TypedReducer<UserState, ResetSurveyCompleted>(_resetSurveyCompleted),
+  TypedReducer<UserState, SetSubscribedToWaitingListUpdates>(
+      _setSubscribedToWaitingListUpdates),
   TypedReducer<UserState, SetWalletConnectURI>(_setWalletConnectURI),
   TypedReducer<UserState, GetWalletDataSuccess>(_getWalletDataSuccess),
   TypedReducer<UserState, SetStripeCustomerDetails>(_setStripeCustomerDetails),
@@ -13,12 +19,14 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, CreateLocalAccountSuccess>(_createNewWalletSuccess),
   // TypedReducer<UserState, AddSurveyEmailSuccess>(_addSurveyEmailSuccess),
   TypedReducer<UserState, CreateSurveyCompletedSuccess>(_completeSurveySuccess),
+  TypedReducer<UserState, SetPhoneNumberSuccess>(_setPhoneNumber),
   TypedReducer<UserState, LoginRequestSuccess>(_loginSuccess),
   TypedReducer<UserState, LoginVerifySuccess>(_loginVerifySuccess),
   TypedReducer<UserState, LogoutRequestSuccess>(_logoutSuccess),
   TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
   TypedReducer<UserState, SetDisplayName>(_setDisplayName),
   TypedReducer<UserState, SetEmail>(_setEmail),
+  TypedReducer<UserState, SetUserAuthenticationStatus>(_setUserAuthenticationStatus),
   TypedReducer<UserState, EmailWLRegistrationSuccess>(
     _setUserEmailForRegistrationToWaitingList,
   ),
@@ -27,23 +35,21 @@ final userReducers = combineReducers<UserState>([
   ),
   TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
   TypedReducer<UserState, ReLogin>(_reLoginUser),
-  TypedReducer<UserState, ReauthenticateUserFailure>(
-      _reAuthenticateUserFailure),
-  TypedReducer<UserState, AuthenticateFuseWalletSDKFailure>(
-      _authenticateFuseWalletSDKFailure),
-  TypedReducer<UserState, FetchFuseSmartWalletFailure>(
-      _fetchFuseSmartWalletFailure),
   TypedReducer<UserState, BackupSuccess>(_backupSuccess),
   TypedReducer<UserState, StoreBackupStatus>(_storeBackupStatus),
   TypedReducer<UserState, SetFirebaseCredentials>(_setFirebaseCredentials),
   TypedReducer<UserState, SetFirebaseSessionToken>(_setFirebaseSessionToken),
   TypedReducer<UserState, SetFuseWalletCredentials>(_setFuseWalletCredentials),
   TypedReducer<UserState, SetVerificationId>(_setVerificationId),
-  TypedReducer<UserState, SetVerificationPassed>(_setVerificationPassed),
-  TypedReducer<UserState, SetPhoneNumber>(_setPhoneNumber),
+  TypedReducer<UserState, SetVerificationFailed>(_setVerificationFailed),
+  TypedReducer<UserState, SetVegiSessionExpired>(_setVegiSessionExpired),
+  TypedReducer<UserState, SetVegiSessionCookie>(_setVegiSessionCookie),
+  TypedReducer<UserState, SetPhoneNumber>(_setPhoneNumberRaw),
   TypedReducer<UserState, JustInstalled>(_justInstalled),
   TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess),
   TypedReducer<UserState, SetSecurityType>(_setSecurityType),
+  TypedReducer<UserState, SetBiometricallyAuthenticated>(
+      _setBiometricallyAuthenticated),
   TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed),
   TypedReducer<UserState, UpdateCurrency>(_updateCurrency),
   TypedReducer<UserState, UpdateLocale>(_updateLocale),
@@ -63,7 +69,57 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetDeviceIsSimulatorRTO>(
     _setDeviceIsSimulator,
   ),
+  TypedReducer<UserState, SetUserRoleOnVegi>(
+    _setVegiRole,
+  ),
+  TypedReducer<UserState, SetPositionInWaitingList>(
+    _setPositionInWaitingList,
+  ),
 ]);
+
+UserState _resetApp(
+  UserState state,
+  ResetAppState action,
+) {
+  return UserState.initial();
+}
+
+UserState _resetSurveyCompleted(
+  UserState state,
+  ResetSurveyCompleted action,
+) {
+  return state.copyWith(
+    surveyCompleted: false,
+  );
+}
+
+UserState _setSubscribedToWaitingListUpdates(
+  UserState state,
+  SetSubscribedToWaitingListUpdates action,
+) {
+  return state.copyWith(
+    subscribedToWaitingListUpdates: action.updatedEntry.emailUpdates,
+  );
+}
+
+UserState _setVegiRole(
+  UserState state,
+  SetUserRoleOnVegi action,
+) {
+  return state.copyWith(
+    userVegiRole: action.userRole,
+    isVegiSuperAdmin: action.isSuperAdmin,
+  );
+}
+
+UserState _setPositionInWaitingList(
+  UserState state,
+  SetPositionInWaitingList action,
+) {
+  return state.copyWith(
+    positionInWaitingList: action.positionInQueue,
+  );
+}
 
 UserState _setWalletConnectURI(
   UserState state,
@@ -162,25 +218,19 @@ UserState _reLoginUser(
   return state.copyWith(isLoggedOut: false);
 }
 
-UserState _reAuthenticateUserFailure(
+UserState _setUserAuthenticationStatus(
   UserState state,
-  ReauthenticateUserFailure action,
+  SetUserAuthenticationStatus action,
 ) {
-  return state.copyWith(userAuthenticationStatus: action.error);
-}
-
-UserState _authenticateFuseWalletSDKFailure(
-  UserState state,
-  AuthenticateFuseWalletSDKFailure action,
-) {
-  return state.copyWith(fuseWalletCreationStatus: action.error);
-}
-
-UserState _fetchFuseSmartWalletFailure(
-  UserState state,
-  FetchFuseSmartWalletFailure action,
-) {
-  return state.copyWith(fuseWalletCreationStatus: action.error);
+  log.info('SetUserAuthenticationStatus ACTION: $action');
+  return state.copyWith(
+    firebaseAuthenticationStatus:
+        action.firebaseStatus ?? state.firebaseAuthenticationStatus,
+    fuseAuthenticationStatus:
+        action.fuseStatus ?? state.fuseAuthenticationStatus,
+    vegiAuthenticationStatus:
+        action.vegiStatus ?? state.vegiAuthenticationStatus,
+  );
 }
 
 UserState _createNewWalletSuccess(
@@ -213,16 +263,29 @@ UserState _completeSurveySuccess(
   );
 }
 
-UserState _loginSuccess(
+UserState _setPhoneNumber(
   UserState state,
-  LoginRequestSuccess action,
+  SetPhoneNumberSuccess action,
 ) {
   return state.copyWith(
     countryCode: action.countryCode.dialCode!,
     isoCode: action.countryCode.code!,
-    phoneNumber: action.phoneNumber,
-    userAuthenticationStatus:
-        UserAuthenticationStatus.authenticatedWithFirebase,
+    phoneNumberNoCountry: action.phoneNumber.nationalNumber,
+    phoneNumber: action.phoneNumber.e164,
+  );
+}
+
+UserState _loginSuccess(
+  UserState state,
+  LoginRequestSuccess action,
+) {
+  log.info('$action');
+  return state.copyWith(
+    countryCode: action.countryCode.dialCode!,
+    isoCode: action.countryCode.code!,
+    phoneNumber: action.phoneNumber.e164,
+    phoneNumberNoCountry: action.phoneNumber.nationalNumber,
+    firebaseAuthenticationStatus: FirebaseAuthenticationStatus.authenticated,
   );
 }
 
@@ -235,17 +298,39 @@ UserState _setVerificationId(
   );
 }
 
-UserState _setVerificationPassed(
+UserState _setVerificationFailed(
   UserState state,
-  SetVerificationPassed action,
+  SetVerificationFailed action,
 ) {
+  log.info('$action');
   return state.copyWith(
-    verificationPassed: action.verificationPassed,
-    userAuthenticationStatus: UserAuthenticationStatus.authenticatedWithVegi,
+    verificationPassed: false,
+    firebaseAuthenticationStatus:
+        FirebaseAuthenticationStatus.verificationFailed,
   );
 }
 
-UserState _setPhoneNumber(
+UserState _setVegiSessionExpired(
+  UserState state,
+  SetVegiSessionExpired action,
+) {
+  log.info('$action');
+  return state.copyWith(
+    firebaseAuthenticationStatus: FirebaseAuthenticationStatus.expired,
+  );
+}
+
+UserState _setVegiSessionCookie(
+  UserState state,
+  SetVegiSessionCookie action,
+) {
+  log.info('$action');
+  return state.copyWith(
+    vegiSessionCookie: action.cookie,
+  );
+}
+
+UserState _setPhoneNumberRaw(
   UserState state,
   SetPhoneNumber action,
 ) {
@@ -264,16 +349,19 @@ UserState _loginVerifySuccess(
   );
 }
 
-// TODO: Update this as now logout means logging a user out of firebase and vegi, not fuse. The fuse smartWallet is obtained from the
-// TODOCONT: For fuse SDK, a user is considered authenticated if there is a privateKey saved for them, we store this private key against the user
-// ~ https://docs.fuse.io/v2/developers/fuse-sdk/flutter-sdk/features#authentication
-// TODOCONT What we might need to do is call the vegibackend to get a users privateKey once they have signed in and then use this to authenticate the smartQalletSDK
 UserState _logoutSuccess(
   UserState state,
   LogoutRequestSuccess action,
 ) {
+  log.info('LogoutRequestSuccess ACTION: $action');
   return state.copyWith(
     isLoggedOut: true,
+    biometricallyAuthenticated: false,
+    firebaseSessionToken: null,
+    fuseAuthenticationStatus: FuseAuthenticationStatus.unauthenticated,
+    firebaseAuthenticationStatus: FirebaseAuthenticationStatus.unauthenticated,
+    jwtToken: '',
+    verificationId: '',
     walletAddress: '',
     privateKey: '',
     userIsVerified: false,
@@ -342,6 +430,15 @@ UserState _setSecurityType(
   );
 }
 
+UserState _setBiometricallyAuthenticated(
+  UserState state,
+  SetBiometricallyAuthenticated action,
+) {
+  return state.copyWith(
+    biometricallyAuthenticated: action.isBiometricallyAuthenticated,
+  );
+}
+
 UserState _setFirebaseCredentials(
   UserState state,
   SetFirebaseCredentials action,
@@ -355,8 +452,7 @@ UserState _setFirebaseSessionToken(
 ) {
   return state.copyWith(
     firebaseSessionToken: action.firebaseSessionToken,
-    userAuthenticationStatus:
-        UserAuthenticationStatus.authenticatedWithFirebase,
+    firebaseAuthenticationStatus: FirebaseAuthenticationStatus.authenticated,
   );
 }
 
@@ -421,8 +517,10 @@ UserState _setUserEmailForRegistrationToWaitingList(
   EmailWLRegistrationSuccess action,
 ) {
   return state.copyWith(
-    email: action.email,
-    surveyEmailUsed: action.email,
+    email: action.entry.email,
+    surveyEmailUsed: action.entry.email,
+    subscribedToWaitingListUpdates: action.entry.emailUpdates,
+    waitingListEntryId: action.entry.id,
   );
 }
 

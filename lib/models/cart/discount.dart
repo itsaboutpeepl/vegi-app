@@ -13,6 +13,7 @@ class Discount with _$Discount {
     required int id,
     required String code,
     required num value,
+    required Currency currency,
     required DiscountType discountType,
     @JsonKey(
       fromJson: jsonToTimeStamp,
@@ -24,6 +25,7 @@ class Discount with _$Discount {
     @Default(false)
         bool isEnabled,
     required String? linkedWalletAddress,
+    @JsonKey()
     @Default(null)
         VendorDTO? vendor,
   }) = _Discount;
@@ -31,5 +33,5 @@ class Discount with _$Discount {
   const Discount._();
 
   factory Discount.fromJson(Map<String, dynamic> json) =>
-      _$DiscountFromJson(json);
+      tryCatchRethrowInline(() => _$DiscountFromJson(json));
 }

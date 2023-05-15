@@ -15,6 +15,7 @@ class VegiDialog<ViewModel> extends StatefulWidget {
     required this.child,
     required this.storeConverter,
     this.onWillChange,
+    this.actions,
   }) : super(key: key);
 
   final Widget child;
@@ -23,7 +24,7 @@ class VegiDialog<ViewModel> extends StatefulWidget {
     ViewModel? oldViewModel,
     ViewModel newViewModel,
   )? onWillChange;
-
+  final List<Widget>? actions;
   @override
   State<VegiDialog<ViewModel>> createState() => _VegiDialogState();
 }
@@ -60,6 +61,7 @@ class _VegiDialogState<ViewModel> extends State<VegiDialog<ViewModel>>
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ViewModel>(
       converter: widget.storeConverter,
+      distinct: true,
       onWillChange: widget.onWillChange ?? (oldVm, newVm) {},
       builder: (_, viewmodel) {
         return ScaleTransition(
@@ -72,6 +74,7 @@ class _VegiDialogState<ViewModel> extends State<VegiDialog<ViewModel>>
               padding: const EdgeInsets.all(10),
               child: widget.child,
             ),
+            actions: widget.actions,
           ),
         );
       },

@@ -14,6 +14,8 @@ import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/onboard.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 
 class UserNameScreen extends StatelessWidget {
@@ -26,21 +28,10 @@ class UserNameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyScaffold(
       title: I10n.of(context).sign_up,
-      body: StoreConnector<AppState, void Function(String)>(
+      body: StoreConnector<AppState, VerifyOnboardViewModel>(
         distinct: true,
-        converter: (store) => (String displayName) async {
-          isAuthenticated = true;
-          store
-            ..dispatch(SetDisplayName(displayName))
-            ..dispatch(
-              createLocalAccountCall(
-                // todo confirm that this flow still works to initialise the new smartWallet
-                () {},
-              ),
-            );
-          unawaited(Analytics.track(eventName: AnalyticsEvents.fillUserName));
-        },
-        builder: (_, setDisplayName) {
+        converter: VerifyOnboardViewModel.fromStore,
+        builder: (_, viewmodel) {
           return Column(
             children: [
               Column(
@@ -121,10 +112,10 @@ class UserNameScreen extends StatelessWidget {
                       label: I10n.of(context).next_button,
                       onPressed: () {
                         if (displayNameController.text.isNotEmpty) {
-                          setDisplayName(
-                            displayNameController.text.capitalize(),
+                          viewmodel.setDisplayName(
+                            displayName: displayNameController.text.capitalize(),
                           );
-                          context.router.push(const ChooseSecurityOption());
+                          _nextOnBoardingScreen(viewmodel,context,);
                         }
                       },
                     ),
@@ -137,5 +128,19 @@ class UserNameScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _nextOnBoardingScreen(VerifyOnboardViewModel viewModel, BuildContext context,) {
+    if (viewModel.email.isEmpty) {
+      rootRouter.push(
+        RegisterEmailOnBoardingScreen(
+          onSubmitEmail: () {},
+        ),
+      );
+    } else if (!viewModel.biometricAuthIsSet) {
+      rootRouter.push(const ChooseSecurityOption());
+    } else {
+      rootRouter.push(const MainScreen());
+    }
   }
 }

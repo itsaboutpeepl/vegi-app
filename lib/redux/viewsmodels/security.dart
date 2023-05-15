@@ -11,10 +11,13 @@ class SecurityViewModel extends Equatable {
     required this.setSecurityType,
     required this.authType,
     required this.isBackup,
+    required this.setBiometricallyAuthenticated,
   });
   final Function(BiometricAuth) setSecurityType;
   final bool isBackup;
   final BiometricAuth authType;
+  final void Function({required bool isBiometricallyAuthenticated})
+      setBiometricallyAuthenticated;
 
   static SecurityViewModel fromStore(Store<AppState> store) {
     return SecurityViewModel(
@@ -22,6 +25,14 @@ class SecurityViewModel extends Equatable {
       authType: store.state.userState.authType,
       setSecurityType: (biometricAuth) {
         store.dispatch(SetSecurityType(biometricAuth: biometricAuth));
+      },
+      setBiometricallyAuthenticated: (
+          {required bool isBiometricallyAuthenticated}) {
+        store.dispatch(
+          SetBiometricallyAuthenticated(
+            isBiometricallyAuthenticated: isBiometricallyAuthenticated,
+          ),
+        );
       },
     );
   }

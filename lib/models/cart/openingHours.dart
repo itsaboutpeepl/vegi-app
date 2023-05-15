@@ -1,8 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 
 part 'openingHours.freezed.dart';
 part 'openingHours.g.dart';
+
+List<OpeningHours> fromJsonOpeningHoursList(dynamic json) =>
+  fromSailsListOfObjectJson<OpeningHours>(OpeningHours.fromJson)(json);
+OpeningHours? fromJsonOpeningHours(dynamic json) =>
+  fromSailsObjectJson<OpeningHours>(OpeningHours.fromJson)(json);
 
 @Freezed()
 class OpeningHours with _$OpeningHours {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
@@ -15,6 +16,30 @@ import 'package:vegan_liverpool/redux/viewsmodels/pastOrders.dart';
 class ScheduledOrdersPage extends StatelessWidget {
   const ScheduledOrdersPage({Key? key}) : super(key: key);
 
+  int itemCount(PastOrdersViewmodel viewmodel) => viewmodel.listOfScheduledOrders.isEmpty ? 1 : viewmodel.listOfScheduledOrders.length;
+
+  Widget? Function(BuildContext context, int index) itemBuilder(
+    PastOrdersViewmodel viewmodel,
+  ) {
+    Widget? builder(BuildContext context, int index) {
+      if (viewmodel.listOfScheduledOrders.isEmpty) {
+        return const EmptyStatePage(
+          emoji: '😐',
+          title: "Pretty empty here, isn't it?",
+          subtitle:
+              'Try scheduling an order from one of our amazing restauarants to fill this page up!',
+          refreshable: true,
+        );
+      } else {
+        return SingleScheduledOrderCard(
+          order: viewmodel.listOfScheduledOrders[index],
+        );
+      }
+    }
+
+    return builder;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PastOrdersViewmodel>(
@@ -24,22 +49,13 @@ class ScheduledOrdersPage extends StatelessWidget {
           appBar: const CustomAppBar(
             pageTitle: 'Scheduled Orders',
           ),
-          body: viewmodel.listOfScheduledOrders.isEmpty
-              ? const EmptyStatePage(
-                  emoji: '😐',
-                  title: "Pretty empty here, isn't it?",
-                  subtitle:
-                      'Try scheduling an order from one of our amazing restauarants to fill this page up!',
-                )
-              : ListView.separated(
+          body: ListView.separated(
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  itemBuilder: (_, index) => SingleScheduledOrderCard(
-                    order: viewmodel.listOfScheduledOrders[index],
-                  ),
+                  itemBuilder: itemBuilder(viewmodel),
+                  itemCount: itemCount(viewmodel),
                   separatorBuilder: (_, index) => const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                   ),
-                  itemCount: viewmodel.listOfScheduledOrders.length,
                 ),
         );
       },

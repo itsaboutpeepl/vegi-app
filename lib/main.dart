@@ -19,6 +19,7 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/redux_state_vi
 import 'package:vegan_liverpool/loadAppState.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
@@ -34,8 +35,9 @@ void main() async {
 
   const envStr = Env.activeEnv;
 
-  print('Loading secrets from ${Env.envFile} for Env: ${Env.activeEnv}');
-
+  if (DebugHelpers.inDebugMode) {
+    print('Loading secrets from ${Env.envFile} for Env: ${Env.activeEnv}');
+  }
   await dotenv.load(fileName: Env.envFile);
 
   StripeService().init();
@@ -44,59 +46,13 @@ void main() async {
 
   await configureDependencies(environment: envStr);
 
-  final prefs = await SharedPreferences.getInstance();
-
-  final hasLoggedIn = await prefs.getInt('hasLoggedIn');
-
-  bool firstLogin = hasLoggedIn != 1;
-  if (firstLogin) {
-    await prefs.setInt('hasLoggedIn', 1);
-  }
-
-  final Persistor<AppState> persistor = Persistor<AppState>(
-    storage: SecureStorage(const FlutterSecureStorage()),
-    serializer: JsonSerializer<AppState>(AppState.fromJsonForPersistor),
-    debug: kDebugMode,
-  );
-
-  final AppState initialState = await loadState(persistor, firstLogin);
-
-  final List<Middleware<AppState>> wms = [
-    thunkMiddleware,
-    persistor.createMiddleware(),
-  ];
-
-  if (kDebugMode) {
-    wms.add(LoggingMiddleware<AppState>.printer());
-  }
-
-  late final Store<AppState> store;
-
-  if (Env.isDev) {
-    final devStore = DevToolsStore<AppState>(
-      appReducer,
-      initialState: await loadState(persistor, firstLogin),
-      middleware: wms,
-    );
-
-    getIt.registerSingleton<DevToolsStore<AppState>>(devStore);
-
-    store = devStore;
-  } else {
-    store = Store<AppState>(
-      appReducer,
-      initialState: initialState,
-      middleware: wms,
-    );
-  }
-
-  // await reauthenticateServices(store, initialState);
+  final store = await reduxStore;
 
   await runZonedGuarded(() async {
     await SentryFlutter.init(
       (options) {
         options
-          ..debug = !kReleaseMode
+          ..debug = (!kReleaseMode && DebugHelpers.isVerboseDebugMode)
           ..dsn = dotenv.env['SENTRY_DSN']
           ..environment = Env.activeEnv;
       },

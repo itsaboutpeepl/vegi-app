@@ -24,6 +24,7 @@ mixin _$VegiAccount {
   VegiAccountType? get accountType => throw _privateConstructorUsedError;
   bool get verified => throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
   String? get bankCardNumber => throw _privateConstructorUsedError;
   String? get bankCardAccountName => throw _privateConstructorUsedError;
   int? get bankCardExpiryDateMonth => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $VegiAccountCopyWith<$Res> {
       VegiAccountType? accountType,
       bool verified,
       String walletAddress,
+      String imageUrl,
       String? bankCardNumber,
       String? bankCardAccountName,
       int? bankCardExpiryDateMonth,
@@ -69,6 +71,7 @@ class _$VegiAccountCopyWithImpl<$Res, $Val extends VegiAccount>
     Object? accountType = freezed,
     Object? verified = null,
     Object? walletAddress = null,
+    Object? imageUrl = null,
     Object? bankCardNumber = freezed,
     Object? bankCardAccountName = freezed,
     Object? bankCardExpiryDateMonth = freezed,
@@ -90,6 +93,10 @@ class _$VegiAccountCopyWithImpl<$Res, $Val extends VegiAccount>
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       bankCardNumber: freezed == bankCardNumber
           ? _value.bankCardNumber
@@ -124,6 +131,7 @@ abstract class _$$_VegiAccountCopyWith<$Res>
       VegiAccountType? accountType,
       bool verified,
       String walletAddress,
+      String imageUrl,
       String? bankCardNumber,
       String? bankCardAccountName,
       int? bankCardExpiryDateMonth,
@@ -145,6 +153,7 @@ class __$$_VegiAccountCopyWithImpl<$Res>
     Object? accountType = freezed,
     Object? verified = null,
     Object? walletAddress = null,
+    Object? imageUrl = null,
     Object? bankCardNumber = freezed,
     Object? bankCardAccountName = freezed,
     Object? bankCardExpiryDateMonth = freezed,
@@ -166,6 +175,10 @@ class __$$_VegiAccountCopyWithImpl<$Res>
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       bankCardNumber: freezed == bankCardNumber
           ? _value.bankCardNumber
@@ -196,6 +209,7 @@ class _$_VegiAccount extends _VegiAccount {
       this.accountType = null,
       required this.verified,
       required this.walletAddress,
+      this.imageUrl = '',
       this.bankCardNumber = null,
       this.bankCardAccountName = null,
       this.bankCardExpiryDateMonth = null,
@@ -216,6 +230,9 @@ class _$_VegiAccount extends _VegiAccount {
   final String walletAddress;
   @override
   @JsonKey()
+  final String imageUrl;
+  @override
+  @JsonKey()
   final String? bankCardNumber;
   @override
   @JsonKey()
@@ -229,7 +246,7 @@ class _$_VegiAccount extends _VegiAccount {
 
   @override
   String toString() {
-    return 'VegiAccount(id: $id, accountType: $accountType, verified: $verified, walletAddress: $walletAddress, bankCardNumber: $bankCardNumber, bankCardAccountName: $bankCardAccountName, bankCardExpiryDateMonth: $bankCardExpiryDateMonth, bankCardExpiryDateYear: $bankCardExpiryDateYear)';
+    return 'VegiAccount(id: $id, accountType: $accountType, verified: $verified, walletAddress: $walletAddress, imageUrl: $imageUrl, bankCardNumber: $bankCardNumber, bankCardAccountName: $bankCardAccountName, bankCardExpiryDateMonth: $bankCardExpiryDateMonth, bankCardExpiryDateYear: $bankCardExpiryDateYear)';
   }
 
   @override
@@ -244,6 +261,8 @@ class _$_VegiAccount extends _VegiAccount {
                 other.verified == verified) &&
             (identical(other.walletAddress, walletAddress) ||
                 other.walletAddress == walletAddress) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.bankCardNumber, bankCardNumber) ||
                 other.bankCardNumber == bankCardNumber) &&
             (identical(other.bankCardAccountName, bankCardAccountName) ||
@@ -263,6 +282,7 @@ class _$_VegiAccount extends _VegiAccount {
       accountType,
       verified,
       walletAddress,
+      imageUrl,
       bankCardNumber,
       bankCardAccountName,
       bankCardExpiryDateMonth,
@@ -288,6 +308,7 @@ abstract class _VegiAccount extends VegiAccount {
       final VegiAccountType? accountType,
       required final bool verified,
       required final String walletAddress,
+      final String imageUrl,
       final String? bankCardNumber,
       final String? bankCardAccountName,
       final int? bankCardExpiryDateMonth,
@@ -305,6 +326,8 @@ abstract class _VegiAccount extends VegiAccount {
   bool get verified;
   @override
   String get walletAddress;
+  @override
+  String get imageUrl;
   @override
   String? get bankCardNumber;
   @override

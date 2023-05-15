@@ -132,6 +132,23 @@ class _YourDetailsModalSheetState extends State<YourDetailsModalSheet> {
                       height: 20,
                     ),
                     FormBuilderTextField(
+                      initialValue: viewmodel.phone,
+                      cursorColor: Colors.white,
+                      decoration: const InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        labelText: 'Phone number',
+                        isDense: true,
+                      ),
+                      readOnly: true,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      name: 'phoneNumber',
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    FormBuilderTextField(
                       initialValue: viewmodel.name,
                       cursorColor: Colors.white,
                       decoration: const InputDecoration(

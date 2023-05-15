@@ -45,7 +45,9 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
         _tabs = [
           FulfilmentMethodType.delivery.name.capitalize(),
           FulfilmentMethodType.collection.name.capitalize(),
-          FulfilmentMethodType.inStore.name.capitalizeWordsFromLowerCamelCase(),
+          if (store.state.userState.isVegiSuperAdmin)
+            FulfilmentMethodType.inStore.name
+                .capitalizeWordsFromLowerCamelCase(),
           // ...(store.state.userState.isVendor || store.state.cartState. ? ['In Store'] : []),
         ];
         _tabController = TabController(length: _tabs.length, vsync: this);
@@ -56,7 +58,8 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
                 SetFulfilmentMethod(
                   fulfilmentMethodType: _tabController.index == 0
                       ? FulfilmentMethodType.delivery
-                      : _tabController.index == 1
+                      : (_tabController.index == 1 ||
+                              !store.state.userState.isVegiSuperAdmin)
                           ? FulfilmentMethodType.collection
                           : FulfilmentMethodType.inStore,
                 ),
@@ -89,7 +92,8 @@ class _FulfilmentMethodSelectorState extends State<FulfilmentMethodSelector>
                 FulfilmentMethodType.delivery
             ? 0
             : store.state.cartState.fulfilmentMethod ==
-                    FulfilmentMethodType.collection
+                        FulfilmentMethodType.collection ||
+                    !store.state.userState.isVegiSuperAdmin
                 ? 1
                 : 2;
       },

@@ -27,7 +27,7 @@ mixin _$MenuItemState {
   @JsonKey(ignore: true)
   int get itemReward => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  Map<int, ProductOptions> get selectedProductOptionsForCategory =>
+  Map<int, ProductOptionValue> get selectedProductOptionsForCategory =>
       throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   bool get loadingProductOptions => throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ abstract class $MenuItemStateCopyWith<$Res> {
       @JsonKey(ignore: true)
           int itemReward,
       @JsonKey(ignore: true)
-          Map<int, ProductOptions> selectedProductOptionsForCategory,
+          Map<int, ProductOptionValue> selectedProductOptionsForCategory,
       @JsonKey(ignore: true)
           bool loadingProductOptions,
       @JsonKey(ignore: true)
@@ -100,7 +100,7 @@ class _$MenuItemStateCopyWithImpl<$Res, $Val extends MenuItemState>
               selectedProductOptionsForCategory
           ? _value.selectedProductOptionsForCategory
           : selectedProductOptionsForCategory // ignore: cast_nullable_to_non_nullable
-              as Map<int, ProductOptions>,
+              as Map<int, ProductOptionValue>,
       loadingProductOptions: null == loadingProductOptions
           ? _value.loadingProductOptions
           : loadingProductOptions // ignore: cast_nullable_to_non_nullable
@@ -141,7 +141,7 @@ abstract class _$$_MenuItemStateCopyWith<$Res>
       @JsonKey(ignore: true)
           int itemReward,
       @JsonKey(ignore: true)
-          Map<int, ProductOptions> selectedProductOptionsForCategory,
+          Map<int, ProductOptionValue> selectedProductOptionsForCategory,
       @JsonKey(ignore: true)
           bool loadingProductOptions,
       @JsonKey(ignore: true)
@@ -186,7 +186,7 @@ class __$$_MenuItemStateCopyWithImpl<$Res>
               selectedProductOptionsForCategory
           ? _value.selectedProductOptionsForCategory
           : selectedProductOptionsForCategory // ignore: cast_nullable_to_non_nullable
-              as Map<int, ProductOptions>,
+              as Map<int, ProductOptionValue>,
       loadingProductOptions: null == loadingProductOptions
           ? _value.loadingProductOptions
           : loadingProductOptions // ignore: cast_nullable_to_non_nullable
@@ -226,7 +226,7 @@ class _$_MenuItemState extends _MenuItemState {
   final int itemReward;
   @override
   @JsonKey(ignore: true)
-  final Map<int, ProductOptions> selectedProductOptionsForCategory;
+  final Map<int, ProductOptionValue> selectedProductOptionsForCategory;
   @override
   @JsonKey(ignore: true)
   final bool loadingProductOptions;
@@ -293,7 +293,7 @@ abstract class _MenuItemState extends MenuItemState {
       @JsonKey(ignore: true)
           final int itemReward,
       @JsonKey(ignore: true)
-          final Map<int, ProductOptions> selectedProductOptionsForCategory,
+          final Map<int, ProductOptionValue> selectedProductOptionsForCategory,
       @JsonKey(ignore: true)
           final bool loadingProductOptions,
       @JsonKey(ignore: true)
@@ -314,7 +314,7 @@ abstract class _MenuItemState extends MenuItemState {
   int get itemReward;
   @override
   @JsonKey(ignore: true)
-  Map<int, ProductOptions> get selectedProductOptionsForCategory;
+  Map<int, ProductOptionValue> get selectedProductOptionsForCategory;
   @override
   @JsonKey(ignore: true)
   bool get loadingProductOptions;

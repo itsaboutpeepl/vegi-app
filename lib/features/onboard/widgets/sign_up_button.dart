@@ -7,6 +7,10 @@ class SignUpButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.autoSizeText = false,
+    this.borderColor = Colors.grey,
+    this.textColor = Colors.white,
+    this.textLoadingColor = const Color(0xFF797979),
+    this.foregroundColor,
     Key? key,
   }) : super(key: key);
 
@@ -14,6 +18,19 @@ class SignUpButton extends StatelessWidget {
   final Future<void> Function() onPressed;
   final bool isLoading;
   final bool autoSizeText;
+  final Color? borderColor;
+  final Color? textColor;
+  final Color? textLoadingColor;
+  final Color? foregroundColor;
+
+  Color get _borderColor => borderColor ?? Colors.grey[100] ?? Colors.grey;
+  Color get _textColor => isLoading
+      ? textLoadingColor ?? const Color(0xFF797979)
+      : textColor ?? Colors.white;
+  Color _foregroundColor(BuildContext context) =>
+      foregroundColor ??
+      Theme.of(context).buttonTheme.colorScheme?.surface ??
+      Colors.white;
 
   BoxConstraints signupButtonSizeConstraints(BuildContext context) =>
       BoxConstraints(
@@ -38,9 +55,9 @@ class SignUpButton extends StatelessWidget {
       constraints: signupButtonSizeConstraints(context),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.white,
+          foregroundColor: _foregroundColor(context),
           side: BorderSide(
-            color: Colors.grey[100]!,
+            color: _borderColor,
             width: 2,
           ),
           padding: const EdgeInsets.symmetric(
@@ -59,7 +76,7 @@ class SignUpButton extends StatelessWidget {
                 ? AutoSizeText(
                     buttonText,
                     style: TextStyle(
-                      color: isLoading ? const Color(0xFF797979) : Colors.white,
+                      color: _textColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
                     ),
@@ -93,9 +110,9 @@ class SignUpButton extends StatelessWidget {
       constraints: signupButtonSizeConstraints(context),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.white,
+          foregroundColor: _foregroundColor(context),
           side: BorderSide(
-            color: Colors.grey[100]!,
+            color: _borderColor,
             width: 2,
           ),
           padding: const EdgeInsets.symmetric(
@@ -112,7 +129,7 @@ class SignUpButton extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w800,
-            color: Colors.grey[100],
+            color: _textColor,
           ),
         ),
       ),

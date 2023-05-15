@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/router/router.dart';
 import 'package:vegan_liverpool/features/account/screens/profile.dart';
+import 'package:vegan_liverpool/features/onboard/screens/createWalletFirstScreen.dart';
+import 'package:vegan_liverpool/features/onboard/screens/registerEmailOnboardingScreen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/restore_wallet_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/signup_screen.dart';
@@ -17,9 +19,15 @@ import 'package:vegan_liverpool/features/veganHome/router/router.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/suggestProductFunnel.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/imageFromGalleryEx.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/redux_state_viewer.dart';
-import 'package:vegan_liverpool/features/waitingListFunnel/screens/registerEmailWaitingList.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/addDiscountCodeScreen.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/preLaunchPerksDetailsPage.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/registerEmailNotificationsScreen.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/surveyQuestionScreen.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/surveyThanksScreen.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListPositionInQueuePage.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListSurveyQuestions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/reset_app.dart';
 
 export 'routes.gr.dart';
 
@@ -27,6 +35,7 @@ export 'routes.gr.dart';
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
     AutoRoute(page: SplashScreen, initial: true),
+    AutoRoute(page: ResetApp),
     AutoRoute(page: ChooseSecurityOption),
     AutoRoute(page: PinCodeScreen),
     AutoRoute(
@@ -55,6 +64,14 @@ export 'routes.gr.dart';
         accountTab,
       ],
     ),
+    AutoRoute(page: RegisterEmailOnBoardingScreen),
+    AutoRoute(page: RegisterEmailNotificationsScreen),
+    AutoRoute(page: CreateWalletFirstOnboardingScreen),
+    AutoRoute(page: WaitingListSurveyQuestionsScreens),
+    AutoRoute(page: PreLaunchPerksDetailsPage),
+    AutoRoute(page: WaitingListPositionInQueuePage),
+    AutoRoute(page: AddDiscountCodeScreen),
+    AutoRoute(page: SurveyThanksScreen),
     AutoRoute(page: SuggestProductFunnelScreen),
     AutoRoute(page: ImageFromGalleryEx),
     if (kDebugMode) AutoRoute(page: ReduxStateViewer),

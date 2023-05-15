@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   void setJwtToken(Store<AppState> store) {
     final String jwtToken = store.state.userState.jwtToken;
     if (![null, ''].contains(jwtToken)) {
-      isAuthenticated = true;
+      isAuthenticatedRouteGuard = true;
       log.info('JWT: $jwtToken');
       fuseWalletSDK.jwtToken = jwtToken;
     }
@@ -265,11 +265,11 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             store: widget.store,
             child: DismissKeyboard(
               child: MaterialApp.router(
-                debugShowCheckedModeBanner: false,
+                debugShowCheckedModeBanner: inDebugMode,
                 locale: _locale,
                 title: Strings.appName, // only for android
                 theme: flexColorSchemeLight.toTheme,
-            
+
                 // themeMode: ThemeMode.system,
                 // theme: getColorScheme(useFlex: true, isDark: false),
                 // darkTheme: getColorScheme(useFlex: true, isDark: true),

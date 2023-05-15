@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
+import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
 part 'menu_item_state.freezed.dart';
@@ -15,7 +15,7 @@ class MenuItemState with _$MenuItemState {
     @JsonKey(ignore: true) @Default(0) int itemReward,
     @JsonKey(ignore: true)
     @Default({})
-        Map<int, ProductOptions> selectedProductOptionsForCategory,
+        Map<int, ProductOptionValue> selectedProductOptionsForCategory,
     @JsonKey(ignore: true) @Default(false) bool loadingProductOptions,
     @JsonKey(ignore: true) @Default(0) int quantity,
   }) = _MenuItemState;

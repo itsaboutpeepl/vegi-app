@@ -6,13 +6,22 @@ import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
+enum AuthenticationStatus {
+  unauthenticated,
+  authenticationFailed,
+  authenticationSucceeded,
+  expired,
+}
+
 abstract class HttpService {
   final Dio dio;
   String get baseUrl => this.dio.options.baseUrl;
+  AuthenticationStatus authStatus = AuthenticationStatus.unauthenticated;
 
   HttpService(this.dio, String baseUrl) {
     this.dio.options.baseUrl = baseUrl.endsWith('/')
@@ -21,28 +30,83 @@ abstract class HttpService {
     this.dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
 
-  void _checkAuthRequest(bool authRequired) {
+  bool _checkAuthRequestIsSatisfied(
+    bool authRequired, {
+    required bool dontRoute,
+  }) {
     final unsatisfied =
         authRequired && !this.dio.options.headers.containsKey('Cookie');
-    if (unsatisfied) {
-      rootRouter.push(const SignUpScreen());
+    if (unsatisfied &&
+        !dontRoute &&
+        authStatus != AuthenticationStatus.authenticationFailed) {
+      if (rootRouter.current.name != SignUpScreen.name) {
+        log.info('Push SignUpScreen()');
+        rootRouter.push(const SignUpScreen());
+      }
     }
+    return !unsatisfied;
   }
 
   bool get hasCookieStored => dio.options.headers.containsKey('Cookie');
 
-  void _deleteSessionCookie() {
+  Future<void> deleteSessionCookie() async {
     if (hasCookieStored) {
       dio.options.headers.remove('Cookie');
     }
+    authStatus = AuthenticationStatus.expired;
+    (await reduxStore).dispatch(SetVegiSessionExpired());
   }
 
-  bool _checkAuthDioResponse(DioError dioErr) {
+  Future<bool> isCookieExpired() async {
+    bool cookieHasExpired = true;
+    if (hasCookieStored) {
+      final cookie = dio.options.headers['Cookie'] as String;
+      final expiryStrPattern =
+          RegExp('Expires=([A-Za-z]{3}, [0-9]{1,2} [A-Za-z]{3} [0-9]{4})');
+      final x = expiryStrPattern.firstMatch(cookie);
+      if (x != null) {
+        final dtStr = x[0];
+      }
+      cookieHasExpired = true;
+    } else {
+      cookieHasExpired = true;
+    }
+    if (cookieHasExpired) {
+      authStatus = AuthenticationStatus.expired;
+      (await reduxStore).dispatch(SetVegiSessionExpired());
+    }
+    return cookieHasExpired;
+  }
+
+  Future<void> logoutSession() async {
+    if (hasCookieStored) {
+      dio.options.headers.remove('Cookie');
+    }
+    authStatus = AuthenticationStatus.unauthenticated;
+    (await reduxStore).dispatch(SetVerificationFailed());
+  }
+
+  Future<void> setSessionCookie(String cookie) async {
+    dio.options.headers['Cookie'] = cookie;
+    authStatus = AuthenticationStatus.authenticationSucceeded;
+    (await reduxStore).dispatch(
+      SetUserAuthenticationStatus(
+        vegiStatus: VegiAuthenticationStatus.authenticated,
+        firebaseStatus: FirebaseAuthenticationStatus.authenticated,
+      ),
+    );
+  }
+
+  bool _checkAuthDioResponse(
+    DioError dioErr, {
+    required bool dontRoute,
+  }) {
     if (dioErr.response?.statusCode == 401) {
       // TODO? Do we need to set: set state logged out to true and then route to the login signin buttons screen
       // navigating to the splash screen should ensure user can login back into vegi again using the phone -sms firebase onboard
-      _deleteSessionCookie();
-      rootRouter.push(const SignUpScreen());
+      deleteSessionCookie();
+      // log.info('Push SignUpScreen()');
+      // rootRouter.push(const SignUpScreen());
       return true;
     }
     return false;
@@ -54,11 +118,13 @@ abstract class HttpService {
     Options? options,
     CancelToken? cancelToken,
     void Function(int, int)? onReceiveProgress,
+    bool dontRoute = false,
     bool sendWithAuthCreds = false,
+    List<int> allowStatusCodes = const <int>[],
   }) {
-    _checkAuthRequest(sendWithAuthCreds);
+    _checkAuthRequestIsSatisfied(sendWithAuthCreds, dontRoute: dontRoute);
     if (!path.startsWith('/')) path = '/' + path;
-    log.info('GET: "${dio.options.baseUrl}${path}"');
+    log.info('GET: "${dio.options.baseUrl}$path"');
     try {
       return dio.get<T>(
         path,
@@ -68,17 +134,49 @@ abstract class HttpService {
         onReceiveProgress: onReceiveProgress,
       );
     } on DioError catch (dioErr) {
-      if (!_checkAuthDioResponse(dioErr)) {
+      if (dioErr.response != null &&
+          allowStatusCodes.contains(dioErr.response!.statusCode)) {
+        return Future.value(
+          Response(
+            data: null,
+            extra: {
+              'message':
+                  'GET: "${dio.options.baseUrl}$path" returned expected error response with code: [${dioErr.response!.statusCode}]',
+            },
+            statusCode: 200,
+            requestOptions: RequestOptions(path: '${dio.options.baseUrl}$path'),
+          ),
+        );
+      }
+      if (!_checkAuthDioResponse(dioErr, dontRoute: dontRoute)) {
         log.error(
             'ERROR [vegi service [${dioErr.response?.statusCode}]] - dioGet -> $dioErr');
       }
-      rethrow;
-    } catch (e, s) {
-      log.error('ERROR - dioGet -> $e');
       return Future.value(
         Response(
           data: null,
-          requestOptions: RequestOptions(path: ''),
+          extra: {
+            'error': dioErr,
+            'message':
+                'GET: "${dio.options.baseUrl}$path" threw -> "${dioErr.message}"',
+          },
+          statusCode: dioErr.response?.statusCode,
+          requestOptions: RequestOptions(path: '${dio.options.baseUrl}$path'),
+        ),
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - dioGet -> $e',
+        stackTrace: s,
+      );
+      return Future.value(
+        Response(
+          data: null,
+          extra: {
+            'error': e,
+            'message': 'GET: "${dio.options.baseUrl}$path" threw -> "$e"',
+          },
+          requestOptions: RequestOptions(path: '${dio.options.baseUrl}$path'),
         ),
       );
     }
@@ -93,10 +191,11 @@ abstract class HttpService {
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
     void Function(int, int)? onReceiveProgress,
+    bool dontRoute = false,
     bool sendWithAuthCreds = false,
   }) {
     log.info('POST: "${dio.options.baseUrl}${path}"');
-    _checkAuthRequest(sendWithAuthCreds);
+    _checkAuthRequestIsSatisfied(sendWithAuthCreds, dontRoute: dontRoute);
     if (!path.startsWith('/')) path = '/' + path;
     return dio.post<T>(
       path,
@@ -111,8 +210,8 @@ abstract class HttpService {
             'Ran into error trying to POST to "${dio.options.baseUrl}${path}"');
         log.error(error, stackTrace: stackTrace);
         if (error.toString().contains('Connection reset by peer')) {
-          _deleteSessionCookie(); //todo: return a 401...
-          rootRouter.push(const SignUpScreen());
+          deleteSessionCookie(); //todo: return a 401...
+          // rootRouter.push(const SignUpScreen());
           return Response(
             data: errorResponseData,
             extra: {
@@ -132,7 +231,7 @@ abstract class HttpService {
             'If running from real_device, cant connect to localhost on running machine...',
           );
         } else if (error is DioError) {
-          if (!_checkAuthDioResponse(error)) {
+          if (!_checkAuthDioResponse(error, dontRoute: dontRoute)) {
             return Response(
               data: errorResponseData,
               extra: {
@@ -147,6 +246,18 @@ abstract class HttpService {
               headers: error.response?.headers,
               statusCode: error.response?.statusCode ?? 500,
               requestOptions: error.requestOptions,
+            );
+          } else {
+            return Response(
+              data: errorResponseData,
+              extra: {
+                'error': null,
+                'message':
+                    'Stale session cookie possible caused by server reboot',
+              },
+              statusCode: 401,
+              requestOptions:
+                  RequestOptions(path: '${dio.options.baseUrl}${path}'),
             );
           }
         }
@@ -171,9 +282,10 @@ abstract class HttpService {
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
     void Function(int, int)? onReceiveProgress,
+    bool dontRoute = false,
     bool sendWithAuthCreds = false,
   }) {
-    _checkAuthRequest(sendWithAuthCreds);
+    _checkAuthRequestIsSatisfied(sendWithAuthCreds, dontRoute: dontRoute);
     final image = file.readAsBytesSync();
 
     final options = Options(
@@ -206,7 +318,7 @@ abstract class HttpService {
             'If running from real_device, cant connect to localhost on running machine...',
           );
         } else if (error is DioError) {
-          if (!_checkAuthDioResponse(error)) {
+          if (!_checkAuthDioResponse(error, dontRoute: dontRoute)) {
             return Response(
               data: errorResponseData,
               extra: {
@@ -221,6 +333,18 @@ abstract class HttpService {
               headers: error.response?.headers,
               statusCode: error.response?.statusCode ?? 500,
               requestOptions: error.requestOptions,
+            );
+          } else {
+            return Response(
+              data: errorResponseData,
+              extra: {
+                'error': null,
+                'message':
+                    'Stale session cookie possible caused by server reboot',
+              },
+              statusCode: 401,
+              requestOptions:
+                  RequestOptions(path: '${dio.options.baseUrl}${path}'),
             );
           }
         }
@@ -247,9 +371,10 @@ abstract class HttpService {
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
     void Function(int, int)? onReceiveProgress,
+    bool dontRoute = false,
     bool sendWithAuthCreds = false,
   }) {
-    _checkAuthRequest(sendWithAuthCreds);
+    _checkAuthRequestIsSatisfied(sendWithAuthCreds, dontRoute: dontRoute);
     final image = file.readAsBytesSync();
     log.info('POST: "${dio.options.baseUrl}${path}"');
     MultipartFile imgByteStream;
@@ -346,7 +471,7 @@ abstract class HttpService {
             FileUploadErrCode.unknownError,
           );
         } else if (error is DioError) {
-          if (!_checkAuthDioResponse(error)) {
+          if (!_checkAuthDioResponse(error, dontRoute: dontRoute)) {
             onError(
               error.message ?? '',
               FileUploadErrCode.unknownError,
@@ -365,6 +490,18 @@ abstract class HttpService {
               headers: error.response?.headers,
               statusCode: error.response?.statusCode ?? 500,
               requestOptions: error.requestOptions,
+            );
+          } else {
+            return Response(
+              data: errorResponseData,
+              extra: {
+                'error': null,
+                'message':
+                    'Stale session cookie possible caused by server reboot',
+              },
+              statusCode: 401,
+              requestOptions:
+                  RequestOptions(path: '${dio.options.baseUrl}${path}'),
             );
           }
         }

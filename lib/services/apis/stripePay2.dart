@@ -24,6 +24,7 @@ class StripePayService {
       final Response<dynamic> response = await peeplEatsService.dioGet(
         '/api/v1/payments/check-stripe-payment-intent/$paymentIntentID',
         sendWithAuthCreds: true,
+        dontRoute: true,
       );
 
       final Map<String, dynamic> result = response.data as Map<String, dynamic>;
@@ -66,6 +67,7 @@ class StripePayService {
           'accountId': accountId,
         },
         sendWithAuthCreds: true,
+        dontRoute: true,
       );
 
       return StripePaymentIntent.fromJson(

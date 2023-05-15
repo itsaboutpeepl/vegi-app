@@ -40,6 +40,7 @@ mixin _$RestaurantItem {
   bool get isVegan => throw _privateConstructorUsedError;
   int get minimumOrderAmount => throw _privateConstructorUsedError;
   int get platformFee => throw _privateConstructorUsedError;
+  DeliveryPartnerDTO? get deliveryPartner => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -70,9 +71,11 @@ abstract class $RestaurantItemCopyWith<$Res> {
       String status,
       bool isVegan,
       int minimumOrderAmount,
-      int platformFee});
+      int platformFee,
+      DeliveryPartnerDTO? deliveryPartner});
 
   $DeliveryAddressesCopyWith<$Res> get address;
+  $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner;
 }
 
 /// @nodoc
@@ -105,6 +108,7 @@ class _$RestaurantItemCopyWithImpl<$Res, $Val extends RestaurantItem>
     Object? isVegan = null,
     Object? minimumOrderAmount = null,
     Object? platformFee = null,
+    Object? deliveryPartner = freezed,
   }) {
     return _then(_value.copyWith(
       restaurantID: null == restaurantID
@@ -175,6 +179,10 @@ class _$RestaurantItemCopyWithImpl<$Res, $Val extends RestaurantItem>
           ? _value.platformFee
           : platformFee // ignore: cast_nullable_to_non_nullable
               as int,
+      deliveryPartner: freezed == deliveryPartner
+          ? _value.deliveryPartner
+          : deliveryPartner // ignore: cast_nullable_to_non_nullable
+              as DeliveryPartnerDTO?,
     ) as $Val);
   }
 
@@ -183,6 +191,18 @@ class _$RestaurantItemCopyWithImpl<$Res, $Val extends RestaurantItem>
   $DeliveryAddressesCopyWith<$Res> get address {
     return $DeliveryAddressesCopyWith<$Res>(_value.address, (value) {
       return _then(_value.copyWith(address: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner {
+    if (_value.deliveryPartner == null) {
+      return null;
+    }
+
+    return $DeliveryPartnerDTOCopyWith<$Res>(_value.deliveryPartner!, (value) {
+      return _then(_value.copyWith(deliveryPartner: value) as $Val);
     });
   }
 }
@@ -212,10 +232,13 @@ abstract class _$$_RestaurantItemCopyWith<$Res>
       String status,
       bool isVegan,
       int minimumOrderAmount,
-      int platformFee});
+      int platformFee,
+      DeliveryPartnerDTO? deliveryPartner});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get address;
+  @override
+  $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner;
 }
 
 /// @nodoc
@@ -246,6 +269,7 @@ class __$$_RestaurantItemCopyWithImpl<$Res>
     Object? isVegan = null,
     Object? minimumOrderAmount = null,
     Object? platformFee = null,
+    Object? deliveryPartner = freezed,
   }) {
     return _then(_$_RestaurantItem(
       restaurantID: null == restaurantID
@@ -316,6 +340,10 @@ class __$$_RestaurantItemCopyWithImpl<$Res>
           ? _value.platformFee
           : platformFee // ignore: cast_nullable_to_non_nullable
               as int,
+      deliveryPartner: freezed == deliveryPartner
+          ? _value.deliveryPartner
+          : deliveryPartner // ignore: cast_nullable_to_non_nullable
+              as DeliveryPartnerDTO?,
     ));
   }
 }
@@ -341,7 +369,8 @@ class _$_RestaurantItem extends _RestaurantItem {
       required this.status,
       required this.isVegan,
       required this.minimumOrderAmount,
-      required this.platformFee})
+      required this.platformFee,
+      required this.deliveryPartner})
       : super._();
 
   factory _$_RestaurantItem.fromJson(Map<String, dynamic> json) =>
@@ -381,10 +410,12 @@ class _$_RestaurantItem extends _RestaurantItem {
   final int minimumOrderAmount;
   @override
   final int platformFee;
+  @override
+  final DeliveryPartnerDTO? deliveryPartner;
 
   @override
   String toString() {
-    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, productCategories: $productCategories, walletAddress: $walletAddress, status: $status, isVegan: $isVegan, minimumOrderAmount: $minimumOrderAmount, platformFee: $platformFee)';
+    return 'RestaurantItem(restaurantID: $restaurantID, name: $name, phoneNumber: $phoneNumber, description: $description, deliveryRestrictionDetails: $deliveryRestrictionDetails, imageURL: $imageURL, category: $category, costLevel: $costLevel, rating: $rating, address: $address, listOfMenuItems: $listOfMenuItems, productCategories: $productCategories, walletAddress: $walletAddress, status: $status, isVegan: $isVegan, minimumOrderAmount: $minimumOrderAmount, platformFee: $platformFee, deliveryPartner: $deliveryPartner)';
   }
 
   @override
@@ -420,7 +451,9 @@ class _$_RestaurantItem extends _RestaurantItem {
             (identical(other.minimumOrderAmount, minimumOrderAmount) ||
                 other.minimumOrderAmount == minimumOrderAmount) &&
             (identical(other.platformFee, platformFee) ||
-                other.platformFee == platformFee));
+                other.platformFee == platformFee) &&
+            (identical(other.deliveryPartner, deliveryPartner) ||
+                other.deliveryPartner == deliveryPartner));
   }
 
   @JsonKey(ignore: true)
@@ -443,7 +476,8 @@ class _$_RestaurantItem extends _RestaurantItem {
       status,
       isVegan,
       minimumOrderAmount,
-      platformFee);
+      platformFee,
+      deliveryPartner);
 
   @JsonKey(ignore: true)
   @override
@@ -477,7 +511,8 @@ abstract class _RestaurantItem extends RestaurantItem {
       required final String status,
       required final bool isVegan,
       required final int minimumOrderAmount,
-      required final int platformFee}) = _$_RestaurantItem;
+      required final int platformFee,
+      required final DeliveryPartnerDTO? deliveryPartner}) = _$_RestaurantItem;
   _RestaurantItem._() : super._();
 
   factory _RestaurantItem.fromJson(Map<String, dynamic> json) =
@@ -517,6 +552,8 @@ abstract class _RestaurantItem extends RestaurantItem {
   int get minimumOrderAmount;
   @override
   int get platformFee;
+  @override
+  DeliveryPartnerDTO? get deliveryPartner;
   @override
   @JsonKey(ignore: true)
   _$$_RestaurantItemCopyWith<_$_RestaurantItem> get copyWith =>

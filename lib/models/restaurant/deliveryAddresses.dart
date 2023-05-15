@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 
 part 'deliveryAddresses.freezed.dart';
 part 'deliveryAddresses.g.dart';
@@ -28,7 +29,7 @@ class DeliveryAddresses with _$DeliveryAddresses {
   const DeliveryAddresses._();
 
   factory DeliveryAddresses.fromJson(Map<String, dynamic> json) =>
-      _$DeliveryAddressesFromJson(json);
+      tryCatchRethrowInline(() => _$DeliveryAddressesFromJson(json));
 
   factory DeliveryAddresses.fromCartJson(Map<String, dynamic> json) {
     return DeliveryAddresses(
@@ -88,8 +89,9 @@ class DeliveryAddresses with _$DeliveryAddresses {
   String get shortAddressLessPostCode =>
       addressLine1.capitalizeWords().maxChars(28 - postalCode.length);
 
-  String get shortAddress =>
-      '$shortAddressLessPostCode, ${postalCode.capitalizeWords()}';
+  String get shortAddress => shortAddressLessPostCode.trim().isNotEmpty
+      ? '$shortAddressLessPostCode, ${postalCode.capitalizeWords()}'
+      : postalCode.capitalizeWords();
 
   String get incode => postalCode.capitalize().substring(postalCode.length - 3);
   String get outcode =>

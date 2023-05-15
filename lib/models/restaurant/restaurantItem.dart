@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/deliveryPartnerDTO.dart';
 import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
@@ -27,6 +28,7 @@ class RestaurantItem with _$RestaurantItem {
     required bool isVegan,
     required int minimumOrderAmount,
     required int platformFee,
+    required DeliveryPartnerDTO? deliveryPartner,
   }) = _RestaurantItem;
 
   const RestaurantItem._();

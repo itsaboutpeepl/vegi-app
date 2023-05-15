@@ -7,10 +7,12 @@ class EmptyStatePage extends StatelessWidget {
     required this.emoji,
     required this.title,
     required this.subtitle,
+    required this.refreshable,
   }) : super(key: key);
   final String emoji;
   final String title;
   final String subtitle;
+  final bool refreshable;
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +57,16 @@ class EmptyStatePage extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            Messages.pullDownToRefresh,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.italic,
-            ),
-          )
+          if (refreshable)
+            const Text(
+              Messages.pullDownToRefresh,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic,
+              ),
+            )
         ],
       ),
     );

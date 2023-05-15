@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/recovery.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class RestoreFromBackupScreen extends StatefulWidget {
   const RestoreFromBackupScreen({Key? key}) : super(key: key);
@@ -130,6 +131,7 @@ class _RestoreFromBackupScreenState extends State<RestoreFromBackupScreen> {
                               setState(() {
                                 isPreloading = false;
                               });
+                              log.info('Push SignUpScreen()');
                               context.router.push(const SignUpScreen());
                             }, () {
                               setState(() {
