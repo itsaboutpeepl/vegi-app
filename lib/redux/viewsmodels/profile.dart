@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -12,6 +13,7 @@ class ProfileViewModel extends Equatable {
     required this.walletAddress,
     required this.displayName,
     required this.email,
+    required this.biometricAuthType,
     required this.seedPhrase,
     required this.editAvatar,
     required this.avatarUrl,
@@ -28,6 +30,7 @@ class ProfileViewModel extends Equatable {
     return ProfileViewModel(
       displayName: store.state.userState.displayName,
       email: store.state.userState.email,
+      biometricAuthType: store.state.userState.authType,
       useLiveLocation: store.state.userState.useLiveLocation,
       isLoggedIn: !store.state.userState.isLoggedOut,
       phone: store.state.userState.phoneNumber,
@@ -76,6 +79,7 @@ class ProfileViewModel extends Equatable {
 
   final String phone;
   final String email;
+  final BiometricAuth biometricAuthType;
   final String walletAddress;
   final String avatarUrl;
   final String displayName;
@@ -102,6 +106,7 @@ class ProfileViewModel extends Equatable {
         walletAddress,
         phone,
         email,
+        biometricAuthType,
         displayName,
         avatarUrl,
         useLiveLocation,

@@ -48,6 +48,10 @@ bool checkAuth<T extends IAuthViewModel>({
       .isNewFailureStatus(oldFirebaseAuthStatus)) {
     if (routerContext.mounted) {
       log.info('Push SignUpScreen()');
+      debugPrintStack(
+        label: 'Push SignUpScreen()',
+        maxFrames: 3,
+      );
       rootRouter.replace(const SignUpScreen());
     }
     return false;

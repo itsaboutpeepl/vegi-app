@@ -19,6 +19,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.countryCode,
     required this.phoneNumber,
     required this.phoneNumberNoCountry,
+    required this.isSuperAdmin,
     required this.firebaseSessionToken,
     required this.firebaseAuthenticationStatus,
     required this.fuseAuthenticationStatus,
@@ -37,6 +38,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
       loggedInToVegi: store.state.userState.isLoggedInToVegi,
       hasLoggedInBefore: store.state.userState.hasLoggedInBefore,
       surveyCompleted: store.state.userState.surveyCompleted,
+      isSuperAdmin: store.state.userState.isVegiSuperAdmin,
       phoneNumberNoCountry: store.state.userState.phoneNumberNoCountry,
       phoneNumber: store.state.userState.phoneNumber,
       countryCode: store.state.userState.isoCode, // the country code (IT,AF..)
@@ -60,8 +62,8 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
       signup: ({
         required CountryCode countryCode,
         required PhoneNumber phoneNumber,
-        required void Function() onSuccess,
-        required void Function(dynamic) onError,
+        required Future<void> Function() onSuccess,
+        required Future<void> Function(dynamic) onError,
       }) {
         store.dispatch(
           loginHandler(
@@ -87,6 +89,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final String countryCode;
   final String dialCode;
   final String phoneNumber;
+  final bool isSuperAdmin;
   final String phoneNumberNoCountry;
   final String? firebaseSessionToken;
   final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
@@ -99,8 +102,8 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final void Function({
     required CountryCode countryCode,
     required PhoneNumber phoneNumber,
-    required void Function() onSuccess,
-    required void Function(dynamic) onError,
+    required Future<void> Function() onSuccess,
+    required Future<void> Function(dynamic) onError,
   }) signup;
   final void Function() setUserIsLoggedOut;
 
@@ -116,6 +119,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
         loggedInToVegi,
         hasLoggedInBefore,
         surveyCompleted,
+        isSuperAdmin,
         phoneNumber,
         phoneNumberNoCountry,
         firebaseSessionToken ?? '',

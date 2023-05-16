@@ -1089,8 +1089,8 @@ ThunkAction<AppState> isUserWalletAddressAVendorAddress({
 ThunkAction<AppState> loginHandler(
   CountryCode countryCode,
   PhoneNumber phoneNumber,
-  void Function(String error) onError,
-  void Function()? onSuccess,
+  Future<void> Function(String error) onError,
+  Future<void> Function()? onSuccess,
 ) {
   bool _useWeb3Auth = false;
   return (Store<AppState> store) async {
@@ -1100,43 +1100,46 @@ ThunkAction<AppState> loginHandler(
       await onBoardStrategy.login(
         store,
         phoneNumber.e164,
-        () {
-          Analytics.track(
-            eventName: AnalyticsEvents.loginWithPhone,
-            properties: {
-              AnalyticsProps.status: AnalyticsProps.success,
-            },
-          );
-          store.dispatch(
-            LoginRequestSuccess(
-              countryCode: countryCode,
-              phoneNumber: phoneNumber,
+        () async {
+          unawaited(
+            Analytics.track(
+              eventName: AnalyticsEvents.loginWithPhone,
+              properties: {
+                AnalyticsProps.status: AnalyticsProps.success,
+              },
             ),
           );
-          store.dispatch(
-            authenticateFuseWalletSDK(),
-          ); //!BUG why is this not called after login?
+          store
+            ..dispatch(
+              LoginRequestSuccess(
+                countryCode: countryCode,
+                phoneNumber: phoneNumber,
+              ),
+            )
+            ..dispatch(
+              authenticateFuseWalletSDK(),
+            ); //!BUG why is this not called after login?
           // if (_useWeb3Auth) {
           //   loginWeb3Auth(/*'vegi://vegiApp.co.uk/user-name-screen'*/);
           // } else {
           //   rootRouter.push(UserNameScreen());
           // }
-          onSuccess?.call();
+          await onSuccess?.call();
         },
-        (e, status) {
-          Analytics.track(
+        (e, status) async {
+          unawaited(Analytics.track(
             eventName: AnalyticsEvents.loginWithPhone,
             properties: {
               AnalyticsProps.status: AnalyticsProps.failed,
               'error': e.toString(),
             },
-          );
+          ));
           store.dispatch(
             SetUserAuthenticationStatus(
               firebaseStatus: FirebaseAuthenticationStatus.phoneAuthFailed,
             ),
           );
-          onError.call(e.toString());
+          await onError.call(e.toString());
         },
       );
     } catch (e, s) {
@@ -1145,7 +1148,7 @@ ThunkAction<AppState> loginHandler(
         error: e,
         stackTrace: s,
       );
-      onError?.call(e.toString());
+      await onError?.call(e.toString());
       await Analytics.track(
         eventName: AnalyticsEvents.loginWithPhone,
         properties: {

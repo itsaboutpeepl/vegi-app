@@ -167,15 +167,15 @@ class _NavDrawerState extends State<NavDrawer> {
                       context.router.push(const ProfileScreen());
                     },
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.lock),
-                    title: const Text('Security'),
-                    onTap: () {
-                      Analytics.track(
-                          eventName: AnalyticsEvents.securityScreen);
-                      context.router.push(const ChooseSecurityOption());
-                    },
-                  ),
+                  // ListTile(
+                  //   leading: const Icon(Icons.lock),
+                  //   title: const Text('Security'),
+                  //   onTap: () {
+                  //     Analytics.track(
+                  //         eventName: AnalyticsEvents.securityScreen);
+                  //     context.router.push(const ChooseSecurityOption());
+                  //   },
+                  // ),
                   ListTile(
                     leading: const Icon(Icons.quiz),
                     title: const Text('FAQs'),

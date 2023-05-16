@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,10 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_address/delivery_address_selector_button.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -311,6 +314,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
+                          Divider(),
+                          _buildGroup(
+                            I10n.of(context).phoneNumber,
+                            Text(
+                              viewmodel.phone,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          Divider(),
+                          ListTile(
+                            // leading: const Icon(Icons.lock),
+                            title: const Text('Security'),
+                            trailing: const Icon(Icons.lock),
+                            subtitle: Text(
+                              viewmodel.biometricAuthType.name
+                                  .capitalizeWords(),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onTap: () {
+                              Analytics.track(
+                                eventName: AnalyticsEvents.securityScreen,
+                              );
+                              context.router.push(const ChooseSecurityOption());
+                            },
+                          ),
                           if (viewmodel.isVerified) ...[
                             const Divider(),
                             const Padding(
@@ -329,7 +362,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-                            Container(
+                            ColoredBox(
                               color: Colors.transparent,
                               child: CupertinoFormRow(
                                 prefix: Row(
@@ -398,16 +431,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             const Divider(),
                           ],
-                          _buildGroup(
-                            I10n.of(context).phoneNumber,
-                            Text(
-                              viewmodel.phone,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
                         ],
                         const Divider(),
                         _buildGroup(

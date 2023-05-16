@@ -639,7 +639,7 @@ extension FirebaseAuthenticationStatusHelpers on FirebaseAuthenticationStatus {
           FirebaseAuthenticationStatus.phoneAuthFailed,
           FirebaseAuthenticationStatus.reauthenticationFailed,
           FirebaseAuthenticationStatus.tFAFailed,
-          FirebaseAuthenticationStatus.unauthenticated,
+          // FirebaseAuthenticationStatus.unauthenticated,
           FirebaseAuthenticationStatus.expired,
           FirebaseAuthenticationStatus.verificationCodeTimedOut,
           FirebaseAuthenticationStatus.verificationFailed,
@@ -652,7 +652,7 @@ extension VegiAuthenticationStatusHelpers on VegiAuthenticationStatus {
   bool isNewFailureStatus(VegiAuthenticationStatus oldStatus) {
     return [
           VegiAuthenticationStatus.failed,
-          VegiAuthenticationStatus.unauthenticated,
+          // VegiAuthenticationStatus.unauthenticated,
         ].contains(this) &&
         oldStatus != this;
   }

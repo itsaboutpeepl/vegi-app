@@ -106,18 +106,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // }
         store.dispatch(isBetaWhitelistedAddress());
       },
-      onInitialBuild: (viewModel) async {
-        if (viewModel.firebaseSessionToken != null) {
-          if (viewModel.firebaseAuthenticationStatus ==
-              FirebaseAuthenticationStatus.authenticated) {
-            setState(() {
-              isPreloading = true;
-            });
-            await onBoardStrategy.reauthenticateUser();
-            await rootRouter.replace(const MainScreen());
-          }
-        }
-      },
+      // onInitialBuild: (viewModel) async {
+      //   if (viewModel.firebaseSessionToken != null) {
+      //     if (viewModel.firebaseAuthenticationStatus ==
+      //         FirebaseAuthenticationStatus.authenticated) {
+      //       setState(() {
+      //         isPreloading = true;
+      //       });
+      //       await onBoardStrategy.reauthenticateUser();
+      //       await rootRouter.replace(const MainScreen());
+      //     }
+      //   }
+      // },
       onWillChange: (previousViewModel, newViewModel) {
         checkAuth(
           oldViewModel: previousViewModel,
@@ -418,18 +418,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
       viewmodel.signup(
         countryCode: countryCode,
         phoneNumber: value,
-        onSuccess: () {
+        onSuccess: () async {
           // setState(() {
           //   isPreloading = false;
           // });
         },
-        onError: (error) {
+        onError: (error) async {
           setState(() {
             isPreloading = false;
           });
-          showErrorSnack(
-            message: I10n.of(context).invalid_number,
-            title: I10n.of(context).something_went_wrong,
+          await showErrorSnack(
+            title: error
+                    .toString()
+                    .contains('blocked all requests from this device')
+                ? 'Verification error'
+                : I10n.of(context).something_went_wrong,
+            message:
+                viewmodel.isSuperAdmin ? 'Firebase error: $error' : '$error',
             context: context,
             margin: const EdgeInsets.only(
               top: 8,
@@ -437,6 +442,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               left: 8,
               bottom: 120,
             ),
+          );
+          log.error(error);
+          await Sentry.captureException(
+            error,
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - signup_screen.parsePhoneNumber $error',
           );
         },
       );

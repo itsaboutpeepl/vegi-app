@@ -84,11 +84,18 @@ class _MainScreenState extends State<MainScreen> {
           return const WaitingListFunnelScreen();
         } else if (vm.firebaseAuthenticationStatus ==
             FirebaseAuthenticationStatus.unauthenticated) {
+          //TODO: do we need to check for other status'
           log.info('Push SignUpScreen()');
           log.info(
               'Can we try and reauthentication here first using existing firebase creds? firebaseStatus: ${vm.firebaseAuthenticationStatus.name}');
-          onBoardStrategy.reauthenticateUser();
-          rootRouter.replaceAll([const SignUpScreen()]);
+          onBoardStrategy.reauthenticateUser().then(
+            (reauthSucceeded) {
+              if (!reauthSucceeded) {
+                rootRouter.replaceAll([const SignUpScreen()]);
+              }
+            },
+          );
+
           return const Center(child: CircularProgressIndicator());
         } else {
           peeplEatsService

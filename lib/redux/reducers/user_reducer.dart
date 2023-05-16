@@ -26,7 +26,8 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
   TypedReducer<UserState, SetDisplayName>(_setDisplayName),
   TypedReducer<UserState, SetEmail>(_setEmail),
-  TypedReducer<UserState, SetUserAuthenticationStatus>(_setUserAuthenticationStatus),
+  TypedReducer<UserState, SetUserAuthenticationStatus>(
+      _setUserAuthenticationStatus),
   TypedReducer<UserState, EmailWLRegistrationSuccess>(
     _setUserEmailForRegistrationToWaitingList,
   ),
@@ -360,6 +361,7 @@ UserState _logoutSuccess(
     firebaseSessionToken: null,
     fuseAuthenticationStatus: FuseAuthenticationStatus.unauthenticated,
     firebaseAuthenticationStatus: FirebaseAuthenticationStatus.unauthenticated,
+    vegiAuthenticationStatus: VegiAuthenticationStatus.unauthenticated,
     jwtToken: '',
     verificationId: '',
     walletAddress: '',
