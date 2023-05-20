@@ -19,6 +19,8 @@ _$_AppState _$$_AppStateFromJson(Map<String, dynamic> json) => _$_AppState(
           .fromJson(json['menuItemState'] as Map<String, dynamic>?),
       pastOrderState: const PastOrderStateConverter()
           .fromJson(json['pastOrderState'] as Map<String, dynamic>?),
+      onboardingState: const OnboardingStateConverter()
+          .fromJson(json['onboardingState'] as Map<String, dynamic>?),
     );
 
 Map<String, dynamic> _$$_AppStateToJson(_$_AppState instance) =>
@@ -33,4 +35,6 @@ Map<String, dynamic> _$$_AppStateToJson(_$_AppState instance) =>
           const MenuItemStateConverter().toJson(instance.menuItemState),
       'pastOrderState':
           const PastOrderStateConverter().toJson(instance.pastOrderState),
+      'onboardingState':
+          const OnboardingStateConverter().toJson(instance.onboardingState),
     };

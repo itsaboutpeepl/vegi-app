@@ -78,16 +78,16 @@ const veganHomeTab = AutoRoute(
       guards: [AuthGuard],
       transitionsBuilder: TransitionsBuilders.slideBottom,
     ),
-    AutoRoute(
-      page: ShowUserMnemonicScreen,
-      name: 'showUserMnemonic',
-      guards: [AuthGuard],
-    ),
-    AutoRoute(
-      page: VerifyUserMnemonic,
-      name: 'verifyUserMnemonic',
-      guards: [AuthGuard],
-    ),
+    // AutoRoute(
+    //   page: ShowUserMnemonicScreen,
+    //   name: 'showUserMnemonic',
+    //   guards: [AuthGuard],
+    // ),
+    // AutoRoute(
+    //   page: VerifyUserMnemonic,
+    //   name: 'verifyUserMnemonic',
+    //   guards: [AuthGuard],
+    // ),
     AutoRoute(
       page: CheckoutScreenPt2,
       name: 'checkoutScreenPt2',

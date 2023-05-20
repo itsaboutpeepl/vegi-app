@@ -1,16 +1,22 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:package_info/package_info.dart';
 import 'package:redux/redux.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/network/web3auth.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/analytics_props.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
 
@@ -20,24 +26,39 @@ class FirebaseStrategy implements IOnBoardStrategy {
   @override
   OnboardStrategy strategy;
 
+  void _complete({
+    required Store<AppState> store,
+    FirebaseAuthenticationStatus? firebaseStatus,
+    VegiAuthenticationStatus? vegiStatus,
+    FuseAuthenticationStatus? fuseStatus,
+  }) =>
+      store
+        ..dispatch(
+          SignupLoading(isLoading: false),
+        )
+        ..dispatch(
+          SetUserAuthenticationStatus(
+            firebaseStatus: firebaseStatus,
+            vegiStatus: vegiStatus,
+            fuseStatus: fuseStatus,
+          ),
+        );
+
   @override
   Future<void> login(
     Store<AppState> store,
     String? phoneNumber,
-    void Function() onSuccess,
-    //TODO: Decide what to do with this call back from the verify_screen viewmodel...
-    //what we could do is remove the callbacks and then have the screen itself
-    //subscribe to changes to the userAuthentication state and navigate once
-    //we have any state that includes firebase Authenticated, but limits functinoality
-    //until we have vegi authenticated too, do we want to split the user state authentication
-    //status into 3, firbease, vegi and fuse so that we can check each on its own?
-    void Function(dynamic error, FirebaseAuthenticationStatus status) onError,
   ) async {
-    store.dispatch(
-      SetUserAuthenticationStatus(
-        firebaseStatus: FirebaseAuthenticationStatus.loading,
-      ),
-    );
+    store
+      ..dispatch(
+        SignupLoading(isLoading: true),
+      )
+      ..dispatch(
+        SetUserAuthenticationStatus(
+          firebaseStatus: FirebaseAuthenticationStatus.loading,
+        ),
+      );
+
     void codeSent(
       String verificationId, [
       int? forceResendingToken,
@@ -45,6 +66,7 @@ class FirebaseStrategy implements IOnBoardStrategy {
       log.info('PhoneCodeSent verificationId: $verificationId');
       store
         ..dispatch(SetFirebaseCredentials(null))
+        ..dispatch(SignupLoading(isLoading: false))
         ..dispatch(SetVerificationId(verificationId));
       rootRouter.push(VerifyPhoneNumber(verificationId: verificationId));
     }
@@ -52,9 +74,9 @@ class FirebaseStrategy implements IOnBoardStrategy {
     /// * This handler will only be called on Android devices which support automatic SMS code resolution.
     /// ~ https://firebase.google.com/docs/auth/flutter/phone-auth#verificationcompleted
     Future<void> verificationCompleted(
-      PhoneAuthCredential credentials,
+      AuthCredential credentials,
     ) async {
-      return completeVerification(
+      return _completeVerification(
         store,
         credentials,
       );
@@ -65,9 +87,50 @@ class FirebaseStrategy implements IOnBoardStrategy {
         ..info('Phone number verification failed.')
         ..info('Code: ${authException.code}.')
         ..info('Message: ${authException.message}');
-      onError(
-        authException.message,
-        FirebaseAuthenticationStatus.phoneAuthFailed,
+
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.loginWithPhone,
+          properties: {
+            AnalyticsProps.status: AnalyticsProps.failed,
+            'error': authException.message,
+          },
+        ),
+      );
+      await Sentry.captureException(
+        authException,
+        stackTrace: StackTrace.current, // from catch (e, s)
+        hint: 'ERROR - verificationFailed ${authException.message}',
+      );
+
+      if (authException.code == 'too-many-requests') {
+        store.dispatch(
+          SignupFailed(
+            error: ErrorDetails(
+              title: 'Authentication Issue',
+              message:
+                  'Too many signin requests made from this device. Please try again later.',
+            ),
+          ),
+        );
+        return _complete(
+          store: store,
+          firebaseStatus:
+              FirebaseAuthenticationStatus.phoneAuthFailedTooManyRequests,
+        );
+      }
+      store.dispatch(
+        SignupFailed(
+          error: ErrorDetails(
+            title: 'Authentication Issue',
+            message: authException.message ?? '',
+          ),
+        ),
+      );
+      return _complete(
+        store: store,
+        firebaseStatus:
+            FirebaseAuthenticationStatus.phoneAuthReauthenticationFailed,
       );
     }
 
@@ -85,9 +148,9 @@ class FirebaseStrategy implements IOnBoardStrategy {
       await firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         codeAutoRetrievalTimeout: (String verificationId) {
-          return onError(
-            'Code verification timeout.',
-            FirebaseAuthenticationStatus.verificationCodeTimedOut,
+          return _complete(
+            store: store,
+            firebaseStatus: FirebaseAuthenticationStatus.phoneAuthTimedOut,
           );
         },
         codeSent: codeSent,
@@ -96,9 +159,9 @@ class FirebaseStrategy implements IOnBoardStrategy {
         verificationFailed: verificationFailed,
       );
     } else {
-      onError(
-        'No phone number set...',
-        FirebaseAuthenticationStatus.noPhoneNumberSet,
+      return _complete(
+        store: store,
+        firebaseStatus: FirebaseAuthenticationStatus.invalidPhoneNumber,
       );
     }
   }
@@ -108,18 +171,207 @@ class FirebaseStrategy implements IOnBoardStrategy {
     Store<AppState> store,
     String verificationCode,
   ) async {
-    PhoneAuthCredential? credentials =
-        store.state.userState.firebaseCredentials;
-    final String verificationId = store.state.userState.verificationId ?? '';
-    credentials ??= PhoneAuthProvider.credential(
-      verificationId: verificationId,
-      smsCode: verificationCode,
-    );
+    store
+      ..dispatch(
+        SignupLoading(isLoading: true),
+      )
+      ..dispatch(
+        SetUserAuthenticationStatus(
+          firebaseStatus: FirebaseAuthenticationStatus.loading,
+        ),
+      );
+    AuthCredential? credentials;
+    try {
+      credentials = store.state.userState.firebaseCredentials;
+      final String verificationId = store.state.userState.verificationId ?? '';
+      credentials ??= PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: verificationCode,
+      );
+    } on FirebaseAuthException catch (e, s) {
+      return _catchFirebaseException(
+        e,
+        s,
+        additionalMessage:
+            'Error fetching phone auth credentials from phone verification id and smsCode tfa pair',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.phoneAuthVerificationFailed,
+      );
+    } on Exception catch (e, s) {
+      return _catchUnknownException(
+        e,
+        s,
+        additionalMessage:
+            'Error fetching phone auth credentials from phone verification id and smsCode tfa pair',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.phoneAuthVerificationFailed,
+      );
+    }
 
-    return completeVerification(
+    return _completeVerification(
       store,
       credentials,
     );
+  }
+
+  Future<void> _completeVerification(
+    Store<AppState> store,
+    AuthCredential credentials,
+  ) async {
+    store.dispatch(SetFirebaseCredentials(credentials));
+
+    late final UserCredential userCredential;
+    try {
+      userCredential = await firebaseAuth.signInWithCredential(
+        credentials,
+      );
+    } on FirebaseAuthException catch (e, s) {
+      log.error(e, stackTrace: s);
+      await Analytics.track(
+        eventName: AnalyticsEvents.verify,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception('Error in verify phone number: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'Error while phone number verification',
+      );
+      return _catchFirebaseException(
+        e,
+        s,
+        additionalMessage:
+            'Error signing into firebase with provided credentials',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.phoneAuthReauthenticationFailed,
+      );
+    } on Exception catch (e, s) {
+      await Analytics.track(
+        eventName: AnalyticsEvents.verify,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception('Error in verify phone number: $e'),
+        stackTrace: s,
+        hint: 'Error while phone number verification',
+      );
+      return _catchUnknownException(
+        e,
+        s,
+        additionalMessage:
+            'Error signing into firebase with provided credentials',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.phoneAuthReauthenticationFailed,
+      );
+    }
+
+    late final User? user;
+    late final String? firebaseSessionToken;
+    try {
+      user = userCredential.user;
+      firebaseSessionToken = await user?.getIdToken();
+    } on FirebaseAuthException catch (e, s) {
+      log.error(e, stackTrace: s);
+      return _catchFirebaseException(
+        e,
+        s,
+        additionalMessage: 'Error with getIdToken for a firebase user',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.userGetIdTokenFailed,
+      );
+    } on Exception catch (e, s) {
+      return _catchUnknownException(
+        e,
+        s,
+        additionalMessage: 'Error with getIdToken for a firebase user',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.userGetIdTokenFailed,
+      );
+    }
+    store.dispatch(
+      SetFirebaseSessionToken(
+        firebaseSessionToken: firebaseSessionToken,
+      ),
+    );
+
+    if (firebaseSessionToken == null) {
+      log.error(
+        'Firebase did not authenticate user using phone auth credentials in onboarding',
+        stackTrace: StackTrace.current,
+      );
+      return _complete(
+        store: store,
+        firebaseStatus:
+            FirebaseAuthenticationStatus.phoneAuthVerificationFailed,
+      );
+    } else {
+      store.dispatch(
+        SetUserAuthenticationStatus(
+          firebaseStatus: FirebaseAuthenticationStatus.authenticated,
+        ),
+      );
+      log.info('Firebase Authentication Succeeded!');
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.verify,
+          properties: {
+            AnalyticsProps.status: AnalyticsProps.success,
+          },
+        ),
+      ); //! Bug one of these lines is killing my state
+    }
+    final User currentUser = firebaseAuth.currentUser!;
+    assert(user?.uid == currentUser.uid, 'User IDs not same.');
+
+    if (store.state.userState.email.isNotEmpty &&
+        (currentUser.email == null ||
+            currentUser.email != store.state.userState.email)) {
+      try {
+        await updateEmail(
+          email: store.state.userState.email,
+          dontComplete: true,
+        );
+      } on FirebaseAuthException catch (e, s) {
+        log.error(e, stackTrace: s);
+        return _catchFirebaseException(
+          e,
+          s,
+          additionalMessage:
+              'Error updating user email with verifyBeforeUpdateEmail()',
+          firebaseStatusIfNotHandled:
+              FirebaseAuthenticationStatus.updateEmailUsingVerificationFailed,
+        );
+      } on Exception catch (e, s) {
+        return _catchUnknownException(
+          e,
+          s,
+          additionalMessage:
+              'Error updating user email with verifyBeforeUpdateEmail()',
+          firebaseStatusIfNotHandled:
+              FirebaseAuthenticationStatus.updateEmailUsingVerificationFailed,
+        );
+      }
+    }
+
+    final result = await loginToVegi(
+      store: store,
+      phoneNumber: store.state.userState.phoneNumber,
+      firebaseSessionToken: firebaseSessionToken,
+    );
+    if (result != LoggedInToVegiResult.success) {
+      _complete(
+        store: store,
+        firebaseStatus: result == LoggedInToVegiResult.firebaseTokenExpired
+            ? FirebaseAuthenticationStatus.expired
+            : FirebaseAuthenticationStatus.authenticated,
+        vegiStatus: VegiAuthenticationStatus.failed,
+      );
+    }
   }
 
   Future<void> resetPassword({
@@ -128,96 +380,164 @@ class FirebaseStrategy implements IOnBoardStrategy {
     await firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> _reauthenticateUser({
+  @override
+  Future<bool> updateEmail({
+    required String email,
+    bool dontComplete = false,
+  }) async {
+    final store = await reduxStore;
+    store.dispatch(
+      SignupLoading(
+        isLoading: true,
+      ),
+    );
+    try {
+      await firebaseAuth.currentUser?.verifyBeforeUpdateEmail(email);
+      if (!dontComplete) {
+        _complete(
+          store: store,
+        );
+      }
+      return true;
+    } on FirebaseAuthException catch (e, s) {
+      await _catchFirebaseException(
+        e,
+        s,
+        additionalMessage:
+            'Error whilst firebaseOnBoarding.updateEmail using firebaseAuth?.currentUser?.verifyBeforeUpdateEmail(email) $e',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.updateEmailUsingVerificationFailed,
+        dontComplete: dontComplete,
+      );
+      return false;
+    } on Exception catch (e, s) {
+      await _catchUnknownException(
+        e,
+        s,
+        additionalMessage:
+            'Error whilst firebaseOnBoarding.updateEmail using firebaseAuth?.currentUser?.verifyBeforeUpdateEmail(email) $e',
+        firebaseStatusIfNotHandled:
+            FirebaseAuthenticationStatus.emailAlreadyInUseWithOtherAccount,
+        dontComplete: dontComplete,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> _reauthenticateUser({
     required AuthCredential credential,
   }) async {
-    await firebaseAuth.currentUser?.reauthenticateWithCredential(credential);
+    final store = await reduxStore;
+    if (credential is PhoneAuthCredential &&
+        (credential.verificationId?.isEmpty ?? true)) {
+      _complete(
+        store: store,
+        firebaseStatus:
+            FirebaseAuthenticationStatus.phoneAuthCredentialHasNoVerificationId,
+        vegiStatus: VegiAuthenticationStatus.unauthenticated,
+      );
+      return false;
+    }
+    try {
+      await firebaseAuth.currentUser?.reauthenticateWithCredential(credential);
+      final firebaseSessionToken = await firebaseAuth.currentUser?.getIdToken();
+      store.dispatch(
+        SetFirebaseSessionToken(
+          firebaseSessionToken: firebaseSessionToken,
+        ),
+      );
+      return true;
+    } on FirebaseAuthException catch (e, s) {
+      await _catchFirebaseException(
+        e,
+        s,
+        additionalMessage:
+            'Error updating user email with getIdToken for a firebase user',
+        dontComplete: true,
+      );
+      _complete(
+        store: store,
+        firebaseStatus:
+            FirebaseAuthenticationStatus.phoneAuthReauthenticationFailed,
+        vegiStatus: VegiAuthenticationStatus.unauthenticated,
+      );
+      return false;
+    } on Exception catch (e, s) {
+      await _catchUnknownException(
+        e,
+        s,
+        additionalMessage:
+            'Error updating user email with getIdToken for a firebase user',
+        dontComplete: true,
+      );
+      _complete(
+        store: store,
+        firebaseStatus:
+            FirebaseAuthenticationStatus.phoneAuthReauthenticationFailed,
+        vegiStatus: VegiAuthenticationStatus.unauthenticated,
+      );
+      return false;
+    }
   }
 
   @override
   Future<bool> reauthenticateUser() async {
     final store = await reduxStore;
+
+    // if (store.state.userState.firebaseAuthenticationStatus ==
+    //     FirebaseAuthenticationStatus.expired || store.state.userState.firebaseSessionToken == null) {
+    //   final creds = store.state.userState.firebaseCredentials;
+    //   if (creds != null) {
+    //     return _reauthenticateUser(
+    //       credential: creds,
+    //     );
+    //   }
+    //   return false;
+    // } else
+    if (store.state.userState.firebaseCredentials == null) {
+      return false;
+    }
+
+    final reauthSucceeded = await _reauthenticateUser(
+      credential: store.state.userState.firebaseCredentials!,
+    );
+
+    if (!reauthSucceeded ||
+        store.state.userState.firebaseAuthenticationStatus
+            .isNewFailureStatus(FirebaseAuthenticationStatus.unauthenticated)) {
+      log.warn(
+          'Failed to reauthenticate firebase as status: FirebaseAuthenticationStatus.[${store.state.userState.firebaseAuthenticationStatus.name}]');
+      return false;
+    }
+
     if (store.state.userState.firebaseSessionToken != null) {
-      try {
-        final succeeded = await loginToVegi(
+      final result = await loginToVegi(
+        store: store,
+        phoneNumber: store.state.userState.phoneNumber,
+        firebaseSessionToken: store.state.userState.firebaseSessionToken!,
+      );
+      if (result == LoggedInToVegiResult.success) {
+        _complete(
           store: store,
-          phoneNumber: store.state.userState.phoneNumber,
-          firebaseSessionToken: store.state.userState.firebaseSessionToken!,
+          vegiStatus: VegiAuthenticationStatus.authenticated,
         );
-        if (succeeded) {
-          store.dispatch(
-            loggedInToVegiSuccess(
-              onError: (errStr) {
-                log.error(
-                    'Unable to check vegi account & beta whitelist after logging in to vegi with error: $errStr');
-              },
-            ),
-          );
-          return true;
-        } else if (store.state.userState.firebaseAuthenticationStatus ==
-            FirebaseAuthenticationStatus.expired) {
-          final creds = store.state.userState.firebaseCredentials;
-          if (creds != null) {
-            await _reauthenticateUser(
-              credential: creds,
-            );
-          }
-          return false;
-        } else {
-          log.error('Could not login to vegi...');
-          store.dispatch(
-            SetUserAuthenticationStatus(
-              firebaseStatus: FirebaseAuthenticationStatus.authenticated,
-              vegiStatus: VegiAuthenticationStatus.failed,
-            ),
-          );
-          return false;
-        }
-      } on Exception catch (e) {
-        log.error('Could not login to vegi...');
-        store.dispatch(
-          SetUserAuthenticationStatus(
-            firebaseStatus: FirebaseAuthenticationStatus.authenticated,
-            vegiStatus: VegiAuthenticationStatus.failed,
-          ),
-        );
-        return false;
-      }
-    } else if (store.state.userState.firebaseCredentials != null) {
-      try {
-        await _reauthenticateUser(
-          credential: store.state.userState.firebaseCredentials!,
-        );
+        store.dispatch(isBetaWhitelistedAddress());
         return true;
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'invalid-credential') {
-          store.dispatch(
-            SetUserAuthenticationStatus(
-              firebaseStatus: FirebaseAuthenticationStatus.verificationFailed,
-              vegiStatus: VegiAuthenticationStatus.unauthenticated,
-            ),
-          );
-          return false;
-        }
-        log.error(
-            'Error whilst reauthenticating using Firebase Credentials from persistent store. $e');
-        store.dispatch(
-          SetUserAuthenticationStatus(
-            firebaseStatus: FirebaseAuthenticationStatus.phoneAuthFailed,
-            vegiStatus: VegiAuthenticationStatus.unauthenticated,
-          ),
-        );
-        return false;
-      } on Exception catch (e) {
-        log.error(
-          e,
-          stackTrace: StackTrace.current,
-        );
-        store.dispatch(
-          SetUserAuthenticationStatus(
-            firebaseStatus: FirebaseAuthenticationStatus.phoneAuthFailed,
-            vegiStatus: VegiAuthenticationStatus.unauthenticated,
-          ),
+        // } else if (store.state.userState.firebaseAuthenticationStatus ==
+        //     FirebaseAuthenticationStatus.expired) {
+        //   final creds = store.state.userState.firebaseCredentials;
+        //   if (creds != null) {
+        //     await _reauthenticateUser(
+        //       credential: creds,
+        //     );
+        //   }
+        //   return false;
+      } else {
+        log.error('Could not login to vegi...');
+        _complete(
+          store: store,
+          firebaseStatus: FirebaseAuthenticationStatus.authenticated,
+          vegiStatus: VegiAuthenticationStatus.failed,
         );
         return false;
       }
@@ -226,101 +546,15 @@ class FirebaseStrategy implements IOnBoardStrategy {
     }
   }
 
-  Future<void> completeVerification(
-    Store<AppState> store,
-    PhoneAuthCredential credentials,
-  ) async {
-    store.dispatch(SetFirebaseCredentials(credentials));
-    final UserCredential userCredential =
-        await firebaseAuth.signInWithCredential(
-      credentials,
-    );
-    final User? user = userCredential.user;
-    final firebaseSessionToken = await user?.getIdToken();
-    store.dispatch(
-      SetFirebaseSessionToken(
-        firebaseSessionToken: firebaseSessionToken,
-      ),
-    );
-    if (firebaseSessionToken == null) {
-      log.error(
-        'Firebase did not authenticate user using phone auth credentials in onboarding',
-        stackTrace: StackTrace.current,
-      );
-
-      store.dispatch(
-        SetUserAuthenticationStatus(
-          firebaseStatus: FirebaseAuthenticationStatus.verificationFailed,
-        ),
-      );
-      return;
-    } else {
-      store.dispatch(
-        SetUserAuthenticationStatus(
-          firebaseStatus: FirebaseAuthenticationStatus.authenticated,
-        ),
-      );
-      log.info('Firebase Authentication Succeeded!');
-      unawaited(Analytics.track(
-        eventName: AnalyticsEvents.verify,
-        properties: {
-          AnalyticsProps.status: AnalyticsProps.success,
-        },
-      )); //! Bug one of these lines is killing my state
-    }
-    final User currentUser = firebaseAuth.currentUser!;
-    assert(user?.uid == currentUser.uid, 'User IDs not same.');
-
-    if (store.state.userState.email.isNotEmpty &&
-        (currentUser.email == null ||
-            currentUser.email != store.state.userState.email)) {
-      await currentUser.updateEmail(store.state.userState.email);
-    }
-
-    try {
-      final succeeded = await loginToVegi(
-        store: store,
-        phoneNumber: store.state.userState.phoneNumber,
-        firebaseSessionToken: firebaseSessionToken,
-      );
-      if (succeeded) {
-        store
-          ..dispatch(
-            SetUserAuthenticationStatus(
-              firebaseStatus: FirebaseAuthenticationStatus.authenticated,
-              vegiStatus: VegiAuthenticationStatus.authenticated,
-            ),
-          )
-          ..dispatch(
-            loggedInToVegiSuccess(
-              onError: (errStr) {
-                log.error(
-                    'Unable to check vegi account & beta whitelist after logging in to vegi with error: $errStr');
-              },
-            ),
-          );
-      } else {
-        log.error('Could not login to vegi...');
-        store.dispatch(
-          SetUserAuthenticationStatus(
-            firebaseStatus: FirebaseAuthenticationStatus.authenticated,
-            vegiStatus: VegiAuthenticationStatus.failed,
-          ),
-        );
-      }
-    } catch (e, s) {
-      // onFailure(e.toString());
-      log.error(e, stackTrace: s);
-      store.dispatch(
-        SetUserAuthenticationStatus(
-          firebaseStatus: FirebaseAuthenticationStatus.authenticated,
-          vegiStatus: VegiAuthenticationStatus.failed,
-        ),
-      );
-    }
+  @override
+  Future<void> verifyRecaptchaToken({
+    String? recaptchaToken,
+    String? deepLinkId,
+  }) async {
+    throw Exception('Not implemented onboardStrategy.verifyRecaptchaToken()');
   }
 
-  Future<bool> loginToVegi({
+  Future<LoggedInToVegiResult> loginToVegi({
     required Store<AppState> store,
     required String phoneNumber,
     required String firebaseSessionToken,
@@ -337,19 +571,35 @@ class FirebaseStrategy implements IOnBoardStrategy {
         firebaseSessionToken: firebaseSessionToken,
         rememberMe: true,
       );
-      store.dispatch(
-        SetUserAuthenticationStatus(
-          firebaseStatus: FirebaseAuthenticationStatus.authenticated,
+      if (loggedIn.sessionCookie.isNotEmpty) {
+        _complete(
+          store: store,
           vegiStatus: VegiAuthenticationStatus.authenticated,
-        ),
-      );
-      return loggedIn.sessionCookie.isNotEmpty;
-    } catch (err) {
-      store.dispatch(
-        SetUserAuthenticationStatus(
-          firebaseStatus: FirebaseAuthenticationStatus.authenticated,
+        );
+        store.dispatch(isBetaWhitelistedAddress());
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.loginWithPhone,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.success,
+            },
+          ),
+        );
+      } else {
+        log.error('Could not login to vegi...');
+        _complete(
+          store: store,
           vegiStatus: VegiAuthenticationStatus.failed,
-        ),
+        );
+      }
+      return loggedIn.sessionCookie.isNotEmpty
+          ? LoggedInToVegiResult.success
+          : LoggedInToVegiResult.failedEmptySessionCookie;
+    } catch (err) {
+      _complete(
+        store: store,
+        firebaseStatus: FirebaseAuthenticationStatus.authenticated,
+        vegiStatus: VegiAuthenticationStatus.failed,
       );
       log
         ..error(
@@ -362,9 +612,280 @@ class FirebaseStrategy implements IOnBoardStrategy {
           firebaseSessionToken: null,
         ),
       );
-      // log.info('Push SignUpScreen()');
-      // rootRouter.replaceAll([const SignUpScreen()])
-      return false;
+      return LoggedInToVegiResult.failed;
     }
   }
+
+  Future<void> emailLinkCallbackFromVerificationEmail({
+    required String emailLinkFromVerificationEmail,
+    bool dontComplete = false,
+  }) async {
+    final store = await reduxStore;
+    store.dispatch(SignupLoading(isLoading: true));
+    try {
+      final userCredential = await firebaseAuth.signInWithEmailLink(
+        email: store.state.userState.email,
+        emailLink: emailLinkFromVerificationEmail,
+      );
+      store.dispatch(SetFirebaseCredentials(userCredential.credential));
+      return _complete(store: store);
+    } catch (err, s) {
+      log.error(err);
+      await Sentry.captureException(
+        err,
+        stackTrace: s, // from catch (err, s)
+        hint:
+            'ERROR - firebaseStrat.emailLinkCallbackFromVerificationEmail $err',
+      );
+    }
+
+    // Success! Go back to your application flow
+    if (dontComplete) {
+      return;
+    }
+    return _complete(
+      store: store,
+    );
+  }
+
+  Future<void> linkAccountsFromEmailLinkCallbackFromVerificationEmail({
+    required String email,
+    required AuthCredential pendingCredential,
+    required String emailLinkFromVerificationEmail,
+    bool dontComplete = false,
+  }) async {
+    final store = await reduxStore;
+    store.dispatch(SignupLoading(isLoading: true));
+    try {
+      final userCredential = await firebaseAuth.signInWithEmailLink(
+        email: email,
+        emailLink: emailLinkFromVerificationEmail,
+      );
+      // Link the pending credential with the existing account
+      await userCredential.user?.linkWithCredential(pendingCredential);
+    } catch (err, s) {
+      log.error(err);
+      await Sentry.captureException(
+        err,
+        stackTrace: s, // from catch (err, s)
+        hint:
+            'ERROR - firebaseStrat.emailLinkCallbackFromVerificationEmail $err',
+      );
+    }
+
+    // Success! Go back to your application flow
+    if (dontComplete) {
+      return;
+    }
+    return _complete(
+      store: store,
+    );
+  }
+
+  Future<ActionCodeSettings> _getActionCodeSettings() async {
+    // ~ https://firebase.google.com/docs/auth/flutter/email-link-auth?hl=en&authuser=0
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    return ActionCodeSettings(
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be whitelisted in the Firebase Console.
+      // url: 'https://www.example.com/finishSignUp?cartId=1234',
+      url: 'vegi://vegiApp.co.uk/verify-email-link',
+
+      // This must be true
+      handleCodeInApp: true,
+
+      iOSBundleId: info.packageName ?? PackageConstants.iosBundleIdentifier,
+      androidPackageName:
+          info.packageName ?? PackageConstants.iosBundleIdentifier,
+      // installIfNotAvailable
+      androidInstallApp: true,
+      // minimumVersion
+      androidMinimumVersion: '12',
+    );
+  }
+
+  Future<void> _linkAccountWithDifferentEmail({
+    required FirebaseAuthException e,
+  }) async {
+    final store = await reduxStore;
+    try {
+      // The account already exists with a different credential
+      final email = e.email;
+      final pendingCredential = e.credential;
+
+      if (email != null && pendingCredential != null) {
+        // store conflicting account details for callbacks later on such as in email_link.
+        store
+          ..dispatch(SignupLoading(isLoading: true))
+          ..dispatch(
+            SetConflictingFirebaseCredentials(
+              conflictingEmail: email,
+              conflictingCredentials: pendingCredential,
+            ),
+          );
+
+        // Fetch a list of what sign-in methods exist for the conflicting user
+        final userSignInMethods =
+            await firebaseAuth.fetchSignInMethodsForEmail(email);
+
+        // If the user has several sign-in methods,
+        // the first method in the list will be the "recommended" method to use.
+        if (userSignInMethods.first == 'email_link') {
+          // Sign the user in to their account with the email link
+
+          // called as callback [emailLinkCallbackFromVerificationEmail] when the app link is received from user clicking the OTP link in the email.
+          // return emailLinkCallbackFromVerificationEmail()
+          try {
+            final userCredential = await firebaseAuth.sendSignInLinkToEmail(
+              email: email,
+              actionCodeSettings: await _getActionCodeSettings(),
+            );
+          } on Exception catch (e, s) {
+            log.error(
+              e,
+              stackTrace: s,
+            );
+            await Sentry.captureException(
+              e,
+              stackTrace: StackTrace.current, // from catch (err, s)
+              hint: 'ERROR - firebaseStrategy.linkAccountWithDifferentEmail $e',
+            );
+          }
+        }
+        // if (userSignInMethods.first == 'password') {
+        //   // Prompt the user to enter their password
+        //   final password = '...';
+
+        //   // Sign the user in to their account with the password
+        //   final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+        //     email: email,
+        //     password: password,
+        //   );
+
+        //   // Link the pending credential with the existing account
+        //   await userCredential.user?.linkWithCredential(pendingCredential);
+
+        //   // Success! Go back to your application flow
+        //   if (dontComplete) {
+        //     return;
+        //   }
+        //   return _complete(
+        //     store: store,
+        //     firebaseStatus:
+        //         FirebaseAuthenticationStatus.emailAlreadyInUseWithOtherAccount,
+        //   );
+        // }
+        // Since other providers are now external, you must now sign the user in with another
+        // auth provider, such as Facebook.
+        // if (userSignInMethods.first == 'facebook.com') {
+        //   // Create a new Facebook credential
+        //   String accessToken = await triggerFacebookAuthentication();
+        //   final facebookAuthCredential =
+        //       FacebookAuthProvider.credential(accessToken);
+
+        //   // Sign the user in with the credential
+        //   UserCredential userCredential =
+        //       await auth.signInWithCredential(facebookAuthCredential);
+
+        //   // Link the pending credential with the existing account
+        //   await userCredential.user.linkWithCredential(pendingCredential);
+
+        //   // Success! Go back to your application flow
+        //   return _complete(
+        //     store: store,
+        //   );
+        // }
+      }
+
+      // Handle other OAuth providers...
+      return _complete(
+        store: store,
+      );
+    } on Exception catch (err, s) {
+      log.error('Error: $err', stackTrace: s);
+      return _complete(store: store);
+    }
+  }
+
+  Future<void> _catchFirebaseException(
+    FirebaseAuthException e,
+    StackTrace s, {
+    String? additionalMessage,
+    FirebaseAuthenticationStatus? firebaseStatusIfNotHandled,
+    bool dontComplete = false,
+  }) async {
+    log
+      ..info(
+        'FirebaseAuth Exception caught:',
+        stackTrace: s,
+      )
+      ..info('Code: ${e.code}.')
+      ..info('Message: ${e.message}')
+      ..info('with additional message: $additionalMessage');
+    final store = await reduxStore;
+    if (e.code == 'invalid-credential') {
+      return _complete(
+        store: store,
+        firebaseStatus: FirebaseAuthenticationStatus.invalidCredentials,
+      );
+    } else if (e.code == 'email-already-in-use' ||
+        e.code == 'account-exists-with-different-credential') {
+      log.error('Try to catch this before coming into this handler?...');
+      // try and link the 2 accounts?
+      log.error(
+        'RESEARCH HOW TO TRY AND LINK 2 differing firebase accounts for email: "${e.email}" using link:\n https://firebase.google.com/docs/auth/flutter/errors#handling_account-exists-with-different-credential_errors',
+      );
+
+      await Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current, // from catch (err, s)
+        hint: 'ERROR - firebase.verify.updateEmailWithVerify: $e',
+      );
+
+      // TODO: Refactor to: await _linkAccountWithDifferentEmail(email:email,);
+      return _linkAccountWithDifferentEmail(e: e);
+    } else if (e.code == 'session-expired') {
+      return _complete(
+        store: store,
+        firebaseStatus: FirebaseAuthenticationStatus.expired,
+      );
+    }
+    if (dontComplete) {
+      return;
+    }
+    return _complete(
+      store: store,
+      firebaseStatus: firebaseStatusIfNotHandled,
+    );
+  }
+
+  Future<void> _catchUnknownException(
+    Exception e,
+    StackTrace s, {
+    String? additionalMessage,
+    FirebaseAuthenticationStatus? firebaseStatusIfNotHandled,
+    bool dontComplete = false,
+  }) async {
+    log
+      ..error(e, stackTrace: s)
+      ..error(
+        'with additional message: $additionalMessage',
+        stackTrace: s,
+      );
+    final store = await reduxStore;
+    if (dontComplete) {
+      return;
+    }
+    return _complete(
+      store: store,
+      firebaseStatus: firebaseStatusIfNotHandled,
+    );
+  }
+}
+
+enum LoggedInToVegiResult {
+  success,
+  failed,
+  failedEmptySessionCookie,
+  firebaseTokenExpired,
 }

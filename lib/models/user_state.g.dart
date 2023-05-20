@@ -90,6 +90,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       subscribedToWaitingListUpdates:
           json['subscribedToWaitingListUpdates'] as bool? ?? false,
       waitingListEntryId: json['waitingListEntryId'] as int? ?? null,
+      loginCounter: json['loginCounter'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
@@ -146,32 +147,58 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'positionInWaitingList': instance.positionInWaitingList,
       'subscribedToWaitingListUpdates': instance.subscribedToWaitingListUpdates,
       'waitingListEntryId': instance.waitingListEntryId,
+      'loginCounter': instance.loginCounter,
     };
 
 const _$FirebaseAuthenticationStatusEnumMap = {
   FirebaseAuthenticationStatus.unauthenticated: 'unauthenticated',
   FirebaseAuthenticationStatus.loading: 'loading',
-  FirebaseAuthenticationStatus.phoneAuthFailed: 'phoneAuthFailed',
-  FirebaseAuthenticationStatus.tFAFailed: 'tFAFailed',
-  FirebaseAuthenticationStatus.noPhoneNumberSet: 'noPhoneNumberSet',
-  FirebaseAuthenticationStatus.verificationCodeTimedOut:
-      'verificationCodeTimedOut',
-  FirebaseAuthenticationStatus.verificationFailed: 'verificationFailed',
   FirebaseAuthenticationStatus.reauthenticationFailed: 'reauthenticationFailed',
   FirebaseAuthenticationStatus.authenticated: 'authenticated',
+  FirebaseAuthenticationStatus.expired: 'expired',
+  FirebaseAuthenticationStatus.phoneAuthFailed: 'phoneAuthFailed',
+  FirebaseAuthenticationStatus.phoneAuthTFAFailed: 'phoneAuthTFAFailed',
+  FirebaseAuthenticationStatus.phoneAuthNoPhoneNumberSet:
+      'phoneAuthNoPhoneNumberSet',
+  FirebaseAuthenticationStatus.phoneAuthVerificationCodeTimedOut:
+      'phoneAuthVerificationCodeTimedOut',
+  FirebaseAuthenticationStatus.phoneAuthVerificationFailed:
+      'phoneAuthVerificationFailed',
+  FirebaseAuthenticationStatus.phoneAuthCredentialHasNoVerificationId:
+      'phoneAuthCredentialHasNoVerificationId',
+  FirebaseAuthenticationStatus.phoneAuthTimedOut: 'phoneAuthTimedOut',
+  FirebaseAuthenticationStatus.phoneAuthFailedTooManyRequests:
+      'phoneAuthFailedTooManyRequests',
+  FirebaseAuthenticationStatus.invalidPhoneNumber: 'invalidPhoneNumber',
+  FirebaseAuthenticationStatus.emailAlreadyInUseWithOtherAccount:
+      'emailAlreadyInUseWithOtherAccount',
+  FirebaseAuthenticationStatus.updateEmailUsingVerificationFailed:
+      'updateEmailUsingVerificationFailed',
+  FirebaseAuthenticationStatus.userGetIdTokenFailed: 'userGetIdTokenFailed',
+  FirebaseAuthenticationStatus.invalidCredentials: 'invalidCredentials',
+  FirebaseAuthenticationStatus.beginAuthentication: 'beginAuthentication',
 };
 
 const _$FuseAuthenticationStatusEnumMap = {
   FuseAuthenticationStatus.unauthenticated: 'unauthenticated',
   FuseAuthenticationStatus.loading: 'loading',
   FuseAuthenticationStatus.authenticated: 'authenticated',
+  FuseAuthenticationStatus.createWalletForEOA: 'createWalletForEOA',
+  FuseAuthenticationStatus.creationStarted: 'creationStarted',
+  FuseAuthenticationStatus.creationSucceeded: 'creationSucceeded',
   FuseAuthenticationStatus.created: 'created',
   FuseAuthenticationStatus.fetched: 'fetched',
-  FuseAuthenticationStatus.failedFetch: 'failedFetch',
+  FuseAuthenticationStatus.failedCreateLocalAccountPrivateKey:
+      'failedCreateLocalAccountPrivateKey',
   FuseAuthenticationStatus.failedCreate: 'failedCreate',
   FuseAuthenticationStatus.failedAuthentication: 'failedAuthentication',
-  FuseAuthenticationStatus.missingUserDetailsToAuthFuseWallet:
-      'missingUserDetailsToAuthFuseWallet',
+  FuseAuthenticationStatus
+          .failedAuthenticationAsMissingUserDetailsToAuthFuseWallet:
+      'failedAuthenticationAsMissingUserDetailsToAuthFuseWallet',
+  FuseAuthenticationStatus
+          .failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt:
+      'failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt',
+  FuseAuthenticationStatus.failedFetch: 'failedFetch',
 };
 
 const _$BiometricAuthEnumMap = {

@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/recovery.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class RestoreFromBackupScreen extends StatefulWidget {
@@ -129,10 +130,10 @@ class _RestoreFromBackupScreenState extends State<RestoreFromBackupScreen> {
                               .validateWalletRecoveryPhrase(seedPhrase)) {
                             viewModel.generateWalletFromBackup(seedPhrase, () {
                               setState(() {
-                                isPreloading = false;
+                                isPreloading = false; // replace with
                               });
-                              log.info('Push SignUpScreen()');
-                              context.router.push(const SignUpScreen());
+                              // log.info('Push SignUpScreen() from ${rootRouter.current.name} in generate wallet from backup button.');
+                              // context.router.push(const SignUpScreen());
                             }, () {
                               setState(() {
                                 isPreloading = false;

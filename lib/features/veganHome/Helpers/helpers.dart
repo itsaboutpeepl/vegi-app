@@ -23,11 +23,33 @@ import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/config.dart' as VEGI_CONFIG;
 import 'package:vegan_liverpool/utils/log/log.dart';
 
-bool checkAuth<T extends IAuthViewModel>({
+class BoolThenRouteResult {
+  const BoolThenRouteResult({
+    required this.succeeded,
+    this.navigationToRun,
+  });
+
+  factory BoolThenRouteResult.from({required bool succeeded}) =>
+      BoolThenRouteResult(succeeded: succeeded);
+
+  final Future<void> Function()? navigationToRun;
+  final bool succeeded;
+  bool get failed => !succeeded;
+  bool get navigationNeeded => navigationToRun != null;
+
+  Future<void> runNavigationIfNeeded() async {
+    if (navigationNeeded) {
+      return navigationToRun!();
+    }
+  }
+}
+
+BoolThenRouteResult checkAuth<T extends IAuthViewModel>({
   required T? oldViewModel,
   required T newViewModel,
   required BuildContext routerContext,
 }) {
+  Future<void> Function()? navigationToRun;
   final oldFirebaseAuthStatus = oldViewModel?.firebaseAuthenticationStatus ??
       FirebaseAuthenticationStatus.unauthenticated;
   final oldFuseAuthStatus = oldViewModel?.fuseAuthenticationStatus ??
@@ -35,37 +57,51 @@ bool checkAuth<T extends IAuthViewModel>({
   final oldVegiAuthStatus = oldViewModel?.vegiAuthenticationStatus ??
       VegiAuthenticationStatus.unauthenticated;
 
-  if (newViewModel.fuseAuthenticationStatus
-      .isNewFailureStatus(oldFuseAuthStatus)) {
-    if (routerContext.mounted) {
-      rootRouter.replace(const CreateWalletFirstOnboardingScreen());
-    }
-    log.error(
-        'fuse auth has failed, investigate why this is happening...: status: ${newViewModel.fuseAuthenticationStatus.name}');
-    return false;
-  }
+  // Remove fuseWalletAuthCheck
+  // if (newViewModel.fuseAuthenticationStatus
+  //     .isNewFailureStatus(oldFuseAuthStatus)) {
+  //   if (routerContext.mounted) {
+  //     navigationToRun =
+  //         () => rootRouter.replace(const CreateWalletFirstOnboardingScreen());
+  //   }
+  //   log.error(
+  //       'fuse auth has failed, investigate why this is happening...: status: FuseAuthenticationStatus[${newViewModel.fuseAuthenticationStatus.name}]');
+  //   return BoolThenRouteResult(
+  //     succeeded: false,
+  //     navigationToRun: navigationToRun,
+  //   );
+  // }
   if (newViewModel.firebaseAuthenticationStatus
       .isNewFailureStatus(oldFirebaseAuthStatus)) {
     if (routerContext.mounted) {
-      log.info('Push SignUpScreen()');
+      log.info(
+          'Push SignUpScreen() due to failed status: FirebaseAuthenticationStatus.[${newViewModel.firebaseAuthenticationStatus.name}]');
       debugPrintStack(
-        label: 'Push SignUpScreen()',
+        label:
+            'Push SignUpScreen() due to failed status: FirebaseAuthenticationStatus.[${newViewModel.firebaseAuthenticationStatus.name}]',
         maxFrames: 3,
       );
-      rootRouter.replace(const SignUpScreen());
+      navigationToRun = () => rootRouter.replace(
+          const SignUpScreen()); //TODO: Remove this as should be taken care of from authentication action failure inside the thunk
     }
-    return false;
+    return BoolThenRouteResult(
+      succeeded: false,
+      navigationToRun: navigationToRun,
+    );
   }
   if (newViewModel.vegiAuthenticationStatus
       .isNewFailureStatus(oldVegiAuthStatus)) {
-    // if(routerContext.mounted){
-    //   rootRouter.replace(const )
-    // }
     log.error(
         'vegi auth has failed, investigate why this is happening...: status: ${newViewModel.vegiAuthenticationStatus.name}');
-    return false;
+    return BoolThenRouteResult(
+      succeeded: false,
+      navigationToRun: navigationToRun,
+    );
   }
-  return true;
+  return BoolThenRouteResult(
+    succeeded: true,
+    navigationToRun: navigationToRun,
+  );
 }
 
 Future<T> delayed<T>(
@@ -411,7 +447,7 @@ double rectArea(
 ) =>
     triangleArea(p1, p2, p3) + triangleArea(p2, p3, p4);
 
-Future<Size> calculateImageDimension({
+Future<Size> calculateImageDimensionFromUrl({
   required String imageUrl,
 }) {
   final completer = Completer<Size>();
@@ -425,7 +461,24 @@ Future<Size> calculateImageDimension({
     ImageStreamListener(
       (ImageInfo image, bool synchronousCall) {
         final myImage = image.image;
-        Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+        final size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+        completer.complete(size);
+      },
+    ),
+  );
+  return completer.future;
+}
+
+Future<Size> calculateImageDimension({
+  required Image image,
+}) {
+  final completer = Completer<Size>();
+  const imageConfig = ImageConfiguration.empty;
+  image.image.resolve(imageConfig).addListener(
+    ImageStreamListener(
+      (ImageInfo image, bool synchronousCall) {
+        final myImage = image.image;
+        final size = Size(myImage.width.toDouble(), myImage.height.toDouble());
         completer.complete(size);
       },
     ),

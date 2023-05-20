@@ -32,6 +32,8 @@ mixin _$AppState {
   MenuItemState get menuItemState => throw _privateConstructorUsedError;
   @PastOrderStateConverter()
   PastOrderState get pastOrderState => throw _privateConstructorUsedError;
+  @OnboardingStateConverter()
+  OnboardingState get onboardingState => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,7 +52,8 @@ abstract class $AppStateCopyWith<$Res> {
       @HomePageStateConverter() HomePageState homePageState,
       @UserCartStateConverter() UserCartState cartState,
       @MenuItemStateConverter() MenuItemState menuItemState,
-      @PastOrderStateConverter() PastOrderState pastOrderState});
+      @PastOrderStateConverter() PastOrderState pastOrderState,
+      @OnboardingStateConverter() OnboardingState onboardingState});
 
   $UserStateCopyWith<$Res> get userState;
   $CashWalletStateCopyWith<$Res> get cashWalletState;
@@ -58,6 +61,7 @@ abstract class $AppStateCopyWith<$Res> {
   $UserCartStateCopyWith<$Res> get cartState;
   $MenuItemStateCopyWith<$Res> get menuItemState;
   $PastOrderStateCopyWith<$Res> get pastOrderState;
+  $OnboardingStateCopyWith<$Res> get onboardingState;
 }
 
 /// @nodoc
@@ -79,6 +83,7 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
     Object? cartState = null,
     Object? menuItemState = null,
     Object? pastOrderState = null,
+    Object? onboardingState = null,
   }) {
     return _then(_value.copyWith(
       userState: null == userState
@@ -105,6 +110,10 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
           ? _value.pastOrderState
           : pastOrderState // ignore: cast_nullable_to_non_nullable
               as PastOrderState,
+      onboardingState: null == onboardingState
+          ? _value.onboardingState
+          : onboardingState // ignore: cast_nullable_to_non_nullable
+              as OnboardingState,
     ) as $Val);
   }
 
@@ -155,6 +164,14 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
       return _then(_value.copyWith(pastOrderState: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $OnboardingStateCopyWith<$Res> get onboardingState {
+    return $OnboardingStateCopyWith<$Res>(_value.onboardingState, (value) {
+      return _then(_value.copyWith(onboardingState: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -170,7 +187,8 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
       @HomePageStateConverter() HomePageState homePageState,
       @UserCartStateConverter() UserCartState cartState,
       @MenuItemStateConverter() MenuItemState menuItemState,
-      @PastOrderStateConverter() PastOrderState pastOrderState});
+      @PastOrderStateConverter() PastOrderState pastOrderState,
+      @OnboardingStateConverter() OnboardingState onboardingState});
 
   @override
   $UserStateCopyWith<$Res> get userState;
@@ -184,6 +202,8 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   $MenuItemStateCopyWith<$Res> get menuItemState;
   @override
   $PastOrderStateCopyWith<$Res> get pastOrderState;
+  @override
+  $OnboardingStateCopyWith<$Res> get onboardingState;
 }
 
 /// @nodoc
@@ -203,6 +223,7 @@ class __$$_AppStateCopyWithImpl<$Res>
     Object? cartState = null,
     Object? menuItemState = null,
     Object? pastOrderState = null,
+    Object? onboardingState = null,
   }) {
     return _then(_$_AppState(
       userState: null == userState
@@ -229,6 +250,10 @@ class __$$_AppStateCopyWithImpl<$Res>
           ? _value.pastOrderState
           : pastOrderState // ignore: cast_nullable_to_non_nullable
               as PastOrderState,
+      onboardingState: null == onboardingState
+          ? _value.onboardingState
+          : onboardingState // ignore: cast_nullable_to_non_nullable
+              as OnboardingState,
     ));
   }
 }
@@ -243,7 +268,8 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
       @HomePageStateConverter() required this.homePageState,
       @UserCartStateConverter() required this.cartState,
       @MenuItemStateConverter() required this.menuItemState,
-      @PastOrderStateConverter() required this.pastOrderState})
+      @PastOrderStateConverter() required this.pastOrderState,
+      @OnboardingStateConverter() required this.onboardingState})
       : super._();
 
   factory _$_AppState.fromJson(Map<String, dynamic> json) =>
@@ -267,10 +293,13 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
   @override
   @PastOrderStateConverter()
   final PastOrderState pastOrderState;
+  @override
+  @OnboardingStateConverter()
+  final OnboardingState onboardingState;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AppState(userState: $userState, cashWalletState: $cashWalletState, homePageState: $homePageState, cartState: $cartState, menuItemState: $menuItemState, pastOrderState: $pastOrderState)';
+    return 'AppState(userState: $userState, cashWalletState: $cashWalletState, homePageState: $homePageState, cartState: $cartState, menuItemState: $menuItemState, pastOrderState: $pastOrderState, onboardingState: $onboardingState)';
   }
 
   @override
@@ -283,7 +312,8 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('homePageState', homePageState))
       ..add(DiagnosticsProperty('cartState', cartState))
       ..add(DiagnosticsProperty('menuItemState', menuItemState))
-      ..add(DiagnosticsProperty('pastOrderState', pastOrderState));
+      ..add(DiagnosticsProperty('pastOrderState', pastOrderState))
+      ..add(DiagnosticsProperty('onboardingState', onboardingState));
   }
 
   @override
@@ -302,13 +332,15 @@ class _$_AppState extends _AppState with DiagnosticableTreeMixin {
             (identical(other.menuItemState, menuItemState) ||
                 other.menuItemState == menuItemState) &&
             (identical(other.pastOrderState, pastOrderState) ||
-                other.pastOrderState == pastOrderState));
+                other.pastOrderState == pastOrderState) &&
+            (identical(other.onboardingState, onboardingState) ||
+                other.onboardingState == onboardingState));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, userState, cashWalletState,
-      homePageState, cartState, menuItemState, pastOrderState);
+      homePageState, cartState, menuItemState, pastOrderState, onboardingState);
 
   @JsonKey(ignore: true)
   @override
@@ -337,7 +369,9 @@ abstract class _AppState extends AppState {
       @MenuItemStateConverter()
           required final MenuItemState menuItemState,
       @PastOrderStateConverter()
-          required final PastOrderState pastOrderState}) = _$_AppState;
+          required final PastOrderState pastOrderState,
+      @OnboardingStateConverter()
+          required final OnboardingState onboardingState}) = _$_AppState;
   _AppState._() : super._();
 
   factory _AppState.fromJson(Map<String, dynamic> json) = _$_AppState.fromJson;
@@ -360,6 +394,9 @@ abstract class _AppState extends AppState {
   @override
   @PastOrderStateConverter()
   PastOrderState get pastOrderState;
+  @override
+  @OnboardingStateConverter()
+  OnboardingState get onboardingState;
   @override
   @JsonKey(ignore: true)
   _$$_AppStateCopyWith<_$_AppState> get copyWith =>

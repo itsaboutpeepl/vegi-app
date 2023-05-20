@@ -26,6 +26,7 @@ import 'package:vegan_liverpool/redux/actions/past_order_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/orderConfirmed.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/survey_thanks.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -86,15 +87,7 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
         // setState(() {
         //   isPrimaryPreloading = true;
         // });
-        viewmodel.createLocalAccount(
-          () {
-            setState(() {
-              isPrimaryPreloading = false;
-            });
-            log.info('Push SignUpScreen()');
-            context.router.push(const SignUpScreen());
-          },
-        );
+        viewmodel.initFuse();
       }
     };
   }
@@ -116,21 +109,10 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
     SurveyThanksViewModel viewmodel,
   ) {
     return () async {
-      // if (isPrimaryPreloading) {
-      //   return;
-      // }
       setState(() {
         isPrimaryPreloading = true;
       });
-      viewmodel.createLocalAccount(
-        () {
-          setState(() {
-            isPrimaryPreloading = false;
-          });
-          log.info('Push SignUpScreen()');
-          context.router.push(const SignUpScreen());
-        },
-      );
+      viewmodel.initFuse();
     };
   }
 
@@ -140,13 +122,27 @@ class _SurveyThanksScreenState extends State<SurveyThanksScreen> {
       converter: SurveyThanksViewModel.fromStore,
       distinct: true,
       onInit: (store) => store.dispatch(CreateSurveyCompletedSuccess(true)),
-      onWillChange: (previousViewModel, newViewModel) async {
-        checkAuth(
-          oldViewModel: previousViewModel,
-          newViewModel: newViewModel,
-          routerContext: context,
-        );
-      },
+      // onWillChange: (previousViewModel, newViewModel) async {
+      //   if (isPrimaryPreloading) {
+      //     return;
+      //   }
+      //   if (newViewModel.fuseAuthenticationStatus ==
+      //           FuseAuthenticationStatus.authenticated &&
+      //       previousViewModel?.fuseAuthenticationStatus !=
+      //           FuseAuthenticationStatus.authenticated) {
+      //     setState(() {
+      //       isPrimaryPreloading = true;
+      //     });
+      //     await rootRouter.push(const SignUpScreen());
+      //     return;
+      //   }
+      //   final checked = checkAuth(
+      //     oldViewModel: previousViewModel,
+      //     newViewModel: newViewModel,
+      //     routerContext: context,
+      //   );
+      //   await checked.runNavigationIfNeeded();
+      // },
       builder: (_, viewmodel) {
         return Scaffold(
           backgroundColor: themeShade1100,

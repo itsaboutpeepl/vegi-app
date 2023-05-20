@@ -38,13 +38,14 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
     return StoreConnector<AppState, SplashViewModel>(
       distinct: true,
       converter: SplashViewModel.fromStore,
-      onWillChange: (previousViewModel, newViewModel) async {
-        checkAuth(
-          oldViewModel: previousViewModel,
-          newViewModel: newViewModel,
-          routerContext: context,
-        );
-      },
+      // onWillChange: (previousViewModel, newViewModel) async {
+      //   final checked = checkAuth(
+      //     oldViewModel: previousViewModel,
+      //     newViewModel: newViewModel,
+      //     routerContext: context,
+      //   );
+      //   await checked.runNavigationIfNeeded();
+      // },
       onInit: (store) {
         store.dispatch(fetchSurveyQuestions());
         if (store.state.userState.accountDetailsExist) {
@@ -139,61 +140,6 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
                             textLoadingColor: themeLightShade1000,
                           ),
                         ],
-                        // if (viewmodel.isLoggedIn) ...[
-                        //   SignUpButton(
-                        //     buttonText: Labels.signupButtonLabelViewAccount,
-                        //     onPressed: _viewAccount(
-                        //       context,
-                        //       viewmodel,
-                        //     ),
-                        //   ),
-                        //   if (viewmodel.isWhiteListedAccount)
-                        //     SignUpButton(
-                        //       buttonText:
-                        //           Labels.signupButtonLabelReAuthenticate,
-                        //       onPressed: _reLogin(
-                        //         context,
-                        //         viewmodel,
-                        //       ),
-                        //     ),
-                        // ],
-                        // if (viewmodel.isLoggedOut) ...[
-                        //   if (viewmodel.surveyCompleted)
-                        //     SignUpButton(
-                        //       buttonText: Labels.signupButtonLabelResetSurvey,
-                        //       onPressed: _resetSurvey(
-                        //         context,
-                        //         viewmodel,
-                        //       ),
-                        //     )
-                        //   else
-                        //     SignUpButton(
-                        //       buttonText:
-                        //           Labels.signupButtonLabelSignUp(context),
-                        //       onPressed: _signUpNewAccountOnWaitlist(
-                        //         context,
-                        //         viewmodel,
-                        //       ),
-                        //     ),
-                        //   if (viewmodel.surveyCompleted &&
-                        //       !viewmodel.accountDetailsExist)
-                        //     SignUpButton(
-                        //       buttonText: Labels.signupButtonLabelCreateAccount,
-                        //       onPressed: _createAccount(
-                        //         context,
-                        //         viewmodel,
-                        //       ),
-                        //     ),
-                        //   if (viewmodel.isWhiteListedAccount)
-                        //     SignUpButton(
-                        //       buttonText:
-                        //           Labels.signupButtonLabelLogin(context),
-                        //       onPressed: _reLogin(
-                        //         context,
-                        //         viewmodel,
-                        //       ),
-                        //     ),
-                        // ],
                       ],
                     ),
                   ),
@@ -237,12 +183,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
         setState(() {
           isTransparentPreloading = true;
         });
-        viewmodel.createLocalAccount(
-          () {
-            log.info('Push SignUpScreen()');
-            context.router.push(const SignUpScreen());
-          },
-        );
+        viewmodel.initFuse();
       }
     };
   }
@@ -268,7 +209,11 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
       //     ),
       //   );
       // }
-      await rootRouter.replace(const WaitingListFunnelScreen());
+      if (showWaitingListFunnel) {
+        await rootRouter.replace(const WaitingListFunnelScreen());
+      } else {
+        await rootRouter.replace(const MainScreen());
+      }
     };
   }
 
@@ -283,15 +228,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
       setState(() {
         isPrimaryPreloading = true;
       });
-      viewmodel.createLocalAccount(
-        () {
-          setState(() {
-            isPrimaryPreloading = false;
-          });
-          log.info('Push SignUpScreen()');
-          context.router.push(const SignUpScreen());
-        },
-      );
+      viewmodel.initFuse();
     };
   }
 
@@ -312,7 +249,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
     SplashViewModel viewmodel,
   ) {
     return () async {
-      viewmodel.loginAgain();
+      viewmodel.initFuse();
     };
   }
 

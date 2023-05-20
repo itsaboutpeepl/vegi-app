@@ -70,7 +70,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
             // viewModel.setSecurityType(
             //   type,
             // );
-            context.router.replace(const MainScreen());
+            rootRouter.replace(const MainScreen());
             Analytics.track(
               eventName: AnalyticsEvents.onboardingCompleted,
             );
@@ -95,13 +95,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   FirebaseAuthenticationStatus.authenticated &&
               newViewModel.vegiAuthenticationStatus !=
                   VegiAuthenticationStatus.authenticated) {
-            final reauthenticationSucceeded =
-                await newViewModel.reauthenticateUserWithVegi();
-            if (!reauthenticationSucceeded) {
-              log.info('Auto signin failed');
-              log.info('Push SignUpScreen()');
-              await rootRouter.replaceAll([const SignUpScreen()]);
-            }
+            final reauthenticationSucceeded = await newViewModel.loginToVegi();
           }
         }
         if (newViewModel.fuseAuthenticationStatus !=
@@ -203,7 +197,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                                       ),
                                       onCompleted: (value) {
                                         if (viewModel.pincode == value) {
-                                          context.router
+                                          rootRouter
                                               .replaceAll([const MainScreen()]);
                                           pincodeController.clear();
                                         } else {

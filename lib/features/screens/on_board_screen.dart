@@ -74,19 +74,28 @@ class _OnBoardScreenState extends State<OnBoardScreen>
     final List<Widget> welcomeScreens = [
       const FirstOnboardingPage(),
       const OnBoardingScreenGeneric(
-        CopyWrite.onboardingScreenHeading1,
-        CopyWrite.onboardingScreenSubHeading1,
-        ImagePaths.onboardingScreenHeadingImage1,
+        title: CopyWrite.onboardingScreenHeading1,
+        subTitle: CopyWrite.onboardingScreenSubHeading1,
+        iconName: ImagePaths.onboardingPage2HeadingImage1,
+        backgroundImageOverlayPath: ImagePaths.onboardingPage2Background,
+        headingColour: themeShade1000,
+        subHeadingColour: Colors.black,
       ),
       const OnBoardingScreenGeneric(
-        CopyWrite.onboardingScreenHeading2,
-        CopyWrite.onboardingScreenSubHeading2,
-        ImagePaths.onboardingScreenHeadingImage2,
+        title: CopyWrite.onboardingScreenHeading2,
+        subTitle: CopyWrite.onboardingScreenSubHeading2,
+        iconName: ImagePaths.onboardingPage3HeadingImage2,
+        backgroundImageOverlayPath: ImagePaths.onboardingPage3Background,
+        headingColour: themeShade400,
+        subHeadingColour: themeShade200,
       ),
       OnBoardingScreenGeneric(
-        CopyWrite.onboardingScreenHeading3,
-        CopyWrite.onboardingScreenSubHeading3,
-        ImagePaths.onboardingScreenHeadingImage3,
+        title: CopyWrite.onboardingScreenHeading3,
+        subTitle: CopyWrite.onboardingScreenSubHeading3,
+        iconName: ImagePaths.onboardingPage4HeadingImage3,
+        backgroundImageOverlayPath: ImagePaths.onboardingPage4Background,
+        headingColour: themeShade400,
+        subHeadingColour: themeShade200,
       ),
       // const SignUpButtons()
       const WaitingListBetaEligibilityScreen(),
@@ -111,6 +120,8 @@ class _OnBoardScreenState extends State<OnBoardScreen>
         screenColor,
         ColorTween(begin: themeShade1100, end: themeShade1200),
       );
+    final buttonsPaddingFromSideEdge = MediaQuery.of(context).size.width * 0.01;
+    const buttonsPaddingFromBottomEdge = 25.0;
     return Scaffold(
       body: Column(
         children: [
@@ -148,39 +159,26 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                                   welcomeScreens[index % welcomeScreens.length],
                             ),
                             Positioned(
-                              bottom: 25,
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
+                              bottom: buttonsPaddingFromBottomEdge,
+                              left: buttonsPaddingFromSideEdge,
+                              right: buttonsPaddingFromSideEdge,
                               child: AnimatedOpacity(
                                 duration: const Duration(seconds: 1),
                                 opacity: _bottomRowOpacity,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    GestureDetector(
+                                    arrowButton(
+                                      context,
+                                      isPointingRight: false,
                                       onTap: previousPage,
-                                      child: CustomPaint(
-                                        painter: CustomButton1(),
-                                        child: const SizedBox(
-                                          width: 70,
-                                          height: 70 * 0.7746031746031746,
-                                          child: Center(
-                                            child: Text(
-                                              'Back',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'Fat Cheeks',
-                                                fontSize: 22,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.075,
-                                    ),
+                                    const Spacer(),
+                                    // SizedBox(
+                                    //   width: MediaQuery.of(context).size.width *
+                                    //       0.075,
+                                    // ),
                                     Container(
                                       padding: const EdgeInsets.all(20),
                                       child: Center(
@@ -190,35 +188,36 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                                           effect: const JumpingDotEffect(
                                             dotWidth: 9,
                                             dotHeight: 9,
-                                            activeDotColor: Color(0xFF696B6D),
+                                            strokeWidth: 3.0,
+                                            paintStyle: PaintingStyle.fill,
+                                            activeDotColor: Color.fromARGB(
+                                              255,
+                                              168,
+                                              200,
+                                              112,
+                                            ),
+                                            dotColor: Color.fromARGB(
+                                              255,
+                                              245,
+                                              254,
+                                              223,
+                                            ),
+                                            // activeDotColor: Color(0xFF696B6D),
                                           ),
                                           onDotClicked: gotoPage,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.075,
-                                    ),
-                                    GestureDetector(
+                                    // SizedBox(
+                                    //   width: MediaQuery.of(context).size.width *
+                                    //       // 0.075,
+                                    //       0.175,
+                                    // ),
+                                    const Spacer(),
+                                    arrowButton(
+                                      context,
+                                      isPointingRight: true,
                                       onTap: nextPage,
-                                      child: CustomPaint(
-                                        painter: CustomButton2(),
-                                        child: const SizedBox(
-                                          width: 75,
-                                          height: 75 * 0.6551102204408818,
-                                          child: Center(
-                                            child: Text(
-                                              'Next',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Fat Cheeks',
-                                                fontSize: 22,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ),
                                   ],
                                 ),
@@ -237,4 +236,44 @@ class _OnBoardScreenState extends State<OnBoardScreen>
       ),
     );
   }
+
+  Widget arrowButton(
+    BuildContext context, {
+    required bool isPointingRight,
+    void Function()? onTap,
+  }) =>
+      GestureDetector(
+        onTap: onTap,
+        // child: CustomPaint(
+        //   painter: CustomButton2(),
+        //   child: const SizedBox(
+        //     width: 75,
+        //     height: 75 * 0.6551102204408818,
+        //     child: Center(
+        //       child: Text(
+        //         'Next',
+        //         style: TextStyle(
+        //           color: Colors.white,
+        //           fontFamily: 'Fat Cheeks',
+        //           fontSize: 22,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        child: Container(
+          height: 100,
+          width: 100,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.contain,
+              image: AssetImage(
+                isPointingRight
+                    ? ImagePaths.nextScreenArrowOnboardingButton
+                    : ImagePaths.previousScreenArrowOnboardingButton,
+              ),
+            ),
+          ),
+        ),
+      );
 }

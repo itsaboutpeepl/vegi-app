@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/common/router/routes.dart'
     hide WaitingListFunnelScreen;
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/firebase_options.dart';
+import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
@@ -18,6 +19,7 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/constants.dart' as VegiConstants;
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -30,10 +32,22 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late TabsRouter _tabsRouter;
 
+  bool isRouting = false;
+
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 5), requestAppTracking);
     super.initState();
+  }
+
+  Future<void> _handleFuseAuthenticationSucceeded() async {
+    (await reduxStore)
+      ..dispatch(isBetaWhitelistedAddress())
+      ..dispatch(
+        identifyCall(
+          wallet: (await reduxStore).state.userState.walletAddress,
+        ),
+      );
   }
 
   @override
@@ -47,63 +61,65 @@ class _MainScreenState extends State<MainScreen> {
               ),
             );
         startFirebaseNotifs(store);
-        if (!store.state.userState.isLoggedOut) {
-          store.dispatch(
-            fetchFuseSmartWallet(
-              onSuccess: () async {
-                store
-                  ..dispatch(isBetaWhitelistedAddress())
-                  ..dispatch(
-                    identifyCall(
-                      wallet: store.state.userState.walletAddress,
-                    ),
-                  );
-              },
-            ),
-          );
-          // ..dispatch(
-          //   enablePushNotifications(store.state.userState.walletAddress),
-          // )
-        }
+        // Remove below auth as already done in builder...
+        // if (!store.state.userState.isLoggedOut) {
+        //   store.dispatch(
+        //     authenticate(),
+        //   );
+        //   // ..dispatch(
+        //   //   enablePushNotifications(store.state.userState.walletAddress),
+        //   // )
+        // }
       },
       distinct: true,
-      onWillChange: (previousViewModel, newViewModel) {
-        checkAuth(
-          oldViewModel: previousViewModel,
-          newViewModel: newViewModel,
-          routerContext: context,
-        );
-      },
+      // onWillChange: (previousViewModel, newViewModel) async {
+      //   if (isRouting) {
+      //     return;
+      //   }
+      //   if (newViewModel.fuseAuthenticationStatus ==
+      //           FuseAuthenticationStatus.authenticated &&
+      //       previousViewModel?.fuseAuthenticationStatus !=
+      //           FuseAuthenticationStatus.authenticated) {
+      //     return _handleFuseAuthenticationSucceeded();
+      //   }
+      //   final checked = checkAuth(
+      //     oldViewModel: previousViewModel,
+      //     newViewModel: newViewModel,
+      //     routerContext: context,
+      //   );
+      //   if (checked.navigationNeeded) {
+      //     setState(() {
+      //       isRouting = true;
+      //     });
+      //     await checked.runNavigationIfNeeded();
+      //   }
+      // },
       converter: MainScreenViewModel.fromStore,
       builder: (context, vm) {
-        if (!vm.userIsVerified) {
-          // showInfoSnack(
-          //   context,
-          //   title: "You're on the waitlist. We'll be in touch soon",
-          // );
+        if (vm.signupIsInFlux) {
+          return LoadingScaffold;
+        }
+        if (!vm.loggedIn) {
+          log.info(
+              'Push OnBoardScreen() from ${rootRouter.current.name} as not logged in');
+          // TODO: This condition needs more as comes in here after we submit our UserNameScreen....
+          rootRouter.replaceAll([const OnBoardScreen()]);
+          return LoadingScaffold;
+        }
+        if (!vm.userIsVerified && VegiConstants.showWaitingListFunnel) {
           return const WaitingListFunnelScreen();
         } else if (vm.firebaseAuthenticationStatus ==
             FirebaseAuthenticationStatus.unauthenticated) {
-          //TODO: do we need to check for other status'
-          log.info('Push SignUpScreen()');
-          log.info(
-              'Can we try and reauthentication here first using existing firebase creds? firebaseStatus: ${vm.firebaseAuthenticationStatus.name}');
-          onBoardStrategy.reauthenticateUser().then(
-            (reauthSucceeded) {
-              if (!reauthSucceeded) {
-                rootRouter.replaceAll([const SignUpScreen()]);
-              }
-            },
-          );
-
-          return const Center(child: CircularProgressIndicator());
+          vm.authenticateAll();
+          return LoadingScaffold;
         } else {
           peeplEatsService
               .checkVegiSessionIsStillValid()
               .then((sessionStillValid) {
             if (!sessionStillValid) {
               vm.setUserIsLoggedOut();
-              log.info('Push SignUpScreen()');
+              log.info(
+                  'Push SignUpScreen() from ${rootRouter.current.name} as vegi session has expired');
               rootRouter.replaceAll([const SignUpScreen()]);
             }
           });

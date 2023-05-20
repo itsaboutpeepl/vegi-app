@@ -30,6 +30,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late Flushbar<bool> flush;
 
+  bool isRouting = false;
+
   Future<void> _reLogin(
     Store<AppState> store,
   ) async {
@@ -38,55 +40,68 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> _checkLoggedInToVegi({
-    required Store<AppState> store,
-  }) async {
+  Future<void> _checkLoggedInToVegi() async {
+    final store = await reduxStore;
     if (store.state.userState.firebaseSessionToken != null) {
       await _reLogin(store);
-      log.info('Push PinCodeScreen()');
+      log.info(
+          'Push PinCodeScreen() from ${rootRouter.current.name} on splash_screen.dart');
+      setState(() {
+        isRouting = true;
+      });
       await rootRouter.replaceAll([const PinCodeScreen()]);
       widget.onLoginResult?.call(true);
     } else {
-      log.info('Push SignUpScreen()');
-      await rootRouter.replaceAll([const SignUpScreen()]);
+      log.info(
+          'Push OnBoardScreen() from ${rootRouter.current.name} on splash_screen.dart');
+      setState(() {
+        isRouting = true;
+      });
+      await rootRouter.replaceAll([const OnBoardScreen()]);
     }
   }
 
   void finishAppStart({
-    required BuildContext context,
     required Store<AppState> store,
   }) {
     final UserState userState = store.state.userState;
     if (userState.authType != BiometricAuth.none) {
+      rootRouter.push(const PinCodeScreen());
       store
-        ..dispatch(
-          fetchFuseSmartWallet(
-            onSuccess: () async {
-              if (BiometricAuth.faceID == userState.authType ||
-                  BiometricAuth.touchID == userState.authType) {
-                await _checkLoggedInToVegi(store: store);
-              } else if (userState.authType == BiometricAuth.pincode) {
-                await _checkLoggedInToVegi(store: store);
-              } else {
-                throw Exception(
-                  'BiometricAuth of ${userState.authType.name} not handled',
-                );
-              }
-            },
-            onFailure: (exception) async {
-              log.info('Push SignUpScreen()');
-              await rootRouter.replaceAll([const SignUpScreen()]);
-            },
-            onError: (error) async {
-              log.info('Push SignUpScreen()');
-              await rootRouter.replaceAll([const SignUpScreen()]);
-            },
-          ),
-        )
+        // ..dispatch(
+        //   authenticate(
+        //       // onSuccess: () async {
+        //       //   if (BiometricAuth.faceID == userState.authType ||
+        //       //       BiometricAuth.touchID == userState.authType) {
+        //       //     await _checkLoggedInToVegi(store: store);
+        //       //   } else if (userState.authType == BiometricAuth.pincode) {
+        //       //     await _checkLoggedInToVegi(store: store);
+        //       //   } else {
+        //       //     throw Exception(
+        //       //       'BiometricAuth of ${userState.authType.name} not handled',
+        //       //     );
+        //       //   }
+        //       // },
+        //       ),
+        // )
         ..dispatch(identifyCall());
     } else {
-      log.info('Push SignUpScreen()');
-      context.router.replaceAll([const SignUpScreen()]);
+      log.info('Push OnBoardScreen() from ${rootRouter.current.name}');
+      context.router.replaceAll([const OnBoardScreen()]);
+    }
+  }
+
+  Future<void> _handleFuseAuthenticationSucceeded() async {
+    final store = await reduxStore;
+    final authType = store.state.userState.authType;
+    if (BiometricAuth.faceID == authType || BiometricAuth.touchID == authType) {
+      return _checkLoggedInToVegi();
+    } else if (authType == BiometricAuth.pincode) {
+      return _checkLoggedInToVegi();
+    } else {
+      throw Exception(
+        'BiometricAuth of ${authType.name} not handled',
+      );
     }
   }
 
@@ -98,28 +113,35 @@ class _SplashScreenState extends State<SplashScreen> {
         final String jwtToken = store.state.userState.jwtToken;
         final bool isLoggedOut = store.state.userState.isLoggedOut;
         if (privateKey.isEmpty || jwtToken.isEmpty || isLoggedOut) {
-          log.info('Push OnBoardScreen()');
+          log.info(
+              'Push OnBoardScreen() from ${rootRouter.current.name} at splash_screen.dart');
           context.router.replaceAll([const OnBoardScreen()]);
           widget.onLoginResult?.call(false);
-        } else if (!store.state.userState.verificationPassed) {
-          log.info('Push SignUpScreen()');
-          context.router.replaceAll([const SignUpScreen()]);
         } else {
           finishAppStart(
-            context: context,
             store: store,
           );
         }
       },
       converter: LockScreenViewModel.fromStore,
       distinct: true,
-      onWillChange: (previousViewModel, newViewModel) async {
-        checkAuth(
-            oldViewModel: previousViewModel,
-            newViewModel: newViewModel,
-            routerContext: context,
-        );
-      },
+      // onWillChange: (previousViewModel, newViewModel) async {
+      //   if (isRouting) {
+      //     return;
+      //   }
+      //   if (newViewModel.fuseAuthenticationStatus ==
+      //           FuseAuthenticationStatus.authenticated &&
+      //       previousViewModel?.fuseAuthenticationStatus !=
+      //           FuseAuthenticationStatus.authenticated) {
+      //     return _handleFuseAuthenticationSucceeded();
+      //   }
+      //   final checked = checkAuth(
+      //     oldViewModel: previousViewModel,
+      //     newViewModel: newViewModel,
+      //     routerContext: context,
+      //   );
+      //   await checked.runNavigationIfNeeded();
+      // },
       builder: (_, viewModel) {
         return Scaffold(
           body: Container(

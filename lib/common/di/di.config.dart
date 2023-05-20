@@ -23,16 +23,16 @@ import 'package:logger/logger.dart' as _i13;
 import 'package:package_info/package_info.dart' as _i15;
 import 'package:phone_number/phone_number.dart' as _i19;
 import 'package:redux/redux.dart' as _i21;
-import 'package:vegan_liverpool/common/di/dio.dart' as _i29;
-import 'package:vegan_liverpool/common/di/firebase.dart' as _i31;
-import 'package:vegan_liverpool/common/di/logger_di.dart' as _i28;
-import 'package:vegan_liverpool/common/di/network_info_di.dart' as _i32;
-import 'package:vegan_liverpool/common/di/onboard.dart' as _i30;
-import 'package:vegan_liverpool/common/di/package_info.dart' as _i33;
-import 'package:vegan_liverpool/common/di/phone.dart' as _i27;
-import 'package:vegan_liverpool/common/network/services.dart' as _i34;
+import 'package:vegan_liverpool/common/di/dio.dart' as _i30;
+import 'package:vegan_liverpool/common/di/firebase.dart' as _i32;
+import 'package:vegan_liverpool/common/di/logger_di.dart' as _i29;
+import 'package:vegan_liverpool/common/di/network_info_di.dart' as _i33;
+import 'package:vegan_liverpool/common/di/onboard.dart' as _i31;
+import 'package:vegan_liverpool/common/di/package_info.dart' as _i34;
+import 'package:vegan_liverpool/common/di/phone.dart' as _i28;
+import 'package:vegan_liverpool/common/network/services.dart' as _i35;
 import 'package:vegan_liverpool/common/router/routes.dart' as _i20;
-import 'package:vegan_liverpool/initStore.dart' as _i35;
+import 'package:vegan_liverpool/initStore.dart' as _i27;
 import 'package:vegan_liverpool/models/app_state.dart' as _i22;
 import 'package:vegan_liverpool/services/apis/blueBeaconService.dart' as _i3;
 import 'package:vegan_liverpool/services/apis/locationService.dart' as _i12;
@@ -109,20 +109,20 @@ extension GetItInjectableX on _i1.GetIt {
   }
 }
 
-class _$Phone extends _i27.Phone {}
+class _$RegisterModule extends _i27.RegisterModule {}
 
-class _$LoggerDi extends _i28.LoggerDi {}
+class _$Phone extends _i28.Phone {}
 
-class _$DioDi extends _i29.DioDi {}
+class _$LoggerDi extends _i29.LoggerDi {}
 
-class _$OnBoardStrategy extends _i30.OnBoardStrategy {}
+class _$DioDi extends _i30.DioDi {}
 
-class _$FirebaseInjectableModule extends _i31.FirebaseInjectableModule {}
+class _$OnBoardStrategy extends _i31.OnBoardStrategy {}
 
-class _$NetworkInfoDi extends _i32.NetworkInfoDi {}
+class _$FirebaseInjectableModule extends _i32.FirebaseInjectableModule {}
 
-class _$PackageInfoDi extends _i33.PackageInfoDi {}
+class _$NetworkInfoDi extends _i33.NetworkInfoDi {}
 
-class _$ServicesModule extends _i34.ServicesModule {}
+class _$PackageInfoDi extends _i34.PackageInfoDi {}
 
-class _$RegisterModule extends _i35.RegisterModule {}
+class _$ServicesModule extends _i35.ServicesModule {}

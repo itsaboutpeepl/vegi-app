@@ -31,11 +31,16 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
   void initState() {
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
-        _left = MediaQuery.of(context).size.width * 0.6;
-        _top = MediaQuery.of(context).size.height * 0.1;
-        _width = 150;
+        _opacity = 1.0;
       });
     });
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   setState(() {
+    //     _left = MediaQuery.of(context).size.width * 0.6;
+    //     _top = MediaQuery.of(context).size.height * 0.1;
+    //     _width = 150;
+    //   });
+    // });
     super.initState();
   }
 
@@ -43,60 +48,73 @@ class _FirstOnboardingPageState extends State<FirstOnboardingPage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, SplashViewModel>(
       converter: SplashViewModel.fromStore,
-      onInit: (store) => store.state.userState.isLoggedOut
-          ? null
-          : store.dispatch(
-              fetchFuseSmartWallet(),
-            ),
+      // onInit: (store) => store.state.userState.isLoggedOut
+      //     ? null
+      //     : store.dispatch(
+      //         initFuseWallet(),
+      //       ),
       distinct: true,
-      onWillChange: (previousViewModel, newViewModel) async {
-        checkAuth(
-          oldViewModel: previousViewModel,
-          newViewModel: newViewModel,
-          routerContext: context,
-        );
-      },
+      // onWillChange: (previousViewModel, newViewModel) async {
+      //   final checked = checkAuth(
+      //     oldViewModel: previousViewModel,
+      //     newViewModel: newViewModel,
+      //     routerContext: context,
+      //   );
+      //   await checked.runNavigationIfNeeded();
+      // },
       builder: (context, viewModel) => Stack(
         children: [
-          Positioned(
-            left: -30,
-            top: 0,
-            child: CustomPaint(
-              size: const Size(
-                200,
-                200 * 0.9019230769230769,
+          Container(
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(
+                255,
+                248,
+                251,
+                244,
               ),
-              painter: Shape1(),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                  ImagePaths.onboardingPage1Background,
+                ),
+              ),
             ),
           ),
-          AnimatedPositioned(
-            curve: Curves.fastLinearToSlowEaseIn,
-            left: _left ?? MediaQuery.of(context).size.width * 0.2,
-            top: _top ?? MediaQuery.of(context).size.height * 0.3,
-            duration: const Duration(seconds: 2),
-            onEnd: () {
-              setState(() {
-                _opacity = 1;
-              });
-              if (!viewModel.isLoggedOut) {
-                showInfoSnack(
-                  context,
-                  title: Messages.loginSuccess(context),
-                );
-              }
-            },
-            child: CustomPaint(
-              size: Size(_width, _width * 1.1484641638225255),
-              painter: PeamanPainter(),
-            ),
-          ),
+          // Positioned(
+          //   left: -30,
+          //   top: 0,
+          //   child: CustomPaint(
+          //     size: const Size(
+          //       200,
+          //       200 * 0.9019230769230769,
+          //     ),
+          //     painter: Shape1(),
+          //   ),
+          // ),
+          // AnimatedPositioned(
+          //   curve: Curves.fastLinearToSlowEaseIn,
+          //   left: _left ?? MediaQuery.of(context).size.width * 0.2,
+          //   top: _top ?? MediaQuery.of(context).size.height * 0.3,
+          //   duration: const Duration(seconds: 2),
+          //   onEnd: () {
+          //     setState(() {
+          //       _opacity = 1;
+          //     });
+          //   },
+          //   child: CustomPaint(
+          //     size: Size(_width, _width * 1.1484641638225255),
+          //     painter: PeamanPainter(),
+          //   ),
+          // ),
           AnimatedOpacity(
+            // curve: Curves.fastLinearToSlowEaseIn,
             duration: const Duration(seconds: 1),
             opacity: _opacity ?? 0,
             child: Align(
               child: Image.asset(
-                'assets/images/Vegi-Logo-horizontal.png',
-                width: MediaQuery.of(context).size.width * 0.7,
+                // 'assets/images/Vegi-Logo-horizontal.png',
+                ImagePaths.onboardingPage1VegiText,
+                width: MediaQuery.of(context).size.width * .4,
               ),
             ),
           )

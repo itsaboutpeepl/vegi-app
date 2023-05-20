@@ -29,6 +29,7 @@ const Color themeShade300 = Color(0xFFC5E2BC);
 const Color themeShade400 = Color(0xFFA8D39B);
 const Color themeShade500 = Color(0xFF99CC8A);
 const Color themeShade600 = Color(0xFF8AC479);
+const Color themeShade650 = Color.fromARGB(255, 154, 197, 92);
 
 const Color themeShade700 = Color(0xFFBFC8C4);
 const Color themeShade800 = Color(0xFF7F9188);

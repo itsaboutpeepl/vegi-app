@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class VegiDebugRouteObserver extends AutoRouterObserver {
+  /// Called when the current route has been pushed.
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     log.info(
         'New route pushed: ${route.settings.name} from ${previousRoute?.settings.name}');
+  }
+
+  /// Called when the current route has been popped off.
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    log.info(
+        'New route popped: ${route.settings.name} from ${previousRoute?.settings.name}');
   }
 
   // only override to observer tab routes

@@ -25,7 +25,7 @@ class MyScaffold extends StatelessWidget {
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       appBar: MyAppBar(
         height: kToolbarHeight,
-        child: AppBar(
+        child: AppBar( 
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           iconTheme: IconThemeData(
             color: Theme.of(context).colorScheme.onSurface,

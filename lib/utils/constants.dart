@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
@@ -13,6 +14,11 @@ import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+const LoadingScaffold = MyScaffold(
+  title: '',
+  body: Center(child: CircularProgressIndicator()),
+);
 
 const String wethTokenAddress = '0xa722c13135930332eb3d749b2f0906559d2c5b99';
 const String wbtcTokenAddress = '0x33284f95ccb7b948d9d352e1439561cf83d8d00d';
@@ -127,6 +133,8 @@ String getGuideLiverpoolLink() {
   //     : THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK;
 }
 
+const showWaitingListFunnel = false;
+
 class Fonts {
   static const String fatFace = 'Fat Cheeks';
 }
@@ -138,8 +146,10 @@ class Messages {
       'Please enter your email to be first to receive an update when we launch.';
 
   static const String emailRegisteredThankYou = 'Thank you for registering';
-  static const String emailPleaseRegisterForLaunchNotifications = 'Enter your email to be notified when we launch';
-  static const String emailPleaseEnterToHelpProtectYourAccount = 'Please enter your email to help us protect your account';
+  static const String emailPleaseRegisterForLaunchNotifications =
+      'Enter your email to be notified when we launch';
+  static const String emailPleaseEnterToHelpProtectYourAccount =
+      'Please enter your email to help us protect your account';
   static const String wellBeInTouchSoon = 'We will be in touch soon!';
   static const String pleaseEnterEmail = 'Please enter your email';
 
@@ -194,14 +204,14 @@ class CopyWrite {
   static const String onboardingScreenHeading1 = 'Shop plant-based';
   static const String onboardingScreenSubHeading1 =
       'Find plant-based, planet-kind and ethical '
-      'products from local businesses and growers';
+      'products from local businesses and growers.';
   static const String onboardingScreenHeading2 = 'Shop local';
   static const String onboardingScreenSubHeading2 =
       'vegi is a digital wallet that supports independents'
-      ' only. Top up your wallet and spend with Liverpool locals';
+      ' only. Top up your wallet and spend with Liverpool locals.';
   static const String onboardingScreenHeading3 = 'Earn rewards';
   static String onboardingScreenSubHeading3 =
-      'Receive ${pplRewardsPcntDelivery.toPercent()} cash back to spend next time using vegi';
+      'Receive ${pplRewardsPcntDelivery.toPercent()} cash back each time you use vegi to spend next time you shop using rewards.';
   static const String continueWithoutDiscountCode =
       'Continue without voucher code?';
   static const String preLaunchPerksHeadingPart1 = 'Shop local, get rewards';
@@ -217,13 +227,41 @@ class CopyWrite {
 }
 
 class ImagePaths {
-  static const String onboardingScreenHeadingImage1 = 'plant-icon.svg';
-  static const String onboardingScreenHeadingImage2 = 'local-icon.svg';
-  static const String onboardingScreenHeadingImage3 = 'rewards-icon.svg';
   static const String vegiHorizontalLogo =
       'assets/images/Vegi-Logo-horizontal.png';
   static const String vegiBeanMan = 'assets/images/beanman.jpg';
+  static const String veganOnlyIcon = 'assets/images/vegan-only-icon.png';
+  static const String fuseLogo = 'assets/images/fuse/fuse-logo.png';
+  static const String fuseIconGreen = 'assets/images/fuse/fuse-icon-green.png';
+  static const String fuseIconFilledGreen =
+      'assets/images/fuse/fuse-icon-filled-green.png';
+  static const String firbebaseLogo = 'assets/images/firebase-logo.svg';
   static const String vegiBeanManNSEW = 'assets/images/beanman-nsew.png';
+
+  static const String onboardingPage2HeadingImage1 = 'plant-icon.svg';
+  static const String onboardingPage3HeadingImage2 = 'local-icon.svg';
+  static const String onboardingPage4HeadingImage3 = 'rewards-icon.svg';
+  static const String onboardingPage1Background =
+      'assets/images/design/1_intro_img.png';
+  static const String onboardingPage2Background =
+      'assets/images/design/2_plant_based_img.png';
+  static const String onboardingPage3Background =
+      'assets/images/design/3_shop_local_img.png';
+  static const String onboardingPage4Background =
+      'assets/images/design/4_earn_rewards_img.png';
+  static const String onboardingPage5Background =
+      'assets/images/design/5_outro_img.png';
+  static const String onboardingPage5Card =
+      'assets/images/design/5_outro_card.png';
+  static const String onboardingPage5CardSnail =
+      'assets/images/design/5_outro_card_snail.png';
+
+  static const String onboardingPage1VegiText =
+      'assets/images/design/1_intro_text.png';
+  static const String previousScreenArrowOnboardingButton =
+      'assets/images/design/previous_screen_arrow_button_onboarding.png';
+  static const String nextScreenArrowOnboardingButton =
+      'assets/images/design/next_screen_arrow_button_onboarding.png';
 }
 
 class Labels {
@@ -342,7 +380,16 @@ Future<bool> deviceIsIosSimulator() async =>
 
 class DebugHelpers {
   static const bool inDebugMode = kDebugMode;
-  static bool isVerboseDebugMode = kDebugMode && const String.fromEnvironment('verbose', defaultValue: "").isNotEmpty;
+  static bool isVerboseDebugMode = kDebugMode &&
+      const String.fromEnvironment('verbose', defaultValue: "").isNotEmpty;
   static Future<bool> deviceIsSimulator() => deviceIsSimulator();
   static Future<bool> deviceIsIosSimulator() => deviceIsIosSimulator();
+}
+
+class PackageConstants {
+  static const String iosBundleIdentifier =
+      'com.vegi.vegiAppTest'; // Runner.xcodeproj/project.pbxproj => PRODUCT_BUNDLE_IDENTIFIER = com.example.appname;
+  static const String androidBundleIdentifier =
+      'com.vegi.vegiAppTest'; // AndroidManifest => manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  static const String webBundleIdentifier = 'vegiapp.co.uk';
 }

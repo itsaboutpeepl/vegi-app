@@ -14,6 +14,11 @@ class ProfileViewModel extends Equatable {
     required this.displayName,
     required this.email,
     required this.biometricAuthType,
+    required this.firebaseCredentialIsValid,
+    required this.firebaseAuthenticationStatus,
+    required this.fuseAuthenticationStatus,
+    required this.vegiAuthenticationStatus,
+    required this.isSuperAdmin,
     required this.seedPhrase,
     required this.editAvatar,
     required this.avatarUrl,
@@ -31,6 +36,13 @@ class ProfileViewModel extends Equatable {
       displayName: store.state.userState.displayName,
       email: store.state.userState.email,
       biometricAuthType: store.state.userState.authType,
+      firebaseCredentialIsValid:
+          store.state.userState.firebaseCredentialIsValid,
+      firebaseAuthenticationStatus:
+          store.state.userState.firebaseAuthenticationStatus,
+      fuseAuthenticationStatus: store.state.userState.fuseAuthenticationStatus,
+      vegiAuthenticationStatus: store.state.userState.vegiAuthenticationStatus,
+      isSuperAdmin: store.state.userState.isVegiSuperAdmin,
       useLiveLocation: store.state.userState.useLiveLocation,
       isLoggedIn: !store.state.userState.isLoggedOut,
       phone: store.state.userState.phoneNumber,
@@ -80,6 +92,11 @@ class ProfileViewModel extends Equatable {
   final String phone;
   final String email;
   final BiometricAuth biometricAuthType;
+  final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
+  final FuseAuthenticationStatus fuseAuthenticationStatus;
+  final VegiAuthenticationStatus vegiAuthenticationStatus;
+  final bool firebaseCredentialIsValid;
+  final bool isSuperAdmin;
   final String walletAddress;
   final String avatarUrl;
   final String displayName;
@@ -107,6 +124,11 @@ class ProfileViewModel extends Equatable {
         phone,
         email,
         biometricAuthType,
+        firebaseCredentialIsValid,
+        firebaseAuthenticationStatus,
+        vegiAuthenticationStatus,
+        fuseAuthenticationStatus,
+        isSuperAdmin,
         displayName,
         avatarUrl,
         useLiveLocation,

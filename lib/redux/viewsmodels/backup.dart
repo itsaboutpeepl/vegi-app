@@ -5,10 +5,12 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/authViewModel.dart';
+import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
+import 'package:vegan_liverpool/utils/onboard/firebase.dart';
 
 import '../../common/router/routes.gr.dart';
 
@@ -44,7 +46,7 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
     required this.biometricAuth,
     required this.biometricallyAuthenticated,
     required this.setBiometricallyAuthenticated,
-    required this.reauthenticateUserWithVegi,
+    required this.loginToVegi,
     required this.firebaseAuthenticationStatus,
     required this.fuseAuthenticationStatus,
     required this.vegiAuthenticationStatus,
@@ -69,8 +71,26 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
           ),
         );
       },
-      reauthenticateUserWithVegi: () async {
-        return onBoardStrategy.reauthenticateUser();
+      loginToVegi: () async {
+        if (store.state.userState.firebaseSessionToken == null) {
+          return false;
+        }
+        store.dispatch(
+          SignupLoading(
+            isLoading: true,
+          ),
+        );
+        final result = await onBoardStrategy.loginToVegi(
+          store: store,
+          phoneNumber: store.state.userState.phoneNumber,
+          firebaseSessionToken: store.state.userState.firebaseSessionToken!,
+        );
+        store.dispatch(
+          SignupLoading(
+            isLoading: false,
+          ),
+        );
+        return result == LoggedInToVegiResult.success;
       },
       loginAgain: () {
         store.dispatch(
@@ -84,7 +104,7 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
   final bool loggedIn;
   final BiometricAuth biometricAuth;
   final bool biometricallyAuthenticated;
-  final Future<bool> Function() reauthenticateUserWithVegi;
+  final Future<bool> Function() loginToVegi;
   final void Function() loginAgain;
   final void Function({required bool isBiometricallyAuthenticated})
       setBiometricallyAuthenticated;

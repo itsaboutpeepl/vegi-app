@@ -11,6 +11,7 @@ class WaitinglistPositionInQueueViewModel extends Equatable {
     required this.surveyCompleted,
     required this.userEmail,
     required this.subscribeToWaitingListEmails,
+    required this.accountCreated,
   });
 
   factory WaitinglistPositionInQueueViewModel.fromStore(Store<AppState> store) {
@@ -19,6 +20,7 @@ class WaitinglistPositionInQueueViewModel extends Equatable {
       surveyCompleted: store.state.userState.surveyCompleted,
       positionInQueue: store.state.userState.positionInWaitingList,
       userEmail: store.state.userState.email,
+      accountCreated: store.state.userState.walletAddress.isNotEmpty,
       subscribeToWaitingListEmails: ({
         required bool receiveNotifications,
         required void Function(String) onError,
@@ -36,6 +38,7 @@ class WaitinglistPositionInQueueViewModel extends Equatable {
   final bool surveyCompleted;
   final int? positionInQueue;
   final String userEmail;
+  final bool accountCreated;
   final void Function({
     required bool receiveNotifications,
     required void Function(String) onError,
@@ -47,5 +50,6 @@ class WaitinglistPositionInQueueViewModel extends Equatable {
         positionInQueue,
         surveyCompleted,
         userEmail,
+        accountCreated,
       ];
 }

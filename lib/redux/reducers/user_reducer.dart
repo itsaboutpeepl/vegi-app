@@ -307,7 +307,7 @@ UserState _setVerificationFailed(
   return state.copyWith(
     verificationPassed: false,
     firebaseAuthenticationStatus:
-        FirebaseAuthenticationStatus.verificationFailed,
+        FirebaseAuthenticationStatus.phoneAuthVerificationFailed,
   );
 }
 

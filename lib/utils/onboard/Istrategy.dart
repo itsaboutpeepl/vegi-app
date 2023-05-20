@@ -15,14 +15,22 @@ abstract class IOnBoardStrategy {
   Future<dynamic> login(
     Store<AppState> store,
     String? phoneNumber,
-    void Function() onSuccess,
-    void Function(dynamic error, FirebaseAuthenticationStatus status) onError,
   );
   Future<dynamic> verify(
     Store<AppState> store,
     String verificationCode,
   );
+  Future<void> verifyRecaptchaToken({
+    String? recaptchaToken,
+    String? deepLinkId,
+  });
   Future<bool> reauthenticateUser();
+  Future<bool> updateEmail({required String email});
+  Future<LoggedInToVegiResult> loginToVegi({
+    required Store<AppState> store,
+    required String phoneNumber,
+    required String firebaseSessionToken,
+  });
 }
 
 class OnBoardStrategyFactory {

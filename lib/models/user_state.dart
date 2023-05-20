@@ -45,16 +45,41 @@ String ethPrivateKeyToJson(EthPrivateKey? ethPk) {
   return ethPk == null ? '' : ethPk.privateKeyInt.toString();
 }
 
+// Map<String, dynamic>? authCredentialToJson(AuthCredential? credential) {
+//   return credential?.asMap();
+// }
+
+// AuthCredential? authCredentialFromJson(dynamic json) {
+//   return json == null
+//       ? null
+//       : json is Map && (json as Map).containsKey('verificationId')
+//           ? PhoneAuthCredential( //remove the whole thing and return to ignoring this whole thing...
+//               providerId: json['providerId'] as String,
+//               token: json['token'] as int?,
+//               accessToken: json['accessToken'] as String?,
+//               signInMethod: json['signInMethod'] as String,
+//             )
+//           : AuthCredential(
+//               providerId: json['providerId'] as String,
+//               token: json['token'] as int?,
+//               accessToken: json['accessToken'] as String?,
+//               signInMethod: json['signInMethod'] as String,
+//             );
+// }
+
 @freezed
 class UserState with _$UserState {
   @JsonSerializable()
   factory UserState({
-    @JsonKey(ignore: true) String? wcURI,
+    @JsonKey(ignore: true)
+        String? wcURI,
     WalletModules? walletModules,
     DateTime? installedAt,
     bool? isContactsSynced,
-    @Default(true) bool isLoggedOut,
-    @Default(false) bool scrollToTop,
+    @Default(true)
+        bool isLoggedOut,
+    @Default(false)
+        bool scrollToTop,
 
     /// * The wallet address is a smart contract wallet which actually conducts payments, holds balances, etc.
     /// * So basically, there are 3 types of stake folder in the fuse network technically speaking,
@@ -64,7 +89,8 @@ class UserState with _$UserState {
     /// direct wallet dapps to perform transfers or any other action.
     /// Then finally there is the community manager address that also has power
     /// to direct wallet addresses that it does not necessarily own to perform functions such as transfers.
-    @Default('') String walletAddress,
+    @Default('')
+        String walletAddress,
 
     /// * the account address simply signs transactions 'on behalf' of the smart contract wallet.
     /// This is so only people who verify their phone numbers can create wallets or something.
@@ -72,7 +98,8 @@ class UserState with _$UserState {
     ///
     /// The account address is a 'real' wallet generated on the device which is only stored on the device.
     // @Default('') String accountAddress,
-    @Default('') String privateKey,
+    @Default('')
+        String privateKey,
     @JsonKey(fromJson: ethPrivateKeyFromJson, toJson: ethPrivateKeyToJson)
     @Default(null)
         EthPrivateKey? fuseWalletCredentials,
@@ -83,52 +110,111 @@ class UserState with _$UserState {
         FirebaseAuthenticationStatus firebaseAuthenticationStatus,
     @Default(FuseAuthenticationStatus.unauthenticated)
         FuseAuthenticationStatus fuseAuthenticationStatus,
-    @Default(false) bool backup,
-    @Default([]) List<String> networks,
-    @Default([]) List<String> mnemonic,
-    @Default('') String pincode,
-    @Default('') String countryCode,
-    @Default('') String phoneNumber,
-    @Default('') String phoneNumberNoCountry,
-    @Default(false) bool warnSendDialogShowed,
-    @Default('') String isoCode,
-    @Default('') String jwtToken,
-    @Default(VegiConstants.defaultDisplayName) String displayName,
-    @Default('') String avatarUrl,
-    @Default('') String email,
+    @Default(false)
+        bool backup,
+    @Default([])
+        List<String> networks,
+    @Default([])
+        List<String> mnemonic,
+    @Default('')
+        String pincode,
+    @Default('')
+        String countryCode,
+    @Default('')
+        String phoneNumber,
+    @Default('')
+        String phoneNumberNoCountry,
+    @Default(false)
+        bool warnSendDialogShowed,
+    @Default('')
+        String isoCode,
+    @Default('')
+        String jwtToken,
+    @Default(VegiConstants.defaultDisplayName)
+        String displayName,
+    @Default('')
+        String avatarUrl,
+    @Default('')
+        String email,
     String? verificationId,
-    @Default(false) bool verificationPassed,
-    @Default('') String identifier,
-    @Default([]) List<String> syncedContacts,
-    @Default({}) Map<String, String> reverseContacts,
-    @Default('usd') String currency,
-    @JsonKey(ignore: true) @Default(false) bool hasUpgrade,
-    @Default(BiometricAuth.none) BiometricAuth authType,
-    @JsonKey(ignore: true) @Default(false) bool biometricallyAuthenticated,
-    @JsonKey(fromJson: localeFromJson, toJson: localeToJson) Locale? locale,
-    @JsonKey(ignore: true) PhoneAuthCredential? firebaseCredentials,
-    @Default(null) String? firebaseSessionToken,
-    @Default(null) String? vegiSessionCookie,
-    @Default([]) List<DeliveryAddresses> listOfDeliveryAddresses,
-    @Default(false) bool hasSavedSeedPhrase,
-    @Default(false) bool useLiveLocation,
-    @Default(false) @JsonKey(ignore: true) bool userIsVerified,
-    @Default(null) @JsonKey(ignore: true) Position? userLocation,
-    @Default(false) @JsonKey(ignore: true) bool isUsingSimulator,
-    @Default(false) @JsonKey(ignore: true) bool isUsingIosSimulator,
-    @Default('') String initialLoginDateTime,
-    @Default(false) bool showSeedPhraseBanner,
-    @Default([]) @JsonKey(ignore: true) List<SurveyQuestion> surveyQuestions,
-    @Default(false) bool surveyCompleted,
-    @Default('') String surveyEmailUsed,
-    @Default(false) bool isVendor,
-    @Default(null) String? stripeCustomerId,
-    @Default(null) num? vegiAccountId,
-    @Default(false) bool isVegiSuperAdmin,
-    @Default(VegiRole.consumer) VegiRole userVegiRole,
-    @Default(null) int? positionInWaitingList,
-    @Default(false) bool subscribedToWaitingListUpdates,
-    @Default(null) int? waitingListEntryId,
+    @Default(false)
+        bool verificationPassed,
+    @Default('')
+        String identifier,
+    @Default([])
+        List<String> syncedContacts,
+    @Default({})
+        Map<String, String> reverseContacts,
+    @Default('usd')
+        String currency,
+    @JsonKey(ignore: true)
+    @Default(false)
+        bool hasUpgrade,
+    @Default(BiometricAuth.none)
+        BiometricAuth authType,
+    @JsonKey(ignore: true)
+    @Default(false)
+        bool biometricallyAuthenticated,
+    @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
+        Locale? locale,
+    @JsonKey(
+      // fromJson: authCredentialFromJson,
+      // toJson: authCredentialToJson,
+      ignore: true,
+    )
+    @Default(null)
+        AuthCredential? firebaseCredentials,
+    @Default(null)
+        String? firebaseSessionToken,
+    @Default(null)
+        String? vegiSessionCookie,
+    @Default([])
+        List<DeliveryAddresses> listOfDeliveryAddresses,
+    @Default(false)
+        bool hasSavedSeedPhrase,
+    @Default(false)
+        bool useLiveLocation,
+    @Default(false)
+    @JsonKey(ignore: true)
+        bool userIsVerified,
+    @Default(null)
+    @JsonKey(ignore: true)
+        Position? userLocation,
+    @Default(false)
+    @JsonKey(ignore: true)
+        bool isUsingSimulator,
+    @Default(false)
+    @JsonKey(ignore: true)
+        bool isUsingIosSimulator,
+    @Default('')
+        String initialLoginDateTime,
+    @Default(false)
+        bool showSeedPhraseBanner,
+    @Default([])
+    @JsonKey(ignore: true)
+        List<SurveyQuestion> surveyQuestions,
+    @Default(false)
+        bool surveyCompleted,
+    @Default('')
+        String surveyEmailUsed,
+    @Default(false)
+        bool isVendor,
+    @Default(null)
+        String? stripeCustomerId,
+    @Default(null)
+        num? vegiAccountId,
+    @Default(false)
+        bool isVegiSuperAdmin,
+    @Default(VegiRole.consumer)
+        VegiRole userVegiRole,
+    @Default(null)
+        int? positionInWaitingList,
+    @Default(false)
+        bool subscribedToWaitingListUpdates,
+    @Default(null)
+        int? waitingListEntryId,
+    @Default(0)
+        int loginCounter,
   }) = _UserState;
 
   const UserState._();
@@ -151,6 +237,7 @@ class UserState with _$UserState {
         isVendor: false,
         isUsingSimulator: false,
         isUsingIosSimulator: false,
+        loginCounter: 0,
       );
 
   factory UserState.fromJson(Map<String, dynamic> json) =>
@@ -159,7 +246,13 @@ class UserState with _$UserState {
       );
 
   String get accountAddress => fuseWalletCredentials?.address.toString() ?? '';
-  bool get accountDetailsExist => accountAddress.isNotEmpty;
+  bool get accountDetailsExist =>
+      accountAddress.isNotEmpty && walletAddress.isNotEmpty;
+  bool get firebaseCredentialIsValid =>
+      firebaseCredentials != null &&
+      (firebaseCredentials is PhoneAuthCredential
+          ? (firebaseCredentials! as PhoneAuthCredential).verificationId != null
+          : true);
 
   bool get isLoggedInToVegi =>
       firebaseAuthenticationStatus ==
@@ -195,5 +288,7 @@ class UserStateConverter
       );
 
   @override
-  Map<String, dynamic> toJson(UserState instance) => instance.toJson();
+  Map<String, dynamic> toJson(UserState instance) => tryCatchRethrowInline(
+        () => instance.toJson(),
+      );
 }

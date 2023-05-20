@@ -5,7 +5,9 @@ import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/authViewModel.dart';
+import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
 
 class MainScreenViewModel extends Equatable implements IAuthViewModel {
   const MainScreenViewModel({
@@ -21,12 +23,16 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.phoneNumberNoCountry,
     required this.isSuperAdmin,
     required this.firebaseSessionToken,
+    required this.signupIsInFlux,
+    required this.signupError,
     required this.firebaseAuthenticationStatus,
     required this.fuseAuthenticationStatus,
     required this.vegiAuthenticationStatus,
+    required this.authenticateAll,
     required this.setPhoneNumber,
     required this.signup,
     required this.setUserIsLoggedOut,
+    required this.setLoading,
   });
 
   factory MainScreenViewModel.fromStore(Store<AppState> store) {
@@ -44,6 +50,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
       countryCode: store.state.userState.isoCode, // the country code (IT,AF..)
       dialCode: store.state.userState.countryCode, // the dial code (+39,+93..)
       firebaseSessionToken: store.state.userState.firebaseSessionToken,
+      signupIsInFlux: store.state.onboardingState.signupIsInFlux,
+
+      signupError: store.state.onboardingState.signupError,
       firebaseAuthenticationStatus:
           store.state.userState.firebaseAuthenticationStatus,
       fuseAuthenticationStatus: store.state.userState.fuseAuthenticationStatus,
@@ -59,23 +68,31 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
           ),
         );
       },
+      authenticateAll: () {
+        store.dispatch(
+          authenticate(),
+        );
+      },
       signup: ({
         required CountryCode countryCode,
         required PhoneNumber phoneNumber,
-        required Future<void> Function() onSuccess,
-        required Future<void> Function(dynamic) onError,
       }) {
         store.dispatch(
           loginHandler(
             countryCode,
             phoneNumber,
-            onError,
-            onSuccess,
           ),
         );
       },
       setUserIsLoggedOut: () {
         store.dispatch(SetVegiSessionExpired());
+      },
+      setLoading: (bool isLoading) {
+        store.dispatch(
+          SignupLoading(
+            isLoading: isLoading,
+          ),
+        );
       },
     );
   }
@@ -95,6 +112,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
   final FuseAuthenticationStatus fuseAuthenticationStatus;
   final VegiAuthenticationStatus vegiAuthenticationStatus;
+  final bool signupIsInFlux;
+  final ErrorDetails? signupError;
+
   final void Function({
     required CountryCode countryCode,
     required PhoneNumber phoneNumber,
@@ -102,17 +122,17 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final void Function({
     required CountryCode countryCode,
     required PhoneNumber phoneNumber,
-    required Future<void> Function() onSuccess,
-    required Future<void> Function(dynamic) onError,
   }) signup;
   final void Function() setUserIsLoggedOut;
+  final void Function() authenticateAll;
+  final void Function(bool) setLoading;
 
   bool get isReauthenticationRequest =>
       firebaseAuthenticationStatus !=
       FirebaseAuthenticationStatus.unauthenticated;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         walletAddress,
         userIsVerified,
         loggedIn,
@@ -123,6 +143,8 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
         phoneNumber,
         phoneNumberNoCountry,
         firebaseSessionToken ?? '',
+        signupIsInFlux,
+        signupError,
         firebaseAuthenticationStatus,
         fuseAuthenticationStatus,
         vegiAuthenticationStatus,

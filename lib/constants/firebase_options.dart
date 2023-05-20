@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:vegan_liverpool/utils/constants.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -64,6 +65,6 @@ class DefaultFirebaseOptions {
     projectId: 'vegiliverpool',
     storageBucket: 'vegiliverpool.appspot.com',
     iosClientId: '526129377-hogf35nhebt59qdn7j4m2qhb7a4jc6r2.apps.googleusercontent.com',
-    iosBundleId: 'com.vegi.vegiAppTest',
+    iosBundleId: PackageConstants.iosBundleIdentifier,
   );
 }

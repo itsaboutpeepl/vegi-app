@@ -16,6 +16,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -93,37 +94,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
       converter: MainScreenViewModel.fromStore,
       distinct: true,
       onInit: (store) {
-        // if (store.state.userState.countryCode.isNotEmpty &&
-        //     store.state.userState.isoCode.isNotEmpty &&
-        //     store.state.userState.phoneNumber.isNotEmpty) {
-        //   setState(() {
-        //     countryCode = CountryCode(
-        //       dialCode: store.state.userState.countryCode,
-        //       code: store.state.userState.isoCode,
-        //     );
-        //   });
-        //   phoneController.text = store.state.userState.phoneNumber;
-        // }
-        store.dispatch(isBetaWhitelistedAddress());
+        if (store.state.userState.firebaseCredentials != null) {
+          onBoardStrategy.reauthenticateUser().then(
+            (reauthSucceeded) {
+              if (reauthSucceeded &&
+                  store.state.userState.walletAddress.isNotEmpty) {
+                store
+                  ..dispatch(isBetaWhitelistedAddress())
+                  ..dispatch(SignupLoading(isLoading: false));
+              }
+            },
+          );
+        }
       },
-      // onInitialBuild: (viewModel) async {
-      //   if (viewModel.firebaseSessionToken != null) {
-      //     if (viewModel.firebaseAuthenticationStatus ==
-      //         FirebaseAuthenticationStatus.authenticated) {
-      //       setState(() {
-      //         isPreloading = true;
-      //       });
-      //       await onBoardStrategy.reauthenticateUser();
-      //       await rootRouter.replace(const MainScreen());
-      //     }
-      //   }
-      // },
-      onWillChange: (previousViewModel, newViewModel) {
-        checkAuth(
-          oldViewModel: previousViewModel,
-          newViewModel: newViewModel,
-          routerContext: context,
-        );
+      onWillChange: (previousViewModel, newViewModel) async {
+        // final checked = checkAuth(
+        //   oldViewModel: previousViewModel,
+        //   newViewModel: newViewModel,
+        //   routerContext: context,
+        // );
+        if (newViewModel.signupError != previousViewModel?.signupError &&
+            newViewModel.signupError != null) {
+          await showErrorSnack(
+            title: newViewModel.signupError!.title,
+            message: newViewModel.signupError!.message,
+            context: context,
+            margin: const EdgeInsets.only(
+              top: 8,
+              right: 8,
+              left: 8,
+              bottom: 120,
+            ),
+          );
+          log.error(newViewModel.signupError!.toString());
+          await Sentry.captureException(
+            newViewModel.signupError!.toString(),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint:
+                'ERROR - signup_screen.parsePhoneNumber $newViewModel.signupError',
+          );
+        }
+        // await checked.runNavigationIfNeeded();
       },
       builder: (context, viewmodel) {
         if (viewmodel.countryCode.isNotEmpty &&
@@ -142,6 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           phoneController.text = viewmodel.phoneNumberNoCountry;
         }
         return MyScaffold(
+          automaticallyImplyLeading: false,
           resizeToAvoidBottomInset: false,
           title: viewmodel.hasLoggedInBefore
               ? 'Reauthenticate'
@@ -324,8 +336,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           const SizedBox(height: 40),
                           PrimaryButton(
                             label: I10n.of(context).next_button,
-                            preload: isPreloading,
-                            disabled: isPreloading,
+                            preload: viewmodel.signupIsInFlux,
+                            disabled: viewmodel.signupIsInFlux,
                             onPressed: () {
                               parsePhoneNumber(
                                 viewmodel: viewmodel,
@@ -376,10 +388,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<Exception?> parsePhoneNumber({
     required MainScreenViewModel viewmodel,
   }) async {
+    viewmodel.setLoading(true);
     final String phoneNumber = '${countryCode.dialCode}${phoneController.text}';
-    setState(() {
-      isPreloading = true;
-    });
+    // setState(() {
+    //   isPreloading = true;
+    // });
     PhoneNumber? value = null;
     try {
       value = await phoneNumberUtil.parse(
@@ -394,9 +407,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         regionCode: countryCode.code,
       );
     } on Exception catch (e) {
-      setState(() {
-        isPreloading = false;
-      });
+      // setState(() {
+      //   isPreloading = false;
+      // });
+      viewmodel.setLoading(false);
 
       await Sentry.captureException(
         e,
@@ -405,58 +419,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       return e;
     }
-    try {
-      viewmodel.setPhoneNumber(
-        countryCode: countryCode,
-        phoneNumber: value,
-      );
-    } catch (err) {
-      log.error('Unable to set phoneNumber in store with error: $err');
-    }
 
-    try {
-      viewmodel.signup(
-        countryCode: countryCode,
-        phoneNumber: value,
-        onSuccess: () async {
-          // setState(() {
-          //   isPreloading = false;
-          // });
-        },
-        onError: (error) async {
-          setState(() {
-            isPreloading = false;
-          });
-          await showErrorSnack(
-            title: error
-                    .toString()
-                    .contains('blocked all requests from this device')
-                ? 'Verification error'
-                : I10n.of(context).something_went_wrong,
-            message:
-                viewmodel.isSuperAdmin ? 'Firebase error: $error' : '$error',
-            context: context,
-            margin: const EdgeInsets.only(
-              top: 8,
-              right: 8,
-              left: 8,
-              bottom: 120,
-            ),
-          );
-          log.error(error);
-          await Sentry.captureException(
-            error,
-            stackTrace: StackTrace.current, // from catch (e, s)
-            hint: 'ERROR - signup_screen.parsePhoneNumber $error',
-          );
-        },
-      );
-    } on Exception catch (e) {
-      setState(() {
-        isPreloading = false;
-      });
-      return e;
-    }
+    viewmodel.setPhoneNumber(
+      countryCode: countryCode,
+      phoneNumber: value,
+    );
+
+    viewmodel.signup(
+      countryCode: countryCode,
+      phoneNumber: value,
+    );
     return null;
   }
 }

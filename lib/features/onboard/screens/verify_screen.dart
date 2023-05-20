@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -27,7 +28,8 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
   TextEditingController codeController = TextEditingController(text: '');
   String currentText = '';
   final formKey = GlobalKey<FormState>();
-  bool isPreloading = false;
+  // bool isPreloading = false;
+  bool isRouting = false;
 
   @override
   void initState() {
@@ -40,29 +42,45 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
     if (viewModel.vegiAuthenticationStatus == VegiAuthenticationStatus.failed) {
       log.error('Vegi login failed. Investigate why...');
     }
-    if (isPreloading &&
-        viewModel.firebaseAuthenticationStatus !=
-            FirebaseAuthenticationStatus.loading) {
-      setState(() {
-        isPreloading = false;
-      });
+    if (isRouting) {
+      return;
     }
+    // if (isPreloading &&
+    //     viewModel.firebaseAuthenticationStatus !=
+    //         FirebaseAuthenticationStatus.loading) {
+    //   setState(() {
+    //     isPreloading = false;
+    //   });
+    // }
     if (success) {
       if (!viewModel.displayNameIsSet) {
-        log.info('Push UserNameScreen()');
+        log.info('Push UserNameScreen() from ${rootRouter.current.name}');
+        setState(() {
+          isRouting = true;
+        });
         await rootRouter.push(UserNameScreen());
       } else if (viewModel.email.isEmpty) {
-        log.info('Push RegisterEmailOnBoardingScreen()');
+        log.info(
+            'Push RegisterEmailOnBoardingScreen() from ${rootRouter.current.name}');
+        setState(() {
+          isRouting = true;
+        });
         await rootRouter.push(
           RegisterEmailOnBoardingScreen(
             onSubmitEmail: () {},
           ),
         );
       } else if (!viewModel.biometricAuthIsSet) {
-        log.info('Push ChooseSecurityOption()');
+        log.info('Push ChooseSecurityOption() from ${rootRouter.current.name}');
+        setState(() {
+          isRouting = true;
+        });
         await rootRouter.push(const ChooseSecurityOption());
       } else {
-        log.info('Push MainScreen()');
+        log.info('Push MainScreen() from ${rootRouter.current.name}');
+        setState(() {
+          isRouting = true;
+        });
         await rootRouter.push(const MainScreen());
       }
     }
@@ -77,25 +95,21 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
         converter: VerifyOnboardViewModel.fromStore,
         onInitialBuild: (viewModel) {
           if (viewModel.firebaseCredentials != null &&
-              viewModel.verificationId != null) {
-            autoCode = viewModel.firebaseCredentials?.smsCode ?? '';
-            setState(() {
-              isPreloading = true;
-            });
+              viewModel.verificationId != null &&
+              viewModel.firebaseCredentials is PhoneAuthCredential) {
+            autoCode = (viewModel.firebaseCredentials! as PhoneAuthCredential)
+                    .smsCode ??
+                '';
+            // setState(() {
+            //   isPreloading = true;
+            // });
             delayed(
               10000,
               () {
-                setState(() {
-                  isPreloading = false;
-                });
+                viewModel.setLoading(false);
               },
               () => viewModel.verify(
                 autoCode,
-                (error) {
-                  setState(() {
-                    isPreloading = false;
-                  });
-                },
               ),
             );
           }
@@ -187,8 +201,8 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                       child: PrimaryButton(
                         label: I10n.of(context).next_button,
                         width: MediaQuery.of(context).size.width * .9,
-                        preload: isPreloading,
-                        disabled: isPreloading,
+                        preload: viewModel.signupIsInFlux,
+                        disabled: viewModel.signupIsInFlux,
                         onPressed: () {
                           _verifyCode(viewModel, context);
                         },
@@ -206,7 +220,6 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                             padding: const EdgeInsets.only(right: 10),
                           ),
                           onPressed: () {
-                            log.info('Push SignUpScreen()');
                             rootRouter.push(const SignUpScreen());
                           },
                           child: Text(
@@ -233,34 +246,16 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
   void _verifyCode(VerifyOnboardViewModel viewModel, BuildContext context) {
     formKey.currentState!.validate();
     if (currentText.length == 6) {
-      setState(() {
-        isPreloading = true;
-      });
+      // setState(() {
+      //   isPreloading = true;
+      // });
       delayed(
         10000,
         () {
-          setState(() {
-            isPreloading = false;
-          });
+          viewModel.setLoading(false);
         },
         () => viewModel.verify(
           codeController.text,
-          (dynamic error) {
-            setState(() {
-              isPreloading = false;
-            });
-            log.error(
-              error,
-              stackTrace: StackTrace.current,
-            );
-            if (context.mounted) {
-              showErrorSnack(
-                context: context,
-                title: 'Connection issue',
-                message: 'Unable to verify phonenumber verification code',
-              );
-            }
-          },
         ),
       );
     }

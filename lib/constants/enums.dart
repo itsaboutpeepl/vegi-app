@@ -589,63 +589,59 @@ enum StripePaymentStatus {
 enum FirebaseAuthenticationStatus {
   unauthenticated,
   loading,
-  phoneAuthFailed,
-  tFAFailed,
-  noPhoneNumberSet,
-  verificationCodeTimedOut,
-  verificationFailed,
   reauthenticationFailed,
   authenticated,
   expired,
+  phoneAuthReauthenticationFailed,
+  phoneAuthFailed,
+  phoneAuthTFAFailed,
+  phoneAuthNoPhoneNumberSet,
+  phoneAuthVerificationCodeTimedOut,
+  phoneAuthVerificationFailed,
+  phoneAuthCredentialHasNoVerificationId,
+  phoneAuthTimedOut,
+  phoneAuthFailedTooManyRequests,
+  invalidPhoneNumber,
+  emailAlreadyInUseWithOtherAccount,
+  updateEmailUsingVerificationFailed,
+  userGetIdTokenFailed,
+  invalidCredentials,
+  beginAuthentication,
   // firebaseAuthenticationSucceededAndVegiLoginFailed,
   // firebaseAuthenticationSucceededAndVegiLoginSucceeded,
   // authenticatedWithFuse,
 }
 
-// enum FirebaseAuthenticationStatus {
-//   unauthenticated,
-//   phoneAuthFailed,
-//   tFAFailed,
-//   noPhoneNumberSet,
-//   verificationCodeTimedOut,
-//   verificationFailed,
-//   reauthenticationFailed,
-//   authenticated,
-// }
+extension FirebaseAuthenticationStatusHelpers on FirebaseAuthenticationStatus {
+  bool isNewFailureStatus(FirebaseAuthenticationStatus oldStatus) {
+    return [
+          FirebaseAuthenticationStatus.phoneAuthNoPhoneNumberSet,
+          FirebaseAuthenticationStatus.phoneAuthReauthenticationFailed,
+          FirebaseAuthenticationStatus.phoneAuthFailed,
+          FirebaseAuthenticationStatus.phoneAuthTimedOut,
+          FirebaseAuthenticationStatus.phoneAuthFailedTooManyRequests,
+          FirebaseAuthenticationStatus.invalidPhoneNumber,
+          FirebaseAuthenticationStatus.invalidCredentials,
+          // FirebaseAuthenticationStatus.emailAlreadyInUseWithOtherAccount, // * removed as still want to see main screen in this case,
+          FirebaseAuthenticationStatus.updateEmailUsingVerificationFailed,
+          FirebaseAuthenticationStatus.userGetIdTokenFailed,
+          FirebaseAuthenticationStatus.reauthenticationFailed,
+          FirebaseAuthenticationStatus.phoneAuthTFAFailed,
+          FirebaseAuthenticationStatus.expired,
+          FirebaseAuthenticationStatus.phoneAuthVerificationCodeTimedOut,
+          FirebaseAuthenticationStatus.phoneAuthVerificationFailed,
+          FirebaseAuthenticationStatus.phoneAuthCredentialHasNoVerificationId,
+          // FirebaseAuthenticationStatus.unauthenticated,
+        ].contains(this) &&
+        oldStatus != this;
+  }
+}
 
 enum VegiAuthenticationStatus {
   unauthenticated,
   loading,
   authenticated,
   failed,
-}
-
-enum FuseAuthenticationStatus {
-  unauthenticated,
-  loading,
-  authenticated,
-  created,
-  fetched,
-  failedFetch,
-  failedCreate,
-  failedAuthentication,
-  missingUserDetailsToAuthFuseWallet,
-}
-
-extension FirebaseAuthenticationStatusHelpers on FirebaseAuthenticationStatus {
-  bool isNewFailureStatus(FirebaseAuthenticationStatus oldStatus) {
-    return [
-          FirebaseAuthenticationStatus.noPhoneNumberSet,
-          FirebaseAuthenticationStatus.phoneAuthFailed,
-          FirebaseAuthenticationStatus.reauthenticationFailed,
-          FirebaseAuthenticationStatus.tFAFailed,
-          // FirebaseAuthenticationStatus.unauthenticated,
-          FirebaseAuthenticationStatus.expired,
-          FirebaseAuthenticationStatus.verificationCodeTimedOut,
-          FirebaseAuthenticationStatus.verificationFailed,
-        ].contains(this) &&
-        oldStatus != this;
-  }
 }
 
 extension VegiAuthenticationStatusHelpers on VegiAuthenticationStatus {
@@ -658,13 +654,34 @@ extension VegiAuthenticationStatusHelpers on VegiAuthenticationStatus {
   }
 }
 
+enum FuseAuthenticationStatus {
+  unauthenticated,
+  loading,
+  authenticated,
+  createWalletForEOA,
+  creationStarted,
+  creationSucceeded,
+  created,
+  fetched,
+  failedCreateLocalAccountPrivateKey,
+  failedCreate,
+  failedAuthentication,
+  failedAuthenticationAsMissingUserDetailsToAuthFuseWallet,
+  failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt,
+  failedFetch,
+}
+
 extension FuseAuthenticationStatusHelpers on FuseAuthenticationStatus {
   bool isNewFailureStatus(FuseAuthenticationStatus oldStatus) {
     return [
-          FuseAuthenticationStatus.failedAuthentication,
+          FuseAuthenticationStatus.failedCreateLocalAccountPrivateKey,
           FuseAuthenticationStatus.failedCreate,
+          FuseAuthenticationStatus.failedAuthentication,
+          FuseAuthenticationStatus
+              .failedAuthenticationAsMissingUserDetailsToAuthFuseWallet,
+          FuseAuthenticationStatus
+              .failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt,
           FuseAuthenticationStatus.failedFetch,
-          FuseAuthenticationStatus.missingUserDetailsToAuthFuseWallet,
           // FuseAuthenticationStatus.unauthenticated,
         ].contains(this) &&
         oldStatus != this;

@@ -78,7 +78,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                               !debugColors ? null : BorderRadius.circular(12),
                         ),
                         child: FutureBuilder<Size>(
-                          future: calculateImageDimension(
+                          future: calculateImageDimensionFromUrl(
                               imageUrl: viewmodel.menuItem!.imageURL),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {

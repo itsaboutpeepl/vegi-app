@@ -82,8 +82,7 @@ mixin _$UserState {
   @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
   Locale? get locale => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  PhoneAuthCredential? get firebaseCredentials =>
-      throw _privateConstructorUsedError;
+  AuthCredential? get firebaseCredentials => throw _privateConstructorUsedError;
   String? get firebaseSessionToken => throw _privateConstructorUsedError;
   String? get vegiSessionCookie => throw _privateConstructorUsedError;
   List<DeliveryAddresses> get listOfDeliveryAddresses =>
@@ -113,6 +112,7 @@ mixin _$UserState {
   int? get positionInWaitingList => throw _privateConstructorUsedError;
   bool get subscribedToWaitingListUpdates => throw _privateConstructorUsedError;
   int? get waitingListEntryId => throw _privateConstructorUsedError;
+  int get loginCounter => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -168,7 +168,7 @@ abstract class $UserStateCopyWith<$Res> {
       @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
           Locale? locale,
       @JsonKey(ignore: true)
-          PhoneAuthCredential? firebaseCredentials,
+          AuthCredential? firebaseCredentials,
       String? firebaseSessionToken,
       String? vegiSessionCookie,
       List<DeliveryAddresses> listOfDeliveryAddresses,
@@ -195,7 +195,8 @@ abstract class $UserStateCopyWith<$Res> {
       VegiRole userVegiRole,
       int? positionInWaitingList,
       bool subscribedToWaitingListUpdates,
-      int? waitingListEntryId});
+      int? waitingListEntryId,
+      int loginCounter});
 
   $WalletModulesCopyWith<$Res>? get walletModules;
 }
@@ -271,6 +272,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? positionInWaitingList = freezed,
     Object? subscribedToWaitingListUpdates = null,
     Object? waitingListEntryId = freezed,
+    Object? loginCounter = null,
   }) {
     return _then(_value.copyWith(
       wcURI: freezed == wcURI
@@ -416,7 +418,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
       firebaseCredentials: freezed == firebaseCredentials
           ? _value.firebaseCredentials
           : firebaseCredentials // ignore: cast_nullable_to_non_nullable
-              as PhoneAuthCredential?,
+              as AuthCredential?,
       firebaseSessionToken: freezed == firebaseSessionToken
           ? _value.firebaseSessionToken
           : firebaseSessionToken // ignore: cast_nullable_to_non_nullable
@@ -505,6 +507,10 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.waitingListEntryId
           : waitingListEntryId // ignore: cast_nullable_to_non_nullable
               as int?,
+      loginCounter: null == loginCounter
+          ? _value.loginCounter
+          : loginCounter // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -571,7 +577,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
           Locale? locale,
       @JsonKey(ignore: true)
-          PhoneAuthCredential? firebaseCredentials,
+          AuthCredential? firebaseCredentials,
       String? firebaseSessionToken,
       String? vegiSessionCookie,
       List<DeliveryAddresses> listOfDeliveryAddresses,
@@ -598,7 +604,8 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       VegiRole userVegiRole,
       int? positionInWaitingList,
       bool subscribedToWaitingListUpdates,
-      int? waitingListEntryId});
+      int? waitingListEntryId,
+      int loginCounter});
 
   @override
   $WalletModulesCopyWith<$Res>? get walletModules;
@@ -673,6 +680,7 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? positionInWaitingList = freezed,
     Object? subscribedToWaitingListUpdates = null,
     Object? waitingListEntryId = freezed,
+    Object? loginCounter = null,
   }) {
     return _then(_$_UserState(
       wcURI: freezed == wcURI
@@ -818,7 +826,7 @@ class __$$_UserStateCopyWithImpl<$Res>
       firebaseCredentials: freezed == firebaseCredentials
           ? _value.firebaseCredentials
           : firebaseCredentials // ignore: cast_nullable_to_non_nullable
-              as PhoneAuthCredential?,
+              as AuthCredential?,
       firebaseSessionToken: freezed == firebaseSessionToken
           ? _value.firebaseSessionToken
           : firebaseSessionToken // ignore: cast_nullable_to_non_nullable
@@ -907,6 +915,10 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.waitingListEntryId
           : waitingListEntryId // ignore: cast_nullable_to_non_nullable
               as int?,
+      loginCounter: null == loginCounter
+          ? _value.loginCounter
+          : loginCounter // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -958,7 +970,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
           this.locale,
       @JsonKey(ignore: true)
-          this.firebaseCredentials,
+          this.firebaseCredentials = null,
       this.firebaseSessionToken = null,
       this.vegiSessionCookie = null,
       this.listOfDeliveryAddresses = const [],
@@ -985,7 +997,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.userVegiRole = VegiRole.consumer,
       this.positionInWaitingList = null,
       this.subscribedToWaitingListUpdates = false,
-      this.waitingListEntryId = null})
+      this.waitingListEntryId = null,
+      this.loginCounter = 0})
       : super._();
 
   factory _$_UserState.fromJson(Map<String, dynamic> json) =>
@@ -1110,7 +1123,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final Locale? locale;
   @override
   @JsonKey(ignore: true)
-  final PhoneAuthCredential? firebaseCredentials;
+  final AuthCredential? firebaseCredentials;
   @override
   @JsonKey()
   final String? firebaseSessionToken;
@@ -1177,10 +1190,13 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final int? waitingListEntryId;
+  @override
+  @JsonKey()
+  final int loginCounter;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, vegiAuthenticationStatus: $vegiAuthenticationStatus, firebaseAuthenticationStatus: $firebaseAuthenticationStatus, fuseAuthenticationStatus: $fuseAuthenticationStatus, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, phoneNumberNoCountry: $phoneNumberNoCountry, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, biometricallyAuthenticated: $biometricallyAuthenticated, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, vegiSessionCookie: $vegiSessionCookie, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId, isVegiSuperAdmin: $isVegiSuperAdmin, userVegiRole: $userVegiRole, positionInWaitingList: $positionInWaitingList, subscribedToWaitingListUpdates: $subscribedToWaitingListUpdates, waitingListEntryId: $waitingListEntryId)';
+    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, vegiAuthenticationStatus: $vegiAuthenticationStatus, firebaseAuthenticationStatus: $firebaseAuthenticationStatus, fuseAuthenticationStatus: $fuseAuthenticationStatus, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, phoneNumberNoCountry: $phoneNumberNoCountry, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, biometricallyAuthenticated: $biometricallyAuthenticated, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, vegiSessionCookie: $vegiSessionCookie, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId, isVegiSuperAdmin: $isVegiSuperAdmin, userVegiRole: $userVegiRole, positionInWaitingList: $positionInWaitingList, subscribedToWaitingListUpdates: $subscribedToWaitingListUpdates, waitingListEntryId: $waitingListEntryId, loginCounter: $loginCounter)';
   }
 
   @override
@@ -1251,7 +1267,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('positionInWaitingList', positionInWaitingList))
       ..add(DiagnosticsProperty(
           'subscribedToWaitingListUpdates', subscribedToWaitingListUpdates))
-      ..add(DiagnosticsProperty('waitingListEntryId', waitingListEntryId));
+      ..add(DiagnosticsProperty('waitingListEntryId', waitingListEntryId))
+      ..add(DiagnosticsProperty('loginCounter', loginCounter));
   }
 
   @override
@@ -1344,7 +1361,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
             (identical(other.userVegiRole, userVegiRole) || other.userVegiRole == userVegiRole) &&
             (identical(other.positionInWaitingList, positionInWaitingList) || other.positionInWaitingList == positionInWaitingList) &&
             (identical(other.subscribedToWaitingListUpdates, subscribedToWaitingListUpdates) || other.subscribedToWaitingListUpdates == subscribedToWaitingListUpdates) &&
-            (identical(other.waitingListEntryId, waitingListEntryId) || other.waitingListEntryId == waitingListEntryId));
+            (identical(other.waitingListEntryId, waitingListEntryId) || other.waitingListEntryId == waitingListEntryId) &&
+            (identical(other.loginCounter, loginCounter) || other.loginCounter == loginCounter));
   }
 
   @JsonKey(ignore: true)
@@ -1408,7 +1426,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         userVegiRole,
         positionInWaitingList,
         subscribedToWaitingListUpdates,
-        waitingListEntryId
+        waitingListEntryId,
+        loginCounter
       ]);
 
   @JsonKey(ignore: true)
@@ -1469,7 +1488,7 @@ abstract class _UserState extends UserState {
       @JsonKey(fromJson: localeFromJson, toJson: localeToJson)
           final Locale? locale,
       @JsonKey(ignore: true)
-          final PhoneAuthCredential? firebaseCredentials,
+          final AuthCredential? firebaseCredentials,
       final String? firebaseSessionToken,
       final String? vegiSessionCookie,
       final List<DeliveryAddresses> listOfDeliveryAddresses,
@@ -1496,7 +1515,8 @@ abstract class _UserState extends UserState {
       final VegiRole userVegiRole,
       final int? positionInWaitingList,
       final bool subscribedToWaitingListUpdates,
-      final int? waitingListEntryId}) = _$_UserState;
+      final int? waitingListEntryId,
+      final int loginCounter}) = _$_UserState;
   _UserState._() : super._();
 
   factory _UserState.fromJson(Map<String, dynamic> json) =
@@ -1596,7 +1616,7 @@ abstract class _UserState extends UserState {
   Locale? get locale;
   @override
   @JsonKey(ignore: true)
-  PhoneAuthCredential? get firebaseCredentials;
+  AuthCredential? get firebaseCredentials;
   @override
   String? get firebaseSessionToken;
   @override
@@ -1646,6 +1666,8 @@ abstract class _UserState extends UserState {
   bool get subscribedToWaitingListUpdates;
   @override
   int? get waitingListEntryId;
+  @override
+  int get loginCounter;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

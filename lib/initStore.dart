@@ -11,9 +11,11 @@ import 'package:vegan_liverpool/common/di/env.dart';
 import 'package:vegan_liverpool/loadAppState.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
+import 'package:vegan_liverpool/scan_network.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_remote_devtools/redux_remote_devtools.dart';
 
 @module
 abstract class RegisterModule {
@@ -41,22 +43,60 @@ abstract class RegisterModule {
       persistor.createMiddleware(),
     ];
 
-    if (DebugHelpers.isVerboseDebugMode) {
-      wms.add(LoggingMiddleware<AppState>.printer());
-    }
-
     late final Store<AppState> store;
 
     if (Env.isDev) {
-      final devStore = DevToolsStore<AppState>(
-        appReducer,
-        initialState: await loadState(persistor, firstLogin),
-        middleware: wms,
-      );
+      if (DebugHelpers.isVerboseDebugMode) {
+        wms.add(LoggingMiddleware<AppState>.printer());
+      }
 
-      store = devStore;
+      if(kDebugMode){
 
-      getIt.registerSingleton<DevToolsStore<AppState>>(devStore);
+        // ~ https://github.com/MichaelMarner/dart-redux-remote-devtools , https://stackoverflow.com/a/56078898
+        final ips = await scanNetwork();
+        if (ips.isNotEmpty) {
+          final devMachineHost = ips.first;
+          // ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'
+          // const devMachineHost =
+          //     '10.0.0.209';
+          const devMachinePort = '8000';
+          final remoteDevtools = RemoteDevToolsMiddleware<dynamic>(
+              '$devMachineHost:$devMachinePort',);
+
+          await remoteDevtools.connect();
+          wms.add(remoteDevtools);
+
+          final devStore = DevToolsStore<AppState>(
+            appReducer,
+            initialState: await loadState(persistor, firstLogin),
+            middleware: wms,
+          );
+
+          store = devStore;
+
+          remoteDevtools.store = store;
+          getIt.registerSingleton<DevToolsStore<AppState>>(devStore); 
+        } else {
+          final devStore = DevToolsStore<AppState>(
+            appReducer,
+            initialState: await loadState(persistor, firstLogin),
+            middleware: wms,
+          );
+
+          store = devStore;
+          getIt.registerSingleton<DevToolsStore<AppState>>(devStore); 
+        }
+      } else {
+        final devStore = DevToolsStore<AppState>(
+          appReducer,
+          initialState: await loadState(persistor, firstLogin),
+          middleware: wms,
+        );
+
+        store = devStore;
+        getIt.registerSingleton<DevToolsStore<AppState>>(devStore); 
+      }
+
       // getIt.registerSingleton<Store<AppState>>(store);
     } else {
       store = Store<AppState>(

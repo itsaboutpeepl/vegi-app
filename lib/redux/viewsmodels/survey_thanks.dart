@@ -21,7 +21,7 @@ class SurveyThanksViewModel extends Equatable implements IAuthViewModel {
   const SurveyThanksViewModel({
     required this.email,
     required this.accountCreated,
-    required this.createLocalAccount,
+    required this.initFuse,
     required this.loginAgain,
     required this.logout,
     required this.isLoggedOut,
@@ -37,13 +37,9 @@ class SurveyThanksViewModel extends Equatable implements IAuthViewModel {
       accountCreated: store.state.userState.walletAddress
           .isNotEmpty, //! BUG to do with jwt token not used to init fuse wallet ->
       isLoggedOut: store.state.userState.isLoggedOut,
-      createLocalAccount: (
-        VoidCallback successCallback,
-      ) {
+      initFuse: () {
         store.dispatch(
-          createLocalAccountCall(
-            successCallback,
-          ),
+          authenticate(),
         );
       },
       firebaseAuthenticationStatus:
@@ -71,9 +67,7 @@ class SurveyThanksViewModel extends Equatable implements IAuthViewModel {
   final VegiAuthenticationStatus vegiAuthenticationStatus;
   final void Function() logout;
   final void Function() loginAgain;
-  final void Function(
-    VoidCallback successCallback,
-  ) createLocalAccount;
+  final void Function() initFuse;
 
   @override
   List<Object> get props => [

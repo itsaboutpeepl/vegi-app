@@ -18,6 +18,7 @@ import 'package:vegan_liverpool/redux/viewsmodels/splash.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/constants.dart' as VegiConstants;
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class SignUpButtons extends StatefulWidget {
@@ -41,34 +42,9 @@ class _SignUpButtonsState extends State<SignUpButtons> {
           eventName: AnalyticsEvents.viewAccount,
         ),
       );
-      unawaited(
-        context.router.push(
-          const ProfileScreen(),
-        ),
+      await context.router.push(
+        const ProfileScreen(),
       );
-    };
-  }
-
-  Future<void> Function() _signUpNewAccount(
-    BuildContext context,
-    SplashViewModel viewmodel,
-  ) {
-    return () async {
-      final bool? result = await showDialog<bool>(
-        context: context,
-        builder: (context) => const WarnBeforeReCreation(),
-      );
-      if (result!) {
-        setState(() {
-          isTransparentPreloading = true;
-        });
-        viewmodel.createLocalAccount(
-          () {
-            log.info('Push SignUpScreen()');
-            context.router.push(const SignUpScreen());
-          },
-        );
-      }
     };
   }
 
@@ -93,7 +69,11 @@ class _SignUpButtonsState extends State<SignUpButtons> {
       //     ),
       //   );
       // }
-      await rootRouter.replace(const WaitingListFunnelScreen());
+      if (VegiConstants.showWaitingListFunnel) {
+        await rootRouter.replace(const WaitingListFunnelScreen());
+      } else {
+        await rootRouter.replace(const MainScreen());
+      }
     };
   }
 
@@ -108,15 +88,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
       setState(() {
         isPrimaryPreloading = true;
       });
-      viewmodel.createLocalAccount(
-        () {
-          setState(() {
-            isPrimaryPreloading = false;
-          });
-          log.info('Push SignUpScreen()');
-          context.router.push(const SignUpScreen());
-        },
-      );
+      viewmodel.initFuse();
     };
   }
 
@@ -137,7 +109,7 @@ class _SignUpButtonsState extends State<SignUpButtons> {
     SplashViewModel viewmodel,
   ) {
     return () async {
-      viewmodel.loginAgain();
+      viewmodel.initFuse();
     };
   }
 
@@ -146,13 +118,27 @@ class _SignUpButtonsState extends State<SignUpButtons> {
     return StoreConnector<AppState, SplashViewModel>(
       distinct: true,
       converter: SplashViewModel.fromStore,
-      onWillChange: (previousViewModel, newViewModel) async {
-        checkAuth(
-          oldViewModel: previousViewModel,
-          newViewModel: newViewModel,
-          routerContext: context,
-        );
-      },
+      // onWillChange: (previousViewModel, newViewModel) async {
+      //   if (isPrimaryPreloading) {
+      //     return;
+      //   }
+      //   if (newViewModel.fuseAuthenticationStatus ==
+      //           FuseAuthenticationStatus.authenticated &&
+      //       previousViewModel?.fuseAuthenticationStatus !=
+      //           FuseAuthenticationStatus.authenticated) {
+      //     setState(() {
+      //       isPrimaryPreloading = true;
+      //     });
+      //     await rootRouter.push(const SignUpScreen()); // todo see TODO on splash viewmodel
+      //     return;
+      //   }
+      //   final checked = checkAuth(
+      //     oldViewModel: previousViewModel,
+      //     newViewModel: newViewModel,
+      //     routerContext: context,
+      //   );
+      //   await checked.runNavigationIfNeeded();
+      // },
       onInit: (store) {
         store.dispatch(fetchSurveyQuestions());
         if (store.state.userState.accountDetailsExist) {

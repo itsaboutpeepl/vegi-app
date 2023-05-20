@@ -1294,6 +1294,7 @@ class PeeplEatsService extends HttpService {
       data: {
         'emailAddress': email,
         'receiveUpdates': receiveUpdates,
+        'firebaseRegistrationToken': await firebaseMessaging.getToken()
       },
     );
 

@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cash_wallet_state.dart';
 import 'package:vegan_liverpool/models/home_page_state.dart';
 import 'package:vegan_liverpool/models/menu_item_state.dart';
+import 'package:vegan_liverpool/models/onboarding_state.dart';
 import 'package:vegan_liverpool/models/past_order_state.dart';
 import 'package:vegan_liverpool/models/user_cart_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
@@ -22,6 +23,7 @@ class AppState with _$AppState {
     @UserCartStateConverter() required UserCartState cartState,
     @MenuItemStateConverter() required MenuItemState menuItemState,
     @PastOrderStateConverter() required PastOrderState pastOrderState,
+    @OnboardingStateConverter() required OnboardingState onboardingState,
   }) = _AppState;
 
   const AppState._();
@@ -34,6 +36,7 @@ class AppState with _$AppState {
       cartState: UserCartState.initial(),
       menuItemState: MenuItemState.initial(),
       pastOrderState: PastOrderState.initial(),
+      onboardingState: OnboardingState.initial(),
     );
   }
 
@@ -48,10 +51,16 @@ class AppState with _$AppState {
       menuItemState: MenuItemState.initial(),
       pastOrderState: const PastOrderStateConverter()
           .fromJson(json['pastOrderState'] as Map<String, dynamic>?),
+      onboardingState: OnboardingState.initial(),
     );
   }
 
   factory AppState.fromJson(dynamic json) => tryCatchRethrowInline(
         () => _$AppStateFromJson(json as Map<String, dynamic>),
       );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return tryCatchRethrowInline(() => super.toJson());
+  }
 }

@@ -516,6 +516,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                         ),
+                        if (viewmodel.isSuperAdmin) ...[
+                          Divider(),
+                          ListTile(
+                            // leading: const Icon(Icons.lock),
+                            title: const Text('firebase'),
+                            trailing: Icon(FontAwesomeIcons.google),
+                            subtitle: Text(
+                              viewmodel.firebaseAuthenticationStatus.name
+                                  .capitalizeWords(),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onTap: () {
+                              // todo: implement refresh call
+                            },
+                          ),
+                          Divider(),
+                          ListTile(
+                            // leading: const Icon(Icons.lock),
+                            title: const Text('vegi'),
+                            trailing: Image.asset(
+                              ImagePaths.veganOnlyIcon,
+                              width: 25,
+                            ),
+                            subtitle: Text(
+                              viewmodel.vegiAuthenticationStatus.name
+                                  .capitalizeWords(),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onTap: () {
+                              // todo: implement refresh call
+                            },
+                          ),
+                          Divider(),
+                          ListTile(
+                            // leading: const Icon(Icons.lock),
+                            title: const Text('Fuse'),
+                            trailing: Image.asset(
+                              ImagePaths.fuseIconFilledGreen,
+                              width: 50,
+                            ),
+                            subtitle: Text(
+                              viewmodel.fuseAuthenticationStatus.name
+                                  .capitalizeWords(),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onTap: () {
+                              // todo: implement refresh call
+                            },
+                          ),
+                        ],
                         const Divider(),
                         const SizedBox(
                           height: 20,
@@ -591,7 +647,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 ListTile(
-                  title: Text('Remove'),
+                  title: const Text('Refresh'),
                   onTap: () async {
                     (await reduxStore).dispatch(
                       setRandomUserAvatar(

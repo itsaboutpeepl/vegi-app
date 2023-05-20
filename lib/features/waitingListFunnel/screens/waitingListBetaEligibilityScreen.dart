@@ -12,6 +12,7 @@ import 'package:vegan_liverpool/features/shared/widgets/arrowButton.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
+import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListBetaEligibilityButton.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/waitingListFunnel/waitingListPositionInQueueViewModel.dart';
@@ -39,183 +40,121 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
           rootRouter.replaceAll([const MainScreen()]);
           return const Center(child: CircularProgressIndicator());
         }
-        return SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                // color: Colors.blue,
-                alignment: Alignment.centerRight,
-                child: Image.asset(
-                  ImagePaths.vegiBeanManNSEW,
-                  width: MediaQuery.of(context).size.width * 0.75,
+        return Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    ImagePaths.onboardingPage5Background,
+                  ),
                 ),
               ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: AutoSizeText.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'You',
-                              style: TextStyle(
-                                color: Colors.grey[850],
-                              ),
-                            ),
-                            const TextSpan(
-                              text: ' are ',
-                              style: TextStyle(
-                                color: themeShade850,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'eligible for our pre-launch perks',
-                              style: TextStyle(
-                                color: Colors.grey[850],
-                              ),
-                            ),
-                          ],
-                        ),
-                        minFontSize: 16,
-                        maxFontSize: 80,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 60,
-                        ),
-                        maxLines: 2,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        // fixedSize: const Size(200, 50),
-                        // textStyle: const TextStyle(fontWeight: FontWeight.w900),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: const EdgeInsets.all(15),
-                      ),
-                      onPressed: () => rootRouter
-                          .replace(const CreateWalletFirstOnboardingScreen()),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Column(
-                            children: const [
-                              AutoSizeText(
-                                'Early bird access',
+            ),
+            Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // mainAxisSize: MainAxisSize.max,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                // Container(
+                //   // color: Colors.blue,
+                //   alignment: Alignment.centerRight,
+                //   child: Image.asset(
+                //     ImagePaths.vegiBeanManNSEW,
+                //     width: MediaQuery.of(context).size.width * 0.75,
+                //   ),
+                // ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.225,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: AutoSizeText.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'You\'re',
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w500,
+                                  color: themeShade1000,
                                 ),
-                                maxLines: 1,
                               ),
-                              AutoSizeText(
-                                'Get notified when we are ready.',
+                              TextSpan(
+                                text: ' eligible ',
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                                  color: themeShade650,
                                 ),
-                                maxLines: 1,
                               ),
-                              AutoSizeText(
-                                'Your vouchers will still be valid!',
+                              TextSpan(
+                                text: 'for our pre-launch perks',
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                                  color: themeShade1000,
                                 ),
-                                maxLines: 1,
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            themeShade850, // ~ The backgroundColor and foregroundColor properties were introduced in Flutter 3.3. Prior to that, they were called primary and onPrimary.
-                        foregroundColor: Colors.black,
-                        // fixedSize: const Size(200, 50),
-                        // textStyle: const TextStyle(fontWeight: FontWeight.w900),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: const EdgeInsets.all(15),
-                      ),
-                      onPressed: () => rootRouter.replace(
-                        RegisterEmailNotificationsScreen(
-                          onSubmitEmail: () {
-                            viewModel.subscribeToWaitingListEmails(
-                              receiveNotifications: true,
-                              onError: (errStr) => showErrorSnack(
-                                context: context,
-                                title: Messages
-                                    .unableToRegisterEmailForNotifications,
-                              ),
-                            );
-                          }, // Register User For Email Notifications and
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Column(
-                            children: const [
-                              AutoSizeText(
-                                'Wait for launch',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                maxLines: 1,
-                              ),
-                              AutoSizeText(
-                                'Get notified when we are ready.',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                maxLines: 1,
-                              ),
-                              AutoSizeText(
-                                'Your vouchers will still be valid!',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                maxLines: 1,
-                              ),
-                            ],
+                          minFontSize: 16,
+                          maxFontSize: 80,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 60,
                           ),
-                        ],
+                          maxLines: 2,
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      WaitingListBetaEligibilityButton(
+                        title: 'Early bird access',
+                        textLines: const [
+                          'Join our beta app to use',
+                          'vegi now!',
+                        ],
+                        onPressed: () => rootRouter.replace(
+                          viewModel.accountCreated
+                              ? const MainScreen()
+                              : const CreateWalletFirstOnboardingScreen(),
+                        ),
+                        imagePath: ImagePaths.onboardingPage5Card,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      WaitingListBetaEligibilityButton(
+                        title: 'Wait for launch',
+                        textLines: const [
+                          'Get notified when we are ready.',
+                          'Your vouchers will still be valid!',
+                        ],
+                        onPressed: () => rootRouter.replace(
+                          RegisterEmailNotificationsScreen(
+                            onSubmitEmail: () {
+                              viewModel.subscribeToWaitingListEmails(
+                                receiveNotifications: true,
+                                onError: (errStr) => showErrorSnack(
+                                  context: context,
+                                  title: Messages
+                                      .unableToRegisterEmailForNotifications,
+                                ),
+                              );
+                            }, // Register User For Email Notifications and
+                          ),
+                        ),
+                        imagePath: ImagePaths.onboardingPage5CardSnail,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         );
       },
     );
