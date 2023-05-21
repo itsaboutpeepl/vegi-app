@@ -30,14 +30,24 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
       converter: WaitinglistPositionInQueueViewModel.fromStore,
       onInit: (store) {
         if (store.state.userState.userIsVerified) {
-          rootRouter.replaceAll([const MainScreen()]);
+          if (store.state.userState.isLoggedOut) {
+            store.dispatch(
+              authenticate(),
+            );
+          } else {
+            rootRouter.replaceAll([const MainScreen()]);
+          }
           return;
         }
       },
       builder: (context, viewModel) {
         const queueTextSize = 48.0;
         if (viewModel.userIsVerified) {
-          rootRouter.replaceAll([const MainScreen()]);
+          if (!viewModel.isLoggedIn) {
+            viewModel.authenticateUser();
+          } else {
+            rootRouter.replaceAll([const MainScreen()]);
+          }
           return const Center(child: CircularProgressIndicator());
         }
         return Stack(
@@ -118,7 +128,7 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
                           'vegi now!',
                         ],
                         onPressed: () => rootRouter.replace(
-                          viewModel.accountCreated
+                          viewModel.accountCreated && viewModel.isLoggedIn
                               ? const MainScreen()
                               : const CreateWalletFirstOnboardingScreen(),
                         ),

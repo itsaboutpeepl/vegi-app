@@ -185,25 +185,63 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                                         child: SmoothPageIndicator(
                                           controller: _pageController,
                                           count: welcomeScreens.length,
-                                          effect: const JumpingDotEffect(
-                                            dotWidth: 9,
-                                            dotHeight: 9,
-                                            strokeWidth: 3.0,
-                                            paintStyle: PaintingStyle.fill,
-                                            activeDotColor: Color.fromARGB(
-                                              255,
-                                              168,
-                                              200,
-                                              112,
+                                          effect: CustomizableEffect(
+                                            dotDecoration: DotDecoration(
+                                              color: Color.fromARGB(
+                                                255,
+                                                245,
+                                                254,
+                                                223,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              dotBorder: DotBorder(
+                                                color: Colors.black,
+                                                width: 3.0,
+                                                padding: 0.0,
+                                                type: DotBorderType.solid,
+                                              ),
+                                              height: 12,
+                                              width: 12,
                                             ),
-                                            dotColor: Color.fromARGB(
-                                              255,
-                                              245,
-                                              254,
-                                              223,
+                                            activeDotDecoration: DotDecoration(
+                                              color: Color.fromARGB(
+                                                255,
+                                                168,
+                                                200,
+                                                112,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              dotBorder: DotBorder(
+                                                color: Colors.black,
+                                                width: 3.0,
+                                                padding: 0.0,
+                                                type: DotBorderType.solid,
+                                              ),
+                                              height: 12,
+                                              width: 12,
                                             ),
-                                            // activeDotColor: Color(0xFF696B6D),
                                           ),
+                                          // effect: const JumpingDotEffect(
+                                          //   dotWidth: 9,
+                                          //   dotHeight: 9,
+                                          //   strokeWidth: 3.0,
+                                          //   paintStyle: PaintingStyle.fill,
+                                          //   activeDotColor: Color.fromARGB(
+                                          //     255,
+                                          //     168,
+                                          //     200,
+                                          //     112,
+                                          //   ),
+                                          //   dotColor: Color.fromARGB(
+                                          //     255,
+                                          //     245,
+                                          //     254,
+                                          //     223,
+                                          //   ),
+                                          //   // activeDotColor: Color(0xFF696B6D),
+                                          // ),
                                           onDotClicked: gotoPage,
                                         ),
                                       ),

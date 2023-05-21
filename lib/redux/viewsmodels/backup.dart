@@ -43,6 +43,7 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
     required this.pincode,
     required this.loginAgain,
     required this.loggedIn,
+    required this.signupInFlux,
     required this.biometricAuth,
     required this.biometricallyAuthenticated,
     required this.setBiometricallyAuthenticated,
@@ -50,12 +51,14 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
     required this.firebaseAuthenticationStatus,
     required this.fuseAuthenticationStatus,
     required this.vegiAuthenticationStatus,
+    required this.notAuthenticated,
   });
 
   factory LockScreenViewModel.fromStore(Store<AppState> store) {
     return LockScreenViewModel(
       pincode: store.state.userState.pincode,
       loggedIn: !store.state.userState.isLoggedOut,
+      signupInFlux: store.state.onboardingState.signupIsInFlux,
       biometricAuth: store.state.userState.authType,
       biometricallyAuthenticated:
           store.state.userState.biometricallyAuthenticated,
@@ -97,11 +100,14 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
           reLoginCall(),
         );
       },
+      notAuthenticated: store.state.userState.isLoggedOut || store.state.userState.fuseAuthenticationStatus != FuseAuthenticationStatus.authenticated || store.state.userState.firebaseAuthenticationStatus != FirebaseAuthenticationStatus.authenticated,
     );
   }
 
   final String pincode;
   final bool loggedIn;
+  final bool signupInFlux;
+  final bool notAuthenticated;
   final BiometricAuth biometricAuth;
   final bool biometricallyAuthenticated;
   final Future<bool> Function() loginToVegi;
@@ -116,6 +122,7 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
   List<Object?> get props => [
         pincode,
         loggedIn,
+        signupInFlux,
         biometricallyAuthenticated,
         biometricAuth,
         firebaseAuthenticationStatus,

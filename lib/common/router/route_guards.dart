@@ -12,7 +12,10 @@ class AuthGuard extends AutoRouteGuard {
       resolver.next();
     } else {
       if (kDebugMode) {
-        log.info('AuthGuard caught: navigating back to splash screen');
+        log.info(
+          'AuthGuard caught: navigating back to splash screen from ${router.current.name} when trying to navigate to ${resolver.route.name}',
+          stackTrace: StackTrace.current,
+        );
       }
       router.push(
         SplashScreen(

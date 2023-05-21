@@ -370,7 +370,6 @@ UserState _logoutSuccess(
     // email: '',
     // phoneNumber: '',
     displayName: '',
-    // jwtToken: '',
     firebaseCredentials: null,
     // accountAddress: '',
     hasSavedSeedPhrase: false,

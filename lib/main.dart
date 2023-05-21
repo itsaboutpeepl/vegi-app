@@ -80,9 +80,7 @@ void main() async {
     if (kReleaseMode) {
       await Sentry.captureException(e, stackTrace: s);
     } else {
-      log
-        ..error('FlutterError exception: ${e.toString()}')
-        ..error('FlutterError stackTrace: ${s.toString()}');
+      log.error('FlutterError exception: $e', stackTrace: s);
     }
   });
 }

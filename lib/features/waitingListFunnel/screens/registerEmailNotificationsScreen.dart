@@ -112,7 +112,7 @@ class _RegisterEmailNotificationsScreenState
                             fontSize: 40,
                             fontWeight: FontWeight.w400,
                           ),
-                          maxLines: 2,
+                          maxLines: 1,
                           textAlign: TextAlign.center,
                         ),
                     ],

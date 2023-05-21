@@ -14,6 +14,7 @@ import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class PinCodeScreen extends StatefulWidget {
@@ -114,6 +115,12 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
               viewModel.setBiometricallyAuthenticated,
         ),
         builder: (context, AsyncSnapshot<void> snapshot) {
+          if (viewModel.signupInFlux) {
+            return LoadingScaffold;
+          } else if (viewModel.notAuthenticated) {
+            viewModel.loginAgain();
+            return LoadingScaffold;
+          }
           return Scaffold(
             body: Container(
               decoration: const BoxDecoration(

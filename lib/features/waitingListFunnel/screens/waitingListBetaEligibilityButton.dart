@@ -31,13 +31,6 @@ class WaitingListBetaEligibilityButton extends StatelessWidget {
     );
     final snailImageSize = calculateImageDimension(image: snailImage);
     return snailImageSize;
-    // const normalImage = Image(
-    //   image: AssetImage(
-    //     // ImagePaths.vegiHorizontalLogo,
-    //     ImagePaths.onboardingPage5CardSnail,
-    //   ),
-    // );
-    // final normalImageSize = calculateImageDimension(image: normalImage);
   }
 
   @override
