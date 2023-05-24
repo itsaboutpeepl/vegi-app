@@ -31,12 +31,14 @@ const _$RestaurantAcceptanceStatusEnumMap = {
   RestaurantAcceptanceStatus.rejected: 'rejected',
   RestaurantAcceptanceStatus.pending: 'pending',
   RestaurantAcceptanceStatus.partiallyFulfilled: 'partiallyFulfilled',
+  RestaurantAcceptanceStatus.cancelledByUser: 'cancelledByUser',
 };
 
 const _$OrderAcceptanceStatusEnumMap = {
   OrderAcceptanceStatus.accepted: 'accepted',
   OrderAcceptanceStatus.declined: 'declined',
   OrderAcceptanceStatus.partiallyFulfilled: 'partiallyFulfilled',
+  OrderAcceptanceStatus.cancelledByUser: 'cancelledByUser',
   OrderAcceptanceStatus.pending: 'pending',
   OrderAcceptanceStatus.outForDelivery: 'outForDelivery',
   OrderAcceptanceStatus.delivered: 'delivered',

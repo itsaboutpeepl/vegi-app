@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
@@ -26,11 +27,35 @@ abstract class IOnBoardStrategy {
   });
   Future<bool> reauthenticateUser();
   Future<bool> updateEmail({required String email});
-  Future<LoggedInToVegiResult> loginToVegi({
+  Future<LoggedInToVegiResult> loginToVegiWithPhone({
     required Store<AppState> store,
     required String phoneNumber,
     required String firebaseSessionToken,
   });
+  Future<LoggedInToVegiResult> loginToVegiWithEmail({
+    required Store<AppState> store,
+    required String email,
+    required String firebaseSessionToken,
+  });
+
+  Future<UserCredential?> signInUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
+  Future<UserCredential?> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
+
+  Future<bool> signInUserBySendingEmailLink({
+    required String email,
+  });
+  Future<UserCredential?> signInUserFromVerificationLink({
+    required String email,
+    required String emailLinkFromVerificationEmail,
+  });
+  Future<UserCredential?> signInWithGoogle();
+  Future<UserCredential?> signInWithApple();
 }
 
 class OnBoardStrategyFactory {

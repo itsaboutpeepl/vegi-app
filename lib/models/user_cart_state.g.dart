@@ -186,6 +186,8 @@ const _$OrderCreationProcessStatusEnumMap = {
   OrderCreationProcessStatus.success: 'success',
   OrderCreationProcessStatus.sendOrderCallClientError:
       'sendOrderCallClientError',
+  OrderCreationProcessStatus.orderCancelled: 'orderCancelled',
+  OrderCreationProcessStatus.orderPaymentFailed: 'orderPaymentFailed',
 };
 
 const _$StripePaymentStatusEnumMap = {
@@ -196,4 +198,5 @@ const _$StripePaymentStatusEnumMap = {
   StripePaymentStatus.mintingStarted: 'mintingStarted',
   StripePaymentStatus.mintingSucceeded: 'mintingSucceeded',
   StripePaymentStatus.mintingFailed: 'mintingFailed',
+  StripePaymentStatus.paymentCancelled: 'paymentCancelled',
 };

@@ -20,6 +20,7 @@ class HomePageState with _$HomePageState {
     @Default('') String filterMenuQuery,
     @JsonKey(ignore: true) @Default(false) bool showMenuSearchBarField,
     @JsonKey(ignore: true) @Default(false) bool isLoadingHomePage,
+    @JsonKey(ignore: true) @Default(false) bool isLoadingHttpRequest,
     @JsonKey(ignore: true) @Default([]) List<String> postalCodes,
     @JsonKey(ignore: true) @Default('L1') String selectedSearchPostCode,
   }) = _HomePageState;

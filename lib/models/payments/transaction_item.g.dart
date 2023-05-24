@@ -34,4 +34,5 @@ const _$CurrencyEnumMap = {
   Currency.PPL: 'PPL',
   Currency.GBT: 'GBT',
   Currency.FUSE: 'FUSE',
+  Currency.percent: 'percent',
 };

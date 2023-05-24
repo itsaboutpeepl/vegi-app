@@ -52,8 +52,8 @@ class ProfileViewModel extends Equatable {
       isVerified: store.state.userState.userIsVerified,
       editAvatar: (
         source, {
-        required ProgressCallback progressCallback,
-        required void Function() onSuccess,
+        ProgressCallback? progressCallback,
+        void Function()? onSuccess,
         void Function(String errStr)? onError,
       }) {
         store.dispatch(
@@ -113,8 +113,8 @@ class ProfileViewModel extends Equatable {
   final void Function() refreshVendors;
   final void Function(
     ImageSource source, {
-    required ProgressCallback progressCallback,
-    required void Function() onSuccess,
+    ProgressCallback? progressCallback,
+    void Function()? onSuccess,
     void Function(String errStr)? onError,
   }) editAvatar;
 

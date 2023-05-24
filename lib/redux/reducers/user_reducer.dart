@@ -26,6 +26,8 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
   TypedReducer<UserState, SetDisplayName>(_setDisplayName),
   TypedReducer<UserState, SetEmail>(_setEmail),
+  TypedReducer<UserState, SetEmailPassword>(_setEmailAndPassword),
+  TypedReducer<UserState, SetPreferredSignOnMethod>(_setPreferredSignonMethod),
   TypedReducer<UserState, SetUserAuthenticationStatus>(
       _setUserAuthenticationStatus),
   TypedReducer<UserState, EmailWLRegistrationSuccess>(
@@ -223,7 +225,7 @@ UserState _setUserAuthenticationStatus(
   UserState state,
   SetUserAuthenticationStatus action,
 ) {
-  log.info('SetUserAuthenticationStatus ACTION: $action');
+  log.info('$action');
   return state.copyWith(
     firebaseAuthenticationStatus:
         action.firebaseStatus ?? state.firebaseAuthenticationStatus,
@@ -367,9 +369,11 @@ UserState _logoutSuccess(
     walletAddress: '',
     privateKey: '',
     userIsVerified: false,
+    password: '',
     // email: '',
     // phoneNumber: '',
     displayName: '',
+    avatarUrl: '',
     firebaseCredentials: null,
     // accountAddress: '',
     hasSavedSeedPhrase: false,
@@ -387,6 +391,7 @@ UserState _logoutSuccess(
       '',
       '',
     ],
+    preferredSignonMethod: PreferredSignonMethod.phone,
   );
 }
 
@@ -402,6 +407,25 @@ UserState _setEmail(
   SetEmail action,
 ) {
   return state.copyWith(email: action.email);
+}
+
+UserState _setEmailAndPassword(
+  UserState state,
+  SetEmailPassword action,
+) {
+  return state.copyWith(
+    email: action.email,
+    password: action.password,
+  );
+}
+
+UserState _setPreferredSignonMethod(
+  UserState state,
+  SetPreferredSignOnMethod action,
+) {
+  return state.copyWith(
+    preferredSignonMethod: action.preferredSignonMethod,
+  );
 }
 
 UserState _setUserAvatar(

@@ -66,6 +66,19 @@ class SetIsLoadingHomePage {
   }
 }
 
+class SetIsLoadingHttpRequest {
+  SetIsLoadingHttpRequest({
+    required this.isLoading,
+  });
+
+  final bool isLoading;
+
+  @override
+  String toString() {
+    return 'SetIsLoadingHttpRequest : isLoading:"$isLoading"';
+  }
+}
+
 class ShowGlobalSearchBarField {
   ShowGlobalSearchBarField({required this.makeGlobalSearchVisible});
   final bool makeGlobalSearchVisible;
@@ -167,7 +180,10 @@ ThunkAction<AppState> fetchFeaturedRestaurantsByPostCode({
     try {
       store.dispatch(SetIsLoadingHomePage(isLoading: true));
       final List<RestaurantItem> restaurants =
-          await peeplEatsService.featuredRestaurants(outCode, dontRoute: dontRoute,);
+          await peeplEatsService.featuredRestaurants(
+        outCode,
+        dontRoute: dontRoute,
+      );
 
       store
         ..dispatch(
@@ -390,11 +406,13 @@ ThunkAction<AppState> fetchMenuItemsForFeaturedRestaurants({
         currentList,
         (RestaurantItem element) async {
           element.productCategories.addAll(
-            await peeplEatsService
-                .getProductCategoriesForVendor(int.parse(element.restaurantID), dontRoute: dontRoute),
+            await peeplEatsService.getProductCategoriesForVendor(
+                int.parse(element.restaurantID),
+                dontRoute: dontRoute),
           );
           element.listOfMenuItems.addAll(
-            await peeplEatsService.getRestaurantMenuItems(element.restaurantID, dontRoute: dontRoute),
+            await peeplEatsService.getRestaurantMenuItems(element.restaurantID,
+                dontRoute: dontRoute),
           );
         },
       );
@@ -422,9 +440,10 @@ ThunkAction<AppState> fetchMenuItemsForRestaurant({
   return (Store<AppState> store) async {
     try {
       final productCategories = await peeplEatsService
-          .getProductCategoriesForVendor(int.parse(restaurantID), dontRoute: dontRoute);
-      final products =
-          await peeplEatsService.getRestaurantMenuItems(restaurantID, dontRoute: dontRoute);
+          .getProductCategoriesForVendor(int.parse(restaurantID),
+              dontRoute: dontRoute);
+      final products = await peeplEatsService
+          .getRestaurantMenuItems(restaurantID, dontRoute: dontRoute);
 
       final restaurant =
           store.state.homePageState.featuredRestaurants.firstWhere(
@@ -636,7 +655,8 @@ ThunkAction<AppState> fetchPostalCodes({
 }) {
   return (Store<AppState> store) async {
     try {
-      final List<String> postalCodes = await peeplEatsService.getPostalCodes(dontRoute: dontRoute);
+      final List<String> postalCodes =
+          await peeplEatsService.getPostalCodes(dontRoute: dontRoute);
 
       store.dispatch(UpdatePostalCodes(postalCodes));
     } catch (e, s) {

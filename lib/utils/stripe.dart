@@ -56,8 +56,8 @@ class StripeService {
     required String recipientWalletAddress,
     required String senderWalletAddress,
     required Currency currency,
-    required num orderId,
-    required num accountId,
+    required int orderId,
+    required int accountId,
     required int amount,
     required bool shouldPushToHome,
     required Store<AppState> store,
@@ -142,53 +142,73 @@ class StripeService {
           );
       }
       return true;
-    } on Exception catch (e, s) {
-      if (e is StripeException) {
-        if (e.error.code != FailureCode.Canceled) {
-          unawaited(
-            Analytics.track(
-              eventName: AnalyticsEvents.mint,
-              properties: {
-                'status': 'failure',
-              },
-            ),
-          );
-          log.error(e.error.localizedMessage);
-          await Sentry.captureException(
-            e,
-            stackTrace: s,
-            hint:
-                'ERROR - Stripe Exception: ${e.error.localizedMessage}; message: ${e.error.message}',
-          );
-          store
-            ..dispatch(
-              StripePaymentStatusUpdate(
-                status: StripePaymentStatus.paymentFailed,
-              ),
-            )
-            ..dispatch(
-              OrderCreationProcessStatusUpdate(
-                status: OrderCreationProcessStatus.none,
-              ),
-            );
-          return false;
-        } else {
-          return false;
-        }
-      } else {
-        log.error(e);
+    } on StripeException catch (e, s) {
+      if (e.error.code != FailureCode.Canceled) {
+        unawaited(
+          Analytics.track(
+            eventName: AnalyticsEvents.mint,
+            properties: {
+              'status': 'failure',
+            },
+          ),
+        );
+        log.error(e.error.localizedMessage);
         await Sentry.captureException(
           e,
           stackTrace: s,
-          hint: 'ERROR - Stripe Exception: $e',
+          hint:
+              'ERROR - Stripe Exception: ${e.error.localizedMessage}; message: ${e.error.message}',
         );
-        store.dispatch(
-          StripePaymentStatusUpdate(
-            status: StripePaymentStatus.paymentFailed,
-          ),
-        );
+        store
+          ..dispatch(SetPaymentButtonFlag(false))
+          ..dispatch(SetTransferringPayment(flag: false))
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.paymentFailed,
+            ),
+          )
+          ..dispatch(
+            OrderCreationProcessStatusUpdate(
+              status: OrderCreationProcessStatus.orderPaymentFailed,
+            ),
+          );
+        return false;
+      } else {
+        // payment cancelled handle
+        store
+          ..dispatch(SetTransferringPayment(flag: false))
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.paymentCancelled, // TODO: Hande this update and refactor apple pay stripe method to use this code too
+            ),
+          )
+          ..dispatch(
+            cancelOrder(
+            orderId: orderId,
+            accountId: accountId,
+            senderWalletAddress: senderWalletAddress,
+          ),)
+          ..dispatch(
+            OrderCreationProcessStatusUpdate(
+              status: OrderCreationProcessStatus.orderCancelled,
+            ),
+          )
+          ..dispatch(SetPaymentButtonFlag(false));
         return false;
       }
+    } on Exception catch (e, s) {
+      log.error(e);
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - Stripe Exception: $e',
+      );
+      store.dispatch(
+        StripePaymentStatusUpdate(
+          status: StripePaymentStatus.paymentFailed,
+        ),
+      );
+      return false;
     }
   }
 

@@ -48,6 +48,7 @@ const _$OrderAcceptanceStatusEnumMap = {
   OrderAcceptanceStatus.accepted: 'accepted',
   OrderAcceptanceStatus.declined: 'declined',
   OrderAcceptanceStatus.partiallyFulfilled: 'partiallyFulfilled',
+  OrderAcceptanceStatus.cancelledByUser: 'cancelledByUser',
   OrderAcceptanceStatus.pending: 'pending',
   OrderAcceptanceStatus.outForDelivery: 'outForDelivery',
   OrderAcceptanceStatus.delivered: 'delivered',

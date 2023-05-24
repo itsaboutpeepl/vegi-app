@@ -134,8 +134,12 @@ class UserState with _$UserState {
         String displayName,
     @Default('')
         String avatarUrl,
+    @Default(PreferredSignonMethod.phone)
+        PreferredSignonMethod preferredSignonMethod,
     @Default('')
         String email,
+    @Default(null)
+        String? password,
     String? verificationId,
     @Default(false)
         bool verificationPassed,
@@ -202,7 +206,7 @@ class UserState with _$UserState {
     @Default(null)
         String? stripeCustomerId,
     @Default(null)
-        num? vegiAccountId,
+        int? vegiAccountId,
     @Default(false)
         bool isVegiSuperAdmin,
     @Default(VegiRole.consumer)

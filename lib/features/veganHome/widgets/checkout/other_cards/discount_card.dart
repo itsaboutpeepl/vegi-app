@@ -1,37 +1,88 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
+import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/discount_card_vm.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
+
+class DiscountCards extends StatelessWidget {
+  const DiscountCards({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, DiscountCardViewModel>(
+      converter: DiscountCardViewModel.fromStore,
+      builder: (context, viewmodel) {
+        return Column(
+          children: [
+            ...viewmodel.activeVouchers.map((voucher) {
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 5.0,
+                ),
+                child: DiscountCard(
+                  hasDiscount: true,
+                  discountCode: voucher.code,
+                  onTap: () async {
+                    await showErrorSnack(
+                      context: context,
+                      title: Messages.permissionDenied,
+                      message: Messages.removeVoucherCodeNotAllowed,
+                    );
+                  },
+                  allowRemovalAction: false,
+                  icon: Icon(
+                    voucher.currency == Currency.percent
+                        ? FontAwesomeIcons.percent
+                        : voucher.currency == Currency.GBP
+                            ? FontAwesomeIcons.sterlingSign
+                            : FontAwesomeIcons.coins,
+                    size: 18,
+                  ),
+                ),
+              );
+            }),
+            const CreateDiscountCard(),
+          ],
+        );
+      },
+    );
+  }
+}
 
 class DiscountCard extends StatelessWidget {
-  const DiscountCard({Key? key}) : super(key: key);
+  const DiscountCard({
+    required this.hasDiscount,
+    required this.discountCode,
+    required this.icon,
+    required this.allowRemovalAction,
+    this.removeDiscount,
+    this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final bool hasDiscount;
+  final bool allowRemovalAction;
+  final String discountCode;
+  final Icon icon;
+  final void Function()? removeDiscount;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Analytics.track(
-          eventName: AnalyticsEvents.addDiscount,
-        );
-        showModalBottomSheet<Widget>(
-          isScrollControlled: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
-          context: context,
-          builder: (_) => const DiscountSelectorModalSheet(),
-        );
-      },
+      onTap: onTap,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         color: themeShade100,
@@ -46,50 +97,82 @@ class DiscountCard extends StatelessWidget {
               horizontal: 10,
               vertical: 10,
             ),
-            child: StoreConnector<AppState, DiscountCardViewModel>(
-              converter: DiscountCardViewModel.fromStore,
-              builder: (context, viewmodel) {
-                return Row(
-                  children: [
+            child: Row(
+              children: [
+                icon,
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  hasDiscount ? discountCode : 'Add a discount code',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (allowRemovalAction) ...[
+                  const Spacer(),
+                  if (hasDiscount)
+                    IconButton(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 2),
+                      onPressed: removeDiscount,
+                      icon: const Icon(
+                        Icons.remove,
+                        size: 18,
+                      ),
+                    )
+                  else
                     const Icon(
-                      FontAwesomeIcons.percent,
+                      Icons.arrow_forward_ios,
                       size: 18,
                     ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      viewmodel.hasDiscount
-                          ? viewmodel.discountCode
-                          : 'Add a discount code',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const Spacer(),
-                    if (viewmodel.hasDiscount)
-                      IconButton(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 2),
-                        onPressed: () => viewmodel.removeDiscount(),
-                        icon: const Icon(
-                          Icons.remove,
-                          size: 18,
-                        ),
-                      )
-                    else
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 18,
-                      )
-                  ],
-                );
-              },
+                ],
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class CreateDiscountCard extends StatelessWidget {
+  const CreateDiscountCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, DiscountCardViewModel>(
+      converter: DiscountCardViewModel.fromStore,
+      builder: (context, viewmodel) {
+        return DiscountCard(
+          hasDiscount: viewmodel.hasDiscount,
+          discountCode: viewmodel.discountCode,
+          removeDiscount: viewmodel.removeDiscount,
+          onTap: () async {
+            unawaited(
+              Analytics.track(
+                eventName: AnalyticsEvents.addDiscount,
+              ),
+            );
+            await showModalBottomSheet<Widget>(
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              context: context,
+              builder: (_) => const DiscountSelectorModalSheet(),
+            );
+          },
+          icon: const Icon(
+            FontAwesomeIcons.percent,
+            size: 18,
+          ),
+          allowRemovalAction: true,
+        );
+      },
     );
   }
 }

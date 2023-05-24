@@ -7,7 +7,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/authViewModel.dart';
 import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
 
 class MainScreenViewModel extends Equatable implements IAuthViewModel {
   const MainScreenViewModel({
@@ -22,6 +22,8 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.phoneNumber,
     required this.phoneNumberNoCountry,
     required this.isSuperAdmin,
+    required this.email,
+    required this.password,
     required this.firebaseSessionToken,
     required this.signupIsInFlux,
     required this.signupError,
@@ -33,6 +35,8 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.signup,
     required this.setUserIsLoggedOut,
     required this.setLoading,
+    required this.signinEmailAndPassword,
+    required this.signInUserUsingEmailLink,
   });
 
   factory MainScreenViewModel.fromStore(Store<AppState> store) {
@@ -51,7 +55,8 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
       dialCode: store.state.userState.countryCode, // the dial code (+39,+93..)
       firebaseSessionToken: store.state.userState.firebaseSessionToken,
       signupIsInFlux: store.state.onboardingState.signupIsInFlux,
-
+      email: store.state.userState.email,
+      password: store.state.userState.password,
       signupError: store.state.onboardingState.signupError,
       firebaseAuthenticationStatus:
           store.state.userState.firebaseAuthenticationStatus,
@@ -94,6 +99,48 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
           ),
         );
       },
+      signinEmailAndPassword: ({
+        required String email,
+        required String password,
+      }) {
+        store
+          ..dispatch(
+            SignupLoading(
+              isLoading: true,
+            ),
+          )
+          ..dispatch(
+            signinWithEmailAndPassword(
+              email: email,
+              password: password,
+            ),
+          )
+          ..dispatch(
+            SignupLoading(
+              isLoading: false,
+            ),
+          );
+      },
+      signInUserUsingEmailLink: ({
+        required String email,
+      }) {
+        store
+          ..dispatch(
+            SignupLoading(
+              isLoading: true,
+            ),
+          )
+          ..dispatch(
+            signInUserBySendingEmailLink(
+              email: email,
+            ),
+          )
+          ..dispatch(
+            SignupLoading(
+              isLoading: false,
+            ),
+          );
+      },
     );
   }
 
@@ -108,12 +155,14 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final String phoneNumber;
   final bool isSuperAdmin;
   final String phoneNumberNoCountry;
+  final String email;
+  final String? password;
   final String? firebaseSessionToken;
   final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
   final FuseAuthenticationStatus fuseAuthenticationStatus;
   final VegiAuthenticationStatus vegiAuthenticationStatus;
   final bool signupIsInFlux;
-  final ErrorDetails? signupError;
+  final SignUpErrorDetails? signupError;
 
   final void Function({
     required CountryCode countryCode,
@@ -126,6 +175,13 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final void Function() setUserIsLoggedOut;
   final void Function() authenticateAll;
   final void Function(bool) setLoading;
+  final void Function({
+    required String email,
+    required String password,
+  }) signinEmailAndPassword;
+  final void Function({
+    required String email,
+  }) signInUserUsingEmailLink;
 
   bool get isReauthenticationRequest =>
       firebaseAuthenticationStatus !=
@@ -142,6 +198,8 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
         isSuperAdmin,
         phoneNumber,
         phoneNumberNoCountry,
+        email,
+        password,
         firebaseSessionToken ?? '',
         signupIsInFlux,
         signupError,

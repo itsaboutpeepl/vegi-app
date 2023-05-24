@@ -48,8 +48,8 @@ import 'package:redux/redux.dart';
 
 @lazySingleton
 class PeeplEatsService extends HttpService {
-  PeeplEatsService(Dio dio) : super(dio, dotenv.env['VEGI_EATS_BACKEND']!) {
-    dio.options.baseUrl = dotenv.env['VEGI_EATS_BACKEND']!;
+  PeeplEatsService(Dio dio) : super(dio, Secrets.VEGI_EATS_BACKEND) {
+    dio.options.baseUrl = Secrets.VEGI_EATS_BACKEND;
     dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
 
@@ -116,24 +116,39 @@ class PeeplEatsService extends HttpService {
       }
       await setSessionCookie(cookie);
     }
-    final Response<dynamic> response = await dioGet(
-      VegiBackendEndpoints.isLoggedIn,
-      sendWithAuthCreds: true,
-    );
-
-    if (response.statusCode != null && response.statusCode! >= 400) {
-      throw Exception(
-        'Bad response returned when trying to checkVegiSessionIsStillValid: $response',
+    try {
+      final Response<dynamic> response = await dioGet(
+        VegiBackendEndpoints.isLoggedIn,
+        sendWithAuthCreds: true,
       );
+
+      if (response.statusCode != null && response.statusCode! >= 400) {
+        throw Exception(
+          'Bad response returned when trying to checkVegiSessionIsStillValid: $response',
+        );
+      }
+
+      final validSession = response.data!['authenticated'] as bool;
+
+      if (!validSession) {
+        sessionIsStaleCallback?.call();
+      }
+
+      return validSession;
+    } on DioError catch (dioErr, s) {
+      final onRealDevice = await DebugHelpers.deviceIsNotSimulator();
+      if ((dioErr.message?.contains('Connection refused') ?? false) &&
+          onRealDevice) {
+        log.warn(
+            'Unable to reverse proxy from physical device back to localhost vegi server.');
+      } else {
+        log.error(dioErr, stackTrace: s);
+      }
+      return false;
+    } catch (e, s) {
+      log.error(e, stackTrace: s);
+      return false;
     }
-
-    final validSession = response.data!['authenticated'] as bool;
-
-    if (!validSession) {
-      sessionIsStaleCallback?.call();
-    }
-
-    return validSession;
   }
 
   Future<VegiSession> loginWithPhone({
@@ -182,6 +197,11 @@ class PeeplEatsService extends HttpService {
           ),
         )
         ..dispatch(
+          SetUserAuthenticationStatus(
+            vegiStatus: VegiAuthenticationStatus.authenticated,
+          ),
+        )
+        ..dispatch(
           SetUserRoleOnVegi(
             userRole: userDetails.role,
             isSuperAdmin: userDetails.isSuperAdmin,
@@ -199,6 +219,13 @@ class PeeplEatsService extends HttpService {
     required String firebaseSessionToken,
     bool rememberMe = true,
   }) async {
+    if (hasCookieStored) {
+      //todo: Dont login again if have user details already and isCookieExpired is false...
+      // if(await isCookieExpired()){
+
+      // }
+      await deleteSessionCookie();
+    }
     final Response<dynamic> response = await dioPost(
       VegiBackendEndpoints.loginWithEmail,
       sendWithAuthCreds: false,
@@ -212,7 +239,7 @@ class PeeplEatsService extends HttpService {
     // Capture session cookie to send with requests from nowon in a VegiSession object that we save to the singleton instance of the peeplEats service?...
     if (response.statusCode != null && response.statusCode! >= 400) {
       throw Exception(
-        'Bad response returned when trying to loginWithPhone: $response',
+        'Bad response returned when trying to loginWithEmail: $response',
       );
     } else if (response.headers.value('set-cookie') == null) {
       throw Exception(
@@ -220,16 +247,34 @@ class PeeplEatsService extends HttpService {
       );
     }
 
-    final cookie = response.headers.value('set-cookie')!;
+    final userDetails =
+        UserDTO.fromJson(response.data['user'] as Map<String, dynamic>);
 
-    await setSessionCookie(cookie);
-    (await reduxStore).dispatch(
-      SetVegiSessionCookie(
-        cookie: cookie,
-      ),
+    final cookie = response.headers.value('set-cookie');
+    if (cookie != null) {
+      await setSessionCookie(cookie);
+      (await reduxStore)
+        ..dispatch(
+          SetVegiSessionCookie(
+            cookie: cookie,
+          ),
+        )
+        ..dispatch(
+          SetUserAuthenticationStatus(
+            vegiStatus: VegiAuthenticationStatus.authenticated,
+          ),
+        )
+        ..dispatch(
+          SetUserRoleOnVegi(
+            userRole: userDetails.role,
+            isSuperAdmin: userDetails.isSuperAdmin,
+          ),
+        );
+    }
+    return VegiSession(
+      sessionCookie: cookie ?? '',
+      user: userDetails,
     );
-
-    return VegiSession(sessionCookie: cookie);
   }
 
   Future<void> logOut() async {
@@ -884,7 +929,7 @@ class PeeplEatsService extends HttpService {
     required int accountId,
     required void Function(String error, ProductSuggestionUploadErrCode errCode)
         onError,
-    required ProgressCallback onReceiveProgress,
+    ProgressCallback? onReceiveProgress,
   }) async {
     try {
       final Response<Map<String, dynamic>> response = await dioPostFile(
@@ -920,7 +965,7 @@ class PeeplEatsService extends HttpService {
         // cancelToken: CancelToken?,
         // onSendProgress: ProgressCallback?,
         onReceiveProgress: (count, total) =>
-            onReceiveProgress != null ? onReceiveProgress(count, total) : null,
+            onReceiveProgress?.call(count, total),
       );
 
       // if (response.statusCode != null && response.statusCode! >= 400) {
@@ -1073,6 +1118,43 @@ class PeeplEatsService extends HttpService {
     final Map<dynamic, dynamic> results = response.data['discount'] as Map;
 
     return results['percentage'] as int? ?? 0;
+  }
+
+  Future<Discount?> validateFixedDiscountCode({
+    required String code,
+    required String walletAddress,
+    int? vendor,
+  }) async {
+    // final store = await reduxStore;
+    final Response<dynamic> response = await dioPost(
+      '/api/v1/admin/validate-discount-code',
+      data: {
+        'code': code,
+        'isGlobalPercentageCode': false,
+        'walletAddress': walletAddress,
+        'vendor': vendor,
+      },
+    );
+
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      log.error(
+          'Unable to validate fixed discount code with response: ${response.statusMessage}');
+      return null;
+    }
+    if (response.data == false) {
+      log.error(
+          'No discount codes found for vendor[$vendor] and wallet: "$walletAddress" with code: "$code"');
+      return null;
+    }
+    final data = response.data as Map<String, dynamic>;
+    final vendorKVP = data['vendor'];
+    if (vendorKVP is int) {
+      final vendorDetails = await _fetchSingleRestaurantAsVendorDTO(
+        vendorId: vendorKVP,
+      );
+      data['vendor'] = vendorDetails?.toJson();
+    }
+    return Discount.fromJson(data);
   }
 
   Future<Map<String, List<TimeSlot>>> getFulfilmentSlots({
@@ -1263,7 +1345,6 @@ class PeeplEatsService extends HttpService {
   Future<WaitingListEntry?> registerEmailToWaitingList(
     String email,
     Store<AppState> store,
-    void Function(String error) onError,
   ) async {
     final Response<dynamic> response = await dioPost(
       'api/v1/admin/register-email-to-waiting-list',
@@ -1274,7 +1355,10 @@ class PeeplEatsService extends HttpService {
     );
 
     if (response.statusCode != null && response.statusCode! >= 400) {
-      onError(response.statusMessage ?? 'Unknown Error');
+      log.error(
+        'Failed to registerEmailToWaitingList with response: ${response.statusMessage}',
+        stackTrace: StackTrace.current,
+      );
       return null;
     } else {
       final entry =
@@ -1287,7 +1371,6 @@ class PeeplEatsService extends HttpService {
   Future<WaitingListEntry?> subscribeToWaitingListEmails({
     required String email,
     required bool receiveUpdates,
-    required void Function(String error) onError,
   }) async {
     final Response<dynamic> response = await dioPost(
       'api/v1/admin/subscribe-waitlist-email-notifications',
@@ -1299,7 +1382,10 @@ class PeeplEatsService extends HttpService {
     );
 
     if (response.statusCode != null && response.statusCode! >= 400) {
-      onError(response.statusMessage ?? 'Unknown Error');
+      log.error(
+        'Failed to subscribeToWaitingListEmails with response: ${response.statusMessage}',
+        stackTrace: StackTrace.current,
+      );
       return null;
     } else {
       return WaitingListEntry.fromJson(response.data as Map<String, dynamic>);
@@ -1322,38 +1408,6 @@ class PeeplEatsService extends HttpService {
     }
 
     return response.data['position'] as int;
-  }
-
-  Future<Discount?> validateFixedDiscountCode({
-    required Store<AppState> store,
-    required String code,
-    required String walletAddress,
-    required int vendor,
-    required void Function(String error) onError,
-  }) async {
-    final Response<dynamic> response = await dioGet(
-      '/api/v1/admin/validate-discount-code',
-      queryParameters: {
-        'code': code,
-        'isGlobalPercentageCode': false,
-        'walletAddress': walletAddress,
-        'vendor': vendor,
-      },
-    );
-
-    if (response.statusCode != null && response.statusCode! >= 400) {
-      onError(response.statusMessage ?? 'Unknown Error');
-      return null;
-    }
-    final data = response.data as Map<String, dynamic>;
-    final vendorKVP = data['vendor'];
-    if (vendorKVP is int) {
-      final vendorDetails = await _fetchSingleRestaurantAsVendorDTO(
-        vendorId: vendorKVP,
-      );
-      data['vendor'] = vendorDetails;
-    }
-    return Discount.fromJson(data);
   }
 
   // Future<void> backupUserSK(
@@ -1466,6 +1520,53 @@ class PeeplEatsService extends HttpService {
       );
     }
     return result;
+  }
+
+  Future<bool?> cancelOrder({
+    required int orderId,
+    required int accountId,
+    required String senderWalletAddress,
+  }) async {
+    final response = await dioPost<dynamic>(
+      'api/v1/orders/cancel-order',
+      data: {
+        'orderId': orderId,
+        'senderWalletAddress': senderWalletAddress,
+      },
+      sendWithAuthCreds: true,
+    ).timeout(
+      const Duration(seconds: inDebugMode ? 300 : 10),
+      onTimeout: () {
+        return Response(
+          data: {},
+          statusCode: 500,
+          requestOptions: RequestOptions(path: 'api/v1/orders/cancel-order'),
+        );
+      },
+    );
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      return null;
+    }
+    final data = response.data as Map<String, dynamic>;
+    // final result = CreateOrderResponse.fromJson(response.data!);
+    // if (result.order.transactions.isEmpty) {
+    //   result.order.transactions.add(
+    //     TransactionItem(
+    //       amount: orderObject.total,
+    //       currency: Currency.GBPx,
+    //       order: result.order.id,
+    //       payer: -1,
+    //       receiver: -2,
+    //       timestamp: DateTime.now(),
+    //     ),
+    //   );
+    // }
+    final completedFlag = data['completedFlag'] as String;
+    if (completedFlag != 'cancelled') {
+      log.warn(
+          'cancel-order request failed and returned an order with completedFlag: $completedFlag');
+    }
+    return completedFlag == 'cancelled';
   }
 
   String getOrderUri(String orderID) =>

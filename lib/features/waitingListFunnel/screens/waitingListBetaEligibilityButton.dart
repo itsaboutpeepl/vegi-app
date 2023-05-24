@@ -50,16 +50,17 @@ class WaitingListBetaEligibilityButton extends StatelessWidget {
           child: Container(
             height: containerHeight,
             width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: assetImage,
+              ),
+            ),
             child: Stack(
+              fit: StackFit.expand,
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: assetImage,
-                    ),
-                  ),
                 ),
                 Container(
                   padding: EdgeInsets.only(

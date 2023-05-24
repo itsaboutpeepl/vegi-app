@@ -28,8 +28,12 @@ final cartStateReducers = combineReducers<UserCartState>([
     _updateSelectedDeliveryAddress,
   ),
   TypedReducer<UserCartState, CreateOrder>(_createOrder),
+  TypedReducer<UserCartState, CancelOrder>(_cancelOrder),
   TypedReducer<UserCartState, SetTransferringPayment>(_toggleTransfer),
   TypedReducer<UserCartState, SetError>(_toggleError),
+  TypedReducer<UserCartState, SetCartErrorResolved>(_setCartErrorResolved),
+  TypedReducer<UserCartState, SetCartError>(_setCartError),
+  TypedReducer<UserCartState, SetCartIsLoading>(_setCartIsLoading),
   TypedReducer<UserCartState, SetConfirmed>(_toggleConfirmed),
   TypedReducer<UserCartState, UpdateSelectedAmounts>(_updateSelectedAmounts),
   TypedReducer<UserCartState, SetRestaurantDetails>(_setRestaurantDetails),
@@ -146,7 +150,14 @@ UserCartState _addValidVoucherCodeToCart(
   UserCartState state,
   AddValidVoucherCodeToCart action,
 ) {
-  final appliedVouchers = state.appliedVouchers..add(action.voucher);
+  final appliedVouchers = [
+    ...state.appliedVouchers.where(
+      (element) =>
+          element.code != action.voucher.code &&
+          element.discountType != action.voucher.discountType,
+    ),
+    action.voucher
+  ];
   num potValue = 0.0;
   final thisCurrency = action.voucher.currency;
   if (action.voucher.vendor != null) {
@@ -228,6 +239,16 @@ UserCartState _createOrder(
   );
 }
 
+UserCartState _cancelOrder(
+  UserCartState state,
+  CancelOrder action,
+) {
+  return state.copyWith(
+    orderID: '',
+    paymentIntentID: '',
+  );
+}
+
 UserCartState _toggleTransfer(
   UserCartState state,
   SetTransferringPayment action,
@@ -240,6 +261,27 @@ UserCartState _toggleError(
   SetError action,
 ) {
   return state.copyWith(errorCompletingPayment: action.flag);
+}
+
+UserCartState _setCartErrorResolved(
+  UserCartState state,
+  SetCartErrorResolved action,
+) {
+  return state.copyWith(errorDetails: null);
+}
+
+UserCartState _setCartIsLoading(
+  UserCartState state,
+  SetCartIsLoading action,
+) {
+  return state.copyWith(isLoadingCartState: action.isLoading);
+}
+
+UserCartState _setCartError(
+  UserCartState state,
+  SetCartError action,
+) {
+  return state.copyWith(errorDetails: action.error);
 }
 
 UserCartState _toggleConfirmed(

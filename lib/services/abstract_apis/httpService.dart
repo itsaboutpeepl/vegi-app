@@ -73,6 +73,7 @@ abstract class HttpService {
     }
     if (cookieHasExpired) {
       authStatus = AuthenticationStatus.expired;
+      log.info('vegi session has expired', stackTrace: StackTrace.current,);
       (await reduxStore).dispatch(SetVegiSessionExpired());
     }
     return cookieHasExpired;
@@ -207,7 +208,7 @@ abstract class HttpService {
       onReceiveProgress: onReceiveProgress,
     )..onError((error, stackTrace) {
         log.error(
-            'Ran into error trying to POST to "${dio.options.baseUrl}${path}"');
+            'Ran into error trying to POST to "${dio.options.baseUrl}${path.substring(1)}"');
         log.error(error, stackTrace: stackTrace);
         if (error.toString().contains('Connection reset by peer')) {
           deleteSessionCookie(); //todo: return a 401...

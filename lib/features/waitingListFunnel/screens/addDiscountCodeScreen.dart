@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
@@ -40,10 +41,6 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
   final discountCodeController = TextEditingController(text: '');
 
   final _formKey = GlobalKey<FormState>();
-
-  bool noDiscountCodeIsFine = false;
-
-  bool isPreloading = false;
 
   bool notifyMeWhenLaunch = true;
 
@@ -86,7 +83,41 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
       body: StoreConnector<AppState, AddDiscountCodeViewModel>(
         onInit: (store) {},
         distinct: true,
-        onWillChange: (previousViewModel, newViewModel) {},
+        onWillChange: (previousViewModel, newViewModel) {
+          if (newViewModel.cartErrorDetails != null &&
+              newViewModel.cartErrorDetails !=
+                  previousViewModel?.cartErrorDetails) {
+            final err = newViewModel.cartErrorDetails!;
+            if (err.code != null) {
+              if (err.code == CartErrCode.invalidDiscountCode) {
+                showErrorSnack(
+                  context: context,
+                  title: err.title,
+                  message: err.message,
+                );
+              } else if (err.code == CartErrCode.failedToRegisterDiscountCode) {
+                showErrorSnack(
+                  context: context,
+                  title: err.title,
+                  message: err.message,
+                );
+              } else if (err.code ==
+                  CartErrCode.failedToRegisterEmailForNotifications) {
+                showErrorSnack(
+                  context: context,
+                  title: Messages.unableToRegisterEmailForNotifications,
+                );
+              }
+            }
+          } else if (newViewModel.voucherPotValue.value !=
+              previousViewModel?.voucherPotValue.value) {
+            showInfoSnack(
+              context,
+              title: 'Voucher applied',
+              backgroundColor: themeLightShade1000,
+            );
+          }
+        },
         converter: AddDiscountCodeViewModel.fromStore,
         builder: (context, viewModel) {
           final deviceSize = MediaQuery.of(context).size;
@@ -104,7 +135,7 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                         // color: Colors.blue,
                         // width: 300.0,
                         height: 200.0,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 20,
                           right: 20,
                           left: 20,
@@ -171,7 +202,7 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                               maxLines: 1,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Padding(
@@ -186,26 +217,36 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                                 children: <Widget>[
                                   Container(
                                     width: 280,
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                          width: 2,
-                                        ),
-                                      ),
-                                    ),
+                                    // decoration: BoxDecoration(
+                                    //   border: Border(
+                                    //     bottom: BorderSide(
+                                    //       color: Theme.of(context)
+                                    //           .colorScheme
+                                    //           .onSurface,
+                                    //       width: 2,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     child: ScaleTransition(
                                       scale: scaleAnimation,
                                       child: TextFormField(
                                         controller: discountCodeController,
-                                        keyboardType: TextInputType.none,
+                                        keyboardType: TextInputType.text,
+                                        enableSuggestions: false,
+                                        autocorrect: false,
+                                        autofocus: true,
+                                        textCapitalization:
+                                            TextCapitalization.characters,
                                         onTapOutside: (event) {
                                           FocusScope.of(context).unfocus();
                                         },
-                                        autocorrect: false,
-                                        autofocus: true,
+                                        validator: (value) {
+                                          if (value?.isEmpty ?? false) {
+                                            return Messages
+                                                .addVoucherCodeCodeCantBeEmpty;
+                                          }
+                                          return null;
+                                        },
                                         style: TextStyle(
                                           fontSize: 18,
                                           color: Theme.of(context)
@@ -214,9 +255,8 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                                                   ?.color ??
                                               Colors.black,
                                         ),
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
+                                        decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
                                             vertical: 20,
                                             horizontal: 10,
                                           ),
@@ -224,120 +264,51 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                                           // hintStyle: TextStyle(
                                           //   decorationStyle: TextAlign.center,
                                           // ),
-                                          border: InputBorder.none,
                                           fillColor: themeLightShade300,
-                                          focusedBorder:
-                                              const OutlineInputBorder(
+                                          // border: InputBorder.none,
+                                          border: OutlineInputBorder(),
+                                          focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide.none,
                                           ),
-                                          enabledBorder:
-                                              const OutlineInputBorder(
+                                          enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide.none,
+                                          ),
+                                          errorStyle: TextStyle(
+                                            color: themeRedShadeErrText,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
                                   const SizedBox(height: 30),
-                                  StoreConnector<AppState, AddDiscountCode>(
-                                    distinct: true,
-                                    converter: (store) => (
-                                      String email,
-                                      void Function() onSuccess,
-                                      dynamic Function(dynamic) onError,
-                                    ) =>
-                                        store.dispatch(
-                                          registerEmailWaitingListHandler(
-                                            email,
-                                            onSuccess,
-                                            onError,
-                                          ),
-                                        ),
-                                    builder:
-                                        (_, registerDiscountCodeToWallet) =>
-                                            PrimaryButton(
-                                      label: Labels.submit,
-                                      preload: isPreloading,
-                                      disabled: isPreloading,
-                                      onPressed: () async {
-                                        final String code =
-                                            discountCodeController.text;
-                                        if (code.isEmpty) {
-                                          if (!noDiscountCodeIsFine) {
-                                            await showDialog<
-                                                ContinueWithoutDiscountCodeDialog>(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              builder: (context) =>
-                                                  ContinueWithoutDiscountCodeDialog(
-                                                dialogClosedCallback:
-                                                    (didCancel) {
-                                                  if (didCancel) {
-                                                    return;
-                                                  }
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                  setState(() {
-                                                    isPreloading = true;
-                                                  });
-                                                  try {
-                                                    registerDiscountCodeToWallet(
-                                                      code,
-                                                      () {
-                                                        setState(() {
-                                                          isPreloading = false;
-                                                        });
-                                                        widget
-                                                            .onVerifyDiscountCode();
-                                                      },
-                                                      (error) {
-                                                        setState(() {
-                                                          isPreloading = false;
-                                                        });
-                                                        showErrorSnack(
-                                                          message: Messages
-                                                              .invalidDiscountCode,
-                                                          title: I10n.of(
-                                                                  context)
-                                                              .something_went_wrong,
-                                                          context: context,
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            top: 8,
-                                                            right: 8,
-                                                            left: 8,
-                                                            bottom: 120,
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  } catch (e) {
-                                                    setState(() {
-                                                      isPreloading = false;
-                                                    });
-                                                    showErrorSnack(
-                                                      message: Messages
-                                                          .invalidDiscountCode,
-                                                      title: I10n.of(context)
-                                                          .something_went_wrong,
-                                                      context: context,
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                        top: 8,
-                                                        right: 8,
-                                                        left: 8,
-                                                        bottom: 120,
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              ),
-                                            );
-                                          }
+                                  PrimaryButton(
+                                    label: Labels.submit,
+                                    preload: viewModel.cartIsLoading,
+                                    disabled: viewModel.cartIsLoading,
+                                    onPressed: () {
+                                      final isValid =
+                                          _formKey.currentState!.validate();
+                                      if (!isValid) {
+                                        return;
+                                      }
+                                      final String code =
+                                          discountCodeController.text;
+                                      if (code.isNotEmpty) {
+                                        if (viewModel.voucherAlreadyApplied(
+                                          code: code,
+                                        )) {
+                                          showErrorSnack(
+                                            context: context,
+                                            title: 'Voucher already applied',
+                                            message: '',
+                                          );
+                                          return;
                                         }
-                                      },
-                                    ),
+                                        viewModel.registerFixedVoucherCode(
+                                          code: code,
+                                        );
+                                      }
+                                    },
                                   ),
                                 ],
                               ),
@@ -395,7 +366,7 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                                     notifyMeWhenLaunch
                                         ? Labels.notifyMeWhenYouRelease
                                         : Labels.dontNotifyMeWhenYouRelease,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -405,7 +376,7 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                                 notifyMeWhenLaunch
                                     ? Messages.willEmailOnceLive
                                     : '',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                 ),
                               ),
@@ -420,7 +391,7 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                                         .withOpacity(0.95)
                                     : CupertinoColors.systemGrey
                                         .withOpacity(0.15),
-                                activeColor: themeShade300.withOpacity(0.10),
+                                activeColor: themeShade650.withOpacity(0.50),
                                 onChanged: (bool? value) {
                                   // This is called when the user toggles the switch
                                   if (value == null) {
@@ -429,15 +400,8 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
                                   setState(() {
                                     notifyMeWhenLaunch = value;
                                   });
-                                  viewModel.subscribeToWaitingListEmails(
+                                  viewModel.subscribeToEmailToNotifications(
                                     receiveNotifications: value,
-                                    onError: (errString) {
-                                      showErrorSnack(
-                                        context: context,
-                                        title: Messages
-                                            .unableToRegisterEmailForNotifications,
-                                      );
-                                    },
                                   );
                                 },
                               ),

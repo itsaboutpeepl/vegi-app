@@ -49,7 +49,11 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       displayName:
           json['displayName'] as String? ?? VegiConstants.defaultDisplayName,
       avatarUrl: json['avatarUrl'] as String? ?? '',
+      preferredSignonMethod: $enumDecodeNullable(
+              _$PreferredSignonMethodEnumMap, json['preferredSignonMethod']) ??
+          PreferredSignonMethod.phone,
       email: json['email'] as String? ?? '',
+      password: json['password'] as String? ?? null,
       verificationId: json['verificationId'] as String?,
       verificationPassed: json['verificationPassed'] as bool? ?? false,
       identifier: json['identifier'] as String? ?? '',
@@ -81,7 +85,7 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       surveyEmailUsed: json['surveyEmailUsed'] as String? ?? '',
       isVendor: json['isVendor'] as bool? ?? false,
       stripeCustomerId: json['stripeCustomerId'] as String? ?? null,
-      vegiAccountId: json['vegiAccountId'] as num? ?? null,
+      vegiAccountId: json['vegiAccountId'] as int? ?? null,
       isVegiSuperAdmin: json['isVegiSuperAdmin'] as bool? ?? false,
       userVegiRole:
           $enumDecodeNullable(_$VegiRoleEnumMap, json['userVegiRole']) ??
@@ -120,7 +124,10 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'jwtToken': instance.jwtToken,
       'displayName': instance.displayName,
       'avatarUrl': instance.avatarUrl,
+      'preferredSignonMethod':
+          _$PreferredSignonMethodEnumMap[instance.preferredSignonMethod]!,
       'email': instance.email,
+      'password': instance.password,
       'verificationId': instance.verificationId,
       'verificationPassed': instance.verificationPassed,
       'identifier': instance.identifier,
@@ -156,6 +163,8 @@ const _$FirebaseAuthenticationStatusEnumMap = {
   FirebaseAuthenticationStatus.reauthenticationFailed: 'reauthenticationFailed',
   FirebaseAuthenticationStatus.authenticated: 'authenticated',
   FirebaseAuthenticationStatus.expired: 'expired',
+  FirebaseAuthenticationStatus.phoneAuthReauthenticationFailed:
+      'phoneAuthReauthenticationFailed',
   FirebaseAuthenticationStatus.phoneAuthFailed: 'phoneAuthFailed',
   FirebaseAuthenticationStatus.phoneAuthTFAFailed: 'phoneAuthTFAFailed',
   FirebaseAuthenticationStatus.phoneAuthNoPhoneNumberSet:
@@ -199,6 +208,14 @@ const _$FuseAuthenticationStatusEnumMap = {
           .failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt:
       'failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt',
   FuseAuthenticationStatus.failedFetch: 'failedFetch',
+};
+
+const _$PreferredSignonMethodEnumMap = {
+  PreferredSignonMethod.phone: 'phone',
+  PreferredSignonMethod.emailAndPassword: 'emailAndPassword',
+  PreferredSignonMethod.emailLink: 'emailLink',
+  PreferredSignonMethod.google: 'google',
+  PreferredSignonMethod.apple: 'apple',
 };
 
 const _$BiometricAuthEnumMap = {

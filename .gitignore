@@ -4,6 +4,8 @@
 *.pyc
 *.swp
 .DS_Store
+*.keystore
+*.keystore.jks
 .atom/
 .buildlog/
 .history
@@ -41,6 +43,9 @@
 **/android/**/GeneratedPluginRegistrant.java
 **/android/app/upload-keystore.jks
 **/android/app/new-upload-keystore.jks
+**/android/app/*keystore.jks
+**/android/app/*keystore
+/key.properties
 
 # iOS/XCode related
 **/ios/**/*.mode1v3

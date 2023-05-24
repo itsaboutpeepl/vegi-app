@@ -20,8 +20,10 @@ OnboardingState _$OnboardingStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$OnboardingState {
+  @JsonKey(ignore: true)
   bool get signupIsInFlux => throw _privateConstructorUsedError;
-  ErrorDetails? get signupError => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  SignUpErrorDetails? get signupError => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   AuthCredential? get conflictingCredentials =>
       throw _privateConstructorUsedError;
@@ -41,12 +43,12 @@ abstract class $OnboardingStateCopyWith<$Res> {
       _$OnboardingStateCopyWithImpl<$Res, OnboardingState>;
   @useResult
   $Res call(
-      {bool signupIsInFlux,
-      ErrorDetails? signupError,
+      {@JsonKey(ignore: true) bool signupIsInFlux,
+      @JsonKey(ignore: true) SignUpErrorDetails? signupError,
       @JsonKey(ignore: true) AuthCredential? conflictingCredentials,
       @JsonKey(ignore: true) String? conflictingEmail});
 
-  $ErrorDetailsCopyWith<$Res>? get signupError;
+  $SignUpErrorDetailsCopyWith<$Res>? get signupError;
 }
 
 /// @nodoc
@@ -75,7 +77,7 @@ class _$OnboardingStateCopyWithImpl<$Res, $Val extends OnboardingState>
       signupError: freezed == signupError
           ? _value.signupError
           : signupError // ignore: cast_nullable_to_non_nullable
-              as ErrorDetails?,
+              as SignUpErrorDetails?,
       conflictingCredentials: freezed == conflictingCredentials
           ? _value.conflictingCredentials
           : conflictingCredentials // ignore: cast_nullable_to_non_nullable
@@ -89,12 +91,12 @@ class _$OnboardingStateCopyWithImpl<$Res, $Val extends OnboardingState>
 
   @override
   @pragma('vm:prefer-inline')
-  $ErrorDetailsCopyWith<$Res>? get signupError {
+  $SignUpErrorDetailsCopyWith<$Res>? get signupError {
     if (_value.signupError == null) {
       return null;
     }
 
-    return $ErrorDetailsCopyWith<$Res>(_value.signupError!, (value) {
+    return $SignUpErrorDetailsCopyWith<$Res>(_value.signupError!, (value) {
       return _then(_value.copyWith(signupError: value) as $Val);
     });
   }
@@ -109,13 +111,13 @@ abstract class _$$_OnboardingStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool signupIsInFlux,
-      ErrorDetails? signupError,
+      {@JsonKey(ignore: true) bool signupIsInFlux,
+      @JsonKey(ignore: true) SignUpErrorDetails? signupError,
       @JsonKey(ignore: true) AuthCredential? conflictingCredentials,
       @JsonKey(ignore: true) String? conflictingEmail});
 
   @override
-  $ErrorDetailsCopyWith<$Res>? get signupError;
+  $SignUpErrorDetailsCopyWith<$Res>? get signupError;
 }
 
 /// @nodoc
@@ -142,7 +144,7 @@ class __$$_OnboardingStateCopyWithImpl<$Res>
       signupError: freezed == signupError
           ? _value.signupError
           : signupError // ignore: cast_nullable_to_non_nullable
-              as ErrorDetails?,
+              as SignUpErrorDetails?,
       conflictingCredentials: freezed == conflictingCredentials
           ? _value.conflictingCredentials
           : conflictingCredentials // ignore: cast_nullable_to_non_nullable
@@ -160,8 +162,8 @@ class __$$_OnboardingStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_OnboardingState extends _OnboardingState {
   _$_OnboardingState(
-      {required this.signupIsInFlux,
-      this.signupError = null,
+      {@JsonKey(ignore: true) this.signupIsInFlux = false,
+      @JsonKey(ignore: true) this.signupError = null,
       @JsonKey(ignore: true) this.conflictingCredentials,
       @JsonKey(ignore: true) this.conflictingEmail})
       : super._();
@@ -170,10 +172,11 @@ class _$_OnboardingState extends _OnboardingState {
       _$$_OnboardingStateFromJson(json);
 
   @override
+  @JsonKey(ignore: true)
   final bool signupIsInFlux;
   @override
-  @JsonKey()
-  final ErrorDetails? signupError;
+  @JsonKey(ignore: true)
+  final SignUpErrorDetails? signupError;
   @override
   @JsonKey(ignore: true)
   final AuthCredential? conflictingCredentials;
@@ -222,8 +225,8 @@ class _$_OnboardingState extends _OnboardingState {
 
 abstract class _OnboardingState extends OnboardingState {
   factory _OnboardingState(
-          {required final bool signupIsInFlux,
-          final ErrorDetails? signupError,
+          {@JsonKey(ignore: true) final bool signupIsInFlux,
+          @JsonKey(ignore: true) final SignUpErrorDetails? signupError,
           @JsonKey(ignore: true) final AuthCredential? conflictingCredentials,
           @JsonKey(ignore: true) final String? conflictingEmail}) =
       _$_OnboardingState;
@@ -233,9 +236,11 @@ abstract class _OnboardingState extends OnboardingState {
       _$_OnboardingState.fromJson;
 
   @override
+  @JsonKey(ignore: true)
   bool get signupIsInFlux;
   @override
-  ErrorDetails? get signupError;
+  @JsonKey(ignore: true)
+  SignUpErrorDetails? get signupError;
   @override
   @JsonKey(ignore: true)
   AuthCredential? get conflictingCredentials;

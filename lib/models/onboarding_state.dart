@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
 
 part 'onboarding_state.freezed.dart';
 part 'onboarding_state.g.dart';
@@ -15,8 +15,8 @@ OnboardingState? fromJsonOnboardingState(dynamic json) =>
 class OnboardingState with _$OnboardingState {
   @JsonSerializable()
   factory OnboardingState({
-    required bool signupIsInFlux,
-    @Default(null) ErrorDetails? signupError,
+    @JsonKey(ignore: true) @Default(false) bool signupIsInFlux,
+    @JsonKey(ignore: true) @Default(null) SignUpErrorDetails? signupError,
     @JsonKey(ignore: true) AuthCredential? conflictingCredentials,
     @JsonKey(ignore: true) String? conflictingEmail,
   }) = _OnboardingState;

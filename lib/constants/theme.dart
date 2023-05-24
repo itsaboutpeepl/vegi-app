@@ -55,6 +55,9 @@ const Color themeLightShade800 = Color.fromARGB(255, 182, 179, 113);
 const Color themeLightShade1000 = Color(0xFFE5AA52);
 const Color themeLightShade1200 = Color.fromARGB(255, 193, 127, 28);
 
+
+const Color themeRedShadeErrText = Color.fromARGB(255, 193, 58, 28);
+
 //Blue Color Scheme
 // const Color themeShade100 = Color(0xFFb3e5fc);
 // const Color themeShade200 = Color(0xFF81d4fa);

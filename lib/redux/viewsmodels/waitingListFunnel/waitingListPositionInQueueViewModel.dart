@@ -33,12 +33,10 @@ class WaitinglistPositionInQueueViewModel extends Equatable {
       },
       subscribeToWaitingListEmails: ({
         required bool receiveNotifications,
-        required void Function(String) onError,
       }) {
         cart_actions.subscribeToWaitingListEmails(
           email: store.state.userState.email,
           receiveUpdates: receiveNotifications,
-          onError: onError,
         );
       },
     );
@@ -53,7 +51,6 @@ class WaitinglistPositionInQueueViewModel extends Equatable {
   final void Function() authenticateUser;
   final void Function({
     required bool receiveNotifications,
-    required void Function(String) onError,
   }) subscribeToWaitingListEmails;
 
   @override

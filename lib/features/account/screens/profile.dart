@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
@@ -14,6 +15,7 @@ import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/checkout/delivery_address/delivery_address_selector_button.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/vegiAvatar.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -64,6 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
       },
       builder: (_, viewmodel) {
+        const avatarSquareSize = 70.0;
         return MyScaffold(
           title: I10n.of(context).account,
           body: InkWell(
@@ -84,23 +87,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Column(
                             children: [
                               GestureDetector(
-                                onTap: () => viewmodel.isLoggedIn &&
-                                        viewmodel.phone.isNotEmpty
+                                onTap: () => viewmodel.isLoggedIn
                                     ? _showSourceImagePicker(
                                         context,
                                         (source) => viewmodel.editAvatar(
                                           source,
-                                          progressCallback: (count, total) {
-                                            setState(() {
-                                              imageUploadPercent =
-                                                  (count / total) * 100.0;
-                                            });
-                                          },
-                                          onSuccess: () {
-                                            setState(() {
-                                              imageUploadPercent = null;
-                                            });
-                                          },
                                           onError: (errStr) async {
                                             await showErrorSnack(
                                                 context: context,
@@ -110,77 +101,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       )
                                     : null,
-                                child: SizedBox(
-                                  height: 70,
-                                  width: 70,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: ColoredBox(
-                                      color: Colors.grey.shade400,
-                                      child: Stack(
-                                        children: [
-                                          if (viewmodel.avatarUrl == '')
-                                            const CircleAvatar(
-                                              backgroundImage: AssetImage(
-                                                'assets/images/anom.png',
-                                              ),
-                                              radius: 40,
-                                            )
-                                          else
-                                            Positioned.fill(
-                                              child: CachedNetworkImage(
-                                                width: 60,
-                                                height: 60,
-                                                imageUrl: viewmodel.avatarUrl,
-                                                placeholder: (context, url) =>
-                                                    const CircularProgressIndicator(),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const CircleAvatar(
-                                                  backgroundImage: AssetImage(
-                                                    'assets/images/anom.png',
-                                                  ),
-                                                  radius: 30,
+                                child: viewmodel.avatarUrl == ''
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 20),
+                                        child: SvgPicture.asset(
+                                          'assets/images/username.svg',
+                                          width: 95,
+                                          height: avatarSquareSize,
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: avatarSquareSize,
+                                        width: avatarSquareSize,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: ColoredBox(
+                                            color: Colors.grey.shade400,
+                                            child: Stack(
+                                              children: [
+                                                VegiAvatar(
+                                                  avatarUrl:
+                                                      viewmodel.avatarUrl,
+                                                  avatarSquareSize:
+                                                      avatarSquareSize,
                                                 ),
-                                                imageBuilder:
-                                                    (context, imageProvider) =>
-                                                        Image(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
+                                                if (viewmodel.isLoggedIn)
+                                                  Positioned.directional(
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                    bottom: 0,
+                                                    start: 0,
+                                                    end: 0,
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 3,
+                                                      ),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurface,
+                                                      child: Text(
+                                                        I10n.of(context).edit,
+                                                        style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .canvasColor,
+                                                          fontSize: 9,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                              ],
                                             ),
-                                          if (viewmodel.isLoggedIn &&
-                                              viewmodel.phone.isNotEmpty)
-                                            Positioned.directional(
-                                              textDirection: TextDirection.ltr,
-                                              bottom: 0,
-                                              start: 0,
-                                              end: 0,
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: 3,
-                                                ),
-                                                alignment: Alignment.center,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                child: Text(
-                                                  I10n.of(context).edit,
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .canvasColor,
-                                                    fontSize: 9,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                        ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
                               ),
                               const SizedBox(height: 5),
                               Text(

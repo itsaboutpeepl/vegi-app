@@ -42,7 +42,7 @@ class CreateOrderForCollection extends CreateOrderForFulfilment
       total: store.state.cartState.cartTotal,
       tipAmount: store.state.cartState.selectedTipAmount,
       marketingOptIn: false,
-      discountCode: store.state.cartState.discountCode,
+      discountCode: store.state.cartState.discountCode, // TODO: Apply discount vouchers here somehow?
       vendor: store.state.cartState.restaurantID,
       walletAddress: store.state.userState.walletAddress,
       address: DeliveryAddresses(

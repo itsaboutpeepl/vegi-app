@@ -40,6 +40,7 @@ enum OrderAcceptanceStatus {
   accepted,
   declined,
   partiallyFulfilled,
+  cancelledByUser,
   pending,
   outForDelivery,
   delivered,
@@ -65,6 +66,7 @@ enum RestaurantAcceptanceStatus {
   rejected,
   pending,
   partiallyFulfilled,
+  cancelledByUser,
 }
 
 enum DeliveryOrderCreationStatus {
@@ -85,6 +87,7 @@ enum Currency {
   PPL,
   GBT,
   FUSE,
+  percent,
 }
 
 extension CurrencyAmountFormatter on Currency {
@@ -101,6 +104,8 @@ extension CurrencyAmountFormatter on Currency {
       case Currency.GBT:
       case Currency.FUSE:
         return '$amount $name';
+      case Currency.percent:
+        return '${(amount * 100.0).toStringAsPrecision(2)}%';
     }
   }
 }
@@ -129,6 +134,24 @@ enum VendorStatus {
   active,
   inactive,
   draft,
+}
+
+enum SignUpErrCode {
+  invalidCredentials,
+  wrongPassword,
+  userNotFound,
+  weakPassword,
+  emailAlreadyInUse,
+  sessionExpired,
+  failedToFetchFuseWallet, signonMethodNotImplemented, invalidEmail, userDisabled, emailLinkExpired, unauthorizedDomain, serverError,
+}
+
+enum CartErrCode {
+  failedToRegisterEmailToWaitingList,
+  invalidDiscountCode,
+  failedToRegisterDiscountCode,
+  failedToCheckPositionInWaitingList,
+  failedToRegisterEmailForNotifications,
 }
 
 extension OrderCompletedFlagHelpers on OrderCompletedFlag {
@@ -162,6 +185,8 @@ extension RestaurantAcceptedStatusHelpers on RestaurantAcceptanceStatus {
 
       case RestaurantAcceptanceStatus.partiallyFulfilled:
         return OrderAcceptanceStatus.partiallyFulfilled;
+      case RestaurantAcceptanceStatus.cancelledByUser:
+        return OrderAcceptanceStatus.cancelledByUser;
 
       case RestaurantAcceptanceStatus.rejected:
         return OrderAcceptanceStatus.declined;
@@ -178,6 +203,9 @@ extension RestaurantAcceptedStatusHelpers on RestaurantAcceptanceStatus {
 
       case 'partially fulfilled':
         return RestaurantAcceptanceStatus.partiallyFulfilled;
+
+      case 'cancelled by user':
+        return RestaurantAcceptanceStatus.cancelledByUser;
 
       case 'rejected':
         return RestaurantAcceptanceStatus.rejected;
@@ -259,6 +287,9 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
       case 'partially fulfilled':
         return OrderAcceptanceStatus.partiallyFulfilled;
 
+      case 'cancelled by user':
+        return OrderAcceptanceStatus.cancelledByUser;
+
       case 'delivered':
         return OrderAcceptanceStatus.delivered;
 
@@ -290,6 +321,9 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
       case OrderAcceptanceStatus.partiallyFulfilled:
         return 'has been partially fulfilled, please review!';
 
+      case OrderAcceptanceStatus.cancelledByUser:
+        return 'has been cancelled!';
+
       case OrderAcceptanceStatus.delivered:
         return 'has been delivered!';
 
@@ -314,6 +348,9 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
 
       case OrderAcceptanceStatus.partiallyFulfilled:
         return 'videos/order-pending.gif';
+
+      case OrderAcceptanceStatus.cancelledByUser:
+        return 'videos/order-declined.gif';
 
       case OrderAcceptanceStatus.delivered:
         return 'videos/order-delivered.gif';
@@ -340,6 +377,9 @@ extension OrderAcceptanceStatusHelpers on OrderAcceptanceStatus {
       case OrderAcceptanceStatus.partiallyFulfilled:
         return 'Your order #$orderID has been partially fulfilled! Please review in the orders section or for help contact support via the FAQ page.!';
 
+      case OrderAcceptanceStatus.cancelledByUser:
+        return 'Your order #$orderID has been cancelled!';
+
       case OrderAcceptanceStatus.delivered:
         return 'Your order #$orderID has been delivered!';
 
@@ -357,6 +397,8 @@ extension RestaurantAcceptanceStatusHelpers on RestaurantAcceptanceStatus {
 
       case 'partially fulfilled':
         return RestaurantAcceptanceStatus.partiallyFulfilled;
+      case 'cancelled by user':
+        return RestaurantAcceptanceStatus.cancelledByUser;
 
       case 'declined':
       case 'rejected':
@@ -380,6 +422,8 @@ extension RestaurantAcceptanceStatusHelpers on RestaurantAcceptanceStatus {
 
       case RestaurantAcceptanceStatus.partiallyFulfilled:
         return 'has been partially fulfilled, please review!';
+      case RestaurantAcceptanceStatus.cancelledByUser:
+        return 'has been partially cancelled!';
     }
   }
 
@@ -396,6 +440,9 @@ extension RestaurantAcceptanceStatusHelpers on RestaurantAcceptanceStatus {
 
       case RestaurantAcceptanceStatus.partiallyFulfilled:
         return 'videos/order-pending.gif';
+
+      case RestaurantAcceptanceStatus.cancelledByUser:
+        return 'videos/order-declined.gif';
     }
   }
 
@@ -412,6 +459,9 @@ extension RestaurantAcceptanceStatusHelpers on RestaurantAcceptanceStatus {
 
       case RestaurantAcceptanceStatus.partiallyFulfilled:
         return 'Your order #$orderID has been partially fulfilled! Please review in the orders section or for help contact support via the FAQ page.!';
+
+      case RestaurantAcceptanceStatus.cancelledByUser:
+        return 'Your order #$orderID has been cancelled!';
     }
   }
 }
@@ -446,6 +496,14 @@ extension DeliveryAddressLabelHelpers on DeliveryAddressLabel {
         return DeliveryAddressLabel.home;
     }
   }
+}
+
+enum PreferredSignonMethod {
+  phone,
+  emailAndPassword,
+  emailLink,
+  google,
+  apple,
 }
 
 enum OrderPaidStatus {
@@ -574,6 +632,8 @@ enum OrderCreationProcessStatus {
   paymentIntentAmountDoesntMatchCartTotal,
   success,
   sendOrderCallClientError,
+  orderCancelled, //todo: Handle
+  orderPaymentFailed, //todo: Handle
 }
 
 enum StripePaymentStatus {
@@ -584,6 +644,7 @@ enum StripePaymentStatus {
   mintingStarted,
   mintingSucceeded,
   mintingFailed,
+  paymentCancelled, //todo: Handle
 }
 
 enum FirebaseAuthenticationStatus {

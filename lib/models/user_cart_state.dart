@@ -11,6 +11,8 @@ import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
 
 part 'user_cart_state.freezed.dart';
 part 'user_cart_state.g.dart';
@@ -112,6 +114,12 @@ class UserCartState with _$UserCartState {
     )
     @Default(null)
         LivePayment? paymentInProcess,
+    @JsonKey(ignore: true)
+    @Default(false)
+        bool isLoadingCartState,
+    @JsonKey(ignore: true)
+    @Default(null)
+        ErrorDetails<CartErrCode>? errorDetails,
   }) = _UserCartState;
 
   const UserCartState._();

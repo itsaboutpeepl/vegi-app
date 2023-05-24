@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
 
 class SignupLoading {
   SignupLoading({
@@ -19,7 +19,7 @@ class SignupFailed {
     required this.error,
   });
 
-  final ErrorDetails error;
+  final SignUpErrorDetails error;
 
   @override
   String toString() {

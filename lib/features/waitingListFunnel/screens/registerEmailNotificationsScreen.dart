@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
@@ -36,12 +37,12 @@ class _RegisterEmailNotificationsScreenState
 
   final _formKey = GlobalKey<FormState>();
 
-  bool isPreloading = false;
+  
 
   late AnimationController controller;
   late Animation<double> opacityAnimation;
   late Animation<double> scaleAnimation;
-  bool emailRegistered = false;
+  
 
   @override
   void initState() {
@@ -77,6 +78,22 @@ class _RegisterEmailNotificationsScreenState
       body: StoreConnector<AppState, RegisterEmailNotificationsViewModel>(
         distinct: true,
         converter: RegisterEmailNotificationsViewModel.fromStore,
+        onWillChange: (previousViewModel, newViewModel) {
+          if (newViewModel.cartError != null &&
+              newViewModel.cartError !=
+                  previousViewModel?.cartError) {
+            final err = newViewModel.cartError!;
+            if (err.code != null) {
+              if (err.code == CartErrCode.failedToRegisterEmailToWaitingList) {
+                showErrorSnack(
+                  context: context,
+                  title: err.title,
+                  message: err.message,
+                );
+              }
+            }
+          }
+        },
         builder: (context, viewModel) {
           return Container(
             alignment: Alignment.center,
@@ -89,7 +106,7 @@ class _RegisterEmailNotificationsScreenState
                   child: Column(
                     children: <Widget>[
                       AutoSizeText(
-                        emailRegistered
+                        viewModel.emailIsRegistered
                             ? Messages.emailRegisteredThankYou
                             : Messages.emailPleaseRegisterForLaunchNotifications,
                         style: const TextStyle(
@@ -98,13 +115,13 @@ class _RegisterEmailNotificationsScreenState
                           fontWeight: FontWeight.w500,
                           fontFamily: Fonts.fatFace,
                         ),
-                        maxLines: emailRegistered ? 1 : 2,
+                        maxLines: viewModel.emailIsRegistered ? 1 : 2,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      if (emailRegistered)
+                      if (viewModel.emailIsRegistered)
                         AutoSizeText(
                           ' ${viewModel.userEmail}',
                           style: const TextStyle(
@@ -120,7 +137,7 @@ class _RegisterEmailNotificationsScreenState
                 ),
                 Column(
                   children: [
-                    if (emailRegistered)
+                    if (viewModel.emailIsRegistered)
                       Padding(
                           padding: const EdgeInsets.only(
                             top: 10,
@@ -206,59 +223,13 @@ class _RegisterEmailNotificationsScreenState
                               const SizedBox(height: 40),
                               PrimaryButton(
                                 label: I10n.of(context).next_button,
-                                preload: isPreloading,
-                                disabled: isPreloading,
+                                preload: viewModel.isLoadingCartState,
+                                disabled: viewModel.isLoadingCartState,
                                 onPressed: () async {
                                   final String email = emailController.text;
                                   FocusScope.of(context).unfocus();
-                                  setState(() {
-                                    isPreloading = true;
-                                  });
-                                  try {
-                                    viewModel.registerEmailToWaitingList(
-                                      email: email,
-                                      onSuccess: () {
-                                        setState(() {
-                                          isPreloading = false;
-                                          emailRegistered = true;
-                                        });
-                                        widget.onSubmitEmail?.call();
-                                      },
-                                      onError: (error) {
-                                        setState(() {
-                                          isPreloading = false;
-                                        });
-                                        showErrorSnack(
-                                          message: Messages.invalidEmail,
-                                          title: I10n.of(context)
-                                              .something_went_wrong,
-                                          context: context,
-                                          margin: const EdgeInsets.only(
-                                            top: 8,
-                                            right: 8,
-                                            left: 8,
-                                            bottom: 120,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } catch (e) {
-                                    setState(() {
-                                      isPreloading = false;
-                                    });
-                                    await showErrorSnack(
-                                      message: Messages.invalidEmail,
-                                      title:
-                                          I10n.of(context).something_went_wrong,
-                                      context: context,
-                                      margin: const EdgeInsets.only(
-                                        top: 8,
-                                        right: 8,
-                                        left: 8,
-                                        bottom: 120,
-                                      ),
-                                    );
-                                  }
+                                  viewModel.registerEmailToWaitingList(
+                                      email: email,);
                                 },
                               ),
                               const SizedBox(height: 20),
@@ -279,8 +250,8 @@ class _RegisterEmailNotificationsScreenState
                       ),
                     if (viewModel.positionInQueue != null)
                       AutoSizeText(
-                        'You\'re our ${viewModel.positionInQueue!.thFormatted(dontFormatStrictlyAbove: 100)} new pal!',
-                        style: TextStyle(
+                        "You're our ${viewModel.positionInQueue!.thFormatted(dontFormatStrictlyAbove: 100)} new pal!",
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 40,
                           fontWeight: FontWeight.w400,

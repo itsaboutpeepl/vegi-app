@@ -173,6 +173,9 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                                       context,
                                       isPointingRight: false,
                                       onTap: previousPage,
+                                      hide: _pageController
+                                              .positions.isNotEmpty &&
+                                          _pageController.page == 0,
                                     ),
                                     const Spacer(),
                                     // SizedBox(
@@ -256,6 +259,10 @@ class _OnBoardScreenState extends State<OnBoardScreen>
                                       context,
                                       isPointingRight: true,
                                       onTap: nextPage,
+                                      hide: _pageController
+                                              .positions.isNotEmpty &&
+                                          _pageController.page ==
+                                              welcomeScreens.length,
                                     ),
                                   ],
                                 ),
@@ -279,6 +286,7 @@ class _OnBoardScreenState extends State<OnBoardScreen>
     BuildContext context, {
     required bool isPointingRight,
     void Function()? onTap,
+    bool hide = false,
   }) =>
       GestureDetector(
         onTap: onTap,
@@ -302,16 +310,18 @@ class _OnBoardScreenState extends State<OnBoardScreen>
         child: Container(
           height: 100,
           width: 100,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.contain,
-              image: AssetImage(
-                isPointingRight
-                    ? ImagePaths.nextScreenArrowOnboardingButton
-                    : ImagePaths.previousScreenArrowOnboardingButton,
-              ),
-            ),
-          ),
+          decoration: hide
+              ? null
+              : BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: AssetImage(
+                      isPointingRight
+                          ? ImagePaths.nextScreenArrowOnboardingButton
+                          : ImagePaths.previousScreenArrowOnboardingButton,
+                    ),
+                  ),
+                ),
         ),
       );
 }

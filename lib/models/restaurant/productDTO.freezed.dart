@@ -48,6 +48,7 @@ mixin _$ProductDTO {
   ProductCategory? get category => throw _privateConstructorUsedError;
   @JsonKey(fromJson: fromJsonProductOptionList)
   List<ProductOption> get options => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonESCRating)
   ESCRating? get rating => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -86,7 +87,7 @@ abstract class $ProductDTOCopyWith<$Res> {
       @JsonKey(fromJson: fromJsonVendorDTO) VendorDTO? vendor,
       @JsonKey(fromJson: fromJsonProductCategory) ProductCategory? category,
       @JsonKey(fromJson: fromJsonProductOptionList) List<ProductOption> options,
-      ESCRating? rating});
+      @JsonKey(fromJson: fromJsonESCRating) ESCRating? rating});
 
   $VendorDTOCopyWith<$Res>? get vendor;
   $ProductCategoryCopyWith<$Res>? get category;
@@ -300,7 +301,7 @@ abstract class _$$_ProductDTOCopyWith<$Res>
       @JsonKey(fromJson: fromJsonVendorDTO) VendorDTO? vendor,
       @JsonKey(fromJson: fromJsonProductCategory) ProductCategory? category,
       @JsonKey(fromJson: fromJsonProductOptionList) List<ProductOption> options,
-      ESCRating? rating});
+      @JsonKey(fromJson: fromJsonESCRating) ESCRating? rating});
 
   @override
   $VendorDTOCopyWith<$Res>? get vendor;
@@ -475,7 +476,7 @@ class _$_ProductDTO extends _ProductDTO {
       @JsonKey(fromJson: fromJsonVendorDTO) required this.vendor,
       @JsonKey(fromJson: fromJsonProductCategory) required this.category,
       @JsonKey(fromJson: fromJsonProductOptionList) this.options = const [],
-      this.rating})
+      @JsonKey(fromJson: fromJsonESCRating) this.rating = null})
       : super._();
 
   factory _$_ProductDTO.fromJson(Map<String, dynamic> json) =>
@@ -544,6 +545,7 @@ class _$_ProductDTO extends _ProductDTO {
   @JsonKey(fromJson: fromJsonProductOptionList)
   final List<ProductOption> options;
   @override
+  @JsonKey(fromJson: fromJsonESCRating)
   final ESCRating? rating;
 
   @override
@@ -672,7 +674,8 @@ abstract class _ProductDTO extends ProductDTO {
           required final ProductCategory? category,
       @JsonKey(fromJson: fromJsonProductOptionList)
           final List<ProductOption> options,
-      final ESCRating? rating}) = _$_ProductDTO;
+      @JsonKey(fromJson: fromJsonESCRating)
+          final ESCRating? rating}) = _$_ProductDTO;
   _ProductDTO._() : super._();
 
   factory _ProductDTO.fromJson(Map<String, dynamic> json) =
@@ -730,6 +733,7 @@ abstract class _ProductDTO extends ProductDTO {
   @JsonKey(fromJson: fromJsonProductOptionList)
   List<ProductOption> get options;
   @override
+  @JsonKey(fromJson: fromJsonESCRating)
   ESCRating? get rating;
   @override
   @JsonKey(ignore: true)

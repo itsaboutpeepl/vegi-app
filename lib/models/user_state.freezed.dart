@@ -67,7 +67,10 @@ mixin _$UserState {
   String get jwtToken => throw _privateConstructorUsedError;
   String get displayName => throw _privateConstructorUsedError;
   String get avatarUrl => throw _privateConstructorUsedError;
+  PreferredSignonMethod get preferredSignonMethod =>
+      throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  String? get password => throw _privateConstructorUsedError;
   String? get verificationId => throw _privateConstructorUsedError;
   bool get verificationPassed => throw _privateConstructorUsedError;
   String get identifier => throw _privateConstructorUsedError;
@@ -106,7 +109,7 @@ mixin _$UserState {
   String get surveyEmailUsed => throw _privateConstructorUsedError;
   bool get isVendor => throw _privateConstructorUsedError;
   String? get stripeCustomerId => throw _privateConstructorUsedError;
-  num? get vegiAccountId => throw _privateConstructorUsedError;
+  int? get vegiAccountId => throw _privateConstructorUsedError;
   bool get isVegiSuperAdmin => throw _privateConstructorUsedError;
   VegiRole get userVegiRole => throw _privateConstructorUsedError;
   int? get positionInWaitingList => throw _privateConstructorUsedError;
@@ -153,7 +156,9 @@ abstract class $UserStateCopyWith<$Res> {
       String jwtToken,
       String displayName,
       String avatarUrl,
+      PreferredSignonMethod preferredSignonMethod,
       String email,
+      String? password,
       String? verificationId,
       bool verificationPassed,
       String identifier,
@@ -190,7 +195,7 @@ abstract class $UserStateCopyWith<$Res> {
       String surveyEmailUsed,
       bool isVendor,
       String? stripeCustomerId,
-      num? vegiAccountId,
+      int? vegiAccountId,
       bool isVegiSuperAdmin,
       VegiRole userVegiRole,
       int? positionInWaitingList,
@@ -238,7 +243,9 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? jwtToken = null,
     Object? displayName = null,
     Object? avatarUrl = null,
+    Object? preferredSignonMethod = null,
     Object? email = null,
+    Object? password = freezed,
     Object? verificationId = freezed,
     Object? verificationPassed = null,
     Object? identifier = null,
@@ -371,10 +378,18 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      preferredSignonMethod: null == preferredSignonMethod
+          ? _value.preferredSignonMethod
+          : preferredSignonMethod // ignore: cast_nullable_to_non_nullable
+              as PreferredSignonMethod,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      password: freezed == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String?,
       verificationId: freezed == verificationId
           ? _value.verificationId
           : verificationId // ignore: cast_nullable_to_non_nullable
@@ -486,7 +501,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
       vegiAccountId: freezed == vegiAccountId
           ? _value.vegiAccountId
           : vegiAccountId // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as int?,
       isVegiSuperAdmin: null == isVegiSuperAdmin
           ? _value.isVegiSuperAdmin
           : isVegiSuperAdmin // ignore: cast_nullable_to_non_nullable
@@ -562,7 +577,9 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       String jwtToken,
       String displayName,
       String avatarUrl,
+      PreferredSignonMethod preferredSignonMethod,
       String email,
+      String? password,
       String? verificationId,
       bool verificationPassed,
       String identifier,
@@ -599,7 +616,7 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       String surveyEmailUsed,
       bool isVendor,
       String? stripeCustomerId,
-      num? vegiAccountId,
+      int? vegiAccountId,
       bool isVegiSuperAdmin,
       VegiRole userVegiRole,
       int? positionInWaitingList,
@@ -646,7 +663,9 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? jwtToken = null,
     Object? displayName = null,
     Object? avatarUrl = null,
+    Object? preferredSignonMethod = null,
     Object? email = null,
+    Object? password = freezed,
     Object? verificationId = freezed,
     Object? verificationPassed = null,
     Object? identifier = null,
@@ -779,10 +798,18 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      preferredSignonMethod: null == preferredSignonMethod
+          ? _value.preferredSignonMethod
+          : preferredSignonMethod // ignore: cast_nullable_to_non_nullable
+              as PreferredSignonMethod,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      password: freezed == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String?,
       verificationId: freezed == verificationId
           ? _value.verificationId
           : verificationId // ignore: cast_nullable_to_non_nullable
@@ -894,7 +921,7 @@ class __$$_UserStateCopyWithImpl<$Res>
       vegiAccountId: freezed == vegiAccountId
           ? _value.vegiAccountId
           : vegiAccountId // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as int?,
       isVegiSuperAdmin: null == isVegiSuperAdmin
           ? _value.isVegiSuperAdmin
           : isVegiSuperAdmin // ignore: cast_nullable_to_non_nullable
@@ -955,7 +982,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.jwtToken = '',
       this.displayName = VegiConstants.defaultDisplayName,
       this.avatarUrl = '',
+      this.preferredSignonMethod = PreferredSignonMethod.phone,
       this.email = '',
+      this.password = null,
       this.verificationId,
       this.verificationPassed = false,
       this.identifier = '',
@@ -1091,7 +1120,13 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final String avatarUrl;
   @override
   @JsonKey()
+  final PreferredSignonMethod preferredSignonMethod;
+  @override
+  @JsonKey()
   final String email;
+  @override
+  @JsonKey()
+  final String? password;
   @override
   final String? verificationId;
   @override
@@ -1174,7 +1209,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final String? stripeCustomerId;
   @override
   @JsonKey()
-  final num? vegiAccountId;
+  final int? vegiAccountId;
   @override
   @JsonKey()
   final bool isVegiSuperAdmin;
@@ -1196,7 +1231,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, vegiAuthenticationStatus: $vegiAuthenticationStatus, firebaseAuthenticationStatus: $firebaseAuthenticationStatus, fuseAuthenticationStatus: $fuseAuthenticationStatus, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, phoneNumberNoCountry: $phoneNumberNoCountry, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, email: $email, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, biometricallyAuthenticated: $biometricallyAuthenticated, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, vegiSessionCookie: $vegiSessionCookie, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId, isVegiSuperAdmin: $isVegiSuperAdmin, userVegiRole: $userVegiRole, positionInWaitingList: $positionInWaitingList, subscribedToWaitingListUpdates: $subscribedToWaitingListUpdates, waitingListEntryId: $waitingListEntryId, loginCounter: $loginCounter)';
+    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, vegiAuthenticationStatus: $vegiAuthenticationStatus, firebaseAuthenticationStatus: $firebaseAuthenticationStatus, fuseAuthenticationStatus: $fuseAuthenticationStatus, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, phoneNumberNoCountry: $phoneNumberNoCountry, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, preferredSignonMethod: $preferredSignonMethod, email: $email, password: $password, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, biometricallyAuthenticated: $biometricallyAuthenticated, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, vegiSessionCookie: $vegiSessionCookie, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId, isVegiSuperAdmin: $isVegiSuperAdmin, userVegiRole: $userVegiRole, positionInWaitingList: $positionInWaitingList, subscribedToWaitingListUpdates: $subscribedToWaitingListUpdates, waitingListEntryId: $waitingListEntryId, loginCounter: $loginCounter)';
   }
 
   @override
@@ -1231,7 +1266,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('jwtToken', jwtToken))
       ..add(DiagnosticsProperty('displayName', displayName))
       ..add(DiagnosticsProperty('avatarUrl', avatarUrl))
+      ..add(DiagnosticsProperty('preferredSignonMethod', preferredSignonMethod))
       ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('password', password))
       ..add(DiagnosticsProperty('verificationId', verificationId))
       ..add(DiagnosticsProperty('verificationPassed', verificationPassed))
       ..add(DiagnosticsProperty('identifier', identifier))
@@ -1319,7 +1356,11 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.displayName == displayName) &&
             (identical(other.avatarUrl, avatarUrl) ||
                 other.avatarUrl == avatarUrl) &&
+            (identical(other.preferredSignonMethod, preferredSignonMethod) ||
+                other.preferredSignonMethod == preferredSignonMethod) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
             (identical(other.verificationId, verificationId) ||
                 other.verificationId == verificationId) &&
             (identical(other.verificationPassed, verificationPassed) ||
@@ -1334,10 +1375,8 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.currency == currency) &&
             (identical(other.hasUpgrade, hasUpgrade) ||
                 other.hasUpgrade == hasUpgrade) &&
-            (identical(other.authType, authType) ||
-                other.authType == authType) &&
-            (identical(other.biometricallyAuthenticated, biometricallyAuthenticated) ||
-                other.biometricallyAuthenticated == biometricallyAuthenticated) &&
+            (identical(other.authType, authType) || other.authType == authType) &&
+            (identical(other.biometricallyAuthenticated, biometricallyAuthenticated) || other.biometricallyAuthenticated == biometricallyAuthenticated) &&
             const DeepCollectionEquality().equals(other.locale, locale) &&
             (identical(other.firebaseCredentials, firebaseCredentials) || other.firebaseCredentials == firebaseCredentials) &&
             (identical(other.firebaseSessionToken, firebaseSessionToken) || other.firebaseSessionToken == firebaseSessionToken) &&
@@ -1393,7 +1432,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         jwtToken,
         displayName,
         avatarUrl,
+        preferredSignonMethod,
         email,
+        password,
         verificationId,
         verificationPassed,
         identifier,
@@ -1473,7 +1514,9 @@ abstract class _UserState extends UserState {
       final String jwtToken,
       final String displayName,
       final String avatarUrl,
+      final PreferredSignonMethod preferredSignonMethod,
       final String email,
+      final String? password,
       final String? verificationId,
       final bool verificationPassed,
       final String identifier,
@@ -1510,7 +1553,7 @@ abstract class _UserState extends UserState {
       final String surveyEmailUsed,
       final bool isVendor,
       final String? stripeCustomerId,
-      final num? vegiAccountId,
+      final int? vegiAccountId,
       final bool isVegiSuperAdmin,
       final VegiRole userVegiRole,
       final int? positionInWaitingList,
@@ -1590,7 +1633,11 @@ abstract class _UserState extends UserState {
   @override
   String get avatarUrl;
   @override
+  PreferredSignonMethod get preferredSignonMethod;
+  @override
   String get email;
+  @override
+  String? get password;
   @override
   String? get verificationId;
   @override
@@ -1655,7 +1702,7 @@ abstract class _UserState extends UserState {
   @override
   String? get stripeCustomerId;
   @override
-  num? get vegiAccountId;
+  int? get vegiAccountId;
   @override
   bool get isVegiSuperAdmin;
   @override

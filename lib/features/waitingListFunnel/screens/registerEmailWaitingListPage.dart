@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
@@ -7,6 +8,7 @@ import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/waitingListFunnel/registerEmailNotificationsViewModel.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/url.dart';
@@ -36,8 +38,6 @@ class _RegisterEmailWaitingListScreenState
   final emailController = TextEditingController(text: '');
 
   final _formKey = GlobalKey<FormState>();
-
-  bool isPreloading = false;
 
   late AnimationController controller;
   late Animation<double> opacityAnimation;
@@ -161,74 +161,36 @@ class _RegisterEmailWaitingListScreenState
                           ),
                         ),
                         const SizedBox(height: 40),
-                        StoreConnector<AppState, RegisterEmailToWaitingList>(
+                        StoreConnector<AppState, RegisterEmailNotificationsViewModel>(
                           distinct: true,
-                          converter: (store) => (
-                            String email,
-                            void Function() onSuccess,
-                            dynamic Function(dynamic) onError,
-                          ) =>
-                              store.dispatch(
-                                registerEmailWaitingListHandler(
-                                  email,
-                                  onSuccess,
-                                  onError,
-                                ),
-                              ),
-                          builder: (_, registerEmailToWaitingList) =>
+                          converter: RegisterEmailNotificationsViewModel.fromStore,
+                          onWillChange: (previousViewModel, newViewModel) {
+                            if (newViewModel.cartError != null &&
+                                newViewModel.cartError !=
+                                    previousViewModel?.cartError) {
+                              final err = newViewModel.cartError!;
+                              if (err.code != null) {
+                                if (err.code ==
+                                    CartErrCode
+                                        .failedToRegisterEmailToWaitingList) {
+                                  showErrorSnack(
+                                    context: context,
+                                    title: err.title,
+                                    message: err.message,
+                                  );
+                                }
+                              }
+                            }
+                          },
+                          builder: (_, viewModel) =>
                               PrimaryButton(
                             label: I10n.of(context).next_button,
-                            preload: isPreloading,
-                            disabled: isPreloading,
+                            preload: viewModel.isLoadingCartState,
+                            disabled: viewModel.isLoadingCartState,
                             onPressed: () async {
                               final String email = emailController.text;
                               FocusScope.of(context).unfocus();
-                              setState(() {
-                                isPreloading = true;
-                              });
-                              try {
-                                registerEmailToWaitingList(
-                                  email,
-                                  () {
-                                    setState(() {
-                                      isPreloading = false;
-                                    });
-                                    widget.onSubmitEmail?.call();
-                                  },
-                                  (error) {
-                                    setState(() {
-                                      isPreloading = false;
-                                    });
-                                    showErrorSnack(
-                                      message: Messages.invalidEmail,
-                                      title:
-                                          I10n.of(context).something_went_wrong,
-                                      context: context,
-                                      margin: const EdgeInsets.only(
-                                        top: 8,
-                                        right: 8,
-                                        left: 8,
-                                        bottom: 120,
-                                      ),
-                                    );
-                                  },
-                                );
-                              } catch (e) {
-                                setState(() {
-                                  isPreloading = false;
-                                });
-                                await showErrorSnack(
-                                  message: Messages.invalidEmail,
-                                  title: I10n.of(context).something_went_wrong,
-                                  context: context,
-                                  margin: const EdgeInsets.only(
-                                    top: 8,
-                                    right: 8,
-                                    left: 8,
-                                    bottom: 120,
-                                  ),
-                                );
-                              }
+                              viewModel.registerEmailToWaitingList(email: email,);
                             },
                           ),
                         ),

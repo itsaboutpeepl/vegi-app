@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:carrier_info/carrier_info.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -20,6 +21,7 @@ import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/mainScreen.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
@@ -377,7 +379,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   )
                 ],
-              )
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () => _showAlternativeSignonPicker(context),
+                child: Text(
+                  'Alternative sign-in methods',
+                  style: TextStyle(
+                    color: Colors.blue[500],
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
         );
@@ -431,4 +446,63 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
     return null;
   }
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    fullNameController.dispose();
+    super.dispose();
+  }
+
+  void _showAlternativeSignonPicker(
+    BuildContext context,
+  ) =>
+      showModalBottomSheet<Widget>(
+        useRootNavigator: true,
+        context: context,
+        builder: (context) => BottomSheet(
+          onClosing: () {},
+          builder: (context) => Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).canvasColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ListTile(
+                //   title: const Text(Labels.googleSignonLabel),
+                //   onTap: () async {
+                //     await onBoardStrategy.signInWithGoogle();
+                //   },
+                // ),
+                // ListTile(
+                //   title: const Text(Labels.appleSignonLabel),
+                //   onTap: () async {
+                //     // Navigator.pop(context);
+                //     await onBoardStrategy.signInWithApple();
+                //   },
+                // ),
+                ListTile(
+                  title: const Text(Labels.emailAndPasswordSignonLabel),
+                  onTap: () async {
+                    await rootRouter
+                        .replace(const SignUpWithEmailAndPasswordScreen());
+                  },
+                ),
+                ListTile(
+                  title: const Text(Labels.emailLinkSignonLabel),
+                  onTap: () async {
+                    await rootRouter.replace(const SignUpEmailLinkScreen());
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 }

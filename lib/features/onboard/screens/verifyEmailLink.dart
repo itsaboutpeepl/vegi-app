@@ -24,11 +24,13 @@ import 'package:vegan_liverpool/utils/constants.dart';
 
 class VerifyEmailLinkPage extends StatelessWidget {
   const VerifyEmailLinkPage({
+    required this.emailAddress,
     required this.emailLinkFromVerificationEmail,
     Key? key,
   }) : super(key: key);
 
   final String emailLinkFromVerificationEmail;
+  final String emailAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,8 @@ class VerifyEmailLinkPage extends StatelessWidget {
       distinct: true,
       builder: (context, viewModel) {
         return FutureBuilder<void>(
-          future: viewModel.linkConflictingFirebaseCredentials(
+          future: viewModel.signInWithEmailLinkCallback(
+            emailAddress: emailAddress,
             emailLinkFromVerificationEmail: emailLinkFromVerificationEmail,
           ),
           builder: (context, snapshot) {

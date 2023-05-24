@@ -11,6 +11,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/analytics_props.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 
@@ -27,6 +28,7 @@ import 'package:vegan_liverpool/models/cart/discount.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -37,6 +39,9 @@ import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/models/waitingListFunnel/waitingListEntry.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -85,6 +90,41 @@ class StripePaymentStatusUpdate {
   @override
   String toString() {
     return 'StripePaymentStatusUpdate : status:"${status.name}"';
+  }
+}
+
+class SetCartError {
+  SetCartError({
+    required this.error,
+  });
+
+  final ErrorDetails<CartErrCode> error;
+
+  @override
+  String toString() {
+    return 'SetCartError : error:"$error"';
+  }
+}
+
+class SetCartErrorResolved {
+  SetCartErrorResolved();
+
+  @override
+  String toString() {
+    return 'SetCartErrorResolved';
+  }
+}
+
+class SetCartIsLoading {
+  SetCartIsLoading({
+    required this.isLoading,
+  });
+
+  final bool isLoading;
+
+  @override
+  String toString() {
+    return 'SetCartIsLoading : isLoading:"$isLoading"';
   }
 }
 
@@ -311,6 +351,18 @@ class CreateOrder {
   @override
   String toString() {
     return 'CreateOrder : orderID: ${order.id}, paymentIntentID: $paymentIntentId';
+  }
+}
+
+class CancelOrder {
+  CancelOrder({
+    required this.orderId,
+  });
+  final int orderId;
+
+  @override
+  String toString() {
+    return 'CancelOrder : orderID: ${orderId}';
   }
 }
 
@@ -575,35 +627,144 @@ ThunkAction<AppState> updateCartTip(int newTip) {
   };
 }
 
-ThunkAction<AppState> subscribeToWaitingListEmails({
+ThunkAction<AppState> registerEmailWaitingListHandler({
   required String email,
-  required bool receiveUpdates,
-  required void Function(String) onError,
 }) {
   return (Store<AppState> store) async {
     try {
+      store
+        ..dispatch(
+          SetIsLoadingHttpRequest(
+            isLoading: true,
+          ),
+        )
+        ..dispatch(
+          SetCartIsLoading(
+            isLoading: true,
+          ),
+        );
+
+      final newEntry = await peeplEatsService.registerEmailToWaitingList(
+        email,
+        store,
+      );
+      unawaited(
+        Analytics.track(
+          eventName: AnalyticsEvents.emailWLRegistration,
+          properties: {
+            AnalyticsProps.status: AnalyticsProps.success,
+          },
+        ),
+      );
+      if (newEntry != null) {
+        store
+          ..dispatch(
+            EmailWLRegistrationSuccess(
+              entry: newEntry,
+            ),
+          )
+          ..dispatch(
+            SetSubscribedToWaitingListUpdates(
+              updatedEntry: newEntry,
+            ),
+          )
+          ..dispatch(SetIsLoadingHttpRequest(isLoading: false))
+          ..dispatch(SetCartIsLoading(isLoading: false));
+      } else {
+        store
+          ..dispatch(
+            SetCartError(
+              error: ErrorDetails<CartErrCode>(
+                title: Messages.failedToRegisterEmailToWaitingList,
+                message: '',
+                code: CartErrCode.failedToRegisterEmailToWaitingList,
+              ),
+            ),
+          )
+          ..dispatch(SetIsLoadingHttpRequest(isLoading: false))
+          ..dispatch(SetCartIsLoading(isLoading: false));
+      }
+    } catch (e, s) {
+      log.error(
+        'ERROR - Email WaitingList Registration Request',
+        error: e,
+        stackTrace: s,
+      );
+      await Analytics.track(
+        eventName: AnalyticsEvents.emailWLRegistration,
+        properties: {
+          AnalyticsProps.status: AnalyticsProps.failed,
+          'error': e.toString(),
+        },
+      );
+      await Sentry.captureException(
+        Exception('Error in Email Registration: ${e.toString()}'),
+        stackTrace: s,
+        hint: 'ERROR in Email Registration',
+      );
+    }
+    store.dispatch(
+      fetchPositionInWaitingListQueue(errorHandler: (err) {
+        store.dispatch(
+          SetCartError(
+            error: ErrorDetails<CartErrCode>(
+              title: Messages.connectionError,
+              message: Messages.failedToCheckPositionInWaitingList,
+              code: CartErrCode.failedToCheckPositionInWaitingList,
+            ),
+          ),
+        );
+      }),
+    );
+  };
+}
+
+ThunkAction<AppState> subscribeToWaitingListEmails({
+  required String email,
+  required bool receiveUpdates,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetCartIsLoading(isLoading: true));
       final entry = await peeplEatsService.subscribeToWaitingListEmails(
         email: email,
         receiveUpdates: receiveUpdates,
-        onError: onError,
       );
       if (entry == null) {
-        return onError('Unable to subscribe email to waiting list updates');
+        store
+          ..dispatch(
+            SetCartError(
+              error: ErrorDetails<CartErrCode>(
+                title: Messages.failedToRegisterEmailToWaitingList,
+                message: '',
+                code: CartErrCode.failedToRegisterEmailForNotifications,
+              ),
+            ),
+          )
+          ..dispatch(SetCartIsLoading(isLoading: false));
       }
       store.dispatch(
         SetSubscribedToWaitingListUpdates(
-          updatedEntry: entry,
+          updatedEntry: entry!,
         ),
       );
     } catch (e, s) {
+      store
+        ..dispatch(
+          SetCartError(
+            error: ErrorDetails<CartErrCode>(
+              title: Messages.failedToRegisterEmailToWaitingList,
+              message: '',
+              code: CartErrCode.failedToRegisterEmailForNotifications,
+            ),
+          ),
+        )
+        ..dispatch(SetCartIsLoading(isLoading: false));
       log.error('ERROR - subsribeToWaitingListEmails $e');
       await Sentry.captureException(
         e,
         stackTrace: s,
         hint: 'ERROR - subsribeToWaitingListEmails $e',
-      );
-      onError(
-        'ERROR - subsribeToWaitingListEmails $e',
       );
     }
   };
@@ -612,41 +773,83 @@ ThunkAction<AppState> subscribeToWaitingListEmails({
 ThunkAction<AppState> validateFixedVoucherCode({
   required String code,
   required int vendor,
-  required void Function(String) onError,
-  void Function()? successHandler,
 }) {
   return (Store<AppState> store) async {
     try {
+      store.dispatch(SetCartIsLoading(isLoading: true));
       final discount = await peeplEatsService.validateFixedDiscountCode(
-        store: store,
         code: code,
         walletAddress: store.state.userState.walletAddress,
         vendor: vendor,
-        onError: onError,
       );
       if (discount == null) {
+        store
+          ..dispatch(
+            SetCartError(
+              error: ErrorDetails<CartErrCode>(
+                title: Messages.addVoucherCodeInvalidCode,
+                message: '',
+                code: CartErrCode.invalidDiscountCode,
+              ),
+            ),
+          )
+          ..dispatch(SetCartIsLoading(isLoading: false));
         return;
       }
-      store.dispatch(
-        AddValidVoucherCodeToCart(
-          // code: code,
-          // vendorId: vendor,
-          // value: discount.value,
-          // expiryDate: discount.expiryDateTime,
-          voucher: discount,
-        ),
-      );
-
-      successHandler?.call();
+      store
+        ..dispatch(
+          AddValidVoucherCodeToCart(
+            // code: code,
+            // vendorId: vendor,
+            // value: discount.value,
+            // expiryDate: discount.expiryDateTime,
+            voucher: discount,
+          ),
+        )
+        ..dispatch(SetCartIsLoading(isLoading: false));
     } catch (e, s) {
-      log.error('ERROR - validateFixedVoucherCode $e');
+      store
+        ..dispatch(
+          SetCartError(
+            error: ErrorDetails<CartErrCode>(
+              title: Messages.addVoucherCodeInvalidCode,
+              message: '',
+              code: CartErrCode.failedToRegisterDiscountCode,
+            ),
+          ),
+        )
+        ..dispatch(SetCartIsLoading(isLoading: false));
+      log.error(
+        'ERROR - validateFixedVoucherCode $e',
+        stackTrace: s,
+      );
       await Sentry.captureException(
         e,
         stackTrace: s,
         hint: 'ERROR - validateFixedVoucherCode $e',
       );
-      onError(
-        'ERROR - validateFixedVoucherCode $e',
+    }
+  };
+}
+
+ThunkAction<AppState> spendVoucherPot({
+  required Money amount,
+}) {
+  return (Store<AppState> store) async {
+    throw Exception('spendVoucherPot not implemented');
+    try {
+      //todo: add this to the pay thunk_action instead with all vouchers automatically applied
+      //todo: Check value of voucher pot,
+      //todo: call peeplEats redeem voucher (enforce use it all by using a voucher?)
+      //todo: if succeeds, remove the voucher from the voucherPot -> AddValidVoucherCodeToCart()
+      //todo: remove total voucher value on checkout screen so visible to user and charge the user remaining amount
+      //todo: 
+    } catch (e, s) {
+      log.error('ERROR - spendVoucherPot $e', stackTrace: s);
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - spendVoucherPot $e',
       );
     }
   };
@@ -1298,7 +1501,8 @@ ThunkAction<AppState> startOrderCreationProcess({
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
-                OrderCreationProcessStatus.needToSelectATimeSlot),
+              OrderCreationProcessStatus.needToSelectATimeSlot,
+            ),
           ),
         );
         return;
@@ -1307,7 +1511,8 @@ ThunkAction<AppState> startOrderCreationProcess({
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
-                OrderCreationProcessStatus.needToSelectADeliveryAddress),
+              OrderCreationProcessStatus.needToSelectADeliveryAddress,
+            ),
           ),
         );
         return;
@@ -1316,10 +1521,16 @@ ThunkAction<AppState> startOrderCreationProcess({
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
-                OrderCreationProcessStatus.orderIsBelowVendorMinimumOrder),
+              OrderCreationProcessStatus.orderIsBelowVendorMinimumOrder,
+            ),
           ),
         );
       } else {
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: OrderCreationProcessStatus.none,
+          ),
+        );
         if (cartState.isDelivery) {
           store.dispatch(
             prepareOrderObjectForDelivery(
@@ -1434,6 +1645,7 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetPaymentButtonFlag(true));
+      //TODO: apply appliedVouchers to order, might need to be done in prepareOrderForXXX step...
       final result = await peeplEatsService.createOrder(orderObject);
       OrderCreationProcessStatus _sentryUpdatePipe(
         OrderCreationProcessStatus status,
@@ -1450,14 +1662,14 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
-                OrderCreationProcessStatus.sendOrderCallTimedOut),
+                OrderCreationProcessStatus.sendOrderCallTimedOut,),
           ),
         );
       } else if (result.orderCreationStatus == OrderCreationStatus.failed) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
-                OrderCreationProcessStatus.sendOrderCallServerError),
+                OrderCreationProcessStatus.sendOrderCallServerError,),
           ),
         );
       } else {
@@ -1558,6 +1770,33 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
   };
 }
 
+ThunkAction<AppState> cancelOrder({
+  required int orderId,
+  required int accountId,
+  required String senderWalletAddress,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(CancelOrder(orderId: orderId));
+      final cancelledOrderSuccess = await peeplEatsService.cancelOrder(
+        orderId: orderId,
+        accountId: accountId,
+        senderWalletAddress: senderWalletAddress,
+      );
+    } catch (e, s) {
+      log.error(
+        'ERROR - cancelOrder $e',
+        stackTrace: s,
+      );
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - cancelOrder $e',
+      );
+    }
+  };
+}
+
 ThunkAction<AppState> startPaymentProcess({
   required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
 }) {
@@ -1578,13 +1817,30 @@ ThunkAction<AppState> startPaymentProcess({
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPeeplPayProcess $e',
           );
-          store.dispatch(SetPaymentButtonFlag(false));
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
+          return;
         } else if (store.state.cartState.orderCreationProcessStatus !=
             OrderCreationProcessStatus.none) {
           final e =
               'orderCreationProcess in state: ${store.state.cartState.orderCreationProcessStatus.name}... Cannot start payment';
           log.error(e, stackTrace: StackTrace.current);
-          store.dispatch(SetPaymentButtonFlag(false));
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
           return;
         }
         final orderId = int.parse(store.state.cartState.orderID);
@@ -1602,18 +1858,12 @@ ThunkAction<AppState> startPaymentProcess({
             .then(
           (value) {
             if (!value) {
-              store
-                ..dispatch(SetPaymentButtonFlag(false))
-                ..dispatch(SetTransferringPayment(flag: value))
-                ..dispatch(
-                  OrderCreationProcessStatusUpdate(
-                    status: OrderCreationProcessStatus.success,
-                  ),
-                )
-                ..dispatch(SetConfirmed(
-                  flag: true,
+              store.dispatch(
+                SetConfirmed(
+                  flag: value,
                   orderId: orderId,
-                ));
+                ),
+              );
               return;
             }
             unawaited(
@@ -1634,23 +1884,30 @@ ThunkAction<AppState> startPaymentProcess({
             eventName: AnalyticsEvents.payStripe,
           ),
         );
-        final orderId = store.state.cartState.orderID;
-        final paymentIntentID = store.state.cartState.paymentIntentID;
         if (store.state.userState.vegiAccountId == null) {
-          final e = 'Vegi AccountId not set on state... Cannot start payment';
+          const e = 'Vegi AccountId not set on state... Cannot start payment';
           log.error(e);
           await Sentry.captureException(
             Exception(e),
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPeeplPayProcess $e',
           );
-          store.dispatch(SetPaymentButtonFlag(false));
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
+          return;
         }
         await stripeService
             .handleStripe(
           recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
           senderWalletAddress: store.state.userState.walletAddress,
-          orderId: num.parse(store.state.cartState.orderID),
+          orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           currency: Currency.GBP,
           amount: store.state.cartState.cartTotal,
@@ -1662,6 +1919,13 @@ ThunkAction<AppState> startPaymentProcess({
             if (!value) {
               store
                 ..dispatch(SetPaymentButtonFlag(false))
+                ..dispatch(
+                  cancelOrder(
+                    orderId: int.parse(store.state.cartState.orderID),
+                    accountId: store.state.userState.vegiAccountId!,
+                    senderWalletAddress: store.state.userState.walletAddress,
+                  ),
+                )
                 ..dispatch(SetTransferringPayment(flag: value));
               return;
             }
@@ -1710,13 +1974,29 @@ ThunkAction<AppState> startPaymentProcess({
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPeeplPayProcess $e',
           );
-          store.dispatch(SetPaymentButtonFlag(false));
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
         } else if (store.state.cartState.orderCreationProcessStatus !=
             OrderCreationProcessStatus.none) {
           final e =
               'orderCreationProcess in state: ${store.state.cartState.orderCreationProcessStatus.name}... Cannot start payment';
           log.error(e, stackTrace: StackTrace.current);
-          store.dispatch(SetPaymentButtonFlag(false));
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
           return;
         }
         await stripeService
@@ -1736,16 +2016,27 @@ ThunkAction<AppState> startPaymentProcess({
             if (!value) {
               store
                 ..dispatch(SetPaymentButtonFlag(false))
+                ..dispatch(
+                  cancelOrder(
+                    orderId: int.parse(store.state.cartState.orderID),
+                    accountId: store.state.userState.vegiAccountId!,
+                    senderWalletAddress: store.state.userState.walletAddress,
+                  ),
+                )
                 ..dispatch(SetTransferringPayment(flag: value))
                 ..dispatch(
                   OrderCreationProcessStatusUpdate(
-                    status: OrderCreationProcessStatus.success,
+                    status: value
+                        ? OrderCreationProcessStatus.success
+                        : OrderCreationProcessStatus.orderCancelled,
                   ),
                 )
-                ..dispatch(SetConfirmed(
-                  flag: true,
-                  orderId: int.parse(store.state.cartState.orderID),
-                ));
+                ..dispatch(
+                  SetConfirmed(
+                    flag: value,
+                    orderId: int.parse(store.state.cartState.orderID),
+                  ),
+                );
               return;
             }
             unawaited(
@@ -1776,13 +2067,29 @@ ThunkAction<AppState> startPaymentProcess({
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPeeplPayProcess $e',
           );
-          store.dispatch(SetPaymentButtonFlag(false));
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
         } else if (store.state.cartState.orderCreationProcessStatus !=
             OrderCreationProcessStatus.none) {
           final e =
               'orderCreationProcess in state: ${store.state.cartState.orderCreationProcessStatus.name}... Cannot start payment';
           log.error(e, stackTrace: StackTrace.current);
-          store.dispatch(SetPaymentButtonFlag(false));
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
           return;
         }
         await stripeService
@@ -1800,7 +2107,15 @@ ThunkAction<AppState> startPaymentProcess({
             .then(
           (value) {
             if (!value) {
-              store.dispatch(SetTransferringPayment(flag: value));
+              store
+                ..dispatch(SetTransferringPayment(flag: value))
+                ..dispatch(
+                  cancelOrder(
+                    orderId: int.parse(store.state.cartState.orderID),
+                    accountId: store.state.userState.vegiAccountId!,
+                    senderWalletAddress: store.state.userState.walletAddress,
+                  ),
+                );
               return;
             }
             unawaited(
@@ -1839,10 +2154,19 @@ ThunkAction<AppState> startPaymentProcess({
         //show loading popup
         //show order confirmed
         await showBottomPaymentSheet(
-            store.state.cartState.selectedPaymentMethod);
+          store.state.cartState.selectedPaymentMethod,
+        );
       }
     } catch (e, s) {
-      store.dispatch(SetPaymentButtonFlag(false));
+      store
+        ..dispatch(SetPaymentButtonFlag(false))
+        ..dispatch(
+          cancelOrder(
+            orderId: int.parse(store.state.cartState.orderID),
+            accountId: store.state.userState.vegiAccountId!,
+            senderWalletAddress: store.state.userState.walletAddress,
+          ),
+        );
       log.error('ERROR - sendOrderObject $e');
       await Sentry.captureException(
         e,
@@ -1882,7 +2206,7 @@ ThunkAction<AppState> startPeeplPayProcess() {
             .handleStripe(
           recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
           senderWalletAddress: store.state.userState.walletAddress,
-          orderId: num.parse(store.state.cartState.orderID),
+          orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           currency: Currency.GBP,
           amount: (selectedGBPXAmount * 100).toInt(),

@@ -525,7 +525,7 @@ T? Function(dynamic) fromSailsObjectJson<T>(
       dynamic json,
     ) =>
         tryCatchRethrowInline(
-          () => json is int || json == null
+          () => json is int || json == null || (json is Map && json.isEmpty)
               ? null
               : fromJson(json as Map<String, dynamic>),
         );
@@ -535,7 +535,11 @@ List<T> Function(dynamic) fromSailsListOfObjectJson<T>(
 ) {
   List<T> fn(dynamic json) {
     if (json is Iterable) {
-      return json.map((e) => fromJson(e as Map<String, dynamic>)).toList();
+      return json
+          .map((e) => fromSailsObjectJson<T>(fromJson)(e))
+          .where((e) => e != null)
+          .cast<T>()
+          .toList();
     } else {
       return [];
     }

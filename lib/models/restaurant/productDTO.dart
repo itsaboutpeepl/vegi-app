@@ -49,7 +49,7 @@ class ProductDTO with _$ProductDTO {
     @JsonKey(fromJson: fromJsonProductOptionList)
     @Default([])
         List<ProductOption> options,
-    ESCRating? rating,
+    @JsonKey(fromJson: fromJsonESCRating) @Default(null) ESCRating? rating,
   }) = _ProductDTO;
 
   const ProductDTO._();

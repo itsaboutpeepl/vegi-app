@@ -4,11 +4,14 @@ import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/features/account/router/router.dart';
 import 'package:vegan_liverpool/features/account/screens/profile.dart';
 import 'package:vegan_liverpool/features/onboard/screens/createWalletFirstScreen.dart';
+import 'package:vegan_liverpool/features/onboard/screens/create_email_password_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/firebaseAuthLink.dart';
 import 'package:vegan_liverpool/features/onboard/screens/registerEmailOnboardingScreen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/restore_wallet_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/show_user_mnemonic.dart';
+import 'package:vegan_liverpool/features/onboard/screens/signup_email_link_screen.dart';
+import 'package:vegan_liverpool/features/onboard/screens/signup_email_password_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/signup_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/username_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/verifyEmailLink.dart';
@@ -43,7 +46,7 @@ export 'routes.gr.dart';
     AutoRoute(page: ChooseSecurityOption),
     AutoRoute(page: VerifyEmailLinkPage),
     AutoRoute(
-      page: FirebaseAuthLinkPage, 
+      page: FirebaseAuthLinkPage,
       path: 'firebaseauth/link',
     ),
     AutoRoute(page: PinCodeScreen),
@@ -65,6 +68,19 @@ export 'routes.gr.dart';
         accountTab,
       ],
     ),
+    AutoRoute(
+      page: SignUpWithEmailAndPasswordScreen,
+      children: [
+        accountTab,
+      ],
+    ),
+    AutoRoute(
+      page: SignUpEmailLinkScreen,
+      children: [
+        accountTab,
+      ],
+    ),
+    AutoRoute(page: CreateWithEmailAndPasswordScreen),
     AutoRoute(page: VerifyPhoneNumber),
     AutoRoute(page: UserNameScreen),
     AutoRoute(

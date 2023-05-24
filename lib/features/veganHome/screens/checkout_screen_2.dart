@@ -185,7 +185,7 @@ class CheckoutScreenPt2 extends StatelessWidget {
                     const DeliveryTimeCard(),
                     const FulfilmentMethodSelector(),
                     const CartItemsCard(),
-                    const DiscountCard(),
+                    const DiscountCards(),
                     const BillSummaryCard(),
                     if (isDelivery) const TipSelectionCard(),
                     const YourDetailsCard(),

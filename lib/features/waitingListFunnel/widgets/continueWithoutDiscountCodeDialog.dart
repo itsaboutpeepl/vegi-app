@@ -39,20 +39,30 @@ class ContinueWithoutDiscountCodeDialog extends StatelessWidget {
           onPressed: () => dialogClosedCallback(true),
         ),
       ],
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: const [
-          Text(
-            CopyWrite.continueWithoutDiscountCode,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          SizedBox(height: 15),
-        ],
+      
+      // child: Column(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   mainAxisSize: MainAxisSize.min,
+      //   children: const [
+      //     Text(
+      //       CopyWrite.continueWithoutDiscountCode,
+      //       textAlign: TextAlign.center,
+      //       style: TextStyle(
+      //         fontSize: 28,
+      //         fontWeight: FontWeight.w800,
+      //       ),
+      //     ),
+      //     SizedBox(height: 15),
+      //   ],
+      // ),
+      child: const AutoSizeText(
+        CopyWrite.continueWithoutDiscountCode,
+        maxLines: 2,
+        maxFontSize: 54,
+        style: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
   }

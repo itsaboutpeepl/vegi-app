@@ -71,6 +71,7 @@ class _VegiDialogState<ViewModel> extends State<VegiDialog<ViewModel>>
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             content: Container(
+              alignment: Alignment.center,
               padding: const EdgeInsets.all(10),
               child: widget.child,
             ),

@@ -40,6 +40,7 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
           return;
         }
       },
+
       builder: (context, viewModel) {
         const queueTextSize = 48.0;
         if (viewModel.userIsVerified) {
@@ -82,6 +83,7 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    
                     children: [
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40),
@@ -89,7 +91,7 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: 'You\'re',
+                                text: "You're",
                                 style: TextStyle(
                                   color: themeShade1000,
                                 ),
@@ -122,11 +124,8 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
                         height: 40,
                       ),
                       WaitingListBetaEligibilityButton(
-                        title: 'Early bird access',
-                        textLines: const [
-                          'Join our beta app to use',
-                          'vegi now!',
-                        ],
+                        title: CopyWrite.earlyBirdLabel,
+                        textLines: CopyWrite.earlyBirdMessage,
                         onPressed: () => rootRouter.replace(
                           viewModel.accountCreated && viewModel.isLoggedIn
                               ? const MainScreen()
@@ -138,24 +137,10 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
                         height: 30,
                       ),
                       WaitingListBetaEligibilityButton(
-                        title: 'Wait for launch',
-                        textLines: const [
-                          'Get notified when we are ready.',
-                          'Your vouchers will still be valid!',
-                        ],
+                        title: CopyWrite.patientSnailLabel,
+                        textLines: CopyWrite.patientSnailMessage,
                         onPressed: () => rootRouter.replace(
-                          RegisterEmailNotificationsScreen(
-                            onSubmitEmail: () {
-                              viewModel.subscribeToWaitingListEmails(
-                                receiveNotifications: true,
-                                onError: (errStr) => showErrorSnack(
-                                  context: context,
-                                  title: Messages
-                                      .unableToRegisterEmailForNotifications,
-                                ),
-                              );
-                            }, // Register User For Email Notifications and
-                          ),
+                          RegisterEmailNotificationsScreen(),
                         ),
                         imagePath: ImagePaths.onboardingPage5CardSnail,
                       ),

@@ -33,9 +33,7 @@ _$_ProductDTO _$$_ProductDTOFromJson(Map<String, dynamic> json) =>
       options: json['options'] == null
           ? const []
           : fromJsonProductOptionList(json['options']),
-      rating: json['rating'] == null
-          ? null
-          : ESCRating.fromJson(json['rating'] as Map<String, dynamic>),
+      rating: json['rating'] == null ? null : fromJsonESCRating(json['rating']),
     );
 
 Map<String, dynamic> _$$_ProductDTOToJson(_$_ProductDTO instance) =>

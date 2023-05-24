@@ -7,15 +7,7 @@ part of 'onboarding_state.dart';
 // **************************************************************************
 
 _$_OnboardingState _$$_OnboardingStateFromJson(Map<String, dynamic> json) =>
-    _$_OnboardingState(
-      signupIsInFlux: json['signupIsInFlux'] as bool,
-      signupError: json['signupError'] == null
-          ? null
-          : ErrorDetails.fromJson(json['signupError'] as Map<String, dynamic>),
-    );
+    _$_OnboardingState();
 
 Map<String, dynamic> _$$_OnboardingStateToJson(_$_OnboardingState instance) =>
-    <String, dynamic>{
-      'signupIsInFlux': instance.signupIsInFlux,
-      'signupError': instance.signupError?.toJson(),
-    };
+    <String, dynamic>{};

@@ -108,8 +108,10 @@ class _MainScreenState extends State<MainScreen> {
         }
         if (!vm.userIsVerified && VegiConstants.showWaitingListFunnel) {
           return const WaitingListFunnelScreen();
-        } else if (vm.firebaseAuthenticationStatus ==
-            FirebaseAuthenticationStatus.unauthenticated) {
+        } else if (vm.fuseAuthenticationStatus ==
+                FuseAuthenticationStatus.unauthenticated ||
+            vm.firebaseAuthenticationStatus ==
+                FirebaseAuthenticationStatus.unauthenticated) {
           vm.authenticateAll();
           return LoadingScaffold;
         } else {

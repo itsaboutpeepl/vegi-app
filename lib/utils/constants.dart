@@ -146,6 +146,10 @@ class Messages {
       'Please enter your email to be first to receive an update when we launch.';
 
   static const String emailRegisteredThankYou = 'Thank you for registering';
+  static const String failedToRegisterEmailToWaitingList =
+      'Registration failed';
+  static const String failedToCheckPositionInWaitingList =
+      'Failed to check position in waiting list.';
   static const String emailPleaseRegisterForLaunchNotifications =
       'Enter your email to be notified when we launch';
   static const String emailPleaseEnterToHelpProtectYourAccount =
@@ -182,6 +186,12 @@ class Messages {
       'Unable to register email for notifications';
 
   static const String addVoucherCode = 'Add a voucher code';
+  static const String addVoucherCodeInvalidCode = 'Invalid code';
+  static const String addVoucherCodeCodeCantBeEmpty =
+      "Discount code can't be empty";
+  static const String permissionDenied = 'Permission denied';
+  static const String removeVoucherCodeNotAllowed =
+      'Existing vouchers cannot be removed.';
 
   static const String willEmailOnceLive =
       "We'll send you an email when we are live and you can spend your credit!";
@@ -198,6 +208,9 @@ class Messages {
 
   static const String searchVegiPlaceholder = 'Search vegi...';
   static const String searchVendorPlaceholder = 'Search vendor...';
+
+  static const String signInFailed = 'Sign-in failed';
+  static const String signInFailedEmailLinkMessage = 'Unable to signup with email links at this time';
 }
 
 class CopyWrite {
@@ -207,11 +220,10 @@ class CopyWrite {
       'products from local businesses and growers.';
   static const String onboardingScreenHeading2 = 'Shop local';
   static const String onboardingScreenSubHeading2 =
-      'vegi is a digital wallet that supports independents'
-      ' only. Top up your wallet and spend with Liverpool locals.';
+      'Use vegi to support independent businesses and keep more money in our local economy.';
   static const String onboardingScreenHeading3 = 'Earn rewards';
-  static String onboardingScreenSubHeading3 =
-      'Receive ${pplRewardsPcntDelivery.toPercent()} cash back each time you use vegi to spend next time you shop using rewards.';
+  static const String onboardingScreenSubHeading3 =
+      'Enjoy cash-back when you use vegi to spend again next time you shop.';
   static const String continueWithoutDiscountCode =
       'Continue without voucher code?';
   static const String preLaunchPerksHeadingPart1 = 'Shop local, get rewards';
@@ -224,6 +236,17 @@ class CopyWrite {
   static const String collectCreditForEcoProducts =
       'Collect credit when you purchase a product made by a local business '
       'from Purple Carrot';
+
+  static const String patientSnailLabel = 'Patient Snail';
+  static const List<String> patientSnailMessage = [
+    'Get notified when ',
+    "we're ready!"
+  ];
+  static const String earlyBirdLabel = 'Early Bird';
+  static const List<String> earlyBirdMessage = [
+    'Join our beta app to use',
+    'vegi now!'
+  ];
 }
 
 class ImagePaths {
@@ -299,6 +322,12 @@ class Labels {
 
   static String vegiPay({required bool vendorMode}) =>
       vendorMode ? 'Take vegiPayment' : 'vegiPay';
+
+  static const String googleSignonLabel = 'Google';
+  static const String appleSignonLabel = 'Apple';
+  static const String emailAndPasswordSignonLabel = 'Email and Password';
+  static const String emailLinkSignonLabel = 'Email link';
+  static const String phoneSignonLabel = 'Phone';
 }
 
 const ENV = String.fromEnvironment('ENV', defaultValue: 'production');
@@ -375,14 +404,19 @@ Future<bool> deviceIsSimulator() async {
   return false;
 }
 
+Future<bool> deviceIsNotSimulator() async {
+  return !(await deviceIsSimulator());
+}
+
 Future<bool> deviceIsIosSimulator() async =>
     Platform.isIOS && (await deviceIsSimulator());
 
 class DebugHelpers {
   static const bool inDebugMode = kDebugMode;
   static bool isVerboseDebugMode = kDebugMode &&
-      const String.fromEnvironment('verbose', defaultValue: "").isNotEmpty;
+      const String.fromEnvironment('verbose', defaultValue: '').isNotEmpty;
   static Future<bool> deviceIsSimulator() => deviceIsSimulator();
+  static Future<bool> deviceIsNotSimulator() => deviceIsNotSimulator();
   static Future<bool> deviceIsIosSimulator() => deviceIsIosSimulator();
 }
 

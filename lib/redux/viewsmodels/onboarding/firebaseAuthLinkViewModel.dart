@@ -9,7 +9,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/errorDetails.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart' as VegiConstants;
@@ -96,7 +96,7 @@ class FirebaseAuthLinkViewModel extends Equatable {
   final VegiAuthenticationStatus vegiAuthenticationStatus;
   final bool signupIsInFlux;
   final dynamic Function(
-    ErrorDetails error,
+    SignUpErrorDetails error,
   ) setSignupFailed;
   final dynamic Function(
     bool isLoading,

@@ -36,6 +36,8 @@ mixin _$HomePageState {
   @JsonKey(ignore: true)
   bool get isLoadingHomePage => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
+  bool get isLoadingHttpRequest => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   List<String> get postalCodes => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String get selectedSearchPostCode => throw _privateConstructorUsedError;
@@ -61,6 +63,7 @@ abstract class $HomePageStateCopyWith<$Res> {
       String filterMenuQuery,
       @JsonKey(ignore: true) bool showMenuSearchBarField,
       @JsonKey(ignore: true) bool isLoadingHomePage,
+      @JsonKey(ignore: true) bool isLoadingHttpRequest,
       @JsonKey(ignore: true) List<String> postalCodes,
       @JsonKey(ignore: true) String selectedSearchPostCode});
 }
@@ -86,6 +89,7 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
     Object? filterMenuQuery = null,
     Object? showMenuSearchBarField = null,
     Object? isLoadingHomePage = null,
+    Object? isLoadingHttpRequest = null,
     Object? postalCodes = null,
     Object? selectedSearchPostCode = null,
   }) {
@@ -122,6 +126,10 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
           ? _value.isLoadingHomePage
           : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
               as bool,
+      isLoadingHttpRequest: null == isLoadingHttpRequest
+          ? _value.isLoadingHttpRequest
+          : isLoadingHttpRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
       postalCodes: null == postalCodes
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
@@ -151,6 +159,7 @@ abstract class _$$_HomePageStateCopyWith<$Res>
       String filterMenuQuery,
       @JsonKey(ignore: true) bool showMenuSearchBarField,
       @JsonKey(ignore: true) bool isLoadingHomePage,
+      @JsonKey(ignore: true) bool isLoadingHttpRequest,
       @JsonKey(ignore: true) List<String> postalCodes,
       @JsonKey(ignore: true) String selectedSearchPostCode});
 }
@@ -174,6 +183,7 @@ class __$$_HomePageStateCopyWithImpl<$Res>
     Object? filterMenuQuery = null,
     Object? showMenuSearchBarField = null,
     Object? isLoadingHomePage = null,
+    Object? isLoadingHttpRequest = null,
     Object? postalCodes = null,
     Object? selectedSearchPostCode = null,
   }) {
@@ -210,6 +220,10 @@ class __$$_HomePageStateCopyWithImpl<$Res>
           ? _value.isLoadingHomePage
           : isLoadingHomePage // ignore: cast_nullable_to_non_nullable
               as bool,
+      isLoadingHttpRequest: null == isLoadingHttpRequest
+          ? _value.isLoadingHttpRequest
+          : isLoadingHttpRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
       postalCodes: null == postalCodes
           ? _value.postalCodes
           : postalCodes // ignore: cast_nullable_to_non_nullable
@@ -235,6 +249,7 @@ class _$_HomePageState extends _HomePageState {
       this.filterMenuQuery = '',
       @JsonKey(ignore: true) this.showMenuSearchBarField = false,
       @JsonKey(ignore: true) this.isLoadingHomePage = false,
+      @JsonKey(ignore: true) this.isLoadingHttpRequest = false,
       @JsonKey(ignore: true) this.postalCodes = const [],
       @JsonKey(ignore: true) this.selectedSearchPostCode = 'L1'})
       : super._();
@@ -268,6 +283,9 @@ class _$_HomePageState extends _HomePageState {
   final bool isLoadingHomePage;
   @override
   @JsonKey(ignore: true)
+  final bool isLoadingHttpRequest;
+  @override
+  @JsonKey(ignore: true)
   final List<String> postalCodes;
   @override
   @JsonKey(ignore: true)
@@ -275,7 +293,7 @@ class _$_HomePageState extends _HomePageState {
 
   @override
   String toString() {
-    return 'HomePageState(featuredRestaurants: $featuredRestaurants, filteredRestaurants: $filteredRestaurants, filterRestaurantsQuery: $filterRestaurantsQuery, showGlobalSearchBarField: $showGlobalSearchBarField, filteredMenuItems: $filteredMenuItems, filterMenuQuery: $filterMenuQuery, showMenuSearchBarField: $showMenuSearchBarField, isLoadingHomePage: $isLoadingHomePage, postalCodes: $postalCodes, selectedSearchPostCode: $selectedSearchPostCode)';
+    return 'HomePageState(featuredRestaurants: $featuredRestaurants, filteredRestaurants: $filteredRestaurants, filterRestaurantsQuery: $filterRestaurantsQuery, showGlobalSearchBarField: $showGlobalSearchBarField, filteredMenuItems: $filteredMenuItems, filterMenuQuery: $filterMenuQuery, showMenuSearchBarField: $showMenuSearchBarField, isLoadingHomePage: $isLoadingHomePage, isLoadingHttpRequest: $isLoadingHttpRequest, postalCodes: $postalCodes, selectedSearchPostCode: $selectedSearchPostCode)';
   }
 
   @override
@@ -300,6 +318,8 @@ class _$_HomePageState extends _HomePageState {
                 other.showMenuSearchBarField == showMenuSearchBarField) &&
             (identical(other.isLoadingHomePage, isLoadingHomePage) ||
                 other.isLoadingHomePage == isLoadingHomePage) &&
+            (identical(other.isLoadingHttpRequest, isLoadingHttpRequest) ||
+                other.isLoadingHttpRequest == isLoadingHttpRequest) &&
             const DeepCollectionEquality()
                 .equals(other.postalCodes, postalCodes) &&
             (identical(other.selectedSearchPostCode, selectedSearchPostCode) ||
@@ -318,6 +338,7 @@ class _$_HomePageState extends _HomePageState {
       filterMenuQuery,
       showMenuSearchBarField,
       isLoadingHomePage,
+      isLoadingHttpRequest,
       const DeepCollectionEquality().hash(postalCodes),
       selectedSearchPostCode);
 
@@ -350,6 +371,8 @@ abstract class _HomePageState extends HomePageState {
       @JsonKey(ignore: true)
           final bool isLoadingHomePage,
       @JsonKey(ignore: true)
+          final bool isLoadingHttpRequest,
+      @JsonKey(ignore: true)
           final List<String> postalCodes,
       @JsonKey(ignore: true)
           final String selectedSearchPostCode}) = _$_HomePageState;
@@ -378,6 +401,9 @@ abstract class _HomePageState extends HomePageState {
   @override
   @JsonKey(ignore: true)
   bool get isLoadingHomePage;
+  @override
+  @JsonKey(ignore: true)
+  bool get isLoadingHttpRequest;
   @override
   @JsonKey(ignore: true)
   List<String> get postalCodes;

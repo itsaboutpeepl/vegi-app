@@ -14,6 +14,8 @@ final homePageReducers = combineReducers<HomePageState>(
       _updateRestaurant,
     ),
     TypedReducer<HomePageState, SetIsLoadingHomePage>(_setIsLoadingHomePage),
+    TypedReducer<HomePageState, SetIsLoadingHttpRequest>(
+        _setIsLoadingHttpRequest),
     TypedReducer<HomePageState, UpdatePostalCodes>(_updatePostalCodes),
     TypedReducer<HomePageState, UpdateSelectedSearchPostCode>(
         _updateSelectedSearchPostCode),
@@ -28,7 +30,6 @@ final homePageReducers = combineReducers<HomePageState>(
     ),
   ],
 );
-
 
 HomePageState _resetApp(
   HomePageState state,
@@ -101,6 +102,13 @@ HomePageState _setIsLoadingHomePage(
   SetIsLoadingHomePage action,
 ) {
   return state.copyWith(isLoadingHomePage: action.isLoading);
+}
+
+HomePageState _setIsLoadingHttpRequest(
+  HomePageState state,
+  SetIsLoadingHttpRequest action,
+) {
+  return state.copyWith(isLoadingHttpRequest: action.isLoading);
 }
 
 HomePageState _updatePostalCodes(

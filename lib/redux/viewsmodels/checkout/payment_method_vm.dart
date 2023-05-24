@@ -19,6 +19,7 @@ class PaymentMethodViewModel extends Equatable {
     required this.restaurantMinimumOrder,
     required this.startPaymentProcess,
     required this.isLoading,
+    required this.isSuperAdmin,
     required this.selectedRestaurantIsLive,
     required this.selectedFulfilmentMethod,
     required this.showvegiPay,
@@ -45,6 +46,7 @@ class PaymentMethodViewModel extends Equatable {
       showvegiPay: store.state.userState.isVendor ||
           store.state.cartState.fulfilmentMethod ==
               FulfilmentMethodType.inStore,
+      isSuperAdmin: store.state.userState.isVegiSuperAdmin,
       hasPplBalance: pplBalance > 0,
       cartTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
       restaurantMinimumOrder: store.state.cartState.restaurantMinimumOrder,
@@ -72,6 +74,7 @@ class PaymentMethodViewModel extends Equatable {
   final bool hasPplBalance;
   final bool isLoading;
   final bool isDelivery;
+  final bool isSuperAdmin;
   final bool showvegiPay;
   final bool selectedRestaurantIsLive;
   final FulfilmentMethodType selectedFulfilmentMethod;
@@ -92,6 +95,7 @@ class PaymentMethodViewModel extends Equatable {
         pplBalance,
         isLoading,
         isDelivery,
+        isSuperAdmin,
         selectedRestaurantIsLive,
         selectedFulfilmentMethod,
         showvegiPay,

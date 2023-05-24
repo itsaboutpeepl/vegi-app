@@ -83,7 +83,7 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
             isLoading: true,
           ),
         );
-        final result = await onBoardStrategy.loginToVegi(
+        final result = await onBoardStrategy.loginToVegiWithPhone(
           store: store,
           phoneNumber: store.state.userState.phoneNumber,
           firebaseSessionToken: store.state.userState.firebaseSessionToken!,
@@ -100,7 +100,11 @@ class LockScreenViewModel extends Equatable implements IAuthViewModel {
           reLoginCall(),
         );
       },
-      notAuthenticated: store.state.userState.isLoggedOut || store.state.userState.fuseAuthenticationStatus != FuseAuthenticationStatus.authenticated || store.state.userState.firebaseAuthenticationStatus != FirebaseAuthenticationStatus.authenticated,
+      notAuthenticated: store.state.userState.isLoggedOut ||
+          store.state.userState.fuseAuthenticationStatus !=
+              FuseAuthenticationStatus.authenticated ||
+          store.state.userState.firebaseAuthenticationStatus !=
+              FirebaseAuthenticationStatus.authenticated,
     );
   }
 
