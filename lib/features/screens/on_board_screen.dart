@@ -89,7 +89,7 @@ class _OnBoardScreenState extends State<OnBoardScreen>
         headingColour: themeShade400,
         subHeadingColour: themeShade200,
       ),
-      OnBoardingScreenGeneric(
+      const OnBoardingScreenGeneric(
         title: CopyWrite.onboardingScreenHeading3,
         subTitle: CopyWrite.onboardingScreenSubHeading3,
         iconName: ImagePaths.onboardingPage4HeadingImage3,

@@ -44,7 +44,7 @@ class StripePayService {
   }
 
   Future<StripePaymentIntent?> createStripePaymentIntent({
-    required int amount,
+    required num amount,
     String? stripeCustomerId,
     String currency = 'gbp',
     required String recipientWalletAddress,

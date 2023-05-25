@@ -12,7 +12,8 @@ _$_CreateOrderForInStorePayment _$$_CreateOrderForInStorePaymentFromJson(
       items: (json['items'] as List<dynamic>)
           .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      total: json['total'] as int,
+      total: json['total'] as num,
+      currency: $enumDecode(_$CurrencyEnumMap, json['currency']),
       tipAmount: json['tipAmount'] as int,
       marketingOptIn: json['marketingOptIn'] as bool,
       discountCode: json['discountCode'] as String,
@@ -36,9 +37,21 @@ Map<String, dynamic> _$$_CreateOrderForInStorePaymentToJson(
       'isDelivery': instance.isDelivery,
       'items': instance.items.map((e) => e.toJson()).toList(),
       'total': instance.total,
+      'currency': _$CurrencyEnumMap[instance.currency]!,
       'tipAmount': instance.tipAmount,
       'marketingOptIn': instance.marketingOptIn,
       'discountCode': instance.discountCode,
       'vendor': instance.vendor,
       'walletAddress': instance.walletAddress,
     };
+
+const _$CurrencyEnumMap = {
+  Currency.GBP: 'GBP',
+  Currency.USD: 'USD',
+  Currency.EUR: 'EUR',
+  Currency.GBPx: 'GBPx',
+  Currency.PPL: 'PPL',
+  Currency.GBT: 'GBT',
+  Currency.FUSE: 'FUSE',
+  Currency.percent: 'percent',
+};

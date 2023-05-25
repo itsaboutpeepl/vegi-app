@@ -53,6 +53,21 @@ class PeeplEatsService extends HttpService {
     dio.options.headers = Map.from({'Content-Type': 'application/json'});
   }
 
+  String? _getResponseExitName(Response<dynamic> response) =>
+      response.headers.value('X-Exit');
+
+  String? _getResponseExitDescription(Response<dynamic> response) =>
+      response.headers.value('X-Exit-Description');
+
+  bool responseHasErrorStatus(Response<dynamic> response) {
+    if (response.statusCode != null && response.statusCode! >= 400) {
+      log.error(
+          'Received a "exits.${_getResponseExitName(response)}" exit from sails vegi backend with message: "${_getResponseExitDescription(response)}"');
+      return true;
+    }
+    return false;
+  }
+
   RestaurantItem _vendorJsonToRestaurantItem(Map<String, dynamic> element) {
     try {
       final List<Map<String, dynamic>> postalCodes = List.from(
@@ -122,7 +137,7 @@ class PeeplEatsService extends HttpService {
         sendWithAuthCreds: true,
       );
 
-      if (response.statusCode != null && response.statusCode! >= 400) {
+      if (responseHasErrorStatus(response)) {
         throw Exception(
           'Bad response returned when trying to checkVegiSessionIsStillValid: $response',
         );
@@ -174,7 +189,7 @@ class PeeplEatsService extends HttpService {
     );
 
     // Capture session cookie to send with requests from nowon in a VegiSession object that we save to the singleton instance of the peeplEats service?...
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       throw Exception(
         'Bad response returned when trying to loginWithPhone: $response',
       );
@@ -237,7 +252,7 @@ class PeeplEatsService extends HttpService {
     );
 
     // Capture session cookie to send with requests from nowon in a VegiSession object that we save to the singleton instance of the peeplEats service?...
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       throw Exception(
         'Bad response returned when trying to loginWithEmail: $response',
       );
@@ -873,7 +888,7 @@ class PeeplEatsService extends HttpService {
             onReceiveProgress != null ? onReceiveProgress(count, total) : null,
       );
 
-      if (response.statusCode != null && response.statusCode! >= 400) {
+      if (responseHasErrorStatus(response)) {
         var errCode = ProductSuggestionUploadErrCode.unknownError;
         if (response.statusCode == 404) {
           errCode = ProductSuggestionUploadErrCode.productNotFound;
@@ -968,7 +983,7 @@ class PeeplEatsService extends HttpService {
             onReceiveProgress?.call(count, total),
       );
 
-      // if (response.statusCode != null && response.statusCode! >= 400) {
+      // if (responseHasErrorStatus(response)) {
       //   var errCode = ProductSuggestionUploadErrCode.unknownError;
       //   if (response.statusCode == 404) {
       //     errCode = ProductSuggestionUploadErrCode.productNotFound;
@@ -1035,7 +1050,7 @@ class PeeplEatsService extends HttpService {
             onReceiveProgress != null ? onReceiveProgress(count, total) : null,
       );
 
-      if (response.statusCode != null && response.statusCode! >= 400) {
+      if (responseHasErrorStatus(response)) {
         var errCode = ProductSuggestionUploadErrCode.unknownError;
         if (response.statusCode == 404) {
           errCode = ProductSuggestionUploadErrCode.productNotFound;
@@ -1091,7 +1106,7 @@ class PeeplEatsService extends HttpService {
       );
     });
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       var errCode = ProductSuggestionUploadErrCode.unknownError;
       if (response.statusCode == 404) {
         errCode = ProductSuggestionUploadErrCode.productNotFound;
@@ -1136,7 +1151,7 @@ class PeeplEatsService extends HttpService {
       },
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       log.error(
           'Unable to validate fixed discount code with response: ${response.statusMessage}');
       return null;
@@ -1243,7 +1258,7 @@ class PeeplEatsService extends HttpService {
       sendWithAuthCreds: true,
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       onError(response.statusMessage ?? 'Unknown Error');
       return null;
     } else {
@@ -1269,7 +1284,7 @@ class PeeplEatsService extends HttpService {
         sendWithAuthCreds: true,
         allowStatusCodes: [404],
       );
-      if (response.statusCode != null && response.statusCode! >= 400) {
+      if (responseHasErrorStatus(response)) {
         if (response.statusCode! == 404) {
           log.info(
               'Expected 404 response for user details request for not internal vegi user');
@@ -1309,7 +1324,7 @@ class PeeplEatsService extends HttpService {
       },
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       onError(response.statusMessage ?? 'Unknown Error');
     } else {
       final data = response.data as Map<String, dynamic>;
@@ -1330,7 +1345,7 @@ class PeeplEatsService extends HttpService {
       },
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       onError(response.statusMessage ?? 'Unknown Error');
       return null;
     } else {
@@ -1354,7 +1369,7 @@ class PeeplEatsService extends HttpService {
       },
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       log.error(
         'Failed to registerEmailToWaitingList with response: ${response.statusMessage}',
         stackTrace: StackTrace.current,
@@ -1381,7 +1396,7 @@ class PeeplEatsService extends HttpService {
       },
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       log.error(
         'Failed to subscribeToWaitingListEmails with response: ${response.statusMessage}',
         stackTrace: StackTrace.current,
@@ -1403,7 +1418,7 @@ class PeeplEatsService extends HttpService {
       },
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       onError(response.statusMessage ?? 'Unknown Error');
     }
 
@@ -1421,7 +1436,7 @@ class PeeplEatsService extends HttpService {
   //     sendWithAuthCreds: true,
   //   );
 
-  //   if (response.statusCode != null && response.statusCode! >= 400) {
+  //   if (responseHasErrorStatus(response)) {
   //     throw Exception(response.statusMessage ?? 'Unknown Error');
   //   }
 
@@ -1439,7 +1454,7 @@ class PeeplEatsService extends HttpService {
   //     sendWithAuthCreds: true,
   //   );
 
-  //   if (response.statusCode != null && response.statusCode! >= 400) {
+  //   if (responseHasErrorStatus(response)) {
   //     return false;
   //   } else if (response.data != null) {
   //     return response.data == true;
@@ -1464,7 +1479,7 @@ class PeeplEatsService extends HttpService {
       },
     );
 
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       onError(response.statusMessage ?? 'Unknown Error');
     } else {
       onSuccess();
@@ -1544,7 +1559,7 @@ class PeeplEatsService extends HttpService {
         );
       },
     );
-    if (response.statusCode != null && response.statusCode! >= 400) {
+    if (responseHasErrorStatus(response)) {
       return null;
     }
     final data = response.data as Map<String, dynamic>;

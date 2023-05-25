@@ -116,6 +116,7 @@ class WaitingListBetaEligibilityScreen extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 60,
+                            fontFamily: Fonts.gelica,
                           ),
                           maxLines: 2,
                         ),

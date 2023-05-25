@@ -12,7 +12,8 @@ _$_CreateOrderForCollection _$$_CreateOrderForCollectionFromJson(
       items: (json['items'] as List<dynamic>)
           .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      total: json['total'] as int,
+      total: json['total'] as num,
+      currency: $enumDecode(_$CurrencyEnumMap, json['currency']),
       tipAmount: json['tipAmount'] as int,
       marketingOptIn: json['marketingOptIn'] as bool,
       discountCode: json['discountCode'] as String,
@@ -31,6 +32,7 @@ Map<String, dynamic> _$$_CreateOrderForCollectionToJson(
     <String, dynamic>{
       'items': instance.items.map((e) => e.toJson()).toList(),
       'total': instance.total,
+      'currency': _$CurrencyEnumMap[instance.currency]!,
       'tipAmount': instance.tipAmount,
       'marketingOptIn': instance.marketingOptIn,
       'discountCode': instance.discountCode,
@@ -42,3 +44,14 @@ Map<String, dynamic> _$$_CreateOrderForCollectionToJson(
       'fulfilmentSlotTo': instance.fulfilmentSlotTo,
       'isDelivery': instance.isDelivery,
     };
+
+const _$CurrencyEnumMap = {
+  Currency.GBP: 'GBP',
+  Currency.USD: 'USD',
+  Currency.EUR: 'EUR',
+  Currency.GBPx: 'GBPx',
+  Currency.PPL: 'PPL',
+  Currency.GBT: 'GBT',
+  Currency.FUSE: 'FUSE',
+  Currency.percent: 'percent',
+};

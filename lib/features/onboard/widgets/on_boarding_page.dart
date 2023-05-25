@@ -60,7 +60,7 @@ class OnBoardingScreenGeneric extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 45,
                   color: headingColour,
-                  fontFamily: 'Fat Cheeks',
+                  fontFamily: Fonts.gelica,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -75,6 +75,7 @@ class OnBoardingScreenGeneric extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         color: subHeadingColour,
+                        fontFamily: Fonts.gelica,
                       ),
                     ),
                   ],

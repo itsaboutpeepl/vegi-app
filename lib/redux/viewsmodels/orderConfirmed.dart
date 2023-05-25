@@ -20,6 +20,7 @@ class OrderConfirmedViewModel extends Equatable {
     required this.restaurantName,
     required this.cartItems,
     required this.cartTotal,
+    required this.cartCurrency,
     required this.orderID,
     required this.order,
     required this.clearCart,
@@ -79,6 +80,7 @@ class OrderConfirmedViewModel extends Equatable {
       restaurantName: store.state.cartState.restaurantName,
       cartItems: store.state.cartState.cartItems,
       cartTotal: store.state.cartState.cartTotal,
+      cartCurrency: store.state.cartState.cartCurrency,
       orderID: store.state.cartState.orderID,
       order: order ?? store.state.pastOrderState.listOfScheduledOrders.last,
       userName: store.state.userState.displayName,
@@ -93,7 +95,8 @@ class OrderConfirmedViewModel extends Equatable {
   final DeliveryAddresses? orderAddress;
   final String restaurantName;
   final List<CartItem> cartItems;
-  final int cartTotal;
+  final num cartTotal;
+  final Currency cartCurrency;
   final String orderID;
   final Order order;
   final void Function() clearCart;

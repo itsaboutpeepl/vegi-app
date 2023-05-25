@@ -12,11 +12,14 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
               ?.map((e) => CartItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      cartSubTotal: json['cartSubTotal'] as int? ?? 0,
-      cartTax: json['cartTax'] as int? ?? 0,
-      cartTotal: json['cartTotal'] as int? ?? 0,
+      cartSubTotal: json['cartSubTotal'] as num? ?? 0,
+      cartTax: json['cartTax'] as num? ?? 0,
+      cartTotal: json['cartTotal'] as num? ?? 0,
+      cartCurrency:
+          $enumDecodeNullable(_$CurrencyEnumMap, json['cartCurrency']) ??
+              Currency.GBP,
       cartDiscountPercent: json['cartDiscountPercent'] as int? ?? 0,
-      cartDiscountComputed: json['cartDiscountComputed'] as int? ?? 0,
+      cartDiscountComputed: json['cartDiscountComputed'] as num? ?? 0,
       voucherPotValue: json['voucherPotValue'] == null
           ? const Money.zero()
           : Money.fromJson(json['voucherPotValue'] as Map<String, dynamic>),
@@ -106,6 +109,7 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'cartSubTotal': instance.cartSubTotal,
       'cartTax': instance.cartTax,
       'cartTotal': instance.cartTotal,
+      'cartCurrency': _$CurrencyEnumMap[instance.cartCurrency]!,
       'cartDiscountPercent': instance.cartDiscountPercent,
       'cartDiscountComputed': instance.cartDiscountComputed,
       'voucherPotValue': Money.toJson(instance.voucherPotValue),
@@ -150,6 +154,17 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
           _$StripePaymentStatusEnumMap[instance.stripePaymentStatus]!,
       'paymentInProcess': paymentInProcessToJson(instance.paymentInProcess),
     };
+
+const _$CurrencyEnumMap = {
+  Currency.GBP: 'GBP',
+  Currency.USD: 'USD',
+  Currency.EUR: 'EUR',
+  Currency.GBPx: 'GBPx',
+  Currency.PPL: 'PPL',
+  Currency.GBT: 'GBT',
+  Currency.FUSE: 'FUSE',
+  Currency.percent: 'percent',
+};
 
 const _$FulfilmentMethodTypeEnumMap = {
   FulfilmentMethodType.collection: 'collection',

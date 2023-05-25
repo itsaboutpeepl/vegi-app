@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 
@@ -15,6 +17,7 @@ class CartItem with _$CartItem {
     required RestaurantMenuItem menuItem,
     required int totalItemPrice,
     required int itemQuantity,
+    @Default(Currency.GBPx) Currency itemCurrency,
     required Map<int, ProductOptionValue> selectedProductOptions,
   }) = _CartItem;
 
@@ -39,4 +42,23 @@ class CartItem with _$CartItem {
     }
     return optionValues;
   }
+
+  Money cartTotalMoney({required Currency inCurrency,}) => Money(
+        currency: inCurrency,
+        value: convertCurrencyAmount(
+          amount: totalItemPrice,
+          fromCurrency: itemCurrency,
+          toCurrency: inCurrency,
+        ),
+      );
+      
+  Money get cartTotalGBP => Money(
+      currency: Currency.GBP,
+      value: convertCurrencyAmount(
+        amount: totalItemPrice,
+        fromCurrency: itemCurrency,
+        toCurrency: Currency.GBP,
+      ),
+    );
+
 }

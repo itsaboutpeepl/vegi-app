@@ -137,6 +137,8 @@ const showWaitingListFunnel = false;
 
 class Fonts {
   static const String fatFace = 'Fat Cheeks';
+  static const String gelica = 'Gelica';
+  static const String europa = 'Europa';
 }
 
 class Messages {
@@ -210,7 +212,8 @@ class Messages {
   static const String searchVendorPlaceholder = 'Search vendor...';
 
   static const String signInFailed = 'Sign-in failed';
-  static const String signInFailedEmailLinkMessage = 'Unable to signup with email links at this time';
+  static const String signInFailedEmailLinkMessage =
+      'Unable to signup with email links at this time';
 }
 
 class CopyWrite {

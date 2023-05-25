@@ -19,7 +19,8 @@ class CreateOrderForInStorePayment extends CreateOrderForFulfilment
   @JsonSerializable()
   factory CreateOrderForInStorePayment({
     required List<CartItem> items,
-    required int total,
+    required num total,
+    required Currency currency,
     required int tipAmount,
     required bool marketingOptIn,
     required String discountCode,
@@ -34,6 +35,7 @@ class CreateOrderForInStorePayment extends CreateOrderForFulfilment
     return CreateOrderForInStorePayment(
       items: store.state.cartState.cartItems,
       total: store.state.cartState.cartTotal,
+      currency: store.state.cartState.cartCurrency,
       tipAmount: store.state.cartState.selectedTipAmount,
       marketingOptIn: false,
       discountCode: store.state.cartState.discountCode,

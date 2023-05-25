@@ -26,7 +26,11 @@ class DiscountCards extends StatelessWidget {
       builder: (context, viewmodel) {
         return Column(
           children: [
-            ...viewmodel.activeVouchers.map((voucher) {
+            ...viewmodel.activeVouchers
+                .where(
+              (element) => element.currency == viewmodel.cartCurrency,
+            )
+                .map((voucher) {
               return Container(
                 margin: const EdgeInsets.symmetric(
                   vertical: 5.0,
@@ -41,7 +45,12 @@ class DiscountCards extends StatelessWidget {
                       message: Messages.removeVoucherCodeNotAllowed,
                     );
                   },
-                  allowRemovalAction: false,
+                  allowRemovalAction: true,
+                  removeDiscount: () {
+                    viewmodel.removeAppliedVoucher(
+                      voucher: voucher,
+                    );
+                  },
                   icon: Icon(
                     voucher.currency == Currency.percent
                         ? FontAwesomeIcons.percent

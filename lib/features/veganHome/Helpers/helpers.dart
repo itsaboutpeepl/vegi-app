@@ -12,6 +12,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/authViewModel.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/discount.dart';
 import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
@@ -312,35 +313,55 @@ UpdateComputedCartValues? computeTotalsFromCart({
   required int platformFee,
   required int cartDiscountPercent,
   required int cartTip,
+  required Currency cartCurrency,
+  required int vendorId,
+  List<Discount> appliedVouchers = const <Discount>[],
 }) {
   try {
-    int cartSubTotal = 0;
     const int cartTax = 0;
-    int cartTotal = 0;
-    int cartDiscountComputed = 0;
+    num cartTotal = 0;
+    num cartSubTotal = 0;
+    num cartPcntDiscountComputed = 0;
+    num cartTotalDiscountComputed = 0;
 
     for (final element in cartItems) {
-      cartSubTotal += element.totalItemPrice;
+      cartSubTotal += element.cartTotalMoney(inCurrency: cartCurrency).value;
     }
 
-    cartDiscountComputed =
+    cartPcntDiscountComputed =
         (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
+
+    final voucherPot = appliedVouchers.sum(
+      (previousValue, discount) =>
+          (['', vendorId.toString(),].contains(discount.vendor?.id.toString() ?? '') ?
+                  discount.currency == cartCurrency
+              ? discount.value : convertCurrencyAmount(
+                amount: discount.value,
+                fromCurrency: discount.currency,
+                toCurrency: cartCurrency,
+              )
+              : 0.0) +
+          previousValue,
+    );
+
+    cartTotalDiscountComputed = cartPcntDiscountComputed + voucherPot;
 
     cartTotal =
         (cartSubTotal + cartTax + cartTip + fulfilmentCharge + platformFee) -
-            cartDiscountComputed;
+            cartPcntDiscountComputed;
 
     if (cartItems.isEmpty) {
       cartSubTotal = 0;
       cartTotal = 0;
-      cartDiscountComputed = 0;
+      cartPcntDiscountComputed = 0;
+      cartTotalDiscountComputed = 0;
     }
 
     return UpdateComputedCartValues(
       cartSubTotal,
       cartTax,
       cartTotal,
-      cartDiscountComputed,
+      cartTotalDiscountComputed,
     );
   } catch (e, s) {
     log.error('ERROR - computeCartTotals $e');
@@ -387,6 +408,8 @@ num fxAmount({
     throw Exception('Not implemented cart totals for toCurrency: $toCurrency');
   }
 }
+
+const convertCurrencyAmount = fxAmount;
 
 // Conversion
 // 1000GBP => 100,000 => 10,000 PPL Tokens

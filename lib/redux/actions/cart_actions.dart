@@ -230,10 +230,10 @@ class UpdateComputedCartValues {
     this.cartTotal,
     this.cartDiscountComputed,
   );
-  final int cartSubTotal;
-  final int cartTax;
-  final int cartTotal;
-  final int cartDiscountComputed;
+  final num cartSubTotal;
+  final num cartTax;
+  final num cartTotal;
+  final num cartDiscountComputed;
 
   @override
   String toString() {
@@ -260,6 +260,20 @@ class AddValidVoucherCodeToCart {
   @override
   String toString() {
     return 'AddValidVoucherCodeToCart : value: ${voucher.value}, '
+        'discountCode: ${voucher.code}, vendorId: ${voucher.vendor}';
+  }
+}
+
+class RemoveVoucherCodeFromCart {
+  RemoveVoucherCodeFromCart({
+    required this.voucher,
+  });
+
+  final Discount voucher;
+
+  @override
+  String toString() {
+    return 'RemoveVoucherCodeFromCart : value: ${voucher.value}, '
         'discountCode: ${voucher.code}, vendorId: ${voucher.vendor}';
   }
 }
@@ -843,7 +857,7 @@ ThunkAction<AppState> spendVoucherPot({
       //todo: call peeplEats redeem voucher (enforce use it all by using a voucher?)
       //todo: if succeeds, remove the voucher from the voucherPot -> AddValidVoucherCodeToCart()
       //todo: remove total voucher value on checkout screen so visible to user and charge the user remaining amount
-      //todo: 
+      //todo:
     } catch (e, s) {
       log.error('ERROR - spendVoucherPot $e', stackTrace: s);
       await Sentry.captureException(
@@ -917,6 +931,32 @@ ThunkAction<AppState> removeCartDiscount() {
         ..dispatch(computeCartTotals());
     } catch (e, s) {
       log.error('ERROR - removeCartDiscount $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - removeCartDiscount $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> removeCartAppliedVoucher({
+  required Discount voucher,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      store
+        ..dispatch(
+          RemoveVoucherCodeFromCart(
+            voucher: voucher,
+          ),
+        )
+        ..dispatch(computeCartTotals());
+    } catch (e, s) {
+      log.error(
+        'ERROR - removeCartDiscount $e',
+        stackTrace: s,
+      );
       await Sentry.captureException(
         e,
         stackTrace: s,
@@ -1471,6 +1511,8 @@ ThunkAction<AppState> computeCartTotals() {
       platformFee: store.state.cartState.restaurantPlatformFee,
       cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       cartTip: store.state.cartState.selectedTipAmount,
+      cartCurrency: store.state.cartState.cartCurrency,
+      vendorId: int.parse(store.state.cartState.restaurantID),
     );
     if (updateCartItems != null) {
       store.dispatch(
@@ -1662,14 +1704,16 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
-                OrderCreationProcessStatus.sendOrderCallTimedOut,),
+              OrderCreationProcessStatus.sendOrderCallTimedOut,
+            ),
           ),
         );
       } else if (result.orderCreationStatus == OrderCreationStatus.failed) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
-                OrderCreationProcessStatus.sendOrderCallServerError,),
+              OrderCreationProcessStatus.sendOrderCallServerError,
+            ),
           ),
         );
       } else {
@@ -1850,7 +1894,7 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: orderId,
           accountId: store.state.userState.vegiAccountId!,
-          currency: Currency.GBP,
+          currency: store.state.cartState.cartCurrency,
           store: store,
           amount: store.state.cartState.cartTotal,
           shouldPushToHome: true,
@@ -2005,7 +2049,7 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          currency: Currency.GBP,
+          currency: store.state.cartState.cartCurrency,
           store: store,
           amount: store.state.cartState.cartTotal,
           shouldPushToHome: false,
@@ -2098,7 +2142,7 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          currency: Currency.GBP,
+          currency: store.state.cartState.cartCurrency,
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,

@@ -13,6 +13,7 @@ import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class VeganSliverAppBar extends StatefulWidget {
@@ -87,7 +88,7 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.black,
-                                    fontFamily: 'Europa',
+                                    fontFamily: Fonts.europa,
                                   ),
                                   value: viewmodel.selectedSearchPostCode,
                                   borderRadius: BorderRadius.circular(10),

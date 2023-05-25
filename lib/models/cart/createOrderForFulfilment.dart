@@ -95,7 +95,8 @@ abstract class CreateOrderForFulfilment {
   // });
 
   late final List<CartItem> items;
-  late final int total;
+  late final num total;
+  late final Currency currency;
   late final int tipAmount;
   late final bool marketingOptIn;
   late final String discountCode;
@@ -129,6 +130,7 @@ abstract class CreateOrderForFulfilment {
             )
             .toList(),
         'total': total,
+        'currency': currency,
         'tipAmount': tipAmount,
         'marketingOptIn': marketingOptIn,
         'discountCode': discountCode,
@@ -166,6 +168,11 @@ abstract class CreateOrderForFulfilment {
     return CreateOrderForCollection(
       items: items,
       total: json['total']! as int,
+      currency: EnumHelpers.enumFromString(
+            Currency.values,
+            (json['currency'] ?? '') as String,
+          ) ??
+          Currency.GBP,
       tipAmount: json['tipAmount']! as int,
       marketingOptIn: json['marketingOptIn']! as bool,
       discountCode: json['discountCode']! as String,

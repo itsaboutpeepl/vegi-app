@@ -21,11 +21,12 @@ UserCartState _$UserCartStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserCartState {
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
-  int get cartSubTotal => throw _privateConstructorUsedError;
-  int get cartTax => throw _privateConstructorUsedError;
-  int get cartTotal => throw _privateConstructorUsedError;
+  num get cartSubTotal => throw _privateConstructorUsedError;
+  num get cartTax => throw _privateConstructorUsedError;
+  num get cartTotal => throw _privateConstructorUsedError;
+  Currency get cartCurrency => throw _privateConstructorUsedError;
   int get cartDiscountPercent => throw _privateConstructorUsedError;
-  int get cartDiscountComputed => throw _privateConstructorUsedError;
+  num get cartDiscountComputed => throw _privateConstructorUsedError;
   @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
   Money get voucherPotValue => throw _privateConstructorUsedError;
   List<Discount> get appliedVouchers => throw _privateConstructorUsedError;
@@ -90,11 +91,12 @@ abstract class $UserCartStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<CartItem> cartItems,
-      int cartSubTotal,
-      int cartTax,
-      int cartTotal,
+      num cartSubTotal,
+      num cartTax,
+      num cartTotal,
+      Currency cartCurrency,
       int cartDiscountPercent,
-      int cartDiscountComputed,
+      num cartDiscountComputed,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
           Money voucherPotValue,
       List<Discount> appliedVouchers,
@@ -163,6 +165,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? cartSubTotal = null,
     Object? cartTax = null,
     Object? cartTotal = null,
+    Object? cartCurrency = null,
     Object? cartDiscountPercent = null,
     Object? cartDiscountComputed = null,
     Object? voucherPotValue = null,
@@ -210,15 +213,19 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       cartSubTotal: null == cartSubTotal
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       cartTax: null == cartTax
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
+      cartCurrency: null == cartCurrency
+          ? _value.cartCurrency
+          : cartCurrency // ignore: cast_nullable_to_non_nullable
+              as Currency,
       cartDiscountPercent: null == cartDiscountPercent
           ? _value.cartDiscountPercent
           : cartDiscountPercent // ignore: cast_nullable_to_non_nullable
@@ -226,7 +233,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       cartDiscountComputed: null == cartDiscountComputed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       voucherPotValue: null == voucherPotValue
           ? _value.voucherPotValue
           : voucherPotValue // ignore: cast_nullable_to_non_nullable
@@ -483,11 +490,12 @@ abstract class _$$_UserCartStateCopyWith<$Res>
   @useResult
   $Res call(
       {List<CartItem> cartItems,
-      int cartSubTotal,
-      int cartTax,
-      int cartTotal,
+      num cartSubTotal,
+      num cartTax,
+      num cartTotal,
+      Currency cartCurrency,
       int cartDiscountPercent,
-      int cartDiscountComputed,
+      num cartDiscountComputed,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
           Money voucherPotValue,
       List<Discount> appliedVouchers,
@@ -562,6 +570,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? cartSubTotal = null,
     Object? cartTax = null,
     Object? cartTotal = null,
+    Object? cartCurrency = null,
     Object? cartDiscountPercent = null,
     Object? cartDiscountComputed = null,
     Object? voucherPotValue = null,
@@ -609,15 +618,19 @@ class __$$_UserCartStateCopyWithImpl<$Res>
       cartSubTotal: null == cartSubTotal
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       cartTax: null == cartTax
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
+      cartCurrency: null == cartCurrency
+          ? _value.cartCurrency
+          : cartCurrency // ignore: cast_nullable_to_non_nullable
+              as Currency,
       cartDiscountPercent: null == cartDiscountPercent
           ? _value.cartDiscountPercent
           : cartDiscountPercent // ignore: cast_nullable_to_non_nullable
@@ -625,7 +638,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
       cartDiscountComputed: null == cartDiscountComputed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       voucherPotValue: null == voucherPotValue
           ? _value.voucherPotValue
           : voucherPotValue // ignore: cast_nullable_to_non_nullable
@@ -783,6 +796,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       this.cartSubTotal = 0,
       this.cartTax = 0,
       this.cartTotal = 0,
+      this.cartCurrency = Currency.GBP,
       this.cartDiscountPercent = 0,
       this.cartDiscountComputed = 0,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
@@ -835,19 +849,22 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   final List<CartItem> cartItems;
   @override
   @JsonKey()
-  final int cartSubTotal;
+  final num cartSubTotal;
   @override
   @JsonKey()
-  final int cartTax;
+  final num cartTax;
   @override
   @JsonKey()
-  final int cartTotal;
+  final num cartTotal;
+  @override
+  @JsonKey()
+  final Currency cartCurrency;
   @override
   @JsonKey()
   final int cartDiscountPercent;
   @override
   @JsonKey()
-  final int cartDiscountComputed;
+  final num cartDiscountComputed;
   @override
   @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
   final Money voucherPotValue;
@@ -959,7 +976,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartCurrency: $cartCurrency, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
   }
 
   @override
@@ -971,6 +988,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('cartSubTotal', cartSubTotal))
       ..add(DiagnosticsProperty('cartTax', cartTax))
       ..add(DiagnosticsProperty('cartTotal', cartTotal))
+      ..add(DiagnosticsProperty('cartCurrency', cartCurrency))
       ..add(DiagnosticsProperty('cartDiscountPercent', cartDiscountPercent))
       ..add(DiagnosticsProperty('cartDiscountComputed', cartDiscountComputed))
       ..add(DiagnosticsProperty('voucherPotValue', voucherPotValue))
@@ -1028,6 +1046,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
             (identical(other.cartTax, cartTax) || other.cartTax == cartTax) &&
             (identical(other.cartTotal, cartTotal) ||
                 other.cartTotal == cartTotal) &&
+            (identical(other.cartCurrency, cartCurrency) ||
+                other.cartCurrency == cartCurrency) &&
             (identical(other.cartDiscountPercent, cartDiscountPercent) ||
                 other.cartDiscountPercent == cartDiscountPercent) &&
             (identical(other.cartDiscountComputed, cartDiscountComputed) ||
@@ -1089,8 +1109,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 .equals(other.eligibleOrderDates, eligibleOrderDates) &&
             (identical(other.nextCollectionSlot, nextCollectionSlot) ||
                 other.nextCollectionSlot == nextCollectionSlot) &&
-            (identical(other.nextDeliverySlot, nextDeliverySlot) ||
-                other.nextDeliverySlot == nextDeliverySlot) &&
+            (identical(other.nextDeliverySlot, nextDeliverySlot) || other.nextDeliverySlot == nextDeliverySlot) &&
             (identical(other.productSuggestion, productSuggestion) || other.productSuggestion == productSuggestion) &&
             (identical(other.orderCreationProcessStatus, orderCreationProcessStatus) || other.orderCreationProcessStatus == orderCreationProcessStatus) &&
             (identical(other.stripePaymentStatus, stripePaymentStatus) || other.stripePaymentStatus == stripePaymentStatus) &&
@@ -1107,6 +1126,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
         cartSubTotal,
         cartTax,
         cartTotal,
+        cartCurrency,
         cartDiscountPercent,
         cartDiscountComputed,
         voucherPotValue,
@@ -1164,11 +1184,12 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
 abstract class _UserCartState extends UserCartState {
   factory _UserCartState(
       {final List<CartItem> cartItems,
-      final int cartSubTotal,
-      final int cartTax,
-      final int cartTotal,
+      final num cartSubTotal,
+      final num cartTax,
+      final num cartTotal,
+      final Currency cartCurrency,
       final int cartDiscountPercent,
-      final int cartDiscountComputed,
+      final num cartDiscountComputed,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
           final Money voucherPotValue,
       final List<Discount> appliedVouchers,
@@ -1217,15 +1238,17 @@ abstract class _UserCartState extends UserCartState {
   @override
   List<CartItem> get cartItems;
   @override
-  int get cartSubTotal;
+  num get cartSubTotal;
   @override
-  int get cartTax;
+  num get cartTax;
   @override
-  int get cartTotal;
+  num get cartTotal;
+  @override
+  Currency get cartCurrency;
   @override
   int get cartDiscountPercent;
   @override
-  int get cartDiscountComputed;
+  num get cartDiscountComputed;
   @override
   @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
   Money get voucherPotValue;

@@ -29,15 +29,17 @@ class UserCartState with _$UserCartState {
     @Default([])
         List<CartItem> cartItems,
     @Default(0)
-        int cartSubTotal,
+        num cartSubTotal,
     @Default(0)
-        int cartTax,
+        num cartTax,
     @Default(0)
-        int cartTotal,
+        num cartTotal,
+    @Default(Currency.GBP)
+        Currency cartCurrency,
     @Default(0)
         int cartDiscountPercent,
     @Default(0)
-        int cartDiscountComputed,
+        num cartDiscountComputed,
     @JsonKey(
       fromJson: Money.fromJson,
       toJson: Money.toJson,
@@ -129,6 +131,7 @@ class UserCartState with _$UserCartState {
         cartSubTotal: 0,
         cartTax: 0,
         cartTotal: 0,
+        cartCurrency: Currency.GBP,
         cartDiscountPercent: 0,
         cartDiscountComputed: 0,
         deliverySlots: [],
@@ -161,6 +164,27 @@ class UserCartState with _$UserCartState {
   bool get isDelivery => fulfilmentMethod == FulfilmentMethodType.delivery;
   bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;
   bool get isInStore => fulfilmentMethod == FulfilmentMethodType.inStore;
+
+  Money cartTotalMoney({
+    required Currency inCurrency,
+  }) =>
+      Money(
+        currency: inCurrency,
+        value: convertCurrencyAmount(
+          amount: cartTotal,
+          fromCurrency: cartCurrency,
+          toCurrency: inCurrency,
+        ),
+      );
+
+  Money get cartTotalGBP => Money(
+        currency: Currency.GBP,
+        value: convertCurrencyAmount(
+          amount: cartTotal,
+          fromCurrency: cartCurrency,
+          toCurrency: Currency.GBP,
+        ),
+      );
 }
 
 class UserCartStateConverter

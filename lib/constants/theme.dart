@@ -1,8 +1,9 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 final FlexColorScheme flexColorSchemeLight = FlexColorScheme.light(
-  fontFamily: 'Europa',
+  fontFamily: Fonts.europa,
   colors: FlexSchemeColor.from(
     secondary: Colors.grey[800],
     primary: themeShade600, //makes 'Feed' text white

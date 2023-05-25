@@ -58,7 +58,7 @@ class StripeService {
     required Currency currency,
     required int orderId,
     required int accountId,
-    required int amount,
+    required num amount,
     required bool shouldPushToHome,
     required Store<AppState> store,
   }) async {
@@ -219,7 +219,7 @@ class StripeService {
     required Currency currency,
     required num orderId,
     required num accountId,
-    required int amount,
+    required num amount,
     required Store<AppState> store,
     required bool shouldPushToHome,
   }) async {

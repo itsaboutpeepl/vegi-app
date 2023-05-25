@@ -17,7 +17,8 @@ class CreateOrderForDelivery extends CreateOrderForFulfilment
   @JsonSerializable()
   factory CreateOrderForDelivery({
     required List<CartItem> items,
-    required int total,
+    required num total,
+    required Currency currency,
     required int tipAmount,
     required bool marketingOptIn,
     required String discountCode,
@@ -45,6 +46,7 @@ class CreateOrderForDelivery extends CreateOrderForFulfilment
         isDelivery: true,
         items: store.state.cartState.cartItems,
         total: store.state.cartState.cartTotal,
+        currency: store.state.cartState.cartCurrency,
         tipAmount: store.state.cartState.selectedTipAmount,
         marketingOptIn: false,
         discountCode: store.state.cartState.discountCode,

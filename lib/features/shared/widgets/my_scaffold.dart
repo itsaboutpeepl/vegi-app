@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_app_bar.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class MyScaffold extends StatelessWidget {
   const MyScaffold({
@@ -38,7 +39,7 @@ class MyScaffold extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 22,
-              fontFamily: 'Europa',
+              fontFamily: Fonts.europa,
               color: Theme.of(context).colorScheme.onSurface,
             ),
             softWrap: true,

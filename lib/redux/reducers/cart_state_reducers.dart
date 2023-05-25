@@ -16,6 +16,8 @@ final cartStateReducers = combineReducers<UserCartState>([
   TypedReducer<UserCartState, UpdateCartDiscount>(_updateCartDiscount),
   TypedReducer<UserCartState, AddValidVoucherCodeToCart>(
       _addValidVoucherCodeToCart),
+  TypedReducer<UserCartState, RemoveVoucherCodeFromCart>(
+      _removeVoucherCodeFromCart),
   TypedReducer<UserCartState, ClearCart>(_clearCart),
   TypedReducer<UserCartState, UpdateSlots>(_updateSlots),
   TypedReducer<UserCartState, OrderCreationProcessStatusUpdate>(
@@ -164,6 +166,38 @@ UserCartState _addValidVoucherCodeToCart(
     potValue = appliedVouchers.sum(
       (previousValue, discount) =>
           ((discount.vendor?.id ?? '') == (action.voucher.vendor?.id ?? '') &&
+                  discount.currency == thisCurrency
+              ? discount.value
+              : 0.0) +
+          previousValue,
+    );
+  }
+  return state.copyWith(
+    voucherPotValue: Money(
+      currency: thisCurrency,
+      value: potValue,
+    ),
+    appliedVouchers: appliedVouchers,
+  );
+}
+
+UserCartState _removeVoucherCodeFromCart(
+  UserCartState state,
+  RemoveVoucherCodeFromCart action,
+) {
+  final appliedVouchers = 
+    state.appliedVouchers.where(
+      (element) =>
+          element.code != action.voucher.code &&
+          element.discountType != action.voucher.discountType,
+    ).toList();
+  
+  num potValue = 0.0;
+  final thisCurrency = action.voucher.currency;
+  if (action.voucher.vendor != null) {
+    potValue = appliedVouchers.sum(
+      (previousValue, discount) =>
+          ((discount.vendor?.id.toString() ?? '') == (action.voucher.vendor?.id.toString() ?? '') &&
                   discount.currency == thisCurrency
               ? discount.value
               : 0.0) +

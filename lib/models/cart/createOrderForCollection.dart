@@ -19,7 +19,8 @@ class CreateOrderForCollection extends CreateOrderForFulfilment
   @JsonSerializable()
   factory CreateOrderForCollection({
     required List<CartItem> items,
-    required int total,
+    required num total,
+    required Currency currency,
     required int tipAmount,
     required bool marketingOptIn,
     required String discountCode,
@@ -40,6 +41,7 @@ class CreateOrderForCollection extends CreateOrderForFulfilment
       isDelivery: false,
       items: store.state.cartState.cartItems,
       total: store.state.cartState.cartTotal,
+      currency: store.state.cartState.cartCurrency,
       tipAmount: store.state.cartState.selectedTipAmount,
       marketingOptIn: false,
       discountCode: store.state.cartState.discountCode, // TODO: Apply discount vouchers here somehow?

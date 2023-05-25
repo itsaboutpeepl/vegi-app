@@ -34,4 +34,6 @@ const _$SignUpErrCodeEnumMap = {
   SignUpErrCode.invalidEmail: 'invalidEmail',
   SignUpErrCode.userDisabled: 'userDisabled',
   SignUpErrCode.emailLinkExpired: 'emailLinkExpired',
+  SignUpErrCode.unauthorizedDomain: 'unauthorizedDomain',
+  SignUpErrCode.serverError: 'serverError',
 };

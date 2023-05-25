@@ -55,7 +55,7 @@ class TopUpViewModel extends Equatable {
   final String senderWalletAddress;
   final num orderId;
   final num? accountId;
-  final int topUpAmount;
+  final num topUpAmount;
   final Future<void> Function(int amountPenceRounded) handleApplePay;
 
   @override

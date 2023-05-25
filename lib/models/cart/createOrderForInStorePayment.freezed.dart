@@ -22,7 +22,8 @@ CreateOrderForInStorePayment _$CreateOrderForInStorePaymentFromJson(
 /// @nodoc
 mixin _$CreateOrderForInStorePayment {
   List<CartItem> get items => throw _privateConstructorUsedError;
-  int get total => throw _privateConstructorUsedError;
+  num get total => throw _privateConstructorUsedError;
+  Currency get currency => throw _privateConstructorUsedError;
   int get tipAmount => throw _privateConstructorUsedError;
   bool get marketingOptIn => throw _privateConstructorUsedError;
   String get discountCode => throw _privateConstructorUsedError;
@@ -45,7 +46,8 @@ abstract class $CreateOrderForInStorePaymentCopyWith<$Res> {
   @useResult
   $Res call(
       {List<CartItem> items,
-      int total,
+      num total,
+      Currency currency,
       int tipAmount,
       bool marketingOptIn,
       String discountCode,
@@ -69,6 +71,7 @@ class _$CreateOrderForInStorePaymentCopyWithImpl<$Res,
   $Res call({
     Object? items = null,
     Object? total = null,
+    Object? currency = null,
     Object? tipAmount = null,
     Object? marketingOptIn = null,
     Object? discountCode = null,
@@ -83,7 +86,11 @@ class _$CreateOrderForInStorePaymentCopyWithImpl<$Res,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as Currency,
       tipAmount: null == tipAmount
           ? _value.tipAmount
           : tipAmount // ignore: cast_nullable_to_non_nullable
@@ -119,7 +126,8 @@ abstract class _$$_CreateOrderForInStorePaymentCopyWith<$Res>
   @useResult
   $Res call(
       {List<CartItem> items,
-      int total,
+      num total,
+      Currency currency,
       int tipAmount,
       bool marketingOptIn,
       String discountCode,
@@ -142,6 +150,7 @@ class __$$_CreateOrderForInStorePaymentCopyWithImpl<$Res>
   $Res call({
     Object? items = null,
     Object? total = null,
+    Object? currency = null,
     Object? tipAmount = null,
     Object? marketingOptIn = null,
     Object? discountCode = null,
@@ -156,7 +165,11 @@ class __$$_CreateOrderForInStorePaymentCopyWithImpl<$Res>
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as Currency,
       tipAmount: null == tipAmount
           ? _value.tipAmount
           : tipAmount // ignore: cast_nullable_to_non_nullable
@@ -188,6 +201,7 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
   _$_CreateOrderForInStorePayment(
       {required this.items,
       required this.total,
+      required this.currency,
       required this.tipAmount,
       required this.marketingOptIn,
       required this.discountCode,
@@ -201,7 +215,9 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
   @override
   final List<CartItem> items;
   @override
-  final int total;
+  final num total;
+  @override
+  final Currency currency;
   @override
   final int tipAmount;
   @override
@@ -220,6 +236,8 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
             other is _$_CreateOrderForInStorePayment &&
             const DeepCollectionEquality().equals(other.items, items) &&
             (identical(other.total, total) || other.total == total) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
             (identical(other.tipAmount, tipAmount) ||
                 other.tipAmount == tipAmount) &&
             (identical(other.marketingOptIn, marketingOptIn) ||
@@ -237,6 +255,7 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
       runtimeType,
       const DeepCollectionEquality().hash(items),
       total,
+      currency,
       tipAmount,
       marketingOptIn,
       discountCode,
@@ -262,7 +281,8 @@ abstract class _CreateOrderForInStorePayment
     extends CreateOrderForInStorePayment {
   factory _CreateOrderForInStorePayment(
       {required final List<CartItem> items,
-      required final int total,
+      required final num total,
+      required final Currency currency,
       required final int tipAmount,
       required final bool marketingOptIn,
       required final String discountCode,
@@ -276,7 +296,9 @@ abstract class _CreateOrderForInStorePayment
   @override
   List<CartItem> get items;
   @override
-  int get total;
+  num get total;
+  @override
+  Currency get currency;
   @override
   int get tipAmount;
   @override
