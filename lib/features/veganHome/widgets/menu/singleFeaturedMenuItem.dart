@@ -79,7 +79,7 @@ class SingleFeaturedMenuItem extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        if (menuItem.price != 0)
+                        if (menuItem.price.value != 0)
                           Text(
                             menuItem.formattedPrice,
                             style: const TextStyle(

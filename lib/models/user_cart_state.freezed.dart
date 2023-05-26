@@ -21,12 +21,16 @@ UserCartState _$UserCartStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserCartState {
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
-  num get cartSubTotal => throw _privateConstructorUsedError;
-  num get cartTax => throw _privateConstructorUsedError;
-  num get cartTotal => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartSubTotal => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartTax => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartTotal => throw _privateConstructorUsedError;
   Currency get cartCurrency => throw _privateConstructorUsedError;
-  int get cartDiscountPercent => throw _privateConstructorUsedError;
-  num get cartDiscountComputed => throw _privateConstructorUsedError;
+  num get cartDiscountPercent => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartDiscountComputed => throw _privateConstructorUsedError;
   @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
   Money get voucherPotValue => throw _privateConstructorUsedError;
   List<Discount> get appliedVouchers => throw _privateConstructorUsedError;
@@ -35,7 +39,8 @@ mixin _$UserCartState {
   DeliveryAddresses? get selectedDeliveryAddress =>
       throw _privateConstructorUsedError;
   TimeSlot? get selectedTimeSlot => throw _privateConstructorUsedError;
-  int get selectedTipAmount => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get selectedTipAmount => throw _privateConstructorUsedError;
   String get discountCode => throw _privateConstructorUsedError;
   String get paymentIntentID => throw _privateConstructorUsedError;
   String get orderID => throw _privateConstructorUsedError;
@@ -54,7 +59,8 @@ mixin _$UserCartState {
   FulfilmentMethodType get fulfilmentMethod =>
       throw _privateConstructorUsedError;
   int get restaurantMinimumOrder => throw _privateConstructorUsedError;
-  int get restaurantPlatformFee => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get restaurantPlatformFee => throw _privateConstructorUsedError;
   String get deliveryInstructions => throw _privateConstructorUsedError;
   PaymentMethod? get selectedPaymentMethod =>
       throw _privateConstructorUsedError;
@@ -91,12 +97,16 @@ abstract class $UserCartStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<CartItem> cartItems,
-      num cartSubTotal,
-      num cartTax,
-      num cartTotal,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartSubTotal,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartTax,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartTotal,
       Currency cartCurrency,
-      int cartDiscountPercent,
-      num cartDiscountComputed,
+      num cartDiscountPercent,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartDiscountComputed,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
           Money voucherPotValue,
       List<Discount> appliedVouchers,
@@ -104,7 +114,8 @@ abstract class $UserCartStateCopyWith<$Res> {
       List<TimeSlot> collectionSlots,
       DeliveryAddresses? selectedDeliveryAddress,
       TimeSlot? selectedTimeSlot,
-      int selectedTipAmount,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money selectedTipAmount,
       String discountCode,
       String paymentIntentID,
       String orderID,
@@ -121,7 +132,8 @@ abstract class $UserCartStateCopyWith<$Res> {
       String restaurantWalletAddress,
       FulfilmentMethodType fulfilmentMethod,
       int restaurantMinimumOrder,
-      int restaurantPlatformFee,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money restaurantPlatformFee,
       String deliveryInstructions,
       PaymentMethod? selectedPaymentMethod,
       List<String> fulfilmentPostalDistricts,
@@ -213,15 +225,15 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       cartSubTotal: null == cartSubTotal
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       cartTax: null == cartTax
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       cartCurrency: null == cartCurrency
           ? _value.cartCurrency
           : cartCurrency // ignore: cast_nullable_to_non_nullable
@@ -229,11 +241,11 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       cartDiscountPercent: null == cartDiscountPercent
           ? _value.cartDiscountPercent
           : cartDiscountPercent // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       cartDiscountComputed: null == cartDiscountComputed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       voucherPotValue: null == voucherPotValue
           ? _value.voucherPotValue
           : voucherPotValue // ignore: cast_nullable_to_non_nullable
@@ -261,7 +273,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       selectedTipAmount: null == selectedTipAmount
           ? _value.selectedTipAmount
           : selectedTipAmount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       discountCode: null == discountCode
           ? _value.discountCode
           : discountCode // ignore: cast_nullable_to_non_nullable
@@ -329,7 +341,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       restaurantPlatformFee: null == restaurantPlatformFee
           ? _value.restaurantPlatformFee
           : restaurantPlatformFee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       deliveryInstructions: null == deliveryInstructions
           ? _value.deliveryInstructions
           : deliveryInstructions // ignore: cast_nullable_to_non_nullable
@@ -490,12 +502,16 @@ abstract class _$$_UserCartStateCopyWith<$Res>
   @useResult
   $Res call(
       {List<CartItem> cartItems,
-      num cartSubTotal,
-      num cartTax,
-      num cartTotal,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartSubTotal,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartTax,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartTotal,
       Currency cartCurrency,
-      int cartDiscountPercent,
-      num cartDiscountComputed,
+      num cartDiscountPercent,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money cartDiscountComputed,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
           Money voucherPotValue,
       List<Discount> appliedVouchers,
@@ -503,7 +519,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       List<TimeSlot> collectionSlots,
       DeliveryAddresses? selectedDeliveryAddress,
       TimeSlot? selectedTimeSlot,
-      int selectedTipAmount,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money selectedTipAmount,
       String discountCode,
       String paymentIntentID,
       String orderID,
@@ -520,7 +537,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       String restaurantWalletAddress,
       FulfilmentMethodType fulfilmentMethod,
       int restaurantMinimumOrder,
-      int restaurantPlatformFee,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          Money restaurantPlatformFee,
       String deliveryInstructions,
       PaymentMethod? selectedPaymentMethod,
       List<String> fulfilmentPostalDistricts,
@@ -618,15 +636,15 @@ class __$$_UserCartStateCopyWithImpl<$Res>
       cartSubTotal: null == cartSubTotal
           ? _value.cartSubTotal
           : cartSubTotal // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       cartTax: null == cartTax
           ? _value.cartTax
           : cartTax // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       cartTotal: null == cartTotal
           ? _value.cartTotal
           : cartTotal // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       cartCurrency: null == cartCurrency
           ? _value.cartCurrency
           : cartCurrency // ignore: cast_nullable_to_non_nullable
@@ -634,11 +652,11 @@ class __$$_UserCartStateCopyWithImpl<$Res>
       cartDiscountPercent: null == cartDiscountPercent
           ? _value.cartDiscountPercent
           : cartDiscountPercent // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       cartDiscountComputed: null == cartDiscountComputed
           ? _value.cartDiscountComputed
           : cartDiscountComputed // ignore: cast_nullable_to_non_nullable
-              as num,
+              as Money,
       voucherPotValue: null == voucherPotValue
           ? _value.voucherPotValue
           : voucherPotValue // ignore: cast_nullable_to_non_nullable
@@ -666,7 +684,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
       selectedTipAmount: null == selectedTipAmount
           ? _value.selectedTipAmount
           : selectedTipAmount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       discountCode: null == discountCode
           ? _value.discountCode
           : discountCode // ignore: cast_nullable_to_non_nullable
@@ -734,7 +752,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
       restaurantPlatformFee: null == restaurantPlatformFee
           ? _value.restaurantPlatformFee
           : restaurantPlatformFee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       deliveryInstructions: null == deliveryInstructions
           ? _value.deliveryInstructions
           : deliveryInstructions // ignore: cast_nullable_to_non_nullable
@@ -793,20 +811,25 @@ class __$$_UserCartStateCopyWithImpl<$Res>
 class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   _$_UserCartState(
       {this.cartItems = const [],
-      this.cartSubTotal = 0,
-      this.cartTax = 0,
-      this.cartTotal = 0,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          this.cartSubTotal = const Money.zeroGBP(),
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          this.cartTax = const Money.zeroGBP(),
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          this.cartTotal = const Money.zeroGBP(),
       this.cartCurrency = Currency.GBP,
       this.cartDiscountPercent = 0,
-      this.cartDiscountComputed = 0,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
-          this.voucherPotValue = const Money.zero(),
+          this.cartDiscountComputed = const Money.zeroGBP(),
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          this.voucherPotValue = const Money.zeroGBP(),
       this.appliedVouchers = const [],
       this.deliverySlots = const [],
       this.collectionSlots = const [],
       this.selectedDeliveryAddress = null,
       this.selectedTimeSlot = null,
-      this.selectedTipAmount = 0,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          this.selectedTipAmount = const Money.zeroGBP(),
       this.discountCode = '',
       this.paymentIntentID = '',
       this.orderID = '',
@@ -823,7 +846,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       this.restaurantWalletAddress = '',
       this.fulfilmentMethod = FulfilmentMethodType.delivery,
       this.restaurantMinimumOrder = 0,
-      this.restaurantPlatformFee = 0,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          this.restaurantPlatformFee = const Money.zeroGBP(),
       this.deliveryInstructions = '',
       this.selectedPaymentMethod = null,
       this.fulfilmentPostalDistricts = const [],
@@ -848,23 +872,23 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   @JsonKey()
   final List<CartItem> cartItems;
   @override
-  @JsonKey()
-  final num cartSubTotal;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  final Money cartSubTotal;
   @override
-  @JsonKey()
-  final num cartTax;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  final Money cartTax;
   @override
-  @JsonKey()
-  final num cartTotal;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  final Money cartTotal;
   @override
   @JsonKey()
   final Currency cartCurrency;
   @override
   @JsonKey()
-  final int cartDiscountPercent;
+  final num cartDiscountPercent;
   @override
-  @JsonKey()
-  final num cartDiscountComputed;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  final Money cartDiscountComputed;
   @override
   @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
   final Money voucherPotValue;
@@ -884,8 +908,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   @JsonKey()
   final TimeSlot? selectedTimeSlot;
   @override
-  @JsonKey()
-  final int selectedTipAmount;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  final Money selectedTipAmount;
   @override
   @JsonKey()
   final String discountCode;
@@ -935,8 +959,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   @JsonKey()
   final int restaurantMinimumOrder;
   @override
-  @JsonKey()
-  final int restaurantPlatformFee;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  final Money restaurantPlatformFee;
   @override
   @JsonKey()
   final String deliveryInstructions;
@@ -1184,12 +1208,16 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
 abstract class _UserCartState extends UserCartState {
   factory _UserCartState(
       {final List<CartItem> cartItems,
-      final num cartSubTotal,
-      final num cartTax,
-      final num cartTotal,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          final Money cartSubTotal,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          final Money cartTax,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          final Money cartTotal,
       final Currency cartCurrency,
-      final int cartDiscountPercent,
-      final num cartDiscountComputed,
+      final num cartDiscountPercent,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          final Money cartDiscountComputed,
       @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
           final Money voucherPotValue,
       final List<Discount> appliedVouchers,
@@ -1197,7 +1225,8 @@ abstract class _UserCartState extends UserCartState {
       final List<TimeSlot> collectionSlots,
       final DeliveryAddresses? selectedDeliveryAddress,
       final TimeSlot? selectedTimeSlot,
-      final int selectedTipAmount,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          final Money selectedTipAmount,
       final String discountCode,
       final String paymentIntentID,
       final String orderID,
@@ -1214,7 +1243,8 @@ abstract class _UserCartState extends UserCartState {
       final String restaurantWalletAddress,
       final FulfilmentMethodType fulfilmentMethod,
       final int restaurantMinimumOrder,
-      final int restaurantPlatformFee,
+      @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+          final Money restaurantPlatformFee,
       final String deliveryInstructions,
       final PaymentMethod? selectedPaymentMethod,
       final List<String> fulfilmentPostalDistricts,
@@ -1238,17 +1268,21 @@ abstract class _UserCartState extends UserCartState {
   @override
   List<CartItem> get cartItems;
   @override
-  num get cartSubTotal;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartSubTotal;
   @override
-  num get cartTax;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartTax;
   @override
-  num get cartTotal;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartTotal;
   @override
   Currency get cartCurrency;
   @override
-  int get cartDiscountPercent;
+  num get cartDiscountPercent;
   @override
-  num get cartDiscountComputed;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get cartDiscountComputed;
   @override
   @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
   Money get voucherPotValue;
@@ -1263,7 +1297,8 @@ abstract class _UserCartState extends UserCartState {
   @override
   TimeSlot? get selectedTimeSlot;
   @override
-  int get selectedTipAmount;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get selectedTipAmount;
   @override
   String get discountCode;
   @override
@@ -1297,7 +1332,8 @@ abstract class _UserCartState extends UserCartState {
   @override
   int get restaurantMinimumOrder;
   @override
-  int get restaurantPlatformFee;
+  @JsonKey(fromJson: Money.fromJson, toJson: Money.toJson)
+  Money get restaurantPlatformFee;
   @override
   String get deliveryInstructions;
   @override

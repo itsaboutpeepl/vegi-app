@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -121,9 +122,8 @@ class _ProductOptionsCategoryViewState
                       .productOptionsCategory.listOfOptions[index].description,
                 ),
                 trailing: Text(
-                  cFPrice(
-                    widget.productOptionsCategory.listOfOptions[index].price,
-                  ),
+                  widget.productOptionsCategory.listOfOptions[index].priceGBPx
+                      .inGBPValue.formattedGBPPrice,
                   style: TextStyle(color: Colors.grey[800]),
                 ),
               ),

@@ -76,6 +76,7 @@ class Secrets {
   const Secrets._();
 
   static String get SENTRY_DSN => dotenv.env['SENTRY_DSN']!;
+  static String get CURRENCY_CONVERTER_API_KEY => dotenv.env['CURRENCY_CONVERTER_API_KEY']!;
 
   static String get ON_BOARDING_STRATEGY => dotenv.env['ON_BOARDING_STRATEGY']!;
 
@@ -134,6 +135,47 @@ String getGuideLiverpoolLink() {
 }
 
 const showWaitingListFunnel = false;
+
+
+class CurrencyRateConstants {
+  static const pplRewardsPcntDelivery = 0.05;
+  static const pplRewardsPcntPoS = 0.01;
+  static const numberOfPPLInOneGBP = 10.0;
+  static const pplPenceValue = 0.1;
+  static const pplPoundValue = pplPenceValue / 100;
+  static const minESCRating = 0.0;
+  static const maxESCRating = 5.0;
+
+  /**
+   * Description placeholder
+   * @date 25/05/2023 - 09:15:53
+   *
+   * @type {0.01}
+   * 
+   * @value of 1 GBT in GBP
+   */
+  static const GBTPoundPegValue = 0.01;
+
+  /**
+   * Description placeholder
+   * @date 25/05/2023 - 09:15:53
+   *
+   * @type {0.01}
+   * 
+   * @value of 1 GBPx in GBP
+   */
+  static const GBPxPoundPegValue = 0.01;
+
+  /**
+   * Description placeholder
+   * @date 25/05/2023 - 09:15:53
+   *
+   * @type {0.01}
+   * 
+   * @value of 1 PPL in GBP
+   */
+  static const PPLPoundPegValue = 0.1;
+}
 
 class Fonts {
   static const String fatFace = 'Fat Cheeks';

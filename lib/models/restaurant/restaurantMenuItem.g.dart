@@ -15,7 +15,7 @@ _$_RestaurantMenuItem _$$_RestaurantMenuItemFromJson(
       imageURL: json['imageURL'] as String,
       categoryName: json['categoryName'] as String,
       categoryId: json['categoryId'] as int,
-      price: json['price'] as int,
+      price: gbpxPriceFromJson(json['price']),
       description: json['description'] as String,
       extras: Map<String, int>.from(json['extras'] as Map),
       listOfProductOptionCategories: (json['listOfProductOptionCategories']
@@ -51,7 +51,7 @@ Map<String, dynamic> _$$_RestaurantMenuItemToJson(
       'imageURL': instance.imageURL,
       'categoryName': instance.categoryName,
       'categoryId': instance.categoryId,
-      'price': instance.price,
+      'price': gbpxPriceToJson(instance.price),
       'description': instance.description,
       'extras': instance.extras,
       'listOfProductOptionCategories': instance.listOfProductOptionCategories

@@ -48,7 +48,7 @@ class BillSummaryCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        viewmodel.itemTotal,
+                        viewmodel.itemTotal.formattedGBPPrice,
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                         ),
@@ -104,7 +104,7 @@ class BillSummaryCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        viewmodel.serviceCharge,
+                        viewmodel.serviceCharge.formattedGBPPrice,
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
@@ -122,7 +122,7 @@ class BillSummaryCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          viewmodel.tipAmount,
+                          viewmodel.tipAmount.formattedGBPPrice,
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
@@ -163,7 +163,7 @@ class BillSummaryCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        viewmodel.grandTotal,
+                        viewmodel.grandTotal.formattedGBPPrice,
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,

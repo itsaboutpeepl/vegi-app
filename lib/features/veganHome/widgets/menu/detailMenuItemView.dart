@@ -3,6 +3,7 @@ import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuViewFloatingBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/menu/productOptionsView.dart';
@@ -176,7 +177,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                             height: 10,
                           ),
                           Text(
-                            cFPrice(viewmodel.totalPrice),
+                            viewmodel.totalPrice.formattedGBPPrice,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w900,

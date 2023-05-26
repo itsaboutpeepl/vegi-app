@@ -23,9 +23,9 @@ mixin _$MenuItemState {
   @JsonKey(ignore: true)
   RestaurantMenuItem? get menuItem => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  int get totalPrice => throw _privateConstructorUsedError;
+  Money get totalPrice => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  int get itemReward => throw _privateConstructorUsedError;
+  num get itemReward => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   Map<int, ProductOptionValue> get selectedProductOptionsForCategory =>
       throw _privateConstructorUsedError;
@@ -50,9 +50,9 @@ abstract class $MenuItemStateCopyWith<$Res> {
       {@JsonKey(ignore: true)
           RestaurantMenuItem? menuItem,
       @JsonKey(ignore: true)
-          int totalPrice,
+          Money totalPrice,
       @JsonKey(ignore: true)
-          int itemReward,
+          num itemReward,
       @JsonKey(ignore: true)
           Map<int, ProductOptionValue> selectedProductOptionsForCategory,
       @JsonKey(ignore: true)
@@ -91,11 +91,11 @@ class _$MenuItemStateCopyWithImpl<$Res, $Val extends MenuItemState>
       totalPrice: null == totalPrice
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       itemReward: null == itemReward
           ? _value.itemReward
           : itemReward // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       selectedProductOptionsForCategory: null ==
               selectedProductOptionsForCategory
           ? _value.selectedProductOptionsForCategory
@@ -137,9 +137,9 @@ abstract class _$$_MenuItemStateCopyWith<$Res>
       {@JsonKey(ignore: true)
           RestaurantMenuItem? menuItem,
       @JsonKey(ignore: true)
-          int totalPrice,
+          Money totalPrice,
       @JsonKey(ignore: true)
-          int itemReward,
+          num itemReward,
       @JsonKey(ignore: true)
           Map<int, ProductOptionValue> selectedProductOptionsForCategory,
       @JsonKey(ignore: true)
@@ -177,11 +177,11 @@ class __$$_MenuItemStateCopyWithImpl<$Res>
       totalPrice: null == totalPrice
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       itemReward: null == itemReward
           ? _value.itemReward
           : itemReward // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       selectedProductOptionsForCategory: null ==
               selectedProductOptionsForCategory
           ? _value.selectedProductOptionsForCategory
@@ -205,7 +205,7 @@ class __$$_MenuItemStateCopyWithImpl<$Res>
 class _$_MenuItemState extends _MenuItemState {
   _$_MenuItemState(
       {@JsonKey(ignore: true) this.menuItem = null,
-      @JsonKey(ignore: true) this.totalPrice = 0,
+      @JsonKey(ignore: true) this.totalPrice = const Money.zeroGBPx(),
       @JsonKey(ignore: true) this.itemReward = 0,
       @JsonKey(ignore: true) this.selectedProductOptionsForCategory = const {},
       @JsonKey(ignore: true) this.loadingProductOptions = false,
@@ -220,10 +220,10 @@ class _$_MenuItemState extends _MenuItemState {
   final RestaurantMenuItem? menuItem;
   @override
   @JsonKey(ignore: true)
-  final int totalPrice;
+  final Money totalPrice;
   @override
   @JsonKey(ignore: true)
-  final int itemReward;
+  final num itemReward;
   @override
   @JsonKey(ignore: true)
   final Map<int, ProductOptionValue> selectedProductOptionsForCategory;
@@ -289,9 +289,9 @@ abstract class _MenuItemState extends MenuItemState {
       {@JsonKey(ignore: true)
           final RestaurantMenuItem? menuItem,
       @JsonKey(ignore: true)
-          final int totalPrice,
+          final Money totalPrice,
       @JsonKey(ignore: true)
-          final int itemReward,
+          final num itemReward,
       @JsonKey(ignore: true)
           final Map<int, ProductOptionValue> selectedProductOptionsForCategory,
       @JsonKey(ignore: true)
@@ -308,10 +308,10 @@ abstract class _MenuItemState extends MenuItemState {
   RestaurantMenuItem? get menuItem;
   @override
   @JsonKey(ignore: true)
-  int get totalPrice;
+  Money get totalPrice;
   @override
   @JsonKey(ignore: true)
-  int get itemReward;
+  num get itemReward;
   @override
   @JsonKey(ignore: true)
   Map<int, ProductOptionValue> get selectedProductOptionsForCategory;

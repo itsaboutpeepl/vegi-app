@@ -3,6 +3,7 @@ import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryPartnerDTO.dart';
 import 'package:vegan_liverpool/models/restaurant/productCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 part 'restaurantItem.freezed.dart';
 part 'restaurantItem.g.dart';
@@ -32,6 +33,9 @@ class RestaurantItem with _$RestaurantItem {
   }) = _RestaurantItem;
 
   const RestaurantItem._();
+
+  num get platformFeeGBP =>
+      platformFee * CurrencyRateConstants.GBPxPoundPegValue;
 
   factory RestaurantItem.fromJson(Map<String, dynamic> json) =>
       _$RestaurantItemFromJson(json);

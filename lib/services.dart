@@ -1,6 +1,7 @@
 import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/services/apis/fxService.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:phone_number/phone_number.dart';
@@ -20,6 +21,8 @@ final RootRouter rootRouter = getIt<RootRouter>();
 final FuseWalletSDK fuseWalletSDK = getIt<FuseWalletSDK>();
 
 final LocationService locationService = getIt<LocationService>();
+
+final FXService fxService = getIt<FXService>();
 
 final PeeplEatsService peeplEatsService = getIt<PeeplEatsService>();
 

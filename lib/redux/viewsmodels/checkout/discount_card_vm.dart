@@ -22,14 +22,17 @@ class DiscountCardViewModel extends Equatable {
       hasDiscount: store.state.cartState.discountCode.isNotEmpty,
       discountCode: store.state.cartState.discountCode,
       cartCurrency: store.state.cartState.cartCurrency,
-      cartVendorId: int.parse(store.state.cartState.restaurantID),
+      cartVendorId: int.tryParse(store.state.cartState.restaurantID) ?? 0,
       activeVouchers: store.state.cartState.appliedVouchers,
       removeDiscount: () => store.dispatch(removeCartDiscount()),
       removeAppliedVoucher: ({
         required Discount voucher,
-      }) => store.dispatch(removeCartAppliedVoucher(
-        voucher: voucher,
-      ),),
+      }) =>
+          store.dispatch(
+        removeCartAppliedVoucher(
+          voucher: voucher,
+        ),
+      ),
     );
   }
 
@@ -45,8 +48,8 @@ class DiscountCardViewModel extends Equatable {
 
   @override
   List<Object?> get props => [
-    discountCode,
-    cartCurrency,
-    cartVendorId,
-  ];
+        discountCode,
+        cartCurrency,
+        cartVendorId,
+      ];
 }

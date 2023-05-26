@@ -68,7 +68,7 @@ class PeeplRewardsAppBar extends StatelessWidget {
                         StoreConnector<AppState, double>(
                           converter: (store) {
                             return getPPLRewardsFromPence(
-                              store.state.cartState.cartTotal,
+                              store.state.cartState.cartTotal.inGBPxValue,
                             );
                           },
                           builder: (context, pplBalance) {

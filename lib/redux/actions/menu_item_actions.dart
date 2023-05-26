@@ -2,6 +2,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
@@ -15,9 +16,14 @@ class ResetMenuItem {
 }
 
 class SetMenuItem {
-  SetMenuItem({required this.menuItem, required this.selectedExtras});
+  SetMenuItem({
+    required this.menuItem,
+    required this.selectedExtras,
+    required this.totalPrice,
+  });
   final RestaurantMenuItem menuItem;
   final List<bool> selectedExtras;
+  final TotalPrice totalPrice;
 
   @override
   String toString() =>
@@ -26,8 +32,8 @@ class SetMenuItem {
 
 class UpdateTotalPrice {
   UpdateTotalPrice({required this.totalPrice, required this.totalRewards});
-  final int totalPrice;
-  final int totalRewards;
+  final Money totalPrice;
+  final num totalRewards;
 
   @override
   String toString() =>
@@ -124,7 +130,7 @@ ThunkAction<AppState> calculateItemTotalPrice() {
       final RestaurantMenuItem? menuItem = store.state.menuItemState.menuItem;
 
       if (menuItem != null) {
-        final totalPrice = menuItem.totalPrice(
+        final totalPrice = await menuItem.totalPrice(
           quantity: store.state.menuItemState.quantity,
           selectedProductOptions:
               store.state.menuItemState.selectedProductOptionsForCategory,
@@ -152,15 +158,22 @@ ThunkAction<AppState> calculateItemTotalPrice() {
 ThunkAction<AppState> setUpMenuItemStructures(RestaurantMenuItem? menuItem) {
   return (Store<AppState> store) async {
     try {
-      menuItem == null
-          ? store.dispatch(ResetMenuItem())
-          : store.dispatch(
-              SetMenuItem(
-                menuItem: menuItem,
-                selectedExtras:
-                    List.generate(menuItem.extras.length, (i) => false),
-              ),
-            );
+      if (menuItem != null) {
+        final totalPrice = await menuItem.totalPrice(
+          quantity: 1,
+          selectedProductOptions: {},
+          fulfilmentMethod: store.state.cartState.fulfilmentMethod,
+        );
+        store.dispatch(
+          SetMenuItem(
+            menuItem: menuItem,
+            totalPrice: totalPrice,
+            selectedExtras: List.generate(menuItem.extras.length, (i) => false),
+          ),
+        );
+      } else {
+        store.dispatch(ResetMenuItem());
+      }
     } catch (e, s) {
       log.error('ERROR - setUpMenuItemStructures $e');
       await Sentry.captureException(

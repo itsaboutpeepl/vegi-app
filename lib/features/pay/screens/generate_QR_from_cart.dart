@@ -30,7 +30,7 @@ class _GenerateQRFromCartState extends State<GenerateQRFromCart> {
           ..dispatch(SetPaymentButtonFlag(false))
           ..dispatch(
             UpdateSelectedAmounts(
-              gbpxAmount: (store.state.cartState.cartTotal) / 100,
+              gbpxAmount: store.state.cartState.cartTotal.inGBPxValue.toDouble(),
               pplAmount: 0,
             ),
           );

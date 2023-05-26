@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as Math;
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +14,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/authViewModel.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
 import 'package:vegan_liverpool/models/cart/discount.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/restaurant/ESCRating.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
@@ -22,6 +24,7 @@ import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/config.dart' as VEGI_CONFIG;
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class BoolThenRouteResult {
@@ -216,28 +219,21 @@ bool shouldEndOngoing(TimeSlot selectedSlot) {
   }
 }
 
-const pplRewardsPcntDelivery = 0.05;
-const pplRewardsPcntPoS = 0.01;
-const numberOfPPLInOneGBP = 10.0;
-const pplPenceValue = 0.1;
-const pplPoundValue = pplPenceValue / 100;
-const minESCRating = 0.0;
-const maxESCRating = 5.0;
-
 double getPPLValueFromPence(num penceAmount) {
   return getPPLValueFromPounds(penceAmount / 100);
 }
 
 double getPPLValueFromPounds(num poundAmount) {
-  return poundAmount * numberOfPPLInOneGBP;
+  return poundAmount * CurrencyRateConstants.numberOfPPLInOneGBP;
 }
 
 double getPoundValueFromPPL(num pplAmount) {
-  return pplAmount / numberOfPPLInOneGBP;
+  return pplAmount / CurrencyRateConstants.numberOfPPLInOneGBP;
 }
 
 double getPPLRewardsFromPounds(num gBPAmount) {
-  return getPPLValueFromPounds(gBPAmount * pplRewardsPcntDelivery);
+  return getPPLValueFromPounds(
+      gBPAmount * CurrencyRateConstants.pplRewardsPcntDelivery);
 }
 
 double getPPLRewardsFromPence(num penceAmount) =>
@@ -248,12 +244,15 @@ int calculateRewardsForPrice({
   required ESCRating? rating,
   required FulfilmentMethodType fulfilmentMethod,
 }) {
-  return ((Math.max(Math.min(rating?.rating ?? 0, maxESCRating), minESCRating) /
-              maxESCRating) *
+  return ((Math.max(
+                  Math.min(
+                      rating?.rating ?? 0, CurrencyRateConstants.maxESCRating),
+                  CurrencyRateConstants.minESCRating) /
+              CurrencyRateConstants.maxESCRating) *
           penceAmount *
           (fulfilmentMethod == FulfilmentMethodType.inStore
-              ? pplRewardsPcntPoS
-              : pplRewardsPcntDelivery))
+              ? CurrencyRateConstants.pplRewardsPcntPoS
+              : CurrencyRateConstants.pplRewardsPcntDelivery))
       .floor();
   // return penceAmount * (fulfilmentMethod == FulfilmentMethodType.inStore ? 1 : 5) ~/ 100;
 }
@@ -265,13 +264,14 @@ double calculateCartRewardsForPrice({
   final x = items.map(
     (item) {
       return (Math.max(
-                  Math.min(item.menuItem.rating?.rating ?? 0, maxESCRating),
-                  minESCRating) /
-              maxESCRating) *
-          item.totalItemPrice *
+                  Math.min(item.menuItem.rating?.rating ?? 0,
+                      CurrencyRateConstants.maxESCRating),
+                  CurrencyRateConstants.minESCRating) /
+              CurrencyRateConstants.maxESCRating) *
+          item.totalItemPrice.inGBPxValue *
           (fulfilmentMethod == FulfilmentMethodType.inStore
-              ? pplRewardsPcntPoS
-              : pplRewardsPcntDelivery);
+              ? CurrencyRateConstants.pplRewardsPcntPoS
+              : CurrencyRateConstants.pplRewardsPcntDelivery);
     },
   ).reduce((value, element) => value + element);
   return x;
@@ -288,73 +288,106 @@ String getPoundValueFormattedFromPPL(num pplAmount) {
   return getPPLValueFromPence(pplAmount).toStringAsFixed(2);
 }
 
-UpdateTotalPrice calculateMenuItemPrice({
+Future<UpdateTotalPrice> calculateMenuItemPrice({
   required RestaurantMenuItem menuItem,
   required int quantity,
   bool inStore = false,
   Iterable<ProductOptionValue> productOptions = const [],
-}) {
-  var total = quantity * menuItem.price;
+}) async {
+  // var total = quantity * (await menuItem.priceGBP).value;
+  var total = menuItem.price * quantity;
 
-  productOptions.forEach((element) {
-    total += element.price;
+  productOptions.forEach((element) async {
+    total += (await element.priceGBP).value;
   });
 
   return UpdateTotalPrice(
     totalPrice: total,
-    totalRewards: total *
-        (inStore ? pplRewardsPcntPoS : pplRewardsPcntDelivery).truncate(),
+    totalRewards: total.inGBPxValue *
+        (inStore
+                ? CurrencyRateConstants.pplRewardsPcntPoS
+                : CurrencyRateConstants.pplRewardsPcntDelivery)
+            .truncate(),
   );
 }
 
-UpdateComputedCartValues? computeTotalsFromCart({
+Future<UpdateComputedCartValues?> computeTotalsFromCart({
   required List<CartItem> cartItems,
-  required int fulfilmentCharge,
-  required int platformFee,
-  required int cartDiscountPercent,
-  required int cartTip,
+  required Money fulfilmentCharge,
+  required Money platformFee,
+  required num cartDiscountPercent,
+  required Money cartTip,
   required Currency cartCurrency,
   required int vendorId,
   List<Discount> appliedVouchers = const <Discount>[],
-}) {
+}) async {
   try {
-    const int cartTax = 0;
-    num cartTotal = 0;
-    num cartSubTotal = 0;
-    num cartPcntDiscountComputed = 0;
-    num cartTotalDiscountComputed = 0;
+    Money cartTax = Money.zero(inCurrency: cartCurrency);
+    Money cartTotal = Money.zero(inCurrency: cartCurrency);
+    Money cartSubTotal = Money.zero(inCurrency: cartCurrency);
+    Money cartPcntDiscountComputed = Money.zero(inCurrency: cartCurrency);
+    Money cartTotalDiscountComputed = Money.zero(inCurrency: cartCurrency);
 
     for (final element in cartItems) {
-      cartSubTotal += element.cartTotalMoney(inCurrency: cartCurrency).value;
+      cartSubTotal +=
+          (await element.totalItemPriceInCurrency(inCurrency: cartCurrency))
+              .value;
     }
 
     cartPcntDiscountComputed =
         (cartSubTotal * cartDiscountPercent) ~/ 100; // subtotal * discount
 
-    final voucherPot = appliedVouchers.sum(
-      (previousValue, discount) =>
-          (['', vendorId.toString(),].contains(discount.vendor?.id.toString() ?? '') ?
-                  discount.currency == cartCurrency
-              ? discount.value : convertCurrencyAmount(
-                amount: discount.value,
-                fromCurrency: discount.currency,
-                toCurrency: cartCurrency,
-              )
-              : 0.0) +
-          previousValue,
-    );
+    // final currenciesToConvert = appliedVouchers.map((discount) => discount.currency).toSet();
+
+    num voucherPot = 0.0;
+    for (final discount in appliedVouchers) {
+      if ([
+        '',
+        vendorId.toString(),
+      ].contains(discount.vendor?.id.toString() ?? '')) {
+        if (discount.currency == cartCurrency) {
+          voucherPot += discount.value;
+        } else {
+          voucherPot += await convertCurrencyAmount(
+            amount: discount.value,
+            fromCurrency: discount.currency,
+            toCurrency: cartCurrency,
+          );
+        }
+      }
+    }
+
+    // final voucherPot = appliedVouchers.sum(
+    //   (previousValue, discount) =>
+    //       ([
+    //         '',
+    //         vendorId.toString(),
+    //       ].contains(discount.vendor?.id.toString() ?? '')
+    //           ? discount.currency == cartCurrency
+    //               ? discount.value
+    //               : (await convertCurrencyAmount(
+    //                   amount: discount.value,
+    //                   fromCurrency: discount.currency,
+    //                   toCurrency: cartCurrency,
+    //                 ))
+    //           : 0.0) +
+    //       previousValue,
+    // );
 
     cartTotalDiscountComputed = cartPcntDiscountComputed + voucherPot;
 
-    cartTotal =
-        (cartSubTotal + cartTax + cartTip + fulfilmentCharge + platformFee) -
-            cartPcntDiscountComputed;
+    cartTotal = (cartSubTotal +
+            cartTax.inCcy(cartCurrency).value +
+            cartTip.inCcy(cartCurrency).value +
+            fulfilmentCharge.inCcy(cartCurrency).value +
+            platformFee.inCcy(cartCurrency).value) -
+        cartPcntDiscountComputed.inCcy(cartCurrency).value;
 
     if (cartItems.isEmpty) {
-      cartSubTotal = 0;
-      cartTotal = 0;
-      cartPcntDiscountComputed = 0;
-      cartTotalDiscountComputed = 0;
+      cartSubTotal = Money.zero(inCurrency: cartCurrency);
+      cartTotal = Money.zero(inCurrency: cartCurrency);
+      cartPcntDiscountComputed = Money.zero(inCurrency: cartCurrency);
+      cartTotalDiscountComputed = Money.zero(inCurrency: cartCurrency);
     }
 
     return UpdateComputedCartValues(
@@ -374,39 +407,162 @@ UpdateComputedCartValues? computeTotalsFromCart({
   }
 }
 
-num fxAmount({
+///
+///  Gives an amount of 1[fromCurrency] in [toCurrency]
+///
+/// @returns {Promise<number>}
+///
+num getInternalCurrencyConversionRateSync({
+  required Currency fromCurrency,
+  required Currency toCurrency,
+}) {
+  if (fromCurrency == toCurrency) {
+    return 1.0;
+  }
+  if (fromCurrency == Currency.GBP) {
+    if (toCurrency == Currency.GBPx) {
+      return 1.0 / CurrencyRateConstants.GBPxPoundPegValue;
+    } else if (toCurrency == Currency.GBT) {
+      return 1.0 / CurrencyRateConstants.GBTPoundPegValue;
+    } else if (toCurrency == Currency.PPL) {
+      return 1.0 / CurrencyRateConstants.PPLPoundPegValue;
+    } else if (toCurrency == Currency.USD || toCurrency == Currency.EUR) {
+      throw Exception(
+          'Requested a currency conversion from getInternalCurrencyConversionRateSync but toCurrency: $toCurrency is not an internal currency.');
+    } else {
+      log.error(
+        'Unsupported currencies requested from helpers.getCurrencyConversionRate of fromCurrency: $fromCurrency, toCurrency: $toCurrency.',
+        stackTrace: StackTrace.current,
+      );
+      return 0.0;
+    }
+  } else if (toCurrency == Currency.GBP) {
+    return 1.0 /
+        (getInternalCurrencyConversionRateSync(
+          fromCurrency: toCurrency,
+          toCurrency: fromCurrency,
+        ));
+  } else {
+    return (getInternalCurrencyConversionRateSync(
+          fromCurrency: fromCurrency,
+          toCurrency: Currency.GBP,
+        )) *
+        (getInternalCurrencyConversionRateSync(
+          fromCurrency: Currency.GBP,
+          toCurrency: toCurrency,
+        ));
+  }
+}
+
+///
+///  Gives an amount of 1[fromCurrency] in [toCurrency]
+///
+/// @returns {Promise<number>}
+///
+Future<num> getCurrencyConversionRate({
+  required Currency fromCurrency,
+  required Currency toCurrency,
+}) async {
+  if (fromCurrency == toCurrency) {
+    return 1.0;
+  }
+
+  if (fromCurrency == Currency.GBP) {
+    if (toCurrency == Currency.GBPx) {
+      return 1.0 / CurrencyRateConstants.GBPxPoundPegValue;
+    } else if (toCurrency == Currency.GBT) {
+      return 1.0 / CurrencyRateConstants.GBTPoundPegValue;
+    } else if (toCurrency == Currency.PPL) {
+      return 1.0 / CurrencyRateConstants.PPLPoundPegValue;
+    } else if (toCurrency == Currency.USD || toCurrency == Currency.EUR) {
+      final liveRate = await fxService.getFXRate(
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+      );
+
+      return liveRate;
+    } else {
+      log.error(
+        'Unsupported currencies requested from helpers.getCurrencyConversionRate of fromCurrency: $fromCurrency, toCurrency: $toCurrency.',
+        stackTrace: StackTrace.current,
+      );
+      return 0.0;
+    }
+  } else if (toCurrency == Currency.GBP) {
+    return 1.0 /
+        (await getCurrencyConversionRate(
+          fromCurrency: toCurrency,
+          toCurrency: fromCurrency,
+        ));
+  } else {
+    return (await getCurrencyConversionRate(
+          fromCurrency: fromCurrency,
+          toCurrency: Currency.GBP,
+        )) *
+        (await getCurrencyConversionRate(
+          fromCurrency: Currency.GBP,
+          toCurrency: toCurrency,
+        ));
+  }
+}
+
+num convertInternalCurrencyAmount({
   required num amount,
   required Currency fromCurrency,
   Currency toCurrency = Currency.GBP,
 }) {
-  var amountGBP = amount; // DEFAULT GBP CASE
-  if (fromCurrency == Currency.EUR || fromCurrency == Currency.USD) {
-    throw Exception(
-        'Not implemented cart totals for fromCurrency: $fromCurrency');
-  } else if (fromCurrency == Currency.GBPx) {
-    amountGBP = amount * 100;
-  } else if (fromCurrency == Currency.PPL) {
-    amountGBP = getPoundValueFromPPL(amount);
-  } else if (fromCurrency == Currency.GBP) {
-    amountGBP = amount;
-  } else if (fromCurrency == Currency.GBT) {
-    throw Exception(
-        'Not implemented cart totals for fromCurrency: $fromCurrency');
+  if (amount == 0) {
+    return 0.0;
   }
+  return amount *
+      (getInternalCurrencyConversionRateSync(
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+      ));
+}
 
-  if (toCurrency == Currency.EUR ||
-      toCurrency == Currency.USD ||
-      toCurrency == Currency.GBT) {
-    throw Exception('Not implemented cart totals for toCurrency: $toCurrency');
-  } else if (toCurrency == Currency.GBPx) {
-    return amountGBP * 100;
-  } else if (toCurrency == Currency.PPL) {
-    return getPPLValueFromPounds(amountGBP);
-  } else if (toCurrency == Currency.GBP) {
-    return amountGBP;
-  } else {
-    throw Exception('Not implemented cart totals for toCurrency: $toCurrency');
+Future<num> fxAmount({
+  required num amount,
+  required Currency fromCurrency,
+  Currency toCurrency = Currency.GBP,
+}) async {
+  if (amount == 0) {
+    return 0.0;
   }
+  return amount *
+      (await getCurrencyConversionRate(
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+      ));
+  // var amountGBP = amount; // DEFAULT GBP CASE
+  // if (fromCurrency == Currency.EUR || fromCurrency == Currency.USD) {
+  //   throw Exception(
+  //     'Not implemented cart totals for fromCurrency: $fromCurrency',
+  //   );
+  // } else if (fromCurrency == Currency.GBPx) {
+  //   amountGBP = amount * 100;
+  // } else if (fromCurrency == Currency.PPL) {
+  //   amountGBP = getPoundValueFromPPL(amount);
+  // } else if (fromCurrency == Currency.GBP) {
+  //   amountGBP = amount;
+  // } else if (fromCurrency == Currency.GBT) {
+  //   throw Exception(
+  //       'Not implemented cart totals for fromCurrency: $fromCurrency');
+  // }
+
+  // if (toCurrency == Currency.EUR ||
+  //     toCurrency == Currency.USD ||
+  //     toCurrency == Currency.GBT) {
+  //   throw Exception('Not implemented cart totals for toCurrency: $toCurrency');
+  // } else if (toCurrency == Currency.GBPx) {
+  //   return amountGBP * 100;
+  // } else if (toCurrency == Currency.PPL) {
+  //   return getPPLValueFromPounds(amountGBP);
+  // } else if (toCurrency == Currency.GBP) {
+  //   return amountGBP;
+  // } else {
+  //   throw Exception('Not implemented cart totals for toCurrency: $toCurrency');
+  // }
 }
 
 const convertCurrencyAmount = fxAmount;

@@ -29,14 +29,15 @@ class CreateOrderForInStorePayment extends CreateOrderForFulfilment
   }) = _CreateOrderForInStorePayment;
 
   @JsonEnum()
-  final FulfilmentMethodType fulfilmentTypeString = FulfilmentMethodType.inStore;
+  final FulfilmentMethodType fulfilmentTypeString =
+      FulfilmentMethodType.inStore;
 
   factory CreateOrderForInStorePayment.fromStore(Store<AppState> store) {
     return CreateOrderForInStorePayment(
       items: store.state.cartState.cartItems,
-      total: store.state.cartState.cartTotal,
+      total: store.state.cartState.cartTotal.inGBPxValue,
       currency: store.state.cartState.cartCurrency,
-      tipAmount: store.state.cartState.selectedTipAmount,
+      tipAmount: store.state.cartState.selectedTipAmount.inGBPxValue.round(),
       marketingOptIn: false,
       discountCode: store.state.cartState.discountCode,
       vendor: store.state.cartState.restaurantID,

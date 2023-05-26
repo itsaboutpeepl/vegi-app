@@ -7,10 +7,10 @@ part 'productOptionValue.freezed.dart';
 part 'productOptionValue.g.dart';
 
 List<ProductOptionValue> fromJsonProductOptionValueList(dynamic json) =>
-  fromSailsListOfObjectJson<ProductOptionValue>(ProductOptionValue.fromJson)(json);
+    fromSailsListOfObjectJson<ProductOptionValue>(ProductOptionValue.fromJson)(
+        json);
 ProductOptionValue? fromJsonProductOptionValue(dynamic json) =>
-  fromSailsObjectJson<ProductOptionValue>(ProductOptionValue.fromJson)(json);
-
+    fromSailsObjectJson<ProductOptionValue>(ProductOptionValue.fromJson)(json);
 
 @Freezed()
 class ProductOptionValue with _$ProductOptionValue {
@@ -23,8 +23,34 @@ class ProductOptionValue with _$ProductOptionValue {
     @JsonKey(defaultValue: false) required bool isAvaliable,
   }) = _ProductOptions;
 
-  int get price => priceModifier;
+  // int get price => priceModifier;
   int get optionID => id;
+
+  Future<Money> priceMoney({
+    required Currency inCurrency,
+  }) async =>
+      Money(
+        currency: inCurrency,
+        value: await convertCurrencyAmount(
+          amount: priceModifier,
+          fromCurrency: Currency.GBPx,
+          toCurrency: inCurrency,
+        ),
+      );
+
+  Future<Money> get priceGBP async => Money(
+        currency: Currency.GBP,
+        value: await convertCurrencyAmount(
+          amount: priceModifier,
+          fromCurrency: Currency.GBPx,
+          toCurrency: Currency.GBP,
+        ),
+      );
+
+  Money get priceGBPx => Money(
+        currency: Currency.GBP,
+        value: priceModifier,
+      );
 
   const ProductOptionValue._();
 

@@ -25,10 +25,11 @@ mixin _$RestaurantMenuItem {
   String get name => throw _privateConstructorUsedError;
   String get imageURL => throw _privateConstructorUsedError;
   String get categoryName => throw _privateConstructorUsedError;
-  int get categoryId => throw _privateConstructorUsedError;
-
+  int get categoryId =>
+      throw _privateConstructorUsedError; // required int price,
   /// this is the price in pence of the restaurant item without any product options applied
-  int get price => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+  Money get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Map<String, int> get extras => throw _privateConstructorUsedError;
   List<ProductOptionsCategory> get listOfProductOptionCategories =>
@@ -68,7 +69,8 @@ abstract class $RestaurantMenuItemCopyWith<$Res> {
       String imageURL,
       String categoryName,
       int categoryId,
-      int price,
+      @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+          Money price,
       String description,
       Map<String, int> extras,
       List<ProductOptionsCategory> listOfProductOptionCategories,
@@ -158,7 +160,7 @@ class _$RestaurantMenuItemCopyWithImpl<$Res, $Val extends RestaurantMenuItem>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -262,7 +264,8 @@ abstract class _$$_RestaurantMenuItemCopyWith<$Res>
       String imageURL,
       String categoryName,
       int categoryId,
-      int price,
+      @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+          Money price,
       String description,
       Map<String, int> extras,
       List<ProductOptionsCategory> listOfProductOptionCategories,
@@ -351,7 +354,7 @@ class __$$_RestaurantMenuItemCopyWithImpl<$Res>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -439,7 +442,8 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
       required this.imageURL,
       required this.categoryName,
       required this.categoryId,
-      required this.price,
+      @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+          required this.price,
       required this.description,
       required this.extras,
       required this.listOfProductOptionCategories,
@@ -475,10 +479,11 @@ class _$_RestaurantMenuItem extends _RestaurantMenuItem {
   final String categoryName;
   @override
   final int categoryId;
-
+// required int price,
   /// this is the price in pence of the restaurant item without any product options applied
   @override
-  final int price;
+  @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+  final Money price;
   @override
   final String description;
   @override
@@ -636,7 +641,8 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
       required final String imageURL,
       required final String categoryName,
       required final int categoryId,
-      required final int price,
+      @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+          required final Money price,
       required final String description,
       required final Map<String, int> extras,
       required final List<ProductOptionsCategory> listOfProductOptionCategories,
@@ -672,10 +678,10 @@ abstract class _RestaurantMenuItem extends RestaurantMenuItem {
   String get categoryName;
   @override
   int get categoryId;
-  @override
-
+  @override // required int price,
   /// this is the price in pence of the restaurant item without any product options applied
-  int get price;
+  @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+  Money get price;
   @override
   String get description;
   @override

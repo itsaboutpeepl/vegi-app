@@ -12,16 +12,25 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
               ?.map((e) => CartItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      cartSubTotal: json['cartSubTotal'] as num? ?? 0,
-      cartTax: json['cartTax'] as num? ?? 0,
-      cartTotal: json['cartTotal'] as num? ?? 0,
+      cartSubTotal: json['cartSubTotal'] == null
+          ? const Money.zeroGBP()
+          : Money.fromJson(json['cartSubTotal'] as Map<String, dynamic>),
+      cartTax: json['cartTax'] == null
+          ? const Money.zeroGBP()
+          : Money.fromJson(json['cartTax'] as Map<String, dynamic>),
+      cartTotal: json['cartTotal'] == null
+          ? const Money.zeroGBP()
+          : Money.fromJson(json['cartTotal'] as Map<String, dynamic>),
       cartCurrency:
           $enumDecodeNullable(_$CurrencyEnumMap, json['cartCurrency']) ??
               Currency.GBP,
-      cartDiscountPercent: json['cartDiscountPercent'] as int? ?? 0,
-      cartDiscountComputed: json['cartDiscountComputed'] as num? ?? 0,
+      cartDiscountPercent: json['cartDiscountPercent'] as num? ?? 0,
+      cartDiscountComputed: json['cartDiscountComputed'] == null
+          ? const Money.zeroGBP()
+          : Money.fromJson(
+              json['cartDiscountComputed'] as Map<String, dynamic>),
       voucherPotValue: json['voucherPotValue'] == null
-          ? const Money.zero()
+          ? const Money.zeroGBP()
           : Money.fromJson(json['voucherPotValue'] as Map<String, dynamic>),
       appliedVouchers: (json['appliedVouchers'] as List<dynamic>?)
               ?.map((e) => Discount.fromJson(e as Map<String, dynamic>))
@@ -42,7 +51,9 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
       selectedTimeSlot: json['selectedTimeSlot'] == null
           ? null
           : TimeSlot.fromJson(json['selectedTimeSlot'] as Map<String, dynamic>),
-      selectedTipAmount: json['selectedTipAmount'] as int? ?? 0,
+      selectedTipAmount: json['selectedTipAmount'] == null
+          ? const Money.zeroGBP()
+          : Money.fromJson(json['selectedTipAmount'] as Map<String, dynamic>),
       discountCode: json['discountCode'] as String? ?? '',
       paymentIntentID: json['paymentIntentID'] as String? ?? '',
       orderID: json['orderID'] as String? ?? '',
@@ -65,7 +76,10 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
               _$FulfilmentMethodTypeEnumMap, json['fulfilmentMethod']) ??
           FulfilmentMethodType.delivery,
       restaurantMinimumOrder: json['restaurantMinimumOrder'] as int? ?? 0,
-      restaurantPlatformFee: json['restaurantPlatformFee'] as int? ?? 0,
+      restaurantPlatformFee: json['restaurantPlatformFee'] == null
+          ? const Money.zeroGBP()
+          : Money.fromJson(
+              json['restaurantPlatformFee'] as Map<String, dynamic>),
       deliveryInstructions: json['deliveryInstructions'] as String? ?? '',
       selectedPaymentMethod: $enumDecodeNullable(
               _$PaymentMethodEnumMap, json['selectedPaymentMethod']) ??
@@ -106,12 +120,12 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
     <String, dynamic>{
       'cartItems': instance.cartItems.map((e) => e.toJson()).toList(),
-      'cartSubTotal': instance.cartSubTotal,
-      'cartTax': instance.cartTax,
-      'cartTotal': instance.cartTotal,
+      'cartSubTotal': Money.toJson(instance.cartSubTotal),
+      'cartTax': Money.toJson(instance.cartTax),
+      'cartTotal': Money.toJson(instance.cartTotal),
       'cartCurrency': _$CurrencyEnumMap[instance.cartCurrency]!,
       'cartDiscountPercent': instance.cartDiscountPercent,
-      'cartDiscountComputed': instance.cartDiscountComputed,
+      'cartDiscountComputed': Money.toJson(instance.cartDiscountComputed),
       'voucherPotValue': Money.toJson(instance.voucherPotValue),
       'appliedVouchers':
           instance.appliedVouchers.map((e) => e.toJson()).toList(),
@@ -120,7 +134,7 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
           instance.collectionSlots.map((e) => e.toJson()).toList(),
       'selectedDeliveryAddress': instance.selectedDeliveryAddress?.toJson(),
       'selectedTimeSlot': instance.selectedTimeSlot?.toJson(),
-      'selectedTipAmount': instance.selectedTipAmount,
+      'selectedTipAmount': Money.toJson(instance.selectedTipAmount),
       'discountCode': instance.discountCode,
       'paymentIntentID': instance.paymentIntentID,
       'orderID': instance.orderID,
@@ -138,7 +152,7 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'fulfilmentMethod':
           _$FulfilmentMethodTypeEnumMap[instance.fulfilmentMethod]!,
       'restaurantMinimumOrder': instance.restaurantMinimumOrder,
-      'restaurantPlatformFee': instance.restaurantPlatformFee,
+      'restaurantPlatformFee': Money.toJson(instance.restaurantPlatformFee),
       'deliveryInstructions': instance.deliveryInstructions,
       'selectedPaymentMethod':
           _$PaymentMethodEnumMap[instance.selectedPaymentMethod],

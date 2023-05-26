@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -62,8 +63,8 @@ class OrderConfirmedViewModel extends Equatable {
       order.transactions.add(
         TransactionItem(
           timestamp: order.orderedDateTime,
-          amount: store.state.cartState.cartTotal,
-          currency: Currency.GBPx,
+          amount: store.state.cartState.cartTotal.value,
+          currency: store.state.cartState.cartTotal.currency,
           receiver: -2,
           payer: store.state.userState.vegiAccountId?.toInt() ?? -1,
           order: order.id,
@@ -95,7 +96,7 @@ class OrderConfirmedViewModel extends Equatable {
   final DeliveryAddresses? orderAddress;
   final String restaurantName;
   final List<CartItem> cartItems;
-  final num cartTotal;
+  final Money cartTotal;
   final Currency cartCurrency;
   final String orderID;
   final Order order;

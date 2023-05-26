@@ -61,7 +61,7 @@ class FloatingCartBar extends StatelessWidget {
                                 height: 3,
                               ),
                               Text(
-                                viewmodel.itemTotal,
+                                viewmodel.itemTotal.formattedGBPPrice,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                 ),

@@ -89,7 +89,7 @@ class ProductDTO with _$ProductDTO {
         isFeatured: isFeatured,
         listOfProductOptionCategories: listOfProductOptionCategories,
         menuItemID: menuItemID,
-        price: price.value.round(),
+        price: price,
         priority: priority,
         productBarCode: productBarCode,
         restaurantID: restaurantID,

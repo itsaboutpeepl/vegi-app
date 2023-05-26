@@ -168,7 +168,7 @@ class PaymentButton extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      viewmodel.cartTotal,
+                      viewmodel.cartTotal.formattedGBPPrice,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(

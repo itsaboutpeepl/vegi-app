@@ -23,6 +23,7 @@ import 'package:vegan_liverpool/models/cart/getOrdersResponse.dart';
 import 'package:vegan_liverpool/models/cart/order.dart' as OrderModel;
 import 'package:vegan_liverpool/models/cart/orderStatus.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
@@ -589,7 +590,7 @@ class PeeplEatsService extends HttpService {
             imageURL: element['imageUrl'] as String? ?? '',
             categoryName: element['category']['name'] as String? ?? '',
             categoryId: element['category']['id'] as int? ?? 0,
-            price: element['basePrice'] as int? ?? 0,
+            price: Money(currency: Currency.GBPx, value: element['basePrice'] as int? ?? 0,),
             description: element['description'] as String? ?? '',
             extras: {},
             listOfProductOptionCategories: [],
@@ -715,7 +716,10 @@ class PeeplEatsService extends HttpService {
             imageURL: element['imageUrl'] as String? ?? '',
             categoryName: element['category']['name'] as String? ?? '',
             categoryId: element['category']['id'] as int? ?? 0,
-            price: element['basePrice'] as int? ?? 0,
+            price: Money(
+              currency: Currency.GBPx,
+              value: element['basePrice'] as int? ?? 0,
+            ),
             description: element['description'] as String? ?? '',
             extras: {},
             listOfProductOptionCategories: [],

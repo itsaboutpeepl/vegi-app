@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 
 class PeeplPaySheetViewModel extends Equatable {
@@ -25,7 +26,7 @@ class PeeplPaySheetViewModel extends Equatable {
 
   factory PeeplPaySheetViewModel.fromStore(Store<AppState> store) {
     return PeeplPaySheetViewModel(
-      cartTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
+      cartTotal: store.state.cartState.cartTotal,
       selectedGBPxAmount: store.state.cartState.selectedGBPxAmount,
       selectedPPLAmount: store.state.cartState.selectedPPLAmount,
       transferringTokens: store.state.cartState.transferringTokens,
@@ -51,7 +52,7 @@ class PeeplPaySheetViewModel extends Equatable {
   }
   final double selectedGBPxAmount;
   final double selectedPPLAmount;
-  final String cartTotal;
+  final Money cartTotal;
   final bool transferringTokens;
   final bool errorCompletingPayment;
   final bool confirmedPayment;

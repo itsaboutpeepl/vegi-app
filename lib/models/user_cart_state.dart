@@ -28,23 +28,39 @@ class UserCartState with _$UserCartState {
   factory UserCartState({
     @Default([])
         List<CartItem> cartItems,
-    @Default(0)
-        num cartSubTotal,
-    @Default(0)
-        num cartTax,
-    @Default(0)
-        num cartTotal,
-    @Default(Currency.GBP)
-        Currency cartCurrency,
-    @Default(0)
-        int cartDiscountPercent,
-    @Default(0)
-        num cartDiscountComputed,
     @JsonKey(
       fromJson: Money.fromJson,
       toJson: Money.toJson,
     )
-    @Default(Money.zero())
+    @Default(Money.zeroGBP())
+        Money cartSubTotal,
+    @JsonKey(
+      fromJson: Money.fromJson,
+      toJson: Money.toJson,
+    )
+    @Default(Money.zeroGBP())
+        Money cartTax,
+    @JsonKey(
+      fromJson: Money.fromJson,
+      toJson: Money.toJson,
+    )
+    @Default(Money.zeroGBP())
+        Money cartTotal,
+    @Default(Currency.GBP)
+        Currency cartCurrency,
+    @Default(0)
+        num cartDiscountPercent,
+    @JsonKey(
+      fromJson: Money.fromJson,
+      toJson: Money.toJson,
+    )
+    @Default(Money.zeroGBP())
+        Money cartDiscountComputed,
+    @JsonKey(
+      fromJson: Money.fromJson,
+      toJson: Money.toJson,
+    )
+    @Default(Money.zeroGBP())
         Money voucherPotValue,
     @Default([])
         List<Discount> appliedVouchers,
@@ -56,8 +72,12 @@ class UserCartState with _$UserCartState {
         DeliveryAddresses? selectedDeliveryAddress,
     @Default(null)
         TimeSlot? selectedTimeSlot,
-    @Default(0)
-        int selectedTipAmount,
+    @JsonKey(
+      fromJson: Money.fromJson,
+      toJson: Money.toJson,
+    )
+    @Default(Money.zeroGBP())
+        Money selectedTipAmount,
     @Default('')
         String discountCode,
     @Default('')
@@ -90,8 +110,12 @@ class UserCartState with _$UserCartState {
         FulfilmentMethodType fulfilmentMethod,
     @Default(0)
         int restaurantMinimumOrder,
-    @Default(0)
-        int restaurantPlatformFee,
+    @JsonKey(
+      fromJson: Money.fromJson,
+      toJson: Money.toJson,
+    )
+    @Default(Money.zeroGBP())
+        Money restaurantPlatformFee,
     @Default('')
         String deliveryInstructions,
     @Default(null)
@@ -128,15 +152,16 @@ class UserCartState with _$UserCartState {
 
   factory UserCartState.initial() => UserCartState(
         cartItems: [],
-        cartSubTotal: 0,
-        cartTax: 0,
-        cartTotal: 0,
         cartCurrency: Currency.GBP,
-        cartDiscountPercent: 0,
-        cartDiscountComputed: 0,
+        cartSubTotal: const Money.zeroGBP(),
+        cartTax: const Money.zeroGBP(),
+        cartTotal: const Money.zeroGBP(),
+        cartDiscountPercent: 0.0,
+        selectedTipAmount: const Money.zeroGBP(),
+        cartDiscountComputed: const Money.zeroGBP(),
+        restaurantPlatformFee: const Money.zeroGBP(),
         deliverySlots: [],
         collectionSlots: [],
-        selectedTipAmount: 0,
         discountCode: '',
         paymentIntentID: '',
         orderID: '',
@@ -165,23 +190,86 @@ class UserCartState with _$UserCartState {
   bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;
   bool get isInStore => fulfilmentMethod == FulfilmentMethodType.inStore;
 
-  Money cartTotalMoney({
+  Future<Money> cartTotalInCurrency({
     required Currency inCurrency,
-  }) =>
+  }) async =>
       Money(
         currency: inCurrency,
-        value: convertCurrencyAmount(
-          amount: cartTotal,
-          fromCurrency: cartCurrency,
+        value: await convertCurrencyAmount(
+          amount: cartTotal.value,
+          fromCurrency: cartTotal.currency,
           toCurrency: inCurrency,
         ),
       );
 
-  Money get cartTotalGBP => Money(
+  Future<Money> get cartTotalGBP async => Money(
         currency: Currency.GBP,
-        value: convertCurrencyAmount(
-          amount: cartTotal,
-          fromCurrency: cartCurrency,
+        value: await convertCurrencyAmount(
+          amount: cartTotal.value,
+          fromCurrency: cartTotal.currency,
+          toCurrency: Currency.GBP,
+        ),
+      );
+
+  Future<Money> platformFeeMoney({
+    required Currency inCurrency,
+  }) async =>
+      Money(
+        currency: inCurrency,
+        value: await convertCurrencyAmount(
+          amount: restaurantPlatformFee.value,
+          fromCurrency: restaurantPlatformFee.currency,
+          toCurrency: inCurrency,
+        ),
+      );
+
+  Future<Money> get platformFeeGBP async => Money(
+        currency: Currency.GBP,
+        value: await convertCurrencyAmount(
+          amount: restaurantPlatformFee.value,
+          fromCurrency: restaurantPlatformFee.currency,
+          toCurrency: Currency.GBP,
+        ),
+      );
+
+  Future<Money> cartTipMoney({
+    required Currency inCurrency,
+  }) async =>
+      Money(
+        currency: inCurrency,
+        value: await convertCurrencyAmount(
+          amount: selectedTipAmount.value,
+          fromCurrency: selectedTipAmount.currency,
+          toCurrency: inCurrency,
+        ),
+      );
+
+  Future<Money> get cartTipGBP async => Money(
+        currency: Currency.GBP,
+        value: await convertCurrencyAmount(
+          amount: selectedTipAmount.value,
+          fromCurrency: selectedTipAmount.currency,
+          toCurrency: Currency.GBP,
+        ),
+      );
+
+  Future<Money> fulfilmentChargeMoney({
+    required Currency inCurrency,
+  }) async =>
+      Money(
+        currency: inCurrency,
+        value: await convertCurrencyAmount(
+          amount: selectedTimeSlot?.priceModifier ?? 0.0,
+          fromCurrency: Currency.GBPx,
+          toCurrency: inCurrency,
+        ),
+      );
+
+  Future<Money> get fulfilmentChargeGBP async => Money(
+        currency: Currency.GBP,
+        value: await convertCurrencyAmount(
+          amount: selectedTimeSlot?.priceModifier ?? 0.0,
+          fromCurrency: Currency.GBPx,
           toCurrency: Currency.GBP,
         ),
       );

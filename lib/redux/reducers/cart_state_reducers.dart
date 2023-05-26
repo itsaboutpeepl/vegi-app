@@ -101,6 +101,7 @@ UserCartState _computeCartTotals(
   UpdateComputedCartValues action,
 ) {
   return state.copyWith(
+    cartCurrency: action.cartTotal.currency,
     cartSubTotal: action.cartSubTotal,
     cartTax: action.cartTax,
     cartTotal: action.cartTotal,
@@ -114,13 +115,13 @@ UserCartState _clearCart(
 ) {
   return state.copyWith(
     cartItems: [],
-    cartSubTotal: 0,
-    cartTax: 0,
-    cartTotal: 0,
-    cartDiscountPercent: 0,
-    cartDiscountComputed: 0,
+    cartSubTotal: Money.zero(inCurrency: state.cartCurrency),
+    cartTax: Money.zero(inCurrency: state.cartCurrency),
+    cartTotal: Money.zero(inCurrency: state.cartCurrency),
+    cartDiscountPercent: 0.0,
+    cartDiscountComputed: Money.zero(inCurrency: state.cartCurrency),
     selectedTimeSlot: null,
-    selectedTipAmount: 0,
+    selectedTipAmount: Money.zero(inCurrency: state.cartCurrency),
     discountCode: '',
     selectedDeliveryAddress: null,
     paymentIntentID: '',

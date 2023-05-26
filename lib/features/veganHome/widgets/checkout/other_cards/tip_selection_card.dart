@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/tip_selection_vm.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 
@@ -104,8 +106,12 @@ class _TipCardState extends State<TipCard> {
               );
               Future.delayed(const Duration(milliseconds: 100), () {
                 viewmodel.selectedUserTip == widget.tipAmount
-                    ? viewmodel.updateUserTip(tipAmount: 0)
-                    : viewmodel.updateUserTip(tipAmount: widget.tipAmount);
+                    ? viewmodel.updateUserTip(tipAmount: Money.zeroGBPx())
+                    : viewmodel.updateUserTip(
+                        tipAmount: Money(
+                        currency: Currency.GBPx,
+                        value: widget.tipAmount,
+                      ));
               });
             },
             child: Padding(

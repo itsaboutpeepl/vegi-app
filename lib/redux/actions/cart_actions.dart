@@ -230,10 +230,10 @@ class UpdateComputedCartValues {
     this.cartTotal,
     this.cartDiscountComputed,
   );
-  final num cartSubTotal;
-  final num cartTax;
-  final num cartTotal;
-  final num cartDiscountComputed;
+  final Money cartSubTotal;
+  final Money cartTax;
+  final Money cartTotal;
+  final Money cartDiscountComputed;
 
   @override
   String toString() {
@@ -346,7 +346,7 @@ class UpdateSelectedTimeSlot {
 
 class UpdateTipAmount {
   UpdateTipAmount(this.tipAmount);
-  final int tipAmount;
+  final Money tipAmount;
 
   @override
   String toString() {
@@ -437,7 +437,7 @@ class SetRestaurantDetails {
   final DeliveryAddresses restaurantAddress;
   final String walletAddress;
   final int minimumOrder;
-  final int platformFee;
+  final Money platformFee;
   final List<String> fulfilmentPostalDistricts;
 
   @override
@@ -624,7 +624,7 @@ ThunkAction<AppState> getEligibleOrderDates() {
   };
 }
 
-ThunkAction<AppState> updateCartTip(int newTip) {
+ThunkAction<AppState> updateCartTip(Money newTip) {
   return (Store<AppState> store) async {
     try {
       store
@@ -1137,12 +1137,13 @@ ThunkAction<AppState> scanRestaurantMenuItemQRCode(
           DateTime.now().millisecondsSinceEpoch,
         ).nextInt(100000),
         menuItem: menuItem,
-        totalItemPrice: calculateMenuItemPrice(
+        totalItemPrice: (await calculateMenuItemPrice(
           menuItem: menuItem,
           quantity: 1,
           productOptions:
               menuItem.listOfProductOptionCategories[0].listOfOptions,
-        ).totalPrice,
+        ))
+            .totalPrice,
         // lib/redux/actions/menu_item_actions.dart:119
         //
         itemQuantity: 1,
@@ -1503,15 +1504,13 @@ ThunkAction<AppState> removeCartItem(int itemId) {
 
 ThunkAction<AppState> computeCartTotals() {
   return (Store<AppState> store) async {
-    final updateCartItems = computeTotalsFromCart(
+    final updateCartItems = await computeTotalsFromCart(
       cartItems: store.state.cartState.cartItems,
-      fulfilmentCharge: store.state.cartState.selectedTimeSlot != null
-          ? store.state.cartState.selectedTimeSlot!.priceModifier
-          : 0,
-      platformFee: store.state.cartState.restaurantPlatformFee,
-      cartDiscountPercent: store.state.cartState.cartDiscountPercent,
-      cartTip: store.state.cartState.selectedTipAmount,
+      fulfilmentCharge: await store.state.cartState.fulfilmentChargeGBP,
+      platformFee: await store.state.cartState.platformFeeGBP,
+      cartTip: await store.state.cartState.cartTipGBP,
       cartCurrency: store.state.cartState.cartCurrency,
+      cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       vendorId: int.parse(store.state.cartState.restaurantID),
     );
     if (updateCartItems != null) {
@@ -1559,7 +1558,8 @@ ThunkAction<AppState> startOrderCreationProcess({
         );
         return;
       }
-      if (cartState.restaurantMinimumOrder > cartState.cartSubTotal) {
+      if (cartState.restaurantMinimumOrder >
+          cartState.cartSubTotal.inGBPxValue) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
             status: _sentryUpdatePipe(
@@ -1894,7 +1894,6 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: orderId,
           accountId: store.state.userState.vegiAccountId!,
-          currency: store.state.cartState.cartCurrency,
           store: store,
           amount: store.state.cartState.cartTotal,
           shouldPushToHome: true,
@@ -1953,7 +1952,6 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          currency: Currency.GBP,
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,
@@ -1984,7 +1982,8 @@ ThunkAction<AppState> startPaymentProcess({
             store
               ..dispatch(
                 UpdateSelectedAmounts(
-                  gbpxAmount: (store.state.cartState.cartTotal) / 100,
+                  gbpxAmount:
+                      store.state.cartState.cartTotal.inGBPxValue.toDouble(),
                   pplAmount: 0,
                 ),
               )
@@ -2049,7 +2048,6 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          currency: store.state.cartState.cartCurrency,
           store: store,
           amount: store.state.cartState.cartTotal,
           shouldPushToHome: false,
@@ -2142,7 +2140,6 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          currency: store.state.cartState.cartCurrency,
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,
@@ -2173,7 +2170,8 @@ ThunkAction<AppState> startPaymentProcess({
             store
               ..dispatch(
                 UpdateSelectedAmounts(
-                  gbpxAmount: (store.state.cartState.cartTotal) / 100,
+                  gbpxAmount:
+                      store.state.cartState.cartTotal.inGBPxValue.toDouble(),
                   pplAmount: 0,
                 ),
               )
@@ -2246,14 +2244,17 @@ ThunkAction<AppState> startPeeplPayProcess() {
       if (hasSufficientGbpxBalance) {
         store.dispatch(startTokenPaymentToRestaurant());
       } else {
+        // ! This is a topup call
         await stripeService
             .handleStripe(
-          recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
+          recipientWalletAddress: store.state.userState.walletAddress,
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          currency: Currency.GBP,
-          amount: (selectedGBPXAmount * 100).toInt(),
+          amount: Money(
+            currency: Currency.GBP,
+            value: selectedGBPXAmount, // this is actually a GBP value.
+          ),
           store: store,
           shouldPushToHome: false,
         )
@@ -2601,20 +2602,24 @@ ThunkAction<AppState> setRestaurantDetails({
       if (clearCart) {
         store.dispatch(ClearCart());
       }
-      store.dispatch(
-        setMenuSearchQuery(searchQuery: ''),
-      );
-      store.dispatch(
-        SetRestaurantDetails(
-          restaurantItem.restaurantID,
-          restaurantItem.name,
-          restaurantItem.address,
-          restaurantItem.walletAddress,
-          restaurantItem.minimumOrderAmount,
-          restaurantItem.platformFee,
-          restaurantItem.deliveryRestrictionDetails,
-        ),
-      );
+      store
+        ..dispatch(
+          setMenuSearchQuery(searchQuery: ''),
+        )
+        ..dispatch(
+          SetRestaurantDetails(
+            restaurantItem.restaurantID,
+            restaurantItem.name,
+            restaurantItem.address,
+            restaurantItem.walletAddress,
+            restaurantItem.minimumOrderAmount,
+            Money(
+              currency: Currency.GBPx,
+              value: restaurantItem.platformFee,
+            ),
+            restaurantItem.deliveryRestrictionDetails,
+          ),
+        );
     } catch (e, s) {
       store.dispatch(SetError(flag: true));
       log.error('ERROR - setRestaurantDetails $e');

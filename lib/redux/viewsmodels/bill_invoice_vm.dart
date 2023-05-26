@@ -3,6 +3,7 @@ import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 
 class BillInvoiceViewModel extends Equatable {
   const BillInvoiceViewModel({
@@ -17,7 +18,7 @@ class BillInvoiceViewModel extends Equatable {
   factory BillInvoiceViewModel.fromStore(Store<AppState> store) {
     return BillInvoiceViewModel(
         didUsePPL: store.state.cartState.selectedPPLAmount > 0,
-        grandTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
+        grandTotal: store.state.cartState.cartTotal,
         gbpxUsed:
             (store.state.cartState.selectedGBPxAmount * 100).formattedGBPxPrice,
         pplUsed:
@@ -32,7 +33,7 @@ class BillInvoiceViewModel extends Equatable {
   final String gbpxUsed;
   final String pplUsed;
   final String pplRewardsEarned;
-  final String grandTotal;
+  final Money grandTotal;
   final bool didUsePPL;
   final String pplRewardsEarnedValue;
 

@@ -3,6 +3,7 @@ import 'package:redux/redux.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
@@ -22,13 +23,13 @@ class TopUpViewModel extends Equatable {
       senderWalletAddress: store.state.userState.walletAddress,
       orderId: num.parse(store.state.cartState.orderID),
       accountId: store.state.userState.vegiAccountId,
-      topUpAmount: store.state.cartState.cartTotal == 0
-          ? 25
-          : store.state.cartState.cartTotal,
+      topUpAmount: store.state.cartState.cartTotal.value == 0
+          ? 25 // Default of £25 when no cart state (i.e. just topping up for future.)
+          : store.state.cartState.cartTotal.inGBPValue,
       handleApplePay: (int amountPence) async {
         if (store.state.userState.vegiAccountId == null) {
           final e =
-              'Vegi AccountId not set on state... Cannot start payment';
+              'vegi AccountId not set on state... Cannot start payment';
           log.error(e);
           await Sentry.captureException(
             Exception(e),
@@ -41,8 +42,7 @@ class TopUpViewModel extends Equatable {
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          currency: Currency.GBP,
-          amount: amountPence,
+          amount: Money(currency: Currency.GBP, value: amountPence / 100),
           store: store, //move to viewmodel
           shouldPushToHome: true,
           productName: 'vegi',

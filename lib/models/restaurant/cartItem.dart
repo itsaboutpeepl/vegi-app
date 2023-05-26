@@ -5,9 +5,21 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 part 'cartItem.freezed.dart';
 part 'cartItem.g.dart';
+
+Money gbpxPriceFromJson(dynamic json) => Money(
+      currency: Currency.GBPx,
+      value: (json is int || json is num || json is double) ? json as num : 0.0,
+    );
+
+dynamic gbpxPriceToJson(Money money) => money.currency == Currency.GBPx
+    ? money.value
+    : money.currency == Currency.GBP
+        ? money.value / CurrencyRateConstants.GBPxPoundPegValue
+        : 0.0;
 
 @Freezed()
 class CartItem with _$CartItem {
@@ -15,9 +27,16 @@ class CartItem with _$CartItem {
   factory CartItem({
     required int internalID,
     required RestaurantMenuItem menuItem,
-    required int totalItemPrice,
+
+    /// this is the price in pence of the restaurant item without any product options applied
+    @JsonKey(
+      fromJson: gbpxPriceFromJson,
+      toJson: gbpxPriceToJson,
+    )
+        required Money totalItemPrice,
     required int itemQuantity,
-    @Default(Currency.GBPx) Currency itemCurrency,
+    @Default(Currency.GBPx)
+        Currency itemCurrency,
     required Map<int, ProductOptionValue> selectedProductOptions,
   }) = _CartItem;
 
@@ -27,7 +46,7 @@ class CartItem with _$CartItem {
       _$CartItemFromJson(json);
 
   String get formattedPrice {
-    return cFPrice(totalItemPrice);
+    return totalItemPrice.inGBPxValue.formattedGBPxPrice;
   }
 
   List<String> get selectedProductOptionsString {
@@ -43,22 +62,24 @@ class CartItem with _$CartItem {
     return optionValues;
   }
 
-  Money cartTotalMoney({required Currency inCurrency,}) => Money(
+  Future<Money> totalItemPriceInCurrency({
+    required Currency inCurrency,
+  }) async =>
+      Money(
         currency: inCurrency,
-        value: convertCurrencyAmount(
-          amount: totalItemPrice,
-          fromCurrency: itemCurrency,
+        value: await convertCurrencyAmount(
+          amount: totalItemPrice.value,
+          fromCurrency: totalItemPrice.currency,
           toCurrency: inCurrency,
         ),
       );
-      
-  Money get cartTotalGBP => Money(
-      currency: Currency.GBP,
-      value: convertCurrencyAmount(
-        amount: totalItemPrice,
-        fromCurrency: itemCurrency,
-        toCurrency: Currency.GBP,
-      ),
-    );
 
+  Future<Money> get totalItemPriceGBP async => Money(
+        currency: Currency.GBP,
+        value: await convertCurrencyAmount(
+          amount: totalItemPrice.value,
+          fromCurrency: totalItemPrice.currency,
+          toCurrency: Currency.GBP,
+        ),
+      );
 }

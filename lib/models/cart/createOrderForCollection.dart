@@ -40,9 +40,9 @@ class CreateOrderForCollection extends CreateOrderForFulfilment
     return CreateOrderForCollection(
       isDelivery: false,
       items: store.state.cartState.cartItems,
-      total: store.state.cartState.cartTotal,
+      total: store.state.cartState.cartTotal.inGBPxValue,
       currency: store.state.cartState.cartCurrency,
-      tipAmount: store.state.cartState.selectedTipAmount,
+      tipAmount: store.state.cartState.selectedTipAmount.inGBPxValue.round(),
       marketingOptIn: false,
       discountCode: store.state.cartState.discountCode, // TODO: Apply discount vouchers here somehow?
       vendor: store.state.cartState.restaurantID,

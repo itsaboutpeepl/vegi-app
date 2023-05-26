@@ -1,24 +1,24 @@
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/menu_item_state.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/redux/actions/menu_item_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 final menuItemReducers = combineReducers<MenuItemState>(
   [
-    TypedReducer<MenuItemState, ResetAppState>(_resetApp),
-    TypedReducer<MenuItemState, ResetMenuItem>(_resetMenuItem),
-    TypedReducer<MenuItemState, SetMenuItem>(_setMenuItem),
-    TypedReducer<MenuItemState, UpdateTotalPrice>(_calculateTotalPrice),
-    TypedReducer<MenuItemState, UpdateQuantity>(_updateQuantity),
+    TypedReducer<MenuItemState, ResetAppState>(_resetApp).call,
+    TypedReducer<MenuItemState, ResetMenuItem>(_resetMenuItem).call,
+    TypedReducer<MenuItemState, SetMenuItem>(_setMenuItem).call,
+    TypedReducer<MenuItemState, UpdateTotalPrice>(_calculateTotalPrice).call,
+    TypedReducer<MenuItemState, UpdateQuantity>(_updateQuantity).call,
     TypedReducer<MenuItemState, UpdateMenuItemWithProductOptions>(
       _updateProductOptions,
-    ),
+    ).call,
     TypedReducer<MenuItemState, LoadingProductOptions>(
       _setLoadingProductOptions,
-    ),
+    ).call,
   ],
 );
-
 
 MenuItemState _resetApp(
   MenuItemState state,
@@ -33,7 +33,7 @@ MenuItemState _resetMenuItem(
 ) {
   return state.copyWith(
     menuItem: null,
-    totalPrice: 0,
+    totalPrice: const Money.zeroGBPx(),
     itemReward: 0,
     quantity: 0,
     selectedProductOptionsForCategory: {},
@@ -46,8 +46,8 @@ MenuItemState _setMenuItem(
 ) {
   return state.copyWith(
     menuItem: action.menuItem,
-    totalPrice: action.menuItem.price,
-    itemReward: action.menuItem.price * 5 ~/ 100,
+    totalPrice: action.totalPrice.totalPrice,
+    itemReward: action.totalPrice.totalRewards,
     selectedProductOptionsForCategory: {},
     quantity: 1,
   );

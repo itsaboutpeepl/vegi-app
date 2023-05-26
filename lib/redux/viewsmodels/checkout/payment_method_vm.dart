@@ -6,6 +6,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -48,7 +49,7 @@ class PaymentMethodViewModel extends Equatable {
               FulfilmentMethodType.inStore,
       isSuperAdmin: store.state.userState.isVegiSuperAdmin,
       hasPplBalance: pplBalance > 0,
-      cartTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
+      cartTotal: store.state.cartState.cartTotal,
       restaurantMinimumOrder: store.state.cartState.restaurantMinimumOrder,
       orderCreationProcessStatus:
           store.state.cartState.orderCreationProcessStatus,
@@ -79,7 +80,7 @@ class PaymentMethodViewModel extends Equatable {
   final bool selectedRestaurantIsLive;
   final FulfilmentMethodType selectedFulfilmentMethod;
   final int restaurantMinimumOrder;
-  final String cartTotal;
+  final Money cartTotal;
   final void Function({required PaymentMethod paymentMethod}) setPaymentMethod;
   final void Function({
     required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,

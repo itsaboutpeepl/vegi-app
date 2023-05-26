@@ -22,7 +22,10 @@ CartItem _$CartItemFromJson(Map<String, dynamic> json) {
 mixin _$CartItem {
   int get internalID => throw _privateConstructorUsedError;
   RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
-  int get totalItemPrice => throw _privateConstructorUsedError;
+
+  /// this is the price in pence of the restaurant item without any product options applied
+  @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+  Money get totalItemPrice => throw _privateConstructorUsedError;
   int get itemQuantity => throw _privateConstructorUsedError;
   Currency get itemCurrency => throw _privateConstructorUsedError;
   Map<int, ProductOptionValue> get selectedProductOptions =>
@@ -42,7 +45,8 @@ abstract class $CartItemCopyWith<$Res> {
   $Res call(
       {int internalID,
       RestaurantMenuItem menuItem,
-      int totalItemPrice,
+      @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+          Money totalItemPrice,
       int itemQuantity,
       Currency itemCurrency,
       Map<int, ProductOptionValue> selectedProductOptions});
@@ -82,7 +86,7 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
       totalItemPrice: null == totalItemPrice
           ? _value.totalItemPrice
           : totalItemPrice // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       itemQuantity: null == itemQuantity
           ? _value.itemQuantity
           : itemQuantity // ignore: cast_nullable_to_non_nullable
@@ -117,7 +121,8 @@ abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
   $Res call(
       {int internalID,
       RestaurantMenuItem menuItem,
-      int totalItemPrice,
+      @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+          Money totalItemPrice,
       int itemQuantity,
       Currency itemCurrency,
       Map<int, ProductOptionValue> selectedProductOptions});
@@ -156,7 +161,7 @@ class __$$_CartItemCopyWithImpl<$Res>
       totalItemPrice: null == totalItemPrice
           ? _value.totalItemPrice
           : totalItemPrice // ignore: cast_nullable_to_non_nullable
-              as int,
+              as Money,
       itemQuantity: null == itemQuantity
           ? _value.itemQuantity
           : itemQuantity // ignore: cast_nullable_to_non_nullable
@@ -180,7 +185,8 @@ class _$_CartItem extends _CartItem {
   _$_CartItem(
       {required this.internalID,
       required this.menuItem,
-      required this.totalItemPrice,
+      @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+          required this.totalItemPrice,
       required this.itemQuantity,
       this.itemCurrency = Currency.GBPx,
       required this.selectedProductOptions})
@@ -193,8 +199,11 @@ class _$_CartItem extends _CartItem {
   final int internalID;
   @override
   final RestaurantMenuItem menuItem;
+
+  /// this is the price in pence of the restaurant item without any product options applied
   @override
-  final int totalItemPrice;
+  @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+  final Money totalItemPrice;
   @override
   final int itemQuantity;
   @override
@@ -256,7 +265,8 @@ abstract class _CartItem extends CartItem {
   factory _CartItem(
           {required final int internalID,
           required final RestaurantMenuItem menuItem,
-          required final int totalItemPrice,
+          @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+              required final Money totalItemPrice,
           required final int itemQuantity,
           final Currency itemCurrency,
           required final Map<int, ProductOptionValue> selectedProductOptions}) =
@@ -270,7 +280,10 @@ abstract class _CartItem extends CartItem {
   @override
   RestaurantMenuItem get menuItem;
   @override
-  int get totalItemPrice;
+
+  /// this is the price in pence of the restaurant item without any product options applied
+  @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
+  Money get totalItemPrice;
   @override
   int get itemQuantity;
   @override

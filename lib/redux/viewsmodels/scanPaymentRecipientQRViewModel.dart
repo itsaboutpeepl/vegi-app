@@ -84,7 +84,7 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
                       (element) => itemsToUpdate.contains(element.menuItemID),
                     )
                     .toList(),
-                success: (updatedMenuItems) {
+                success: (updatedMenuItems) async {
                   final itemsToAdd = <CartItem>[];
                   for (final menuItemJson in basketMenuItems) {
                     final menuItemId = menuItemJson['id'] as int;
@@ -117,13 +117,13 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
                       ).nextInt(100000),
                       menuItem: menuItem,
                       selectedProductOptions: selectedProductOptions,
-                      totalItemPrice: menuItem
+                      totalItemPrice: (await menuItem
                           .totalPrice(
                             quantity: menuItemQuantity,
                             selectedProductOptions: selectedProductOptions,
                             fulfilmentMethod:
                                 store.state.cartState.fulfilmentMethod,
-                          )
+                          ))
                           .totalPrice,
                       itemQuantity: menuItemQuantity,
                       //this quantity always needs to be 1 to work

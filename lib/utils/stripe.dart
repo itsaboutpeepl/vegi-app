@@ -16,6 +16,7 @@ import 'package:vegan_liverpool/features/topup/dialogs/minting_dialog.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -55,19 +56,19 @@ class StripeService {
   Future<bool> handleStripe({
     required String recipientWalletAddress,
     required String senderWalletAddress,
-    required Currency currency,
     required int orderId,
     required int accountId,
-    required num amount,
+    required Money amount,
     required bool shouldPushToHome,
     required Store<AppState> store,
   }) async {
     try {
+      final currency = amount.currency;
       final paymentIntentClientSecret =
           await stripePayService.createStripePaymentIntent(
         //TODO: if walletAddress, then user stripePayService.createStripePaymentIntentForTopupFromBank or something
-        amount: amount,
-        currency: currency.name.toLowerCase(),
+        amount: amount.value,
+        currency: amount.currency.name.toLowerCase(),
         recipientWalletAddress: recipientWalletAddress,
         senderWalletAddress: senderWalletAddress,
         orderId: orderId,
@@ -75,6 +76,23 @@ class StripeService {
       );
       if (paymentIntentClientSecret == null) {
         log.error('Unable to create payment intent from ${stripePayService}');
+        await Sentry.captureException(
+          Exception('Unable to create payment intent from ${stripePayService}'),
+          stackTrace: StackTrace.current, // from catch (err, s)
+        );
+        store.dispatch(
+          StripePaymentStatusUpdate(
+            status: StripePaymentStatus.paymentFailed,
+          ),
+        );
+        return false;
+      } else if (currency != Currency.GBP && currency != Currency.GBPx) {
+        log.error('Unable to use apple pay via stripe for currency: $currency');
+        await Sentry.captureException(
+          Exception(
+              'Unable to use apple pay via stripe for currency: $currency'),
+          stackTrace: StackTrace.current, // from catch (err, s)
+        );
         store.dispatch(
           StripePaymentStatusUpdate(
             status: StripePaymentStatus.paymentFailed,
@@ -101,6 +119,7 @@ class StripeService {
         ),
       );
       await instance.presentPaymentSheet();
+
       final mintingCrypto = currency == Currency.GBPx ||
           currency == Currency.PPL ||
           currency == Currency.GBT;
@@ -109,7 +128,7 @@ class StripeService {
           ..dispatch(
             SetProcessingPayment(
               payment: LivePayment(
-                amount: amount.toDouble(),
+                amount: amount.value,
                 currency: currency,
                 status: PaymentProcessingStatus.started,
                 technology: PaymentTechnology.stripeOnRamp,
@@ -127,7 +146,7 @@ class StripeService {
           ..dispatch(
             SetProcessingPayment(
               payment: LivePayment(
-                amount: amount.toDouble(),
+                amount: amount.value,
                 currency: currency,
                 status: PaymentProcessingStatus.succeeded,
                 technology: PaymentTechnology.card,
@@ -179,15 +198,17 @@ class StripeService {
           ..dispatch(SetTransferringPayment(flag: false))
           ..dispatch(
             StripePaymentStatusUpdate(
-              status: StripePaymentStatus.paymentCancelled, // TODO: Hande this update and refactor apple pay stripe method to use this code too
+              status: StripePaymentStatus
+                  .paymentCancelled, // TODO: Hande this update and refactor apple pay stripe method to use this code too
             ),
           )
           ..dispatch(
             cancelOrder(
-            orderId: orderId,
-            accountId: accountId,
-            senderWalletAddress: senderWalletAddress,
-          ),)
+              orderId: orderId,
+              accountId: accountId,
+              senderWalletAddress: senderWalletAddress,
+            ),
+          )
           ..dispatch(
             OrderCreationProcessStatusUpdate(
               status: OrderCreationProcessStatus.orderCancelled,
@@ -216,19 +237,19 @@ class StripeService {
     required String productName,
     required String recipientWalletAddress,
     required String senderWalletAddress,
-    required Currency currency,
     required num orderId,
     required num accountId,
-    required num amount,
+    required Money amount,
     required Store<AppState> store,
     required bool shouldPushToHome,
   }) async {
     try {
+      final currency = amount.currency;
       // 1. fetch Intent Client Secret from backend
       final paymentIntentClientSecret =
           await stripePayService.createStripePaymentIntent(
-        amount: amount,
-        currency: currency.name.toLowerCase(),
+        amount: amount.value,
+        currency: amount.currency.name.toLowerCase(),
         recipientWalletAddress: recipientWalletAddress,
         senderWalletAddress: senderWalletAddress,
         orderId: orderId,
@@ -236,6 +257,23 @@ class StripeService {
       );
       if (paymentIntentClientSecret == null) {
         log.error('Unable to create payment intent from ${stripePayService}');
+        await Sentry.captureException(
+          Exception('Unable to create payment intent from ${stripePayService}'),
+          stackTrace: StackTrace.current, // from catch (err, s)
+        );
+        store.dispatch(
+          StripePaymentStatusUpdate(
+            status: StripePaymentStatus.paymentFailed,
+          ),
+        );
+        return false;
+      } else if (currency != Currency.GBP && currency != Currency.GBPx) {
+        log.error('Unable to use apple pay via stripe for currency: $currency');
+        await Sentry.captureException(
+          Exception(
+              'Unable to use apple pay via stripe for currency: $currency'),
+          stackTrace: StackTrace.current, // from catch (err, s)
+        );
         store.dispatch(
           StripePaymentStatusUpdate(
             status: StripePaymentStatus.paymentFailed,
@@ -243,7 +281,6 @@ class StripeService {
         );
         return false;
       }
-
       // 2. Confirm apple pay payment
       await Stripe.instance.confirmPlatformPayPaymentIntent(
         clientSecret: paymentIntentClientSecret.paymentIntent.clientSecret,
@@ -252,14 +289,15 @@ class StripeService {
             cartItems: [
               ApplePayCartSummaryItem.immediate(
                 label: productName,
-                amount: (amount / 100).toString(),
+                amount: amount.inGBPValue.toStringAsFixed(2),
               )
             ],
-            merchantCountryCode: 'gb',
-            currencyCode: 'gbp',
+            merchantCountryCode: amount.inGBP.currency.name.toLowerCase().substring(0, 2),
+            currencyCode: amount.inGBP.currency.name.toLowerCase(),
           ),
         ),
       );
+
       final mintingCrypto = currency == Currency.GBPx ||
           currency == Currency.PPL ||
           currency == Currency.GBT;
@@ -268,7 +306,7 @@ class StripeService {
           ..dispatch(
             SetProcessingPayment(
               payment: LivePayment(
-                amount: amount.toDouble(),
+                amount: amount.value,
                 currency: currency,
                 status: PaymentProcessingStatus.started,
                 technology: PaymentTechnology.stripeOnRamp,
@@ -286,7 +324,7 @@ class StripeService {
           ..dispatch(
             SetProcessingPayment(
               payment: LivePayment(
-                amount: amount.toDouble(),
+                amount: amount.value,
                 currency: currency,
                 status: PaymentProcessingStatus.succeeded,
                 technology: PaymentTechnology.card,

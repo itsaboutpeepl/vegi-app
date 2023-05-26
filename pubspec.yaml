@@ -125,7 +125,7 @@ flutter:
         - asset: assets/fonts/FatCheeks-Regular.ttf
     - family: Gelica
       fonts:
-        - asset: assets/fonts/Gelica-Regular.ttf
+        - asset: assets/fonts/gelica-regular.otf
     - family: Europa
       fonts:
         - asset: assets/fonts/europa-regular-webfont.ttf

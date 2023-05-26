@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 
 class BillSummaryViewModel extends Equatable {
   const BillSummaryViewModel({
@@ -35,13 +36,13 @@ class BillSummaryViewModel extends Equatable {
           ? store.state.cartState.selectedTimeSlot!.priceModifier
               .formattedGBPxPrice
           : 0.formattedGBPxPrice,
-      grandTotal: store.state.cartState.cartTotal.formattedGBPxPrice,
-      itemTotal: store.state.cartState.cartSubTotal.formattedGBPxPrice,
+      grandTotal: store.state.cartState.cartTotal,
+      itemTotal: store.state.cartState.cartSubTotal,
       serviceCharge:
-          store.state.cartState.restaurantPlatformFee.formattedGBPxPrice,
+          store.state.cartState.restaurantPlatformFee,
       discountAmount:
-          store.state.cartState.cartDiscountComputed.formattedGBPxPrice,
-      tipAmount: store.state.cartState.selectedTipAmount.formattedGBPxPrice,
+          store.state.cartState.cartDiscountComputed,
+      tipAmount: store.state.cartState.selectedTipAmount,
     );
   }
 
@@ -49,13 +50,13 @@ class BillSummaryViewModel extends Equatable {
   final bool hasDeliveryCharge;
   final bool hasCollectionCharge;
   final String collectionCharge;
-  final bool hasTip;
-  final String itemTotal;
   final String deliveryCharge;
-  final String serviceCharge;
-  final String grandTotal;
-  final String discountAmount;
-  final String tipAmount;
+  final bool hasTip;
+  final Money itemTotal;
+  final Money serviceCharge;
+  final Money grandTotal;
+  final Money discountAmount;
+  final Money tipAmount;
 
   @override
   List<Object?> get props => [
