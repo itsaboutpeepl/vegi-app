@@ -26,9 +26,10 @@ mixin _$CreateOrderForInStorePayment {
   Currency get currency => throw _privateConstructorUsedError;
   int get tipAmount => throw _privateConstructorUsedError;
   bool get marketingOptIn => throw _privateConstructorUsedError;
-  String get discountCode => throw _privateConstructorUsedError;
+  List<String> get discountCodes => throw _privateConstructorUsedError;
   String get vendor => throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
+  String get publicId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,9 +51,10 @@ abstract class $CreateOrderForInStorePaymentCopyWith<$Res> {
       Currency currency,
       int tipAmount,
       bool marketingOptIn,
-      String discountCode,
+      List<String> discountCodes,
       String vendor,
-      String walletAddress});
+      String walletAddress,
+      String publicId});
 }
 
 /// @nodoc
@@ -74,9 +76,10 @@ class _$CreateOrderForInStorePaymentCopyWithImpl<$Res,
     Object? currency = null,
     Object? tipAmount = null,
     Object? marketingOptIn = null,
-    Object? discountCode = null,
+    Object? discountCodes = null,
     Object? vendor = null,
     Object? walletAddress = null,
+    Object? publicId = null,
   }) {
     return _then(_value.copyWith(
       items: null == items
@@ -99,10 +102,10 @@ class _$CreateOrderForInStorePaymentCopyWithImpl<$Res,
           ? _value.marketingOptIn
           : marketingOptIn // ignore: cast_nullable_to_non_nullable
               as bool,
-      discountCode: null == discountCode
-          ? _value.discountCode
-          : discountCode // ignore: cast_nullable_to_non_nullable
-              as String,
+      discountCodes: null == discountCodes
+          ? _value.discountCodes
+          : discountCodes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       vendor: null == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -110,6 +113,10 @@ class _$CreateOrderForInStorePaymentCopyWithImpl<$Res,
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      publicId: null == publicId
+          ? _value.publicId
+          : publicId // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -130,9 +137,10 @@ abstract class _$$_CreateOrderForInStorePaymentCopyWith<$Res>
       Currency currency,
       int tipAmount,
       bool marketingOptIn,
-      String discountCode,
+      List<String> discountCodes,
       String vendor,
-      String walletAddress});
+      String walletAddress,
+      String publicId});
 }
 
 /// @nodoc
@@ -153,9 +161,10 @@ class __$$_CreateOrderForInStorePaymentCopyWithImpl<$Res>
     Object? currency = null,
     Object? tipAmount = null,
     Object? marketingOptIn = null,
-    Object? discountCode = null,
+    Object? discountCodes = null,
     Object? vendor = null,
     Object? walletAddress = null,
+    Object? publicId = null,
   }) {
     return _then(_$_CreateOrderForInStorePayment(
       items: null == items
@@ -178,10 +187,10 @@ class __$$_CreateOrderForInStorePaymentCopyWithImpl<$Res>
           ? _value.marketingOptIn
           : marketingOptIn // ignore: cast_nullable_to_non_nullable
               as bool,
-      discountCode: null == discountCode
-          ? _value.discountCode
-          : discountCode // ignore: cast_nullable_to_non_nullable
-              as String,
+      discountCodes: null == discountCodes
+          ? _value.discountCodes
+          : discountCodes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       vendor: null == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -189,6 +198,10 @@ class __$$_CreateOrderForInStorePaymentCopyWithImpl<$Res>
       walletAddress: null == walletAddress
           ? _value.walletAddress
           : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      publicId: null == publicId
+          ? _value.publicId
+          : publicId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -204,9 +217,10 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
       required this.currency,
       required this.tipAmount,
       required this.marketingOptIn,
-      required this.discountCode,
+      required this.discountCodes,
       required this.vendor,
-      required this.walletAddress})
+      required this.walletAddress,
+      required this.publicId})
       : super._();
 
   factory _$_CreateOrderForInStorePayment.fromJson(Map<String, dynamic> json) =>
@@ -223,11 +237,13 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
   @override
   final bool marketingOptIn;
   @override
-  final String discountCode;
+  final List<String> discountCodes;
   @override
   final String vendor;
   @override
   final String walletAddress;
+  @override
+  final String publicId;
 
   @override
   bool operator ==(dynamic other) {
@@ -242,11 +258,13 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
                 other.tipAmount == tipAmount) &&
             (identical(other.marketingOptIn, marketingOptIn) ||
                 other.marketingOptIn == marketingOptIn) &&
-            (identical(other.discountCode, discountCode) ||
-                other.discountCode == discountCode) &&
+            const DeepCollectionEquality()
+                .equals(other.discountCodes, discountCodes) &&
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             (identical(other.walletAddress, walletAddress) ||
-                other.walletAddress == walletAddress));
+                other.walletAddress == walletAddress) &&
+            (identical(other.publicId, publicId) ||
+                other.publicId == publicId));
   }
 
   @JsonKey(ignore: true)
@@ -258,9 +276,10 @@ class _$_CreateOrderForInStorePayment extends _CreateOrderForInStorePayment {
       currency,
       tipAmount,
       marketingOptIn,
-      discountCode,
+      const DeepCollectionEquality().hash(discountCodes),
       vendor,
-      walletAddress);
+      walletAddress,
+      publicId);
 
   @JsonKey(ignore: true)
   @override
@@ -285,9 +304,10 @@ abstract class _CreateOrderForInStorePayment
       required final Currency currency,
       required final int tipAmount,
       required final bool marketingOptIn,
-      required final String discountCode,
+      required final List<String> discountCodes,
       required final String vendor,
-      required final String walletAddress}) = _$_CreateOrderForInStorePayment;
+      required final String walletAddress,
+      required final String publicId}) = _$_CreateOrderForInStorePayment;
   _CreateOrderForInStorePayment._() : super._();
 
   factory _CreateOrderForInStorePayment.fromJson(Map<String, dynamic> json) =
@@ -304,11 +324,13 @@ abstract class _CreateOrderForInStorePayment
   @override
   bool get marketingOptIn;
   @override
-  String get discountCode;
+  List<String> get discountCodes;
   @override
   String get vendor;
   @override
   String get walletAddress;
+  @override
+  String get publicId;
   @override
   @JsonKey(ignore: true)
   _$$_CreateOrderForInStorePaymentCopyWith<_$_CreateOrderForInStorePayment>

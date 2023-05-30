@@ -1,6 +1,9 @@
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 import 'package:tuple/tuple.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 extension CapitalizeString on String {
@@ -80,7 +83,8 @@ extension IntHelpers on int {
 }
 
 extension DoubleHelpers on double {
-  String toPercent([int decimalPlaces = 0]) => '${(this * 100.0).toStringAsFixed(decimalPlaces)}%';
+  String toPercent([int decimalPlaces = 0]) =>
+      '${(this * 100.0).toStringAsFixed(decimalPlaces)}%';
 }
 
 extension DateTimeHelpers on DateTime {
@@ -197,6 +201,27 @@ extension IterableHelpers<T> on Iterable<T> {
 extension ListHelpers<T> on List<T> {
   List<T> sortInline(int Function(T a, T b) convert) {
     return sorted((a, b) => convert(a, b));
+  }
+}
+
+extension MoneyIterableHelpers on Iterable<Money> {
+  Future<Money> sum({
+    Currency? outputCurrency,
+  }) async {
+    if (outputCurrency == null) {
+      if (isEmpty) {
+        return const Money.zeroGBP();
+      }
+      outputCurrency = first.currency;
+    }
+    final fxdAmounts = await Future.wait(map(
+      (money) => convertCurrencyAmount(
+        amount: money.value,
+        fromCurrency: money.currency,
+        toCurrency: outputCurrency!,
+      ),
+    ),);
+    return Money(currency: outputCurrency, value: fxdAmounts.sum,);
   }
 }
 

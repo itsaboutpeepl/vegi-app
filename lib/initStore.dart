@@ -49,9 +49,8 @@ abstract class RegisterModule {
       if (DebugHelpers.isVerboseDebugMode) {
         wms.add(LoggingMiddleware<AppState>.printer());
       }
-
-      if(kDebugMode){
-
+      final notSim = await DebugHelpers.deviceIsNotSimulator();
+      if (kDebugMode && notSim) {
         // ~ https://github.com/MichaelMarner/dart-redux-remote-devtools , https://stackoverflow.com/a/56078898
         final ips = await scanNetwork();
         if (ips.isNotEmpty) {
@@ -61,7 +60,8 @@ abstract class RegisterModule {
           //     '10.0.0.209';
           const devMachinePort = '8000';
           final remoteDevtools = RemoteDevToolsMiddleware<dynamic>(
-              '$devMachineHost:$devMachinePort',);
+            '$devMachineHost:$devMachinePort',
+          );
 
           await remoteDevtools.connect();
           wms.add(remoteDevtools);
@@ -75,7 +75,7 @@ abstract class RegisterModule {
           store = devStore;
 
           remoteDevtools.store = store;
-          getIt.registerSingleton<DevToolsStore<AppState>>(devStore); 
+          getIt.registerSingleton<DevToolsStore<AppState>>(devStore);
         } else {
           final devStore = DevToolsStore<AppState>(
             appReducer,
@@ -84,7 +84,7 @@ abstract class RegisterModule {
           );
 
           store = devStore;
-          getIt.registerSingleton<DevToolsStore<AppState>>(devStore); 
+          getIt.registerSingleton<DevToolsStore<AppState>>(devStore);
         }
       } else {
         final devStore = DevToolsStore<AppState>(
@@ -94,7 +94,7 @@ abstract class RegisterModule {
         );
 
         store = devStore;
-        getIt.registerSingleton<DevToolsStore<AppState>>(devStore); 
+        getIt.registerSingleton<DevToolsStore<AppState>>(devStore);
       }
 
       // getIt.registerSingleton<Store<AppState>>(store);

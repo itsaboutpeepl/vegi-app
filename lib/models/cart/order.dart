@@ -7,6 +7,7 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/discount.dart';
 import 'package:vegan_liverpool/models/cart/fulfilmentMethod.dart';
 import 'package:vegan_liverpool/models/cart/orderItem.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/models/payments/transaction_item.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryPartnerDTO.dart';
@@ -17,9 +18,15 @@ import 'package:vegan_liverpool/models/restaurant/vendorDTO.dart';
 part 'order.freezed.dart';
 part 'order.g.dart';
 
+List<Order> fromJsonOrderList(dynamic json) =>
+    fromSailsListOfObjectJson<Order>(Order.fromJson)(json);
+Order? fromJsonOrder(dynamic json) =>
+    fromSailsObjectJson<Order>(Order.fromJson)(json);
+
 OrderCompletedFlag orderCompletedFlagFromJson(dynamic json) =>
     OrderCompletedFlagHelpers.enumValueFromString(
-        json == null ? '' : json.toString());
+      json == null ? '' : json.toString(),
+    );
 String orderCompletedFlagToJson(OrderCompletedFlag flag) =>
     flag == OrderCompletedFlag.partiallyRefunded
         ? 'partially refunded'
@@ -112,26 +119,28 @@ class Order with _$Order {
     required int? orderCondition,
     required DateTime fulfilmentSlotFrom, // "2022-09-29T10:00:00.000Z"
     required DateTime fulfilmentSlotTo, // "2022-09-29T10:00:00.000Z"
-    required FulfilmentMethod fulfilmentMethod,
-    required VendorDTO vendor,
-    required DeliveryPartnerDTO? deliveryPartner,
-    @Default(null)
-        Discount? discount,
-    required List<OrderItem> items,
+    @JsonKey(fromJson: fromJsonFulfilmentMethod)
+        required FulfilmentMethod? fulfilmentMethod,
+    @JsonKey(fromJson: fromJsonVendorDTO)
+        required VendorDTO? vendor,
+    @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+        required DeliveryPartnerDTO? deliveryPartner,
+    @JsonKey(fromJson: fromJsonDiscountList)
+    @Default([])
+        List<Discount> discounts,
+    @JsonKey(fromJson: fromJsonOrderItemList)
+        required List<OrderItem> items,
+    @JsonKey(fromJson: fromJsonOrder)
     @Default(null)
         Order? parentOrder,
+    @JsonKey(fromJson: fromJsonOrderItemList)
     @Default([])
         List<OrderItem> unfulfilledItems,
+    @JsonKey(fromJson: fromJsonTransactionItemList)
     @Default([])
         List<TransactionItem> transactions,
     required num fulfilmentCharge,
     required num platformFee,
-    @Default('')
-        String cartDiscountCode,
-    @Default('fixed')
-        String cartDiscountType,
-    @Default(0)
-        num cartDiscountAmount,
   }) = _Order;
 
   const Order._();
@@ -140,9 +149,18 @@ class Order with _$Order {
         () => _$OrderFromJson(json),
       );
 
-  int get fulfilmentMethodId => fulfilmentMethod.id;
-  num? get fulfilmentMethodPriceModifier => fulfilmentMethod.priceModifier;
-  FulfilmentMethodType get fulfilmentMethodType => fulfilmentMethod.methodType;
+  int get fulfilmentMethodId => fulfilmentMethod?.id ?? 0;
+  num? get fulfilmentMethodPriceModifier =>
+      fulfilmentMethod?.priceModifier ?? 0;
+  FulfilmentMethodType get fulfilmentMethodType =>
+      fulfilmentMethod?.methodType ?? FulfilmentMethodType.none;
+
+  List<String> get cartDiscountCodes =>
+      discounts.map((discount) => discount.code).toList();
+  List<DiscountType> get cartDiscountTypes =>
+      discounts.map((discount) => discount.discountType).toList();
+  Future<Money> get cartDiscountAmount =>
+      discounts.map((discount) => discount.moneyAmount).sum();
 
   num get GBPAmountPaid => transactions.isEmpty
       ? total / 100
@@ -177,17 +195,20 @@ class Order with _$Order {
   String get orderID => id.toString();
   String? get restaurantPhoneNumber => vendorPhoneNumber;
   String get paymentStatusLabel => paymentStatus.name.capitalize();
-  bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;
-  bool get isDelivery => fulfilmentMethod == FulfilmentMethodType.delivery;
-  bool get isInStore => fulfilmentMethod == FulfilmentMethodType.inStore;
+  bool get isCollection =>
+      fulfilmentMethod?.methodType == FulfilmentMethodType.collection;
+  bool get isDelivery =>
+      fulfilmentMethod?.methodType == FulfilmentMethodType.delivery;
+  bool get isInStore =>
+      fulfilmentMethod?.methodType == FulfilmentMethodType.inStore;
   int get cartTotalGBPx => total.round();
   int get cartTotalGBP => (total / 100).round();
   int get cartSubTotalGBPx => subtotal.round();
   int get cartSubTotalGBP => (subtotal / 100).round();
 
-  int get vendorId => vendor.id;
-  String get vendorName => vendor.name;
-  String? get vendorPhoneNumber => vendor.phoneNumber;
+  int get vendorId => vendor?.id ?? 0;
+  String get vendorName => vendor?.name ?? '';
+  String? get vendorPhoneNumber => vendor?.phoneNumber;
   int? get deliveryPartnerId => deliveryPartner?.id;
   String? get deliveryPartnerName => deliveryPartner?.name;
 

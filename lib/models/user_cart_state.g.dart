@@ -217,6 +217,8 @@ const _$OrderCreationProcessStatusEnumMap = {
       'sendOrderCallClientError',
   OrderCreationProcessStatus.orderCancelled: 'orderCancelled',
   OrderCreationProcessStatus.orderPaymentFailed: 'orderPaymentFailed',
+  OrderCreationProcessStatus.orderAlreadyBeingCreated:
+      'orderAlreadyBeingCreated',
 };
 
 const _$StripePaymentStatusEnumMap = {

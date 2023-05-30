@@ -2,7 +2,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 
-class Money {
+class Money implements Comparable {
   const Money({
     required this.currency,
     required this.value,
@@ -81,6 +81,30 @@ class Money {
   Money operator /(num amount) =>
       Money(currency: currency, value: value / amount);
 
+  Future<Money> combineMoneys(Money otherMoney) async {
+    if (otherMoney.currency == currency) {
+      return this + otherMoney.value;
+    }
+    final fxdAmount = await convertCurrencyAmount(
+      amount: otherMoney.value,
+      fromCurrency: otherMoney.currency,
+      toCurrency: currency,
+    );
+    return this + fxdAmount;
+  }
+
+  Future<Money> subtractMoneys(Money otherMoney) async {
+    if (otherMoney.currency == currency) {
+      return this - otherMoney.value;
+    }
+    final fxdAmount = await convertCurrencyAmount(
+      amount: otherMoney.value,
+      fromCurrency: otherMoney.currency,
+      toCurrency: currency,
+    );
+    return this + fxdAmount;
+  }
+
   /// Truncating division operator.
   ///
   /// Performs truncating division of this number by [other].
@@ -106,7 +130,7 @@ class Money {
       ? '£'
       : currency == Currency.USD
           ? "\$"
-          : '${currency.name} ';
+          : '[${currency.name}] ';
 
   String get formattedPrice =>
       '${formattedCurrencySymbol}${value.toStringAsFixed(2)}';
@@ -115,6 +139,20 @@ class Money {
 
   @override
   String toString() {
-    return '[$currency] ${value.toStringAsFixed(2)}';
+    return '$formattedCurrencySymbol${value.toStringAsFixed(2)}';
+  }
+
+  @override
+  int compareTo(dynamic other) {
+    if (other is Money && currency == other.currency) {
+      if (value < other.value) {
+        return -1;
+      } else if (value == other.value) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+    return -1;
   }
 }

@@ -23,9 +23,10 @@ class CreateOrderForInStorePayment extends CreateOrderForFulfilment
     required Currency currency,
     required int tipAmount,
     required bool marketingOptIn,
-    required String discountCode,
+    required List<String> discountCodes,
     required String vendor,
     required String walletAddress,
+    required String publicId,
   }) = _CreateOrderForInStorePayment;
 
   @JsonEnum()
@@ -39,9 +40,20 @@ class CreateOrderForInStorePayment extends CreateOrderForFulfilment
       currency: store.state.cartState.cartCurrency,
       tipAmount: store.state.cartState.selectedTipAmount.inGBPxValue.round(),
       marketingOptIn: false,
-      discountCode: store.state.cartState.discountCode,
+      discountCodes: store.state.cartState.discountCode.isEmpty
+          ? store.state.cartState.appliedVouchers
+              .map((voucher) => voucher.code)
+              .toList()
+          : [
+        store.state.cartState
+            .discountCode, // TODO: Apply discount vouchers here somehow?
+        ...store.state.cartState.appliedVouchers
+            .map((voucher) => voucher.code)
+            .toList(),
+      ],
       vendor: store.state.cartState.restaurantID,
       walletAddress: store.state.userState.walletAddress,
+      publicId: '',
     );
   }
 

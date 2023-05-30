@@ -11,6 +11,8 @@ import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/models/cart/discount.dart';
+import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/checkout/discount_card_vm.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
@@ -38,6 +40,7 @@ class DiscountCards extends StatelessWidget {
                 child: DiscountCard(
                   hasDiscount: true,
                   discountCode: voucher.code,
+                  discount: voucher,
                   onTap: () async {
                     await showErrorSnack(
                       context: context,
@@ -76,6 +79,7 @@ class DiscountCard extends StatelessWidget {
     required this.discountCode,
     required this.icon,
     required this.allowRemovalAction,
+    this.discount,
     this.removeDiscount,
     this.onTap,
     Key? key,
@@ -84,12 +88,20 @@ class DiscountCard extends StatelessWidget {
   final bool hasDiscount;
   final bool allowRemovalAction;
   final String discountCode;
+  final Discount? discount;
   final Icon icon;
   final void Function()? removeDiscount;
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final discountValue = discount == null
+        ? null
+        : Money(
+            currency: discount!.currency,
+            value: discount!.value,
+          );
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -113,7 +125,11 @@ class DiscountCard extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                  hasDiscount ? discountCode : 'Add a discount code',
+                  hasDiscount
+                      ? discountValue != null
+                          ? '$discountCode ($discountValue)'
+                          : '$discountCode'
+                      : 'Add a discount code',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

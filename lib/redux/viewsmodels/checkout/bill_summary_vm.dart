@@ -26,7 +26,6 @@ class BillSummaryViewModel extends Equatable {
       hasDeliveryCharge: hasSelectedSlot && store.state.cartState.isDelivery,
       hasCollectionCharge:
           hasSelectedSlot && (!store.state.cartState.isDelivery),
-      hasDiscount: store.state.cartState.discountCode.isNotEmpty,
       hasTip: store.state.cartState.selectedTipAmount != 0,
       deliveryCharge: hasSelectedSlot
           ? store.state.cartState.selectedTimeSlot!.priceModifier
@@ -38,10 +37,10 @@ class BillSummaryViewModel extends Equatable {
           : 0.formattedGBPxPrice,
       grandTotal: store.state.cartState.cartTotal,
       itemTotal: store.state.cartState.cartSubTotal,
-      serviceCharge:
-          store.state.cartState.restaurantPlatformFee,
-      discountAmount:
-          store.state.cartState.cartDiscountComputed,
+      serviceCharge: store.state.cartState.restaurantPlatformFee,
+      hasDiscount: store.state.cartState.discountCode.isNotEmpty ||
+          store.state.cartState.voucherPotValue.value > 0,
+      discountAmount: store.state.cartState.cartDiscountComputed,
       tipAmount: store.state.cartState.selectedTipAmount,
     );
   }

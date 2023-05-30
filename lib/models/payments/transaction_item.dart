@@ -5,6 +5,12 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 part 'transaction_item.freezed.dart';
 part 'transaction_item.g.dart';
 
+List<TransactionItem> fromJsonTransactionItemList(dynamic json) =>
+  fromSailsListOfObjectJson<TransactionItem>(TransactionItem.fromJson)(json);
+TransactionItem? fromJsonTransactionItem(dynamic json) =>
+  fromSailsObjectJson<TransactionItem>(TransactionItem.fromJson)(json);
+
+
 @Freezed()
 class TransactionItem with _$TransactionItem {
   @JsonSerializable()

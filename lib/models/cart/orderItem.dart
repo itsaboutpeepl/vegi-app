@@ -9,6 +9,12 @@ import 'package:vegan_liverpool/models/cart/orderProductOptionValue.dart';
 part 'orderItem.freezed.dart';
 part 'orderItem.g.dart';
 
+List<OrderItem> fromJsonOrderItemList(dynamic json) =>
+  fromSailsListOfObjectJson<OrderItem>(OrderItem.fromJson)(json);
+OrderItem? fromJsonOrderItem(dynamic json) =>
+  fromSailsObjectJson<OrderItem>(OrderItem.fromJson)(json);
+
+
 @Freezed()
 class OrderItem with _$OrderItem {
   // static Product productFromJson(Map<String, dynamic> itemJson) {

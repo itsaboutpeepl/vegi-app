@@ -111,6 +111,7 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
             }
           } else if (newViewModel.voucherPotValue.value !=
               previousViewModel?.voucherPotValue.value) {
+            discountCodeController.clear();
             showInfoSnack(
               context,
               title: 'Voucher applied',

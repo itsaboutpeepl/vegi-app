@@ -26,7 +26,7 @@ mixin _$CreateOrderForDelivery {
   Currency get currency => throw _privateConstructorUsedError;
   int get tipAmount => throw _privateConstructorUsedError;
   bool get marketingOptIn => throw _privateConstructorUsedError;
-  String get discountCode => throw _privateConstructorUsedError;
+  List<String> get discountCodes => throw _privateConstructorUsedError;
   String get vendor => throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
   DeliveryAddresses get address => throw _privateConstructorUsedError;
@@ -34,6 +34,7 @@ mixin _$CreateOrderForDelivery {
   String get fulfilmentSlotFrom => throw _privateConstructorUsedError;
   String get fulfilmentSlotTo => throw _privateConstructorUsedError;
   bool get isDelivery => throw _privateConstructorUsedError;
+  String get publicId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -53,14 +54,15 @@ abstract class $CreateOrderForDeliveryCopyWith<$Res> {
       Currency currency,
       int tipAmount,
       bool marketingOptIn,
-      String discountCode,
+      List<String> discountCodes,
       String vendor,
       String walletAddress,
       DeliveryAddresses address,
       int fulfilmentMethod,
       String fulfilmentSlotFrom,
       String fulfilmentSlotTo,
-      bool isDelivery});
+      bool isDelivery,
+      String publicId});
 
   $DeliveryAddressesCopyWith<$Res> get address;
 }
@@ -84,7 +86,7 @@ class _$CreateOrderForDeliveryCopyWithImpl<$Res,
     Object? currency = null,
     Object? tipAmount = null,
     Object? marketingOptIn = null,
-    Object? discountCode = null,
+    Object? discountCodes = null,
     Object? vendor = null,
     Object? walletAddress = null,
     Object? address = null,
@@ -92,6 +94,7 @@ class _$CreateOrderForDeliveryCopyWithImpl<$Res,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
     Object? isDelivery = null,
+    Object? publicId = null,
   }) {
     return _then(_value.copyWith(
       items: null == items
@@ -114,10 +117,10 @@ class _$CreateOrderForDeliveryCopyWithImpl<$Res,
           ? _value.marketingOptIn
           : marketingOptIn // ignore: cast_nullable_to_non_nullable
               as bool,
-      discountCode: null == discountCode
-          ? _value.discountCode
-          : discountCode // ignore: cast_nullable_to_non_nullable
-              as String,
+      discountCodes: null == discountCodes
+          ? _value.discountCodes
+          : discountCodes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       vendor: null == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -146,6 +149,10 @@ class _$CreateOrderForDeliveryCopyWithImpl<$Res,
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
               as bool,
+      publicId: null == publicId
+          ? _value.publicId
+          : publicId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -172,14 +179,15 @@ abstract class _$$_CreateOrderForDeliveryCopyWith<$Res>
       Currency currency,
       int tipAmount,
       bool marketingOptIn,
-      String discountCode,
+      List<String> discountCodes,
       String vendor,
       String walletAddress,
       DeliveryAddresses address,
       int fulfilmentMethod,
       String fulfilmentSlotFrom,
       String fulfilmentSlotTo,
-      bool isDelivery});
+      bool isDelivery,
+      String publicId});
 
   @override
   $DeliveryAddressesCopyWith<$Res> get address;
@@ -202,7 +210,7 @@ class __$$_CreateOrderForDeliveryCopyWithImpl<$Res>
     Object? currency = null,
     Object? tipAmount = null,
     Object? marketingOptIn = null,
-    Object? discountCode = null,
+    Object? discountCodes = null,
     Object? vendor = null,
     Object? walletAddress = null,
     Object? address = null,
@@ -210,6 +218,7 @@ class __$$_CreateOrderForDeliveryCopyWithImpl<$Res>
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
     Object? isDelivery = null,
+    Object? publicId = null,
   }) {
     return _then(_$_CreateOrderForDelivery(
       items: null == items
@@ -232,10 +241,10 @@ class __$$_CreateOrderForDeliveryCopyWithImpl<$Res>
           ? _value.marketingOptIn
           : marketingOptIn // ignore: cast_nullable_to_non_nullable
               as bool,
-      discountCode: null == discountCode
-          ? _value.discountCode
-          : discountCode // ignore: cast_nullable_to_non_nullable
-              as String,
+      discountCodes: null == discountCodes
+          ? _value.discountCodes
+          : discountCodes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       vendor: null == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -264,6 +273,10 @@ class __$$_CreateOrderForDeliveryCopyWithImpl<$Res>
           ? _value.isDelivery
           : isDelivery // ignore: cast_nullable_to_non_nullable
               as bool,
+      publicId: null == publicId
+          ? _value.publicId
+          : publicId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -278,14 +291,15 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
       required this.currency,
       required this.tipAmount,
       required this.marketingOptIn,
-      required this.discountCode,
+      required this.discountCodes,
       required this.vendor,
       required this.walletAddress,
       required this.address,
       required this.fulfilmentMethod,
       required this.fulfilmentSlotFrom,
       required this.fulfilmentSlotTo,
-      required this.isDelivery})
+      required this.isDelivery,
+      required this.publicId})
       : super._();
 
   factory _$_CreateOrderForDelivery.fromJson(Map<String, dynamic> json) =>
@@ -302,7 +316,7 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
   @override
   final bool marketingOptIn;
   @override
-  final String discountCode;
+  final List<String> discountCodes;
   @override
   final String vendor;
   @override
@@ -317,6 +331,8 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
   final String fulfilmentSlotTo;
   @override
   final bool isDelivery;
+  @override
+  final String publicId;
 
   @override
   bool operator ==(dynamic other) {
@@ -331,8 +347,8 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
                 other.tipAmount == tipAmount) &&
             (identical(other.marketingOptIn, marketingOptIn) ||
                 other.marketingOptIn == marketingOptIn) &&
-            (identical(other.discountCode, discountCode) ||
-                other.discountCode == discountCode) &&
+            const DeepCollectionEquality()
+                .equals(other.discountCodes, discountCodes) &&
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             (identical(other.walletAddress, walletAddress) ||
                 other.walletAddress == walletAddress) &&
@@ -344,7 +360,9 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
             (identical(other.fulfilmentSlotTo, fulfilmentSlotTo) ||
                 other.fulfilmentSlotTo == fulfilmentSlotTo) &&
             (identical(other.isDelivery, isDelivery) ||
-                other.isDelivery == isDelivery));
+                other.isDelivery == isDelivery) &&
+            (identical(other.publicId, publicId) ||
+                other.publicId == publicId));
   }
 
   @JsonKey(ignore: true)
@@ -356,14 +374,15 @@ class _$_CreateOrderForDelivery extends _CreateOrderForDelivery {
       currency,
       tipAmount,
       marketingOptIn,
-      discountCode,
+      const DeepCollectionEquality().hash(discountCodes),
       vendor,
       walletAddress,
       address,
       fulfilmentMethod,
       fulfilmentSlotFrom,
       fulfilmentSlotTo,
-      isDelivery);
+      isDelivery,
+      publicId);
 
   @JsonKey(ignore: true)
   @override
@@ -387,14 +406,15 @@ abstract class _CreateOrderForDelivery extends CreateOrderForDelivery {
       required final Currency currency,
       required final int tipAmount,
       required final bool marketingOptIn,
-      required final String discountCode,
+      required final List<String> discountCodes,
       required final String vendor,
       required final String walletAddress,
       required final DeliveryAddresses address,
       required final int fulfilmentMethod,
       required final String fulfilmentSlotFrom,
       required final String fulfilmentSlotTo,
-      required final bool isDelivery}) = _$_CreateOrderForDelivery;
+      required final bool isDelivery,
+      required final String publicId}) = _$_CreateOrderForDelivery;
   _CreateOrderForDelivery._() : super._();
 
   factory _CreateOrderForDelivery.fromJson(Map<String, dynamic> json) =
@@ -411,7 +431,7 @@ abstract class _CreateOrderForDelivery extends CreateOrderForDelivery {
   @override
   bool get marketingOptIn;
   @override
-  String get discountCode;
+  List<String> get discountCodes;
   @override
   String get vendor;
   @override
@@ -426,6 +446,8 @@ abstract class _CreateOrderForDelivery extends CreateOrderForDelivery {
   String get fulfilmentSlotTo;
   @override
   bool get isDelivery;
+  @override
+  String get publicId;
   @override
   @JsonKey(ignore: true)
   _$$_CreateOrderForDeliveryCopyWith<_$_CreateOrderForDelivery> get copyWith =>

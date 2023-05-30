@@ -34,13 +34,14 @@ class OrderConfirmedScreen extends StatelessWidget {
                     isDelivery: viewmodel.isDelivery,
                     orderId: viewmodel.orderID,
                   ),
-                  AddressCard(
-                    isDelivery: viewmodel.isDelivery,
-                    orderAddress: viewmodel.orderAddress,
-                    selectedSlot: viewmodel.selectedSlot!,
-                    userName: viewmodel.userName,
-                    restaurantName: viewmodel.restaurantName,
-                  ),
+                  if (viewmodel.selectedSlot != null)
+                    AddressCard(
+                      isDelivery: viewmodel.isDelivery,
+                      orderAddress: viewmodel.orderAddress,
+                      selectedSlot: viewmodel.selectedSlot!,
+                      userName: viewmodel.userName,
+                      restaurantName: viewmodel.restaurantName,
+                    ),
                   BillInvoiceCard(order: viewmodel.order),
                   OrderListCard(
                     orderItems: viewmodel.cartItems

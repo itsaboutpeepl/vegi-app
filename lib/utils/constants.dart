@@ -76,7 +76,8 @@ class Secrets {
   const Secrets._();
 
   static String get SENTRY_DSN => dotenv.env['SENTRY_DSN']!;
-  static String get CURRENCY_CONVERTER_API_KEY => dotenv.env['CURRENCY_CONVERTER_API_KEY']!;
+  static String get CURRENCY_CONVERTER_API_KEY =>
+      dotenv.env['CURRENCY_CONVERTER_API_KEY']!;
 
   static String get ON_BOARDING_STRATEGY => dotenv.env['ON_BOARDING_STRATEGY']!;
 
@@ -135,7 +136,6 @@ String getGuideLiverpoolLink() {
 }
 
 const showWaitingListFunnel = false;
-
 
 class CurrencyRateConstants {
   static const pplRewardsPcntDelivery = 0.05;
@@ -433,7 +433,7 @@ const fileUploadVegiMaxSizeMB = 1; // 1MB
 
 const inDebugMode = kDebugMode;
 
-Future<bool> deviceIsSimulator() async {
+Future<bool> thisDeviceIsSimulator() async {
   final deviceInfo = DeviceInfoPlugin();
   if (Platform.isIOS) {
     final iosInfo = await deviceInfo.iosInfo;
@@ -449,20 +449,20 @@ Future<bool> deviceIsSimulator() async {
   return false;
 }
 
-Future<bool> deviceIsNotSimulator() async {
-  return !(await deviceIsSimulator());
+Future<bool> thisDeviceIsNotSimulator() async {
+  return !(await thisDeviceIsSimulator());
 }
 
-Future<bool> deviceIsIosSimulator() async =>
-    Platform.isIOS && (await deviceIsSimulator());
+Future<bool> thisDeviceIsIosSimulator() async =>
+    Platform.isIOS && (await thisDeviceIsSimulator());
 
 class DebugHelpers {
   static const bool inDebugMode = kDebugMode;
   static bool isVerboseDebugMode = kDebugMode &&
       const String.fromEnvironment('verbose', defaultValue: '').isNotEmpty;
-  static Future<bool> deviceIsSimulator() => deviceIsSimulator();
-  static Future<bool> deviceIsNotSimulator() => deviceIsNotSimulator();
-  static Future<bool> deviceIsIosSimulator() => deviceIsIosSimulator();
+  static Future<bool> deviceIsSimulator() => thisDeviceIsSimulator();
+  static Future<bool> deviceIsNotSimulator() => thisDeviceIsNotSimulator();
+  static Future<bool> deviceIsIosSimulator() => thisDeviceIsIosSimulator();
 }
 
 class PackageConstants {

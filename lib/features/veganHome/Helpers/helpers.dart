@@ -381,7 +381,7 @@ Future<UpdateComputedCartValues?> computeTotalsFromCart({
             cartTip.inCcy(cartCurrency).value +
             fulfilmentCharge.inCcy(cartCurrency).value +
             platformFee.inCcy(cartCurrency).value) -
-        cartPcntDiscountComputed.inCcy(cartCurrency).value;
+        cartTotalDiscountComputed.inCcy(cartCurrency).value;
 
     if (cartItems.isEmpty) {
       cartSubTotal = Money.zero(inCurrency: cartCurrency);
@@ -406,6 +406,8 @@ Future<UpdateComputedCartValues?> computeTotalsFromCart({
     return null;
   }
 }
+
+
 
 ///
 ///  Gives an amount of 1[fromCurrency] in [toCurrency]

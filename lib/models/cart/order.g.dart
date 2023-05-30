@@ -52,35 +52,24 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
       orderCondition: json['orderCondition'] as int?,
       fulfilmentSlotFrom: DateTime.parse(json['fulfilmentSlotFrom'] as String),
       fulfilmentSlotTo: DateTime.parse(json['fulfilmentSlotTo'] as String),
-      fulfilmentMethod: FulfilmentMethod.fromJson(
-          json['fulfilmentMethod'] as Map<String, dynamic>),
-      vendor: VendorDTO.fromJson(json['vendor'] as Map<String, dynamic>),
-      deliveryPartner: json['deliveryPartner'] == null
-          ? null
-          : DeliveryPartnerDTO.fromJson(
-              json['deliveryPartner'] as Map<String, dynamic>),
-      discount: json['discount'] == null
-          ? null
-          : Discount.fromJson(json['discount'] as Map<String, dynamic>),
-      items: (json['items'] as List<dynamic>)
-          .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      fulfilmentMethod: fromJsonFulfilmentMethod(json['fulfilmentMethod']),
+      vendor: fromJsonVendorDTO(json['vendor']),
+      deliveryPartner: fromJsonDeliveryPartnerDTO(json['deliveryPartner']),
+      discounts: json['discounts'] == null
+          ? const []
+          : fromJsonDiscountList(json['discounts']),
+      items: fromJsonOrderItemList(json['items']),
       parentOrder: json['parentOrder'] == null
           ? null
-          : Order.fromJson(json['parentOrder'] as Map<String, dynamic>),
-      unfulfilledItems: (json['unfulfilledItems'] as List<dynamic>?)
-              ?.map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      transactions: (json['transactions'] as List<dynamic>?)
-              ?.map((e) => TransactionItem.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+          : fromJsonOrder(json['parentOrder']),
+      unfulfilledItems: json['unfulfilledItems'] == null
+          ? const []
+          : fromJsonOrderItemList(json['unfulfilledItems']),
+      transactions: json['transactions'] == null
+          ? const []
+          : fromJsonTransactionItemList(json['transactions']),
       fulfilmentCharge: json['fulfilmentCharge'] as num,
       platformFee: json['platformFee'] as num,
-      cartDiscountCode: json['cartDiscountCode'] as String? ?? '',
-      cartDiscountType: json['cartDiscountType'] as String? ?? 'fixed',
-      cartDiscountAmount: json['cartDiscountAmount'] as num? ?? 0,
     );
 
 Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
@@ -121,10 +110,10 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'orderCondition': instance.orderCondition,
       'fulfilmentSlotFrom': instance.fulfilmentSlotFrom.toIso8601String(),
       'fulfilmentSlotTo': instance.fulfilmentSlotTo.toIso8601String(),
-      'fulfilmentMethod': instance.fulfilmentMethod.toJson(),
-      'vendor': instance.vendor.toJson(),
+      'fulfilmentMethod': instance.fulfilmentMethod?.toJson(),
+      'vendor': instance.vendor?.toJson(),
       'deliveryPartner': instance.deliveryPartner?.toJson(),
-      'discount': instance.discount?.toJson(),
+      'discounts': instance.discounts.map((e) => e.toJson()).toList(),
       'items': instance.items.map((e) => e.toJson()).toList(),
       'parentOrder': instance.parentOrder?.toJson(),
       'unfulfilledItems':
@@ -132,9 +121,6 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'transactions': instance.transactions.map((e) => e.toJson()).toList(),
       'fulfilmentCharge': instance.fulfilmentCharge,
       'platformFee': instance.platformFee,
-      'cartDiscountCode': instance.cartDiscountCode,
-      'cartDiscountType': instance.cartDiscountType,
-      'cartDiscountAmount': instance.cartDiscountAmount,
     };
 
 const _$OrderPaidStatusEnumMap = {

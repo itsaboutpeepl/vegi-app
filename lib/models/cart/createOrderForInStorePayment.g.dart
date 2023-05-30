@@ -16,9 +16,12 @@ _$_CreateOrderForInStorePayment _$$_CreateOrderForInStorePaymentFromJson(
       currency: $enumDecode(_$CurrencyEnumMap, json['currency']),
       tipAmount: json['tipAmount'] as int,
       marketingOptIn: json['marketingOptIn'] as bool,
-      discountCode: json['discountCode'] as String,
+      discountCodes: (json['discountCodes'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       vendor: json['vendor'] as String,
       walletAddress: json['walletAddress'] as String,
+      publicId: json['publicId'] as String,
     )
       ..address =
           DeliveryAddresses.fromJson(json['address'] as Map<String, dynamic>)
@@ -40,9 +43,10 @@ Map<String, dynamic> _$$_CreateOrderForInStorePaymentToJson(
       'currency': _$CurrencyEnumMap[instance.currency]!,
       'tipAmount': instance.tipAmount,
       'marketingOptIn': instance.marketingOptIn,
-      'discountCode': instance.discountCode,
+      'discountCodes': instance.discountCodes,
       'vendor': instance.vendor,
       'walletAddress': instance.walletAddress,
+      'publicId': instance.publicId,
     };
 
 const _$CurrencyEnumMap = {

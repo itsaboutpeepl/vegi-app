@@ -70,19 +70,24 @@ mixin _$Order {
       throw _privateConstructorUsedError; // "2022-09-29T10:00:00.000Z"
   DateTime get fulfilmentSlotTo =>
       throw _privateConstructorUsedError; // "2022-09-29T10:00:00.000Z"
-  FulfilmentMethod get fulfilmentMethod => throw _privateConstructorUsedError;
-  VendorDTO get vendor => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonFulfilmentMethod)
+  FulfilmentMethod? get fulfilmentMethod => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonVendorDTO)
+  VendorDTO? get vendor => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
   DeliveryPartnerDTO? get deliveryPartner => throw _privateConstructorUsedError;
-  Discount? get discount => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonDiscountList)
+  List<Discount> get discounts => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonOrderItemList)
   List<OrderItem> get items => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonOrder)
   Order? get parentOrder => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonOrderItemList)
   List<OrderItem> get unfulfilledItems => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonTransactionItemList)
   List<TransactionItem> get transactions => throw _privateConstructorUsedError;
   num get fulfilmentCharge => throw _privateConstructorUsedError;
   num get platformFee => throw _privateConstructorUsedError;
-  String get cartDiscountCode => throw _privateConstructorUsedError;
-  String get cartDiscountType => throw _privateConstructorUsedError;
-  num get cartDiscountAmount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -138,24 +143,28 @@ abstract class $OrderCopyWith<$Res> {
       int? orderCondition,
       DateTime fulfilmentSlotFrom,
       DateTime fulfilmentSlotTo,
-      FulfilmentMethod fulfilmentMethod,
-      VendorDTO vendor,
-      DeliveryPartnerDTO? deliveryPartner,
-      Discount? discount,
-      List<OrderItem> items,
-      Order? parentOrder,
-      List<OrderItem> unfulfilledItems,
-      List<TransactionItem> transactions,
+      @JsonKey(fromJson: fromJsonFulfilmentMethod)
+          FulfilmentMethod? fulfilmentMethod,
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          VendorDTO? vendor,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          DeliveryPartnerDTO? deliveryPartner,
+      @JsonKey(fromJson: fromJsonDiscountList)
+          List<Discount> discounts,
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          List<OrderItem> items,
+      @JsonKey(fromJson: fromJsonOrder)
+          Order? parentOrder,
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          List<OrderItem> unfulfilledItems,
+      @JsonKey(fromJson: fromJsonTransactionItemList)
+          List<TransactionItem> transactions,
       num fulfilmentCharge,
-      num platformFee,
-      String cartDiscountCode,
-      String cartDiscountType,
-      num cartDiscountAmount});
+      num platformFee});
 
-  $FulfilmentMethodCopyWith<$Res> get fulfilmentMethod;
-  $VendorDTOCopyWith<$Res> get vendor;
+  $FulfilmentMethodCopyWith<$Res>? get fulfilmentMethod;
+  $VendorDTOCopyWith<$Res>? get vendor;
   $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner;
-  $DiscountCopyWith<$Res>? get discount;
   $OrderCopyWith<$Res>? get parentOrder;
 }
 
@@ -207,19 +216,16 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? orderCondition = freezed,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
-    Object? fulfilmentMethod = null,
-    Object? vendor = null,
+    Object? fulfilmentMethod = freezed,
+    Object? vendor = freezed,
     Object? deliveryPartner = freezed,
-    Object? discount = freezed,
+    Object? discounts = null,
     Object? items = null,
     Object? parentOrder = freezed,
     Object? unfulfilledItems = null,
     Object? transactions = null,
     Object? fulfilmentCharge = null,
     Object? platformFee = null,
-    Object? cartDiscountCode = null,
-    Object? cartDiscountType = null,
-    Object? cartDiscountAmount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -362,22 +368,22 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.fulfilmentSlotTo
           : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      fulfilmentMethod: null == fulfilmentMethod
+      fulfilmentMethod: freezed == fulfilmentMethod
           ? _value.fulfilmentMethod
           : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
-              as FulfilmentMethod,
-      vendor: null == vendor
+              as FulfilmentMethod?,
+      vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
-              as VendorDTO,
+              as VendorDTO?,
       deliveryPartner: freezed == deliveryPartner
           ? _value.deliveryPartner
           : deliveryPartner // ignore: cast_nullable_to_non_nullable
               as DeliveryPartnerDTO?,
-      discount: freezed == discount
-          ? _value.discount
-          : discount // ignore: cast_nullable_to_non_nullable
-              as Discount?,
+      discounts: null == discounts
+          ? _value.discounts
+          : discounts // ignore: cast_nullable_to_non_nullable
+              as List<Discount>,
       items: null == items
           ? _value.items
           : items // ignore: cast_nullable_to_non_nullable
@@ -402,33 +408,29 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.platformFee
           : platformFee // ignore: cast_nullable_to_non_nullable
               as num,
-      cartDiscountCode: null == cartDiscountCode
-          ? _value.cartDiscountCode
-          : cartDiscountCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      cartDiscountType: null == cartDiscountType
-          ? _value.cartDiscountType
-          : cartDiscountType // ignore: cast_nullable_to_non_nullable
-              as String,
-      cartDiscountAmount: null == cartDiscountAmount
-          ? _value.cartDiscountAmount
-          : cartDiscountAmount // ignore: cast_nullable_to_non_nullable
-              as num,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $FulfilmentMethodCopyWith<$Res> get fulfilmentMethod {
-    return $FulfilmentMethodCopyWith<$Res>(_value.fulfilmentMethod, (value) {
+  $FulfilmentMethodCopyWith<$Res>? get fulfilmentMethod {
+    if (_value.fulfilmentMethod == null) {
+      return null;
+    }
+
+    return $FulfilmentMethodCopyWith<$Res>(_value.fulfilmentMethod!, (value) {
       return _then(_value.copyWith(fulfilmentMethod: value) as $Val);
     });
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $VendorDTOCopyWith<$Res> get vendor {
-    return $VendorDTOCopyWith<$Res>(_value.vendor, (value) {
+  $VendorDTOCopyWith<$Res>? get vendor {
+    if (_value.vendor == null) {
+      return null;
+    }
+
+    return $VendorDTOCopyWith<$Res>(_value.vendor!, (value) {
       return _then(_value.copyWith(vendor: value) as $Val);
     });
   }
@@ -442,18 +444,6 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
 
     return $DeliveryPartnerDTOCopyWith<$Res>(_value.deliveryPartner!, (value) {
       return _then(_value.copyWith(deliveryPartner: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DiscountCopyWith<$Res>? get discount {
-    if (_value.discount == null) {
-      return null;
-    }
-
-    return $DiscountCopyWith<$Res>(_value.discount!, (value) {
-      return _then(_value.copyWith(discount: value) as $Val);
     });
   }
 
@@ -520,28 +510,31 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       int? orderCondition,
       DateTime fulfilmentSlotFrom,
       DateTime fulfilmentSlotTo,
-      FulfilmentMethod fulfilmentMethod,
-      VendorDTO vendor,
-      DeliveryPartnerDTO? deliveryPartner,
-      Discount? discount,
-      List<OrderItem> items,
-      Order? parentOrder,
-      List<OrderItem> unfulfilledItems,
-      List<TransactionItem> transactions,
+      @JsonKey(fromJson: fromJsonFulfilmentMethod)
+          FulfilmentMethod? fulfilmentMethod,
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          VendorDTO? vendor,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          DeliveryPartnerDTO? deliveryPartner,
+      @JsonKey(fromJson: fromJsonDiscountList)
+          List<Discount> discounts,
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          List<OrderItem> items,
+      @JsonKey(fromJson: fromJsonOrder)
+          Order? parentOrder,
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          List<OrderItem> unfulfilledItems,
+      @JsonKey(fromJson: fromJsonTransactionItemList)
+          List<TransactionItem> transactions,
       num fulfilmentCharge,
-      num platformFee,
-      String cartDiscountCode,
-      String cartDiscountType,
-      num cartDiscountAmount});
+      num platformFee});
 
   @override
-  $FulfilmentMethodCopyWith<$Res> get fulfilmentMethod;
+  $FulfilmentMethodCopyWith<$Res>? get fulfilmentMethod;
   @override
-  $VendorDTOCopyWith<$Res> get vendor;
+  $VendorDTOCopyWith<$Res>? get vendor;
   @override
   $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner;
-  @override
-  $DiscountCopyWith<$Res>? get discount;
   @override
   $OrderCopyWith<$Res>? get parentOrder;
 }
@@ -590,19 +583,16 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
     Object? orderCondition = freezed,
     Object? fulfilmentSlotFrom = null,
     Object? fulfilmentSlotTo = null,
-    Object? fulfilmentMethod = null,
-    Object? vendor = null,
+    Object? fulfilmentMethod = freezed,
+    Object? vendor = freezed,
     Object? deliveryPartner = freezed,
-    Object? discount = freezed,
+    Object? discounts = null,
     Object? items = null,
     Object? parentOrder = freezed,
     Object? unfulfilledItems = null,
     Object? transactions = null,
     Object? fulfilmentCharge = null,
     Object? platformFee = null,
-    Object? cartDiscountCode = null,
-    Object? cartDiscountType = null,
-    Object? cartDiscountAmount = null,
   }) {
     return _then(_$_Order(
       id: null == id
@@ -745,22 +735,22 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.fulfilmentSlotTo
           : fulfilmentSlotTo // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      fulfilmentMethod: null == fulfilmentMethod
+      fulfilmentMethod: freezed == fulfilmentMethod
           ? _value.fulfilmentMethod
           : fulfilmentMethod // ignore: cast_nullable_to_non_nullable
-              as FulfilmentMethod,
-      vendor: null == vendor
+              as FulfilmentMethod?,
+      vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
-              as VendorDTO,
+              as VendorDTO?,
       deliveryPartner: freezed == deliveryPartner
           ? _value.deliveryPartner
           : deliveryPartner // ignore: cast_nullable_to_non_nullable
               as DeliveryPartnerDTO?,
-      discount: freezed == discount
-          ? _value.discount
-          : discount // ignore: cast_nullable_to_non_nullable
-              as Discount?,
+      discounts: null == discounts
+          ? _value.discounts
+          : discounts // ignore: cast_nullable_to_non_nullable
+              as List<Discount>,
       items: null == items
           ? _value.items
           : items // ignore: cast_nullable_to_non_nullable
@@ -784,18 +774,6 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
       platformFee: null == platformFee
           ? _value.platformFee
           : platformFee // ignore: cast_nullable_to_non_nullable
-              as num,
-      cartDiscountCode: null == cartDiscountCode
-          ? _value.cartDiscountCode
-          : cartDiscountCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      cartDiscountType: null == cartDiscountType
-          ? _value.cartDiscountType
-          : cartDiscountType // ignore: cast_nullable_to_non_nullable
-              as String,
-      cartDiscountAmount: null == cartDiscountAmount
-          ? _value.cartDiscountAmount
-          : cartDiscountAmount // ignore: cast_nullable_to_non_nullable
               as num,
     ));
   }
@@ -849,19 +827,24 @@ class _$_Order extends _Order {
       required this.orderCondition,
       required this.fulfilmentSlotFrom,
       required this.fulfilmentSlotTo,
-      required this.fulfilmentMethod,
-      required this.vendor,
-      required this.deliveryPartner,
-      this.discount = null,
-      required this.items,
-      this.parentOrder = null,
-      this.unfulfilledItems = const [],
-      this.transactions = const [],
+      @JsonKey(fromJson: fromJsonFulfilmentMethod)
+          required this.fulfilmentMethod,
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          required this.vendor,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          required this.deliveryPartner,
+      @JsonKey(fromJson: fromJsonDiscountList)
+          this.discounts = const [],
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          required this.items,
+      @JsonKey(fromJson: fromJsonOrder)
+          this.parentOrder = null,
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          this.unfulfilledItems = const [],
+      @JsonKey(fromJson: fromJsonTransactionItemList)
+          this.transactions = const [],
       required this.fulfilmentCharge,
-      required this.platformFee,
-      this.cartDiscountCode = '',
-      this.cartDiscountType = 'fixed',
-      this.cartDiscountAmount = 0})
+      required this.platformFee})
       : super._();
 
   factory _$_Order.fromJson(Map<String, dynamic> json) =>
@@ -951,42 +934,37 @@ class _$_Order extends _Order {
   final DateTime fulfilmentSlotTo;
 // "2022-09-29T10:00:00.000Z"
   @override
-  final FulfilmentMethod fulfilmentMethod;
+  @JsonKey(fromJson: fromJsonFulfilmentMethod)
+  final FulfilmentMethod? fulfilmentMethod;
   @override
-  final VendorDTO vendor;
+  @JsonKey(fromJson: fromJsonVendorDTO)
+  final VendorDTO? vendor;
   @override
+  @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
   final DeliveryPartnerDTO? deliveryPartner;
   @override
-  @JsonKey()
-  final Discount? discount;
+  @JsonKey(fromJson: fromJsonDiscountList)
+  final List<Discount> discounts;
   @override
+  @JsonKey(fromJson: fromJsonOrderItemList)
   final List<OrderItem> items;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: fromJsonOrder)
   final Order? parentOrder;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: fromJsonOrderItemList)
   final List<OrderItem> unfulfilledItems;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: fromJsonTransactionItemList)
   final List<TransactionItem> transactions;
   @override
   final num fulfilmentCharge;
   @override
   final num platformFee;
-  @override
-  @JsonKey()
-  final String cartDiscountCode;
-  @override
-  @JsonKey()
-  final String cartDiscountType;
-  @override
-  @JsonKey()
-  final num cartDiscountAmount;
 
   @override
   String toString() {
-    return 'Order(id: $id, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, paymentStatus: $paymentStatus, paymentIntentId: $paymentIntentId, firebaseRegistrationToken: $firebaseRegistrationToken, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressLatitude: $deliveryAddressLatitude, deliveryAddressLongitude: $deliveryAddressLongitude, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, customerWalletAddress: $customerWalletAddress, publicId: $publicId, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, orderAcceptanceStatus: $orderAcceptanceStatus, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, completedFlag: $completedFlag, completedOrderFeedback: $completedOrderFeedback, deliveryPunctuality: $deliveryPunctuality, orderCondition: $orderCondition, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, fulfilmentMethod: $fulfilmentMethod, vendor: $vendor, deliveryPartner: $deliveryPartner, discount: $discount, items: $items, parentOrder: $parentOrder, unfulfilledItems: $unfulfilledItems, transactions: $transactions, fulfilmentCharge: $fulfilmentCharge, platformFee: $platformFee, cartDiscountCode: $cartDiscountCode, cartDiscountType: $cartDiscountType, cartDiscountAmount: $cartDiscountAmount)';
+    return 'Order(id: $id, total: $total, subtotal: $subtotal, orderedDateTime: $orderedDateTime, paidDateTime: $paidDateTime, refundDateTime: $refundDateTime, paymentStatus: $paymentStatus, paymentIntentId: $paymentIntentId, firebaseRegistrationToken: $firebaseRegistrationToken, deliveryName: $deliveryName, deliveryEmail: $deliveryEmail, deliveryPhoneNumber: $deliveryPhoneNumber, deliveryAddressLineOne: $deliveryAddressLineOne, deliveryAddressLineTwo: $deliveryAddressLineTwo, deliveryAddressCity: $deliveryAddressCity, deliveryAddressPostCode: $deliveryAddressPostCode, deliveryAddressLatitude: $deliveryAddressLatitude, deliveryAddressLongitude: $deliveryAddressLongitude, deliveryAddressInstructions: $deliveryAddressInstructions, deliveryId: $deliveryId, deliveryPartnerAccepted: $deliveryPartnerAccepted, deliveryPartnerConfirmed: $deliveryPartnerConfirmed, customerWalletAddress: $customerWalletAddress, publicId: $publicId, restaurantAcceptanceStatus: $restaurantAcceptanceStatus, orderAcceptanceStatus: $orderAcceptanceStatus, tipAmount: $tipAmount, rewardsIssued: $rewardsIssued, sentToDeliveryPartner: $sentToDeliveryPartner, completedFlag: $completedFlag, completedOrderFeedback: $completedOrderFeedback, deliveryPunctuality: $deliveryPunctuality, orderCondition: $orderCondition, fulfilmentSlotFrom: $fulfilmentSlotFrom, fulfilmentSlotTo: $fulfilmentSlotTo, fulfilmentMethod: $fulfilmentMethod, vendor: $vendor, deliveryPartner: $deliveryPartner, discounts: $discounts, items: $items, parentOrder: $parentOrder, unfulfilledItems: $unfulfilledItems, transactions: $transactions, fulfilmentCharge: $fulfilmentCharge, platformFee: $platformFee)';
   }
 
   @override
@@ -1060,16 +1038,13 @@ class _$_Order extends _Order {
             (identical(other.fulfilmentMethod, fulfilmentMethod) || other.fulfilmentMethod == fulfilmentMethod) &&
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             (identical(other.deliveryPartner, deliveryPartner) || other.deliveryPartner == deliveryPartner) &&
-            (identical(other.discount, discount) || other.discount == discount) &&
+            const DeepCollectionEquality().equals(other.discounts, discounts) &&
             const DeepCollectionEquality().equals(other.items, items) &&
             (identical(other.parentOrder, parentOrder) || other.parentOrder == parentOrder) &&
             const DeepCollectionEquality().equals(other.unfulfilledItems, unfulfilledItems) &&
             const DeepCollectionEquality().equals(other.transactions, transactions) &&
             (identical(other.fulfilmentCharge, fulfilmentCharge) || other.fulfilmentCharge == fulfilmentCharge) &&
-            (identical(other.platformFee, platformFee) || other.platformFee == platformFee) &&
-            (identical(other.cartDiscountCode, cartDiscountCode) || other.cartDiscountCode == cartDiscountCode) &&
-            (identical(other.cartDiscountType, cartDiscountType) || other.cartDiscountType == cartDiscountType) &&
-            (identical(other.cartDiscountAmount, cartDiscountAmount) || other.cartDiscountAmount == cartDiscountAmount));
+            (identical(other.platformFee, platformFee) || other.platformFee == platformFee));
   }
 
   @JsonKey(ignore: true)
@@ -1114,16 +1089,13 @@ class _$_Order extends _Order {
         fulfilmentMethod,
         vendor,
         deliveryPartner,
-        discount,
+        const DeepCollectionEquality().hash(discounts),
         const DeepCollectionEquality().hash(items),
         parentOrder,
         const DeepCollectionEquality().hash(unfulfilledItems),
         const DeepCollectionEquality().hash(transactions),
         fulfilmentCharge,
-        platformFee,
-        cartDiscountCode,
-        cartDiscountType,
-        cartDiscountAmount
+        platformFee
       ]);
 
   @JsonKey(ignore: true)
@@ -1185,19 +1157,24 @@ abstract class _Order extends Order {
       required final int? orderCondition,
       required final DateTime fulfilmentSlotFrom,
       required final DateTime fulfilmentSlotTo,
-      required final FulfilmentMethod fulfilmentMethod,
-      required final VendorDTO vendor,
-      required final DeliveryPartnerDTO? deliveryPartner,
-      final Discount? discount,
-      required final List<OrderItem> items,
-      final Order? parentOrder,
-      final List<OrderItem> unfulfilledItems,
-      final List<TransactionItem> transactions,
+      @JsonKey(fromJson: fromJsonFulfilmentMethod)
+          required final FulfilmentMethod? fulfilmentMethod,
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          required final VendorDTO? vendor,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          required final DeliveryPartnerDTO? deliveryPartner,
+      @JsonKey(fromJson: fromJsonDiscountList)
+          final List<Discount> discounts,
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          required final List<OrderItem> items,
+      @JsonKey(fromJson: fromJsonOrder)
+          final Order? parentOrder,
+      @JsonKey(fromJson: fromJsonOrderItemList)
+          final List<OrderItem> unfulfilledItems,
+      @JsonKey(fromJson: fromJsonTransactionItemList)
+          final List<TransactionItem> transactions,
       required final num fulfilmentCharge,
-      required final num platformFee,
-      final String cartDiscountCode,
-      final String cartDiscountType,
-      final num cartDiscountAmount}) = _$_Order;
+      required final num platformFee}) = _$_Order;
   _Order._() : super._();
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$_Order.fromJson;
@@ -1284,31 +1261,33 @@ abstract class _Order extends Order {
   @override // "2022-09-29T10:00:00.000Z"
   DateTime get fulfilmentSlotTo;
   @override // "2022-09-29T10:00:00.000Z"
-  FulfilmentMethod get fulfilmentMethod;
+  @JsonKey(fromJson: fromJsonFulfilmentMethod)
+  FulfilmentMethod? get fulfilmentMethod;
   @override
-  VendorDTO get vendor;
+  @JsonKey(fromJson: fromJsonVendorDTO)
+  VendorDTO? get vendor;
   @override
+  @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
   DeliveryPartnerDTO? get deliveryPartner;
   @override
-  Discount? get discount;
+  @JsonKey(fromJson: fromJsonDiscountList)
+  List<Discount> get discounts;
   @override
+  @JsonKey(fromJson: fromJsonOrderItemList)
   List<OrderItem> get items;
   @override
+  @JsonKey(fromJson: fromJsonOrder)
   Order? get parentOrder;
   @override
+  @JsonKey(fromJson: fromJsonOrderItemList)
   List<OrderItem> get unfulfilledItems;
   @override
+  @JsonKey(fromJson: fromJsonTransactionItemList)
   List<TransactionItem> get transactions;
   @override
   num get fulfilmentCharge;
   @override
   num get platformFee;
-  @override
-  String get cartDiscountCode;
-  @override
-  String get cartDiscountType;
-  @override
-  num get cartDiscountAmount;
   @override
   @JsonKey(ignore: true)
   _$$_OrderCopyWith<_$_Order> get copyWith =>

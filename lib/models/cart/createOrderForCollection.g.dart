@@ -16,7 +16,9 @@ _$_CreateOrderForCollection _$$_CreateOrderForCollectionFromJson(
       currency: $enumDecode(_$CurrencyEnumMap, json['currency']),
       tipAmount: json['tipAmount'] as int,
       marketingOptIn: json['marketingOptIn'] as bool,
-      discountCode: json['discountCode'] as String,
+      discountCodes: (json['discountCodes'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       vendor: json['vendor'] as String,
       walletAddress: json['walletAddress'] as String,
       address:
@@ -25,6 +27,7 @@ _$_CreateOrderForCollection _$$_CreateOrderForCollectionFromJson(
       fulfilmentSlotFrom: json['fulfilmentSlotFrom'] as String,
       fulfilmentSlotTo: json['fulfilmentSlotTo'] as String,
       isDelivery: json['isDelivery'] as bool,
+      publicId: json['publicId'] as String,
     );
 
 Map<String, dynamic> _$$_CreateOrderForCollectionToJson(
@@ -35,7 +38,7 @@ Map<String, dynamic> _$$_CreateOrderForCollectionToJson(
       'currency': _$CurrencyEnumMap[instance.currency]!,
       'tipAmount': instance.tipAmount,
       'marketingOptIn': instance.marketingOptIn,
-      'discountCode': instance.discountCode,
+      'discountCodes': instance.discountCodes,
       'vendor': instance.vendor,
       'walletAddress': instance.walletAddress,
       'address': instance.address.toJson(),
@@ -43,6 +46,7 @@ Map<String, dynamic> _$$_CreateOrderForCollectionToJson(
       'fulfilmentSlotFrom': instance.fulfilmentSlotFrom,
       'fulfilmentSlotTo': instance.fulfilmentSlotTo,
       'isDelivery': instance.isDelivery,
+      'publicId': instance.publicId,
     };
 
 const _$CurrencyEnumMap = {

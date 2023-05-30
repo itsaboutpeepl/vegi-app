@@ -1512,6 +1512,7 @@ ThunkAction<AppState> computeCartTotals() {
       cartCurrency: store.state.cartState.cartCurrency,
       cartDiscountPercent: store.state.cartState.cartDiscountPercent,
       vendorId: int.parse(store.state.cartState.restaurantID),
+      appliedVouchers: store.state.cartState.appliedVouchers,
     );
     if (updateCartItems != null) {
       store.dispatch(
@@ -1538,6 +1539,16 @@ ThunkAction<AppState> startOrderCreationProcess({
         return status;
       }
 
+      if (store.state.homePageState.isLoadingHttpRequest) {
+        store.dispatch(
+          OrderCreationProcessStatusUpdate(
+            status: _sentryUpdatePipe(
+              OrderCreationProcessStatus.orderAlreadyBeingCreated,
+            ),
+          ),
+        );
+        return;
+      }
       if (cartState.selectedTimeSlot == null) {
         store.dispatch(
           OrderCreationProcessStatusUpdate(
@@ -1568,11 +1579,15 @@ ThunkAction<AppState> startOrderCreationProcess({
           ),
         );
       } else {
-        store.dispatch(
-          OrderCreationProcessStatusUpdate(
-            status: OrderCreationProcessStatus.none,
-          ),
-        );
+        store
+          ..dispatch(
+            OrderCreationProcessStatusUpdate(
+              status: OrderCreationProcessStatus.none,
+            ),
+          )
+          ..dispatch(SetIsLoadingHttpRequest(
+            isLoading: true,
+          ));
         if (cartState.isDelivery) {
           store.dispatch(
             prepareOrderObjectForDelivery(
@@ -1687,7 +1702,6 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetPaymentButtonFlag(true));
-      //TODO: apply appliedVouchers to order, might need to be done in prepareOrderForXXX step...
       final result = await peeplEatsService.createOrder(orderObject);
       OrderCreationProcessStatus _sentryUpdatePipe(
         OrderCreationProcessStatus status,
@@ -1701,21 +1715,33 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
       }
 
       if (result == null) {
-        store.dispatch(
-          OrderCreationProcessStatusUpdate(
-            status: _sentryUpdatePipe(
-              OrderCreationProcessStatus.sendOrderCallTimedOut,
+        store
+          ..dispatch(
+            SetIsLoadingHttpRequest(
+              isLoading: false,
             ),
-          ),
-        );
+          )
+          ..dispatch(
+            OrderCreationProcessStatusUpdate(
+              status: _sentryUpdatePipe(
+                OrderCreationProcessStatus.sendOrderCallTimedOut,
+              ),
+            ),
+          );
       } else if (result.orderCreationStatus == OrderCreationStatus.failed) {
-        store.dispatch(
-          OrderCreationProcessStatusUpdate(
-            status: _sentryUpdatePipe(
-              OrderCreationProcessStatus.sendOrderCallServerError,
+        store
+          ..dispatch(
+            SetIsLoadingHttpRequest(
+              isLoading: false,
             ),
-          ),
-        );
+          )
+          ..dispatch(
+            OrderCreationProcessStatusUpdate(
+              status: _sentryUpdatePipe(
+                OrderCreationProcessStatus.sendOrderCallServerError,
+              ),
+            ),
+          );
       } else {
         log.verbose('Order Result $result');
         final Map<String, dynamic> checkResult =
@@ -1724,15 +1750,28 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
         final Map<String, dynamic> paymentIntent =
             checkResult['paymentIntent'] as Map<String, dynamic>;
 
-        if (paymentIntent['amount'] != store.state.cartState.cartTotal) {
-          store.dispatch(
-            OrderCreationProcessStatusUpdate(
-              status: _sentryUpdatePipe(
-                OrderCreationProcessStatus
-                    .paymentIntentAmountDoesntMatchCartTotal,
+        final paymentIntentAmount = Money.fromJson({
+          'currency': paymentIntent['metadata']['currency'] as String,
+          'value':
+              num.tryParse(paymentIntent['metadata']['amount'] as String) ??
+                  0.0,
+        });
+        if (paymentIntentAmount.compareTo(store.state.cartState.cartTotal) !=
+            0) {
+          store
+            ..dispatch(
+              SetIsLoadingHttpRequest(
+                isLoading: false,
               ),
-            ),
-          );
+            )
+            ..dispatch(
+              OrderCreationProcessStatusUpdate(
+                status: _sentryUpdatePipe(
+                  OrderCreationProcessStatus
+                      .paymentIntentAmountDoesntMatchCartTotal,
+                ),
+              ),
+            );
         } else {
           store
             ..dispatch(
@@ -1741,6 +1780,9 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
                 order: result.order,
               ),
             )
+            ..dispatch(SetIsLoadingHttpRequest(
+              isLoading: false,
+            ))
             ..dispatch(
               startPaymentProcess(
                 showBottomPaymentSheet: showBottomPaymentSheet,
@@ -1749,7 +1791,8 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           // todo: this needs to be replaced with the result.order.firebaseRegistrationToken subscription
           // do a cmd f12 of all locations where the below subscribeToTopic function is called from
           unawaited(
-            firebaseMessaging.subscribeToTopic('order-${result.orderId}'),
+            firebaseMessaging
+                .subscribeToTopic('order-${result.order.publicId}'),
           );
           unawaited(
             Analytics.track(
@@ -1774,7 +1817,13 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           },
         ),
       );
-      store.dispatch(SetPaymentButtonFlag(false));
+      store
+        ..dispatch(
+          SetIsLoadingHttpRequest(
+            isLoading: false,
+          ),
+        )
+        ..dispatch(SetPaymentButtonFlag(false));
       log.error(e);
       if (e.response != null) {
         await Sentry.captureException(
@@ -1799,6 +1848,9 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
       );
       store
         ..dispatch(SetPaymentButtonFlag(false))
+        ..dispatch(SetIsLoadingHttpRequest(
+          isLoading: false,
+        ))
         ..dispatch(
           OrderCreationProcessStatusUpdate(
             status: OrderCreationProcessStatus.sendOrderCallClientError,
@@ -2513,14 +2565,32 @@ ThunkAction<AppState> startPaymentConfirmationCheck() {
 
 ThunkAction<AppState> subscribeToOrderUpdates() {
   return (Store<AppState> store) async {
-    await firebaseMessaging
-        .subscribeToTopic('order-${store.state.cartState.orderID}');
+    final orderDetails = await peeplEatsService.getOrderFromUri(
+      vegiRelUri: peeplEatsService.getOrderUri(store.state.cartState.orderID),
+    );
+    if (orderDetails == null) {
+      final err = Exception(
+          'Unable to locate order with internal id: ${store.state.cartState.orderID} from vegi backend.');
+      log.error(
+        err,
+        stackTrace: StackTrace.current,
+      );
+      await Sentry.captureException(
+        err,
+        stackTrace: StackTrace.current, // from catch (err, s)
+        hint: 'ERROR - cart_actions.dart.subscribeToOrderUpdates $err',
+      );
+      return;
+    }
+    await firebaseMessaging.subscribeToTopic('order-${orderDetails.publicId}');
     store
       ..dispatch(SetTransferringPayment(flag: false))
-      ..dispatch(SetConfirmed(
-        flag: true,
-        orderId: int.parse(store.state.cartState.orderID),
-      ));
+      ..dispatch(
+        SetConfirmed(
+          flag: true,
+          orderId: int.parse(store.state.cartState.orderID),
+        ),
+      );
 
     // Below to notify the user with a message once the payment is confirmed using firebasemessaging.
     // int counter = 0;

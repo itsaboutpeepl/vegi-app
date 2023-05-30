@@ -633,7 +633,7 @@ enum OrderCreationProcessStatus {
   success,
   sendOrderCallClientError,
   orderCancelled, //todo: Handle
-  orderPaymentFailed, //todo: Handle
+  orderPaymentFailed, orderAlreadyBeingCreated, //todo: Handle
 }
 
 enum StripePaymentStatus {

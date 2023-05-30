@@ -188,7 +188,8 @@ Future<void> _firebaseMessagingBackgroundHandler(
 Future<void> handleFCM(
     RemoteMessage? remoteMessage, Store<AppState> store) async {
   if (remoteMessage != null) {
-    log.info('New Message From Firebase: ${remoteMessage.data}');
+    log.info(
+        'New Message From Firebase with message: ${remoteMessage}  data: ${remoteMessage.data}');
   } else {
     return;
   }

@@ -701,8 +701,8 @@ ThunkAction<AppState> updateEmail({
 ThunkAction<AppState> fetchDeviceType() {
   return (Store<AppState> store) async {
     try {
-      final isSimulator = await deviceIsSimulator();
-      final isIosSimulator = await deviceIsIosSimulator();
+      final isSimulator = await thisDeviceIsSimulator();
+      final isIosSimulator = await thisDeviceIsIosSimulator();
       store.dispatch(
         SetDeviceIsSimulatorRTO(
           isSimulator: isSimulator,

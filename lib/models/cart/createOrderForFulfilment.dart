@@ -99,7 +99,7 @@ abstract class CreateOrderForFulfilment {
   late final Currency currency;
   late final int tipAmount;
   late final bool marketingOptIn;
-  late final String discountCode;
+  late final List<String> discountCodes;
   late final String vendor;
   late final String walletAddress;
   late final DeliveryAddresses address;
@@ -107,6 +107,7 @@ abstract class CreateOrderForFulfilment {
   late final String fulfilmentSlotFrom;
   late final String fulfilmentSlotTo;
   late final bool isDelivery;
+  late final String publicId;
 
   @override
   String toString() {
@@ -130,10 +131,10 @@ abstract class CreateOrderForFulfilment {
             )
             .toList(),
         'total': total,
-        'currency': currency,
+        'currency': currency.name,
         'tipAmount': tipAmount,
         'marketingOptIn': marketingOptIn,
-        'discountCode': discountCode,
+        'discountCodes': discountCodes,
         'vendor': vendor,
         'walletAddress': walletAddress,
         'isDelivery': isDelivery,
@@ -175,7 +176,7 @@ abstract class CreateOrderForFulfilment {
           Currency.GBP,
       tipAmount: json['tipAmount']! as int,
       marketingOptIn: json['marketingOptIn']! as bool,
-      discountCode: json['discountCode']! as String,
+      discountCodes: (json['discountCodes'] ?? <String>[]) as List<String>,
       vendor: json['vendor']! as String,
       walletAddress: json['walletAddress']! as String,
       isDelivery: json['isDelivery']! as bool,
@@ -185,6 +186,7 @@ abstract class CreateOrderForFulfilment {
       fulfilmentMethod: json['fulfilmentMethod']! as int,
       fulfilmentSlotFrom: json['fulfilmentSlotFrom']! as String,
       fulfilmentSlotTo: json['fulfilmentSlotTo']! as String,
+      publicId: json['publicId'] as String,
     );
   }
 }
