@@ -708,7 +708,9 @@ class FirebaseStrategy implements IOnBoardStrategy {
       ),
     );
     try {
-      await firebaseAuth.currentUser?.verifyBeforeUpdateEmail(email);
+      final existingEmail = firebaseAuth.currentUser?.email ?? email;
+      await firebaseAuth.currentUser?.verifyBeforeUpdateEmail(
+          email,); //TODO: THis method is failling to allow us to update the users email?...
       if (!dontComplete) {
         _complete(
           store: store,
@@ -1283,7 +1285,10 @@ class FirebaseStrategy implements IOnBoardStrategy {
       );
     } else if (e.code == 'email-already-in-use' ||
         e.code == 'account-exists-with-different-credential') {
-      log.error('Try to catch this before coming into this handler?...');
+      log.error(
+        'Try to catch this before coming into this handler?...',
+        stackTrace: s,
+      );
       // try and link the 2 accounts?
       log.error(
         'RESEARCH HOW TO TRY AND LINK 2 differing firebase accounts for email: "${e.email}" using link:\n https://firebase.google.com/docs/auth/flutter/errors#handling_account-exists-with-different-credential_errors',

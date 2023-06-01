@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,7 +13,9 @@ import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:redux/redux.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/common/di/package_info.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
 import 'package:vegan_liverpool/common/router/vegi_debug_route_observer.dart';
 import 'package:vegan_liverpool/constants/strings.dart';
@@ -25,7 +29,6 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
-import 'package:uni_links/uni_links.dart';
 
 enum UniLinksType { string, uri }
 

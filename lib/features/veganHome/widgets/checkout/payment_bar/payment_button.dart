@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/pay/dialogs/stripe_payment_confirmed_dialog.dart';
+import 'package:vegan_liverpool/features/pay/dialogs/unauthenticated_dialog.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/card_failed.dart';
 import 'package:vegan_liverpool/features/topup/dialogs/minting_dialog.dart';
@@ -160,6 +161,8 @@ class PaymentButton extends StatelessWidget {
         // },
         builder: (context, viewmodel) {
           return ShimmerButton(
+            disabled: viewmodel.disablePayments,
+            showPopupOnDisabledButtonTapped: const UnauthenticatedDialog(),
             buttonContent: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

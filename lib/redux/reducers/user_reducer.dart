@@ -7,77 +7,79 @@ import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 final userReducers = combineReducers<UserState>([
-  TypedReducer<UserState, ResetAppState>(_resetApp),
-  TypedReducer<UserState, ResetSurveyCompleted>(_resetSurveyCompleted),
+  TypedReducer<UserState, ResetAppState>(_resetApp).call,
+  TypedReducer<UserState, SetAppUpdateRequired>(_setAppUpdateRequired).call,
+  TypedReducer<UserState, SetAppUpdateAcknowledged>(_setAppUpdateNotificationCheked).call,
+  TypedReducer<UserState, ResetSurveyCompleted>(_resetSurveyCompleted).call,
   TypedReducer<UserState, SetSubscribedToWaitingListUpdates>(
-      _setSubscribedToWaitingListUpdates),
-  TypedReducer<UserState, SetWalletConnectURI>(_setWalletConnectURI),
-  TypedReducer<UserState, GetWalletDataSuccess>(_getWalletDataSuccess),
-  TypedReducer<UserState, SetStripeCustomerDetails>(_setStripeCustomerDetails),
-  TypedReducer<UserState, ScrollToTop>(_scrollToTop),
-  TypedReducer<UserState, ToggleUpgrade>(_toggleUpgrade),
-  TypedReducer<UserState, CreateLocalAccountSuccess>(_createNewWalletSuccess),
+      _setSubscribedToWaitingListUpdates).call,
+  TypedReducer<UserState, SetWalletConnectURI>(_setWalletConnectURI).call,
+  TypedReducer<UserState, GetWalletDataSuccess>(_getWalletDataSuccess).call,
+  TypedReducer<UserState, SetStripeCustomerDetails>(_setStripeCustomerDetails).call,
+  TypedReducer<UserState, ScrollToTop>(_scrollToTop).call,
+  TypedReducer<UserState, ToggleUpgrade>(_toggleUpgrade).call,
+  TypedReducer<UserState, CreateLocalAccountSuccess>(_createNewWalletSuccess).call,
   // TypedReducer<UserState, AddSurveyEmailSuccess>(_addSurveyEmailSuccess),
-  TypedReducer<UserState, CreateSurveyCompletedSuccess>(_completeSurveySuccess),
-  TypedReducer<UserState, SetPhoneNumberSuccess>(_setPhoneNumber),
-  TypedReducer<UserState, LoginRequestSuccess>(_loginSuccess),
-  TypedReducer<UserState, LoginVerifySuccess>(_loginVerifySuccess),
-  TypedReducer<UserState, LogoutRequestSuccess>(_logoutSuccess),
-  TypedReducer<UserState, SetPincodeSuccess>(_setPincode),
-  TypedReducer<UserState, SetDisplayName>(_setDisplayName),
-  TypedReducer<UserState, SetEmail>(_setEmail),
-  TypedReducer<UserState, SetEmailPassword>(_setEmailAndPassword),
-  TypedReducer<UserState, SetPreferredSignOnMethod>(_setPreferredSignonMethod),
+  TypedReducer<UserState, CreateSurveyCompletedSuccess>(_completeSurveySuccess).call,
+  TypedReducer<UserState, SetPhoneNumberSuccess>(_setPhoneNumber).call,
+  TypedReducer<UserState, LoginRequestSuccess>(_loginSuccess).call,
+  TypedReducer<UserState, LoginVerifySuccess>(_loginVerifySuccess).call,
+  TypedReducer<UserState, LogoutRequestSuccess>(_logoutSuccess).call,
+  TypedReducer<UserState, SetPincodeSuccess>(_setPincode).call,
+  TypedReducer<UserState, SetDisplayName>(_setDisplayName).call,
+  TypedReducer<UserState, SetEmail>(_setEmail).call,
+  TypedReducer<UserState, SetEmailPassword>(_setEmailAndPassword).call,
+  TypedReducer<UserState, SetPreferredSignOnMethod>(_setPreferredSignonMethod).call,
   TypedReducer<UserState, SetUserAuthenticationStatus>(
-      _setUserAuthenticationStatus),
+      _setUserAuthenticationStatus).call,
   TypedReducer<UserState, EmailWLRegistrationSuccess>(
     _setUserEmailForRegistrationToWaitingList,
-  ),
+  ).call,
   TypedReducer<UserState, SetSurveyQuestionsSuccess>(
     _setSurveyQuestions,
-  ),
-  TypedReducer<UserState, SetUserAvatar>(_setUserAvatar),
-  TypedReducer<UserState, ReLogin>(_reLoginUser),
-  TypedReducer<UserState, BackupSuccess>(_backupSuccess),
-  TypedReducer<UserState, StoreBackupStatus>(_storeBackupStatus),
-  TypedReducer<UserState, SetFirebaseCredentials>(_setFirebaseCredentials),
-  TypedReducer<UserState, SetFirebaseSessionToken>(_setFirebaseSessionToken),
-  TypedReducer<UserState, SetFuseWalletCredentials>(_setFuseWalletCredentials),
-  TypedReducer<UserState, SetVerificationId>(_setVerificationId),
-  TypedReducer<UserState, SetVerificationFailed>(_setVerificationFailed),
-  TypedReducer<UserState, SetVegiSessionExpired>(_setVegiSessionExpired),
-  TypedReducer<UserState, SetVegiSessionCookie>(_setVegiSessionCookie),
-  TypedReducer<UserState, SetPhoneNumber>(_setPhoneNumberRaw),
-  TypedReducer<UserState, JustInstalled>(_justInstalled),
-  TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess),
-  TypedReducer<UserState, SetSecurityType>(_setSecurityType),
+  ).call,
+  TypedReducer<UserState, SetUserAvatar>(_setUserAvatar).call,
+  TypedReducer<UserState, ReLogin>(_reLoginUser).call,
+  TypedReducer<UserState, BackupSuccess>(_backupSuccess).call,
+  TypedReducer<UserState, StoreBackupStatus>(_storeBackupStatus).call,
+  TypedReducer<UserState, SetFirebaseCredentials>(_setFirebaseCredentials).call,
+  TypedReducer<UserState, SetFirebaseSessionToken>(_setFirebaseSessionToken).call,
+  TypedReducer<UserState, SetFuseWalletCredentials>(_setFuseWalletCredentials).call,
+  TypedReducer<UserState, SetVerificationId>(_setVerificationId).call,
+  TypedReducer<UserState, SetVerificationFailed>(_setVerificationFailed).call,
+  TypedReducer<UserState, SetVegiSessionExpired>(_setVegiSessionExpired).call,
+  TypedReducer<UserState, SetVegiSessionCookie>(_setVegiSessionCookie).call,
+  TypedReducer<UserState, SetPhoneNumber>(_setPhoneNumberRaw).call,
+  TypedReducer<UserState, JustInstalled>(_justInstalled).call,
+  TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess).call,
+  TypedReducer<UserState, SetSecurityType>(_setSecurityType).call,
   TypedReducer<UserState, SetBiometricallyAuthenticated>(
-      _setBiometricallyAuthenticated),
-  TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed),
-  TypedReducer<UserState, UpdateCurrency>(_updateCurrency),
-  TypedReducer<UserState, UpdateLocale>(_updateLocale),
-  TypedReducer<UserState, UpdateListOfDeliveryAddresses>(_addDeliveryAddress),
-  TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner),
-  TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
-  TypedReducer<UserState, EnableLocationServices>(_setLocationServicesEnabled),
+      _setBiometricallyAuthenticated).call,
+  TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed).call,
+  TypedReducer<UserState, UpdateCurrency>(_updateCurrency).call,
+  TypedReducer<UserState, UpdateLocale>(_updateLocale).call,
+  TypedReducer<UserState, UpdateListOfDeliveryAddresses>(_addDeliveryAddress).call,
+  TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner).call,
+  TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase).call,
+  TypedReducer<UserState, EnableLocationServices>(_setLocationServicesEnabled).call,
   TypedReducer<UserState, SetUserVerifiedStatusSuccess>(
     _setUserVerifiedStatusSuccessResponse,
-  ),
+  ).call,
   TypedReducer<UserState, SetUserVegiAccountIdSuccess>(
     _setUserVegiAccountIdSuccessResponse,
-  ),
+  ).call,
   TypedReducer<UserState, SetUserIsVendorStatusSuccess>(
     _setUserIsVendorSuccessResponse,
-  ),
+  ).call,
   TypedReducer<UserState, SetDeviceIsSimulatorRTO>(
     _setDeviceIsSimulator,
-  ),
+  ).call,
   TypedReducer<UserState, SetUserRoleOnVegi>(
     _setVegiRole,
-  ),
+  ).call,
   TypedReducer<UserState, SetPositionInWaitingList>(
     _setPositionInWaitingList,
-  ),
+  ).call,
 ]);
 
 UserState _resetApp(
@@ -85,6 +87,25 @@ UserState _resetApp(
   ResetAppState action,
 ) {
   return UserState.initial();
+}
+
+UserState _setAppUpdateRequired(
+  UserState state,
+  SetAppUpdateRequired action,
+) {
+  return state.copyWith(
+    appUpdateNeeded: action.appUpdateNeeded,
+    appUpdateNextVersion: action.appUpdateNextVersion,
+  );
+}
+
+UserState _setAppUpdateNotificationCheked(
+  UserState state,
+  SetAppUpdateAcknowledged action,
+) {
+  return state.copyWith(
+    appUpdateNotificationSeenForBuildNumber: action.versionNumberAcknowledged,
+  );
 }
 
 UserState _resetSurveyCompleted(

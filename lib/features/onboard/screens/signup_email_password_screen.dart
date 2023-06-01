@@ -370,12 +370,13 @@ class _SignUpWithEmailAndPasswordScreenState
                     await rootRouter.replace(const SignUpScreen());
                   },
                 ),
-                ListTile(
-                  title: const Text(Labels.emailLinkSignonLabel),
-                  onTap: () async {
-                    await rootRouter.replace(const SignUpEmailLinkScreen());
-                  },
-                ),
+                if(DebugHelpers.inDebugMode)
+                  ListTile(
+                    title: const Text(Labels.emailLinkSignonLabel),
+                    onTap: () async {
+                      await rootRouter.replace(const SignUpEmailLinkScreen());
+                    },
+                  ),
                 // ListTile(
                 //   title: const Text(Labels.googleSignonLabel),
                 //   onTap: () async {

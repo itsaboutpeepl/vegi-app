@@ -15,6 +15,7 @@ import 'package:vegan_liverpool/models/admin/surveyQuestion.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/utils/constants.dart' as VegiConstants;
 import 'package:vegan_liverpool/utils/log/log.dart';
+import 'package:vegan_liverpool/version.dart';
 
 part 'user_state.freezed.dart';
 part 'user_state.g.dart';
@@ -145,6 +146,15 @@ class UserState with _$UserState {
         bool verificationPassed,
     @Default('')
         String identifier,
+    @Default(false)
+    bool appUpdateNeeded,
+    @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson,)
+    @Default(null)
+    Version? appUpdateNextVersion,
+    @JsonKey(fromJson: Version.fromJson,
+      toJson: Version.toJson,)
+    @Default(null)
+    Version? appUpdateNotificationSeenForBuildNumber,
     @Default([])
         List<String> syncedContacts,
     @Default({})

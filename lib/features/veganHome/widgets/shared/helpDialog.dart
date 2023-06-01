@@ -18,8 +18,6 @@ import 'package:vegan_liverpool/utils/url.dart';
 class HelpDialog extends StatelessWidget {
   const HelpDialog({Key? key}) : super(key: key);
 
-  
-
   @override
   Widget build(BuildContext context) {
     return VegiDialog(

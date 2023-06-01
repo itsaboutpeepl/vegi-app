@@ -32,6 +32,7 @@ class BillInvoiceCard extends StatelessWidget {
           ),
           child: StoreConnector<AppState, BillInvoiceViewModel>(
             converter: BillInvoiceViewModel.fromStore,
+            distinct: true,
             builder: (context, viewmodel) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

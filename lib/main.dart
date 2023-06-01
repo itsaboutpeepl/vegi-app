@@ -16,8 +16,10 @@ import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/di/env.dart';
 import 'package:vegan_liverpool/common/network/web3auth.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/redux_state_viewer.dart';
+import 'package:vegan_liverpool/initFirebaseRemote.dart';
 import 'package:vegan_liverpool/loadAppState.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/new_version.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -47,6 +49,8 @@ void main() async {
   await configureDependencies(environment: envStr);
 
   final store = await reduxStore;
+
+  await initFirebaseRemote();
 
   await runZonedGuarded(() async {
     await SentryFlutter.init(

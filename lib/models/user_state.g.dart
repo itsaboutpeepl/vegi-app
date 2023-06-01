@@ -57,6 +57,15 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       verificationId: json['verificationId'] as String?,
       verificationPassed: json['verificationPassed'] as bool? ?? false,
       identifier: json['identifier'] as String? ?? '',
+      appUpdateNeeded: json['appUpdateNeeded'] as bool? ?? false,
+      appUpdateNextVersion: json['appUpdateNextVersion'] == null
+          ? null
+          : Version.fromJson(json['appUpdateNextVersion']),
+      appUpdateNotificationSeenForBuildNumber:
+          json['appUpdateNotificationSeenForBuildNumber'] == null
+              ? null
+              : Version.fromJson(
+                  json['appUpdateNotificationSeenForBuildNumber']),
       syncedContacts: (json['syncedContacts'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -131,6 +140,10 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'verificationId': instance.verificationId,
       'verificationPassed': instance.verificationPassed,
       'identifier': instance.identifier,
+      'appUpdateNeeded': instance.appUpdateNeeded,
+      'appUpdateNextVersion': Version.toJson(instance.appUpdateNextVersion),
+      'appUpdateNotificationSeenForBuildNumber':
+          Version.toJson(instance.appUpdateNotificationSeenForBuildNumber),
       'syncedContacts': instance.syncedContacts,
       'reverseContacts': instance.reverseContacts,
       'currency': instance.currency,
@@ -208,6 +221,7 @@ const _$FuseAuthenticationStatusEnumMap = {
           .failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt:
       'failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt',
   FuseAuthenticationStatus.failedFetch: 'failedFetch',
+  FuseAuthenticationStatus.creationTransactionHash: 'creationTransactionHash',
 };
 
 const _$PreferredSignonMethodEnumMap = {

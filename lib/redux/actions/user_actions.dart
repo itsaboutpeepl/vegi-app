@@ -6,6 +6,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/common/di/package_info.dart';
 import 'package:vegan_liverpool/common/network/web3auth.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
@@ -42,6 +44,8 @@ import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/json_helpers.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/onboard/firebase.dart';
+import 'package:vegan_liverpool/utils/onboard/fuseAuthUtils.dart';
+import 'package:vegan_liverpool/version.dart';
 
 class ResetAppState {
   ResetAppState();
@@ -55,6 +59,34 @@ class SetWalletConnectURI {
 
   @override
   String toString() => 'SetWalletConnectURI : wcURI: $wcURI';
+}
+
+class SetAppUpdateRequired {
+  SetAppUpdateRequired({
+    required this.appUpdateNeeded,
+    required this.appUpdateNextVersion,
+  });
+
+  final bool appUpdateNeeded;
+  final Version? appUpdateNextVersion;
+
+  @override
+  String toString() {
+    return 'SetAppUpdateRequired : updateNeeded:"$appUpdateNeeded", appUpdateNextVersion: $appUpdateNextVersion';
+  }
+}
+
+class SetAppUpdateAcknowledged {
+  SetAppUpdateAcknowledged({
+    required this.versionNumberAcknowledged,
+  });
+
+  final Version? versionNumberAcknowledged;
+
+  @override
+  String toString() {
+    return 'SetAppUpdateAcknowledged : versionNumberAcknowledged:"$versionNumberAcknowledged"';
+  }
 }
 
 class ScrollToTop {
@@ -715,6 +747,123 @@ ThunkAction<AppState> fetchDeviceType() {
         e,
         stackTrace: s,
         hint: 'ERROR - fetchDeviceType e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> checkForUpdatesAppStore() {
+  return (Store<AppState> store) async {
+    bool updateNeeded = false;
+    Version? currentBuildVersion;
+    try {
+      final status = await newVersion.getVersionStatus();
+      if (status != null) {
+        updateNeeded = status.canUpdate; // (true)
+        currentBuildVersion = status.localVersionParsed; // (1.2.1)
+        final requiredBuildVersion = status.storeVersionParsed; // (1.2.3)
+        // status
+        //     .appStoreLink; // (https://itunes.apple.com/us/app/google/id284815942?mt=8)
+        store.dispatch(
+          SetAppUpdateRequired(
+            appUpdateNeeded: updateNeeded,
+            appUpdateNextVersion: requiredBuildVersion,
+          ),
+        );
+      } else {
+        store.dispatch(
+          SetAppUpdateRequired(
+            appUpdateNeeded: false,
+            appUpdateNextVersion: currentBuildVersion,
+          ),
+        );
+      }
+    } catch (err, s) {
+      log.error(
+        err,
+        stackTrace: s,
+      );
+      await Sentry.captureException(
+        err,
+        stackTrace: s, // from catch (err, s)
+        hint: 'ERROR - user_actions.dart.checkForUpdatesAppStore $err',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> checkForUpdatesFirebaseRemoteConfig() {
+  return (Store<AppState> store) async {
+    bool updateNeededUsingFirebaseConfig = false;
+    Version? currentBuildNumber;
+    // ~ https://firebase.google.com/docs/remote-config/get-started?platform=flutter#get-remote-config
+    final remoteConfigBuildNoKey = Platform.isAndroid
+        ? 'requiredBuildNumberAndroid'
+        : Platform.isIOS
+            ? 'requiredBuildNumberIOS'
+            : 'requiredWebScriptsCacheUID';
+
+    try {
+      final requiredBuildNumber = Version.parse(
+        firebaseRemoteConfig.getString(
+          remoteConfigBuildNoKey, // 1.0.2
+        ),
+      );
+
+      final currentBuildVersionStatus = await newVersion.getVersionStatus();
+      if (currentBuildVersionStatus != null) {
+        currentBuildNumber = currentBuildVersionStatus.localVersionParsed;
+        updateNeededUsingFirebaseConfig = currentBuildNumber < requiredBuildNumber;
+        store.dispatch(
+          SetAppUpdateRequired(
+            appUpdateNeeded: updateNeededUsingFirebaseConfig,
+            appUpdateNextVersion: requiredBuildNumber,
+          ),
+        );
+      }
+    } on Exception catch (e) {
+      log
+        ..error(
+          'Unable to check firebase_remote_config for "$remoteConfigBuildNoKey" key: $e',
+          stackTrace: StackTrace.current,
+        )
+        ..error(
+          e,
+          stackTrace: StackTrace.current,
+        );
+      await Sentry.captureException(
+        e,
+        stackTrace: StackTrace.current, // from catch (err, s)
+        hint: 'ERROR - app.dart.checkUpdates $e',
+      );
+      updateNeededUsingFirebaseConfig = false;
+      store.dispatch(
+        SetAppUpdateRequired(
+          appUpdateNeeded: updateNeededUsingFirebaseConfig,
+          appUpdateNextVersion: currentBuildNumber,
+        ),
+      );
+    }
+    if (updateNeededUsingFirebaseConfig == false && store.state.userState.isVegiSuperAdmin) {
+      store.dispatch(checkForUpdatesAppStore());
+    }
+  };
+}
+
+ThunkAction<AppState> updateAppNeededNotificationSeen() {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(
+        SetAppUpdateAcknowledged(
+          versionNumberAcknowledged: store.state.userState.appUpdateNextVersion,
+        ),
+      );
+    } catch (e, s) {
+      log.error('ERROR - updateAppNeededNotificationSeen $e', stackTrace: s);
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - updateAppNeededNotificationSeen $e',
       );
     }
   };
@@ -1510,64 +1659,8 @@ Future<FuseAuthenticationStatus> _initFuseWallet(Store<AppState> store) async {
   // * FUSE - Fetch/Create Wallet from FuseSDK
   try {
     if (store.state.userState.jwtToken.isEmpty) {
-      try {
-        final EthPrivateKey credentials =
-            EthPrivateKey.fromHex(store.state.userState.privateKey);
-        final DC<Exception, String> authRes = await fuseWalletSDK.authenticate(
-          credentials,
-        );
-        if (authRes.hasData) {
-          final jwt = authRes.data!;
-          store
-            ..dispatch(LoginVerifySuccess(jwt))
-            ..dispatch(
-              SetUserAuthenticationStatus(
-                fuseStatus: FuseAuthenticationStatus.created,
-              ),
-            );
-          fuseWalletSDK.jwtToken = jwt;
-        } else if (authRes.hasError) {
-          store
-            ..dispatch(
-              SetUserAuthenticationStatus(
-                fuseStatus: FuseAuthenticationStatus.failedAuthentication,
-              ),
-            )
-            ..dispatch(
-              SignupFailed(
-                error: SignUpErrorDetails(
-                  title: 'Fuse authentication failed',
-                  message: 'Error occurred in authenticate: ${authRes.error}',
-                ),
-              ),
-            );
-          return FuseAuthenticationStatus.failedAuthentication;
-        }
-      } catch (e, s) {
-        store.dispatch(
-          SetUserAuthenticationStatus(
-            fuseStatus: FuseAuthenticationStatus.failedAuthentication,
-          ),
-        );
-        final errMsg =
-            'Bad AuthRes from Fuse Authentication did not contain either data or an error: $e';
-        log.error(errMsg, stackTrace: s);
-        await Sentry.captureException(
-          errMsg,
-          stackTrace: s, // from catch (err, s)
-          hint: 'ERROR - user_actions.authenticateFuseWalletSDK $errMsg',
-        );
-
-        log.error(
-          'ERROR - authenticateFuseWalletSDK',
-          error: e,
-          stackTrace: s,
-        );
-        await Sentry.captureException(
-          Exception('Error in authenticateFuseWalletSDK: $e'),
-          stackTrace: s,
-          hint: 'ERROR - authenticateFuseWalletSDK',
-        );
+      final authSucceeded = await authenticateSDK(store);
+      if (!authSucceeded) {
         return FuseAuthenticationStatus.failedAuthentication;
       }
     }
@@ -1598,74 +1691,14 @@ Future<FuseAuthenticationStatus> _initFuseWallet(Store<AppState> store) async {
       final wasLateInitJwtIssue = exception.toString().contains('LateInit');
       if (wasLateInitJwtIssue) {
         // * FUSE - Authenticate SDK
-        if (store.state.userState.jwtToken.isEmpty) {
-          try {
-            final EthPrivateKey credentials =
-                EthPrivateKey.fromHex(store.state.userState.privateKey);
-            final DC<Exception, String> authRes =
-                await fuseWalletSDK.authenticate(
-              credentials,
-            );
-            if (authRes.hasData) {
-              final jwt = authRes.data!;
-              store
-                ..dispatch(LoginVerifySuccess(jwt))
-                ..dispatch(
-                  SetUserAuthenticationStatus(
-                    fuseStatus: FuseAuthenticationStatus.created,
-                  ),
-                );
-              fuseWalletSDK.jwtToken = jwt;
-            } else if (authRes.hasError) {
-              store
-                ..dispatch(
-                  SetUserAuthenticationStatus(
-                    fuseStatus: FuseAuthenticationStatus.failedAuthentication,
-                  ),
-                )
-                ..dispatch(
-                  SignupFailed(
-                    error: SignUpErrorDetails(
-                      title: 'Fuse authentication failed',
-                      message:
-                          'Error occurred in authenticate: ${authRes.error}',
-                    ),
-                  ),
-                );
-              return FuseAuthenticationStatus.failedAuthentication;
-            }
-          } catch (e, s) {
-            store.dispatch(
-              SetUserAuthenticationStatus(
-                fuseStatus: FuseAuthenticationStatus.failedAuthentication,
-              ),
-            );
-            final errMsg =
-                'Unhandled exception trying to authenticate FuseSDK with error: $e';
-            log.error(errMsg, stackTrace: s);
-            await Sentry.captureException(
-              errMsg,
-              stackTrace: s, // from catch (err, s)
-              hint: 'ERROR - user_actions.authenticateFuseWalletSDK $errMsg',
-            );
-
-            log.error(
-              'ERROR - authenticateFuseWalletSDK',
-              error: e,
-              stackTrace: s,
-            );
-            await Sentry.captureException(
-              Exception('Error in authenticateFuseWalletSDK: $e'),
-              stackTrace: s,
-              hint: 'ERROR - authenticateFuseWalletSDK',
-            );
-            return FuseAuthenticationStatus.failedAuthentication;
-          }
-        } else {
-          fuseWalletSDK.jwtToken = store.state.userState.jwtToken;
+        final authSucceeded = await authenticateSDK(store);
+        if (!authSucceeded) {
+          return FuseAuthenticationStatus.failedAuthentication;
         }
-      } else {
-        await _tryCreateWallet(store);
+      }
+      final tryCreateWalletStatus = await _tryCreateWallet(store);
+      if (tryCreateWalletStatus == FuseAuthenticationStatus.authenticated) {
+        return tryCreateWalletStatus;
       }
       // Try to REfetch wallet for the EOA, if it doesn't exist create one
 
@@ -1700,40 +1733,6 @@ Future<FuseAuthenticationStatus> _initFuseWallet(Store<AppState> store) async {
           await _tryCreateWallet(store);
         }
       }
-      // else {
-      //   SignUpErrorDetails errDetails;
-      //   if (walletData.error! is DioError) {
-      //     final err = walletData.error! as DioError;
-      //     errDetails = SignUpErrorDetails(
-      //       title: 'Fuse Connection Error [${err.type}]',
-      //       message: err.message ?? err.toString(),
-      //       code: SignUpErrCode.failedToFetchFuseWallet,
-      //     );
-      //   } else {
-      //     errDetails = SignUpErrorDetails(
-      //       title: 'Fuse Error',
-      //       message: walletData.error!.toString(),
-      //       code: SignUpErrCode.failedToFetchFuseWallet,
-      //     );
-      //   }
-      //   store
-      //     ..dispatch(
-      //       SetUserAuthenticationStatus(
-      //         fuseStatus: FuseAuthenticationStatus.failedFetch,
-      //       ),
-      //     )
-      //     ..dispatch(
-      //       SignupFailed(
-      //         error: errDetails,
-      //       ),
-      //     )
-      //     ..dispatch(
-      //       SignupLoading(
-      //         isLoading: false,
-      //       ),
-      //     );
-      //   return FuseAuthenticationStatus.failedFetch;
-      // }
     }
     return store.state.userState.fuseAuthenticationStatus;
   } catch (e, s) {
@@ -1762,7 +1761,30 @@ Future<FuseAuthenticationStatus> _initFuseWallet(Store<AppState> store) async {
   }
 }
 
-Future<FuseAuthenticationStatus> _tryCreateWallet(Store<AppState> store) async {
+Future<FuseAuthenticationStatus> _tryCreateWallet(
+  Store<AppState> store, {
+  bool forceCreateNew = false,
+}) async {
+  if (forceCreateNew != true) {
+    final walletDataReFetched = await fuseWalletSDK.fetchWallet();
+    if (walletDataReFetched.hasData) {
+      final smartWallet = walletDataReFetched.data!;
+      log.info(
+          'Successfully refetched smart wallet address ${smartWallet.smartWalletAddress} so no need to create a new wallet as requested');
+      store
+        ..dispatch(
+          saveSmartWallet(
+            smartWallet: fuseWalletSDK.smartWallet,
+          ),
+        )
+        ..dispatch(
+          SetUserAuthenticationStatus(
+            fuseStatus: FuseAuthenticationStatus.authenticated,
+          ),
+        );
+      return FuseAuthenticationStatus.authenticated;
+    }
+  }
   // we move to createWallet call below
   store.dispatch(
     SetUserAuthenticationStatus(
@@ -1793,19 +1815,49 @@ Future<FuseAuthenticationStatus> _tryCreateWallet(Store<AppState> store) async {
           );
         } else if (event.name == 'transactionHash') {
           log.info('transactionHash ${event.data}');
+          store.dispatch(
+            SetUserAuthenticationStatus(
+              fuseStatus: FuseAuthenticationStatus.creationTransactionHash,
+            ),
+          );
         } else if (event.name == 'smartWalletCreationSucceeded') {
-          log.info('smartWalletCreationSucceeded ${event.data}');
+          final smartWalletAddress =
+              event.data['smartWalletAddress'] as String?;
+          final EOA = event.data['ownerAddress'] as String?;
+          WalletModules? walletModules;
+          if (event.data.containsKey('walletModules')) {
+            walletModules = WalletModules.fromJson(
+              event.data['walletModules'] as Map<String, dynamic>,
+            );
+          }
+          final networks =
+              (event.data['networks'] as List<String>?) ?? <String>[];
+          final fuseSDKVersion = event.data['version'];
+          log.info(
+              'smartWalletCreationSucceeded with smartwalletaddress: "$smartWalletAddress"');
+
+          if (smartWalletAddress != null && walletModules != null) {
+            store
+              ..dispatch(
+                GetWalletDataSuccess(
+                  walletAddress: smartWalletAddress,
+                  networks: networks,
+                  walletModules: walletModules,
+                ),
+              )
+              ..dispatch(
+                SetUserAuthenticationStatus(
+                  fuseStatus: FuseAuthenticationStatus.authenticated,
+                ),
+              );
+            return;
+          }
           store.dispatch(
             SetUserAuthenticationStatus(
               fuseStatus: FuseAuthenticationStatus.creationSucceeded,
             ),
           );
-          //todo:remove the below log
-          log.verbose(
-            event.data,
-            stackTrace: StackTrace.current,
-          );
-          //todo: does the walletAddress exist within event.data?
+
           fuseWalletSDK.fetchWallet().then((walletDataFetchPostCreate) {
             if (walletDataFetchPostCreate.hasData) {
               final smartWallet = walletDataFetchPostCreate.data!;
@@ -1843,7 +1895,15 @@ Future<FuseAuthenticationStatus> _tryCreateWallet(Store<AppState> store) async {
             }
           });
         } else if (event.name == 'smartWalletCreationFailed') {
-          log.error('smartWalletCreationFailed ${event.data}');
+          log.error(
+            'smartWalletCreationFailed ${event.data}',
+            stackTrace: StackTrace.current,
+          );
+          Sentry.captureException(
+            event.data,
+            stackTrace: StackTrace.current, // from catch (err, s)
+            hint: 'ERROR - user_actions._tryCreateWallet in  ${event.data}',
+          );
           store.dispatch(
             SetUserAuthenticationStatus(
               fuseStatus: FuseAuthenticationStatus.failedCreate,
@@ -1871,6 +1931,12 @@ Future<FuseAuthenticationStatus> _tryCreateWallet(Store<AppState> store) async {
     return FuseAuthenticationStatus.created;
   } else if (walletCreationResult.hasError) {
     log.error(walletCreationResult.error.toString());
+    await Sentry.captureException(
+      walletCreationResult.error,
+      stackTrace: StackTrace.current, // from catch (err, s)
+      hint:
+          'ERROR - user_actions._tryCreateWallet ${walletCreationResult.error}',
+    );
     store
       ..dispatch(
         SetUserAuthenticationStatus(

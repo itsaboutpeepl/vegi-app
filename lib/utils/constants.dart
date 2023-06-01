@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vegan_liverpool/common/di/package_info.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
@@ -128,6 +130,27 @@ const THE_GUIDE_LIVERPOOL_GOOGLEPS_LINK = THE_GUIDE_LIVERPOOL_LINKTREE;
 const VEGI_SUPPORT_PHONE_NUMBER = '+447917787967';
 const VEGI_SUPPORT_EMAIL = 'support@vegi.co.uk';
 
+Future<Uri?> getAppStoreLink() async {
+  if (Platform.isAndroid || Platform.isIOS) {
+    final appId = Platform.isAndroid
+        ? PackageConstants.androidBundleIdentifier
+        : packageInfo.appName.contains('test') && (await canLaunchUrlString('itms-beta://'))
+        ? PackageConstants.iosAppIdVegiTest
+        : PackageConstants.iosAppIdVegiProd;
+    final url = Uri.parse(
+      Platform.isAndroid
+          // ? "market://details?id=$appId"
+          ? 'https://play.google.com/store/apps/details?id=$appId'
+          : packageInfo.appName.contains('test') && (await canLaunchUrlString('itms-beta://')) // ~ https://stackoverflow.com/a/32960501
+          ? 'https://beta.itunes.apple.com/v1/app/$appId' // 1643896043
+          : 'https://apps.apple.com/app/id$appId',
+    );
+    return url;
+  } else {
+    return null;
+  }
+}
+
 String getGuideLiverpoolLink() {
   return 'https://qrco.de/bdNuyp';
   // return Platform.isIOS
@@ -184,6 +207,13 @@ class Fonts {
 }
 
 class Messages {
+  static String whatsappMessageSupportTemplate(String message) => '$message'
+      ' Technicals: Version ${packageInfo.version},'
+      ' Build (${packageInfo.buildNumber}).\n';
+  static String emailMessageSupportTemplate(String message) => '$message'
+      ' Technicals: Version ${packageInfo.version},'
+      ' Build (${packageInfo.buildNumber}).\n';
+
   static const String email = 'Email Address';
   static const String voucherCode = 'Voucher';
   static const String enterEmail =
@@ -304,7 +334,10 @@ class ImagePaths {
   static const String fuseIconFilledGreen =
       'assets/images/fuse/fuse-icon-filled-green.png';
   static const String firbebaseLogo = 'assets/images/firebase-logo.svg';
+  static const String pplAvatar35width = 'assets/images/avatar-ppl-red.png';
   static const String vegiBeanManNSEW = 'assets/images/beanman-nsew.png';
+
+  static const String usernamePlaceholder = 'assets/images/username.svg';
 
   static const String onboardingPage2HeadingImage1 = 'plant-icon.svg';
   static const String onboardingPage3HeadingImage2 = 'local-icon.svg';
@@ -312,11 +345,11 @@ class ImagePaths {
   static const String onboardingPage1Background =
       'assets/images/design/1_intro_img.png';
   static const String onboardingPage2Background =
-      'assets/images/design/2_plant_based_img.png';
+      'assets/images/design/Vegi-Onboardingshop-plant-based-copy.png';
   static const String onboardingPage3Background =
-      'assets/images/design/3_shop_local_img.png';
+      'assets/images/design/Vegi-Onboardingshop-local.png';
   static const String onboardingPage4Background =
-      'assets/images/design/4_earn_rewards_img.png';
+      'assets/images/design/Vegi-Onboardingearn-rewards.png';
   static const String onboardingPage5Background =
       'assets/images/design/5_outro_img.png';
   static const String onboardingPage5Card =
@@ -336,6 +369,10 @@ class Labels {
   static const String registerEmailOnboardingScreenTitle = 'Email';
   static const String registerEmailWaitingListNotificationsScreenTitle =
       'Register';
+  static const String homeScreenRouteLabel = 'Home';
+  static const String stripeVegiProductName = 'vegi';
+  static const String launchAppStore = 'Open AppStore';
+  static const String cancelButtonLabel = 'Cancel';
 
   static const String submit = 'Submit';
   static const String signupButtonLabelViewAccount = 'View account';
@@ -466,8 +503,20 @@ class DebugHelpers {
 }
 
 class PackageConstants {
+  static const String iosAppIdVegiTest = '1643896043'; // i.e. 1600049497
+  static const String iosAppIdVegiProd = '1608208174'; // i.e. 1600049497
+  static const String androidAppIdVegiProd =
+      'com.vegi.vegiAppTest'; // i.e. 1600049497
+  static String iosBuildVersion = '${packageInfo.version}.${packageInfo.buildNumber}';
+  static String androidBuildVersion = '${packageInfo.version}.${packageInfo.buildNumber}';
+  static String buildVersion() => Platform.isIOS
+      ? PackageConstants.iosBuildVersion
+      : Platform.isAndroid
+          ? PackageConstants.androidBuildVersion
+          : '';
   static const String iosBundleIdentifier =
       'com.vegi.vegiAppTest'; // Runner.xcodeproj/project.pbxproj => PRODUCT_BUNDLE_IDENTIFIER = com.example.appname;
+
   static const String androidBundleIdentifier =
       'com.vegi.vegiAppTest'; // AndroidManifest => manifest xmlns:android="http://schemas.android.com/apk/res/android"
   static const String webBundleIdentifier = 'vegiapp.co.uk';

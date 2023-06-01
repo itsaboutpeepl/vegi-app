@@ -17,6 +17,9 @@ class PaymentMethodViewModel extends Equatable {
     required this.pplBalance,
     required this.hasPplBalance,
     required this.cartTotal,
+    required this.firebaseAuthenticationStatus,
+    required this.fuseAuthenticationStatus,
+    required this.vegiAuthenticationStatus,
     required this.restaurantMinimumOrder,
     required this.startPaymentProcess,
     required this.isLoading,
@@ -50,6 +53,10 @@ class PaymentMethodViewModel extends Equatable {
       isSuperAdmin: store.state.userState.isVegiSuperAdmin,
       hasPplBalance: pplBalance > 0,
       cartTotal: store.state.cartState.cartTotal,
+      firebaseAuthenticationStatus:
+          store.state.userState.firebaseAuthenticationStatus,
+      fuseAuthenticationStatus: store.state.userState.fuseAuthenticationStatus,
+      vegiAuthenticationStatus: store.state.userState.vegiAuthenticationStatus,
       restaurantMinimumOrder: store.state.cartState.restaurantMinimumOrder,
       orderCreationProcessStatus:
           store.state.cartState.orderCreationProcessStatus,
@@ -81,6 +88,9 @@ class PaymentMethodViewModel extends Equatable {
   final FulfilmentMethodType selectedFulfilmentMethod;
   final int restaurantMinimumOrder;
   final Money cartTotal;
+  final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
+  final FuseAuthenticationStatus fuseAuthenticationStatus;
+  final VegiAuthenticationStatus vegiAuthenticationStatus;
   final void Function({required PaymentMethod paymentMethod}) setPaymentMethod;
   final void Function({
     required Future<void> Function(PaymentMethod?) showBottomPaymentSheet,
@@ -89,6 +99,12 @@ class PaymentMethodViewModel extends Equatable {
   final StripePaymentStatus stripePaymentStatus;
   final LivePayment? processingPayment;
   final bool transferringTokens;
+
+  bool get disablePayments =>
+      fuseAuthenticationStatus != FuseAuthenticationStatus.authenticated ||
+      firebaseAuthenticationStatus !=
+          FirebaseAuthenticationStatus.authenticated ||
+      vegiAuthenticationStatus != VegiAuthenticationStatus.authenticated;
 
   @override
   List<Object?> get props => [
@@ -108,5 +124,8 @@ class PaymentMethodViewModel extends Equatable {
         processingPayment?.amount,
         processingPayment?.status,
         transferringTokens,
+        firebaseAuthenticationStatus,
+        fuseAuthenticationStatus,
+        vegiAuthenticationStatus,
       ];
 }

@@ -202,6 +202,8 @@ extension ListHelpers<T> on List<T> {
   List<T> sortInline(int Function(T a, T b) convert) {
     return sorted((a, b) => convert(a, b));
   }
+
+  T? get firstOrNull => isEmpty ? null : first;
 }
 
 extension MoneyIterableHelpers on Iterable<Money> {
@@ -214,14 +216,19 @@ extension MoneyIterableHelpers on Iterable<Money> {
       }
       outputCurrency = first.currency;
     }
-    final fxdAmounts = await Future.wait(map(
-      (money) => convertCurrencyAmount(
-        amount: money.value,
-        fromCurrency: money.currency,
-        toCurrency: outputCurrency!,
+    final fxdAmounts = await Future.wait(
+      map(
+        (money) => convertCurrencyAmount(
+          amount: money.value,
+          fromCurrency: money.currency,
+          toCurrency: outputCurrency!,
+        ),
       ),
-    ),);
-    return Money(currency: outputCurrency, value: fxdAmounts.sum,);
+    );
+    return Money(
+      currency: outputCurrency,
+      value: fxdAmounts.sum,
+    );
   }
 }
 

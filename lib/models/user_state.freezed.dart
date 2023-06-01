@@ -74,6 +74,12 @@ mixin _$UserState {
   String? get verificationId => throw _privateConstructorUsedError;
   bool get verificationPassed => throw _privateConstructorUsedError;
   String get identifier => throw _privateConstructorUsedError;
+  bool get appUpdateNeeded => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+  Version? get appUpdateNextVersion => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+  Version? get appUpdateNotificationSeenForBuildNumber =>
+      throw _privateConstructorUsedError;
   List<String> get syncedContacts => throw _privateConstructorUsedError;
   Map<String, String> get reverseContacts => throw _privateConstructorUsedError;
   String get currency => throw _privateConstructorUsedError;
@@ -162,6 +168,11 @@ abstract class $UserStateCopyWith<$Res> {
       String? verificationId,
       bool verificationPassed,
       String identifier,
+      bool appUpdateNeeded,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          Version? appUpdateNextVersion,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          Version? appUpdateNotificationSeenForBuildNumber,
       List<String> syncedContacts,
       Map<String, String> reverseContacts,
       String currency,
@@ -249,6 +260,9 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? verificationId = freezed,
     Object? verificationPassed = null,
     Object? identifier = null,
+    Object? appUpdateNeeded = null,
+    Object? appUpdateNextVersion = freezed,
+    Object? appUpdateNotificationSeenForBuildNumber = freezed,
     Object? syncedContacts = null,
     Object? reverseContacts = null,
     Object? currency = null,
@@ -402,6 +416,19 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
           ? _value.identifier
           : identifier // ignore: cast_nullable_to_non_nullable
               as String,
+      appUpdateNeeded: null == appUpdateNeeded
+          ? _value.appUpdateNeeded
+          : appUpdateNeeded // ignore: cast_nullable_to_non_nullable
+              as bool,
+      appUpdateNextVersion: freezed == appUpdateNextVersion
+          ? _value.appUpdateNextVersion
+          : appUpdateNextVersion // ignore: cast_nullable_to_non_nullable
+              as Version?,
+      appUpdateNotificationSeenForBuildNumber: freezed ==
+              appUpdateNotificationSeenForBuildNumber
+          ? _value.appUpdateNotificationSeenForBuildNumber
+          : appUpdateNotificationSeenForBuildNumber // ignore: cast_nullable_to_non_nullable
+              as Version?,
       syncedContacts: null == syncedContacts
           ? _value.syncedContacts
           : syncedContacts // ignore: cast_nullable_to_non_nullable
@@ -583,6 +610,11 @@ abstract class _$$_UserStateCopyWith<$Res> implements $UserStateCopyWith<$Res> {
       String? verificationId,
       bool verificationPassed,
       String identifier,
+      bool appUpdateNeeded,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          Version? appUpdateNextVersion,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          Version? appUpdateNotificationSeenForBuildNumber,
       List<String> syncedContacts,
       Map<String, String> reverseContacts,
       String currency,
@@ -669,6 +701,9 @@ class __$$_UserStateCopyWithImpl<$Res>
     Object? verificationId = freezed,
     Object? verificationPassed = null,
     Object? identifier = null,
+    Object? appUpdateNeeded = null,
+    Object? appUpdateNextVersion = freezed,
+    Object? appUpdateNotificationSeenForBuildNumber = freezed,
     Object? syncedContacts = null,
     Object? reverseContacts = null,
     Object? currency = null,
@@ -822,6 +857,19 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.identifier
           : identifier // ignore: cast_nullable_to_non_nullable
               as String,
+      appUpdateNeeded: null == appUpdateNeeded
+          ? _value.appUpdateNeeded
+          : appUpdateNeeded // ignore: cast_nullable_to_non_nullable
+              as bool,
+      appUpdateNextVersion: freezed == appUpdateNextVersion
+          ? _value.appUpdateNextVersion
+          : appUpdateNextVersion // ignore: cast_nullable_to_non_nullable
+              as Version?,
+      appUpdateNotificationSeenForBuildNumber: freezed ==
+              appUpdateNotificationSeenForBuildNumber
+          ? _value.appUpdateNotificationSeenForBuildNumber
+          : appUpdateNotificationSeenForBuildNumber // ignore: cast_nullable_to_non_nullable
+              as Version?,
       syncedContacts: null == syncedContacts
           ? _value.syncedContacts
           : syncedContacts // ignore: cast_nullable_to_non_nullable
@@ -988,6 +1036,11 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       this.verificationId,
       this.verificationPassed = false,
       this.identifier = '',
+      this.appUpdateNeeded = false,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          this.appUpdateNextVersion = null,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          this.appUpdateNotificationSeenForBuildNumber = null,
       this.syncedContacts = const [],
       this.reverseContacts = const {},
       this.currency = 'usd',
@@ -1137,6 +1190,15 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
   final String identifier;
   @override
   @JsonKey()
+  final bool appUpdateNeeded;
+  @override
+  @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+  final Version? appUpdateNextVersion;
+  @override
+  @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+  final Version? appUpdateNotificationSeenForBuildNumber;
+  @override
+  @JsonKey()
   final List<String> syncedContacts;
   @override
   @JsonKey()
@@ -1231,7 +1293,7 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, vegiAuthenticationStatus: $vegiAuthenticationStatus, firebaseAuthenticationStatus: $firebaseAuthenticationStatus, fuseAuthenticationStatus: $fuseAuthenticationStatus, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, phoneNumberNoCountry: $phoneNumberNoCountry, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, preferredSignonMethod: $preferredSignonMethod, email: $email, password: $password, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, biometricallyAuthenticated: $biometricallyAuthenticated, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, vegiSessionCookie: $vegiSessionCookie, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId, isVegiSuperAdmin: $isVegiSuperAdmin, userVegiRole: $userVegiRole, positionInWaitingList: $positionInWaitingList, subscribedToWaitingListUpdates: $subscribedToWaitingListUpdates, waitingListEntryId: $waitingListEntryId, loginCounter: $loginCounter)';
+    return 'UserState(wcURI: $wcURI, walletModules: $walletModules, installedAt: $installedAt, isContactsSynced: $isContactsSynced, isLoggedOut: $isLoggedOut, scrollToTop: $scrollToTop, walletAddress: $walletAddress, privateKey: $privateKey, fuseWalletCredentials: $fuseWalletCredentials, vegiAuthenticationStatus: $vegiAuthenticationStatus, firebaseAuthenticationStatus: $firebaseAuthenticationStatus, fuseAuthenticationStatus: $fuseAuthenticationStatus, backup: $backup, networks: $networks, mnemonic: $mnemonic, pincode: $pincode, countryCode: $countryCode, phoneNumber: $phoneNumber, phoneNumberNoCountry: $phoneNumberNoCountry, warnSendDialogShowed: $warnSendDialogShowed, isoCode: $isoCode, jwtToken: $jwtToken, displayName: $displayName, avatarUrl: $avatarUrl, preferredSignonMethod: $preferredSignonMethod, email: $email, password: $password, verificationId: $verificationId, verificationPassed: $verificationPassed, identifier: $identifier, appUpdateNeeded: $appUpdateNeeded, appUpdateNextVersion: $appUpdateNextVersion, appUpdateNotificationSeenForBuildNumber: $appUpdateNotificationSeenForBuildNumber, syncedContacts: $syncedContacts, reverseContacts: $reverseContacts, currency: $currency, hasUpgrade: $hasUpgrade, authType: $authType, biometricallyAuthenticated: $biometricallyAuthenticated, locale: $locale, firebaseCredentials: $firebaseCredentials, firebaseSessionToken: $firebaseSessionToken, vegiSessionCookie: $vegiSessionCookie, listOfDeliveryAddresses: $listOfDeliveryAddresses, hasSavedSeedPhrase: $hasSavedSeedPhrase, useLiveLocation: $useLiveLocation, userIsVerified: $userIsVerified, userLocation: $userLocation, isUsingSimulator: $isUsingSimulator, isUsingIosSimulator: $isUsingIosSimulator, initialLoginDateTime: $initialLoginDateTime, showSeedPhraseBanner: $showSeedPhraseBanner, surveyQuestions: $surveyQuestions, surveyCompleted: $surveyCompleted, surveyEmailUsed: $surveyEmailUsed, isVendor: $isVendor, stripeCustomerId: $stripeCustomerId, vegiAccountId: $vegiAccountId, isVegiSuperAdmin: $isVegiSuperAdmin, userVegiRole: $userVegiRole, positionInWaitingList: $positionInWaitingList, subscribedToWaitingListUpdates: $subscribedToWaitingListUpdates, waitingListEntryId: $waitingListEntryId, loginCounter: $loginCounter)';
   }
 
   @override
@@ -1272,6 +1334,10 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('verificationId', verificationId))
       ..add(DiagnosticsProperty('verificationPassed', verificationPassed))
       ..add(DiagnosticsProperty('identifier', identifier))
+      ..add(DiagnosticsProperty('appUpdateNeeded', appUpdateNeeded))
+      ..add(DiagnosticsProperty('appUpdateNextVersion', appUpdateNextVersion))
+      ..add(DiagnosticsProperty('appUpdateNotificationSeenForBuildNumber',
+          appUpdateNotificationSeenForBuildNumber))
       ..add(DiagnosticsProperty('syncedContacts', syncedContacts))
       ..add(DiagnosticsProperty('reverseContacts', reverseContacts))
       ..add(DiagnosticsProperty('currency', currency))
@@ -1367,14 +1433,17 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
                 other.verificationPassed == verificationPassed) &&
             (identical(other.identifier, identifier) ||
                 other.identifier == identifier) &&
-            const DeepCollectionEquality()
-                .equals(other.syncedContacts, syncedContacts) &&
-            const DeepCollectionEquality()
-                .equals(other.reverseContacts, reverseContacts) &&
-            (identical(other.currency, currency) ||
-                other.currency == currency) &&
-            (identical(other.hasUpgrade, hasUpgrade) ||
-                other.hasUpgrade == hasUpgrade) &&
+            (identical(other.appUpdateNeeded, appUpdateNeeded) ||
+                other.appUpdateNeeded == appUpdateNeeded) &&
+            (identical(other.appUpdateNextVersion, appUpdateNextVersion) ||
+                other.appUpdateNextVersion == appUpdateNextVersion) &&
+            (identical(other.appUpdateNotificationSeenForBuildNumber, appUpdateNotificationSeenForBuildNumber) ||
+                other.appUpdateNotificationSeenForBuildNumber ==
+                    appUpdateNotificationSeenForBuildNumber) &&
+            const DeepCollectionEquality().equals(other.syncedContacts, syncedContacts) &&
+            const DeepCollectionEquality().equals(other.reverseContacts, reverseContacts) &&
+            (identical(other.currency, currency) || other.currency == currency) &&
+            (identical(other.hasUpgrade, hasUpgrade) || other.hasUpgrade == hasUpgrade) &&
             (identical(other.authType, authType) || other.authType == authType) &&
             (identical(other.biometricallyAuthenticated, biometricallyAuthenticated) || other.biometricallyAuthenticated == biometricallyAuthenticated) &&
             const DeepCollectionEquality().equals(other.locale, locale) &&
@@ -1438,6 +1507,9 @@ class _$_UserState extends _UserState with DiagnosticableTreeMixin {
         verificationId,
         verificationPassed,
         identifier,
+        appUpdateNeeded,
+        appUpdateNextVersion,
+        appUpdateNotificationSeenForBuildNumber,
         const DeepCollectionEquality().hash(syncedContacts),
         const DeepCollectionEquality().hash(reverseContacts),
         currency,
@@ -1520,6 +1592,11 @@ abstract class _UserState extends UserState {
       final String? verificationId,
       final bool verificationPassed,
       final String identifier,
+      final bool appUpdateNeeded,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          final Version? appUpdateNextVersion,
+      @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+          final Version? appUpdateNotificationSeenForBuildNumber,
       final List<String> syncedContacts,
       final Map<String, String> reverseContacts,
       final String currency,
@@ -1644,6 +1721,14 @@ abstract class _UserState extends UserState {
   bool get verificationPassed;
   @override
   String get identifier;
+  @override
+  bool get appUpdateNeeded;
+  @override
+  @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+  Version? get appUpdateNextVersion;
+  @override
+  @JsonKey(fromJson: Version.fromJson, toJson: Version.toJson)
+  Version? get appUpdateNotificationSeenForBuildNumber;
   @override
   List<String> get syncedContacts;
   @override

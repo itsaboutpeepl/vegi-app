@@ -17,9 +17,7 @@ Future<void> launchUrl(
 }
 
 String whatsappAutofillNewMessage(String phoneNumber, String message) {
-  final body = '$message'
-      ' Version ${packageInfo.version},'
-      ' Build ${packageInfo.buildNumber}';
+  final body = Messages.whatsappMessageSupportTemplate(message);
   // ~ https://stackoverflow.com/a/60950933
   return 'whatsapp://send?phone=$phoneNumber&text=${Uri.encodeComponent(body)}';
 }
@@ -52,9 +50,7 @@ bool whatsappChatIsOutOfHours() {
 String mailAutofillNewMessage(String to, String subject, String message) {
   final emailTo = Uri.encodeComponent(to);
   final emailSubject = Uri.encodeComponent(subject);
-  final body = '$message'
-      ' Version ${packageInfo.version},'
-      ' Build ${packageInfo.buildNumber}';
+  final body = Messages.emailMessageSupportTemplate(message);
   final mailString =
       'mailto:$emailTo?subject=$emailSubject&body=${Uri.encodeComponent(body)}';
 

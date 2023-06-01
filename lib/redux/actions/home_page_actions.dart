@@ -552,7 +552,10 @@ ThunkAction<AppState> setGlobalSearchQuery(
       //   ),
       // );
     } catch (e, s) {
-      log.error('ERROR - setGlobalSearchQuery $e');
+      log.error(
+        'ERROR - setGlobalSearchQuery $e',
+        stackTrace: s,
+      );
       await Sentry.captureException(
         e,
         stackTrace: s,
@@ -571,6 +574,9 @@ ThunkAction<AppState> setSelectedVendor({required RestaurantItem vendor}) {
 ThunkAction<AppState> setMenuSearchQuery({required String searchQuery}) {
   return (Store<AppState> store) async {
     try {
+      if (store.state.cartState.restaurantID.isEmpty) {
+        return;
+      }
       final restaurantMenuItems = store.state.homePageState.featuredRestaurants
           .singleWhere(
             (element) =>
@@ -640,7 +646,7 @@ ThunkAction<AppState> setMenuSearchQuery({required String searchQuery}) {
       //   filteredMenuItems: filteredCartItems,
       // ));
     } catch (e, s) {
-      log.error('ERROR - setGlobalSearchQuery $e');
+      log.error('ERROR - setGlobalSearchQuery $e', stackTrace: s);
       await Sentry.captureException(
         e,
         stackTrace: s,

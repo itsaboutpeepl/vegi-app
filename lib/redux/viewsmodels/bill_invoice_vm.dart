@@ -38,5 +38,7 @@ class BillInvoiceViewModel extends Equatable {
   final String pplRewardsEarnedValue;
 
   @override
-  List<Object?> get props => [grandTotal];
+  List<Object?> get props => [
+    grandTotal,
+  ];
 }

@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/analytics_events.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
@@ -66,13 +67,19 @@ class _VegiDialogState<ViewModel> extends State<VegiDialog<ViewModel>>
       builder: (_, viewmodel) {
         return ScaleTransition(
           scale: scaleAnimation,
+          alignment: Alignment.center,
           child: AlertDialog(
-            shape: const RoundedRectangleBorder(
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
+            contentPadding: const EdgeInsets.all(0.0),
             content: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: themeShade100,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              padding: const EdgeInsets.all(8),
               child: widget.child,
             ),
             actions: widget.actions,

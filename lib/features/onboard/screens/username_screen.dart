@@ -69,7 +69,7 @@ class UserNameScreen extends StatelessWidget {
                               ? Padding(
                                   padding: const EdgeInsets.only(left: 20),
                                   child: SvgPicture.asset(
-                                    'assets/images/username.svg',
+                                    ImagePaths.usernamePlaceholder,
                                     width: 95,
                                     height: avatarSquareSize,
                                   ),

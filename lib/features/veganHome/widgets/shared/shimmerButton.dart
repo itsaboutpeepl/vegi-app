@@ -4,12 +4,14 @@ import 'package:vegan_liverpool/constants/theme.dart';
 
 class ShimmerButton extends StatelessWidget {
   const ShimmerButton({
-    Key? key,
     required this.buttonContent,
     required this.buttonAction,
     required this.baseColor,
     required this.highlightColor,
+    Key? key,
     this.isLoading = false,
+    this.disabled = false,
+    this.showPopupOnDisabledButtonTapped,
   }) : super(key: key);
 
   final Widget buttonContent;
@@ -17,11 +19,13 @@ class ShimmerButton extends StatelessWidget {
   final Color baseColor;
   final Color highlightColor;
   final bool isLoading;
+  final bool disabled;
+  final Widget? showPopupOnDisabledButtonTapped;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: buttonAction,
+      onTap: () => disabled ? showPopupOnDisabledButtonTapped == null ? null : showDialog<void>(context: context, builder: (context) => showPopupOnDisabledButtonTapped!,) : buttonAction(),
       child: Stack(
         children: [
           Material(

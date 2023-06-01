@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:carrier_info/carrier_info.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/logoutDialog.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -494,15 +496,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         .replace(const SignUpWithEmailAndPasswordScreen());
                   },
                 ),
+                if (DebugHelpers.inDebugMode)
+                  ListTile(
+                    title: const Text(Labels.emailLinkSignonLabel),
+                    onTap: () async {
+                      await rootRouter.replace(const SignUpEmailLinkScreen());
+                    },
+                  ),
                 ListTile(
-                  title: const Text(Labels.emailLinkSignonLabel),
-                  onTap: () async {
-                    await rootRouter.replace(const SignUpEmailLinkScreen());
-                  },
+                  title: Text(Labels.signupButtonLabelLogout(context)),
+                  onTap: () => _logout(context),
                 ),
               ],
             ),
           ),
         ),
       );
+
+  Future<void> _logout(
+    BuildContext context,
+  ) async {
+    await rootRouter.pop();
+    await showDialog<Widget>(
+      context: context,
+      builder: (context) => const LogoutDialog(),
+    );
+  }
 }

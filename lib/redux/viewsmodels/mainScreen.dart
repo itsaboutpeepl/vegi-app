@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/models/authViewModel.dart';
 import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
+import 'package:vegan_liverpool/version.dart';
 
 class MainScreenViewModel extends Equatable implements IAuthViewModel {
   const MainScreenViewModel({
@@ -30,6 +31,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.firebaseAuthenticationStatus,
     required this.fuseAuthenticationStatus,
     required this.vegiAuthenticationStatus,
+    required this.appUpdateNeeded,
+    required this.appUpdateNextVersion,
+    required this.appUpdateNotificationSeenForBuildNumber,
     required this.authenticateAll,
     required this.setPhoneNumber,
     required this.signup,
@@ -37,6 +41,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.setLoading,
     required this.signinEmailAndPassword,
     required this.signInUserUsingEmailLink,
+    required this.setAppUpdateNotificationSeen,
   });
 
   factory MainScreenViewModel.fromStore(Store<AppState> store) {
@@ -62,6 +67,10 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
           store.state.userState.firebaseAuthenticationStatus,
       fuseAuthenticationStatus: store.state.userState.fuseAuthenticationStatus,
       vegiAuthenticationStatus: store.state.userState.vegiAuthenticationStatus,
+      appUpdateNeeded: store.state.userState.appUpdateNeeded,
+      appUpdateNextVersion: store.state.userState.appUpdateNextVersion,
+      appUpdateNotificationSeenForBuildNumber:
+          store.state.userState.appUpdateNotificationSeenForBuildNumber,
       setPhoneNumber: ({
         required CountryCode countryCode,
         required PhoneNumber phoneNumber,
@@ -141,6 +150,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
             ),
           );
       },
+      setAppUpdateNotificationSeen: () {
+        store.dispatch(updateAppNeededNotificationSeen());
+      },
     );
   }
 
@@ -163,6 +175,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final VegiAuthenticationStatus vegiAuthenticationStatus;
   final bool signupIsInFlux;
   final SignUpErrorDetails? signupError;
+  final bool appUpdateNeeded;
+  final Version? appUpdateNextVersion;
+  final Version? appUpdateNotificationSeenForBuildNumber;
 
   final void Function({
     required CountryCode countryCode,
@@ -182,10 +197,17 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final void Function({
     required String email,
   }) signInUserUsingEmailLink;
+  final void Function() setAppUpdateNotificationSeen;
 
   bool get isReauthenticationRequest =>
       firebaseAuthenticationStatus !=
       FirebaseAuthenticationStatus.unauthenticated;
+
+  bool get updateNotificationNeeded =>
+      appUpdateNeeded &&
+      appUpdateNextVersion != null &&
+      appUpdateNotificationSeenForBuildNumber != null &&
+      appUpdateNotificationSeenForBuildNumber! > appUpdateNextVersion!;
 
   @override
   List<Object?> get props => [
@@ -206,6 +228,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
         firebaseAuthenticationStatus,
         fuseAuthenticationStatus,
         vegiAuthenticationStatus,
+        appUpdateNeeded,
+        appUpdateNextVersion,
+        appUpdateNotificationSeenForBuildNumber,
         dialCode,
         countryCode,
       ];

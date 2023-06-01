@@ -105,7 +105,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
                             isLoading: isPrimaryPreloading,
                             borderColor: themeShade1000,
                             textColor: themeShade850,
-                            textLoadingColor: themeLightShade1000,
+                            textLoadingColor: themeShade850,
                           ),
                           SignUpButton(
                             buttonText: Labels.signupButtonLabelLogout(context),
@@ -113,7 +113,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
                             isLoading: isPrimaryPreloading,
                             borderColor: themeShade1000,
                             textColor: themeShade850,
-                            textLoadingColor: themeLightShade1000,
+                            textLoadingColor: themeShade850,
                           ),
                         ] else ...[
                           SignUpButton(
@@ -123,7 +123,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
                             isLoading: isPrimaryPreloading,
                             borderColor: themeShade1000,
                             textColor: themeShade850,
-                            textLoadingColor: themeLightShade1000,
+                            textLoadingColor: themeShade850,
                           ),
                           SignUpButton(
                             autoSizeText: true,
@@ -137,7 +137,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
                             isLoading: isPrimaryPreloading,
                             borderColor: themeShade1000,
                             textColor: themeShade850,
-                            textLoadingColor: themeLightShade1000,
+                            textLoadingColor: themeShade850,
                           ),
                         ],
                       ],

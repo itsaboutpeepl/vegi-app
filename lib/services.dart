@@ -1,6 +1,8 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:fuse_wallet_sdk/fuse_wallet_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/new_version.dart';
 import 'package:vegan_liverpool/services/apis/fxService.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -38,8 +40,12 @@ final FirebaseAuth firebaseAuth = getIt<FirebaseAuth>();
 
 final FirebaseMessaging firebaseMessaging = getIt<FirebaseMessaging>();
 
+final FirebaseRemoteConfig firebaseRemoteConfig = getIt<FirebaseRemoteConfig>();
+
 final PhoneNumberUtil phoneNumberUtil = getIt<PhoneNumberUtil>();
 
 final IOnBoardStrategy onBoardStrategy = getIt<IOnBoardStrategy>();
 
 final StripeService stripeService = getIt<StripeService>();
+
+final NewVersion newVersion = getIt<NewVersion>();

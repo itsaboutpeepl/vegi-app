@@ -1823,7 +1823,8 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
             isLoading: false,
           ),
         )
-        ..dispatch(SetPaymentButtonFlag(false));
+        ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),);
       log.error(e);
       if (e.response != null) {
         await Sentry.captureException(
@@ -1848,9 +1849,7 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
       );
       store
         ..dispatch(SetPaymentButtonFlag(false))
-        ..dispatch(SetIsLoadingHttpRequest(
-          isLoading: false,
-        ))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
         ..dispatch(
           OrderCreationProcessStatusUpdate(
             status: OrderCreationProcessStatus.sendOrderCallClientError,
@@ -1915,6 +1914,7 @@ ThunkAction<AppState> startPaymentProcess({
           );
           store
             ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
             ..dispatch(
               cancelOrder(
                 orderId: int.parse(store.state.cartState.orderID),
@@ -1930,6 +1930,7 @@ ThunkAction<AppState> startPaymentProcess({
           log.error(e, stackTrace: StackTrace.current);
           store
             ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
             ..dispatch(
               cancelOrder(
                 orderId: int.parse(store.state.cartState.orderID),
@@ -1985,10 +1986,11 @@ ThunkAction<AppState> startPaymentProcess({
           await Sentry.captureException(
             Exception(e),
             stackTrace: StackTrace.current, // from catch (e, s)
-            hint: 'ERROR - startPeeplPayProcess $e',
+            hint: 'ERROR - startPaymentProcess[PaymentMethod.stripeToFuse] $e',
           );
           store
             ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
             ..dispatch(
               cancelOrder(
                 orderId: int.parse(store.state.cartState.orderID),
@@ -2013,6 +2015,7 @@ ThunkAction<AppState> startPaymentProcess({
             if (!value) {
               store
                 ..dispatch(SetPaymentButtonFlag(false))
+                ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
                 ..dispatch(
                   cancelOrder(
                     orderId: int.parse(store.state.cartState.orderID),
@@ -2062,15 +2065,16 @@ ThunkAction<AppState> startPaymentProcess({
           ),
         );
         if (store.state.userState.vegiAccountId == null) {
-          final e = 'Vegi AccountId not set on state... Cannot start payment';
+          const e = 'Vegi AccountId not set on state... Cannot start payment';
           log.error(e);
           await Sentry.captureException(
             Exception(e),
             stackTrace: StackTrace.current, // from catch (e, s)
-            hint: 'ERROR - startPeeplPayProcess $e',
+            hint: 'ERROR - startPaymentProcess[PaymentMethod.applePay] $e',
           );
           store
             ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
             ..dispatch(
               cancelOrder(
                 orderId: int.parse(store.state.cartState.orderID),
@@ -2085,6 +2089,7 @@ ThunkAction<AppState> startPaymentProcess({
           log.error(e, stackTrace: StackTrace.current);
           store
             ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
             ..dispatch(
               cancelOrder(
                 orderId: int.parse(store.state.cartState.orderID),
@@ -2103,13 +2108,14 @@ ThunkAction<AppState> startPaymentProcess({
           store: store,
           amount: store.state.cartState.cartTotal,
           shouldPushToHome: false,
-          productName: 'Vegi',
+          productName: Labels.stripeVegiProductName,
         )
             .then(
           (value) {
             if (!value) {
               store
                 ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
                 ..dispatch(
                   cancelOrder(
                     orderId: int.parse(store.state.cartState.orderID),
@@ -2159,10 +2165,11 @@ ThunkAction<AppState> startPaymentProcess({
           await Sentry.captureException(
             Exception(e),
             stackTrace: StackTrace.current, // from catch (e, s)
-            hint: 'ERROR - startPeeplPayProcess $e',
+            hint: 'ERROR - startPaymentProcess[PaymentMethod.applePayToFuse] $e',
           );
           store
             ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
             ..dispatch(
               cancelOrder(
                 orderId: int.parse(store.state.cartState.orderID),
@@ -2177,6 +2184,7 @@ ThunkAction<AppState> startPaymentProcess({
           log.error(e, stackTrace: StackTrace.current);
           store
             ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
             ..dispatch(
               cancelOrder(
                 orderId: int.parse(store.state.cartState.orderID),
@@ -2195,7 +2203,7 @@ ThunkAction<AppState> startPaymentProcess({
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,
-          productName: 'Vegi',
+          productName: Labels.stripeVegiProductName,
         )
             .then(
           (value) {
@@ -2254,6 +2262,7 @@ ThunkAction<AppState> startPaymentProcess({
     } catch (e, s) {
       store
         ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),)
         ..dispatch(
           cancelOrder(
             orderId: int.parse(store.state.cartState.orderID),
@@ -2284,6 +2293,7 @@ ThunkAction<AppState> startPeeplPayProcess() {
         );
       }
 
+      // TODO: REDO this method to use FUSE tech but using FUSE USD and GBT if using rewards.
       final double currentGBPXAmount =
           store.state.cashWalletState.tokens[gbpxToken.address]!.getAmount();
 
@@ -2323,7 +2333,8 @@ ThunkAction<AppState> startPeeplPayProcess() {
         );
       }
     } catch (e, s) {
-      store.dispatch(SetPaymentButtonFlag(false));
+      store.dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),);
       log.error('ERROR - sendOrderObject $e');
       await Sentry.captureException(
         e,
@@ -2340,7 +2351,8 @@ ThunkAction<AppState> startTokenPaymentToRestaurant() {
       //Set loading to true
       store
         ..dispatch(SetTransferringPayment(flag: true))
-        ..dispatch(SetPaymentButtonFlag(false));
+        ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(SetIsLoadingHttpRequest(isLoading: false,),);
 
       final BigInt currentGBPXAmount =
           store.state.cashWalletState.tokens[gbpxToken.address]!.amount;
@@ -2674,9 +2686,6 @@ ThunkAction<AppState> setRestaurantDetails({
       }
       store
         ..dispatch(
-          setMenuSearchQuery(searchQuery: ''),
-        )
-        ..dispatch(
           SetRestaurantDetails(
             restaurantItem.restaurantID,
             restaurantItem.name,
@@ -2689,6 +2698,9 @@ ThunkAction<AppState> setRestaurantDetails({
             ),
             restaurantItem.deliveryRestrictionDetails,
           ),
+        )
+        ..dispatch(
+          setMenuSearchQuery(searchQuery: ''),
         );
     } catch (e, s) {
       store.dispatch(SetError(flag: true));

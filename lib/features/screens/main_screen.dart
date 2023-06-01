@@ -11,6 +11,7 @@ import 'package:vegan_liverpool/constants/firebase_options.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/dialogs/appUpdateNeededDialog.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/screens/waitingListFunnel.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
@@ -72,28 +73,35 @@ class _MainScreenState extends State<MainScreen> {
         // }
       },
       distinct: true,
-      // onWillChange: (previousViewModel, newViewModel) async {
-      //   if (isRouting) {
-      //     return;
-      //   }
-      //   if (newViewModel.fuseAuthenticationStatus ==
-      //           FuseAuthenticationStatus.authenticated &&
-      //       previousViewModel?.fuseAuthenticationStatus !=
-      //           FuseAuthenticationStatus.authenticated) {
-      //     return _handleFuseAuthenticationSucceeded();
-      //   }
-      //   final checked = checkAuth(
-      //     oldViewModel: previousViewModel,
-      //     newViewModel: newViewModel,
-      //     routerContext: context,
-      //   );
-      //   if (checked.navigationNeeded) {
-      //     setState(() {
-      //       isRouting = true;
-      //     });
-      //     await checked.runNavigationIfNeeded();
-      //   }
-      // },
+      onWillChange: (previousViewModel, newViewModel) async {
+        if (newViewModel.updateNotificationNeeded) {
+          newViewModel.setAppUpdateNotificationSeen();
+          await showDialog<void>(
+            context: context,
+            builder: (context) => const AppUpdateNeededDialog(),
+          );
+        }
+        //   if (isRouting) {
+        //     return;
+        //   }
+        //   if (newViewModel.fuseAuthenticationStatus ==
+        //           FuseAuthenticationStatus.authenticated &&
+        //       previousViewModel?.fuseAuthenticationStatus !=
+        //           FuseAuthenticationStatus.authenticated) {
+        //     return _handleFuseAuthenticationSucceeded();
+        //   }
+        //   final checked = checkAuth(
+        //     oldViewModel: previousViewModel,
+        //     newViewModel: newViewModel,
+        //     routerContext: context,
+        //   );
+        //   if (checked.navigationNeeded) {
+        //     setState(() {
+        //       isRouting = true;
+        //     });
+        //     await checked.runNavigationIfNeeded();
+        //   }
+      },
       converter: MainScreenViewModel.fromStore,
       builder: (context, vm) {
         if (vm.signupIsInFlux) {
@@ -113,7 +121,7 @@ class _MainScreenState extends State<MainScreen> {
             vm.firebaseAuthenticationStatus ==
                 FirebaseAuthenticationStatus.unauthenticated) {
           vm.authenticateAll();
-          return LoadingScaffold;
+          // return LoadingScaffold; // ! removed as still want to show restaurants, but without being signed in
         } else {
           peeplEatsService
               .checkVegiSessionIsStillValid()

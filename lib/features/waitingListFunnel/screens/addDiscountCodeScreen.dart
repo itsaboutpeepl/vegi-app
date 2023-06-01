@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
@@ -9,6 +10,7 @@ import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/shared/dialogs/backHomeDialog.dart';
 import 'package:vegan_liverpool/features/waitingListFunnel/widgets/continueWithoutDiscountCodeDialog.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
@@ -115,7 +117,14 @@ class _AddDiscountCodeScreenState extends State<AddDiscountCodeScreen>
             showInfoSnack(
               context,
               title: 'Voucher applied',
-              backgroundColor: themeLightShade1000,
+              backgroundColor: themeShade500,
+            );
+            showDialog<BackHomeDialog>(
+              context: context,
+              builder: (context) => const BackHomeDialog(
+                cancelButtonIcon: FontAwesomeIcons.pencil,
+                cancelButtonName: 'Add more',
+              ),
             );
           }
         },

@@ -102,7 +102,7 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
               if (viewmodel.selectedFulfilmentMethod !=
                       FulfilmentMethodType.inStore ||
                   !viewmodel.showvegiPay) ...[
-                if (viewmodel.isSuperAdmin)
+                if (viewmodel.isSuperAdmin && DebugHelpers.inDebugMode)
                   ListTile(
                     onTap: () {
                       viewmodel.setPaymentMethod(
@@ -111,10 +111,10 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                       context.router.pop();
                     },
                     leading: Image.asset(
-                      'assets/images/avatar-ppl-red.png',
+                      ImagePaths.pplAvatar35width,
                       width: 35,
                     ),
-                    title: const Text('Peepl Pay'),
+                    title: Text(PaymentMethod.peeplPay.formattedName),
                     subtitle: viewmodel.hasPplBalance
                         ? Text(
                             'Use your rewards and save ${viewmodel.pplBalance}',
@@ -159,6 +159,20 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                 //     size: 14,
                 //   ),
                 // ),
+                ListTile(
+                  onTap: () {
+                    viewmodel.setPaymentMethod(
+                      paymentMethod: PaymentMethod.applePay,
+                    );
+                    context.router.pop();
+                  },
+                  leading: const Icon(FontAwesomeIcons.applePay),
+                  title: Text(PaymentMethod.applePay.formattedName),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                  ),
+                ),
                 if (viewmodel.isSuperAdmin)
                   if (Platform.isIOS)
                     if (AppConfig.useFusePayments)
@@ -176,62 +190,47 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                           size: 14,
                         ),
                       )
-                    else
-                      ListTile(
-                        onTap: () {
-                          viewmodel.setPaymentMethod(
-                            paymentMethod: PaymentMethod.applePay,
-                          );
-                          context.router.pop();
-                        },
-                        leading: const Icon(FontAwesomeIcons.applePay),
-                        title: Text(PaymentMethod.applePay.formattedName),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
+                    else if (AppConfig.useFusePayments)
+                      Opacity(
+                        opacity: 0.5,
+                        child: ListTile(
+                          onTap: () {
+                            // viewmodel.setPaymentMethod(
+                            //   paymentMethod: PaymentMethod.googlePayToFuse,
+                            // );
+                            // context.router.pop();
+                          },
+                          enabled: false,
+                          leading: const Icon(FontAwesomeIcons.googlePay),
+                          title:
+                              Text(PaymentMethod.googlePayToFuse.formattedName),
+                          subtitle: const Text('Coming soon'),
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                          ),
                         ),
                       )
-                  else if (AppConfig.useFusePayments)
-                    Opacity(
-                      opacity: 0.5,
-                      child: ListTile(
-                        onTap: () {
-                          // viewmodel.setPaymentMethod(
-                          //   paymentMethod: PaymentMethod.googlePayToFuse,
-                          // );
-                          // context.router.pop();
-                        },
-                        enabled: false,
-                        leading: const Icon(FontAwesomeIcons.googlePay),
-                        title:
-                            Text(PaymentMethod.googlePayToFuse.formattedName),
-                        subtitle: const Text('Coming soon'),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
+                    else
+                      Opacity(
+                        opacity: 0.5,
+                        child: ListTile(
+                          onTap: () {
+                            // viewmodel.setPaymentMethod(
+                            //   paymentMethod: PaymentMethod.googlePay,
+                            // );
+                            // context.router.pop();
+                          },
+                          enabled: false,
+                          leading: const Icon(FontAwesomeIcons.googlePay),
+                          title: Text(PaymentMethod.googlePay.formattedName),
+                          subtitle: const Text('Coming soon'),
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                          ),
                         ),
                       ),
-                    )
-                  else
-                    Opacity(
-                      opacity: 0.5,
-                      child: ListTile(
-                        onTap: () {
-                          // viewmodel.setPaymentMethod(
-                          //   paymentMethod: PaymentMethod.googlePay,
-                          // );
-                          // context.router.pop();
-                        },
-                        enabled: false,
-                        leading: const Icon(FontAwesomeIcons.googlePay),
-                        title: Text(PaymentMethod.googlePay.formattedName),
-                        subtitle: const Text('Coming soon'),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                      ),
-                    ),
               ],
               if (viewmodel.showvegiPay)
                 Opacity(

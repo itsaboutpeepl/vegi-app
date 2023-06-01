@@ -729,7 +729,7 @@ enum FuseAuthenticationStatus {
   failedAuthentication,
   failedAuthenticationAsMissingUserDetailsToAuthFuseWallet,
   failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt,
-  failedFetch,
+  failedFetch, creationTransactionHash,
 }
 
 extension FuseAuthenticationStatusHelpers on FuseAuthenticationStatus {
