@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
+import 'package:vegan_liverpool/common/router/routes.gr.dart' as routes;
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
@@ -18,17 +19,19 @@ import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
-class SignUpEmailLinkScreen extends StatefulWidget {
-  const SignUpEmailLinkScreen({Key? key}) : super(key: key);
+class SetEmailOnboardingScreen extends StatefulWidget {
+  const SetEmailOnboardingScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUpEmailLinkScreen> createState() => _SignUpEmailLinkScreenState();
+  State<SetEmailOnboardingScreen> createState() =>
+      _SetEmailOnboardingScreenState();
 }
 
-class _SignUpEmailLinkScreenState extends State<SignUpEmailLinkScreen> {
+class _SetEmailOnboardingScreenState extends State<SetEmailOnboardingScreen> {
   final fullNameController = TextEditingController(text: '');
   final emailController = TextEditingController(text: '');
   final _formKey = GlobalKey<FormState>();
+  bool isRouting = false;
 
   bool isPreloading = false;
 
@@ -44,20 +47,6 @@ class _SignUpEmailLinkScreenState extends State<SignUpEmailLinkScreen> {
     return StoreConnector<AppState, MainScreenViewModel>(
       converter: MainScreenViewModel.fromStore,
       distinct: true,
-      onInit: (store) {
-        if (store.state.userState.firebaseCredentials != null) {
-          onBoardStrategy.reauthenticateUser().then(
-            (reauthSucceeded) {
-              if (reauthSucceeded &&
-                  store.state.userState.walletAddress.isNotEmpty) {
-                store
-                  ..dispatch(isBetaWhitelistedAddress())
-                  ..dispatch(SignupLoading(isLoading: false));
-              }
-            },
-          );
-        }
-      },
       onWillChange: (previousViewModel, newViewModel) async {
         // final checked = checkAuth(
         //   oldViewModel: previousViewModel,
@@ -101,50 +90,20 @@ class _SignUpEmailLinkScreenState extends State<SignUpEmailLinkScreen> {
         return MyScaffold(
           automaticallyImplyLeading: false,
           resizeToAvoidBottomInset: false,
-          title: viewmodel.hasLoggedInBefore
-              ? 'Reauthenticate'
-              : I10n.of(context).sign_up,
+          title: Labels.registerEmailOnboardingScreenTitle,
           body: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  children: <Widget>[
+                  children: const <Widget>[
                     Text(
-                      viewmodel.hasLoggedInBefore
-                          ? 'Please enter your email to reauthenticate'
-                          : 'Please enter your email',
+                      Messages.emailPleaseEnterToHelpProtectYourAccount,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        focusColor: Theme.of(context).canvasColor,
-                        highlightColor: Theme.of(context).canvasColor,
-                        onTap: () {
-                          showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                const SignUpDialog(),
-                          );
-                        },
-                        child: Center(
-                          child: Text(
-                            I10n.of(context).why_do_we_need_this,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -217,9 +176,10 @@ class _SignUpEmailLinkScreenState extends State<SignUpEmailLinkScreen> {
                             preload: viewmodel.signupIsInFlux,
                             disabled: viewmodel.signupIsInFlux,
                             onPressed: () async {
-                              viewmodel.signInUserUsingEmailLink(
+                              viewmodel.setEmail(
                                 email: emailController.text,
                               );
+                              await _route(viewmodel);
                             },
                           ),
                           const SizedBox(height: 20),
@@ -227,8 +187,7 @@ class _SignUpEmailLinkScreenState extends State<SignUpEmailLinkScreen> {
                             onTap: () =>
                                 launchUrl('https://vegiapp.co.uk/privacy'),
                             child: Text(
-                              'By signing up, you agree to the vegi'
-                              ' Terms & Conditions which can be found here',
+                              Labels.vegiPrivacyTnCs,
                               style: TextStyle(
                                 color: Colors.grey[500],
                               ),
@@ -241,24 +200,38 @@ class _SignUpEmailLinkScreenState extends State<SignUpEmailLinkScreen> {
                   )
                 ],
               ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () => _showAlternativeSignonPicker(context),
-                child: Text(
-                  'Alternative sign-in methods',
-                  style: TextStyle(
-                    color: Colors.blue[500],
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.normal,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
             ],
           ),
         );
       },
     );
+  }
+
+  Future<void> _route(MainScreenViewModel viewModel) async {
+    if (isRouting ||
+        rootRouter.current.name !=
+            routes.SetEmailOnboardingScreen().routeName) {
+      return;
+    }
+    if (!viewModel.displayNameIsSet) {
+      log.info('Push UserNameScreen() from ${rootRouter.current.name}');
+      setState(() {
+        isRouting = true;
+      });
+      await rootRouter.push(UserNameScreen());
+    } else if (!viewModel.biometricAuthIsSet) {
+      log.info('Push ChooseSecurityOption() from ${rootRouter.current.name}');
+      setState(() {
+        isRouting = true;
+      });
+      await rootRouter.push(const ChooseSecurityOption());
+    } else {
+      log.info('Push MainScreen() from ${rootRouter.current.name}');
+      setState(() {
+        isRouting = true;
+      });
+      await rootRouter.replaceAll([const MainScreen()]);
+    }
   }
 
   String _createErrorMessage(SignUpErrorDetails? errorDetails) {

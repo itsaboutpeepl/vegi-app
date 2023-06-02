@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:vegan_liverpool/common/di/env.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
@@ -58,13 +59,14 @@ class DefaultFirebaseOptions {
     storageBucket: 'vegiliverpool.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
+  static FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCa0YnaqwKNrQq05Xxo0oqQmAThalUYeck',
     appId: '1:526129377:ios:7fdd83bd162d99c470bfa0',
     messagingSenderId: '526129377',
     projectId: 'vegiliverpool',
     storageBucket: 'vegiliverpool.appspot.com',
-    iosClientId: '526129377-hogf35nhebt59qdn7j4m2qhb7a4jc6r2.apps.googleusercontent.com',
-    iosBundleId: PackageConstants.iosBundleIdentifier,
+    iosClientId:
+        '526129377-hogf35nhebt59qdn7j4m2qhb7a4jc6r2.apps.googleusercontent.com',
+    iosBundleId: PackageConstants.bundleIdentifierHardCoded,
   );
 }

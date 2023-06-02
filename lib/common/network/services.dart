@@ -20,12 +20,14 @@ abstract class ServicesModule {
   FuseWalletSDK get fuseWalletSDK =>
       FuseWalletSDK(Secrets.FUSE_WALLET_SDK_PUBLIC_KEY);
 
+  // @preResolve
+  // Future<NewVersion> get newVersion => NewVersion.fromPackageInfo(); // ! BUG -> this causes app to fail before start because of the preresolve....
   @lazySingleton
   NewVersion get newVersion => NewVersion(
         iOSAppStoreCountry:
             'GB', // ~ https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-        iOSId: PackageConstants.iosAppIdVegiTest,
-        androidId: PackageConstants.androidBundleIdentifier,
+        iOSId: PackageConstants.bundleIdentifierHardCoded,
+        androidId: PackageConstants.bundleIdentifierHardCoded,
       );
 
   // @lazySingleton

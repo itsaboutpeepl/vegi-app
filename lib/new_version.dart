@@ -18,11 +18,11 @@ import 'package:vegan_liverpool/version.dart';
 class VersionStatus {
   /// The current version of the app.
   final String localVersion;
-  Version get localVersionParsed => Version.parse(localVersion);
+  Version? get localVersionParsed => Version.tryParse(localVersion);
 
   /// The most recent version of the app in the store.
   final String storeVersion;
-  Version get storeVersionParsed => Version.parse(storeVersion);
+  Version? get storeVersionParsed => Version.tryParse(storeVersion);
 
   /// A link to the app store page where the app can be updated.
   final String appStoreLink;
@@ -35,26 +35,39 @@ class VersionStatus {
 
   /// Returns `true` if the store version of the application is greater than the local version.
   bool get canUpdate {
-    final local = localVersion.split('.').map(int.parse).toList();
-    final store = storeVersion.split('.').map(int.parse).toList();
-
-    // Each consecutive field in the version notation is less significant than the previous one,
-    // therefore only one comparison needs to yield `true` for it to be determined that the store
-    // version is greater than the local version.
-    for (var i = 0; i < store.length; i++) {
-      // The store version field is newer than the local version.
-      if (store[i] > local[i]) {
-        return true;
-      }
-
-      // The local version field is newer than the store version.
-      if (local[i] > store[i]) {
+    try {
+      if (!Version.isWellFormatted(localVersion) ||
+          !Version.isWellFormatted(storeVersion)) {
         return false;
       }
-    }
 
-    // The local and store versions are the same.
-    return false;
+      final local = localVersion.split('.').map(int.parse).toList();
+      final store = storeVersion.split('.').map(int.parse).toList();
+
+      // Each consecutive field in the version notation is less significant than the previous one,
+      // therefore only one comparison needs to yield `true` for it to be determined that the store
+      // version is greater than the local version.
+      for (var i = 0; i < store.length; i++) {
+        // The store version field is newer than the local version.
+        if (store[i] > local[i]) {
+          return true;
+        }
+
+        // The local version field is newer than the store version.
+        if (local[i] > store[i]) {
+          return false;
+        }
+      }
+
+      // The local and store versions are the same.
+      return false;
+    } on Exception catch (e, s) {
+      log.error(
+        e,
+        stackTrace: s,
+      );
+      return false;
+    }
   }
 
   VersionStatus._({
@@ -93,6 +106,16 @@ class NewVersion {
     this.iOSAppStoreCountry,
     this.forceAppVersion,
   });
+
+  static Future<NewVersion> fromPackageInfo() async {
+    final _packageInfo = await PackageInfo.fromPlatform();
+    return NewVersion(
+      iOSAppStoreCountry:
+          'GB', // ~ https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+      iOSId: _packageInfo.packageName,
+      androidId: _packageInfo.packageName,
+    );
+  }
 
   /// This checks the version status, then displays a platform-specific alert
   /// with buttons to dismiss the update alert, or go to the app store.
@@ -136,7 +159,8 @@ class NewVersion {
       parameters.addAll({"country": iOSAppStoreCountry!});
     }
     final uri = Uri.https("itunes.apple.com", "/lookup", parameters);
-    final response = await http.get(uri);
+    final response = await http.get(
+        uri); // ~ https://itunes.apple.com/lookup?country=GB&bundleId=com.vegi.vegiApp
     if (response.statusCode != 200) {
       log.error(
         'Failed to query iOS App Store',

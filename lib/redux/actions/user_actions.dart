@@ -813,7 +813,12 @@ ThunkAction<AppState> checkForUpdatesFirebaseRemoteConfig() {
       final currentBuildVersionStatus = await newVersion.getVersionStatus();
       if (currentBuildVersionStatus != null) {
         currentBuildNumber = currentBuildVersionStatus.localVersionParsed;
-        updateNeededUsingFirebaseConfig = currentBuildNumber < requiredBuildNumber;
+        if (currentBuildNumber == null || requiredBuildNumber == null) {
+          updateNeededUsingFirebaseConfig = false;
+        } else {
+          updateNeededUsingFirebaseConfig =
+              currentBuildNumber < requiredBuildNumber;
+        }
         store.dispatch(
           SetAppUpdateRequired(
             appUpdateNeeded: updateNeededUsingFirebaseConfig,
@@ -844,7 +849,8 @@ ThunkAction<AppState> checkForUpdatesFirebaseRemoteConfig() {
         ),
       );
     }
-    if (updateNeededUsingFirebaseConfig == false && store.state.userState.isVegiSuperAdmin) {
+    if (updateNeededUsingFirebaseConfig == false &&
+        store.state.userState.isVegiSuperAdmin) {
       store.dispatch(checkForUpdatesAppStore());
     }
   };
@@ -1774,7 +1780,7 @@ Future<FuseAuthenticationStatus> _tryCreateWallet(
       store
         ..dispatch(
           saveSmartWallet(
-            smartWallet: fuseWalletSDK.smartWallet,
+            smartWallet: smartWallet,
           ),
         )
         ..dispatch(
@@ -1791,6 +1797,26 @@ Future<FuseAuthenticationStatus> _tryCreateWallet(
       fuseStatus: FuseAuthenticationStatus.createWalletForEOA,
     ),
   );
+
+  try {
+    final _smartWallet = fuseWalletSDK.smartWallet;
+    store
+      ..dispatch(
+        saveSmartWallet(
+          smartWallet: _smartWallet,
+        ),
+      )
+      ..dispatch(
+        SetUserAuthenticationStatus(
+          fuseStatus: FuseAuthenticationStatus.authenticated,
+        ),
+      );
+    return FuseAuthenticationStatus.authenticated;
+  } catch (e, s) {
+    // TODO
+    // do nothing
+  }
+
   final walletCreationResult = await fuseWalletSDK.createWallet();
   if (walletCreationResult.hasData) {
     store
@@ -1830,8 +1856,11 @@ Future<FuseAuthenticationStatus> _tryCreateWallet(
               event.data['walletModules'] as Map<String, dynamic>,
             );
           }
-          final networks =
-              (event.data['networks'] as List<String>?) ?? <String>[];
+          List<String> networks = <String>[];
+          if (event.data.containsKey('networks')) {
+            networks =
+                List<String>.from(event.data['networks'] as Iterable<dynamic>);
+          }
           final fuseSDKVersion = event.data['version'];
           log.info(
               'smartWalletCreationSucceeded with smartwalletaddress: "$smartWalletAddress"');

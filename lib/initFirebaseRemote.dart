@@ -11,7 +11,9 @@ Future<void> initFirebaseRemote() async {
   await firebaseRemoteConfig.setConfigSettings(
     RemoteConfigSettings(
       fetchTimeout: const Duration(minutes: 1),
-      minimumFetchInterval: const Duration(hours: 1), // ~ https://firebase.google.com/docs/remote-config/get-started?platform=flutter#throttling
+      minimumFetchInterval: const Duration(
+          hours:
+              1), // ~ https://firebase.google.com/docs/remote-config/get-started?platform=flutter#throttling
     ),
   );
 

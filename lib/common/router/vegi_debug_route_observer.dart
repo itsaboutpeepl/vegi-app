@@ -7,24 +7,34 @@ class VegiDebugRouteObserver extends AutoRouterObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     log.info(
-        'New route pushed: ${route.settings.name} from ${previousRoute?.settings.name}');
+      'New route pushed: ${route.settings.name} from ${previousRoute?.settings.name}',
+      stackTrace: StackTrace.current,
+    );
   }
 
   /// Called when the current route has been popped off.
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     log.info(
-        'New route popped: ${route.settings.name} from ${previousRoute?.settings.name}');
+      'New route popped: ${route.settings.name} from ${previousRoute?.settings.name}',
+      stackTrace: StackTrace.current,
+    );
   }
 
   // only override to observer tab routes
   @override
   void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
-    log.info('Tab route visited: ${route.name}');
+    log.info(
+      'Tab route visited: ${route.name}',
+      stackTrace: StackTrace.current,
+    );
   }
 
   @override
   void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
-    log.info('Tab route re-visited: ${route.name}');
+    log.info(
+      'Tab route re-visited: ${route.name}',
+      stackTrace: StackTrace.current,
+    );
   }
 }

@@ -624,6 +624,12 @@ class FirebaseStrategy implements IOnBoardStrategy {
     return firebaseSessionToken;
   }
 
+  @override
+  bool registeredEmailIs(String email) {
+    final currentUserEmail = firebaseAuth.currentUser?.email;
+    return currentUserEmail != null && currentUserEmail == email;
+  }
+
   Future<void> _processSigninPhoneNumber(
     Store<AppState> store,
     UserCredential userCredential,
@@ -707,10 +713,20 @@ class FirebaseStrategy implements IOnBoardStrategy {
         isLoading: true,
       ),
     );
+    final existingEmail = firebaseAuth.currentUser?.email ?? email;
     try {
-      final existingEmail = firebaseAuth.currentUser?.email ?? email;
+      // we are seeing an issue here where we already have 2 different firebase accounts set up for jdwonczyk@gmail.com and joey@vegiapp.co.uk and therefore when we try to update form jdwnoczyk to joey@vegi, we get an error as the email already has a different account registered to it.
+      // we need to first check if joey@vegiapp already has a firebase account and if it does, we need to get the user to login with it first to link the account.
+      final dummySigninMethods =
+          await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+      if (dummySigninMethods.isNotEmpty) {
+        log.warn(
+            'Unable to change current user with email: $existingEmail to new email: $email because there is already another user registered to this email: $email');
+        return false;
+      }
       await firebaseAuth.currentUser?.verifyBeforeUpdateEmail(
-          email,); //TODO: THis method is failling to allow us to update the users email?...
+        email,
+      ); //TODO: THis method is failling to allow us to update the users email?...
       if (!dontComplete) {
         _complete(
           store: store,
@@ -718,6 +734,24 @@ class FirebaseStrategy implements IOnBoardStrategy {
       }
       return true;
     } on FirebaseAuthException catch (e, s) {
+      if (e.code == 'email-already-in-use') {
+        // FirebaseAuth.instance.currentUser?.linkWithCredential(credential)
+        log.warn(
+            'Unable to change current user with email: $existingEmail to new email: $email because there is already another user registered to this email: $email');
+        if (!dontComplete) {
+          store.dispatch(
+            SignupFailed(
+              error: SignUpErrorDetails(
+                message:
+                    'Email registered to this account is $existingEmail and can\'t be updated to $email as another account already exists with that email.',
+                title: '$email already registered',
+                code: SignUpErrCode.emailAlreadyInUse,
+              ),
+            ),
+          );
+        }
+        return false;
+      }
       await _catchFirebaseException(
         e,
         s,

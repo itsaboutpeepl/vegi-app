@@ -1,4 +1,5 @@
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 /// Provides immutable storage and comparison of semantic version numbers.
@@ -173,12 +174,16 @@ class Version implements Comparable<Version> {
     return output.toString();
   }
 
+  static bool isWellFormatted(String versionString) =>
+      RegExp(r'^\d+\.\d+\.\d+$').hasMatch(versionString);
+
   /// Creates a [Version] instance from a string.
   ///
   /// The string must conform to the specification at http://semver.org/
   /// Throws [FormatException] if the string is empty or does not conform to the spec.
   static Version parse(String versionString) {
-    if (versionString.trim().isEmpty) {
+    if (versionString.trim().isEmpty ||
+        !Version.isWellFormatted(versionString)) {
       throw FormatException("Cannot parse empty string into version");
     }
     if (!_versionRegex.hasMatch(versionString)) {
@@ -271,6 +276,9 @@ class Version implements Comparable<Version> {
     }
     return 0;
   }
+
+  static Version? tryParse(String versionString) =>
+      tryCatchInline(() => Version.isWellFormatted(versionString) ? Version.parse(versionString) : null, null);
 
   static bool _isNumeric(String? s) {
     if (s == null) {

@@ -276,7 +276,7 @@ class _RegisterEmailNotificationsScreenState
     if (!viewModel.biometricAuthIsSet) {
       rootRouter.push(const ChooseSecurityOption());
     } else {
-      rootRouter.push(const MainScreen());
+      rootRouter.replaceAll([const MainScreen()]);
     }
   }
 }

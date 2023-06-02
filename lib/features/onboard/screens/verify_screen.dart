@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/common/router/routes.dart' as routes;
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
@@ -30,6 +31,7 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
   final formKey = GlobalKey<FormState>();
   // bool isPreloading = false;
   bool isRouting = false;
+  bool finishedRouting = false;
 
   @override
   void initState() {
@@ -40,49 +42,20 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
     final success = viewModel.firebaseAuthenticationStatus ==
         FirebaseAuthenticationStatus.authenticated;
     if (viewModel.vegiAuthenticationStatus == VegiAuthenticationStatus.failed) {
-      log.error('Vegi login failed. Investigate why...');
+      log.error('vegi login failed. Investigate why...');
     }
-    if (isRouting) {
+    if (isRouting ||
+        finishedRouting ||
+        rootRouter.current.name != routes.VerifyPhoneNumber().routeName) {
       return;
     }
-    // if (isPreloading &&
-    //     viewModel.firebaseAuthenticationStatus !=
-    //         FirebaseAuthenticationStatus.loading) {
-    //   setState(() {
-    //     isPreloading = false;
-    //   });
-    // }
     if (success) {
-      if (!viewModel.displayNameIsSet) {
-        log.info('Push UserNameScreen() from ${rootRouter.current.name}');
-        setState(() {
-          isRouting = true;
-        });
-        await rootRouter.push(UserNameScreen());
-      } else if (viewModel.email.isEmpty) {
-        log.info(
-            'Push RegisterEmailOnBoardingScreen() from ${rootRouter.current.name}');
-        setState(() {
-          isRouting = true;
-        });
-        await rootRouter.push(
-          RegisterEmailOnBoardingScreen(
-            onSubmitEmail: () {},
-          ),
-        );
-      } else if (!viewModel.biometricAuthIsSet) {
-        log.info('Push ChooseSecurityOption() from ${rootRouter.current.name}');
-        setState(() {
-          isRouting = true;
-        });
-        await rootRouter.push(const ChooseSecurityOption());
-      } else {
-        log.info('Push MainScreen() from ${rootRouter.current.name}');
-        setState(() {
-          isRouting = true;
-        });
-        await rootRouter.push(const MainScreen());
-      }
+      await rootRouter.push(
+        const SetEmailOnboardingScreen(),
+      );
+      setState(() {
+        finishedRouting = true;
+      });
     }
   }
 

@@ -9,6 +9,7 @@ import 'package:vegan_liverpool/redux/actions/onboarding_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/signUpErrorDetails.dart';
 import 'package:vegan_liverpool/version.dart';
+import 'package:vegan_liverpool/utils/constants.dart' as VegiConstants;
 
 class MainScreenViewModel extends Equatable implements IAuthViewModel {
   const MainScreenViewModel({
@@ -25,6 +26,10 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.isSuperAdmin,
     required this.email,
     required this.password,
+    required this.displayName,
+    required this.isLoggedOut,
+    required this.accountDetailsExist,
+    required this.biometricAuth,
     required this.firebaseSessionToken,
     required this.signupIsInFlux,
     required this.signupError,
@@ -36,6 +41,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.appUpdateNotificationSeenForBuildNumber,
     required this.authenticateAll,
     required this.setPhoneNumber,
+    required this.setEmail,
     required this.signup,
     required this.setUserIsLoggedOut,
     required this.setLoading,
@@ -62,6 +68,11 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
       signupIsInFlux: store.state.onboardingState.signupIsInFlux,
       email: store.state.userState.email,
       password: store.state.userState.password,
+      displayName: store.state.userState.displayName,
+      isLoggedOut: store.state.userState.isLoggedOut ||
+          store.state.userState.jwtToken == '',
+      accountDetailsExist: store.state.userState.accountDetailsExist,
+      biometricAuth: store.state.userState.authType,
       signupError: store.state.onboardingState.signupError,
       firebaseAuthenticationStatus:
           store.state.userState.firebaseAuthenticationStatus,
@@ -79,6 +90,15 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
           SetPhoneNumberSuccess(
             countryCode: countryCode,
             phoneNumber: phoneNumber,
+          ),
+        );
+      },
+      setEmail: ({
+        required String email,
+      }) {
+        store.dispatch(
+          SetEmail(
+            email,
           ),
         );
       },
@@ -169,6 +189,10 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
   final String phoneNumberNoCountry;
   final String email;
   final String? password;
+  final String displayName;
+  final bool isLoggedOut;
+  final bool accountDetailsExist;
+  final BiometricAuth biometricAuth;
   final String? firebaseSessionToken;
   final FirebaseAuthenticationStatus firebaseAuthenticationStatus;
   final FuseAuthenticationStatus fuseAuthenticationStatus;
@@ -183,6 +207,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required CountryCode countryCode,
     required PhoneNumber phoneNumber,
   }) setPhoneNumber;
+  final void Function({
+    required String email,
+  }) setEmail;
   final void Function({
     required CountryCode countryCode,
     required PhoneNumber phoneNumber,
@@ -209,6 +236,15 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
       appUpdateNotificationSeenForBuildNumber != null &&
       appUpdateNotificationSeenForBuildNumber! > appUpdateNextVersion!;
 
+  bool get displayNameIsSet =>
+      displayName != '' && displayName != VegiConstants.defaultDisplayName;
+
+  bool get biometricAuthIsSet => biometricAuth != BiometricAuth.none;
+
+  bool get emailIsSet => email.isNotEmpty;
+
+  bool get isLoggedIn => !isLoggedOut && accountDetailsExist;
+
   @override
   List<Object?> get props => [
         walletAddress,
@@ -222,6 +258,10 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
         phoneNumberNoCountry,
         email,
         password,
+        displayName,
+        isLoggedOut,
+        accountDetailsExist,
+        biometricAuth,
         firebaseSessionToken ?? '',
         signupIsInFlux,
         signupError,

@@ -185,7 +185,9 @@ Future<void> _firebaseMessagingBackgroundHandler(
   RemoteMessage remoteMessage,
   Store<AppState> store,
 ) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: await DefaultFirebaseOptions.currentPlatform,
+  );
 
   await handleFCM(
     remoteMessage,

@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vegan_liverpool/common/di/env.dart';
 import 'package:vegan_liverpool/common/di/package_info.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
@@ -117,7 +119,8 @@ const VEGI_PRIVACY_URL = '$VEGI_BASE_URL/privacy';
 const VEGI_CONTACT_US_URL = '$VEGI_BASE_URL/contact';
 const VEGI_FAQs_URL = '$VEGI_BASE_URL/FAQs';
 const VEGI_TIKTOK_HANDLE = '@vegi_app';
-const VEGI_TIKTOK_PROFILE_URL = 'https://vm.tiktok.com/ZMNF3ekHX/';
+const VEGI_TIKTOK_PROFILE_URL =
+    'https://vm.tiktok.com/ZMNF3ekHX/'; // ~ https://www.tiktok.com/@wearevegi
 const VEGI_INSTA_HANDLE = 'wearevegi';
 const VEGI_INSTA_PROFILE_URL = 'https://www.instagram.com/wearevegi/';
 
@@ -134,16 +137,19 @@ Future<Uri?> getAppStoreLink() async {
   if (Platform.isAndroid || Platform.isIOS) {
     final appId = Platform.isAndroid
         ? PackageConstants.androidBundleIdentifier
-        : packageInfo.appName.contains('test') && (await canLaunchUrlString('itms-beta://'))
-        ? PackageConstants.iosAppIdVegiTest
-        : PackageConstants.iosAppIdVegiProd;
+        : PackageConstants.isTestFlightVersion &&
+                (await canLaunchUrlString('itms-beta://'))
+            ? PackageConstants.iosAppIdVegiTest
+            : PackageConstants.iosAppIdVegiProd;
     final url = Uri.parse(
       Platform.isAndroid
           // ? "market://details?id=$appId"
           ? 'https://play.google.com/store/apps/details?id=$appId'
-          : packageInfo.appName.contains('test') && (await canLaunchUrlString('itms-beta://')) // ~ https://stackoverflow.com/a/32960501
-          ? 'https://beta.itunes.apple.com/v1/app/$appId' // 1643896043
-          : 'https://apps.apple.com/app/id$appId',
+          : packageInfo.appName.contains('test') &&
+                  (await canLaunchUrlString(
+                      'itms-beta://')) // ~ https://stackoverflow.com/a/32960501
+              ? 'https://beta.itunes.apple.com/v1/app/$appId' // 1643896043
+              : 'https://apps.apple.com/app/id$appId',
     );
     return url;
   } else {
@@ -218,6 +224,9 @@ class Messages {
   static const String voucherCode = 'Voucher';
   static const String enterEmail =
       'Please enter your email to be first to receive an update when we launch.';
+
+  static const vegiPrivacyTnCs = 'By signing up, you agree to the vegi'
+      ' Terms & Conditions which can be found here';
 
   static const String emailRegisteredThankYou = 'Thank you for registering';
   static const String failedToRegisterEmailToWaitingList =
@@ -374,6 +383,8 @@ class Labels {
   static const String launchAppStore = 'Open AppStore';
   static const String cancelButtonLabel = 'Cancel';
 
+  static const vegiPrivacyTnCs = 'Terms & Conditions';
+
   static const String submit = 'Submit';
   static const String signupButtonLabelViewAccount = 'View account';
   static const String signupButtonLabelCreateAccount = 'Create account';
@@ -507,17 +518,43 @@ class PackageConstants {
   static const String iosAppIdVegiProd = '1608208174'; // i.e. 1600049497
   static const String androidAppIdVegiProd =
       'com.vegi.vegiAppTest'; // i.e. 1600049497
-  static String iosBuildVersion = '${packageInfo.version}.${packageInfo.buildNumber}';
-  static String androidBuildVersion = '${packageInfo.version}.${packageInfo.buildNumber}';
+  static String iosBuildVersion =
+      '${packageInfo.version}.${packageInfo.buildNumber}';
+  static String androidBuildVersion =
+      '${packageInfo.version}.${packageInfo.buildNumber}';
+  static bool isTestFlightVersion =
+      packageInfo.appName.toLowerCase().contains('test');
   static String buildVersion() => Platform.isIOS
       ? PackageConstants.iosBuildVersion
       : Platform.isAndroid
           ? PackageConstants.androidBuildVersion
           : '';
-  static const String iosBundleIdentifier =
+  static const String bundleIdentifierHardCoded =
       'com.vegi.vegiAppTest'; // Runner.xcodeproj/project.pbxproj => PRODUCT_BUNDLE_IDENTIFIER = com.example.appname;
+  static String iosBundleIdentifier = packageInfo
+      .packageName; // Runner.xcodeproj/project.pbxproj => PRODUCT_BUNDLE_IDENTIFIER = com.example.appname;
 
-  static const String androidBundleIdentifier =
-      'com.vegi.vegiAppTest'; // AndroidManifest => manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  static String androidBundleIdentifier = packageInfo
+      .packageName; // AndroidManifest => manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  // static final packageNameHardCoded =
+  //     Env.isProd ? 'com.vegi.vegiApp' : 'com.vegi.vegiAppTest';
+  // static Future<String> buildVersion() => Platform.isIOS
+  //     ? PackageConstants.iosBuildVersion
+  //     : Platform.isAndroid
+  //         ? PackageConstants.androidBuildVersion
+  //         : Future.value('');
+  // static Future<String> get iosBuildVersion async =>
+  //     '${(await PackageInfo.fromPlatform()).version}.${(await PackageInfo.fromPlatform()).buildNumber}';
+  // static Future<String> get androidBuildVersion async =>
+  //     '${(await PackageInfo.fromPlatform()).version}.${(await PackageInfo.fromPlatform()).buildNumber}';
+  // static Future<String> get appName async =>
+  //     (await PackageInfo.fromPlatform()).appName;
+  // static Future<String> get iosBundleIdentifier async => (await PackageInfo
+  //         .fromPlatform())
+  //     .packageName; // com.vegi.vegiAppTest // Runner.xcodeproj/project.pbxproj => PRODUCT_BUNDLE_IDENTIFIER = com.example.appname;
+
+  // static Future<String> get androidBundleIdentifier async => (await PackageInfo
+  //         .fromPlatform())
+  //     .packageName; // com.vegi.vegiAppTest // AndroidManifest => manifest xmlns:android="http://schemas.android.com/apk/res/android"
   static const String webBundleIdentifier = 'vegiapp.co.uk';
 }

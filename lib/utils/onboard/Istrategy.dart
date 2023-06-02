@@ -11,6 +11,8 @@ abstract class IOnBoardStrategy {
 
   final OnboardStrategy strategy;
 
+  bool registeredEmailIs(String email);
+
   // final OnboardingAuthChain authLayer;
 
   Future<dynamic> login(

@@ -9,6 +9,7 @@ import 'package:vegan_liverpool/features/onboard/screens/firebaseAuthLink.dart';
 import 'package:vegan_liverpool/features/onboard/screens/registerEmailOnboardingScreen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/restore_wallet_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/security_screen.dart';
+import 'package:vegan_liverpool/features/onboard/screens/set_email_onboarding_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/show_user_mnemonic.dart';
 import 'package:vegan_liverpool/features/onboard/screens/signup_email_link_screen.dart';
 import 'package:vegan_liverpool/features/onboard/screens/signup_email_password_screen.dart';
@@ -80,6 +81,7 @@ export 'routes.gr.dart';
         accountTab,
       ],
     ),
+    AutoRoute(page: SetEmailOnboardingScreen),
     AutoRoute(page: CreateWithEmailAndPasswordScreen),
     AutoRoute(page: VerifyPhoneNumber),
     AutoRoute(page: UserNameScreen),
