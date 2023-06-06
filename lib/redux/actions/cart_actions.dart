@@ -29,6 +29,7 @@ import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/payments/money.dart';
+import 'package:vegan_liverpool/models/payments/stripe_payment_intent.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -358,9 +359,11 @@ class CreateOrder {
   CreateOrder({
     required this.order,
     required this.paymentIntentId,
+    required this.stripePaymentIntent,
   });
   final Order order;
   final String paymentIntentId;
+  final StripePaymentIntent stripePaymentIntent;
 
   @override
   String toString() {
@@ -1744,12 +1747,12 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           );
       } else {
         log.verbose('Order Result $result');
+        // TODO Convert this call to also use StripePaymentIntentInternal.fomrJson
         final Map<String, dynamic> checkResult =
             await peeplPayService.checkOrderValidity(result.paymentIntentID);
 
         final Map<String, dynamic> paymentIntent =
             checkResult['paymentIntent'] as Map<String, dynamic>;
-
         final paymentIntentAmount = Money.fromJson({
           'currency': paymentIntent['metadata']['currency'] as String,
           'value':
@@ -1776,6 +1779,7 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
           store
             ..dispatch(
               CreateOrder(
+                stripePaymentIntent: result.stripePaymentIntent,
                 paymentIntentId: result.paymentIntentID,
                 order: result.order,
               ),
@@ -1966,12 +1970,13 @@ ThunkAction<AppState> startPaymentProcess({
         }
         final orderId = int.parse(store.state.cartState.orderID);
         await stripeService
-            .handleStripe(
+            .handleStripeCardPayment(
           recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: orderId,
           accountId: store.state.userState.vegiAccountId!,
           stripeCustomerId: store.state.userState.stripeCustomerId,
+          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
           store: store,
           amount: store.state.cartState.cartTotal,
           shouldPushToHome: true,
@@ -2030,12 +2035,13 @@ ThunkAction<AppState> startPaymentProcess({
           return;
         }
         await stripeService
-            .handleStripe(
+            .handleStripeCardPayment(
           recipientWalletAddress: store.state.cartState.restaurantWalletAddress,
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           stripeCustomerId: store.state.userState.stripeCustomerId,
+          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,
@@ -2150,6 +2156,7 @@ ThunkAction<AppState> startPaymentProcess({
           store: store,
           amount: store.state.cartState.cartTotal,
           stripeCustomerId: store.state.userState.stripeCustomerId,
+          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
           shouldPushToHome: false,
           productName: Labels.stripeVegiProductName,
         )
@@ -2257,6 +2264,7 @@ ThunkAction<AppState> startPaymentProcess({
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           stripeCustomerId: store.state.userState.stripeCustomerId,
+          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,
@@ -2372,7 +2380,7 @@ ThunkAction<AppState> startPeeplPayProcess() {
       } else {
         // ! This is a topup call
         await stripeService
-            .handleStripe(
+            .handleStripeTopupForMintingCryptoByCard(
           recipientWalletAddress: store.state.userState.walletAddress,
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: int.parse(store.state.cartState.orderID),

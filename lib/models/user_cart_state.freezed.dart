@@ -43,6 +43,10 @@ mixin _$UserCartState {
   Money get selectedTipAmount => throw _privateConstructorUsedError;
   String get discountCode => throw _privateConstructorUsedError;
   String get paymentIntentID => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  String get paymentIntentClientSecret => throw _privateConstructorUsedError;
+  String get ephemeralKey => throw _privateConstructorUsedError;
+  String get publishableKey => throw _privateConstructorUsedError;
   Order? get order => throw _privateConstructorUsedError;
   double get selectedGBPxAmount => throw _privateConstructorUsedError;
   double get selectedPPLAmount => throw _privateConstructorUsedError;
@@ -118,6 +122,10 @@ abstract class $UserCartStateCopyWith<$Res> {
           Money selectedTipAmount,
       String discountCode,
       String paymentIntentID,
+      @JsonKey(ignore: true)
+          String paymentIntentClientSecret,
+      String ephemeralKey,
+      String publishableKey,
       Order? order,
       double selectedGBPxAmount,
       double selectedPPLAmount,
@@ -190,6 +198,9 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? selectedTipAmount = null,
     Object? discountCode = null,
     Object? paymentIntentID = null,
+    Object? paymentIntentClientSecret = null,
+    Object? ephemeralKey = null,
+    Object? publishableKey = null,
     Object? order = freezed,
     Object? selectedGBPxAmount = null,
     Object? selectedPPLAmount = null,
@@ -282,6 +293,18 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
       paymentIntentID: null == paymentIntentID
           ? _value.paymentIntentID
           : paymentIntentID // ignore: cast_nullable_to_non_nullable
+              as String,
+      paymentIntentClientSecret: null == paymentIntentClientSecret
+          ? _value.paymentIntentClientSecret
+          : paymentIntentClientSecret // ignore: cast_nullable_to_non_nullable
+              as String,
+      ephemeralKey: null == ephemeralKey
+          ? _value.ephemeralKey
+          : ephemeralKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      publishableKey: null == publishableKey
+          ? _value.publishableKey
+          : publishableKey // ignore: cast_nullable_to_non_nullable
               as String,
       order: freezed == order
           ? _value.order
@@ -536,6 +559,10 @@ abstract class _$$_UserCartStateCopyWith<$Res>
           Money selectedTipAmount,
       String discountCode,
       String paymentIntentID,
+      @JsonKey(ignore: true)
+          String paymentIntentClientSecret,
+      String ephemeralKey,
+      String publishableKey,
       Order? order,
       double selectedGBPxAmount,
       double selectedPPLAmount,
@@ -615,6 +642,9 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? selectedTipAmount = null,
     Object? discountCode = null,
     Object? paymentIntentID = null,
+    Object? paymentIntentClientSecret = null,
+    Object? ephemeralKey = null,
+    Object? publishableKey = null,
     Object? order = freezed,
     Object? selectedGBPxAmount = null,
     Object? selectedPPLAmount = null,
@@ -707,6 +737,18 @@ class __$$_UserCartStateCopyWithImpl<$Res>
       paymentIntentID: null == paymentIntentID
           ? _value.paymentIntentID
           : paymentIntentID // ignore: cast_nullable_to_non_nullable
+              as String,
+      paymentIntentClientSecret: null == paymentIntentClientSecret
+          ? _value.paymentIntentClientSecret
+          : paymentIntentClientSecret // ignore: cast_nullable_to_non_nullable
+              as String,
+      ephemeralKey: null == ephemeralKey
+          ? _value.ephemeralKey
+          : ephemeralKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      publishableKey: null == publishableKey
+          ? _value.publishableKey
+          : publishableKey // ignore: cast_nullable_to_non_nullable
               as String,
       order: freezed == order
           ? _value.order
@@ -847,6 +889,10 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
           this.selectedTipAmount = const Money.zeroGBP(),
       this.discountCode = '',
       this.paymentIntentID = '',
+      @JsonKey(ignore: true)
+          this.paymentIntentClientSecret = '',
+      this.ephemeralKey = '',
+      this.publishableKey = '',
       this.order = null,
       this.selectedGBPxAmount = 0.0,
       this.selectedPPLAmount = 0.0,
@@ -932,6 +978,15 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   @JsonKey()
   final String paymentIntentID;
   @override
+  @JsonKey(ignore: true)
+  final String paymentIntentClientSecret;
+  @override
+  @JsonKey()
+  final String ephemeralKey;
+  @override
+  @JsonKey()
+  final String publishableKey;
+  @override
   @JsonKey()
   final Order? order;
   @override
@@ -1015,7 +1070,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartCurrency: $cartCurrency, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, order: $order, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartCurrency: $cartCurrency, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, paymentIntentClientSecret: $paymentIntentClientSecret, ephemeralKey: $ephemeralKey, publishableKey: $publishableKey, order: $order, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
   }
 
   @override
@@ -1040,6 +1095,10 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('selectedTipAmount', selectedTipAmount))
       ..add(DiagnosticsProperty('discountCode', discountCode))
       ..add(DiagnosticsProperty('paymentIntentID', paymentIntentID))
+      ..add(DiagnosticsProperty(
+          'paymentIntentClientSecret', paymentIntentClientSecret))
+      ..add(DiagnosticsProperty('ephemeralKey', ephemeralKey))
+      ..add(DiagnosticsProperty('publishableKey', publishableKey))
       ..add(DiagnosticsProperty('order', order))
       ..add(DiagnosticsProperty('selectedGBPxAmount', selectedGBPxAmount))
       ..add(DiagnosticsProperty('selectedPPLAmount', selectedPPLAmount))
@@ -1109,6 +1168,12 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 other.discountCode == discountCode) &&
             (identical(other.paymentIntentID, paymentIntentID) ||
                 other.paymentIntentID == paymentIntentID) &&
+            (identical(other.paymentIntentClientSecret, paymentIntentClientSecret) ||
+                other.paymentIntentClientSecret == paymentIntentClientSecret) &&
+            (identical(other.ephemeralKey, ephemeralKey) ||
+                other.ephemeralKey == ephemeralKey) &&
+            (identical(other.publishableKey, publishableKey) ||
+                other.publishableKey == publishableKey) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.selectedGBPxAmount, selectedGBPxAmount) ||
                 other.selectedGBPxAmount == selectedGBPxAmount) &&
@@ -1138,16 +1203,11 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 other.restaurantMinimumOrder == restaurantMinimumOrder) &&
             (identical(other.restaurantPlatformFee, restaurantPlatformFee) ||
                 other.restaurantPlatformFee == restaurantPlatformFee) &&
-            (identical(other.deliveryInstructions, deliveryInstructions) ||
-                other.deliveryInstructions == deliveryInstructions) &&
-            (identical(other.selectedPaymentMethod, selectedPaymentMethod) ||
-                other.selectedPaymentMethod == selectedPaymentMethod) &&
-            const DeepCollectionEquality().equals(
-                other.fulfilmentPostalDistricts, fulfilmentPostalDistricts) &&
-            const DeepCollectionEquality()
-                .equals(other.eligibleOrderDates, eligibleOrderDates) &&
-            (identical(other.nextCollectionSlot, nextCollectionSlot) ||
-                other.nextCollectionSlot == nextCollectionSlot) &&
+            (identical(other.deliveryInstructions, deliveryInstructions) || other.deliveryInstructions == deliveryInstructions) &&
+            (identical(other.selectedPaymentMethod, selectedPaymentMethod) || other.selectedPaymentMethod == selectedPaymentMethod) &&
+            const DeepCollectionEquality().equals(other.fulfilmentPostalDistricts, fulfilmentPostalDistricts) &&
+            const DeepCollectionEquality().equals(other.eligibleOrderDates, eligibleOrderDates) &&
+            (identical(other.nextCollectionSlot, nextCollectionSlot) || other.nextCollectionSlot == nextCollectionSlot) &&
             (identical(other.nextDeliverySlot, nextDeliverySlot) || other.nextDeliverySlot == nextDeliverySlot) &&
             (identical(other.productSuggestion, productSuggestion) || other.productSuggestion == productSuggestion) &&
             (identical(other.orderCreationProcessStatus, orderCreationProcessStatus) || other.orderCreationProcessStatus == orderCreationProcessStatus) &&
@@ -1177,6 +1237,9 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
         selectedTipAmount,
         discountCode,
         paymentIntentID,
+        paymentIntentClientSecret,
+        ephemeralKey,
+        publishableKey,
         order,
         selectedGBPxAmount,
         selectedPPLAmount,
@@ -1244,6 +1307,10 @@ abstract class _UserCartState extends UserCartState {
           final Money selectedTipAmount,
       final String discountCode,
       final String paymentIntentID,
+      @JsonKey(ignore: true)
+          final String paymentIntentClientSecret,
+      final String ephemeralKey,
+      final String publishableKey,
       final Order? order,
       final double selectedGBPxAmount,
       final double selectedPPLAmount,
@@ -1318,6 +1385,13 @@ abstract class _UserCartState extends UserCartState {
   String get discountCode;
   @override
   String get paymentIntentID;
+  @override
+  @JsonKey(ignore: true)
+  String get paymentIntentClientSecret;
+  @override
+  String get ephemeralKey;
+  @override
+  String get publishableKey;
   @override
   Order? get order;
   @override

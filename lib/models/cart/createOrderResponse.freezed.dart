@@ -21,11 +21,12 @@ CreateOrderResponse _$CreateOrderResponseFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CreateOrderResponse {
   int get orderId => throw _privateConstructorUsedError;
-  String get paymentIntentID => throw _privateConstructorUsedError;
   OrderCreationStatus get orderCreationStatus =>
       throw _privateConstructorUsedError;
   @JsonKey(fromJson: Order.fromJson, toJson: orderToJson)
   Order get order => throw _privateConstructorUsedError;
+  StripePaymentIntent get stripePaymentIntent =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,11 +42,12 @@ abstract class $CreateOrderResponseCopyWith<$Res> {
   @useResult
   $Res call(
       {int orderId,
-      String paymentIntentID,
       OrderCreationStatus orderCreationStatus,
-      @JsonKey(fromJson: Order.fromJson, toJson: orderToJson) Order order});
+      @JsonKey(fromJson: Order.fromJson, toJson: orderToJson) Order order,
+      StripePaymentIntent stripePaymentIntent});
 
   $OrderCopyWith<$Res> get order;
+  $StripePaymentIntentCopyWith<$Res> get stripePaymentIntent;
 }
 
 /// @nodoc
@@ -62,19 +64,15 @@ class _$CreateOrderResponseCopyWithImpl<$Res, $Val extends CreateOrderResponse>
   @override
   $Res call({
     Object? orderId = null,
-    Object? paymentIntentID = null,
     Object? orderCreationStatus = null,
     Object? order = null,
+    Object? stripePaymentIntent = null,
   }) {
     return _then(_value.copyWith(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
               as int,
-      paymentIntentID: null == paymentIntentID
-          ? _value.paymentIntentID
-          : paymentIntentID // ignore: cast_nullable_to_non_nullable
-              as String,
       orderCreationStatus: null == orderCreationStatus
           ? _value.orderCreationStatus
           : orderCreationStatus // ignore: cast_nullable_to_non_nullable
@@ -83,6 +81,10 @@ class _$CreateOrderResponseCopyWithImpl<$Res, $Val extends CreateOrderResponse>
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
               as Order,
+      stripePaymentIntent: null == stripePaymentIntent
+          ? _value.stripePaymentIntent
+          : stripePaymentIntent // ignore: cast_nullable_to_non_nullable
+              as StripePaymentIntent,
     ) as $Val);
   }
 
@@ -91,6 +93,15 @@ class _$CreateOrderResponseCopyWithImpl<$Res, $Val extends CreateOrderResponse>
   $OrderCopyWith<$Res> get order {
     return $OrderCopyWith<$Res>(_value.order, (value) {
       return _then(_value.copyWith(order: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $StripePaymentIntentCopyWith<$Res> get stripePaymentIntent {
+    return $StripePaymentIntentCopyWith<$Res>(_value.stripePaymentIntent,
+        (value) {
+      return _then(_value.copyWith(stripePaymentIntent: value) as $Val);
     });
   }
 }
@@ -105,12 +116,14 @@ abstract class _$$_CreateOrderResponseCopyWith<$Res>
   @useResult
   $Res call(
       {int orderId,
-      String paymentIntentID,
       OrderCreationStatus orderCreationStatus,
-      @JsonKey(fromJson: Order.fromJson, toJson: orderToJson) Order order});
+      @JsonKey(fromJson: Order.fromJson, toJson: orderToJson) Order order,
+      StripePaymentIntent stripePaymentIntent});
 
   @override
   $OrderCopyWith<$Res> get order;
+  @override
+  $StripePaymentIntentCopyWith<$Res> get stripePaymentIntent;
 }
 
 /// @nodoc
@@ -125,19 +138,15 @@ class __$$_CreateOrderResponseCopyWithImpl<$Res>
   @override
   $Res call({
     Object? orderId = null,
-    Object? paymentIntentID = null,
     Object? orderCreationStatus = null,
     Object? order = null,
+    Object? stripePaymentIntent = null,
   }) {
     return _then(_$_CreateOrderResponse(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
               as int,
-      paymentIntentID: null == paymentIntentID
-          ? _value.paymentIntentID
-          : paymentIntentID // ignore: cast_nullable_to_non_nullable
-              as String,
       orderCreationStatus: null == orderCreationStatus
           ? _value.orderCreationStatus
           : orderCreationStatus // ignore: cast_nullable_to_non_nullable
@@ -146,6 +155,10 @@ class __$$_CreateOrderResponseCopyWithImpl<$Res>
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
               as Order,
+      stripePaymentIntent: null == stripePaymentIntent
+          ? _value.stripePaymentIntent
+          : stripePaymentIntent // ignore: cast_nullable_to_non_nullable
+              as StripePaymentIntent,
     ));
   }
 }
@@ -156,10 +169,10 @@ class __$$_CreateOrderResponseCopyWithImpl<$Res>
 class _$_CreateOrderResponse extends _CreateOrderResponse {
   _$_CreateOrderResponse(
       {required this.orderId,
-      required this.paymentIntentID,
       required this.orderCreationStatus,
       @JsonKey(fromJson: Order.fromJson, toJson: orderToJson)
-          required this.order})
+          required this.order,
+      required this.stripePaymentIntent})
       : super._();
 
   factory _$_CreateOrderResponse.fromJson(Map<String, dynamic> json) =>
@@ -168,16 +181,16 @@ class _$_CreateOrderResponse extends _CreateOrderResponse {
   @override
   final int orderId;
   @override
-  final String paymentIntentID;
-  @override
   final OrderCreationStatus orderCreationStatus;
   @override
   @JsonKey(fromJson: Order.fromJson, toJson: orderToJson)
   final Order order;
+  @override
+  final StripePaymentIntent stripePaymentIntent;
 
   @override
   String toString() {
-    return 'CreateOrderResponse(orderId: $orderId, paymentIntentID: $paymentIntentID, orderCreationStatus: $orderCreationStatus, order: $order)';
+    return 'CreateOrderResponse(orderId: $orderId, orderCreationStatus: $orderCreationStatus, order: $order, stripePaymentIntent: $stripePaymentIntent)';
   }
 
   @override
@@ -186,17 +199,17 @@ class _$_CreateOrderResponse extends _CreateOrderResponse {
         (other.runtimeType == runtimeType &&
             other is _$_CreateOrderResponse &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
-            (identical(other.paymentIntentID, paymentIntentID) ||
-                other.paymentIntentID == paymentIntentID) &&
             (identical(other.orderCreationStatus, orderCreationStatus) ||
                 other.orderCreationStatus == orderCreationStatus) &&
-            (identical(other.order, order) || other.order == order));
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.stripePaymentIntent, stripePaymentIntent) ||
+                other.stripePaymentIntent == stripePaymentIntent));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, orderId, paymentIntentID, orderCreationStatus, order);
+      runtimeType, orderId, orderCreationStatus, order, stripePaymentIntent);
 
   @JsonKey(ignore: true)
   @override
@@ -215,11 +228,12 @@ class _$_CreateOrderResponse extends _CreateOrderResponse {
 
 abstract class _CreateOrderResponse extends CreateOrderResponse {
   factory _CreateOrderResponse(
-      {required final int orderId,
-      required final String paymentIntentID,
-      required final OrderCreationStatus orderCreationStatus,
-      @JsonKey(fromJson: Order.fromJson, toJson: orderToJson)
-          required final Order order}) = _$_CreateOrderResponse;
+          {required final int orderId,
+          required final OrderCreationStatus orderCreationStatus,
+          @JsonKey(fromJson: Order.fromJson, toJson: orderToJson)
+              required final Order order,
+          required final StripePaymentIntent stripePaymentIntent}) =
+      _$_CreateOrderResponse;
   _CreateOrderResponse._() : super._();
 
   factory _CreateOrderResponse.fromJson(Map<String, dynamic> json) =
@@ -228,12 +242,12 @@ abstract class _CreateOrderResponse extends CreateOrderResponse {
   @override
   int get orderId;
   @override
-  String get paymentIntentID;
-  @override
   OrderCreationStatus get orderCreationStatus;
   @override
   @JsonKey(fromJson: Order.fromJson, toJson: orderToJson)
   Order get order;
+  @override
+  StripePaymentIntent get stripePaymentIntent;
   @override
   @JsonKey(ignore: true)
   _$$_CreateOrderResponseCopyWith<_$_CreateOrderResponse> get copyWith =>

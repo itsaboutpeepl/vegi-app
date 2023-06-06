@@ -56,6 +56,8 @@ _$_UserCartState _$$_UserCartStateFromJson(Map<String, dynamic> json) =>
           : Money.fromJson(json['selectedTipAmount'] as Map<String, dynamic>),
       discountCode: json['discountCode'] as String? ?? '',
       paymentIntentID: json['paymentIntentID'] as String? ?? '',
+      ephemeralKey: json['ephemeralKey'] as String? ?? '',
+      publishableKey: json['publishableKey'] as String? ?? '',
       order: json['order'] == null
           ? null
           : Order.fromJson(json['order'] as Map<String, dynamic>),
@@ -139,6 +141,8 @@ Map<String, dynamic> _$$_UserCartStateToJson(_$_UserCartState instance) =>
       'selectedTipAmount': Money.toJson(instance.selectedTipAmount),
       'discountCode': instance.discountCode,
       'paymentIntentID': instance.paymentIntentID,
+      'ephemeralKey': instance.ephemeralKey,
+      'publishableKey': instance.publishableKey,
       'order': instance.order?.toJson(),
       'selectedGBPxAmount': instance.selectedGBPxAmount,
       'selectedPPLAmount': instance.selectedPPLAmount,

@@ -44,6 +44,7 @@ class TopUpViewModel extends Equatable {
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           stripeCustomerId: store.state.userState.stripeCustomerId,
+          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
           amount: Money(currency: Currency.GBP, value: amountPence / 100),
           store: store, //move to viewmodel
           shouldPushToHome: true,

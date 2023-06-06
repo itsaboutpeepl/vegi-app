@@ -125,6 +125,9 @@ UserCartState _clearCart(
     discountCode: '',
     selectedDeliveryAddress: null,
     paymentIntentID: '',
+    ephemeralKey: '',
+    publishableKey: '',
+    paymentIntentClientSecret: '',
     order: null,
     selectedGBPxAmount: 0,
     selectedPPLAmount: 0,
@@ -273,6 +276,9 @@ UserCartState _createOrder(
   return state.copyWith(
     order: action.order,
     paymentIntentID: action.paymentIntentId,
+    paymentIntentClientSecret: action.stripePaymentIntent.paymentIntent.clientSecret,
+    ephemeralKey: action.stripePaymentIntent.ephemeralKey,
+    publishableKey: action.stripePaymentIntent.publishableKey,
   );
 }
 

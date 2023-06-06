@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/payments/stripe_payment_intent.dart';
+import 'package:vegan_liverpool/models/payments/stripe_payment_intent_internal.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
@@ -17,14 +19,18 @@ class StripePayService {
   StripePayService();
   Dio get dio => peeplEatsService.dio;
 
-  Future<Map<dynamic, dynamic>> startPaymentIntentCheck(
-    String paymentIntentID,
-  ) async {
+  Future<StripePaymentIntentInternal?> startPaymentIntentCheck({
+    required String paymentIntentID,
+    required String paymentIntentClientSecret,
+  }) async {
     try {
       final Response<dynamic> response = await peeplEatsService.dioGet(
         '/api/v1/payments/check-stripe-payment-intent/$paymentIntentID',
         sendWithAuthCreds: true,
         dontRoute: true,
+        queryParameters: {
+          'client_secret': paymentIntentClientSecret,
+        },
       );
 
       final Map<String, dynamic> result = response.data as Map<String, dynamic>;
@@ -34,15 +40,22 @@ class StripePayService {
         stackTrace: StackTrace.current,
       );
 
-      return result;
+      final paymentIntent = tryCatchRethrowInline(
+        () => StripePaymentIntentInternal.fromJson(result),
+      );
+
+      return paymentIntent;
     } catch (e, s) {
-      log.info('Error: startPaymentIntentCheck ${e.toString()}');
+      log.info(
+        'Error: startPaymentIntentCheck ${e.toString()}',
+        stackTrace: s,
+      );
       await Sentry.captureException(
         e,
         stackTrace: s,
         hint: 'Error: startPaymentIntentCheck ${e.toString()}',
       );
-      return {};
+      return null;
     }
   }
 

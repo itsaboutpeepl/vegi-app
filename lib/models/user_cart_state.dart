@@ -83,6 +83,12 @@ class UserCartState with _$UserCartState {
         String discountCode,
     @Default('')
         String paymentIntentID,
+    @JsonKey(ignore: true) @Default('')
+        String paymentIntentClientSecret,
+    @Default('')
+        String ephemeralKey,
+    @Default('')
+        String publishableKey,
     @Default(null)
         Order? order,
     @Default(0.0)
