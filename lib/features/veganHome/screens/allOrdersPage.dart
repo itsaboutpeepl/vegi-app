@@ -444,14 +444,14 @@ class SingleProductOrderItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
                   Text(
-                    orderItem.product?.name,
+                    orderItem.product.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                     ),
                   ),
                 ] +
-                orderItem.product?.options.map<Widget>((element) {
+                orderItem.product.options.map<Widget>((element) {
                   return Text('${element.name} - ${element.chosenOption}');
                 }).toList(),
           ),
@@ -465,7 +465,7 @@ class SingleProductOrderItem extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Text(orderItem.product?.totalPriceFormatted),
+            Text(orderItem.product.totalPriceFormatted),
           ],
         )
       ],

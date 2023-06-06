@@ -97,7 +97,8 @@ class SingleScheduledOrderCard extends StatelessWidget {
                       text: '${order.restaurantName}\n',
                       children: [
                         TextSpan(
-                          text: '${order.cartTotal.inCcy(Currency.GBP).value.toStringAsFixed(2)}\n',
+                          text:
+                              '${order.cartTotal.inCcy(Currency.GBP).value.toStringAsFixed(2)}\n',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
@@ -256,7 +257,7 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               children: [
                 Text.rich(
                   TextSpan(
-                    text: widget.item.product?.name,
+                    text: widget.item.product.name,
                     children: [
                       TextSpan(
                         text: '\n${widget.item.formattedPrice}',
@@ -268,8 +269,8 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (widget.item.product?.options
-                    .isNotEmpty ?? false)
+                if (widget.item.product.options
+                    .isNotEmpty) // BUG Do order objects pull off order items with selected ProductOptions info....
                   GestureDetector(
                     onTap: () => setState(() {
                       _showOptions = !_showOptions;
@@ -289,7 +290,7 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               ],
             ),
           ] +
-          (widget.item.product?.options ?? [])
+          widget.item.product.options
               .map(
                 (option) => _showOptions
                     ? Text.rich(

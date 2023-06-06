@@ -130,7 +130,7 @@ class _MainScreenState extends State<MainScreen> {
               vm.setUserIsLoggedOut();
               log.info(
                   'Push SignUpScreen() from ${rootRouter.current.name} as vegi session has expired');
-              rootRouter.replaceAll([const SignUpScreen()]);
+              // rootRouter.replaceAll([const SignUpScreen()]);
               vm.routeToLogin();
             }
           });

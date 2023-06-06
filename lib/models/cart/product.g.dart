@@ -9,9 +9,10 @@ part of 'product.dart';
 _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       name: json['name'] as String,
       basePrice: json['basePrice'] as int,
-      options: json['options'] == null
-          ? const []
-          : fromJsonOrderProductOptionValueList(json['options']),
+      options: (json['options'] as List<dynamic>)
+          .map((e) =>
+              OrderProductOptionValue.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>

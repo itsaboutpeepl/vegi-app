@@ -8,10 +8,10 @@ import 'package:vegan_liverpool/models/payments/money.dart';
 part 'product.freezed.dart';
 part 'product.g.dart';
 
-List<Product> fromJsonProductList(dynamic json) =>
-    fromSailsListOfObjectJson<Product>(Product.fromJson)(json);
-Product? fromJsonProduct(dynamic json) =>
-    fromSailsObjectJson<Product>(Product.fromJson)(json);
+// List<Product> fromJsonProductList(dynamic json) =>
+//     fromSailsListOfObjectJson<Product>(Product.fromJson)(json);
+// Product? fromJsonProduct(dynamic json) =>
+//     fromSailsObjectJson<Product>(Product.fromJson)(json);
 
 @Freezed()
 class Product with _$Product {
@@ -19,8 +19,9 @@ class Product with _$Product {
   factory Product({
     required String name,
     required int basePrice,
-    @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
-    @Default([]) List<OrderProductOptionValue> options,
+    required List<OrderProductOptionValue> options,
+    // @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
+    // @Default([]) List<OrderProductOptionValue> options,
   }) = _Product;
 
   const Product._();
