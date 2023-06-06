@@ -13,6 +13,8 @@ class VegiAccount with _$VegiAccount {
     required bool verified,
     required String walletAddress,
     @Default('') String imageUrl,
+    @Default(null) String? stripeCustomerId,
+    @Default(null) String? stripeAccountId,
     @Default(null) String? bankCardNumber,
     @Default(null) String? bankCardAccountName,
     @Default(null) int? bankCardExpiryDateMonth,

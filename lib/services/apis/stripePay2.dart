@@ -29,7 +29,10 @@ class StripePayService {
 
       final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
-      log.info('Payment Intent Result $result');
+      log.info(
+        'Payment Intent Result $result',
+        stackTrace: StackTrace.current,
+      );
 
       return result;
     } catch (e, s) {
@@ -59,7 +62,7 @@ class StripePayService {
           'amount': amount,
           'currency': currency,
           'customerId': stripeCustomerId ?? '',
-          'vendorDisplayName': 'vegi',
+          'vendorDisplayName': Labels.stripeVegiProductName,
           // 'walletAddress': walletAddress,
           'recipientWalletAddress': recipientWalletAddress,
           'senderWalletAddress': senderWalletAddress,

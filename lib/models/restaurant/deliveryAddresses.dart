@@ -8,6 +8,11 @@ import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 part 'deliveryAddresses.freezed.dart';
 part 'deliveryAddresses.g.dart';
 
+List<DeliveryAddresses> fromJsonDeliveryAddressesList(dynamic json) =>
+  fromSailsListOfObjectJson<DeliveryAddresses>(DeliveryAddresses.fromJson)(json);
+DeliveryAddresses? fromJsonDeliveryAddresses(dynamic json) =>
+  fromSailsObjectJson<DeliveryAddresses>(DeliveryAddresses.fromJson)(json);
+
 @Freezed()
 class DeliveryAddresses with _$DeliveryAddresses {
   @JsonSerializable()

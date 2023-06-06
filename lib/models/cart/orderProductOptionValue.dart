@@ -5,6 +5,12 @@ import 'package:vegan_liverpool/models/restaurant/productOptionValue.dart';
 part 'orderProductOptionValue.freezed.dart';
 part 'orderProductOptionValue.g.dart';
 
+List<OrderProductOptionValue> fromJsonOrderProductOptionValueList(dynamic json) =>
+  fromSailsListOfObjectJson<OrderProductOptionValue>(OrderProductOptionValue.fromJson)(json);
+OrderProductOptionValue? fromJsonOrderProductOptionValue(dynamic json) =>
+  fromSailsObjectJson<OrderProductOptionValue>(OrderProductOptionValue.fromJson)(json);
+
+
 @Freezed()
 class OrderProductOptionValue with _$OrderProductOptionValue {
   @JsonSerializable()

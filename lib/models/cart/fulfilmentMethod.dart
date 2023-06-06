@@ -27,9 +27,13 @@ class FulfilmentMethod with _$FulfilmentMethod {
     required int? maxOrders,
     @Default(null) int? maxDeliveryDistance,
     required num? priceModifier,
+    @JsonKey(fromJson: fromJsonVendorDTO)
     @Default(null) VendorDTO? vendor,
+    @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
     @Default(null) DeliveryPartnerDTO? deliveryPartner,
+    @JsonKey(fromJson: fromJsonOpeningHours)
     @Default(null) OpeningHours? openingHours,
+    @JsonKey(fromJson: fromJsonDeliveryAddresses)
     @Default(null) DeliveryAddresses? fulfilmentOrigin,
   }) = _FulfilmentMethod;
 

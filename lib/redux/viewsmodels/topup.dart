@@ -5,6 +5,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/payments/money.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 
 class TopUpViewModel extends Equatable {
@@ -42,10 +43,11 @@ class TopUpViewModel extends Equatable {
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
+          stripeCustomerId: store.state.userState.stripeCustomerId,
           amount: Money(currency: Currency.GBP, value: amountPence / 100),
           store: store, //move to viewmodel
           shouldPushToHome: true,
-          productName: 'vegi',
+          productName: Labels.stripeVegiProductName,
         );
       }
     );

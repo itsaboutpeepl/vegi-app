@@ -21,7 +21,9 @@ OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OrderItem {
   int get id => throw _privateConstructorUsedError;
-  bool? get unfulfilled => throw _privateConstructorUsedError;
+  bool? get unfulfilled =>
+      throw _privateConstructorUsedError; // @JsonKey(fromJson: fromJsonProduct)
+// @Default(null) Product? product,
   Product get product => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -141,6 +143,8 @@ class _$_OrderItem extends _OrderItem {
   final int id;
   @override
   final bool? unfulfilled;
+// @JsonKey(fromJson: fromJsonProduct)
+// @Default(null) Product? product,
   @override
   final Product product;
 
@@ -192,7 +196,8 @@ abstract class _OrderItem extends OrderItem {
   int get id;
   @override
   bool? get unfulfilled;
-  @override
+  @override // @JsonKey(fromJson: fromJsonProduct)
+// @Default(null) Product? product,
   Product get product;
   @override
   @JsonKey(ignore: true)

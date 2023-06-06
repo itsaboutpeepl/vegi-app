@@ -90,6 +90,12 @@ enum Currency {
   percent,
 }
 
+enum CurrencyFiatOnly {
+  GBP,
+  USD,
+  EUR,
+}
+
 extension CurrencyAmountFormatter on Currency {
   String formatAmountWithSymbol(num amount) {
     switch (this) {
@@ -106,6 +112,19 @@ extension CurrencyAmountFormatter on Currency {
         return '$amount $name';
       case Currency.percent:
         return '${(amount * 100.0).toStringAsPrecision(2)}%';
+    }
+  }
+}
+
+extension CurrencyFiatOnlyAmountFormatter on CurrencyFiatOnly {
+  String formatAmountWithSymbol(num amount) {
+    switch (this) {
+      case CurrencyFiatOnly.GBP:
+        return '£$amount';
+      case CurrencyFiatOnly.USD:
+        return '\$$amount';
+      case CurrencyFiatOnly.EUR:
+        return '€$amount';
     }
   }
 }
@@ -143,7 +162,13 @@ enum SignUpErrCode {
   weakPassword,
   emailAlreadyInUse,
   sessionExpired,
-  failedToFetchFuseWallet, signonMethodNotImplemented, invalidEmail, userDisabled, emailLinkExpired, unauthorizedDomain, serverError,
+  failedToFetchFuseWallet,
+  signonMethodNotImplemented,
+  invalidEmail,
+  userDisabled,
+  emailLinkExpired,
+  unauthorizedDomain,
+  serverError,
 }
 
 enum CartErrCode {
@@ -633,7 +658,8 @@ enum OrderCreationProcessStatus {
   success,
   sendOrderCallClientError,
   orderCancelled, //todo: Handle
-  orderPaymentFailed, orderAlreadyBeingCreated, //todo: Handle
+  orderPaymentFailed,
+  orderAlreadyBeingCreated, //todo: Handle
 }
 
 enum StripePaymentStatus {
@@ -729,7 +755,8 @@ enum FuseAuthenticationStatus {
   failedAuthentication,
   failedAuthenticationAsMissingUserDetailsToAuthFuseWallet,
   failedToAuthenticateWalletSDKWithJWTTokenAfterInitialisationAttempt,
-  failedFetch, creationTransactionHash,
+  failedFetch,
+  creationTransactionHash,
 }
 
 extension FuseAuthenticationStatusHelpers on FuseAuthenticationStatus {

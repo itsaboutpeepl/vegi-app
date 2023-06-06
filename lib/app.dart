@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:redux/redux.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+// import 'package:screen_capture_event/screen_capture_event.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
@@ -53,6 +55,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   UniLinksType _type = UniLinksType.string;
   String _latestLink = 'Unknown';
   Uri? _latestUri;
+  // final ScreenCaptureEvent screenListener = ScreenCaptureEvent();
 
   void setLocale(Locale locale) {
     setState(() {
@@ -90,11 +93,29 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       ..dispatch(fetchDeviceType());
     _locale = widget.store.state.userState.locale;
     initPlatformState();
+    // screenListener.addScreenRecordListener((recorded) {
+    //   ///Recorded was your record status (bool)
+    //   setState(() {
+    //     text = recorded ? "Start Recording" : "Stop Recording";
+    //   });
+    // });
+
+    // screenListener
+    //   ..addScreenShotListener((filePath) {
+    //     ///filePath only available for Android
+    //     _logScreenShot(
+    //       screenshotFilePath: filePath,
+    //     );
+    //   })
+
+    //   ///Start watch
+    //   ..watch();
   }
 
   @override
   void dispose() {
     _sub?.cancel();
+    // screenListener.dispose();
     super.dispose();
   }
 
@@ -107,6 +128,29 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       await initPlatformStateForUriUniLinks();
     }
   }
+
+  // Future<void> _logScreenShot({
+  //   String? screenshotFilePath,
+  // }) async {
+  //   final storeJson = (await reduxStore).state.toJson();
+  //   final widgetTree = debugDumpApp();
+  //   await Sentry.captureMessage(
+  //     jsonEncode({
+  //       'reduxStore': storeJson,
+  //       'widgetTree': widgetTree,
+  //       'screenshotFilePath': screenshotFilePath ?? '',
+  //     }),
+  //     level: SentryLevel.debug,
+  //   );
+  //   log.info(
+  //     {
+  //       'reduxStore': storeJson,
+  //       'widgetTree': widgetTree,
+  //       'screenshotFilePath': screenshotFilePath ?? '',
+  //     },
+  //     stackTrace: StackTrace.current,
+  //   );
+  // }
 
   /// An implementation using a [String] link
   Future<void> initPlatformStateForStringUniLinks() async {

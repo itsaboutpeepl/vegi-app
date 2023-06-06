@@ -40,7 +40,7 @@ abstract class HttpService {
         !dontRoute &&
         authStatus != AuthenticationStatus.authenticationFailed) {
       if (rootRouter.current.name != SignUpScreen.name) {
-        log.info('Push SignUpScreen()');
+        log.info('Push SignUpScreen()', stackTrace: StackTrace.current,);
         rootRouter.push(const SignUpScreen());
       }
     }
@@ -73,7 +73,10 @@ abstract class HttpService {
     }
     if (cookieHasExpired) {
       authStatus = AuthenticationStatus.expired;
-      log.info('vegi session has expired', stackTrace: StackTrace.current,);
+      log.info(
+        'vegi session has expired',
+        stackTrace: StackTrace.current,
+      );
       (await reduxStore).dispatch(SetVegiSessionExpired());
     }
     return cookieHasExpired;
@@ -195,7 +198,8 @@ abstract class HttpService {
     bool dontRoute = false,
     bool sendWithAuthCreds = false,
   }) {
-    log.info('POST: "${dio.options.baseUrl}${path}"');
+    log.info(
+        'POST: "${dio.options.baseUrl.substring(0, dio.options.baseUrl.length - 1)}${path}"');
     _checkAuthRequestIsSatisfied(sendWithAuthCreds, dontRoute: dontRoute);
     if (!path.startsWith('/')) path = '/' + path;
     return dio.post<T>(

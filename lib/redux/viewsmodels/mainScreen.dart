@@ -40,6 +40,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required this.appUpdateNextVersion,
     required this.appUpdateNotificationSeenForBuildNumber,
     required this.authenticateAll,
+    required this.routeToLogin,
     required this.setPhoneNumber,
     required this.setEmail,
     required this.signup,
@@ -120,6 +121,9 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
       },
       setUserIsLoggedOut: () {
         store.dispatch(SetVegiSessionExpired());
+      },
+      routeToLogin: () {
+        store.dispatch(routeToLoginScreen());
       },
       setLoading: (bool isLoading) {
         store.dispatch(
@@ -215,6 +219,7 @@ class MainScreenViewModel extends Equatable implements IAuthViewModel {
     required PhoneNumber phoneNumber,
   }) signup;
   final void Function() setUserIsLoggedOut;
+  final void Function() routeToLogin;
   final void Function() authenticateAll;
   final void Function(bool) setLoading;
   final void Function({

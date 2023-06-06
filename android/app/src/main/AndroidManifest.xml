@@ -57,5 +57,8 @@
         <meta-data android:name="com.claimsforce.segment.DEBUG" android:value="false" />
 
         <meta-data android:name="flutterEmbedding" android:value="2" />
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 </manifest>

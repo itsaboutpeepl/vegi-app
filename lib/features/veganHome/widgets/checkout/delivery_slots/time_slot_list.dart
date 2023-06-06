@@ -24,7 +24,7 @@ class _TimeSlotListBuilderState extends State<TimeSlotListBuilder> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: viewmodel.timeSlots.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 5,
                   childAspectRatio: 2.3,
                   mainAxisSpacing: 15,
@@ -51,7 +51,7 @@ class _TimeSlotListBuilderState extends State<TimeSlotListBuilder> {
                           viewmodel.timeSlots[index].formattedDateTimeOnly,
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
                       ),

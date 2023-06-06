@@ -23,7 +23,7 @@ extension PaymentMethodHelpers on PaymentMethod {
       case PaymentMethod.applePay:
         return 'Apple Pay';
       case PaymentMethod.googlePay:
-        return 'Apple Pay';
+        return 'Google Pay';
       case PaymentMethod.applePayToFuse:
         return 'Apple Pay [Fuse]';
       case PaymentMethod.googlePayToFuse:

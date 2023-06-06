@@ -7,7 +7,7 @@ part of 'cartItem.dart';
 // **************************************************************************
 
 _$_CartItem _$$_CartItemFromJson(Map<String, dynamic> json) => _$_CartItem(
-      internalID: json['internalID'] as int,
+      id: json['id'] as int,
       menuItem:
           RestaurantMenuItem.fromJson(json['menuItem'] as Map<String, dynamic>),
       totalItemPrice: gbpxPriceFromJson(json['totalItemPrice']),
@@ -24,7 +24,7 @@ _$_CartItem _$$_CartItemFromJson(Map<String, dynamic> json) => _$_CartItem(
 
 Map<String, dynamic> _$$_CartItemToJson(_$_CartItem instance) =>
     <String, dynamic>{
-      'internalID': instance.internalID,
+      'id': instance.id,
       'menuItem': instance.menuItem.toJson(),
       'totalItemPrice': gbpxPriceToJson(instance.totalItemPrice),
       'itemQuantity': instance.itemQuantity,

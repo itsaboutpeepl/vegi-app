@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
@@ -16,7 +17,10 @@ import 'package:vegan_liverpool/redux/viewsmodels/pastOrders.dart';
 class ScheduledOrdersPage extends StatelessWidget {
   const ScheduledOrdersPage({Key? key}) : super(key: key);
 
-  int itemCount(PastOrdersViewmodel viewmodel) => viewmodel.listOfScheduledOrders.isEmpty ? 1 : viewmodel.listOfScheduledOrders.length;
+  int itemCount(PastOrdersViewmodel viewmodel) =>
+      viewmodel.listOfScheduledOrders.isEmpty
+          ? 1
+          : viewmodel.listOfScheduledOrders.length;
 
   Widget? Function(BuildContext context, int index) itemBuilder(
     PastOrdersViewmodel viewmodel,
@@ -50,13 +54,13 @@ class ScheduledOrdersPage extends StatelessWidget {
             pageTitle: 'Scheduled Orders',
           ),
           body: ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
-                  itemBuilder: itemBuilder(viewmodel),
-                  itemCount: itemCount(viewmodel),
-                  separatorBuilder: (_, index) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                  ),
-                ),
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            itemBuilder: itemBuilder(viewmodel),
+            itemCount: itemCount(viewmodel),
+            separatorBuilder: (_, index) => const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+            ),
+          ),
         );
       },
     );
@@ -93,14 +97,15 @@ class SingleScheduledOrderCard extends StatelessWidget {
                       text: '${order.restaurantName}\n',
                       children: [
                         TextSpan(
-                          text: '${cFPrice(order.cartTotalGBPx)}\n',
+                          text: '${order.cartTotal.inCcy(Currency.GBP).value.toStringAsFixed(2)}\n',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        if (order.PPLAmountPaid != 0.0)
+                        if (order.rewardsTokensAmountPaid != 0.0)
                           TextSpan(
-                            text: '${order.PPLAmountPaid.toStringAsFixed(2)} ',
+                            text:
+                                '${order.rewardsTokensAmountPaid.toStringAsFixed(2)} ',
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -108,20 +113,20 @@ class SingleScheduledOrderCard extends StatelessWidget {
                         else
                           const WidgetSpan(child: SizedBox.shrink()),
                         WidgetSpan(
-                          child: order.PPLAmountPaid != 0.0
+                          child: order.rewardsTokensAmountPaid != 0.0
                               ? Image.asset(
                                   'assets/images/avatar-ppl-red.png',
                                   width: 25,
                                 )
                               : const SizedBox.shrink(),
                         ),
-                        if (order.PPLAmountPaid != 0.0)
+                        if (order.rewardsTokensAmountPaid != 0.0)
                           const TextSpan(text: '\n')
                         else
                           const WidgetSpan(child: SizedBox.shrink()),
                         TextSpan(
                           text:
-                              '${getPPLRewardsFromPounds(order.GBPAmountPaid).toStringAsFixed(2)} ',
+                              '${order.rewardsEarnedInPPL.toStringAsFixed(2)} ',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
@@ -251,7 +256,7 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               children: [
                 Text.rich(
                   TextSpan(
-                    text: widget.item.product.name,
+                    text: widget.item.product?.name,
                     children: [
                       TextSpan(
                         text: '\n${widget.item.formattedPrice}',
@@ -263,8 +268,8 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (widget.item.product.options
-                    .isNotEmpty) // BUG Do order objects pull off order items with selected ProductOptions info....
+                if (widget.item.product?.options
+                    .isNotEmpty ?? false)
                   GestureDetector(
                     onTap: () => setState(() {
                       _showOptions = !_showOptions;
@@ -284,7 +289,7 @@ class _SingleProductOrderItemState extends State<SingleProductOrderItem> {
               ],
             ),
           ] +
-          widget.item.product.options
+          (widget.item.product?.options ?? [])
               .map(
                 (option) => _showOptions
                     ? Text.rich(

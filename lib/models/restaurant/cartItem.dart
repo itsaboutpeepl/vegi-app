@@ -25,7 +25,7 @@ dynamic gbpxPriceToJson(Money money) => money.currency == Currency.GBPx
 class CartItem with _$CartItem {
   @JsonSerializable()
   factory CartItem({
-    required int internalID,
+    required int id,
     required RestaurantMenuItem menuItem,
 
     /// this is the price in pence of the restaurant item without any product options applied

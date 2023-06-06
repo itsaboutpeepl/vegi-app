@@ -20,7 +20,10 @@ class PeeplPayService {
 
     final Map<String, dynamic> result = response.data as Map<String, dynamic>;
 
-    log.info('Payment Intent Result $result');
+    log.info(
+      'Check Order Validity: Payment Intent Result $result',
+      stackTrace: StackTrace.current,
+    );
 
     return result;
   }

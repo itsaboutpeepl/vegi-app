@@ -20,7 +20,7 @@ CartItem _$CartItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CartItem {
-  int get internalID => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   RestaurantMenuItem get menuItem => throw _privateConstructorUsedError;
 
   /// this is the price in pence of the restaurant item without any product options applied
@@ -43,7 +43,7 @@ abstract class $CartItemCopyWith<$Res> {
       _$CartItemCopyWithImpl<$Res, CartItem>;
   @useResult
   $Res call(
-      {int internalID,
+      {int id,
       RestaurantMenuItem menuItem,
       @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
           Money totalItemPrice,
@@ -67,7 +67,7 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? internalID = null,
+    Object? id = null,
     Object? menuItem = null,
     Object? totalItemPrice = null,
     Object? itemQuantity = null,
@@ -75,9 +75,9 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? selectedProductOptions = null,
   }) {
     return _then(_value.copyWith(
-      internalID: null == internalID
-          ? _value.internalID
-          : internalID // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
       menuItem: null == menuItem
           ? _value.menuItem
@@ -119,7 +119,7 @@ abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int internalID,
+      {int id,
       RestaurantMenuItem menuItem,
       @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
           Money totalItemPrice,
@@ -142,7 +142,7 @@ class __$$_CartItemCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? internalID = null,
+    Object? id = null,
     Object? menuItem = null,
     Object? totalItemPrice = null,
     Object? itemQuantity = null,
@@ -150,9 +150,9 @@ class __$$_CartItemCopyWithImpl<$Res>
     Object? selectedProductOptions = null,
   }) {
     return _then(_$_CartItem(
-      internalID: null == internalID
-          ? _value.internalID
-          : internalID // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
       menuItem: null == menuItem
           ? _value.menuItem
@@ -183,7 +183,7 @@ class __$$_CartItemCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CartItem extends _CartItem {
   _$_CartItem(
-      {required this.internalID,
+      {required this.id,
       required this.menuItem,
       @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
           required this.totalItemPrice,
@@ -196,7 +196,7 @@ class _$_CartItem extends _CartItem {
       _$$_CartItemFromJson(json);
 
   @override
-  final int internalID;
+  final int id;
   @override
   final RestaurantMenuItem menuItem;
 
@@ -214,7 +214,7 @@ class _$_CartItem extends _CartItem {
 
   @override
   String toString() {
-    return 'CartItem(internalID: $internalID, menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, itemCurrency: $itemCurrency, selectedProductOptions: $selectedProductOptions)';
+    return 'CartItem(id: $id, menuItem: $menuItem, totalItemPrice: $totalItemPrice, itemQuantity: $itemQuantity, itemCurrency: $itemCurrency, selectedProductOptions: $selectedProductOptions)';
   }
 
   @override
@@ -222,8 +222,7 @@ class _$_CartItem extends _CartItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CartItem &&
-            (identical(other.internalID, internalID) ||
-                other.internalID == internalID) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.menuItem, menuItem) ||
                 other.menuItem == menuItem) &&
             (identical(other.totalItemPrice, totalItemPrice) ||
@@ -240,7 +239,7 @@ class _$_CartItem extends _CartItem {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      internalID,
+      id,
       menuItem,
       totalItemPrice,
       itemQuantity,
@@ -263,7 +262,7 @@ class _$_CartItem extends _CartItem {
 
 abstract class _CartItem extends CartItem {
   factory _CartItem(
-          {required final int internalID,
+          {required final int id,
           required final RestaurantMenuItem menuItem,
           @JsonKey(fromJson: gbpxPriceFromJson, toJson: gbpxPriceToJson)
               required final Money totalItemPrice,
@@ -276,7 +275,7 @@ abstract class _CartItem extends CartItem {
   factory _CartItem.fromJson(Map<String, dynamic> json) = _$_CartItem.fromJson;
 
   @override
-  int get internalID;
+  int get id;
   @override
   RestaurantMenuItem get menuItem;
   @override

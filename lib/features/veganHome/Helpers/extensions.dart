@@ -206,6 +206,11 @@ extension ListHelpers<T> on List<T> {
   T? get firstOrNull => isEmpty ? null : first;
 }
 
+extension MapHelpers on Map<String, dynamic> {
+  bool containsKeyAndNotNull(String key) =>
+      containsKey(key) && this[key] != null;
+}
+
 extension MoneyIterableHelpers on Iterable<Money> {
   Future<Money> sum({
     Currency? outputCurrency,

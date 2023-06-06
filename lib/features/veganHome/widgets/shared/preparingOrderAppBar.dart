@@ -13,6 +13,15 @@ class PreparingOrderAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String headerText =
+        'Order #${order.orderID} ${order.restaurantAcceptanceStatus.displayTitle}';
+    Color barColor = themeShade200;
+    if (order.paymentStatus == OrderPaidStatus.failed ||
+        order.paymentStatus == OrderPaidStatus.unpaid) {
+      headerText =
+          'Order #${order.orderID} payment ${order.paymentStatus.name}!';
+      barColor = themeLightShade1000;
+    }
     return SliverAppBar(
       toolbarHeight: 30,
       automaticallyImplyLeading: false,
@@ -25,7 +34,7 @@ class PreparingOrderAppBar extends StatelessWidget {
             PreparingOrderPage(order: order),
           ),
           child: Card(
-            color: themeShade200,
+            color: barColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: const BorderSide(
@@ -37,7 +46,7 @@ class PreparingOrderAppBar extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Text(
-                  'Order #${order.orderID} ${order.restaurantAcceptanceStatus.displayTitle}',
+                  headerText,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,

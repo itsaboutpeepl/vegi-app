@@ -14,6 +14,7 @@ import 'package:vegan_liverpool/models/restaurant/deliveryPartnerDTO.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/models/restaurant/time_slot.dart';
 import 'package:vegan_liverpool/models/restaurant/vendorDTO.dart';
+import 'package:vegan_liverpool/utils/config.dart';
 
 part 'order.freezed.dart';
 part 'order.g.dart';
@@ -63,8 +64,14 @@ class Order with _$Order {
   @JsonSerializable()
   factory Order({
     required int id,
+
+    /// DO NOT USE, USE cartTotal INSTEAD
     required num total,
+
+    /// DO NOT USE, USE cartSubTotal INSTEAD
     required num subtotal,
+    @Default(Currency.GBPx)
+        Currency currency,
     @JsonKey(
       fromJson: jsonToTimeStamp,
       toJson: timeStampToJsonInt,
@@ -93,6 +100,8 @@ class Order with _$Order {
     required String deliveryAddressLineOne,
     required String? deliveryAddressLineTwo,
     required String deliveryAddressCity,
+    @Default('GB') String deliveryAddressCountry,
+    @Default('') String deliveryAddressCounty,
     required String deliveryAddressPostCode,
     required double? deliveryAddressLatitude,
     required double? deliveryAddressLongitude,
@@ -162,33 +171,45 @@ class Order with _$Order {
   Future<Money> get cartDiscountAmount =>
       discounts.map((discount) => discount.moneyAmount).sum();
 
-  num get GBPAmountPaid => transactions.isEmpty
-      ? total / 100
-      : transactions
-              .where((t) => t.currency == Currency.GBPx)
-              .map((t) => t.amount / 100)
-              .sum() +
-          transactions
-              .where((t) => t.currency == Currency.GBP)
-              .map((t) => t.amount)
-              .sum();
-  num get GBPxAmountPaid => GBPAmountPaid * 100;
-  num get PPLAmountPaid => transactions
-      .where((t) => t.currency == Currency.PPL)
+  Money get cartTotal => Money(currency: currency, value: total);
+
+  Money get cartSubTotal => Money(currency: currency, value: subtotal);
+
+  Money get GBPAmountPaid => transactions.isEmpty
+      ? cartTotal.toFiatCcy()
+      : Money(
+          currency: Currency.GBP,
+          value: transactions
+              .map(
+                (t) => Money(
+                  currency: t.currency,
+                  value: t.amount,
+                ).toFiatCcy(),
+              )
+              .where((element) => element.currency == Currency.GBP)
+              .map(
+                (e) => e.value,
+              )
+              .sum(),
+        );
+
+  Money get GBPxAmountPaid => GBPAmountPaid.inCcy(Currency.GBPx);
+  num get rewardsTokensAmountPaid => transactions
+      .where((t) => t.currency == AppConfig.rewardCurrency)
       .map((t) => t.amount)
       .sum();
 
   double get rewardsEarnedInPPL => getPPLRewardsFromPounds(
-        GBPAmountPaid,
+        GBPAmountPaid.currency == Currency.GBP ? GBPAmountPaid.value : 0.0,
       );
 
   String get rewardsEarnedInPPLFormatted =>
       rewardsEarnedInPPL.toStringAsFixed(2);
 
-  String get pplRewardsEarnedValue =>
+  String get gbtRewardsEarnedValue =>
       '£${getPoundValueFromPPL(rewardsEarnedInPPL).toStringAsFixed(2)}';
 
-  bool get didUsePPL => PPLAmountPaid != 0.0;
+  bool get didUsePPL => rewardsTokensAmountPaid != 0.0;
 
   //SECTION custom getter names for app readability
   String get restaurantName => vendorName;
@@ -201,10 +222,10 @@ class Order with _$Order {
       fulfilmentMethod?.methodType == FulfilmentMethodType.delivery;
   bool get isInStore =>
       fulfilmentMethod?.methodType == FulfilmentMethodType.inStore;
-  int get cartTotalGBPx => total.round();
-  int get cartTotalGBP => (total / 100).round();
-  int get cartSubTotalGBPx => subtotal.round();
-  int get cartSubTotalGBP => (subtotal / 100).round();
+  int get cartTotalGBPx => cartTotal.inCcy(Currency.GBPx).value.round();
+  int get cartTotalGBP => cartTotal.inCcy(Currency.GBP).value.round();
+  int get cartSubTotalGBPx => cartSubTotal.inCcy(Currency.GBPx).value.round();
+  int get cartSubTotalGBP => cartSubTotal.inCcy(Currency.GBP).value.round();
 
   int get vendorId => vendor?.id ?? 0;
   String get vendorName => vendor?.name ?? '';

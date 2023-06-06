@@ -43,7 +43,7 @@ mixin _$UserCartState {
   Money get selectedTipAmount => throw _privateConstructorUsedError;
   String get discountCode => throw _privateConstructorUsedError;
   String get paymentIntentID => throw _privateConstructorUsedError;
-  String get orderID => throw _privateConstructorUsedError;
+  Order? get order => throw _privateConstructorUsedError;
   double get selectedGBPxAmount => throw _privateConstructorUsedError;
   double get selectedPPLAmount => throw _privateConstructorUsedError;
   bool get payButtonLoading => throw _privateConstructorUsedError;
@@ -118,7 +118,7 @@ abstract class $UserCartStateCopyWith<$Res> {
           Money selectedTipAmount,
       String discountCode,
       String paymentIntentID,
-      String orderID,
+      Order? order,
       double selectedGBPxAmount,
       double selectedPPLAmount,
       bool payButtonLoading,
@@ -152,6 +152,7 @@ abstract class $UserCartStateCopyWith<$Res> {
 
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   $TimeSlotCopyWith<$Res>? get selectedTimeSlot;
+  $OrderCopyWith<$Res>? get order;
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress;
   $TimeSlotCopyWith<$Res>? get nextCollectionSlot;
   $TimeSlotCopyWith<$Res>? get nextDeliverySlot;
@@ -189,7 +190,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? selectedTipAmount = null,
     Object? discountCode = null,
     Object? paymentIntentID = null,
-    Object? orderID = null,
+    Object? order = freezed,
     Object? selectedGBPxAmount = null,
     Object? selectedPPLAmount = null,
     Object? payButtonLoading = null,
@@ -282,10 +283,10 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
           ? _value.paymentIntentID
           : paymentIntentID // ignore: cast_nullable_to_non_nullable
               as String,
-      orderID: null == orderID
-          ? _value.orderID
-          : orderID // ignore: cast_nullable_to_non_nullable
-              as String,
+      order: freezed == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as Order?,
       selectedGBPxAmount: null == selectedGBPxAmount
           ? _value.selectedGBPxAmount
           : selectedGBPxAmount // ignore: cast_nullable_to_non_nullable
@@ -420,6 +421,18 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
 
   @override
   @pragma('vm:prefer-inline')
+  $OrderCopyWith<$Res>? get order {
+    if (_value.order == null) {
+      return null;
+    }
+
+    return $OrderCopyWith<$Res>(_value.order!, (value) {
+      return _then(_value.copyWith(order: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress {
     if (_value.restaurantAddress == null) {
       return null;
@@ -523,7 +536,7 @@ abstract class _$$_UserCartStateCopyWith<$Res>
           Money selectedTipAmount,
       String discountCode,
       String paymentIntentID,
-      String orderID,
+      Order? order,
       double selectedGBPxAmount,
       double selectedPPLAmount,
       bool payButtonLoading,
@@ -559,6 +572,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   @override
   $TimeSlotCopyWith<$Res>? get selectedTimeSlot;
+  @override
+  $OrderCopyWith<$Res>? get order;
   @override
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress;
   @override
@@ -600,7 +615,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? selectedTipAmount = null,
     Object? discountCode = null,
     Object? paymentIntentID = null,
-    Object? orderID = null,
+    Object? order = freezed,
     Object? selectedGBPxAmount = null,
     Object? selectedPPLAmount = null,
     Object? payButtonLoading = null,
@@ -693,10 +708,10 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.paymentIntentID
           : paymentIntentID // ignore: cast_nullable_to_non_nullable
               as String,
-      orderID: null == orderID
-          ? _value.orderID
-          : orderID // ignore: cast_nullable_to_non_nullable
-              as String,
+      order: freezed == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as Order?,
       selectedGBPxAmount: null == selectedGBPxAmount
           ? _value.selectedGBPxAmount
           : selectedGBPxAmount // ignore: cast_nullable_to_non_nullable
@@ -832,7 +847,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
           this.selectedTipAmount = const Money.zeroGBP(),
       this.discountCode = '',
       this.paymentIntentID = '',
-      this.orderID = '',
+      this.order = null,
       this.selectedGBPxAmount = 0.0,
       this.selectedPPLAmount = 0.0,
       this.payButtonLoading = false,
@@ -918,7 +933,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   final String paymentIntentID;
   @override
   @JsonKey()
-  final String orderID;
+  final Order? order;
   @override
   @JsonKey()
   final double selectedGBPxAmount;
@@ -1000,7 +1015,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartCurrency: $cartCurrency, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, orderID: $orderID, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartCurrency: $cartCurrency, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, order: $order, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
   }
 
   @override
@@ -1025,7 +1040,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('selectedTipAmount', selectedTipAmount))
       ..add(DiagnosticsProperty('discountCode', discountCode))
       ..add(DiagnosticsProperty('paymentIntentID', paymentIntentID))
-      ..add(DiagnosticsProperty('orderID', orderID))
+      ..add(DiagnosticsProperty('order', order))
       ..add(DiagnosticsProperty('selectedGBPxAmount', selectedGBPxAmount))
       ..add(DiagnosticsProperty('selectedPPLAmount', selectedPPLAmount))
       ..add(DiagnosticsProperty('payButtonLoading', payButtonLoading))
@@ -1094,7 +1109,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 other.discountCode == discountCode) &&
             (identical(other.paymentIntentID, paymentIntentID) ||
                 other.paymentIntentID == paymentIntentID) &&
-            (identical(other.orderID, orderID) || other.orderID == orderID) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.selectedGBPxAmount, selectedGBPxAmount) ||
                 other.selectedGBPxAmount == selectedGBPxAmount) &&
             (identical(other.selectedPPLAmount, selectedPPLAmount) ||
@@ -1162,7 +1177,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
         selectedTipAmount,
         discountCode,
         paymentIntentID,
-        orderID,
+        order,
         selectedGBPxAmount,
         selectedPPLAmount,
         payButtonLoading,
@@ -1229,7 +1244,7 @@ abstract class _UserCartState extends UserCartState {
           final Money selectedTipAmount,
       final String discountCode,
       final String paymentIntentID,
-      final String orderID,
+      final Order? order,
       final double selectedGBPxAmount,
       final double selectedPPLAmount,
       final bool payButtonLoading,
@@ -1304,7 +1319,7 @@ abstract class _UserCartState extends UserCartState {
   @override
   String get paymentIntentID;
   @override
-  String get orderID;
+  Order? get order;
   @override
   double get selectedGBPxAmount;
   @override

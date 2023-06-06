@@ -407,8 +407,6 @@ Future<UpdateComputedCartValues?> computeTotalsFromCart({
   }
 }
 
-
-
 ///
 ///  Gives an amount of 1[fromCurrency] in [toCurrency]
 ///
@@ -694,6 +692,10 @@ T tryCatchRethrowInline<T>(
     log.error(
       e,
       stackTrace: s,
+    );
+    Sentry.captureException(
+      e,
+      stackTrace: s, // from catch (err, s)
     );
     rethrow;
   }

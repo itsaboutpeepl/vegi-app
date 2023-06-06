@@ -4,6 +4,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/envService.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/cart/discount.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/payments/money.dart';
@@ -82,8 +83,8 @@ class UserCartState with _$UserCartState {
         String discountCode,
     @Default('')
         String paymentIntentID,
-    @Default('')
-        String orderID,
+    @Default(null)
+        Order? order,
     @Default(0.0)
         double selectedGBPxAmount,
     @Default(0.0)
@@ -164,7 +165,6 @@ class UserCartState with _$UserCartState {
         collectionSlots: [],
         discountCode: '',
         paymentIntentID: '',
-        orderID: '',
         selectedGBPxAmount: 0,
         selectedPPLAmount: 0,
         payButtonLoading: false,
@@ -185,6 +185,8 @@ class UserCartState with _$UserCartState {
       tryCatchRethrowInline(
         () => _$UserCartStateFromJson(json),
       );
+
+  String get orderID => order?.id.toString() ?? '';
 
   bool get isDelivery => fulfilmentMethod == FulfilmentMethodType.delivery;
   bool get isCollection => fulfilmentMethod == FulfilmentMethodType.collection;

@@ -590,7 +590,10 @@ class PeeplEatsService extends HttpService {
             imageURL: element['imageUrl'] as String? ?? '',
             categoryName: element['category']['name'] as String? ?? '',
             categoryId: element['category']['id'] as int? ?? 0,
-            price: Money(currency: Currency.GBPx, value: element['basePrice'] as int? ?? 0,),
+            price: Money(
+              currency: Currency.GBPx,
+              value: element['basePrice'] as int? ?? 0,
+            ),
             description: element['description'] as String? ?? '',
             extras: {},
             listOfProductOptionCategories: [],
@@ -751,16 +754,16 @@ class PeeplEatsService extends HttpService {
   }
 
   /// vegiRelUri is the relative uri in the orders sub directory (i.e. currently just the id of the order)
-  Future<CreateOrderForFulfilment?> getOrderFromUri({
+  Future<OrderModel.Order?> getOrderFromUri({
     required String vegiRelUri,
   }) async {
-    final response =
-        await dioGet<Map<String, dynamic>>('api/v1/orders/$vegiRelUri');
+    final response = await dioGet<Map<String, dynamic>>(vegiRelUri);
 
-    if (response != null &&
-        response.data != null &&
-        response.data is Map<String, dynamic>) {
-      return CreateOrderForDelivery.fromJson(response.data!);
+    if (response.data != null &&
+        response.data is Map<String, dynamic> && 
+        response.data!.containsKey('order')) {
+      return OrderModel.Order.fromJson(
+          response.data!['order'] as Map<String, dynamic>,);
     } else {
       return null;
     }
@@ -1522,7 +1525,8 @@ class PeeplEatsService extends HttpService {
         );
       },
     );
-    if (response.data?.isEmpty ?? true) {
+    if ((response.data?.isEmpty ?? true) ||
+        !CreateOrderResponse.canParse(response.data!)) {
       return null;
     }
     final result = CreateOrderResponse.fromJson(response.data!);
@@ -1530,7 +1534,7 @@ class PeeplEatsService extends HttpService {
       result.order.transactions.add(
         TransactionItem(
           amount: orderObject.total,
-          currency: Currency.GBPx,
+          currency: orderObject.currency,
           order: result.order.id,
           payer: -1,
           receiver: -2,
@@ -1588,8 +1592,11 @@ class PeeplEatsService extends HttpService {
     return completedFlag == 'cancelled';
   }
 
-  String getOrderUri(String orderID) =>
-      '$baseUrl/api/v1/orders/get-order-details?orderId=$orderID';
+  String getOrderFullUri(String orderID) =>
+      '${baseUrl}api/v1/orders/get-order-details?orderId=$orderID';
+
+  String getOrderRelUri(String orderID) =>
+      'api/v1/orders/get-order-details?orderId=$orderID';
 
   Future<OrderStatus> checkOrderStatus(String orderID) async {
     final Response<dynamic> response =

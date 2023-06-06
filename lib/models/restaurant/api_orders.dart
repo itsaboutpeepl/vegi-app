@@ -30,7 +30,7 @@
 // class CartItem with _$CartItem {
 //   @JsonSerializable()
 //   factory CartItem({
-//     required int internalID,
+//     required int id,
 //     required RestaurantMenuItem menuItem,
 //     required int totalItemPrice,
 //     required int itemQuantity,

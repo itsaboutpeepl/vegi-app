@@ -28,9 +28,13 @@ mixin _$FulfilmentMethod {
   int? get maxOrders => throw _privateConstructorUsedError;
   int? get maxDeliveryDistance => throw _privateConstructorUsedError;
   num? get priceModifier => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonVendorDTO)
   VendorDTO? get vendor => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
   DeliveryPartnerDTO? get deliveryPartner => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonOpeningHours)
   OpeningHours? get openingHours => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonDeliveryAddresses)
   DeliveryAddresses? get fulfilmentOrigin => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,10 +58,14 @@ abstract class $FulfilmentMethodCopyWith<$Res> {
       int? maxOrders,
       int? maxDeliveryDistance,
       num? priceModifier,
-      VendorDTO? vendor,
-      DeliveryPartnerDTO? deliveryPartner,
-      OpeningHours? openingHours,
-      DeliveryAddresses? fulfilmentOrigin});
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          VendorDTO? vendor,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          DeliveryPartnerDTO? deliveryPartner,
+      @JsonKey(fromJson: fromJsonOpeningHours)
+          OpeningHours? openingHours,
+      @JsonKey(fromJson: fromJsonDeliveryAddresses)
+          DeliveryAddresses? fulfilmentOrigin});
 
   $VendorDTOCopyWith<$Res>? get vendor;
   $DeliveryPartnerDTOCopyWith<$Res>? get deliveryPartner;
@@ -209,10 +217,14 @@ abstract class _$$_FulfilmentMethodCopyWith<$Res>
       int? maxOrders,
       int? maxDeliveryDistance,
       num? priceModifier,
-      VendorDTO? vendor,
-      DeliveryPartnerDTO? deliveryPartner,
-      OpeningHours? openingHours,
-      DeliveryAddresses? fulfilmentOrigin});
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          VendorDTO? vendor,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          DeliveryPartnerDTO? deliveryPartner,
+      @JsonKey(fromJson: fromJsonOpeningHours)
+          OpeningHours? openingHours,
+      @JsonKey(fromJson: fromJsonDeliveryAddresses)
+          DeliveryAddresses? fulfilmentOrigin});
 
   @override
   $VendorDTOCopyWith<$Res>? get vendor;
@@ -314,10 +326,14 @@ class _$_FulfilmentMethod extends _FulfilmentMethod {
       required this.maxOrders,
       this.maxDeliveryDistance = null,
       required this.priceModifier,
-      this.vendor = null,
-      this.deliveryPartner = null,
-      this.openingHours = null,
-      this.fulfilmentOrigin = null})
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          this.vendor = null,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          this.deliveryPartner = null,
+      @JsonKey(fromJson: fromJsonOpeningHours)
+          this.openingHours = null,
+      @JsonKey(fromJson: fromJsonDeliveryAddresses)
+          this.fulfilmentOrigin = null})
       : super._();
 
   factory _$_FulfilmentMethod.fromJson(Map<String, dynamic> json) =>
@@ -341,16 +357,16 @@ class _$_FulfilmentMethod extends _FulfilmentMethod {
   @override
   final num? priceModifier;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: fromJsonVendorDTO)
   final VendorDTO? vendor;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
   final DeliveryPartnerDTO? deliveryPartner;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: fromJsonOpeningHours)
   final OpeningHours? openingHours;
   @override
-  @JsonKey()
+  @JsonKey(fromJson: fromJsonDeliveryAddresses)
   final DeliveryAddresses? fulfilmentOrigin;
 
   @override
@@ -428,10 +444,14 @@ abstract class _FulfilmentMethod extends FulfilmentMethod {
       required final int? maxOrders,
       final int? maxDeliveryDistance,
       required final num? priceModifier,
-      final VendorDTO? vendor,
-      final DeliveryPartnerDTO? deliveryPartner,
-      final OpeningHours? openingHours,
-      final DeliveryAddresses? fulfilmentOrigin}) = _$_FulfilmentMethod;
+      @JsonKey(fromJson: fromJsonVendorDTO)
+          final VendorDTO? vendor,
+      @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
+          final DeliveryPartnerDTO? deliveryPartner,
+      @JsonKey(fromJson: fromJsonOpeningHours)
+          final OpeningHours? openingHours,
+      @JsonKey(fromJson: fromJsonDeliveryAddresses)
+          final DeliveryAddresses? fulfilmentOrigin}) = _$_FulfilmentMethod;
   _FulfilmentMethod._() : super._();
 
   factory _FulfilmentMethod.fromJson(Map<String, dynamic> json) =
@@ -454,12 +474,16 @@ abstract class _FulfilmentMethod extends FulfilmentMethod {
   @override
   num? get priceModifier;
   @override
+  @JsonKey(fromJson: fromJsonVendorDTO)
   VendorDTO? get vendor;
   @override
+  @JsonKey(fromJson: fromJsonDeliveryPartnerDTO)
   DeliveryPartnerDTO? get deliveryPartner;
   @override
+  @JsonKey(fromJson: fromJsonOpeningHours)
   OpeningHours? get openingHours;
   @override
+  @JsonKey(fromJson: fromJsonDeliveryAddresses)
   DeliveryAddresses? get fulfilmentOrigin;
   @override
   @JsonKey(ignore: true)

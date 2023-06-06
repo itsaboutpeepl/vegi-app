@@ -10,6 +10,8 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
       id: json['id'] as int,
       total: json['total'] as num,
       subtotal: json['subtotal'] as num,
+      currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
+          Currency.GBPx,
       orderedDateTime: jsonToTimeStamp(json['orderedDateTime']),
       paidDateTime: jsonToTimeStampNullable(json['paidDateTime']),
       refundDateTime: jsonToTimeStampNullable(json['refundDateTime']),
@@ -24,6 +26,8 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
       deliveryAddressLineOne: json['deliveryAddressLineOne'] as String,
       deliveryAddressLineTwo: json['deliveryAddressLineTwo'] as String?,
       deliveryAddressCity: json['deliveryAddressCity'] as String,
+      deliveryAddressCountry: json['deliveryAddressCountry'] as String? ?? 'GB',
+      deliveryAddressCounty: json['deliveryAddressCounty'] as String? ?? '',
       deliveryAddressPostCode: json['deliveryAddressPostCode'] as String,
       deliveryAddressLatitude:
           (json['deliveryAddressLatitude'] as num?)?.toDouble(),
@@ -76,6 +80,7 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'id': instance.id,
       'total': instance.total,
       'subtotal': instance.subtotal,
+      'currency': _$CurrencyEnumMap[instance.currency]!,
       'orderedDateTime': timeStampToJsonInt(instance.orderedDateTime),
       'paidDateTime': timeStampToJsonIntNullable(instance.paidDateTime),
       'refundDateTime': timeStampToJsonIntNullable(instance.refundDateTime),
@@ -88,6 +93,8 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'deliveryAddressLineOne': instance.deliveryAddressLineOne,
       'deliveryAddressLineTwo': instance.deliveryAddressLineTwo,
       'deliveryAddressCity': instance.deliveryAddressCity,
+      'deliveryAddressCountry': instance.deliveryAddressCountry,
+      'deliveryAddressCounty': instance.deliveryAddressCounty,
       'deliveryAddressPostCode': instance.deliveryAddressPostCode,
       'deliveryAddressLatitude': instance.deliveryAddressLatitude,
       'deliveryAddressLongitude': instance.deliveryAddressLongitude,
@@ -122,6 +129,17 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'fulfilmentCharge': instance.fulfilmentCharge,
       'platformFee': instance.platformFee,
     };
+
+const _$CurrencyEnumMap = {
+  Currency.GBP: 'GBP',
+  Currency.USD: 'USD',
+  Currency.EUR: 'EUR',
+  Currency.GBPx: 'GBPx',
+  Currency.PPL: 'PPL',
+  Currency.GBT: 'GBT',
+  Currency.FUSE: 'FUSE',
+  Currency.percent: 'percent',
+};
 
 const _$OrderPaidStatusEnumMap = {
   OrderPaidStatus.paid: 'paid',

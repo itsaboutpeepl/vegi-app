@@ -42,7 +42,7 @@ class GenerateQRFromCartViewModel extends Equatable {
       (basket?.toUploadJson() ?? Future.value({})).then(
         (value) => value
           ..addAll({
-            'uri': peeplEatsService.getOrderUri(orderId),
+            'uri': peeplEatsService.getOrderFullUri(orderId),
             'generatorWalletAddress': generatorWalletAddress,
             // 'customerWalletAddress': customerWalletAddress ?? '',
             // 'vendorWalletAddress': vendorWalletAddress,

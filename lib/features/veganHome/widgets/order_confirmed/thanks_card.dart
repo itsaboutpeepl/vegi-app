@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/drawStar.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class ThankYouCard extends StatefulWidget {
   const ThankYouCard({
@@ -86,7 +87,7 @@ class _ThankYouCardState extends State<ThankYouCard> {
               height: 20,
             ),
             const Text(
-              'Thank you for ordering with vegi 💚',
+              Messages.checkoutSuccessThankyouForOrdering,
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.w900,
@@ -97,9 +98,7 @@ class _ThankYouCardState extends State<ThankYouCard> {
               height: 20,
             ),
             Text(
-              'Your order #${widget.orderId} has been received '
-              "and will be confirmed shortly. We'll send you a text "
-              'with an update once they respond! \n ',
+             Messages.checkoutSuccessOrderReceivedButNotConfirmed(widget.orderId),
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 16,

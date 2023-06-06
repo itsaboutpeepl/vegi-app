@@ -6,6 +6,8 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/bill_invoice_vm.dart';
+import 'package:vegan_liverpool/utils/config.dart';
+import 'package:vegan_liverpool/utils/constants.dart';
 
 class BillInvoiceCard extends StatelessWidget {
   const BillInvoiceCard({
@@ -64,8 +66,8 @@ class BillInvoiceCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Amount paid in GBP',
+                      Text(
+                        'Amount paid in ${order.GBPAmountPaid.currency.name}',
                       ),
                       Text(
                         (order.GBPAmountPaid).formattedGBPPrice,
@@ -79,11 +81,11 @@ class BillInvoiceCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Amount paid in PPL rewards',
+                        Text(
+                          'Amount paid in ${AppConfig.rewardCurrency.name} rewards',
                         ),
                         Text(
-                          (order.PPLAmountPaid * 100).formattedGBPxPrice,
+                          order.rewardsTokensAmountPaid.toStringAsFixed(3),
                         ),
                       ],
                     ),
@@ -103,13 +105,13 @@ class BillInvoiceCard extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Image.asset(
-                        'assets/images/avatar-ppl-red.png',
-                        width: 23,
-                      ),
+                      // const SizedBox(
+                      //   width: 4,
+                      // ),
+                      // Image.asset(
+                      //   ImagePaths.pplAvatar35width,
+                      //   width: 23,
+                      // ),
                       const Spacer(),
                       Text(
                         '${order.rewardsEarnedInPPLFormatted} ',
@@ -119,7 +121,7 @@ class BillInvoiceCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '(${order.pplRewardsEarnedValue})',
+                        '(${order.gbtRewardsEarnedValue})',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,

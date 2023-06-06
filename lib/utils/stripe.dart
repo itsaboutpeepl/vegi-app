@@ -58,6 +58,7 @@ class StripeService {
     required String senderWalletAddress,
     required int orderId,
     required int accountId,
+    required String? stripeCustomerId,
     required Money amount,
     required bool shouldPushToHome,
     required Store<AppState> store,
@@ -73,6 +74,7 @@ class StripeService {
         senderWalletAddress: senderWalletAddress,
         orderId: orderId,
         accountId: accountId,
+        stripeCustomerId: stripeCustomerId,
       );
       if (paymentIntentClientSecret == null) {
         log.error('Unable to create payment intent from ${stripePayService}');
@@ -104,18 +106,90 @@ class StripeService {
       // ~ https://docs.page/flutter-stripe/flutter_stripe/sheet#5-test-the-integration
       final dynamicUrl = 'vegi://vegiApp.co.uk${rootRouter.currentUrl}';
       log.info(dynamicUrl);
-      //todo: can we call rootRouter.addListener at beginning of this call for startPeeplPayProcess thunk and then remove handler if finishes and close payment sheet if rootRouter is called....
+
+      // final bankAccountDetails = await instance.collectBankAccount(
+      //   isPaymentIntent: true,
+      //   clientSecret: paymentIntentClientSecret.paymentIntent.clientSecret,
+      //   params: CollectBankAccountParams(
+      //     paymentMethodType: PaymentMethodType.Card,
+      //     billingDetails: BillingDetails(
+      //       email: store.state.cartState.selectedDeliveryAddress?.email ?? store.state.userState.email,
+      //       phone: store.state.cartState.selectedDeliveryAddress?.phoneNumber ??
+      //           store.state.userState.phoneNumber,
+      //       name: store.state.cartState.selectedDeliveryAddress?.name ??
+      //           store.state.userState.displayName,
+      //     ),
+      //   ),
+      // );
+
+      final billingDetails = BillingDetails(
+        name: store.state.cartState.order?.deliveryName,
+        email: store.state.cartState.order?.deliveryEmail,
+        phone: store.state.cartState.order?.deliveryPhoneNumber,
+        address: Address(
+          city: store.state.cartState.order?.deliveryAddressCity,
+          country: store.state.cartState.order?.deliveryAddressCountry, // ~ https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+          line1: store.state.cartState.order?.deliveryAddressLineOne,
+          line2: store.state.cartState.order?.deliveryAddressLineTwo,
+          state: store.state.cartState.order?.deliveryAddressCity,
+          postalCode: store.state.cartState.order?.deliveryAddressPostCode,
+        ),
+      );
+
       await instance.initPaymentSheet(
-        // todo: Check that the returnUrl makes sense...
         paymentSheetParameters: SetupPaymentSheetParameters(
-          style: ThemeMode.dark,
-          merchantDisplayName: 'vegi',
-          paymentIntentClientSecret: paymentIntentClientSecret.paymentIntent
-              .clientSecret, //todo autoformat saved customer details from calling backend to retreive customer details for their saved stripeCustomerId from store
+          // Enable custom flow
+          customFlow: true,
+          // Main params
+          paymentIntentClientSecret:
+              paymentIntentClientSecret.paymentIntent.clientSecret,
+          merchantDisplayName: Labels.stripeVegiProductName,
+          // Customer keys
           customerEphemeralKeySecret: paymentIntentClientSecret.ephemeralKey,
+          customerId: paymentIntentClientSecret.customer,
+          // Extra options
+          // primaryButtonLabel: 'Pay now',
+          // applePay: PaymentSheetApplePay(
+          //   merchantCountryCode: 'DE',
+          // ),
+          // googlePay: PaymentSheetGooglePay(
+          //   merchantCountryCode: 'DE',
+          //   testEnv: true,
+          // ),
           // billingDetails, delayedPaymentMethods etc...
           returnURL: dynamicUrl,
-          // billingDetails: BillingDetails()
+          // billingDetails: BillingDetails(
+          //   email: store.state.cartState.selectedDeliveryAddress?.email ??
+          //       store.state.userState.email,
+          //   phone: store.state.cartState.selectedDeliveryAddress?.phoneNumber ??
+          //       store.state.userState.phoneNumber,
+          //   name: store.state.cartState.selectedDeliveryAddress?.name ??
+          //       store.state.userState.displayName,
+          // ),
+          style: ThemeMode.dark,
+          allowsDelayedPaymentMethods: true,
+          // appearance: PaymentSheetAppearance(
+          //   colors: PaymentSheetAppearanceColors(
+          //     background: Colors.lightBlue,
+          //     primary: Colors.blue,
+          //     componentBorder: Colors.red,
+          //   ),
+          //   shapes: PaymentSheetShape(
+          //     borderWidth: 4,
+          //     shadow: PaymentSheetShadowParams(color: Colors.red),
+          //   ),
+          //   primaryButton: PaymentSheetPrimaryButtonAppearance(
+          //     shapes: PaymentSheetPrimaryButtonShape(blurRadius: 8),
+          //     colors: PaymentSheetPrimaryButtonTheme(
+          //       light: PaymentSheetPrimaryButtonThemeColors(
+          //         background: Color.fromARGB(255, 231, 235, 30),
+          //         text: Color.fromARGB(255, 235, 92, 30),
+          //         border: Color.fromARGB(255, 235, 92, 30),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          billingDetails: billingDetails,
         ),
       );
       await instance.presentPaymentSheet();
@@ -171,12 +245,15 @@ class StripeService {
             },
           ),
         );
-        log.error(e.error.localizedMessage);
+        log.error(
+          'Stripe Payment ${e.error.code} with StripeErrorType.[${e.error.type}] because of stripe error code StripeErrorCode.[${e.error.stripeErrorCode}]: ${e.error.localizedMessage};',
+          stackTrace: s,
+        );
         await Sentry.captureException(
-          e,
+          'Stripe Payment ${e.error.code} with StripeErrorType.[${e.error.type}] because of stripe error code StripeErrorCode.[${e.error.stripeErrorCode}]: ${e.error.localizedMessage};',
           stackTrace: s,
           hint:
-              'ERROR - Stripe Exception: ${e.error.localizedMessage}; message: ${e.error.message}',
+              'ERROR - Stripe Exception: Stripe Payment ${e.error.code} with StripeErrorType.[${e.error.type}]: ${e.error.localizedMessage}; with error code StripeErrorCode.[${e.error.stripeErrorCode}]',
         );
         store
           ..dispatch(SetPaymentButtonFlag(false))
@@ -184,6 +261,13 @@ class StripeService {
           ..dispatch(
             StripePaymentStatusUpdate(
               status: StripePaymentStatus.paymentFailed,
+            ),
+          )
+          ..dispatch(
+            cancelOrder(
+              orderId: orderId,
+              accountId: accountId,
+              senderWalletAddress: senderWalletAddress,
             ),
           )
           ..dispatch(
@@ -218,7 +302,10 @@ class StripeService {
         return false;
       }
     } on Exception catch (e, s) {
-      log.error(e);
+      log.error(
+        e,
+        stackTrace: s,
+      );
       await Sentry.captureException(
         e,
         stackTrace: s,
@@ -239,6 +326,167 @@ class StripeService {
     required String senderWalletAddress,
     required num orderId,
     required num accountId,
+    required String? stripeCustomerId,
+    required Money amount,
+    required Store<AppState> store,
+    required bool shouldPushToHome,
+  }) async {
+    try {
+      final currency = amount.currency;
+      // 1. fetch Intent Client Secret from backend
+      final paymentIntentClientSecret =
+          await stripePayService.createStripePaymentIntent(
+        amount: amount.value,
+        currency: amount.currency.name.toLowerCase(),
+        recipientWalletAddress: recipientWalletAddress,
+        senderWalletAddress: senderWalletAddress,
+        orderId: orderId,
+        accountId: accountId,
+        stripeCustomerId: stripeCustomerId,
+      );
+      if (paymentIntentClientSecret == null) {
+        log.error('Unable to create payment intent from ${stripePayService}');
+        await Sentry.captureException(
+          Exception('Unable to create payment intent from ${stripePayService}'),
+          stackTrace: StackTrace.current, // from catch (err, s)
+        );
+        store.dispatch(
+          StripePaymentStatusUpdate(
+            status: StripePaymentStatus.paymentFailed,
+          ),
+        );
+        return false;
+      } else if (currency != Currency.GBP && currency != Currency.GBPx) {
+        log.error('Unable to use apple pay via stripe for currency: $currency');
+        await Sentry.captureException(
+          Exception(
+              'Unable to use apple pay via stripe for currency: $currency'),
+          stackTrace: StackTrace.current, // from catch (err, s)
+        );
+        store.dispatch(
+          StripePaymentStatusUpdate(
+            status: StripePaymentStatus.paymentFailed,
+          ),
+        );
+        return false;
+      }
+
+      // final billingDetails = BillingDetails(
+      //   name: store.state.cartState.order?.deliveryName,
+      //   email: store.state.cartState.order?.deliveryEmail,
+      //   phone: store.state.cartState.order?.deliveryPhoneNumber,
+      //   address: Address(
+      //     city: store.state.cartState.order?.deliveryAddressCity,
+      //     country: 'UK',
+      //     line1: store.state.cartState.order?.deliveryAddressLineOne,
+      //     line2: store.state.cartState.order?.deliveryAddressLineTwo,
+      //     state: store.state.cartState.order?.deliveryAddressCity,
+      //     postalCode: store.state.cartState.order?.deliveryAddressPostCode,
+      //   ),
+      // );
+
+      // 2. Confirm apple pay payment
+      await Stripe.instance.confirmPlatformPayPaymentIntent(
+        clientSecret: paymentIntentClientSecret.paymentIntent.clientSecret,
+        confirmParams: PlatformPayConfirmParams.applePay(
+          applePay: ApplePayParams(
+            cartItems: [
+              ApplePayCartSummaryItem.immediate(
+                label: productName,
+                amount: amount.inGBPValue.toStringAsFixed(2),
+              )
+            ],
+            merchantCountryCode:
+                amount.inGBP.currency.name.toLowerCase().substring(0, 2),
+            currencyCode: amount.inGBP.currency.name.toLowerCase(),
+          ),
+        ),
+      );
+
+      final mintingCrypto = currency == Currency.GBPx ||
+          currency == Currency.PPL ||
+          currency == Currency.GBT;
+      if (mintingCrypto) {
+        store
+          ..dispatch(
+            SetProcessingPayment(
+              payment: LivePayment(
+                amount: amount.value,
+                currency: currency,
+                status: PaymentProcessingStatus.started,
+                technology: PaymentTechnology.stripeOnRamp,
+                type: PaymentType.topup,
+              ),
+            ),
+          )
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.mintingStarted,
+            ),
+          );
+      } else {
+        store
+          ..dispatch(
+            SetProcessingPayment(
+              payment: LivePayment(
+                amount: amount.value,
+                currency: currency,
+                status: PaymentProcessingStatus.succeeded,
+                technology: PaymentTechnology.card,
+                type: PaymentType.cardPayment,
+              ),
+            ),
+          )
+          ..dispatch(
+            StripePaymentStatusUpdate(
+              status: StripePaymentStatus.paymentConfirmed,
+            ),
+          );
+      }
+      return true;
+    } on Exception catch (e, s) {
+      store.dispatch(
+        StripePaymentStatusUpdate(
+          status: StripePaymentStatus.paymentFailed,
+        ),
+      );
+      if (e is StripeException) {
+        if (e.error.code != FailureCode.Canceled) {
+          unawaited(
+            Analytics.track(
+              eventName: AnalyticsEvents.mint,
+              properties: {
+                'status': 'failure',
+              },
+            ),
+          );
+          log.error(e.error.localizedMessage);
+          await Sentry.captureException(
+            e,
+            stackTrace: s,
+          );
+          return false;
+        } else {
+          return false;
+        }
+      } else {
+        log.error(e);
+        await Sentry.captureException(
+          e,
+          stackTrace: s,
+        );
+        return false;
+      }
+    }
+  }
+
+  Future<bool> handleGooglePay({
+    required String productName,
+    required String recipientWalletAddress,
+    required String senderWalletAddress,
+    required num orderId,
+    required num accountId,
+    required String? stripeCustomerId,
     required Money amount,
     required Store<AppState> store,
     required bool shouldPushToHome,
@@ -268,7 +516,8 @@ class StripeService {
         );
         return false;
       } else if (currency != Currency.GBP && currency != Currency.GBPx) {
-        log.error('Unable to use apple pay via stripe for currency: $currency');
+        log.error(
+            'Unable to use google pay via stripe for currency: $currency');
         await Sentry.captureException(
           Exception(
               'Unable to use apple pay via stripe for currency: $currency'),
@@ -292,7 +541,8 @@ class StripeService {
                 amount: amount.inGBPValue.toStringAsFixed(2),
               )
             ],
-            merchantCountryCode: amount.inGBP.currency.name.toLowerCase().substring(0, 2),
+            merchantCountryCode:
+                amount.inGBP.currency.name.toLowerCase().substring(0, 2),
             currencyCode: amount.inGBP.currency.name.toLowerCase(),
           ),
         ),

@@ -89,7 +89,7 @@ UserCartState _updateCartItem(
   return state.copyWith(
     cartItems: state.cartItems
         .where(
-          (element) => element.internalID != action.cartItem.internalID,
+          (element) => element.id != action.cartItem.id,
         )
         .toList()
       ..add(action.cartItem),
@@ -125,7 +125,7 @@ UserCartState _clearCart(
     discountCode: '',
     selectedDeliveryAddress: null,
     paymentIntentID: '',
-    orderID: '',
+    order: null,
     selectedGBPxAmount: 0,
     selectedPPLAmount: 0,
     transferringTokens: false,
@@ -186,19 +186,21 @@ UserCartState _removeVoucherCodeFromCart(
   UserCartState state,
   RemoveVoucherCodeFromCart action,
 ) {
-  final appliedVouchers = 
-    state.appliedVouchers.where(
-      (element) =>
-          element.code != action.voucher.code &&
-          element.discountType != action.voucher.discountType,
-    ).toList();
-  
+  final appliedVouchers = state.appliedVouchers
+      .where(
+        (element) =>
+            element.code != action.voucher.code &&
+            element.discountType != action.voucher.discountType,
+      )
+      .toList();
+
   num potValue = 0.0;
   final thisCurrency = action.voucher.currency;
   if (action.voucher.vendor != null) {
     potValue = appliedVouchers.sum(
       (previousValue, discount) =>
-          ((discount.vendor?.id.toString() ?? '') == (action.voucher.vendor?.id.toString() ?? '') &&
+          ((discount.vendor?.id.toString() ?? '') ==
+                      (action.voucher.vendor?.id.toString() ?? '') &&
                   discount.currency == thisCurrency
               ? discount.value
               : 0.0) +
@@ -269,7 +271,7 @@ UserCartState _createOrder(
   CreateOrder action,
 ) {
   return state.copyWith(
-    orderID: action.order.id.toString(),
+    order: action.order,
     paymentIntentID: action.paymentIntentId,
   );
 }
@@ -279,7 +281,7 @@ UserCartState _cancelOrder(
   CancelOrder action,
 ) {
   return state.copyWith(
-    orderID: '',
+    order: null,
     paymentIntentID: '',
   );
 }

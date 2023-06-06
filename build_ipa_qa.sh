@@ -17,8 +17,10 @@ cd ./ios
 
 # xcrun agvtool next-version -all
 
-echo "Now:"
+echo "Current version of builds is (remember increments on every build, not just on publish...):"
 xcrun agvtool what-version
+
+echo "see https://www.notion.so/gember/xcode-Better-way-of-incrementing-build-number-Stack-Overflow-3bbd3f4a1f9948c287360aa5523685cc for smarter builds"
 
 cd ..
 
@@ -26,13 +28,13 @@ fvm flutter build ipa --dart-define ENV=qa
 
 cd ./ios
 
-xcrun agvtool next-version -all
+echo "Not manually incrementing build for now as xcode uses avgtool to autoincrement of EVERY build call anyways"
+# xcrun agvtool next-version -all
 
 
 echo "Next build will be:"
 xcrun agvtool what-version
 
 cd ..
-
 
 open build/ios/ipa/

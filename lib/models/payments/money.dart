@@ -63,6 +63,7 @@ class Money implements Comparable {
           amount: value,
         ),
       );
+      
   Money inCcy(Currency inCurrency) => Money(
         currency: inCurrency,
         value: convertInternalCurrencyAmount(
@@ -71,6 +72,36 @@ class Money implements Comparable {
           amount: value,
         ),
       );
+  
+  /**
+   * convert any crypto currencies to the local currency for that region
+   * 
+   * - FUSE -> GBP (FOR NOW),
+   * 
+   * - GBPx -> GBP,
+   * 
+   * - GBT -> GBP,
+   * 
+   * - PPL -> GBP,
+   * 
+   * - USD -> USD,
+   * 
+   * - EUR -> EUR,
+   * 
+   * - [GBP -> GBP],
+   */
+  Money toFiatCcy() {
+    var toCurrency = Currency.GBP;
+    if([Currency.GBPx, Currency.GBT, Currency.PPL].contains(currency)){
+      toCurrency = Currency.GBP;
+    } else if(currency == Currency.FUSE){
+      toCurrency = Currency.GBP;
+    } else {
+      toCurrency = currency;
+      return this;
+    }
+    return inCcy(toCurrency);
+  } 
 
   Money operator +(num amount) =>
       Money(currency: currency, value: value + amount);

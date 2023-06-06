@@ -31,14 +31,14 @@ class TimeSlot with _$TimeSlot {
   }
 
   String get formattedDate {
-    final DateFormat hourFormatter = DateFormat(DateFormat.HOUR);
+    final DateFormat hourMinFormatter = DateFormat(DateFormat.HOUR_MINUTE);
     final DateFormat monthFormatter = DateFormat(DateFormat.ABBR_MONTH);
-    final String startHour = hourFormatter
+    final String startHour = hourMinFormatter
         .format(startTime)
         .replaceAll(' AM', '')
         .replaceAll(' PM', '');
 
-    final String endHour = hourFormatter.format(endTime).replaceAll(' ', '');
+    final String endHour = hourMinFormatter.format(endTime).replaceAll(' ', '');
 
     final String month = monthFormatter.format(startTime);
 
@@ -46,7 +46,7 @@ class TimeSlot with _$TimeSlot {
   }
 
   String get formattedDateTimeOnly {
-    final DateFormat dateFormat = DateFormat(DateFormat.HOUR);
+    final DateFormat dateFormat = DateFormat(DateFormat.HOUR_MINUTE);
 
     return '${dateFormat.format(startTime).replaceAll(' AM', '').replaceAll(' PM', '')}-${dateFormat.format(endTime)}';
   }

@@ -174,63 +174,64 @@ class PaymentMethodSelectorModalSheet extends StatelessWidget {
                   ),
                 ),
                 if (viewmodel.isSuperAdmin)
-                  if (Platform.isIOS)
-                    if (AppConfig.useFusePayments)
-                      ListTile(
+                  if (Platform.isIOS && AppConfig.useFusePayments)
+                    ListTile(
+                      onTap: () {
+                        viewmodel.setPaymentMethod(
+                          paymentMethod: PaymentMethod.applePayToFuse,
+                        );
+                        context.router.pop();
+                      },
+                      leading: const Icon(FontAwesomeIcons.applePay),
+                      title: Text(PaymentMethod.applePayToFuse.formattedName),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                      ),
+                    )
+                  else if (!Platform.isIOS && AppConfig.useFusePayments)
+                    Opacity(
+                      opacity: 0.5,
+                      child: ListTile(
                         onTap: () {
-                          viewmodel.setPaymentMethod(
-                            paymentMethod: PaymentMethod.applePayToFuse,
-                          );
-                          context.router.pop();
+                          // viewmodel.setPaymentMethod(
+                          //   paymentMethod: PaymentMethod.googlePayToFuse,
+                          // );
+                          // context.router.pop();
                         },
-                        leading: const Icon(FontAwesomeIcons.applePay),
-                        title: Text(PaymentMethod.applePayToFuse.formattedName),
+                        enabled: false,
+                        leading: const Icon(FontAwesomeIcons.googlePay),
+                        title:
+                            Text(PaymentMethod.googlePayToFuse.formattedName),
+                        subtitle: const Text('Coming soon'),
                         trailing: const Icon(
                           Icons.arrow_forward_ios,
                           size: 14,
                         ),
-                      )
-                    else if (AppConfig.useFusePayments)
-                      Opacity(
-                        opacity: 0.5,
-                        child: ListTile(
-                          onTap: () {
-                            // viewmodel.setPaymentMethod(
-                            //   paymentMethod: PaymentMethod.googlePayToFuse,
-                            // );
-                            // context.router.pop();
-                          },
-                          enabled: false,
-                          leading: const Icon(FontAwesomeIcons.googlePay),
-                          title:
-                              Text(PaymentMethod.googlePayToFuse.formattedName),
-                          subtitle: const Text('Coming soon'),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                          ),
-                        ),
-                      )
-                    else
-                      Opacity(
-                        opacity: 0.5,
-                        child: ListTile(
-                          onTap: () {
-                            // viewmodel.setPaymentMethod(
-                            //   paymentMethod: PaymentMethod.googlePay,
-                            // );
-                            // context.router.pop();
-                          },
-                          enabled: false,
-                          leading: const Icon(FontAwesomeIcons.googlePay),
-                          title: Text(PaymentMethod.googlePay.formattedName),
-                          subtitle: const Text('Coming soon'),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                          ),
+                      ),
+                    )
+                  // Ignored as apple pay already for the public above
+                  // else if (Platform.isIOS && !AppConfig.useFusePayments)
+                  else
+                    Opacity(
+                      opacity: 0.5,
+                      child: ListTile(
+                        onTap: () {
+                          // viewmodel.setPaymentMethod(
+                          //   paymentMethod: PaymentMethod.googlePay,
+                          // );
+                          // context.router.pop();
+                        },
+                        enabled: false,
+                        leading: const Icon(FontAwesomeIcons.googlePay),
+                        title: Text(PaymentMethod.googlePay.formattedName),
+                        subtitle: const Text('Coming soon'),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
                         ),
                       ),
+                    ),
               ],
               if (viewmodel.showvegiPay)
                 Opacity(

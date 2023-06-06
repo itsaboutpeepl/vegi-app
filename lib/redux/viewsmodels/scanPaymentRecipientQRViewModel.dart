@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/cart/createOrderForFulfilment.dart';
+import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
@@ -26,7 +27,7 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
       //todo: add function to find a product from selected vendor
       scannedCartItems: store.state.cartState.cartItems,
       loadBasketToCartState: ({
-        required CreateOrderForFulfilment basket,
+        required Order basket,
         required void Function() success,
         required void Function(String, QRCodeScanErrCode) error,
       }) {
@@ -112,18 +113,17 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
                       }),
                     );
                     final item = CartItem(
-                      internalID: Random(
+                      id: Random(
                         DateTime.now().millisecondsSinceEpoch,
                       ).nextInt(100000),
                       menuItem: menuItem,
                       selectedProductOptions: selectedProductOptions,
-                      totalItemPrice: (await menuItem
-                          .totalPrice(
-                            quantity: menuItemQuantity,
-                            selectedProductOptions: selectedProductOptions,
-                            fulfilmentMethod:
-                                store.state.cartState.fulfilmentMethod,
-                          ))
+                      totalItemPrice: (await menuItem.totalPrice(
+                        quantity: menuItemQuantity,
+                        selectedProductOptions: selectedProductOptions,
+                        fulfilmentMethod:
+                            store.state.cartState.fulfilmentMethod,
+                      ))
                           .totalPrice,
                       itemQuantity: menuItemQuantity,
                       //this quantity always needs to be 1 to work
@@ -169,7 +169,7 @@ class ScanPaymentRecipientQRViewModel extends Equatable {
 
   final List<CartItem> scannedCartItems;
   final void Function({
-    required CreateOrderForFulfilment basket,
+    required Order basket,
     required void Function() success,
     required void Function(String, QRCodeScanErrCode) error,
   }) loadBasketToCartState;

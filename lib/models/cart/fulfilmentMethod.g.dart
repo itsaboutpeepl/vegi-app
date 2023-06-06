@@ -17,20 +17,16 @@ _$_FulfilmentMethod _$$_FulfilmentMethodFromJson(Map<String, dynamic> json) =>
       maxOrders: json['maxOrders'] as int?,
       maxDeliveryDistance: json['maxDeliveryDistance'] as int? ?? null,
       priceModifier: json['priceModifier'] as num?,
-      vendor: json['vendor'] == null
-          ? null
-          : VendorDTO.fromJson(json['vendor'] as Map<String, dynamic>),
+      vendor: json['vendor'] == null ? null : fromJsonVendorDTO(json['vendor']),
       deliveryPartner: json['deliveryPartner'] == null
           ? null
-          : DeliveryPartnerDTO.fromJson(
-              json['deliveryPartner'] as Map<String, dynamic>),
+          : fromJsonDeliveryPartnerDTO(json['deliveryPartner']),
       openingHours: json['openingHours'] == null
           ? null
-          : OpeningHours.fromJson(json['openingHours'] as Map<String, dynamic>),
+          : fromJsonOpeningHours(json['openingHours']),
       fulfilmentOrigin: json['fulfilmentOrigin'] == null
           ? null
-          : DeliveryAddresses.fromJson(
-              json['fulfilmentOrigin'] as Map<String, dynamic>),
+          : fromJsonDeliveryAddresses(json['fulfilmentOrigin']),
     );
 
 Map<String, dynamic> _$$_FulfilmentMethodToJson(_$_FulfilmentMethod instance) =>

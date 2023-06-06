@@ -10,10 +10,9 @@ part 'orderItem.freezed.dart';
 part 'orderItem.g.dart';
 
 List<OrderItem> fromJsonOrderItemList(dynamic json) =>
-  fromSailsListOfObjectJson<OrderItem>(OrderItem.fromJson)(json);
+    fromSailsListOfObjectJson<OrderItem>(OrderItem.fromJson)(json);
 OrderItem? fromJsonOrderItem(dynamic json) =>
-  fromSailsObjectJson<OrderItem>(OrderItem.fromJson)(json);
-
+    fromSailsObjectJson<OrderItem>(OrderItem.fromJson)(json);
 
 @Freezed()
 class OrderItem with _$OrderItem {
@@ -31,6 +30,8 @@ class OrderItem with _$OrderItem {
   factory OrderItem({
     required int id,
     bool? unfulfilled,
+    // @JsonKey(fromJson: fromJsonProduct)
+    // @Default(null) Product? product,
     required Product product,
   }) = _OrderItem;
 
@@ -42,13 +43,13 @@ class OrderItem with _$OrderItem {
       );
 
   String get formattedPrice {
-    return product.totalPriceFormatted;
+    return product?.totalPriceFormatted ?? '£0.00';
   }
 
   List<String> get selectedProductOptionsString {
     int _counter = 0;
     final List<String> optionValues = [];
-    for (final element in product.options) {
+    for (final element in (product?.options ?? [])) {
       _counter++;
       optionValues.add(
         '$_counter. ${element.chosenOption}'.capitalizeWords(),

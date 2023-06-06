@@ -225,6 +225,15 @@ class Messages {
   static const String enterEmail =
       'Please enter your email to be first to receive an update when we launch.';
 
+  static const checkoutSuccessThankyouForOrdering =
+      'Thank you for ordering with vegi 💚';
+  static String checkoutSuccessOrderReceivedButNotConfirmed(String orderId) =>
+      'Your order #$orderId has been received '
+      "and will be confirmed shortly. We'll send you a text "
+      'with an update once they respond! \n ';
+  static const onboardingThankyouForRegistering =
+      'Thank you for registering with vegi 💚';
+
   static const vegiPrivacyTnCs = 'By signing up, you agree to the vegi'
       ' Terms & Conditions which can be found here';
 

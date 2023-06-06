@@ -165,7 +165,7 @@ class SetStripeCustomerDetails {
     required this.customerId,
   });
 
-  final String customerId;
+  final String? customerId;
 
   @override
   String toString() {
@@ -1048,6 +1048,8 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
       );
       if (vegiAccount != null) {
         store
+          ..dispatch(SetStripeCustomerDetails(
+              customerId: vegiAccount.stripeCustomerId))
           ..dispatch(SetUserVerifiedStatusSuccess(vegiAccount.verified))
           ..dispatch(SetUserAvatar(vegiAccount.imageUrl))
           ..dispatch(SetUserVegiAccountIdSuccess(vegiAccount.id));
@@ -1446,38 +1448,6 @@ ThunkAction<AppState> authenticate({
       // }
 
       // * Firebase Auth
-      Future<void> pushSignUpScreen() async {
-        store
-          ..dispatch(
-            SetUserAuthenticationStatus(
-              firebaseStatus: FirebaseAuthenticationStatus.beginAuthentication,
-            ),
-          )
-          ..dispatch(SignupLoading(isLoading: false));
-        if (store.state.userState.preferredSignonMethod ==
-            PreferredSignonMethod.emailAndPassword) {
-          log.info(
-              'ReplaceAll with SignUpWithEmailAndPasswordScreen() from ${rootRouter.current.name} in authenticate thunk.');
-          await rootRouter.replaceAll(
-            [const SignUpWithEmailAndPasswordScreen()],
-          );
-        } else if (store.state.userState.preferredSignonMethod ==
-            PreferredSignonMethod.emailLink) {
-          log.info(
-              'ReplaceAll with SignUpEmailLinkScreen() from ${rootRouter.current.name} in authenticate thunk.');
-          await rootRouter.replaceAll(
-            [const SignUpEmailLinkScreen()],
-          );
-        } else {
-          log.info(
-              'ReplaceAll with SignUpScreen() from ${rootRouter.current.name} in authenticate thunk.');
-          await rootRouter.replaceAll(
-            [const SignUpScreen()],
-          ); // ~ https://stackoverflow.com/a/46713257
-        }
-        return;
-      }
-
       // reauth if not already authenticated with firebase.
       if (store.state.userState.firebaseSessionToken?.isEmpty ?? true) {
         if (store.state.userState.firebaseCredentialIsValid) {
@@ -1485,11 +1455,27 @@ ThunkAction<AppState> authenticate({
           final reauthSucceeded = await onBoardStrategy.reauthenticateUser();
           store.dispatch(SignupLoading(isLoading: false));
           if (!reauthSucceeded) {
-            return pushSignUpScreen();
+            store
+              ..dispatch(
+                SetUserAuthenticationStatus(
+                  firebaseStatus:
+                      FirebaseAuthenticationStatus.beginAuthentication,
+                ),
+              )
+              ..dispatch(SignupLoading(isLoading: false));
+            return store.dispatch(routeToLoginScreen());
           }
         } else {
           // unable to reauth firebase so nav to SignUpScreen and return;
-          return pushSignUpScreen();
+          store
+            ..dispatch(
+              SetUserAuthenticationStatus(
+                firebaseStatus:
+                    FirebaseAuthenticationStatus.beginAuthentication,
+              ),
+            )
+            ..dispatch(SignupLoading(isLoading: false));
+          return store.dispatch(routeToLoginScreen());
         }
       }
 
@@ -2006,6 +1992,42 @@ ThunkAction<AppState> saveSmartWallet({
         Exception('Error in setup wallet call: ${e.toString()}'),
         stackTrace: s,
         hint: 'ERROR - setupWalletCall',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> routeToLoginScreen() {
+  return (Store<AppState> store) async {
+    try {
+      if (store.state.userState.preferredSignonMethod ==
+          PreferredSignonMethod.emailAndPassword) {
+        log.info(
+            'ReplaceAll with SignUpWithEmailAndPasswordScreen() from ${rootRouter.current.name} in authenticate thunk.');
+        await rootRouter.replaceAll(
+          [const SignUpWithEmailAndPasswordScreen()],
+        );
+      } else if (store.state.userState.preferredSignonMethod ==
+          PreferredSignonMethod.emailLink) {
+        log.info(
+            'ReplaceAll with SignUpEmailLinkScreen() from ${rootRouter.current.name} in authenticate thunk.');
+        await rootRouter.replaceAll(
+          [const SignUpEmailLinkScreen()],
+        );
+      } else {
+        log.info(
+            'ReplaceAll with SignUpScreen() from ${rootRouter.current.name} in authenticate thunk.');
+        await rootRouter.replaceAll(
+          [const SignUpScreen()],
+        ); // ~ https://stackoverflow.com/a/46713257
+      }
+      return;
+    } catch (e, s) {
+      log.error('ERROR - routeToLoginScreen $e', stackTrace: s);
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - routeToLoginScreen $e',
       );
     }
   };

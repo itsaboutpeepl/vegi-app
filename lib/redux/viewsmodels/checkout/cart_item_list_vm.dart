@@ -22,7 +22,7 @@ class CartItemListViewModel extends Equatable {
     final List<int> itemIds = [];
 
     for (final cartItem in cartItems) {
-      itemIds.add(cartItem.internalID);
+      itemIds.add(cartItem.id);
       itemPrices.add(cartItem.formattedPrice);
       itemNames.add(cartItem.menuItem.name.capitalizeWords());
       optionValues.add(cartItem.selectedProductOptionsString);

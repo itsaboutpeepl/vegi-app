@@ -25,6 +25,8 @@ mixin _$VegiAccount {
   bool get verified => throw _privateConstructorUsedError;
   String get walletAddress => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get stripeCustomerId => throw _privateConstructorUsedError;
+  String? get stripeAccountId => throw _privateConstructorUsedError;
   String? get bankCardNumber => throw _privateConstructorUsedError;
   String? get bankCardAccountName => throw _privateConstructorUsedError;
   int? get bankCardExpiryDateMonth => throw _privateConstructorUsedError;
@@ -48,6 +50,8 @@ abstract class $VegiAccountCopyWith<$Res> {
       bool verified,
       String walletAddress,
       String imageUrl,
+      String? stripeCustomerId,
+      String? stripeAccountId,
       String? bankCardNumber,
       String? bankCardAccountName,
       int? bankCardExpiryDateMonth,
@@ -72,6 +76,8 @@ class _$VegiAccountCopyWithImpl<$Res, $Val extends VegiAccount>
     Object? verified = null,
     Object? walletAddress = null,
     Object? imageUrl = null,
+    Object? stripeCustomerId = freezed,
+    Object? stripeAccountId = freezed,
     Object? bankCardNumber = freezed,
     Object? bankCardAccountName = freezed,
     Object? bankCardExpiryDateMonth = freezed,
@@ -98,6 +104,14 @@ class _$VegiAccountCopyWithImpl<$Res, $Val extends VegiAccount>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      stripeCustomerId: freezed == stripeCustomerId
+          ? _value.stripeCustomerId
+          : stripeCustomerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stripeAccountId: freezed == stripeAccountId
+          ? _value.stripeAccountId
+          : stripeAccountId // ignore: cast_nullable_to_non_nullable
+              as String?,
       bankCardNumber: freezed == bankCardNumber
           ? _value.bankCardNumber
           : bankCardNumber // ignore: cast_nullable_to_non_nullable
@@ -132,6 +146,8 @@ abstract class _$$_VegiAccountCopyWith<$Res>
       bool verified,
       String walletAddress,
       String imageUrl,
+      String? stripeCustomerId,
+      String? stripeAccountId,
       String? bankCardNumber,
       String? bankCardAccountName,
       int? bankCardExpiryDateMonth,
@@ -154,6 +170,8 @@ class __$$_VegiAccountCopyWithImpl<$Res>
     Object? verified = null,
     Object? walletAddress = null,
     Object? imageUrl = null,
+    Object? stripeCustomerId = freezed,
+    Object? stripeAccountId = freezed,
     Object? bankCardNumber = freezed,
     Object? bankCardAccountName = freezed,
     Object? bankCardExpiryDateMonth = freezed,
@@ -180,6 +198,14 @@ class __$$_VegiAccountCopyWithImpl<$Res>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      stripeCustomerId: freezed == stripeCustomerId
+          ? _value.stripeCustomerId
+          : stripeCustomerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stripeAccountId: freezed == stripeAccountId
+          ? _value.stripeAccountId
+          : stripeAccountId // ignore: cast_nullable_to_non_nullable
+              as String?,
       bankCardNumber: freezed == bankCardNumber
           ? _value.bankCardNumber
           : bankCardNumber // ignore: cast_nullable_to_non_nullable
@@ -210,6 +236,8 @@ class _$_VegiAccount extends _VegiAccount {
       required this.verified,
       required this.walletAddress,
       this.imageUrl = '',
+      this.stripeCustomerId = null,
+      this.stripeAccountId = null,
       this.bankCardNumber = null,
       this.bankCardAccountName = null,
       this.bankCardExpiryDateMonth = null,
@@ -233,6 +261,12 @@ class _$_VegiAccount extends _VegiAccount {
   final String imageUrl;
   @override
   @JsonKey()
+  final String? stripeCustomerId;
+  @override
+  @JsonKey()
+  final String? stripeAccountId;
+  @override
+  @JsonKey()
   final String? bankCardNumber;
   @override
   @JsonKey()
@@ -246,7 +280,7 @@ class _$_VegiAccount extends _VegiAccount {
 
   @override
   String toString() {
-    return 'VegiAccount(id: $id, accountType: $accountType, verified: $verified, walletAddress: $walletAddress, imageUrl: $imageUrl, bankCardNumber: $bankCardNumber, bankCardAccountName: $bankCardAccountName, bankCardExpiryDateMonth: $bankCardExpiryDateMonth, bankCardExpiryDateYear: $bankCardExpiryDateYear)';
+    return 'VegiAccount(id: $id, accountType: $accountType, verified: $verified, walletAddress: $walletAddress, imageUrl: $imageUrl, stripeCustomerId: $stripeCustomerId, stripeAccountId: $stripeAccountId, bankCardNumber: $bankCardNumber, bankCardAccountName: $bankCardAccountName, bankCardExpiryDateMonth: $bankCardExpiryDateMonth, bankCardExpiryDateYear: $bankCardExpiryDateYear)';
   }
 
   @override
@@ -263,6 +297,10 @@ class _$_VegiAccount extends _VegiAccount {
                 other.walletAddress == walletAddress) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.stripeCustomerId, stripeCustomerId) ||
+                other.stripeCustomerId == stripeCustomerId) &&
+            (identical(other.stripeAccountId, stripeAccountId) ||
+                other.stripeAccountId == stripeAccountId) &&
             (identical(other.bankCardNumber, bankCardNumber) ||
                 other.bankCardNumber == bankCardNumber) &&
             (identical(other.bankCardAccountName, bankCardAccountName) ||
@@ -283,6 +321,8 @@ class _$_VegiAccount extends _VegiAccount {
       verified,
       walletAddress,
       imageUrl,
+      stripeCustomerId,
+      stripeAccountId,
       bankCardNumber,
       bankCardAccountName,
       bankCardExpiryDateMonth,
@@ -309,6 +349,8 @@ abstract class _VegiAccount extends VegiAccount {
       required final bool verified,
       required final String walletAddress,
       final String imageUrl,
+      final String? stripeCustomerId,
+      final String? stripeAccountId,
       final String? bankCardNumber,
       final String? bankCardAccountName,
       final int? bankCardExpiryDateMonth,
@@ -328,6 +370,10 @@ abstract class _VegiAccount extends VegiAccount {
   String get walletAddress;
   @override
   String get imageUrl;
+  @override
+  String? get stripeCustomerId;
+  @override
+  String? get stripeAccountId;
   @override
   String? get bankCardNumber;
   @override

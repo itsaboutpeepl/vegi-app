@@ -412,7 +412,7 @@ UserState _logoutSuccess(
       '',
       '',
     ],
-    preferredSignonMethod: PreferredSignonMethod.phone,
+    // preferredSignonMethod: PreferredSignonMethod.phone,
   );
 }
 

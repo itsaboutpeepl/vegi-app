@@ -55,6 +55,7 @@ dependencies:
   # mobile_scanner: ^3.0.0 # ~ to be added when this issue is fixed with pods -> https://stackoverflow.com/a/74288202
   number_display: ^3.0.0
   package_info: ^2.0.2 #Gets application info, used to show application and build version
+  pay: ^1.1.1
   phone_number: ^1.0.0
   pin_code_fields: ^7.2.0
   # redux: ^5.0.0
@@ -87,6 +88,7 @@ dependencies:
   fuse_wallet_sdk: ^0.0.17
   google_sign_in: ^6.1.0
   firebase_remote_config: ^4.2.2
+  screen_capture_event: ^1.1.1
   # web3auth_flutter: ^1.3.0
 dependency_overrides:
     # flutter_chips_input: # ~ https://github.com/danvick/flutter_chips_input/issues/136
