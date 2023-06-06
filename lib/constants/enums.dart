@@ -114,6 +114,13 @@ extension CurrencyAmountFormatter on Currency {
         return '${(amount * 100.0).toStringAsPrecision(2)}%';
     }
   }
+
+  bool isCrypto() => [
+        Currency.GBPx,
+        Currency.FUSE,
+        Currency.PPL,
+        Currency.GBT,
+      ].contains(this);
 }
 
 extension CurrencyFiatOnlyAmountFormatter on CurrencyFiatOnly {

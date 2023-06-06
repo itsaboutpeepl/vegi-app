@@ -21,7 +21,9 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   String get name => throw _privateConstructorUsedError;
-  int get basePrice => throw _privateConstructorUsedError;
+  int get basePrice =>
+      throw _privateConstructorUsedError; // required List<OrderProductOptionValue> options,
+  @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
   List<OrderProductOptionValue> get options =>
       throw _privateConstructorUsedError;
 
@@ -36,7 +38,10 @@ abstract class $ProductCopyWith<$Res> {
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
   $Res call(
-      {String name, int basePrice, List<OrderProductOptionValue> options});
+      {String name,
+      int basePrice,
+      @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
+          List<OrderProductOptionValue> options});
 }
 
 /// @nodoc
@@ -81,7 +86,10 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String name, int basePrice, List<OrderProductOptionValue> options});
+      {String name,
+      int basePrice,
+      @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
+          List<OrderProductOptionValue> options});
 }
 
 /// @nodoc
@@ -120,7 +128,10 @@ class __$$_ProductCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Product extends _Product {
   _$_Product(
-      {required this.name, required this.basePrice, required this.options})
+      {required this.name,
+      required this.basePrice,
+      @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
+          this.options = const []})
       : super._();
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
@@ -130,7 +141,9 @@ class _$_Product extends _Product {
   final String name;
   @override
   final int basePrice;
+// required List<OrderProductOptionValue> options,
   @override
+  @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
   final List<OrderProductOptionValue> options;
 
   @override
@@ -172,7 +185,8 @@ abstract class _Product extends Product {
   factory _Product(
       {required final String name,
       required final int basePrice,
-      required final List<OrderProductOptionValue> options}) = _$_Product;
+      @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
+          final List<OrderProductOptionValue> options}) = _$_Product;
   _Product._() : super._();
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
@@ -181,7 +195,8 @@ abstract class _Product extends Product {
   String get name;
   @override
   int get basePrice;
-  @override
+  @override // required List<OrderProductOptionValue> options,
+  @JsonKey(fromJson: fromJsonOrderProductOptionValueList)
   List<OrderProductOptionValue> get options;
   @override
   @JsonKey(ignore: true)

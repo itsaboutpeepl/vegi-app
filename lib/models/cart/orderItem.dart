@@ -30,8 +30,7 @@ class OrderItem with _$OrderItem {
   factory OrderItem({
     required int id,
     bool? unfulfilled,
-    // @JsonKey(fromJson: fromJsonProduct)
-    // @Default(null) Product? product,
+    @JsonKey(fromJson: fromJsonProduct)
     required Product product,
   }) = _OrderItem;
 

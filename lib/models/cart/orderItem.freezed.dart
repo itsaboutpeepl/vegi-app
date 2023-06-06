@@ -21,9 +21,8 @@ OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OrderItem {
   int get id => throw _privateConstructorUsedError;
-  bool? get unfulfilled =>
-      throw _privateConstructorUsedError; // @JsonKey(fromJson: fromJsonProduct)
-// @Default(null) Product? product,
+  bool? get unfulfilled => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: fromJsonProduct)
   Product get product => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +36,10 @@ abstract class $OrderItemCopyWith<$Res> {
   factory $OrderItemCopyWith(OrderItem value, $Res Function(OrderItem) then) =
       _$OrderItemCopyWithImpl<$Res, OrderItem>;
   @useResult
-  $Res call({int id, bool? unfulfilled, Product product});
+  $Res call(
+      {int id,
+      bool? unfulfilled,
+      @JsonKey(fromJson: fromJsonProduct) Product product});
 
   $ProductCopyWith<$Res> get product;
 }
@@ -91,7 +93,10 @@ abstract class _$$_OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
       __$$_OrderItemCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, bool? unfulfilled, Product product});
+  $Res call(
+      {int id,
+      bool? unfulfilled,
+      @JsonKey(fromJson: fromJsonProduct) Product product});
 
   @override
   $ProductCopyWith<$Res> get product;
@@ -133,7 +138,10 @@ class __$$_OrderItemCopyWithImpl<$Res>
 
 @JsonSerializable()
 class _$_OrderItem extends _OrderItem {
-  _$_OrderItem({required this.id, this.unfulfilled, required this.product})
+  _$_OrderItem(
+      {required this.id,
+      this.unfulfilled,
+      @JsonKey(fromJson: fromJsonProduct) required this.product})
       : super._();
 
   factory _$_OrderItem.fromJson(Map<String, dynamic> json) =>
@@ -143,9 +151,8 @@ class _$_OrderItem extends _OrderItem {
   final int id;
   @override
   final bool? unfulfilled;
-// @JsonKey(fromJson: fromJsonProduct)
-// @Default(null) Product? product,
   @override
+  @JsonKey(fromJson: fromJsonProduct)
   final Product product;
 
   @override
@@ -184,9 +191,10 @@ class _$_OrderItem extends _OrderItem {
 
 abstract class _OrderItem extends OrderItem {
   factory _OrderItem(
-      {required final int id,
-      final bool? unfulfilled,
-      required final Product product}) = _$_OrderItem;
+          {required final int id,
+          final bool? unfulfilled,
+          @JsonKey(fromJson: fromJsonProduct) required final Product product}) =
+      _$_OrderItem;
   _OrderItem._() : super._();
 
   factory _OrderItem.fromJson(Map<String, dynamic> json) =
@@ -196,8 +204,8 @@ abstract class _OrderItem extends OrderItem {
   int get id;
   @override
   bool? get unfulfilled;
-  @override // @JsonKey(fromJson: fromJsonProduct)
-// @Default(null) Product? product,
+  @override
+  @JsonKey(fromJson: fromJsonProduct)
   Product get product;
   @override
   @JsonKey(ignore: true)

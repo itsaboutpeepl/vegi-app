@@ -19,6 +19,7 @@ import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/payments/money.dart';
 
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
+import 'package:vegan_liverpool/redux/actions/home_page_actions.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/analytics.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -64,6 +65,11 @@ class StripeService {
     required Store<AppState> store,
   }) async {
     try {
+      store.dispatch(
+        StripePaymentStatusUpdate(
+          status: StripePaymentStatus.none,
+        ),
+      );
       final currency = amount.currency;
       final paymentIntentClientSecret =
           await stripePayService.createStripePaymentIntent(
@@ -128,7 +134,8 @@ class StripeService {
         phone: store.state.cartState.order?.deliveryPhoneNumber,
         address: Address(
           city: store.state.cartState.order?.deliveryAddressCity,
-          country: store.state.cartState.order?.deliveryAddressCountry, // ~ https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+          country: store.state.cartState.order
+              ?.deliveryAddressCountry, // ~ https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
           line1: store.state.cartState.order?.deliveryAddressLineOne,
           line2: store.state.cartState.order?.deliveryAddressLineTwo,
           state: store.state.cartState.order?.deliveryAddressCity,
@@ -194,10 +201,22 @@ class StripeService {
       );
       await instance.presentPaymentSheet();
 
-      final mintingCrypto = currency == Currency.GBPx ||
-          currency == Currency.PPL ||
-          currency == Currency.GBT;
-      if (mintingCrypto) {
+      // 4. Confirm the payment sheet.
+      try {
+        unawaited(
+          instance.confirmPaymentSheetPayment().timeout(
+                const Duration(
+                  seconds: 10,
+                ),
+              ),
+        );
+      } on Exception catch (e, s) {
+        // TODO
+        log.error('WTF: $e', stackTrace: s);
+        rethrow;
+      }
+
+      if (currency.isCrypto()) {
         store
           ..dispatch(
             SetProcessingPayment(
@@ -226,6 +245,13 @@ class StripeService {
                 technology: PaymentTechnology.card,
                 type: PaymentType.cardPayment,
               ),
+            ),
+          )
+          ..dispatch(SetPaymentButtonFlag(false))
+          ..dispatch(SetTransferringPayment(flag: false))
+          ..dispatch(
+            SetIsLoadingHttpRequest(
+              isLoading: false,
             ),
           )
           ..dispatch(
@@ -332,6 +358,11 @@ class StripeService {
     required bool shouldPushToHome,
   }) async {
     try {
+      store.dispatch(
+        StripePaymentStatusUpdate(
+          status: StripePaymentStatus.none,
+        ),
+      );
       final currency = amount.currency;
       // 1. fetch Intent Client Secret from backend
       final paymentIntentClientSecret =
@@ -403,10 +434,7 @@ class StripeService {
         ),
       );
 
-      final mintingCrypto = currency == Currency.GBPx ||
-          currency == Currency.PPL ||
-          currency == Currency.GBT;
-      if (mintingCrypto) {
+      if (currency.isCrypto()) {
         store
           ..dispatch(
             SetProcessingPayment(
@@ -435,6 +463,13 @@ class StripeService {
                 technology: PaymentTechnology.card,
                 type: PaymentType.cardPayment,
               ),
+            ),
+          )
+          ..dispatch(SetPaymentButtonFlag(false))
+          ..dispatch(SetTransferringPayment(flag: false))
+          ..dispatch(
+            SetIsLoadingHttpRequest(
+              isLoading: false,
             ),
           )
           ..dispatch(
@@ -492,6 +527,11 @@ class StripeService {
     required bool shouldPushToHome,
   }) async {
     try {
+      store.dispatch(
+        StripePaymentStatusUpdate(
+          status: StripePaymentStatus.none,
+        ),
+      );
       final currency = amount.currency;
       // 1. fetch Intent Client Secret from backend
       final paymentIntentClientSecret =
@@ -580,6 +620,13 @@ class StripeService {
                 technology: PaymentTechnology.card,
                 type: PaymentType.cardPayment,
               ),
+            ),
+          )
+          ..dispatch(SetPaymentButtonFlag(false))
+          ..dispatch(SetTransferringPayment(flag: false))
+          ..dispatch(
+            SetIsLoadingHttpRequest(
+              isLoading: false,
             ),
           )
           ..dispatch(

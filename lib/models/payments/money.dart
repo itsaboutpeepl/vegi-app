@@ -1,3 +1,4 @@
+import 'dart:math' as Math;
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
@@ -63,7 +64,7 @@ class Money implements Comparable {
           amount: value,
         ),
       );
-      
+
   Money inCcy(Currency inCurrency) => Money(
         currency: inCurrency,
         value: convertInternalCurrencyAmount(
@@ -72,7 +73,7 @@ class Money implements Comparable {
           amount: value,
         ),
       );
-  
+
   /**
    * convert any crypto currencies to the local currency for that region
    * 
@@ -92,16 +93,16 @@ class Money implements Comparable {
    */
   Money toFiatCcy() {
     var toCurrency = Currency.GBP;
-    if([Currency.GBPx, Currency.GBT, Currency.PPL].contains(currency)){
+    if ([Currency.GBPx, Currency.GBT, Currency.PPL].contains(currency)) {
       toCurrency = Currency.GBP;
-    } else if(currency == Currency.FUSE){
+    } else if (currency == Currency.FUSE) {
       toCurrency = Currency.GBP;
     } else {
       toCurrency = currency;
       return this;
     }
     return inCcy(toCurrency);
-  } 
+  }
 
   Money operator +(num amount) =>
       Money(currency: currency, value: value + amount);
@@ -176,10 +177,10 @@ class Money implements Comparable {
   @override
   int compareTo(dynamic other) {
     if (other is Money && currency == other.currency) {
-      if (value < other.value) {
-        return -1;
-      } else if (value == other.value) {
+      if ((value - other.value).abs() < 0.000001) {
         return 0;
+      } else if (value < other.value) {
+        return -1;
       } else {
         return 1;
       }

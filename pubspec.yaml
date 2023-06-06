@@ -34,7 +34,7 @@ dependencies:
   flutter_redux: ^0.10.0
   flutter_secure_storage: ^8.0.0
   flutter_sticky_header: ^0.6.4
-  flutter_stripe: ^9.0.0+1
+  flutter_stripe: ^9.2.1
   flutter_svg: ^2.0.0+1
   flutter_typeahead: ^4.3.6
   flutter_udid: ^2.0.0
