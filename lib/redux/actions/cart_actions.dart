@@ -1746,8 +1746,8 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
             ),
           );
       } else {
-        final checkResult = await peeplPayService.checkOrderValidity(
-            result.paymentIntentID);
+        final checkResult =
+            await peeplPayService.checkOrderValidity(result.paymentIntentID);
         if (checkResult == null) {
           store
             ..dispatch(
@@ -1787,8 +1787,28 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
                 ),
               ),
             );
+        } else if (result.stripePaymentIntent.customer == null) {
+          store
+            ..dispatch(
+              SetIsLoadingHttpRequest(
+                isLoading: false,
+              ),
+            )
+            ..dispatch(
+              OrderCreationProcessStatusUpdate(
+                status: _sentryUpdatePipe(
+                  OrderCreationProcessStatus
+                      .unableToGetStripeCustomerIdFromCreateOrderRequest,
+                ),
+              ),
+            );
         } else {
           store
+            ..dispatch(
+              SetStripeCustomerDetails(
+                customerId: result.stripePaymentIntent.customer!.id,
+              ),
+            )
             ..dispatch(
               CreateOrder(
                 stripePaymentIntent: result.stripePaymentIntent,
@@ -1959,6 +1979,33 @@ ThunkAction<AppState> startPaymentProcess({
               ),
             );
           return;
+        } else if (store.state.userState.stripeCustomerId == null) {
+          final e =
+              'stripe customer id not set on state... Cannot startPaymentProcess';
+          log.error(
+            e,
+            stackTrace: StackTrace.current,
+          );
+          await Sentry.captureException(
+            Exception(e),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - startPaymentProcess $e',
+          );
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              SetIsLoadingHttpRequest(
+                isLoading: false,
+              ),
+            )
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
+          return;
         } else if (store.state.cartState.orderCreationProcessStatus !=
             OrderCreationProcessStatus.none) {
           final e =
@@ -1987,7 +2034,7 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: orderId,
           accountId: store.state.userState.vegiAccountId!,
-          stripeCustomerId: store.state.userState.stripeCustomerId,
+          stripeCustomerId: store.state.userState.stripeCustomerId!,
           paymentIntentClientSecret:
               store.state.cartState.paymentIntentClientSecret,
           store: store,
@@ -2025,11 +2072,41 @@ ThunkAction<AppState> startPaymentProcess({
         );
         if (store.state.userState.vegiAccountId == null) {
           const e = 'Vegi AccountId not set on state... Cannot start payment';
-          log.error(e);
+          log.error(
+            e,
+            stackTrace: StackTrace.current,
+          );
           await Sentry.captureException(
             Exception(e),
             stackTrace: StackTrace.current, // from catch (e, s)
             hint: 'ERROR - startPaymentProcess[PaymentMethod.stripeToFuse] $e',
+          );
+          store
+            ..dispatch(SetPaymentButtonFlag(false))
+            ..dispatch(
+              SetIsLoadingHttpRequest(
+                isLoading: false,
+              ),
+            )
+            ..dispatch(
+              cancelOrder(
+                orderId: int.parse(store.state.cartState.orderID),
+                accountId: store.state.userState.vegiAccountId!,
+                senderWalletAddress: store.state.userState.walletAddress,
+              ),
+            );
+          return;
+        } else if (store.state.userState.stripeCustomerId == null) {
+          final e =
+              'stripe customer id not set on state... Cannot start payment';
+          log.error(
+            e,
+            stackTrace: StackTrace.current,
+          );
+          await Sentry.captureException(
+            Exception(e),
+            stackTrace: StackTrace.current, // from catch (e, s)
+            hint: 'ERROR - startPeeplPayProcess $e',
           );
           store
             ..dispatch(SetPaymentButtonFlag(false))
@@ -2053,7 +2130,7 @@ ThunkAction<AppState> startPaymentProcess({
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          stripeCustomerId: store.state.userState.stripeCustomerId,
+          stripeCustomerId: store.state.userState.stripeCustomerId!,
           paymentIntentClientSecret:
               store.state.cartState.paymentIntentClientSecret,
           amount: store.state.cartState.cartTotal,
@@ -2373,7 +2450,21 @@ ThunkAction<AppState> startPeeplPayProcess() {
     try {
       if (store.state.userState.vegiAccountId == null) {
         final e = 'vegi AccountId not set on state... Cannot start payment';
-        log.error(e);
+        log.error(
+          e,
+          stackTrace: StackTrace.current,
+        );
+        await Sentry.captureException(
+          Exception(e),
+          stackTrace: StackTrace.current, // from catch (e, s)
+          hint: 'ERROR - startPeeplPayProcess $e',
+        );
+      } else if (store.state.userState.stripeCustomerId == null) {
+        final e = 'stripe customer id not set on state... Cannot start payment';
+        log.error(
+          e,
+          stackTrace: StackTrace.current,
+        );
         await Sentry.captureException(
           Exception(e),
           stackTrace: StackTrace.current, // from catch (e, s)
@@ -2401,7 +2492,7 @@ ThunkAction<AppState> startPeeplPayProcess() {
           senderWalletAddress: store.state.userState.walletAddress,
           orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
-          stripeCustomerId: store.state.userState.stripeCustomerId,
+          stripeCustomerId: store.state.userState.stripeCustomerId!,
           amount: Money(
             currency: Currency.GBP,
             value: selectedGBPXAmount, // this is actually a GBP value.

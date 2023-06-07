@@ -18,6 +18,23 @@
             ]
         },
         {
+            "name": "vegi - Debug (stripe livemode & reset)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "ENV=development",
+                "--dart-define",
+                "USE_FIREBASE_EMULATOR=false",
+                "--dart-define",
+                "reset_state=true",
+                "--dart-define",
+                "stripe_live_mode=true"
+            ]
+        },
+        {
             "name": "vegi - Debug [verbose]",
             "request": "launch",
             "type": "dart",

@@ -37,9 +37,9 @@ void main() async {
 
   const envStr = Env.activeEnv;
 
-  if (DebugHelpers.inDebugMode) {
-    print('Loading secrets from ${Env.envFile} for Env: ${Env.activeEnv}');
-  }
+  // if (DebugHelpers.inDebugMode) {
+  //   print('Loading secrets from ${Env.envFile} for Env: ${Env.activeEnv}');
+  // }
   await dotenv.load(fileName: Env.envFile);
 
   StripeService().init();

@@ -667,7 +667,7 @@ enum OrderCreationProcessStatus {
   orderCancelled, //todo: Handle
   orderPaymentFailed,
   orderAlreadyBeingCreated, 
-  paymentIntentCheckNotFound, //todo: Handle
+  paymentIntentCheckNotFound, unableToGetStripeCustomerIdFromCreateOrderRequest, //todo: Handle
 }
 
 enum StripePaymentStatus {

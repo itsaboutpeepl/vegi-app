@@ -433,6 +433,8 @@ class Labels {
 }
 
 const ENV = String.fromEnvironment('ENV', defaultValue: 'production');
+const STRIPE_LIVEMODE =
+    String.fromEnvironment('stripe_live_mode', defaultValue: 'false');
 const USE_FIREBASE_EMULATOR =
     String.fromEnvironment('USE_FIREBASE_EMULATOR', defaultValue: 'false');
 

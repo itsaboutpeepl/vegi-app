@@ -41,7 +41,7 @@ class StripeService {
   final Stripe instance = Stripe.instance;
 
   void init() {
-    Stripe.publishableKey = Env.isDev
+    Stripe.publishableKey = Env.isDev && STRIPE_LIVEMODE != 'true'
         ? dotenv.env['STRIPE_API_KEY_TEST']!
         : dotenv.env['STRIPE_API_KEY_LIVE']!;
     // if (Stripe.publishableKey.contains('live')) {
@@ -61,7 +61,7 @@ class StripeService {
     required StripePaymentIntentInternal paymentIntentClientSecret,
     required String ephemeralKey,
     required String publishableKey,
-    required String? stripeCustomerId,
+    required String stripeCustomerId,
   }) async {
     // ~ https://docs.page/flutter-stripe/flutter_stripe/sheet#5-test-the-integration
     final dynamicUrl = 'vegi://vegiApp.co.uk${rootRouter.currentUrl}';
@@ -193,7 +193,7 @@ class StripeService {
     required String senderWalletAddress,
     required int orderId,
     required int accountId,
-    required String? stripeCustomerId,
+    required String stripeCustomerId,
     required Money amount,
     required bool shouldPushToHome,
     required Store<AppState> store,
@@ -352,7 +352,7 @@ class StripeService {
     required int orderId,
     required int accountId,
     required String paymentIntentClientSecret,
-    required String? stripeCustomerId,
+    required String stripeCustomerId,
     required Money amount,
     required bool shouldPushToHome,
     required Store<AppState> store,
