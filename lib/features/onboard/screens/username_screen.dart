@@ -37,6 +37,7 @@ class UserNameScreen extends StatelessWidget {
       body: StoreConnector<AppState, VerifyOnboardViewModel>(
         distinct: true,
         converter: VerifyOnboardViewModel.fromStore,
+        onInit: (store) => store.dispatch(setRandomUserAvatarIfNone()),
         builder: (_, viewmodel) {
           return Column(
             children: [
@@ -248,15 +249,7 @@ class UserNameScreen extends StatelessWidget {
                   title: const Text('Refresh'),
                   onTap: () async {
                     (await reduxStore).dispatch(
-                      setRandomUserAvatar(
-                        onError: (errStr) {
-                          showErrorSnack(
-                            context: context,
-                            title: Messages.connectionError,
-                            message: Messages.operationFailed,
-                          );
-                        },
-                      ),
+                      setRandomUserAvatar(),
                     );
                     Navigator.pop(context);
                   },

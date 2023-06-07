@@ -1285,7 +1285,7 @@ class PeeplEatsService extends HttpService {
       final Response<dynamic> response = await dioGet(
         '/api/v1/admin/user-details',
         queryParameters: {
-          'email': email,
+          'email': email.toLowerCase(),
           'phoneNoCountry': phoneNoCountry,
         },
         sendWithAuthCreds: true,
@@ -1348,7 +1348,7 @@ class PeeplEatsService extends HttpService {
       'api/v1/admin/update-waiting-list-entry',
       data: {
         'id': waitingListEntryId,
-        'emailAddress': email,
+        'emailAddress': email.toLowerCase(),
       },
     );
 
@@ -1371,7 +1371,7 @@ class PeeplEatsService extends HttpService {
     final Response<dynamic> response = await dioPost(
       'api/v1/admin/register-email-to-waiting-list',
       data: {
-        'emailAddress': email,
+        'emailAddress': email.toLowerCase(),
         'origin': kIsWeb ? 'guide' : 'mobile',
       },
     );
@@ -1397,7 +1397,7 @@ class PeeplEatsService extends HttpService {
     final Response<dynamic> response = await dioPost(
       'api/v1/admin/subscribe-waitlist-email-notifications',
       data: {
-        'emailAddress': email,
+        'emailAddress': email.toLowerCase(),
         'receiveUpdates': receiveUpdates,
         'firebaseRegistrationToken': await firebaseMessaging.getToken()
       },

@@ -13,6 +13,7 @@ class PastOrdersViewmodel extends Equatable {
     required this.hasOngoingOrder,
     required this.globalSearchIsVisible,
     required this.isVendor,
+    required this.isLoading,
   });
 
   factory PastOrdersViewmodel.fromStore(Store<AppState> store) {
@@ -23,6 +24,9 @@ class PastOrdersViewmodel extends Equatable {
           store.state.pastOrderState.listOfOngoingOrders.isNotEmpty,
       globalSearchIsVisible: store.state.homePageState.showGlobalSearchBarField,
       isVendor: store.state.userState.isVendor,
+      isLoading: store.state.onboardingState.signupIsInFlux ||
+          // store.state.homePageState.isLoadingHomePage ||
+          store.state.homePageState.isLoadingHttpRequest,
     );
   }
 
@@ -31,22 +35,25 @@ class PastOrdersViewmodel extends Equatable {
   final bool hasOngoingOrder;
   final bool globalSearchIsVisible;
   final bool isVendor;
+  final bool isLoading;
 
-  Order? get scheduledOrderToShow => listOfScheduledOrders.sortInline((a, b) {
-        final timeComp =
-            a.timeSlot.startTime.compareTo(b.timeSlot.startTime);
+  Order? get scheduledOrderToShow => listOfScheduledOrders
+      .sortInline((a, b) {
+        final timeComp = a.timeSlot.startTime.compareTo(b.timeSlot.startTime);
         if (timeComp == 0) {
           return a.orderID.compareTo(b.orderID);
         } else {
           return timeComp;
         }
-      }).sublist(
+      })
+      .sublist(
         0,
         Math.min(
           1,
           listOfScheduledOrders.length,
         ),
-      ).firstOrNull;
+      )
+      .firstOrNull;
 
   @override
   List<Object?> get props => [
@@ -55,6 +62,7 @@ class PastOrdersViewmodel extends Equatable {
         hasOngoingOrder,
         globalSearchIsVisible,
         isVendor,
+        isLoading,
         scheduledOrderToShow?.paymentStatusLabel,
         scheduledOrderToShow?.orderID,
         scheduledOrderToShow?.GBPxAmountPaid,

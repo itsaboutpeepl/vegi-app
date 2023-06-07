@@ -427,7 +427,7 @@ UserState _setEmail(
   UserState state,
   SetEmail action,
 ) {
-  return state.copyWith(email: action.email);
+  return state.copyWith(email: action.email.toLowerCase());
 }
 
 UserState _setEmailAndPassword(
@@ -435,7 +435,7 @@ UserState _setEmailAndPassword(
   SetEmailPassword action,
 ) {
   return state.copyWith(
-    email: action.email,
+    email: action.email.toLowerCase(),
     password: action.password,
   );
 }
@@ -563,8 +563,8 @@ UserState _setUserEmailForRegistrationToWaitingList(
   EmailWLRegistrationSuccess action,
 ) {
   return state.copyWith(
-    email: action.entry.email,
-    surveyEmailUsed: action.entry.email,
+    email: action.entry.email.toLowerCase(),
+    surveyEmailUsed: action.entry.email.toLowerCase(),
     subscribedToWaitingListUpdates: action.entry.emailUpdates,
     waitingListEntryId: action.entry.id,
   );
@@ -610,5 +610,5 @@ UserState _setUserIsVendorSuccessResponse(
 //   UserState state,
 //   SurveyResponseSuccess action,
 // ) {
-//   return state.copyWith(email: action.email, questionNumberResponded: action.questionNumber,);
+//   return state.copyWith(email: action.email.toLowerCase(), questionNumberResponded: action.questionNumber,);
 // }

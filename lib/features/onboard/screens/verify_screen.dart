@@ -50,12 +50,12 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
       return;
     }
     if (success) {
-      await rootRouter.push(
-        const SetEmailOnboardingScreen(),
-      );
       setState(() {
         finishedRouting = true;
       });
+      await rootRouter.push(
+        const SetEmailOnboardingScreen(),
+      );
     }
   }
 

@@ -63,7 +63,7 @@ class _CreateWalletButtonsState extends State<CreateWalletButtons> {
                   Expanded(
                     flex: 6,
                     child: Image.asset(
-                      'assets/images/Vegi-Logo-horizontal.png',
+                      ImagePaths.vegiHorizontalLogo,
                       width: 350,
                       height: 250,
                     ),

@@ -208,7 +208,8 @@ class CurrencyRateConstants {
 
 class Fonts {
   static const String fatFace = 'Fat Cheeks';
-  static const String gelica = 'Gelica';
+  // static const String gelica = 'Gelica';
+  static const String gelica = 'Europa';
   static const String europa = 'Europa';
 }
 

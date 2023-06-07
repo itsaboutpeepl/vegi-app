@@ -225,6 +225,10 @@ const _$OrderCreationProcessStatusEnumMap = {
   OrderCreationProcessStatus.orderPaymentFailed: 'orderPaymentFailed',
   OrderCreationProcessStatus.orderAlreadyBeingCreated:
       'orderAlreadyBeingCreated',
+  OrderCreationProcessStatus.paymentIntentCheckNotFound:
+      'paymentIntentCheckNotFound',
+  OrderCreationProcessStatus.unableToGetStripeCustomerIdFromCreateOrderRequest:
+      'unableToGetStripeCustomerIdFromCreateOrderRequest',
 };
 
 const _$StripePaymentStatusEnumMap = {

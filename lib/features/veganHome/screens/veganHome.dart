@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as Math;
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/VendorHomeView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/restaurant/featuredRestaurantList.dart';
@@ -28,20 +29,26 @@ class VeganHomeScreen extends StatelessWidget {
       builder: (_, viewmodel) {
         return Scaffold(
           drawer: NavDrawer(),
-          body: NestedScrollView(
-            headerSliverBuilder: (_, flag) => [
-              const VeganSliverAppBar(),
-              const BackupWalletAppBar(),
-              if (viewmodel.globalSearchIsVisible && !viewmodel.isVendor)
-                const SearchVendorsAppBar(),
-              if (!viewmodel.isVendor && viewmodel.scheduledOrderToShow != null)
-                PreparingOrderAppBar(
-                  order: viewmodel.scheduledOrderToShow!,
-                ),
+          body: Stack(
+            children: [
+              NestedScrollView(
+                headerSliverBuilder: (_, flag) => [
+                  const VeganSliverAppBar(),
+                  const BackupWalletAppBar(),
+                  if (viewmodel.globalSearchIsVisible && !viewmodel.isVendor)
+                    const SearchVendorsAppBar(),
+                  if (!viewmodel.isVendor && viewmodel.scheduledOrderToShow != null)
+                    PreparingOrderAppBar(
+                      order: viewmodel.scheduledOrderToShow!,
+                    ),
+                ],
+                body: viewmodel.isVendor
+                    ? const VendorHomeView() // todo: Make this screen into 2 tiles... -> take payment and new customer
+                    : const FeaturedRestaurantList(),
+              ),
+              if(viewmodel.isLoading)
+                const Center(child: CircularProgressIndicator(color: themeShade400),),
             ],
-            body: viewmodel.isVendor
-                ? const VendorHomeView() // todo: Make this screen into 2 tiles... -> take payment and new customer
-                : const FeaturedRestaurantList(),
           ),
         );
       },

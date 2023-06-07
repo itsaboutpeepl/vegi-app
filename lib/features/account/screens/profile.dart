@@ -629,15 +629,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: const Text('Refresh'),
                   onTap: () async {
                     (await reduxStore).dispatch(
-                      setRandomUserAvatar(
-                        onError: (errStr) {
-                          showErrorSnack(
-                            context: context,
-                            title: Messages.connectionError,
-                            message: Messages.operationFailed,
-                          );
-                        },
-                      ),
+                      setRandomUserAvatar(),
                     );
                     Navigator.pop(context);
                   },

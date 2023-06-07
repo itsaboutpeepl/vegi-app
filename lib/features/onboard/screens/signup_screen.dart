@@ -384,7 +384,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () => _showAlternativeSignonPicker(context),
+                onTap: () => _showAlternativeSignonPicker(context, viewmodel),
                 child: Text(
                   'Alternative sign-in methods',
                   style: TextStyle(
@@ -458,6 +458,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _showAlternativeSignonPicker(
     BuildContext context,
+    MainScreenViewModel viewmodel,
   ) =>
       showModalBottomSheet<Widget>(
         useRootNavigator: true,
@@ -489,20 +490,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //     await onBoardStrategy.signInWithApple();
                 //   },
                 // ),
-                ListTile(
-                  title: const Text(Labels.emailAndPasswordSignonLabel),
-                  onTap: () async {
-                    await rootRouter
-                        .replace(const SignUpWithEmailAndPasswordScreen());
-                  },
-                ),
-                if (DebugHelpers.inDebugMode)
+                if (viewmodel.phoneNumber.isNotEmpty) ...[
                   ListTile(
-                    title: const Text(Labels.emailLinkSignonLabel),
+                    title: const Text(Labels.emailAndPasswordSignonLabel),
                     onTap: () async {
-                      await rootRouter.replace(const SignUpEmailLinkScreen());
+                      await rootRouter
+                          .replace(const SignUpWithEmailAndPasswordScreen());
                     },
                   ),
+                  if (DebugHelpers.inDebugMode)
+                    ListTile(
+                      title: const Text(Labels.emailLinkSignonLabel),
+                      onTap: () async {
+                        await rootRouter.replace(const SignUpEmailLinkScreen());
+                      },
+                    ),
+                ],
                 ListTile(
                   title: Text(Labels.signupButtonLabelLogout(context)),
                   onTap: () => _logout(context),

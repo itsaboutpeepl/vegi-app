@@ -124,14 +124,29 @@ class SignUpButton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: Text(
-          buttonText,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: _textColor,
-          ),
-        ),
+        child: !isLoading
+            ? Text(
+                buttonText,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: _textColor,
+                ),
+              )
+            : Container(
+                width: 21,
+                height: 21,
+                margin: const EdgeInsets.only(
+                  left: 28,
+                  right: 28,
+                ),
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).canvasColor,
+                  ),
+                ),
+              ),
       ),
     );
   }

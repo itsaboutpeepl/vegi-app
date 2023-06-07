@@ -1048,23 +1048,17 @@ ThunkAction<AppState> isBetaWhitelistedAddress() {
       );
       if (vegiAccount != null) {
         store
-          ..dispatch(SetStripeCustomerDetails(
-              customerId: vegiAccount.stripeCustomerId))
+          ..dispatch(
+            SetStripeCustomerDetails(
+              customerId: vegiAccount.stripeCustomerId,
+            ),
+          )
           ..dispatch(SetUserVerifiedStatusSuccess(vegiAccount.verified))
           ..dispatch(SetUserAvatar(vegiAccount.imageUrl))
           ..dispatch(SetUserVegiAccountIdSuccess(vegiAccount.id));
         if (vegiAccount.imageUrl.isEmpty) {
           store.dispatch(
-            setRandomUserAvatar(
-              onError: (errStr) {
-                log.error(errStr);
-                Sentry.captureException(
-                  errStr,
-                  stackTrace: StackTrace.current, // from catch (e, s)
-                  hint: 'ERROR - setRandomUserAvatar $errStr',
-                );
-              },
-            ),
+            setRandomUserAvatar(),
           );
         }
       }
@@ -2225,10 +2219,41 @@ ThunkAction<AppState> updateDisplayNameCall(String displayName) {
   };
 }
 
-ThunkAction<AppState> setRandomUserAvatar({
-  required void Function(String err) onError,
-  void Function()? onSuccess,
-}) {
+ThunkAction<AppState> setRandomUserAvatarIfNone() {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetIsLoadingHttpRequest(isLoading: true));
+
+      final vegiAccount = await peeplEatsService.getVegiAccountForWalletAddress(
+        store.state.userState.walletAddress,
+        (eStr) {
+          Analytics.track(
+            eventName: AnalyticsEvents.getUserForWalletAddress,
+            properties: {
+              AnalyticsProps.status: AnalyticsProps.failed,
+              'error': eStr,
+            },
+          );
+        },
+      );
+
+      if (vegiAccount != null && vegiAccount.imageUrl.isEmpty) {
+        store.dispatch(setRandomUserAvatar());
+      }
+
+      store.dispatch(SetIsLoadingHttpRequest(isLoading: true));
+    } catch (e, s) {
+      log.error('ERROR - setRandomUserAvatarIfNone $e', stackTrace: s);
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - setRandomUserAvatarIfNone $e',
+      );
+    }
+  };
+}
+
+ThunkAction<AppState> setRandomUserAvatar() {
   return (Store<AppState> store) async {
     try {
       updateFirebaseCurrentUser(({required User firebaseUser}) async {
@@ -2249,7 +2274,6 @@ ThunkAction<AppState> setRandomUserAvatar({
         if (imageUrl.isNotEmpty) {
           await firebaseUser.updatePhotoURL(imageUrl);
           store.dispatch(SetUserAvatar(imageUrl));
-          onSuccess?.call();
         }
       });
     } catch (e, s) {
@@ -2264,7 +2288,14 @@ ThunkAction<AppState> setRandomUserAvatar({
         stackTrace: s,
         hint: 'Error in update user profile image',
       );
-      store.dispatch(SetUserAvatar(''));
+      store
+        ..dispatch(SetUserAvatar(''))
+        ..dispatch(
+          SignUpErrorDetails(
+            title: Messages.connectionError,
+            message: Messages.operationFailed,
+          ),
+        );
     }
   };
 }
