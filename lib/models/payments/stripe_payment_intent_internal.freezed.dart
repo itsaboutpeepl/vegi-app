@@ -26,6 +26,7 @@ mixin _$StripePaymentIntentInternal {
   String get clientSecret => throw _privateConstructorUsedError;
   num get amount => throw _privateConstructorUsedError;
   String get currency => throw _privateConstructorUsedError;
+  String? get customer => throw _privateConstructorUsedError; //customerId
   Map<String, dynamic> get metadata => throw _privateConstructorUsedError;
   @JsonKey(name: 'payment_method_types')
   List<String> get paymentMethodTypes => throw _privateConstructorUsedError;
@@ -51,6 +52,7 @@ abstract class $StripePaymentIntentInternalCopyWith<$Res> {
       @JsonKey(name: 'client_secret') String clientSecret,
       num amount,
       String currency,
+      String? customer,
       Map<String, dynamic> metadata,
       @JsonKey(name: 'payment_method_types') List<String> paymentMethodTypes,
       Map<String, dynamic> shipping,
@@ -75,6 +77,7 @@ class _$StripePaymentIntentInternalCopyWithImpl<$Res,
     Object? clientSecret = null,
     Object? amount = null,
     Object? currency = null,
+    Object? customer = freezed,
     Object? metadata = null,
     Object? paymentMethodTypes = null,
     Object? shipping = null,
@@ -97,6 +100,10 @@ class _$StripePaymentIntentInternalCopyWithImpl<$Res,
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as String,
+      customer: freezed == customer
+          ? _value.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as String?,
       metadata: null == metadata
           ? _value.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
@@ -131,6 +138,7 @@ abstract class _$$_StripePaymentIntentInternalCopyWith<$Res>
       @JsonKey(name: 'client_secret') String clientSecret,
       num amount,
       String currency,
+      String? customer,
       Map<String, dynamic> metadata,
       @JsonKey(name: 'payment_method_types') List<String> paymentMethodTypes,
       Map<String, dynamic> shipping,
@@ -154,6 +162,7 @@ class __$$_StripePaymentIntentInternalCopyWithImpl<$Res>
     Object? clientSecret = null,
     Object? amount = null,
     Object? currency = null,
+    Object? customer = freezed,
     Object? metadata = null,
     Object? paymentMethodTypes = null,
     Object? shipping = null,
@@ -176,6 +185,10 @@ class __$$_StripePaymentIntentInternalCopyWithImpl<$Res>
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as String,
+      customer: freezed == customer
+          ? _value.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as String?,
       metadata: null == metadata
           ? _value.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
@@ -205,6 +218,7 @@ class _$_StripePaymentIntentInternal extends _StripePaymentIntentInternal {
       @JsonKey(name: 'client_secret') required this.clientSecret,
       required this.amount,
       required this.currency,
+      this.customer,
       this.metadata = const {},
       @JsonKey(name: 'payment_method_types') this.paymentMethodTypes = const [],
       this.shipping = const {},
@@ -224,6 +238,9 @@ class _$_StripePaymentIntentInternal extends _StripePaymentIntentInternal {
   @override
   final String currency;
   @override
+  final String? customer;
+//customerId
+  @override
   @JsonKey()
   final Map<String, dynamic> metadata;
   @override
@@ -238,7 +255,7 @@ class _$_StripePaymentIntentInternal extends _StripePaymentIntentInternal {
 
   @override
   String toString() {
-    return 'StripePaymentIntentInternal(id: $id, clientSecret: $clientSecret, amount: $amount, currency: $currency, metadata: $metadata, paymentMethodTypes: $paymentMethodTypes, shipping: $shipping, status: $status)';
+    return 'StripePaymentIntentInternal(id: $id, clientSecret: $clientSecret, amount: $amount, currency: $currency, customer: $customer, metadata: $metadata, paymentMethodTypes: $paymentMethodTypes, shipping: $shipping, status: $status)';
   }
 
   @override
@@ -252,6 +269,8 @@ class _$_StripePaymentIntentInternal extends _StripePaymentIntentInternal {
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.currency, currency) ||
                 other.currency == currency) &&
+            (identical(other.customer, customer) ||
+                other.customer == customer) &&
             const DeepCollectionEquality().equals(other.metadata, metadata) &&
             const DeepCollectionEquality()
                 .equals(other.paymentMethodTypes, paymentMethodTypes) &&
@@ -267,6 +286,7 @@ class _$_StripePaymentIntentInternal extends _StripePaymentIntentInternal {
       clientSecret,
       amount,
       currency,
+      customer,
       const DeepCollectionEquality().hash(metadata),
       const DeepCollectionEquality().hash(paymentMethodTypes),
       const DeepCollectionEquality().hash(shipping),
@@ -295,6 +315,7 @@ abstract class _StripePaymentIntentInternal
           required final String clientSecret,
       required final num amount,
       required final String currency,
+      final String? customer,
       final Map<String, dynamic> metadata,
       @JsonKey(name: 'payment_method_types')
           final List<String> paymentMethodTypes,
@@ -315,6 +336,8 @@ abstract class _StripePaymentIntentInternal
   @override
   String get currency;
   @override
+  String? get customer;
+  @override //customerId
   Map<String, dynamic> get metadata;
   @override
   @JsonKey(name: 'payment_method_types')

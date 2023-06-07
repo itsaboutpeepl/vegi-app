@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/features/veganHome/Helpers/extensions.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/payments/stripe_payment_intent.dart';
+import 'package:vegan_liverpool/models/payments/stripe_payment_intent_check.dart';
 import 'package:vegan_liverpool/models/payments/stripe_payment_intent_internal.dart';
 import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
@@ -19,7 +21,7 @@ class StripePayService {
   StripePayService();
   Dio get dio => peeplEatsService.dio;
 
-  Future<StripePaymentIntentInternal?> startPaymentIntentCheck({
+  Future<StripePaymentIntentCheck?> startPaymentIntentCheck({
     required String paymentIntentID,
     required String paymentIntentClientSecret,
   }) async {
@@ -28,9 +30,9 @@ class StripePayService {
         '/api/v1/payments/check-stripe-payment-intent/$paymentIntentID',
         sendWithAuthCreds: true,
         dontRoute: true,
-        queryParameters: {
-          'client_secret': paymentIntentClientSecret,
-        },
+        // queryParameters: {
+        //   'client_secret': paymentIntentClientSecret,
+        // },
       );
 
       final Map<String, dynamic> result = response.data as Map<String, dynamic>;
@@ -40,8 +42,15 @@ class StripePayService {
         stackTrace: StackTrace.current,
       );
 
+      if (result.isNotEmpty && result.containsKeyAndNotNull('paymentIntent')) {
+        result['paymentIntent']['client_secret'] = paymentIntentClientSecret;
+      }
+      if (result.isNotEmpty && result.containsKeyAndNotNull('id')) {
+        result['paymentIntent']['id'] = paymentIntentID;
+      }
+
       final paymentIntent = tryCatchRethrowInline(
-        () => StripePaymentIntentInternal.fromJson(result),
+        () => StripePaymentIntentCheck.fromJson(result),
       );
 
       return paymentIntent;

@@ -666,7 +666,8 @@ enum OrderCreationProcessStatus {
   sendOrderCallClientError,
   orderCancelled, //todo: Handle
   orderPaymentFailed,
-  orderAlreadyBeingCreated, //todo: Handle
+  orderAlreadyBeingCreated, 
+  paymentIntentCheckNotFound, //todo: Handle
 }
 
 enum StripePaymentStatus {
@@ -678,6 +679,49 @@ enum StripePaymentStatus {
   mintingSucceeded,
   mintingFailed,
   paymentCancelled, //todo: Handle
+}
+
+enum StripePaymentMethodType {
+  acss_debit,
+  affirm,
+  afterpay_clearpay,
+  alipay,
+  au_becs_debit,
+  bacs_debit,
+  bancontact,
+  blik,
+  boleto,
+  card,
+  card_present,
+  cashapp,
+  customer_balance,
+  eps,
+  fpx,
+  giropay,
+  grabpay,
+  ideal,
+  interac_present,
+  klarna,
+  konbini,
+  link,
+  oxxo,
+  p24,
+  paynow,
+  paypal,
+  pix,
+  promptpay,
+  sepa_debit,
+  sofort,
+  us_bank_account,
+  wechat_pay,
+  zip,
+}
+
+enum StripePaymentMethodCardChecks {
+  pass,
+  fail,
+  unavailable,
+  unchecked,
 }
 
 enum FirebaseAuthenticationStatus {

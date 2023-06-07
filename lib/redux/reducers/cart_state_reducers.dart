@@ -125,6 +125,7 @@ UserCartState _clearCart(
     discountCode: '',
     selectedDeliveryAddress: null,
     paymentIntentID: '',
+    paymentIntent: null,
     ephemeralKey: '',
     publishableKey: '',
     paymentIntentClientSecret: '',
@@ -276,6 +277,7 @@ UserCartState _createOrder(
   return state.copyWith(
     order: action.order,
     paymentIntentID: action.paymentIntentId,
+    paymentIntent: action.stripePaymentIntent,
     paymentIntentClientSecret: action.stripePaymentIntent.paymentIntent.clientSecret,
     ephemeralKey: action.stripePaymentIntent.ephemeralKey,
     publishableKey: action.stripePaymentIntent.publishableKey,

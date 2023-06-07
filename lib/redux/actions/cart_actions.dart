@@ -1746,18 +1746,30 @@ ThunkAction<AppState> sendOrderObject<T extends CreateOrderForFulfilment>({
             ),
           );
       } else {
-        log.verbose('Order Result $result');
-        // TODO Convert this call to also use StripePaymentIntentInternal.fomrJson
-        final Map<String, dynamic> checkResult =
-            await peeplPayService.checkOrderValidity(result.paymentIntentID);
+        final checkResult = await peeplPayService.checkOrderValidity(
+            result.paymentIntentID);
+        if (checkResult == null) {
+          store
+            ..dispatch(
+              SetIsLoadingHttpRequest(
+                isLoading: false,
+              ),
+            )
+            ..dispatch(
+              OrderCreationProcessStatusUpdate(
+                status: _sentryUpdatePipe(
+                  OrderCreationProcessStatus.paymentIntentCheckNotFound,
+                ),
+              ),
+            );
+          return;
+        }
 
-        final Map<String, dynamic> paymentIntent =
-            checkResult['paymentIntent'] as Map<String, dynamic>;
+        final paymentIntent = checkResult.paymentIntent;
         final paymentIntentAmount = Money.fromJson({
-          'currency': paymentIntent['metadata']['currency'] as String,
+          'currency': paymentIntent.metadata['currency'] as String,
           'value':
-              num.tryParse(paymentIntent['metadata']['amount'] as String) ??
-                  0.0,
+              num.tryParse(paymentIntent.metadata['amount'] as String) ?? 0.0,
         });
         if (paymentIntentAmount.compareTo(store.state.cartState.cartTotal) !=
             0) {
@@ -1976,7 +1988,8 @@ ThunkAction<AppState> startPaymentProcess({
           orderId: orderId,
           accountId: store.state.userState.vegiAccountId!,
           stripeCustomerId: store.state.userState.stripeCustomerId,
-          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
+          paymentIntentClientSecret:
+              store.state.cartState.paymentIntentClientSecret,
           store: store,
           amount: store.state.cartState.cartTotal,
           shouldPushToHome: true,
@@ -2041,7 +2054,8 @@ ThunkAction<AppState> startPaymentProcess({
           orderId: int.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           stripeCustomerId: store.state.userState.stripeCustomerId,
-          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
+          paymentIntentClientSecret:
+              store.state.cartState.paymentIntentClientSecret,
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,
@@ -2156,7 +2170,8 @@ ThunkAction<AppState> startPaymentProcess({
           store: store,
           amount: store.state.cartState.cartTotal,
           stripeCustomerId: store.state.userState.stripeCustomerId,
-          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
+          paymentIntentClientSecret:
+              store.state.cartState.paymentIntentClientSecret,
           shouldPushToHome: false,
           productName: Labels.stripeVegiProductName,
         )
@@ -2264,7 +2279,8 @@ ThunkAction<AppState> startPaymentProcess({
           orderId: num.parse(store.state.cartState.orderID),
           accountId: store.state.userState.vegiAccountId!,
           stripeCustomerId: store.state.userState.stripeCustomerId,
-          paymentIntentClientSecret: store.state.cartState.paymentIntentClientSecret,
+          paymentIntentClientSecret:
+              store.state.cartState.paymentIntentClientSecret,
           amount: store.state.cartState.cartTotal,
           store: store,
           shouldPushToHome: false,

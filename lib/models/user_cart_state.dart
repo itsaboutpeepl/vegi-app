@@ -8,6 +8,7 @@ import 'package:vegan_liverpool/models/cart/order.dart';
 import 'package:vegan_liverpool/models/cart/productSuggestion.dart';
 import 'package:vegan_liverpool/models/payments/live_payment.dart';
 import 'package:vegan_liverpool/models/payments/money.dart';
+import 'package:vegan_liverpool/models/payments/stripe_payment_intent.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/restaurant/payment_methods.dart';
@@ -83,8 +84,12 @@ class UserCartState with _$UserCartState {
         String discountCode,
     @Default('')
         String paymentIntentID,
-    @JsonKey(ignore: true) @Default('')
+    @JsonKey(ignore: true)
+    @Default('')
         String paymentIntentClientSecret,
+    @JsonKey(ignore: true)
+    @Default(null)
+        StripePaymentIntent? paymentIntent,
     @Default('')
         String ephemeralKey,
     @Default('')

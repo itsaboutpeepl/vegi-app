@@ -97,6 +97,14 @@ class CheckoutScreenPt2 extends StatelessWidget {
                   title: "Order totals aren't matching",
                 );
               } else if (newViewModel.orderCreationProcessStatus ==
+                  OrderCreationProcessStatus
+                      .paymentIntentCheckNotFound) {
+                await showErrorSnack(
+                  context: context,
+                  title: 'Connection issue',
+                  message: 'Failed to validate payment',
+                );
+              } else if (newViewModel.orderCreationProcessStatus ==
                   OrderCreationProcessStatus.orderIsBelowVendorMinimumOrder) {
                 await showErrorSnack(
                   context: context,

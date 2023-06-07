@@ -156,13 +156,31 @@ class StripeService {
 
     // 4. Confirm the payment sheet.
     try {
-      unawaited(
-        instance.confirmPaymentSheetPayment().timeout(
+      // * Check paymentIntentObject for existing payment methods
+      bool preregisteredPaymentMethodUsedForThisIntent = false;
+      if (store.state.cartState.paymentIntent != null &&
+          store.state.cartState.paymentIntent!.paymentIntent.paymentMethodTypes
+              .isNotEmpty) {
+        preregisteredPaymentMethodUsedForThisIntent = store.state.cartState
+                .paymentIntent!.paymentIntent.paymentMethodTypes.length >
+            0;
+      }
+      // final newCardDetailsWereUsed = !preregisteredPaymentMethodUsedForThisIntent;
+      if (preregisteredPaymentMethodUsedForThisIntent) {
+        // pre-registered cards need confirmation, new card details are confirmed when input to stripe payment sheet.
+        await instance.confirmPaymentSheetPayment().timeout(
               const Duration(
-                seconds: 10,
+                seconds: 30,
               ),
-            ),
-      );
+            );
+        // unawaited(
+        //   instance.confirmPaymentSheetPayment().timeout(
+        //         const Duration(
+        //           seconds: 10,
+        //         ),
+        //       ),
+        // );
+      }
     } on Exception catch (e, s) {
       // TODO
       log.error('WTF: $e', stackTrace: s);
@@ -355,11 +373,11 @@ class StripeService {
 
       if (paymentIntent == null) {
         log.error(
-          'Failed to fetch paymentIntent from vegi server using paymentIntent client scret that was created on the order',
+          'Failed to fetch paymentIntent[${store.state.cartState.paymentIntentID}] from vegi server using paymentIntent client secret that was created on the order',
           stackTrace: StackTrace.current,
         );
         await Sentry.captureException(
-          'Failed to fetch paymentIntent from vegi server using paymentIntent client scret that was created on the order',
+          'Failed to fetch paymentIntent[${store.state.cartState.paymentIntentID}] from vegi server using paymentIntent client secret that was created on the order',
           stackTrace: StackTrace.current, // from catch (err, s)
           hint: 'ERROR - stripe.dart.handleStripeCardPayment',
         );
@@ -388,7 +406,7 @@ class StripeService {
 
       await _handleStripeCardPaymentFlow(
         store: store,
-        paymentIntentClientSecret: paymentIntent,
+        paymentIntentClientSecret: paymentIntent.paymentIntent,
         ephemeralKey: store.state.cartState.ephemeralKey,
         publishableKey: store.state.cartState.publishableKey,
         stripeCustomerId: stripeCustomerId,

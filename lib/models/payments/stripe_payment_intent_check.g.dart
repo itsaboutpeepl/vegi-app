@@ -1,19 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'stripe_payment_intent.dart';
+part of 'stripe_payment_intent_check.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_StripePaymentIntent _$$_StripePaymentIntentFromJson(
+_$_StripePaymentIntentCheck _$$_StripePaymentIntentCheckFromJson(
         Map<String, dynamic> json) =>
-    _$_StripePaymentIntent(
-      customer: json['customer'] == null
-          ? null
-          : StripeCustomer.fromJson(json['customer'] as Map<String, dynamic>),
-      ephemeralKey: json['ephemeralKey'] as String,
-      publishableKey: json['publishableKey'] as String,
+    _$_StripePaymentIntentCheck(
       paymentIntent: StripePaymentIntentInternal.fromJson(
           json['paymentIntent'] as Map<String, dynamic>),
       paymentMethods: (json['paymentMethods'] as List<dynamic>?)
@@ -23,12 +18,9 @@ _$_StripePaymentIntent _$$_StripePaymentIntentFromJson(
           const [],
     );
 
-Map<String, dynamic> _$$_StripePaymentIntentToJson(
-        _$_StripePaymentIntent instance) =>
+Map<String, dynamic> _$$_StripePaymentIntentCheckToJson(
+        _$_StripePaymentIntentCheck instance) =>
     <String, dynamic>{
-      'customer': instance.customer?.toJson(),
-      'ephemeralKey': instance.ephemeralKey,
-      'publishableKey': instance.publishableKey,
       'paymentIntent': instance.paymentIntent.toJson(),
       'paymentMethods': instance.paymentMethods.map((e) => e.toJson()).toList(),
     };

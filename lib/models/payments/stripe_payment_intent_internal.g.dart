@@ -13,6 +13,7 @@ _$_StripePaymentIntentInternal _$$_StripePaymentIntentInternalFromJson(
       clientSecret: json['client_secret'] as String,
       amount: json['amount'] as num,
       currency: json['currency'] as String,
+      customer: json['customer'] as String?,
       metadata: json['metadata'] as Map<String, dynamic>? ?? const {},
       paymentMethodTypes: (json['payment_method_types'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$_StripePaymentIntentInternalToJson(
       'client_secret': instance.clientSecret,
       'amount': instance.amount,
       'currency': instance.currency,
+      'customer': instance.customer,
       'metadata': instance.metadata,
       'payment_method_types': instance.paymentMethodTypes,
       'shipping': instance.shipping,

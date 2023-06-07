@@ -45,6 +45,8 @@ mixin _$UserCartState {
   String get paymentIntentID => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String get paymentIntentClientSecret => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  StripePaymentIntent? get paymentIntent => throw _privateConstructorUsedError;
   String get ephemeralKey => throw _privateConstructorUsedError;
   String get publishableKey => throw _privateConstructorUsedError;
   Order? get order => throw _privateConstructorUsedError;
@@ -124,6 +126,8 @@ abstract class $UserCartStateCopyWith<$Res> {
       String paymentIntentID,
       @JsonKey(ignore: true)
           String paymentIntentClientSecret,
+      @JsonKey(ignore: true)
+          StripePaymentIntent? paymentIntent,
       String ephemeralKey,
       String publishableKey,
       Order? order,
@@ -160,6 +164,7 @@ abstract class $UserCartStateCopyWith<$Res> {
 
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   $TimeSlotCopyWith<$Res>? get selectedTimeSlot;
+  $StripePaymentIntentCopyWith<$Res>? get paymentIntent;
   $OrderCopyWith<$Res>? get order;
   $DeliveryAddressesCopyWith<$Res>? get restaurantAddress;
   $TimeSlotCopyWith<$Res>? get nextCollectionSlot;
@@ -199,6 +204,7 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
     Object? discountCode = null,
     Object? paymentIntentID = null,
     Object? paymentIntentClientSecret = null,
+    Object? paymentIntent = freezed,
     Object? ephemeralKey = null,
     Object? publishableKey = null,
     Object? order = freezed,
@@ -298,6 +304,10 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
           ? _value.paymentIntentClientSecret
           : paymentIntentClientSecret // ignore: cast_nullable_to_non_nullable
               as String,
+      paymentIntent: freezed == paymentIntent
+          ? _value.paymentIntent
+          : paymentIntent // ignore: cast_nullable_to_non_nullable
+              as StripePaymentIntent?,
       ephemeralKey: null == ephemeralKey
           ? _value.ephemeralKey
           : ephemeralKey // ignore: cast_nullable_to_non_nullable
@@ -444,6 +454,18 @@ class _$UserCartStateCopyWithImpl<$Res, $Val extends UserCartState>
 
   @override
   @pragma('vm:prefer-inline')
+  $StripePaymentIntentCopyWith<$Res>? get paymentIntent {
+    if (_value.paymentIntent == null) {
+      return null;
+    }
+
+    return $StripePaymentIntentCopyWith<$Res>(_value.paymentIntent!, (value) {
+      return _then(_value.copyWith(paymentIntent: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $OrderCopyWith<$Res>? get order {
     if (_value.order == null) {
       return null;
@@ -561,6 +583,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
       String paymentIntentID,
       @JsonKey(ignore: true)
           String paymentIntentClientSecret,
+      @JsonKey(ignore: true)
+          StripePaymentIntent? paymentIntent,
       String ephemeralKey,
       String publishableKey,
       Order? order,
@@ -599,6 +623,8 @@ abstract class _$$_UserCartStateCopyWith<$Res>
   $DeliveryAddressesCopyWith<$Res>? get selectedDeliveryAddress;
   @override
   $TimeSlotCopyWith<$Res>? get selectedTimeSlot;
+  @override
+  $StripePaymentIntentCopyWith<$Res>? get paymentIntent;
   @override
   $OrderCopyWith<$Res>? get order;
   @override
@@ -643,6 +669,7 @@ class __$$_UserCartStateCopyWithImpl<$Res>
     Object? discountCode = null,
     Object? paymentIntentID = null,
     Object? paymentIntentClientSecret = null,
+    Object? paymentIntent = freezed,
     Object? ephemeralKey = null,
     Object? publishableKey = null,
     Object? order = freezed,
@@ -742,6 +769,10 @@ class __$$_UserCartStateCopyWithImpl<$Res>
           ? _value.paymentIntentClientSecret
           : paymentIntentClientSecret // ignore: cast_nullable_to_non_nullable
               as String,
+      paymentIntent: freezed == paymentIntent
+          ? _value.paymentIntent
+          : paymentIntent // ignore: cast_nullable_to_non_nullable
+              as StripePaymentIntent?,
       ephemeralKey: null == ephemeralKey
           ? _value.ephemeralKey
           : ephemeralKey // ignore: cast_nullable_to_non_nullable
@@ -891,6 +922,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       this.paymentIntentID = '',
       @JsonKey(ignore: true)
           this.paymentIntentClientSecret = '',
+      @JsonKey(ignore: true)
+          this.paymentIntent = null,
       this.ephemeralKey = '',
       this.publishableKey = '',
       this.order = null,
@@ -981,6 +1014,9 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   final String paymentIntentClientSecret;
   @override
+  @JsonKey(ignore: true)
+  final StripePaymentIntent? paymentIntent;
+  @override
   @JsonKey()
   final String ephemeralKey;
   @override
@@ -1070,7 +1106,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartCurrency: $cartCurrency, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, paymentIntentClientSecret: $paymentIntentClientSecret, ephemeralKey: $ephemeralKey, publishableKey: $publishableKey, order: $order, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
+    return 'UserCartState(cartItems: $cartItems, cartSubTotal: $cartSubTotal, cartTax: $cartTax, cartTotal: $cartTotal, cartCurrency: $cartCurrency, cartDiscountPercent: $cartDiscountPercent, cartDiscountComputed: $cartDiscountComputed, voucherPotValue: $voucherPotValue, appliedVouchers: $appliedVouchers, deliverySlots: $deliverySlots, collectionSlots: $collectionSlots, selectedDeliveryAddress: $selectedDeliveryAddress, selectedTimeSlot: $selectedTimeSlot, selectedTipAmount: $selectedTipAmount, discountCode: $discountCode, paymentIntentID: $paymentIntentID, paymentIntentClientSecret: $paymentIntentClientSecret, paymentIntent: $paymentIntent, ephemeralKey: $ephemeralKey, publishableKey: $publishableKey, order: $order, selectedGBPxAmount: $selectedGBPxAmount, selectedPPLAmount: $selectedPPLAmount, payButtonLoading: $payButtonLoading, transferringTokens: $transferringTokens, errorCompletingPayment: $errorCompletingPayment, confirmedPayment: $confirmedPayment, restaurantName: $restaurantName, restaurantID: $restaurantID, restaurantIsLive: $restaurantIsLive, restaurantAddress: $restaurantAddress, restaurantWalletAddress: $restaurantWalletAddress, fulfilmentMethod: $fulfilmentMethod, restaurantMinimumOrder: $restaurantMinimumOrder, restaurantPlatformFee: $restaurantPlatformFee, deliveryInstructions: $deliveryInstructions, selectedPaymentMethod: $selectedPaymentMethod, fulfilmentPostalDistricts: $fulfilmentPostalDistricts, eligibleOrderDates: $eligibleOrderDates, nextCollectionSlot: $nextCollectionSlot, nextDeliverySlot: $nextDeliverySlot, productSuggestion: $productSuggestion, orderCreationProcessStatus: $orderCreationProcessStatus, stripePaymentStatus: $stripePaymentStatus, paymentInProcess: $paymentInProcess, isLoadingCartState: $isLoadingCartState, errorDetails: $errorDetails)';
   }
 
   @override
@@ -1097,6 +1133,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('paymentIntentID', paymentIntentID))
       ..add(DiagnosticsProperty(
           'paymentIntentClientSecret', paymentIntentClientSecret))
+      ..add(DiagnosticsProperty('paymentIntent', paymentIntent))
       ..add(DiagnosticsProperty('ephemeralKey', ephemeralKey))
       ..add(DiagnosticsProperty('publishableKey', publishableKey))
       ..add(DiagnosticsProperty('order', order))
@@ -1170,6 +1207,8 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 other.paymentIntentID == paymentIntentID) &&
             (identical(other.paymentIntentClientSecret, paymentIntentClientSecret) ||
                 other.paymentIntentClientSecret == paymentIntentClientSecret) &&
+            (identical(other.paymentIntent, paymentIntent) ||
+                other.paymentIntent == paymentIntent) &&
             (identical(other.ephemeralKey, ephemeralKey) ||
                 other.ephemeralKey == ephemeralKey) &&
             (identical(other.publishableKey, publishableKey) ||
@@ -1201,8 +1240,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
                 other.fulfilmentMethod == fulfilmentMethod) &&
             (identical(other.restaurantMinimumOrder, restaurantMinimumOrder) ||
                 other.restaurantMinimumOrder == restaurantMinimumOrder) &&
-            (identical(other.restaurantPlatformFee, restaurantPlatformFee) ||
-                other.restaurantPlatformFee == restaurantPlatformFee) &&
+            (identical(other.restaurantPlatformFee, restaurantPlatformFee) || other.restaurantPlatformFee == restaurantPlatformFee) &&
             (identical(other.deliveryInstructions, deliveryInstructions) || other.deliveryInstructions == deliveryInstructions) &&
             (identical(other.selectedPaymentMethod, selectedPaymentMethod) || other.selectedPaymentMethod == selectedPaymentMethod) &&
             const DeepCollectionEquality().equals(other.fulfilmentPostalDistricts, fulfilmentPostalDistricts) &&
@@ -1238,6 +1276,7 @@ class _$_UserCartState extends _UserCartState with DiagnosticableTreeMixin {
         discountCode,
         paymentIntentID,
         paymentIntentClientSecret,
+        paymentIntent,
         ephemeralKey,
         publishableKey,
         order,
@@ -1309,6 +1348,8 @@ abstract class _UserCartState extends UserCartState {
       final String paymentIntentID,
       @JsonKey(ignore: true)
           final String paymentIntentClientSecret,
+      @JsonKey(ignore: true)
+          final StripePaymentIntent? paymentIntent,
       final String ephemeralKey,
       final String publishableKey,
       final Order? order,
@@ -1388,6 +1429,9 @@ abstract class _UserCartState extends UserCartState {
   @override
   @JsonKey(ignore: true)
   String get paymentIntentClientSecret;
+  @override
+  @JsonKey(ignore: true)
+  StripePaymentIntent? get paymentIntent;
   @override
   String get ephemeralKey;
   @override
